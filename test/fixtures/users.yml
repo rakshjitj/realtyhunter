@@ -3,7 +3,7 @@
 michael:
   fname: Michael
   lname: Example
-  email: michael.example@whatever.com
+  email: michaelexample@whatever.com
   password_digest: <%= User.digest('password') %>
   remember_digest: MyString
   bio: MyText

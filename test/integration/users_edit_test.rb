@@ -4,13 +4,16 @@ class UsersEditTest < ActionDispatch::IntegrationTest
 
   def setup
     @user = users(:michael)
+    post login_path, session: { email: @user.email, password: 'password' }
+    follow_redirect!
   end
 
   test "unsuccessful edit" do
     get edit_user_path(@user)
     assert_template 'users/edit'
     patch user_path(@user), user: { fname:  "",
-    																lname:  "",
+    								lname:  "",
+                                    bio: "",
                                     email: "foo@invalid",
                                     password:              "foo",
                                     password_confirmation: "bar" }
@@ -23,9 +26,11 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     fname  = "Foo"
     lname = "Bar"
     email = "foo@bar.com"
+    bio = "afsdfasdfsad"
     patch user_path(@user), user: { fname: fname,
-    	 															lname: lname,
+    	 						    lname: lname,
                                     email: email,
+                                    bio: bio,
                                     password:              "",
                                     password_confirmation: "" }
     assert_not flash.empty?

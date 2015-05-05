@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:show, :edit, :update]
-  before_action :correct_user,   only: [:show, :edit, :update]
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :logged_in_user, only: [:show, :edit, :update, :destroy]
+  before_action :correct_user,   only: [:show, :edit, :update, :destroy]
+  before_action :set_user,       only: [:show, :edit, :update, :destroy]
 
   # GET /users
   # GET /users.json
@@ -31,10 +31,11 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         log_in @user
-        flash[:success] = "Welcome @user.fname @user.lname!"
+        flash[:success] = "Welcome " + @user.fname + " " + @user.lname + "!"
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
+        #puts "**** #{@user.errors.inspect}"
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
