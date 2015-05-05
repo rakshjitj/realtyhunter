@@ -6,6 +6,11 @@ class UserTest < ActiveSupport::TestCase
     @user = User.new(fname: "Example", lname: "User", email: "user@example.com", bio: "blah blah blah", password:"12345qwe")
   end
 
+  # Returns true if a test user is logged in.
+  def is_logged_in?
+    !session[:user_id].nil?
+  end
+
   test "should be valid" do
     assert @user.valid?
   end
@@ -75,5 +80,9 @@ class UserTest < ActiveSupport::TestCase
   test "password should have a minimum length" do
     @user.password = @user.password_confirmation = "a" * 5
     assert_not @user.valid?
+  end
+
+  test "authenticated? should return false for a user with nil digest" do
+    assert_not @user.authenticated?('')
   end
 end
