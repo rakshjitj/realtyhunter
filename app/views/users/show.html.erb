@@ -1,5 +1,10 @@
 <p id="notice"><%= notice %></p>
 
+<h1>
+  <strong>Profile pic:</strong>
+  <%= gravatar_for @user %>
+</h1>
+
 <p>
   <strong>Fname:</strong>
   <%= @user.fname %>
@@ -16,19 +21,11 @@
 </p>
 
 <p>
-  <strong>Password digest:</strong>
-  <%= @user.password_digest %>
-</p>
-
-<p>
-  <strong>Remember digest:</strong>
-  <%= @user.remember_digest %>
-</p>
-
-<p>
   <strong>Bio:</strong>
   <%= @user.bio %>
 </p>
+
+<% provide(:title, @user.fname) %>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

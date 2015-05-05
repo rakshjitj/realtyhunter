@@ -1,0 +1,78 @@
+<link rel='stylesheet' id='we3-main-styles-css'  href='http://myspacenyc.com/wp-content/plugins/we3-real-estate//css/we3-main.css?ver=1.0.0' media='all' />
+<link rel='stylesheet' id='we3-icomoon-styles-css'  href='http://myspacenyc.com/wp-content/plugins/we3-real-estate//css/icomoon/icomoon.css?ver=1.0.0' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='http://myspacenyc.com/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=4.0.2' media='all' />
+<link rel='stylesheet' id='upw_theme_standard-css'  href='http://myspacenyc.com/wp-content/plugins/ultimate-posts-widget/css/upw-theme-standard.min.css?ver=4.0' media='all' />
+<link rel='stylesheet' id='normalize-css'  href='http://myspacenyc.com/wp-content/themes/myspacenyc-blankslate/normalize.css?ver=1.0' media='all' />
+<link rel='stylesheet' id='html5blank-css'  href='http://myspacenyc.com/wp-content/themes/myspacenyc-blankslate/style.css?ver=1.0' media='all' />
+<link rel='stylesheet' id='msl-main-css'  href='http://myspacenyc.com/wp-content/plugins/master-slider/public/assets/css/masterslider.main.css?ver=2.0.4' media='all' />
+<link rel='stylesheet' id='msl-custom-css'  href='http://myspacenyc.com/wp-content/uploads/master-slider/custom.css?ver=1.5' media='all' />
+
+
+<!-- header -->
+			<header class="header clear" role="banner">
+
+				<!-- wrapper -->
+				<div class="wrapper">
+					
+					<div class="nav-mobile">
+						
+						<nav class="nav fixed-menu">
+							<ul id="menu-fixed-menu" class="menu"><li id="menu-item-100" class="phone menu-item menu-item-type-custom menu-item-object-custom menu-item-100"><a href="tel:+18004165070">800-416-5070</a></li>
+</ul>						</nav>
+						<div class="mobile-menu">
+							<i class="icon-menu2 open"></i>
+							<i class="icon-close close"></i>
+						</div>
+					</div>
+					<!-- logo -->
+					<div class="logo">
+						<a href="http://myspacenyc.com">
+							<img src="http://myspacenyc.com/wp-content/themes/myspacenyc-blankslate/img/logo.png" alt="Logo" class="logo-img">
+						</a>
+					</div>
+					<div class="logo-mobile">
+						<a href="http://myspacenyc.com">
+							<img src="http://myspacenyc.com/wp-content/themes/myspacenyc-blankslate/img/logo-wide.png" alt="Logo" class="logo-img">
+						</a>
+					</div>
+					<!-- /logo -->
+					<!-- nav -->
+					<nav class="nav" role="navigation">
+						<ul id="menu-main-menu" class="menu">
+
+						<li id="menu-item-48" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-48">
+							<%= link_to 'LISTINGS', listings_path %>
+						<!--a href="/search/listings/rent/">RENTALS</a--></li>
+
+						<li id="menu-item-97" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-97">
+							<%= link_to 'LEADS', leads_path %>
+							<!--a href="http://myspacenyc.com/about/">ABOUT</a--></li>
+
+						<li id="menu-item-101" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-101">
+							<%= link_to 'LANDLORDS', landlords_path %>
+						<!--a href="http://myspacenyc.com/list-with-us/">LIST WITH US</a--></li>
+
+						<li id="menu-item-98" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-98">
+						<%= link_to 'DEALS', deals_path %>
+							<!--a href="http://myspacenyc.com/contact/">CONTACT</a--></li>
+
+						<% if logged_in? %>
+							<li id="menu-item-99" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-98">
+							<%= link_to 'PROFILE', user_path(current_user) %>
+								<!--a href="http://myspacenyc.com/contact/">CONTACT</a--></li>
+						<% end %>
+						<li id="menu-item-99" class="phone menu-item menu-item-type-custom menu-item-object-custom menu-item-99"><a href="tel:+18004165070">800-416-5070</a></li>
+						
+						</ul>
+						</nav>
+					<!-- /nav -->
+				</div>
+			</header>
+			<!-- /header -->
+
+
+
+<!--link rel='stylesheet' id='we3-search-bar-styles-css'  href='http://myspacenyc.com/wp-content/plugins/we3-real-estate/modules/search/css/we3-search-bar.css?ver=1.0.0' media='all' />
+<link rel='stylesheet' id='we3-mobile-styles-css'  href='http://myspacenyc.com/wp-content/plugins/we3-real-estate/modules/search/css/we3-mobile-styles.css?ver=1.0.0' media='all' />
+<link rel='stylesheet' id='we3-jquery-ui-styles-css'  href='//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css?ver=1.0.0' media='all' />
+<link rel='stylesheet' id='we3-jquery-mobile-styles-css'  href='http://myspacenyc.com/wp-content/plugins/we3-real-estate/modules/search/css/mobile/jquery.mobile.custom.structure.min.css?ver=1.0.0' media='all' /-->

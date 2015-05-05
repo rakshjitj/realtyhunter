@@ -29,8 +29,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Unicorn as the app server
 # gem 'unicorn'
 gem 'will_paginate'
+gem 'bootstrap-sass', '~> 3.3.4'
 gem 'bootstrap-will_paginate'
-gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
 gem 'rails_12factor'
 
