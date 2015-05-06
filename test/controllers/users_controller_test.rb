@@ -1,14 +1,10 @@
 require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
+
   setup do
     @user = users(:michael)
-  end
-
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_not_nil assigns(:users)
+    @other_user = users(:archer)
   end
 
   test "should get new" do
@@ -24,6 +20,12 @@ class UsersControllerTest < ActionController::TestCase
 
   test "should redirect update when not logged in" do
     patch :update, id: @user, user: { fname: @user.fname, email: @user.email }
+    assert_not flash.empty?
+    assert_redirected_to login_url
+  end
+
+  test "should redirect index when not logged in" do
+    get :index
     assert_not flash.empty?
     assert_redirected_to login_url
   end
@@ -72,5 +74,19 @@ class UsersControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to users_path
+  end
+
+  test "should redirect edit when logged in as wrong user" do
+    log_in_as(@other_user)
+    get :edit, id: @user
+    #assert flash.empty?
+    assert_redirected_to users_url
+  end
+
+  test "should redirect update when logged in as wrong user" do
+    log_in_as(@other_user)
+    patch :update, id: @user, user: { fname: @user.fname, email: @user.email }
+    #assert flash.empty?
+    assert_redirected_to users_url
   end
 end

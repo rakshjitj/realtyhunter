@@ -5,5 +5,34 @@ michael:
   lname: Example
   email: michaelexample@whatever.com
   password_digest: <%= User.digest('password') %>
-  remember_digest: MyString
   bio: MyText
+
+archer:
+  fname: Sterling
+  lname: Archer
+  email: duchess@example.gov
+  password_digest: <%= User.digest('password') %>
+  bio: MyText
+
+lana:
+  fname: Lana
+  lname: Kane
+  email: hands@example.gov
+  password_digest: <%= User.digest('password') %>
+  bio: MyText
+
+mallory:
+  fname: Mallory
+  lname: Archer
+  email: boss@example.gov
+  password_digest: <%= User.digest('password') %>
+  bio: MyText
+
+<% 75.times do |n| %>
+user_<%= n %>:
+  fname:  <%= "User #{n}" %>
+  lname:  <%= "User #{n}" %>
+  email: <%= "user-#{n}@example.com" %>
+  password_digest: <%= User.digest('password') %>
+  bio: MyText
+<% end %>

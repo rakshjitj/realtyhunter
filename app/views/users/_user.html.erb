@@ -1,0 +1,8 @@
+<tr class="<%= cycle('even', 'odd') -%>">
+      <td><%= link_to gravatar_for(user, size: 50), user %></td>
+      <td><%= user.fname %></td>
+      <td><%= user.lname %></td>
+      <td><%= user.email %></td>
+      <td><%= link_to 'Edit', edit_user_path(user) %></td>
+      <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+</tr>

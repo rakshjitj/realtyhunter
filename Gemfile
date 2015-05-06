@@ -37,6 +37,9 @@ gem 'rails_12factor'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+#used to add semi-realistic users
+gem 'faker', '1.4.2'
+
 group :production do
 	gem 'puma'
 end

@@ -1,12 +1,12 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:show, :edit, :update, :destroy]
+  before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy]
   before_action :correct_user,   only: [:show, :edit, :update, :destroy]
-  before_action :set_user,       only: [:show, :edit, :update, :destroy]
 
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    #@users = User.all
+    @users = User.paginate(:page => params[:page], :per_page => 50)
   end
 
   # GET /users/1
@@ -21,6 +21,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    
   end
 
   # POST /users
@@ -35,7 +36,7 @@ class UsersController < ApplicationController
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
-        #puts "**** #{@user.errors.inspect}"
+        puts "**** #{@user.errors.inspect}"
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
@@ -50,6 +51,7 @@ class UsersController < ApplicationController
       flash[:success] = "Profile updated!"
       redirect_to @user
     else
+      puts "**** #{@user.errors.inspect}"
       render 'edit'
     end
 #    respond_to do |format|
@@ -74,16 +76,32 @@ class UsersController < ApplicationController
   end
 
   private
+
+    # Confirms a logged-in user.
+    def logged_in_user
+      unless logged_in?
+        store_location
+        flash[:danger] = "Please log in."
+        redirect_to login_url
+      end
+    end
+
     # Confirms the correct user.
     def correct_user
       @user = User.find(params[:id])
-      redirect_to(root_url) unless @user == current_user
+      #redirect_back_or users_path unless @user == current_user
+      unless @user == current_user
+        flash[:danger] = "You are not authorized to go there."
+        redirect_back_or users_url
+        #redirect_to(users_url)
+      end
+      #redirect_to(root_url) unless @user == current_user
     end
 
     # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
+    #def set_user
+    #  @user = User.find(params[:id])
+    #end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
