@@ -34,6 +34,9 @@ gem 'bootstrap-will_paginate'
 gem 'autoprefixer-rails'
 gem 'rails_12factor'
 
+# for handling image uploads
+gem 'aws-sdk', '~> 2'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

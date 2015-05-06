@@ -6,6 +6,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :email
       t.string :password_digest
       t.string :remember_digest
+      t.string :avatar_url
       t.text :bio
     end
     #add_index :users, :email, unique: true
