@@ -29,9 +29,8 @@ test:
   database: myspace_realty_monster_test
 
 production:
-  <<: *default
-  user: hacdzlznynfxjt
-  password: 6bP4F0QLtRH71gbK-B9N57lZkP
   host: ec2-23-21-76-246.compute-1.amazonaws.com
-  port: 5432
   database: dfp43tn5v7au5h
+  user: hacdzlznynfxjt
+  port: 5432
+  password: 6bP4F0QLtRH71gbK-B9N57lZkP
