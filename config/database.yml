@@ -10,6 +10,7 @@ default: &default
   timeout: 5000
   username: myspace
   password: Myspace722!
+  host: localhost
   port: 5433
 
 development:
@@ -29,4 +30,8 @@ test:
 
 production:
   <<: *default
-  database: myspace_realty_monster_prod
+  user: hacdzlznynfxjt
+  password: 6bP4F0QLtRH71gbK-B9N57lZkP
+  host: ec2-23-21-76-246.compute-1.amazonaws.com
+  port: 5432
+  database: dfp43tn5v7au5h
