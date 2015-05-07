@@ -1,27 +1,34 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy]
   before_action :correct_user,   only: [:show, :edit, :update, :destroy]
+  #before_action :compose_pre_post
 
   # GET /users
   # GET /users.json
   def index
     #@users = User.all
-    @users = User.paginate(:page => params[:page], :per_page => 50)
+    @users = User.search(params[:search])
+    @users = @users.paginate(:page => params[:page], :per_page => 50)
+    #@users = User.where(activated: true).paginate(page: params[:page])
+    #@users = User.paginate(:page => params[:page], :per_page => 50)
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
+    # TODO: only show if this is an active user
+    redirect_to root_url and return unless @user.activated == true
   end
 
   # GET /users/new
   def new
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: 201, acl: :public_read)
+    puts "#{@s3_direct_post.inspect}"
     @user = User.new
   end
 
   # GET /users/1/edit
   def edit
-    
   end
 
   # POST /users
@@ -81,6 +88,10 @@ class UsersController < ApplicationController
 
   private
 
+    def compose_pre_post
+      #@s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: 201, acl: :public_read)
+    end
+
     # Confirms a logged-in user.
     def logged_in_user
       unless logged_in?
@@ -109,6 +120,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:email, :fname, :lname, :bio, :password, :password_confirmation)
+      params.require(:user).permit(:email, :fname, :lname, :bio, :password, 
+        :password_confirmation, :avatar_url, :phone_number, :mobile_phone_number)
     end
 end

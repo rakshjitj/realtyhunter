@@ -1,9 +1,25 @@
 <% provide(:title, 'All Users') %>
 <h1>All users</h1>
 
-<%= link_to 'New User', new_user_path %>
+<div class="row">
+  <div class="col-md-12">
+    <%= link_to 'New User', new_user_path %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    <%= form_tag users_path, :method => 'get' do %>
+      Search:
+      <%= text_field_tag :search, params[:search], placeholder: "name/email", size: 50 %>
+      <%= submit_tag "Go", :name => nil %>
+      <%= link_to "Clear", users_path, class: 'btn btn-xs btn-default' %>
+    <% end %>
+  </div>
+  <div class="col-md-offset-10">
+    <%= will_paginate %>
+  </div>
+</div>
 
-<%= will_paginate %>
 
 <div class="row">
   <div class="col-md-12">
@@ -27,7 +43,7 @@
 </div>
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-offset-10">
     <%= will_paginate %>
   </div>
 </div>

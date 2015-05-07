@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  rolify
 	attr_accessor :remember_token, :activation_token, :reset_token
   before_create :create_activation_digest
   before_save :downcase_email
@@ -46,8 +47,7 @@ class User < ActiveRecord::Base
 
   # Activates an account.
   def activate
-    update_attribute(:activated,    true)
-    update_attribute(:activated_at, Time.zone.now)
+    update_columns(activated: true, activated_at: Time.zone.now)
   end
 
   # Sends activation email.
@@ -58,8 +58,8 @@ class User < ActiveRecord::Base
   # Sets the password reset attributes.
   def create_reset_digest
     self.reset_token = User.new_token
-    update_attribute(:reset_digest,  User.digest(reset_token))
-    update_attribute(:reset_sent_at, Time.zone.now)
+    update_columns(reset_digest:  User.digest(reset_token),
+                   reset_sent_at: Time.zone.now)
   end
 
   # Sends password reset email.
@@ -70,6 +70,23 @@ class User < ActiveRecord::Base
   # Returns true if a password reset has expired.
   def password_reset_expired?
     reset_sent_at < 2.hours.ago
+  end
+
+  def self.search(query_string)
+    @running_list = User.all
+
+    if !query_string
+      return @running_list
+    end
+    
+    @terms = query_string.split(" ")
+    @terms.each do |term|
+      #puts "**** #{term} ****\n"
+      term = "%#{term}%"
+      @running_list = @running_list.where('fname ILIKE ? or lname ILIKE ? or email ILIKE ?', "%#{term}%", "%#{term}%", "%#{term}%").all
+    end
+
+    @running_list.uniq
   end
 
   private

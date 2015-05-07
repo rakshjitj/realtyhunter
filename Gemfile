@@ -35,10 +35,14 @@ gem 'autoprefixer-rails'
 gem 'rails_12factor'
 
 # for handling image uploads
-gem 'aws-sdk', '~> 2'
+gem 'aws-sdk', '~> 1'
 
 # sending emails
 gem 'mandrill-api'
+
+# roles authorization
+gem "rolify"
+gem 'cancancan', '~> 1.10'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

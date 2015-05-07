@@ -15,4 +15,14 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     	assert_select 'a[href=?]', edit_user_path(user), text: "Edit"
     end
   end
+
+  test "index shows only active users" do
+    log_in_as(@user)
+    get users_path
+    assert_template 'users/index'
+    User.paginate(page: 1).each do |user|
+      assert user.activated
+    end
+
+  end
 end
