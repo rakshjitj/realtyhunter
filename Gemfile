@@ -37,6 +37,9 @@ gem 'rails_12factor'
 # for handling image uploads
 gem 'aws-sdk', '~> 2'
 
+# sending emails
+gem 'mandrill-api'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
