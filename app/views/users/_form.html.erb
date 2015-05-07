@@ -12,7 +12,7 @@ $(function() {
       url:             '<%= @s3_direct_post.url %>',
       type:            'POST',
       autoUpload:       true,
-      formData:         '<%= @s3_direct_post.fields.to_json.html_safe %>',
+      formData:         <%= @s3_direct_post.fields.to_json.html_safe %>,
       paramName:        'file', // S3 does not like nested name fields i.e. name="user[avatar_url]"
       dataType:         'XML',  // S3 returns XML if success_action_status is set to 201
       replaceFileInput: false,
@@ -43,7 +43,8 @@ $(function() {
       },
       fail: function(e, data) {
         submitButton.prop('disabled', false);
-        console.log(e, data)
+        console.log(e, data);
+        console.log("FIELDS", <%= @s3_direct_post.fields.to_json.html_safe %>);
         progressBar.
           css("background", "red").
           text("Failed");
@@ -57,10 +58,6 @@ $(function() {
 <%= form_for(@user, html: { class: "directUpload" }) do |f| %>
   <%= render 'shared/error_messages' %>
 
-  <div class="field">
-    <%= f.label :avatar_url %><br>
-    <%= f.file_field :avatar_url %>
-  </div>
   <div class="field">
     <%= f.label :email, "Email (will be your username)" %><br>
     <%= f.email_field :email, class: 'form-control' %>
@@ -84,6 +81,11 @@ $(function() {
   <div class="field">
     <%= f.label "Give us your bio" %><br>
     <%= f.text_area :bio, class: 'form-control', :size => "20x10" %>
+  </div>
+  <div class="field">
+    <!--%= f.label :avatar_url %--><br>
+    <%= image_tag @user.avatar_url %>
+    <%= f.file_field :avatar_url %>
   </div>
   <div class="actions">
     <%= f.submit class: "btn btn-primary" %>

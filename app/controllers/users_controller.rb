@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy]
   before_action :correct_user,   only: [:show, :edit, :update, :destroy]
-  #before_action :compose_pre_post
+  before_action :compose_pre_post
 
   # GET /users
   # GET /users.json
@@ -22,8 +22,6 @@ class UsersController < ApplicationController
 
   # GET /users/new
   def new
-    @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: 201, acl: :public_read)
-    puts "#{@s3_direct_post.inspect}"
     @user = User.new
   end
 
@@ -89,7 +87,7 @@ class UsersController < ApplicationController
   private
 
     def compose_pre_post
-      #@s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: 201, acl: :public_read)
+      @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: 201, acl: :public_read)
     end
 
     # Confirms a logged-in user.
