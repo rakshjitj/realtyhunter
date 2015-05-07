@@ -8,9 +8,9 @@
 
 @password = "713lorimer"
 users = User.create([
-	{ fname: 'Raquel', lname: 'Bujans',   email: 'rbujans@myspacenyc.com', bio: "blah blah blah", password:@password, password_confirmation:@password},
-	{ fname: 'Nir',    lname: 'Mizrachi', email: 'nir@myspacenyc.com',     bio: "blah blah blah", password:@password, password_confirmation:@password},
-	{ fname: 'Cheryl', lname: 'Hoyles',   email: 'info@myspacenyc.com',    bio: "blah blah blah", password:@password, password_confirmation:@password},
+	{ fname: 'Raquel', lname: 'Bujans',   email: 'rbujans@myspacenyc.com', bio: "blah blah blah", password:@password, password_confirmation:@password, activated: true, activated_at: Time.zone.now},
+	{ fname: 'Nir',    lname: 'Mizrachi', email: 'nir@myspacenyc.com',     bio: "blah blah blah", password:@password, password_confirmation:@password, activated: true, activated_at: Time.zone.now},
+	{ fname: 'Cheryl', lname: 'Hoyles',   email: 'info@myspacenyc.com',    bio: "blah blah blah", password:@password, password_confirmation:@password, activated: true, activated_at: Time.zone.now},
 	])
 
 50.times do |n|
@@ -22,5 +22,7 @@ users = User.create([
   						 lname: lname,
                email: email,
                password:              password,
-               password_confirmation: password)
+               password_confirmation: password,
+               activated: true,
+               activated_at: Time.zone.now)
 end
