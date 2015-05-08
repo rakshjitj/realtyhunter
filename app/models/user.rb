@@ -93,6 +93,14 @@ class User < ActiveRecord::Base
     @running_list.uniq
   end
 
+  def avatar_thumbnail_url
+    return S3_AVATAR_THUMBNAIL_BUCKET.objects[self.avatar_key].url_for(:read).to_s
+  end
+
+  def avatar_url
+    return S3_AVATAR_BUCKET.url + self.avatar_key
+  end
+
   private
 
     # Converts email to all lower-case.
