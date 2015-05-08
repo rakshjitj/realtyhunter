@@ -50,6 +50,7 @@ gem 'cancancan', '~> 1.10'
 #used to add semi-realistic users
 gem 'faker', '1.4.2'
 
+
 group :production do
 	gem 'puma'
 end

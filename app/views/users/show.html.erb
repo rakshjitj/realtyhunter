@@ -1,46 +1,49 @@
-<!--p id="notice"><%= notice %></p-->
-
 <% provide(:title, "Your Profile") %>
-<!--div class="row">
-  <aside class="col-md-4">
-    
-  </aside>
-</div-->
-
 
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
-
+  <div class="col-md-6">
     <section class="user_info">
-      <h1>
-        <%= image_tag @user.avatar_url %>
-        <%= @user.fname %> <%= @user.lname %>
-      </h1>
+        <%= avatar_for @user %>
     </section>
-    
-    <br />
+  </div>
 
-    <p>
-      <strong>Fname:</strong>
-      <%= @user.fname %>
-    </p>
+  <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-12">
+        <h1><%= @user.fname %> <%= @user.lname %></h1>
+        <br />
+        <%= link_to 'Edit', edit_user_path(@user) %><br />
+      </div>
+    </div>
 
-    <p>
-      <strong>Lname:</strong>
-      <%= @user.lname %>
-    </p>
+    <div class="row">
+      <div class="col-md-2">
+        <strong>Email:</strong>
+      </div>
+      <div class="col-md-10">
+        <%= @user.email %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <strong>Mobile:</strong>
+      </div>
+      <div class="col-md-10">
+        <%= @user.mobile_phone_number %>
+      </div>
+    </div>
 
-    <p>
-      <strong>Email:</strong>
-      <%= @user.email %>
-    </p>
+    <div class="row">
+      <div class="col-md-12">
+        <strong>Bio:</strong>
+      </div>  
+    </div>
 
-    <p>
-      <strong>Bio:</strong>
-      <%= @user.bio %>
-    </p>
-
-    <%= link_to 'Edit', edit_user_path(@user) %>
+    <div class="row">
+      <div class="col-md-12">
+        <%= @user.bio %>
+      </div>  
+    </div>
     
   </div>
 </div>

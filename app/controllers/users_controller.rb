@@ -33,7 +33,6 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-
     #respond_to do |format|
       if @user.save
         #log_in @user
@@ -87,7 +86,7 @@ class UsersController < ApplicationController
   private
 
     def compose_pre_post
-      @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: 201, acl: :public_read)
+      @s3_direct_post = S3_AVATAR_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: 201, acl: :public_read)
     end
 
     # Confirms a logged-in user.
@@ -118,7 +117,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:email, :fname, :lname, :bio, :password, 
-        :password_confirmation, :avatar_url, :phone_number, :mobile_phone_number)
+      params.require(:user).permit(:email, :fname, :lname, :mobile_phone_number, :bio, :password, 
+        :password_confirmation, :avatar_key, :phone_number, :mobile_phone_number)
     end
 end

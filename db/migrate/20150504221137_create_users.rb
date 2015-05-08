@@ -8,7 +8,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :mobile_phone_number
       t.string :password_digest
       t.string :remember_digest
-      t.string :avatar_url
+      t.string :avatar_key
       t.text   :bio
       t.string :activation_digest
       t.boolean :activated, default: false

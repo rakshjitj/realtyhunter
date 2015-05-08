@@ -72,6 +72,10 @@ class User < ActiveRecord::Base
     reset_sent_at < 2.hours.ago
   end
 
+  def avatar_thumbnail_url
+    S3_AVATAR_RESIZED_BUCKET['avatar_url']
+  end
+
   def self.search(query_string)
     @running_list = User.all
 

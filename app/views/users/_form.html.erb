@@ -7,6 +7,7 @@ $(function() {
     var progressBar  = $("<div class='bar'></div>");
     var barContainer = $("<div class='progress'></div>").append(progressBar);
     fileInput.after(barContainer);
+
     fileInput.fileupload({
       fileInput:       fileInput,
       url:             '<%= @s3_direct_post.url %>',
@@ -22,7 +23,6 @@ $(function() {
       },
       start: function (e) {
         submitButton.prop('disabled', true);
-
         progressBar.
           css('background', 'green').
           css('display', 'block').
@@ -35,16 +35,14 @@ $(function() {
 
         // extract key and generate URL from response
         var key   = $(data.jqXHR.responseXML).find("Key").text();
-        var url   = '//<%= @s3_direct_post.url.host %>/' + key;
-
+        //var url   = '//<%= @s3_direct_post.url.host %>/' + key;
         // create hidden field
-        var input = $("<input />", { type:'hidden', name: fileInput.attr('name'), value: url })
+        //var input = $("<input />", { type:'hidden', name: fileInput.attr('name'), value: url })
+        var input = $("<input />", { type:'hidden', name: fileInput.attr('name'), value: '' + key })
         form.append(input);
       },
       fail: function(e, data) {
         submitButton.prop('disabled', false);
-        console.log(e, data);
-        console.log("FIELDS", <%= @s3_direct_post.fields.to_json.html_safe %>);
         progressBar.
           css("background", "red").
           text("Failed");
@@ -79,13 +77,16 @@ $(function() {
     <%= f.text_field :lname, class: 'form-control' %>
   </div>
   <div class="field">
+    <%= f.label :mobile_phone_number, "Mobile" %><br>
+    <%= f.text_field :mobile_phone_number, class: 'form-control' %>
+  </div>
+  <div class="field">
     <%= f.label "Give us your bio" %><br>
     <%= f.text_area :bio, class: 'form-control', :size => "20x10" %>
   </div>
   <div class="field">
-    <!--%= f.label :avatar_url %--><br>
-    <%= image_tag @user.avatar_url %>
-    <%= f.file_field :avatar_url %>
+    <%= f.label :avatar_key, "Profile image:" %><br>
+    <%= f.file_field :avatar_key %>
   </div>
   <div class="actions">
     <%= f.submit class: "btn btn-primary" %>

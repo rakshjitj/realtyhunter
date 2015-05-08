@@ -1,5 +1,21 @@
 module UsersHelper
 
+	def avatar_for(user)
+		if user.avatar_key?
+			avatar_url = S3_AVATAR_BUCKET.url + user.avatar_key
+			image_tag(avatar_url, alt: user.fname + " " + user.lname + ' avatar', class: "gravatar")
+		end
+	end
+
+	def avatar_thumbnail_for(user)
+		if user.avatar_key?
+			thumbnail_url = S3_AVATAR_THUMBNAIL_BUCKET.objects[user.avatar_key].url_for(:read)
+			image_tag(thumbnail_url, alt: user.fname + " " + user.lname + ' avatar thumbnail', class: "gravatar")
+		else 
+			# TODO: render default 'no profile pic chosen'
+		end
+	end
+
 	# Returns the Gravatar for the given user.
   #def gravatar_for(user, options = { size: 80 })
   #	if user.email
