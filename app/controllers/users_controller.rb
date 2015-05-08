@@ -84,6 +84,16 @@ class UsersController < ApplicationController
     end
   end
 
+  def upload_image
+    # TODO: 
+    # resize image & upload new image to S3
+  end
+
+  def destroy_image
+    # TODO: delete image
+    S3_AVATAR_BUCKET.objects[self.avatar_key].delete
+  end
+
   private
 
     def compose_pre_post

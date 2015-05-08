@@ -54,38 +54,68 @@ $(function() {
 </script>
 
 
-<%= form_for(@user, html: { class: "directUpload" }) do |f| %>
-  <%= render 'shared/error_messages' %>
+<div class="row">
+  <div class="col-md-6">
+    <!-- User image form -->
+    <div class="row">
+      <div class="col-md-12">
+        Current image: <br />
+        <% if @user.avatar_key %>
+          <%= link_to 'Remove', user_destroy_image_path %> <br />
+          <%= avatar_for @user %>
+        <% else %>
+          <i class="fa fa-user fa-fw fa-border user-avatar"></i>
+        <% end %>
+      </div>
+        
+    </div>
+    <%= form_for(@user, :url => user_upload_image_path) do |f| %>
 
-  <div class="field">
-    <%= f.label :email, "Email (will be your username)" %><br>
-    <%= f.email_field :email, class: 'form-control' %>
+      <div class="field">
+        <br />
+        <%= f.label :avatar_key, "Upload new profile image:" %><br>
+        <%= f.file_field :avatar_key %>
+      </div>
+      <div class="actions">
+        <%= f.submit "Upload", class: "btn btn-primary" %>
+      </div>
+    <% end %>
   </div>
-  <div class="field">
-    <%= f.label :password %><br>
-    <%= f.password_field :password, class: 'form-control' %>
+
+
+  <div class="col-md-6">
+    <!-- All other fields form -->
+    <%= form_for(@user, html: { class: "directUpload" }) do |f| %>
+      <%= render 'shared/error_messages' %>
+
+      <div class="field">
+        <%= f.label :email, "Email (will be your username)" %><br>
+        <%= f.email_field :email, class: 'form-control' %>
+      </div>
+      <div class="field">
+        <%= f.label :password %><br>
+        <%= f.password_field :password, class: 'form-control' %>
+      </div>
+      <div class="field">
+        <%= f.label :password_confirmation, "Confirmation" %><br>
+        <%= f.password_field :password_confirmation, class: 'form-control' %>
+      </div>
+      <div class="field">
+        <%= f.label :name, "Name" %><br>
+        <%= f.text_field :name, class: 'form-control' %>
+      </div>
+      <div class="field">
+        <%= f.label :mobile_phone_number, "Mobile" %><br>
+        <%= f.telephone_field :mobile_phone_number, class: 'form-control' %>
+      </div>
+      <div class="field">
+        <%= f.label "Give us your bio" %><br>
+        <%= f.text_area :bio, class: 'form-control', :size => "20x10" %>
+      </div>
+      <div class="actions">
+        <%= f.submit class: "btn btn-primary" %>
+      </div>
+    <% end %>    
   </div>
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirmation" %><br>
-    <%= f.password_field :password_confirmation, class: 'form-control' %>
-  </div>
-  <div class="field">
-    <%= f.label :name, "Name" %><br>
-    <%= f.text_field :name, class: 'form-control' %>
-  </div>
-  <div class="field">
-    <%= f.label :mobile_phone_number, "Mobile" %><br>
-    <%= f.telephone_field :mobile_phone_number, class: 'form-control' %>
-  </div>
-  <div class="field">
-    <%= f.label "Give us your bio" %><br>
-    <%= f.text_area :bio, class: 'form-control', :size => "20x10" %>
-  </div>
-  <div class="field">
-    <%= f.label :avatar_key, "Profile image:" %><br>
-    <%= f.file_field :avatar_key %>
-  </div>
-  <div class="actions">
-    <%= f.submit class: "btn btn-primary" %>
-  </div>
-<% end %>
+</div>
+

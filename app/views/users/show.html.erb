@@ -12,39 +12,36 @@
       <div class="col-md-12">
         <h1><%= @user.name %></h1>
         <br />
-        <%= link_to 'Edit', edit_user_path(@user) %><br />
+        <%= link_to '(Edit)', edit_user_path(@user) %><br />
+        <br />
       </div>
     </div>
 
     <div class="row">
-      <div class="col-md-2">
-        <strong>Email:</strong>
+      <div class="col-md-1">
+        <strong class="pull-right">Email:</strong>
       </div>
-      <div class="col-md-10">
+      <div class="col-md-11">
         <%= @user.email %>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-2">
-        <strong>Mobile:</strong>
+      <div class="col-md-1">
+        <strong class="pull-right">Mobile:</strong>
       </div>
-      <div class="col-md-10">
+      <div class="col-md-11">
         <%= @user.mobile_phone_number %>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-md-12">
-        <strong>Bio:</strong>
-      </div>  
-    </div>
-
-    <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-1">
+        <strong class="pull-right">Bio:</strong>
+      </div>
+      <div class="col-md-11">
         <%= @user.bio %>
-      </div>  
-    </div>
-    
+      </div>
+    </div>    
   </div>
 </div>
 
