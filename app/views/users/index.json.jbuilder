@@ -1,6 +1,5 @@
 json.array!(@users) do |user|
-  json.extract! user, :id, :phone_number, :mobile_phone_number, :email, :bio
-  json.name user.fname + " " + user.lname
+  json.extract! user, :id, :phone_number, :mobile_phone_number, :email, :bio, :name
   
   if user.avatar_key?
   	json.headshot do

@@ -9,8 +9,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   test "invalid signup information" do
     get signup_path
     assert_no_difference 'User.count' do
-      post users_path, user: { fname:  "",
-                               lname:  "",
+      post users_path, user: { name:  "",
                                email: "user@invalid",
                                password:              "foo",
                                password_confirmation: "bar" }
@@ -27,8 +26,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       post users_path, user: { email: "user@example.com",
                                password:              "password",
                                password_confirmation: "password",
-                               fname:  "Example",
-                               lname:  "User",
+                               name:  "Example User",
                                bio: "dfsadfasfasf" }
     end
     assert_equal 1, ActionMailer::Base.deliveries.size

@@ -8,9 +8,7 @@ class User < ActiveRecord::Base
 						format: { with: VALID_EMAIL_REGEX }, 
             uniqueness: { case_sensitive: false }
 
-  validates :fname, presence: true, length: {maximum: 50}
-            #uniqueness: { case_sensitive: false }
-  validates :lname, presence: true, length: {maximum: 50}
+  validates :name, presence: true, length: {maximum: 50}
             #uniqueness: { case_sensitive: false }
 	has_secure_password
 	validates :password, length: { minimum: 6 }, allow_blank: true
@@ -50,6 +48,10 @@ class User < ActiveRecord::Base
     update_columns(activated: true, activated_at: Time.zone.now)
   end
 
+  def fname
+    self.name.split(' ')[0]
+  end
+
   # Sends activation email.
   def send_activation_email
     UserMailer.account_activation(self).deliver_now
@@ -87,7 +89,7 @@ class User < ActiveRecord::Base
     @terms.each do |term|
       #puts "**** #{term} ****\n"
       term = "%#{term}%"
-      @running_list = @running_list.where('fname ILIKE ? or lname ILIKE ? or email ILIKE ?', "%#{term}%", "%#{term}%", "%#{term}%").all
+      @running_list = @running_list.where('name ILIKE ? or email ILIKE ?', "%#{term}%", "%#{term}%").all
     end
 
     @running_list.uniq

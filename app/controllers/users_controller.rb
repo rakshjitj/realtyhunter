@@ -36,13 +36,13 @@ class UsersController < ApplicationController
     #respond_to do |format|
       if @user.save
         #log_in @user
-        #flash[:success] = "Welcome " + @user.fname + " " + @user.lname + "!"
+        #flash[:success] = "Welcome " + @user.name + "!"
         #format.html { redirect_to @user, notice: 'User was successfully created.' }
         #format.json { render :show, status: :created, location: @user }
         @user.send_activation_email
         flash[:info] = "Please check your email to activate your account."
-        log_out @user
-        #redirect_to root_url
+        #log_out
+        redirect_to root_url
       else
         #puts "**** #{@user.errors.inspect}"
         #format.html { render :new }
@@ -103,11 +103,11 @@ class UsersController < ApplicationController
     def correct_user
       @user = User.find(params[:id])
       #redirect_back_or users_path unless @user == current_user
-      unless @user == current_user || @user.has_role? :admin
+      unless (@user == current_user || @user.has_role?(:admin))
         flash[:danger] = "You are not authorized to go there."
         redirect_back_or users_url
         #redirect_to(users_url)
-      #end
+      end
       #redirect_to(root_url) unless @user == current_user
     end
 
@@ -118,7 +118,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:email, :fname, :lname, :mobile_phone_number, :bio, :password, 
+      params.require(:user).permit(:email, :name, :mobile_phone_number, :bio, :password, 
         :password_confirmation, :avatar_key, :phone_number, :mobile_phone_number)
     end
 end

@@ -73,18 +73,6 @@ $(function() {
     <%= f.label :name, "Name" %><br>
     <%= f.text_field :name, class: 'form-control' %>
   </div>
-  <div class="field">
-    <%= f.label :mobile_phone_number, "Mobile" %><br>
-    <%= f.telephone_field :mobile_phone_number, class: 'form-control' %>
-  </div>
-  <div class="field">
-    <%= f.label "Give us your bio" %><br>
-    <%= f.text_area :bio, class: 'form-control', :size => "20x10" %>
-  </div>
-  <div class="field">
-    <%= f.label :avatar_key, "Profile image:" %><br>
-    <%= f.file_field :avatar_key %>
-  </div>
   <div class="actions">
     <%= f.submit class: "btn btn-primary" %>
   </div>
