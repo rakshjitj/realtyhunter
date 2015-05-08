@@ -92,7 +92,7 @@ $state-danger-text: red;
 
 input, textarea, select, .uneditable-input {
   border: 1px solid #bbb;
-  width: 100%;
+  //width: 100%;
   margin-bottom: 15px;
   @include box_sizing;
 }
@@ -200,3 +200,7 @@ aside {
   -moz-box-shadow: 0px 0px 2px #888;
   -webkit-box-shadow: 0px 0px 2px #888;
   box-shadow: 0px 0px 2px #888;*/
+
+.avatar {
+  border: 1px solid #bbb;
+}
