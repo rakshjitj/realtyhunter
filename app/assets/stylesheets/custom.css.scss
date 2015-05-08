@@ -179,10 +179,18 @@ aside {
   }
 }
 
-.fa-user {
-  font-size: 200px;
-  border: 1px solid #bbb;
-
+.user-avatar-thumbnail {
+  .fa-user {
+    font-size: 50px;
+    border: 1px solid #bbb;
+  }
+}
+.user-avatar {
+  .fa-user {
+    font-size: 200px;
+    border: 1px solid #bbb;
+  }
+}
   //padding: 15px 25px;
   /*border: 1px solid #bbb;
   display: inline-block;
@@ -192,4 +200,3 @@ aside {
   -moz-box-shadow: 0px 0px 2px #888;
   -webkit-box-shadow: 0px 0px 2px #888;
   box-shadow: 0px 0px 2px #888;*/
-}

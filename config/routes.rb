@@ -11,8 +11,9 @@ Rails.application.routes.draw do
   root :to => 'static_pages#home'
   
   resources :users
-  delete 'user_destroy_image' => 'users#destroy_image'
-  delete 'user_upload_image' => 'users#upload_image'
+  delete 'users/:id/destroy_image', to: 'users#destroy_image', as: :user_destroy_image
+  patch 'users/:id/upload_image', to: 'users#upload_image', as: :user_upload_image
+  #/users/:id/edit(.:format)               users#edit
 
   resources :account_activations, only: [:edit]
   resources :password_resets,     only: [:new, :create, :edit, :update]

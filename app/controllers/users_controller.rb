@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy]
-  before_action :correct_user,   only: [:show, :edit, :update, :destroy]
-  before_action :compose_pre_post
+  before_action :logged_in_user, only: [:index, :show, :edit, :upload_image, :destroy]
+  before_action :correct_user,   only: [:show, :edit, :update, :upload_image, :destroy]
 
   # GET /users
   # GET /users.json
@@ -74,6 +73,26 @@ class UsersController < ApplicationController
 #    end
   end
 
+  # PATCH /users/1
+  def upload_image
+    # TODO: 
+    # resize image & upload new image to S3
+    @user = User.find(params[:id])
+    if @user.update_attributes(user_params)
+      flash[:success] = "Profile image updated!"
+      redirect_to @user
+    else
+      #puts "**** #{@user.errors.inspect}"
+      render 'edit'
+    end
+  end
+
+  # DELETE /users/1
+  def destroy_image
+    # TODO: delete image
+    #S3_AVATAR_BUCKET.objects[self.avatar_key].delete
+  end
+
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
@@ -84,21 +103,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def upload_image
-    # TODO: 
-    # resize image & upload new image to S3
-  end
-
-  def destroy_image
-    # TODO: delete image
-    S3_AVATAR_BUCKET.objects[self.avatar_key].delete
-  end
-
   private
-
-    def compose_pre_post
-      @s3_direct_post = S3_AVATAR_BUCKET.presigned_post(key: "avatars/#{SecureRandom.uuid}/${filename}", success_action_status: 201, acl: :public_read)
-    end
 
     # Confirms a logged-in user.
     def logged_in_user
@@ -112,6 +117,7 @@ class UsersController < ApplicationController
     # Confirms the correct user.
     def correct_user
       @user = User.find(params[:id])
+      #puts "***ID**** #{params.inspect}"
       #redirect_back_or users_path unless @user == current_user
       unless (@user == current_user || @user.has_role?(:admin))
         flash[:danger] = "You are not authorized to go there."
@@ -129,6 +135,6 @@ class UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:email, :name, :mobile_phone_number, :bio, :password, 
-        :password_confirmation, :avatar_key, :phone_number, :mobile_phone_number)
+        :password_confirmation, :avatar, :remove_avatar, :phone_number, :mobile_phone_number)
     end
 end

@@ -35,7 +35,9 @@ gem 'autoprefixer-rails'
 gem 'rails_12factor'
 
 # for handling image uploads
-gem 'aws-sdk', '~> 1'
+gem 'aws-sdk', '< 2'
+gem 'mini_magick'
+gem 'refile', '~> 0.4.2', require: ["refile/rails", "refile/image_processing"]
 
 # sending emails
 gem 'mandrill-api'

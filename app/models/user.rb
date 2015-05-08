@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   rolify
+  attachment :avatar
 	attr_accessor :remember_token, :activation_token, :reset_token
   before_create :create_activation_digest
   before_save :downcase_email

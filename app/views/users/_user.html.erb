@@ -1,12 +1,18 @@
 <tr class="<%= cycle('even', 'odd') -%>">
-	<% if user.avatar_key %>
-		<td><%= link_to avatar_thumbnail_for(user), user %></td>
+	<% if user.avatar_id? %>
+		<td>
+			<%= link_to attachment_image_tag(user, :avatar, :fill, 100, 100), 
+			edit_user_path(user) %>
+		</td>
 	<% else %>
-		<td></td>
+		<td>
+			<div class="user-avatar-thumbnail">
+				<i class="fa fa-user fa-fw fa-border"></i>
+			</div>
+		</td>
 	<% end %>	
   
   <td><%= link_to user.name, user %></td>
   <td><%= user.email %></td>
-  <td><%= link_to 'Edit', edit_user_path(user) %></td>
-  <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  <td><%= link_to 'Edit', edit_user_path(user) %> | <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
 </tr>

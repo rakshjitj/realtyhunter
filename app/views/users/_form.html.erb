@@ -1,83 +1,37 @@
-<script type="text/javascript">
-$(function() {
-  $('.directUpload').find("input:file").each(function(i, elem) {
-    var fileInput    = $(elem);
-    var form         = $(fileInput.parents('form:first'));
-    var submitButton = form.find('input[type="submit"]');
-    var progressBar  = $("<div class='bar'></div>");
-    var barContainer = $("<div class='progress'></div>").append(progressBar);
-    fileInput.after(barContainer);
-
-    fileInput.fileupload({
-      fileInput:       fileInput,
-      url:             '<%= @s3_direct_post.url %>',
-      type:            'POST',
-      autoUpload:       true,
-      formData:         <%= @s3_direct_post.fields.to_json.html_safe %>,
-      paramName:        'file', // S3 does not like nested name fields i.e. name="user[avatar_url]"
-      dataType:         'XML',  // S3 returns XML if success_action_status is set to 201
-      replaceFileInput: false,
-      progressall: function (e, data) {
-        var progress = parseInt(data.loaded / data.total * 100, 10);
-        progressBar.css('width', progress + '%')
-      },
-      start: function (e) {
-        submitButton.prop('disabled', true);
-        progressBar.
-          css('background', 'green').
-          css('display', 'block').
-          css('width', '0%').
-          text("Loading...");
-      },
-      done: function(e, data) {
-        submitButton.prop('disabled', false);
-        progressBar.text("Uploading done");
-
-        // extract key and generate URL from response
-        var key   = $(data.jqXHR.responseXML).find("Key").text();
-        console.log(key, data.jqXHR.responseXML);
-        //var url   = '//<%= @s3_direct_post.url.host %>/' + key;
-        // create hidden field
-        //var input = $("<input />", { type:'hidden', name: fileInput.attr('name'), value: url })
-        var input = $("<input />", { type:'hidden', name: fileInput.attr('name'), value: '' + key })
-        form.append(input);
-      },
-      fail: function(e, data) {
-        submitButton.prop('disabled', false);
-        progressBar.
-          css("background", "red").
-          text("Failed");
-      }
-    });
-  });
-});  
-</script>
-
-
 <div class="row">
   <div class="col-md-6">
     <!-- User image form -->
-    <div class="row">
-      <div class="col-md-12">
-        Current image: <br />
-        <% if @user.avatar_key %>
-          <%= link_to 'Remove', user_destroy_image_path %> <br />
-          <%= avatar_for @user %>
-        <% else %>
-          <i class="fa fa-user fa-fw fa-border user-avatar"></i>
-        <% end %>
+    
+    <!-- , :url => user_upload_image_path(@user)  -->
+    <%= form_for(@user) do |f| %>
+
+      <div class="row">
+        <div class="col-md-12">
+          Current image: <br />
+          
+          <% if @user.avatar_id? %>
+            <!-- display existing image -->
+            <%= attachment_image_tag(@user, :avatar, :fill, 300, 300) %>
+            <!-- add in options to remove existing image -->
+            <%= f.check_box :remove_avatar %>
+            <%= f.label :remove_avatar %>
+          <% else %>
+            <div class="user-avatar">
+              <i class="fa fa-user fa-fw fa-border user-avatar"></i>
+            </div>
+          <% end %>
+        </div>
       </div>
-        
-    </div>
-    <%= form_for(@user, :url => user_upload_image_path) do |f| %>
 
       <div class="field">
         <br />
-        <%= f.label :avatar_key, "Upload new profile image:" %><br>
-        <%= f.file_field :avatar_key %>
+        
+        <%= f.label :avatar, "Upload new profile image:" %><br>
+        <%= f.attachment_field :avatar, direct: true %>
+        
       </div>
       <div class="actions">
-        <%= f.submit "Upload", class: "btn btn-primary" %>
+        <%= f.submit "Save", class: "btn btn-primary" %>
       </div>
     <% end %>
   </div>
@@ -85,7 +39,7 @@ $(function() {
 
   <div class="col-md-6">
     <!-- All other fields form -->
-    <%= form_for(@user, html: { class: "directUpload" }) do |f| %>
+    <%= form_for(@user) do |f| %>
       <%= render 'shared/error_messages' %>
 
       <div class="field">
