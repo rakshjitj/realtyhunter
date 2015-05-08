@@ -34,6 +34,9 @@ users = User.create([
     activated: true, 
     activated_at: Time.zone.now},
 	])
+users[0].add_role :admin
+users[1].add_role :admin
+users[2].add_role :admin
 
 50.times do |n|
   fname  = Faker::Name.first_name
@@ -42,7 +45,7 @@ users = User.create([
   mobile_phone_number = Faker::PhoneNumber.cell_phone
   email = "example-#{n+1}@railstutorial.org"
   password = "password"
-  User.create!(fname:  fname,
+  userN = User.create!(fname:  fname,
   						 lname: lname,
                email: email,
                phone_number: phone_number,
@@ -51,4 +54,5 @@ users = User.create([
                password_confirmation: password,
                activated: true,
                activated_at: Time.zone.now)
+  userN.add_role :lic_agent
 end

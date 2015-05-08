@@ -35,7 +35,6 @@ ActiveRecord::Schema.define(version: 20150507021000) do
     t.string   "mobile_phone_number"
     t.string   "password_digest"
     t.string   "remember_digest"
-    t.string   "avatar_url"
     t.string   "avatar_key"
     t.text     "bio"
     t.string   "activation_digest"

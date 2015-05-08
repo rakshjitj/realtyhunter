@@ -41,7 +41,8 @@ class UsersController < ApplicationController
         #format.json { render :show, status: :created, location: @user }
         @user.send_activation_email
         flash[:info] = "Please check your email to activate your account."
-        redirect_to root_url
+        log_out @user
+        #redirect_to root_url
       else
         #puts "**** #{@user.errors.inspect}"
         #format.html { render :new }
@@ -86,7 +87,7 @@ class UsersController < ApplicationController
   private
 
     def compose_pre_post
-      @s3_direct_post = S3_AVATAR_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: 201, acl: :public_read)
+      @s3_direct_post = S3_AVATAR_BUCKET.presigned_post(key: "avatars/#{SecureRandom.uuid}/${filename}", success_action_status: 201, acl: :public_read)
     end
 
     # Confirms a logged-in user.
@@ -102,11 +103,11 @@ class UsersController < ApplicationController
     def correct_user
       @user = User.find(params[:id])
       #redirect_back_or users_path unless @user == current_user
-      unless @user == current_user
+      unless @user == current_user || @user.has_role? :admin
         flash[:danger] = "You are not authorized to go there."
         redirect_back_or users_url
         #redirect_to(users_url)
-      end
+      #end
       #redirect_to(root_url) unless @user == current_user
     end
 
