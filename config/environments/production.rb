@@ -90,5 +90,7 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  #config.action_controller.asset_host = "d3o6a4fzhkel22.cloudfront.net"
+  # serve from CDN
+  config.serve_static_files = true
+  config.action_controller.asset_host = ENV['CLOUDFRONT_ENDPOINT']
 end
