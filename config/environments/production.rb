@@ -91,6 +91,6 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # serve from CDN
-  config.serve_static_files = true
+  #config.serve_static_files = true
   config.action_controller.asset_host = ENV['CLOUDFRONT_ENDPOINT']
 end

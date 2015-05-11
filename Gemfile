@@ -32,7 +32,7 @@ gem 'will_paginate'
 gem 'bootstrap-sass', '~> 3.3.4'
 gem 'bootstrap-will_paginate'
 gem 'autoprefixer-rails'
-gem 'rails_12factor'
+gem 'rails_12factor', group: :production
 
 # for handling image uploads
 gem 'aws-sdk', '< 2'
