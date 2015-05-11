@@ -52,7 +52,7 @@ class UsersController < ApplicationController
       flash[:success] = "Profile updated!"
       redirect_to @user
     else
-      puts "**** #{@user.errors.inspect}"
+      #puts "**** #{@user.errors.inspect}"
       render 'edit'
     end
   end
@@ -69,12 +69,6 @@ class UsersController < ApplicationController
       #puts "**** #{@user.errors.inspect}"
       render 'edit'
     end
-  end
-
-  # DELETE /users/1
-  def destroy_image
-    # TODO: delete image
-    #S3_AVATAR_BUCKET.objects[self.avatar_key].delete
   end
 
   # DELETE /users/1
@@ -104,7 +98,7 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
       #puts "***ID**** #{params.inspect}"
       #redirect_back_or users_path unless @user == current_user
-      unless (@user == current_user || @user.has_role?(:admin))
+      unless (@user.has_role?(:admin) || @user == current_user)
         flash[:danger] = "You are not authorized to go there."
         redirect_back_or users_url
         #redirect_to(users_url)

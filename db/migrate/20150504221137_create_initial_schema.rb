@@ -1,5 +1,23 @@
-class CreateUsers < ActiveRecord::Migration
+class CreateInitialSchema < ActiveRecord::Migration
   def change
+    create_table :companies do |t|
+      t.string :name
+      t.string :logo_id, :string
+      t.timestamps null: false
+    end
+
+    create_table :offices do |t|
+      t.string :name
+      t.string :street_address
+      t.string :city
+      t.string :state
+      t.string :zipcode
+      t.string :telephone
+      t.string :fax
+
+      t.timestamps null: false
+    end
+
     create_table :users do |t|
       t.string :name
       t.string :email

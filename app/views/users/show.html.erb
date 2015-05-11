@@ -11,8 +11,16 @@
     <%= link_to '(Edit)', edit_user_path(@user) %><br />
     <br />
     <section class="user_info">
-      <!--%= avatar_for @user %-->
-      <%= attachment_image_tag(@user, :avatar, :fill, 300, 300) %>
+      <% if @user.avatar_id? %>
+        <%= attachment_image_tag(@user, :avatar, :fill, 300, 300) %>
+      <% else %>
+        <td>
+          <div class="user-avatar">
+            <i class="fa fa-user fa-fw fa-border"></i>
+          </div>
+        </td>
+      <% end %>
+      
     </section>
   </div>
 
@@ -24,6 +32,30 @@
       </div>
     </div>
 
+    <div class="row">
+      <div class="col-md-1">
+        <strong class="pull-right">Title:</strong>
+      </div>
+      <div class="col-md-11">
+        <!--%= @user.title %-->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-1">
+        <strong class="pull-right">Office:</strong>
+      </div>
+      <div class="col-md-11">
+        <!--%= @user.office %-->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-1">
+        <strong class="pull-right">Manager:</strong>
+      </div>
+      <div class="col-md-11">
+        <!--%= @user.manager %-->
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-1">
         <strong class="pull-right">Email:</strong>

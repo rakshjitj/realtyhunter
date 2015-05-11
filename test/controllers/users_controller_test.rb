@@ -92,10 +92,42 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to users_path
   end
 
-  # test upload image
-  # test edit image
-  # test delete image
-  # test if not activated, can't browse site
-  # test only admin can edit other people's roles
+  # test "should upload image" do
+  #   log_in_as(@user)
+  #   patch :upload_image, id: @user, 
+  #   user: { 
+  #     user_avatar: "test.gif"
+  #   }
+  #   assert_redirected_to @user
+  #   puts "***** #{@user.inspect}"
+  # end
 
+  # test "should upload image from remote url" do
+  #   log_in_as(@user)
+  #   patch :upload_image, id: @user, 
+  #   user: { 
+  #     remote_avatar: "https://c402277.ssl.cf1.rackcdn.com/photos/144/images/hero_small/Giant_Panda_Hero_image_(c)_Michel_Gunther_WWF_Canon.jpg?1345515244"
+  #   }
+  #   assert_redirected_to @user
+  #   puts "***** #{@user.inspect}"
+  # end
+
+  # test "should remove image from remote url" do
+  #   # upload image first
+  #   log_in_as(@user)
+  #   patch :upload_image, id: @user, 
+  #   user: { 
+  #     user_avatar: "test.gif"
+  #   }
+  #   assert_redirected_to @user
+
+  #   # now remove
+  #   patch :upload_image, id: @user, 
+  #   user: { 
+  #     remove_avatar: true
+  #   }
+  #   assert_redirected_to @user
+  # end
+
+  # test only admin can edit other people's roles
 end

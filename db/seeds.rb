@@ -6,6 +6,16 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+@company = Company.create([{name: "Myspace"}])
+
+@offices = Office.create([
+  {name: "Crown Heights", street_address: "722 Franklin Ave", city: "Brooklyn", state: "NY", zipcode: "11238", telephone: "718.399.3444", fax: "718.399.3444"},
+  {name: "Bushwick", street_address: "105 Central Ave", city: "Brooklyn", state: "NY", zipcode: "11206", telephone: "347.533.7777", fax: "347.533.7777"},
+  {name: "Williamsburg", street_address: "713 Lorimer St", city: "Brooklyn", state: "NY", zipcode: "11211", telephone: "718.564.6300", fax: "718.564.6300"},
+  {name: "Lefferts Gardens", street_address: "661 Flatbush Ave", city: "Brooklyn", state: "NY", zipcode: "11225", telephone: "718.408.8881", fax: "718.408.8881"},
+  {name: "Williamsburg - Leasing", street_address: "297 Broadway, 2nd Fl", city: "Brooklyn", state: "NY", zipcode: "11211", telephone: "555-555-5555", fax: "555-555-5555"},
+  ])
+
 @password = "713lorimer"
 
 users = User.create([

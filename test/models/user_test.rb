@@ -81,11 +81,6 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.authenticated?(:remember, '')
   end
 
-  test "avatar is present" do
-    # TO DO
-    #@user.avatar = 
-  end
-
   test "search correct when valid user found" do
     @user.name = "raquel bujans"
     @results = User.search("bujans")
