@@ -32,23 +32,16 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-    #respond_to do |format|
-      if @user.save
-        #log_in @user
-        #flash[:success] = "Welcome " + @user.name + "!"
-        #format.html { redirect_to @user, notice: 'User was successfully created.' }
-        #format.json { render :show, status: :created, location: @user }
-        @user.send_activation_email
-        flash[:info] = "Please check your email to activate your account."
-        #log_out
-        redirect_to root_url
-      else
-        #puts "**** #{@user.errors.inspect}"
-        #format.html { render :new }
-        #format.json { render json: @user.errors, status: :unprocessable_entity }
-        render 'new'
-      end
-    #end
+    if @user.save
+      #flash[:success] = "Welcome " + @user.name + "!"
+      @user.send_activation_email
+      flash[:info] = "Please check your email to activate your account."
+      #log_out
+      redirect_to root_url
+    else
+      #puts "**** #{@user.errors.inspect}"
+      render 'new'
+    end
   end
 
   # PATCH/PUT /users/1
@@ -62,15 +55,6 @@ class UsersController < ApplicationController
       puts "**** #{@user.errors.inspect}"
       render 'edit'
     end
-#    respond_to do |format|
-#      if @user.update(user_params)
-#        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-#        format.json { render :show, status: :ok, location: @user }
-#      else
-#        format.html { render :edit }
-#        format.json { render json: @user.errors, status: :unprocessable_entity }
-#      end
-#    end
   end
 
   # PATCH /users/1
@@ -110,6 +94,7 @@ class UsersController < ApplicationController
       unless logged_in?
         store_location
         flash[:danger] = "Please log in."
+        #puts "LOGIN_URL: ******* #{login_url.inspect}"
         redirect_to login_url
       end
     end

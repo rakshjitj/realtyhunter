@@ -75,9 +75,9 @@ class User < ActiveRecord::Base
     reset_sent_at < 2.hours.ago
   end
 
-  def avatar_thumbnail_url
-    S3_AVATAR_RESIZED_BUCKET['avatar_url']
-  end
+  #def avatar_thumbnail_url
+  #  S3_AVATAR_RESIZED_BUCKET['avatar_url']
+  #end
 
   def self.search(query_string)
     @running_list = User.all
@@ -96,13 +96,13 @@ class User < ActiveRecord::Base
     @running_list.uniq
   end
 
-  def avatar_thumbnail_url
-    return S3_AVATAR_THUMBNAIL_BUCKET.objects[self.avatar_key].url_for(:read).to_s
-  end
+  #def avatar_thumbnail_url
+  #  return S3_AVATAR_THUMBNAIL_BUCKET.objects[self.avatar_key].url_for(:read).to_s
+  #end
 
-  def avatar_url
-    return S3_AVATAR_BUCKET.url + self.avatar_key
-  end
+  #def avatar_url
+  #  return S3_AVATAR_BUCKET.url + self.avatar_key
+  #end
 
   private
 

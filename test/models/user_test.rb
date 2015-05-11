@@ -30,6 +30,11 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
+  test "can get fname from name" do
+    @user.name = "first last"
+    assert @user.fname, "first"
+  end
+
   test "email should not be too long" do
     @user.email = "a" * 244 + "@example.com"
     assert_not @user.valid?
@@ -75,4 +80,22 @@ class UserTest < ActiveSupport::TestCase
   test "authenticated? should return false for a user with nil digest" do
     assert_not @user.authenticated?(:remember, '')
   end
+
+  test "avatar is present" do
+    # TO DO
+    #@user.avatar = 
+  end
+
+  test "search correct when valid user found" do
+    @user.name = "raquel bujans"
+    @results = User.search("bujans")
+    assert @results.length, 1
+  end
+
+  test "search correct when no valid user found" do
+    @user.name = "raquel bujans"
+    @results = User.search("blah")
+    assert @results.length, 0
+  end
+
 end
