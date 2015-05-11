@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-md-6">
+    <%= form_for(@company) do |f| %>
+      <%= render 'shared/company_error_messages' %>
+
+      <div class="field">
+        <%= f.label :name, "Name:" %><br>
+        <%= f.text_field :name, class: 'form-control' %>
+      </div>
+
+      <div class="field">
+        <%= f.label :logo, "Upload new logo:" %><br>
+        <%= f.attachment_field :logo, direct: true, class: 'form-control'  %>
+      </div>
+      <div class="field">
+        <%= f.label :remote_logo_url, "Or specify URL:" %>
+        <%= f.text_field :remote_logo_url, class: 'form-control' %>
+      </div>  
+      
+
+      <div class="actions">
+        <%= f.submit %>
+      </div>
+    <% end %>
+
+  </div>
+</div>
+

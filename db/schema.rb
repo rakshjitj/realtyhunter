@@ -22,7 +22,10 @@ ActiveRecord::Schema.define(version: 20150508170449) do
     t.string   "string"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "offices_id"
   end
+
+  add_index "companies", ["offices_id"], name: "index_companies_on_offices_id", using: :btree
 
   create_table "offices", force: :cascade do |t|
     t.string   "name"
@@ -32,6 +35,7 @@ ActiveRecord::Schema.define(version: 20150508170449) do
     t.string   "zipcode"
     t.string   "telephone"
     t.string   "fax"
+    t.integer  "company_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
   end

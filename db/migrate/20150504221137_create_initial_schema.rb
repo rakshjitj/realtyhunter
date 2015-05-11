@@ -4,6 +4,7 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.string :name
       t.string :logo_id, :string
       t.timestamps null: false
+      t.references :offices, index: true
     end
 
     create_table :offices do |t|
@@ -14,7 +15,7 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.string :zipcode
       t.string :telephone
       t.string :fax
-
+      t.belongs_to :company
       t.timestamps null: false
     end
 

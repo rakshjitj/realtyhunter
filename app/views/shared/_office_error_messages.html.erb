@@ -1,0 +1,12 @@
+<% if @office.errors.any? %>
+  <div id="error_explanation">
+    <div class="alert alert-danger">
+      The form contains <%= pluralize(@office.errors.count, "error") %>.
+    </div>
+    <ul>
+    <% @office.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>

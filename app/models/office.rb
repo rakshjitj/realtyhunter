@@ -1,9 +1,12 @@
 class Office < ActiveRecord::Base
+	belongs_to :company
+
 	validates :name, presence: true, length: {maximum: 100}, 
 						uniqueness: { case_sensitive: false }
 
   validates :street_address, presence: true, length: {maximum: 100},
             uniqueness: { case_sensitive: false }
+            
 	validates :city, length: { maximum: 100 }, presence: true
 	validates :state, length: { minimum: 2, maximum:2 }, presence: true
 	validates :zipcode, length: { minimum: 5, maximum:10 }, presence: true

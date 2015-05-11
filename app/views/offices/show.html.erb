@@ -1,0 +1,88 @@
+<% provide(:title, 'Office') %>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+  	<div class="row">
+  		<div class="col-md">
+	  		<h1><%= @office.name.titleize %> Office</h1>
+	  	</div>
+    </div>
+    <div class="row">
+  		<div class="col-md-12">
+  			<%= link_to 'Edit', edit_company_office_path %> | 
+		    <%= link_to 'List', company_offices_path %> | 
+		    <%= link_to 'View Company', company_path(@office.company) %>
+		    <br />
+		    <br />
+  		</div>
+  	</div>
+    <div class="row">
+      <div class="col-md-3">
+        <strong class="pull-right">Name:</strong>
+      </div>
+      <div class="col-md">
+        <%= @office.name %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <strong class="pull-right">Company:</strong>
+      </div>
+      <div class="col-md">
+        <!--%= @office.name %-->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <strong class="pull-right">Street Address:</strong>
+      </div>
+      <div>
+        <%= @office.street_address %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <strong class="pull-right">City:</strong>
+      </div>
+      <div class="col-md">
+        <%= @office.city %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <strong class="pull-right">State:</strong>
+      </div>
+      <div class="col-md">
+        <%= @office.state%>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <strong class="pull-right">Zipcode:</strong>
+      </div>
+      <div class="col-md">
+        <%= @office.zipcode %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <strong class="pull-right">Telephone:</strong>
+      </div>
+      <div class="col-md">
+        <%= @office.telephone %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <strong class="pull-right">Fax:</strong>
+      </div>
+      <div class="col-md">
+        <%= @office.fax %>
+      </div>
+    </div>
+  </div>
+
+ </div>
+

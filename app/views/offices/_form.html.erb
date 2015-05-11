@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-md-6">
+    <%= form_for ([@company, @office]) do |f| %>
+      <%= render 'shared/office_error_messages' %>
+
+      <div class="field">
+        <%= f.label :name, "Name" %><br>
+        <%= f.text_field :name, class: 'form-control' %>
+      </div>
+
+      <div class="field">
+        <%= f.label :name, "Street Address" %><br>
+        <%= f.text_field :street_address, class: 'form-control' %>
+      </div>
+
+      <div class="field">
+        <%= f.label :name, "City" %><br>
+        <%= f.text_field :city, class: 'form-control' %>
+      </div>
+
+      <div class="field">
+        <%= f.label :name, "State" %><br>
+        <%= f.text_field :state, class: 'form-control' %>
+      </div>
+
+      <div class="field">
+        <%= f.label :name, "Zipcode" %><br>
+        <%= f.text_field :zipcode, class: 'form-control' %>
+      </div>
+
+      <div class="field">
+        <%= f.label :name, "Phone" %><br>
+        <%= f.telephone_field :telephone, class: 'form-control' %>
+      </div>
+
+      <div class="field">
+        <%= f.label :name, "Fax" %><br>
+        <%= f.telephone_field :fax, class: 'form-control' %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit %>
+      </div>
+    <% end %>
+
+  </div>
+</div>
+
+

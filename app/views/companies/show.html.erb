@@ -1,0 +1,34 @@
+<% provide(:title, @company.name) %>
+
+<div class="row">
+  <div class="col-md-offset-3 col-md-5">
+    <h1><%= @company.name.titleize %> Company Profile</h1>
+    <br />
+    
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-offset-3 col-md-5">
+  	<strong>Logo:</strong>
+    <br /><br />
+    <% if @company.logo_id? %>
+      <%= attachment_image_tag(@company, :logo, :fill, 300, 300) %>
+    <% else %>
+      <td>
+        <div class="company-logo">
+          <i class="fa fa-user fa-fw fa-border"></i>
+        </div>
+      </td>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-offset-3 col-md-5">
+  <br />
+  	<%= link_to 'Edit', edit_company_path(@company) %> |
+		<%= link_to 'Companies List', companies_path %> | 
+		<%= link_to 'View Offices', company_offices_path(@company) %>
+
+  </div>
+</div>

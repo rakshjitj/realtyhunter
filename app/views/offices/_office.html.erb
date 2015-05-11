@@ -1,0 +1,12 @@
+<tr class="<%= cycle('even', 'odd') -%>">
+	
+  <td><%= link_to office.name, company_office_path(office.company, office) %></td>
+  <td><%= office.street_address %></td>
+  <td><%= office.city %></td>
+  <td><%= office.state %></td>
+  <td><%= office.zipcode %></td>
+  <td><%= office.telephone %></td>
+	<td><%= office.fax %></td>
+
+  <td><%= link_to 'Delete', company_office_path(office.company, office), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+</tr>

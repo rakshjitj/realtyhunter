@@ -40,7 +40,7 @@
   <div class="col-md-6">
     <!-- All other fields form -->
     <%= form_for(@user) do |f| %>
-      <%= render 'shared/error_messages' %>
+      <%= render 'shared/user_error_messages' %>
 
       <div class="field">
         <%= f.label :email, "Email (will be your username)" %><br>
