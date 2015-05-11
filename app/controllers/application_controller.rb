@@ -13,6 +13,17 @@ class ApplicationController < ActionController::Base
 
   private
 
+    # Confirms a logged-in user.
+    def logged_in_user
+      unless logged_in?
+        store_location
+        flash[:danger] = "Please log in."
+        #puts "LOGIN_URL: ******* #{login_url.inspect}"
+        redirect_to login_url
+      end
+    end
+
+
 	  def expire_hsts
   	  response.headers["Strict-Transport-Security"] = 'max-age=0'
   	end

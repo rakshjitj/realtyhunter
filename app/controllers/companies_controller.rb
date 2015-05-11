@@ -1,4 +1,5 @@
 class CompaniesController < ApplicationController
+  before_action :logged_in_user, only: [:index, :show, :edit, :destroy]
   before_action :set_company, only: [:show, :edit, :update, :destroy]
 
   # GET /companies
