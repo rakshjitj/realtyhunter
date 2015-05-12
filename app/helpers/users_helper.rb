@@ -23,4 +23,32 @@ module UsersHelper
 		#end
 	end
 
+  # this is just so we can define the busines logic in a centralized place.
+  # this is a non-functional user
+  def define_roles
+    @user = User.create({
+      email: 'topsecret@admin.com', 
+      name: "Roles Definition",
+      password:"test123" });
+    # Inactive Agent:
+    @user.add_role :inactive_agent
+    # Licensed Agent:
+    @user.add_role :residential_agent
+    @user.add_role :commercial_agent
+    @user.add_role :sales_agent
+    @user.add_role :roomsharing_agent
+    @user.add_role :associate_broker
+    @user.add_role :broker
+    # Executive Agent:
+    @user.add_role :manager
+    @user.add_role :closing_manager
+    @user.add_role :marketing
+    @user.add_role :operations
+    @user.add_role :company_admin
+    # Not for nestio:
+    @user.add_role :super_admin
+
+    @user.delete
+  end
+  
 end

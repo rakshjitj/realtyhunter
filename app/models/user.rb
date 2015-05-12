@@ -1,5 +1,10 @@
 class User < ActiveRecord::Base
   rolify
+  belongs_to :office
+  belongs_to :company
+  belongs_to :manager, :class_name => "User"
+  has_many :subordinates, :class_name => "User", :foreign_key => "manager_id"
+
   attachment :avatar #, extension: ["jpg", "jpeg", "png", "gif"]
 	attr_accessor :remember_token, :activation_token, :reset_token
   before_create :create_activation_digest
@@ -103,6 +108,51 @@ class User < ActiveRecord::Base
   #def avatar_url
   #  return S3_AVATAR_BUCKET.url + self.avatar_key
   #end
+
+  def make_manager
+    self.add_role :manager
+  end
+
+  def remove_manager
+    subordinates.clear
+    self.remove_role :manager
+  end
+
+  def add_subordinate(subord)
+    if self.has_role? :manager
+      subord.manager = self
+      #self.subordinates << subord
+    else
+      raise 'Tried to add subordinate without being manager first'  
+    end
+  end
+
+  def remove_subordinate(subord)
+    if self.has_role? :manager
+      subord.manager = nil
+      #self.subordinates.delete(subord)
+    else
+      raise 'Tried to remove subordinate without being manager first'  
+    end
+  end
+
+  def is_management?
+    if (has_role? :company_admin) || 
+      (has_role? :operations) ||
+      (has_role? :broker) || 
+      (has_role? :associate_broker) ||
+      (has_role? :manager)
+      true
+    else 
+      false
+    end    
+  end
+
+  def coworkers
+    @coworkers = self.company.users.dup
+    @coworkers.delete(self)
+    @coworkers
+  end
 
   private
 

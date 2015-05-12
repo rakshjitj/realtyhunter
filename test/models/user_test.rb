@@ -3,7 +3,30 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
 
   def setup
-    @user = User.new(name: "Example User", email: "user@example.com", bio: "blah blah blah", password:"12345qwe")
+    @company = Company.new(name: "MyCompany")
+    @office = Office.new(name: "MyOffice", company: @company)
+    @user = User.new(
+      name: "Example User", 
+      email: "user@example.com", 
+      bio: "blah blah blah", 
+      password:"12345qwe",
+      office: @office,
+      company: @company)
+    @user2 = User.new(
+      name: "Another User", 
+      email: "another@example.com", 
+      bio: "blah blah blah", 
+      password:"12345qwe",
+      office: @office,
+      company: @company)
+
+    @manager  = User.new(
+      name: "Manager User", 
+      email: "manager@example.com", 
+      bio: "blah blah blah", 
+      password:"12345qwe",
+      office: @office,
+      company: @company)
   end
 
   # Returns true if a test user is logged in.
@@ -92,5 +115,57 @@ class UserTest < ActiveSupport::TestCase
     @results = User.search("blah")
     assert @results.length, 0
   end
+
+  test "make manager works" do
+    @manager.make_manager
+    assert @manager.has_role? :manager
+  end
+
+  test "remove manager works" do
+    @manager.remove_manager
+    assert_not @manager.has_role? :manager
+  end
+
+  test "managers can add subordinates" do
+    @manager.save
+    @user.save
+    @manager.make_manager
+    @manager.add_subordinate(@user)
+    assert @manager.subordinates.length, 1
+    assert @user.manager, @manager
+  end
+
+  test "non-managers can't add subordinates" do
+    exception = assert_raises(RuntimeError) { @manager.add_subordinate(@user) }
+    assert @manager.subordinates.length, 0
+  end
+
+  test "is_management correctly identifies managers" do
+    assert_not @manager.is_management?
+    @manager.make_manager
+    assert @manager.is_management?
+  end
+
+  test "managers can remove subordinates" do
+    @manager.save
+    @user.save
+    @manager.make_manager
+    @manager.add_subordinate(@user)
+    assert @manager.subordinates.length, 1
+    @manager.remove_subordinate(@user)
+    assert @manager.subordinates.length, 0
+    assert_not @user.manager
+  end
+
+  test "user can see their coworkers" do
+    @user.save
+    @user2.save
+    @company.save
+    assert @user.coworkers.length, 1
+    assert @user.coworkers[0], @user2
+  end 
+
+  #test "super admin can see users from all companies" do
+  #end 
 
 end

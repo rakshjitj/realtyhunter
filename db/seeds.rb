@@ -20,31 +20,53 @@
 @password = "713lorimer"
 
 users = User.create([
+  { name: 'Super Admin', 
+    email: 'admin@realtymonster.com', 
+    password: @password, 
+    password_confirmation: @password, 
+    activated: true, 
+    activated_at: Time.zone.now,
+    company: @company, 
+    office: @offices[0]
+  },
 	{ name: 'Raquel Bujans', 
     email: 'rbujans@myspacenyc.com', 
     bio: "blah blah blah", 
     password: @password, 
     password_confirmation: @password, 
     activated: true, 
-    activated_at: Time.zone.now },
+    activated_at: Time.zone.now,
+    company: @company, 
+    office: @offices[0]
+ },
 	{ name: 'Nir Mizrachi', 
     email: 'nir@myspacenyc.com',     
     bio: "blah blah blah", 
     password: @password, 
     password_confirmation: @password, 
     activated: true, 
-    activated_at: Time.zone.now },
+    activated_at: Time.zone.now,
+    company: @company, 
+    office: @offices[0]
+  },
 	{ name: 'Cheryl Hoyles', 
     email: 'info@myspacenyc.com',    
     bio: "blah blah blah", 
     password: @password, 
     password_confirmation: @password, 
     activated: true, 
-    activated_at: Time.zone.now},
+    activated_at: Time.zone.now,
+    company: @company, 
+    office: @offices[0]
+ }
 	])
-users[0].add_role :admin
-users[1].add_role :admin
-users[2].add_role :admin
+users[0].add_role :super_admin
+users[1].add_role :company_admin
+users[2].add_role :company_admin
+users[3].add_role :company_admin
+users[1].make_manager
+users[2].make_manager
+users[3].make_manager
 
 50.times do |n|
   name  = Faker::Name.name
@@ -59,6 +81,17 @@ users[2].add_role :admin
                password:              password,
                password_confirmation: password,
                activated: true,
-               activated_at: Time.zone.now)
-  userN.add_role :lic_agent
+               activated_at: Time.zone.now,
+               company: @company, 
+               office: @offices[0])
+  userN.add_role :residential_agent
+
+  if n < 20
+    users[1].add_subordinate(userN)
+  elsif 20 < n && n < 35
+    users[2].add_subordinate(userN)
+  else
+    users[3].add_subordinate(userN)
+  end
 end
+

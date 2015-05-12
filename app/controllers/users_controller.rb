@@ -12,6 +12,21 @@ class UsersController < ApplicationController
     #@users = User.paginate(:page => params[:page], :per_page => 50)
   end
 
+  # GET /coworkers
+  # GET /coworkers.json
+  def coworkers
+    @users = current_user.coworkers
+    @users = @users.paginate(:page => params[:page], :per_page => 50)
+    render 'index'
+  end
+
+  # GET /subordinates
+  # GET /subordinates.json
+  def subordinates
+    @users = current_user.subordinates
+    @users = @users.paginate(:page => params[:page], :per_page => 50)
+    render 'index'
+  end
   # GET /users/1
   # GET /users/1.json
   def show

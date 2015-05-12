@@ -21,7 +21,7 @@ class CompanyTest < ActiveSupport::TestCase
     duplicate_company = @company.dup
     duplicate_company.name = @company.name.upcase
     @company.save
-    assert_not duplicate_user.valid?
+    assert_not duplicate_company.valid?
   end
 
 end

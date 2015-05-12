@@ -5,7 +5,10 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.string :logo_id, :string
       t.timestamps null: false
       t.references :offices, index: true
+      t.references :users, index: true
     end
+
+    # TODO: code smell? companies, offices, users
 
     create_table :offices do |t|
       t.string :name
@@ -16,6 +19,7 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.string :telephone
       t.string :fax
       t.belongs_to :company
+      t.references :users, index: true
       t.timestamps null: false
     end
 
@@ -33,7 +37,11 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.datetime :activated_at
       t.string   :reset_digest
       t.datetime :reset_sent_at
+      t.belongs_to :company
+      t.belongs_to :office
+      t.references :manager, index: true
     end
     add_index :users, :email, unique: true
+
   end
 end

@@ -23,9 +23,11 @@ ActiveRecord::Schema.define(version: 20150508170449) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "offices_id"
+    t.integer  "users_id"
   end
 
   add_index "companies", ["offices_id"], name: "index_companies_on_offices_id", using: :btree
+  add_index "companies", ["users_id"], name: "index_companies_on_users_id", using: :btree
 
   create_table "offices", force: :cascade do |t|
     t.string   "name"
@@ -36,9 +38,12 @@ ActiveRecord::Schema.define(version: 20150508170449) do
     t.string   "telephone"
     t.string   "fax"
     t.integer  "company_id"
+    t.integer  "users_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
   end
+
+  add_index "offices", ["users_id"], name: "index_offices_on_users_id", using: :btree
 
   create_table "roles", force: :cascade do |t|
     t.string   "name"
@@ -64,10 +69,14 @@ ActiveRecord::Schema.define(version: 20150508170449) do
     t.datetime "activated_at"
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
+    t.integer  "company_id"
+    t.integer  "office_id"
+    t.integer  "manager_id"
     t.string   "avatar_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["manager_id"], name: "index_users_on_manager_id", using: :btree
 
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"
