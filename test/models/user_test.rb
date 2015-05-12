@@ -121,6 +121,17 @@ class UserTest < ActiveSupport::TestCase
     assert @manager.has_role? :manager
   end
 
+  test "is_manager? works" do
+    @manager.make_manager
+    assert @manager.has_role? :manager
+    assert @manager.is_manager?
+  end
+
+  test "is_company_admin? works" do
+    assert @manager.add_role :company_admin
+    assert @manager.is_company_admin?
+  end
+
   test "remove manager works" do
     @manager.remove_manager
     assert_not @manager.has_role? :manager

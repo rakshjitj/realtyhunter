@@ -85,7 +85,7 @@ users[3].make_manager
                company: @company, 
                office: @offices[0])
   userN.add_role :residential_agent
-
+  puts "#{n} "
   if n < 20
     users[1].add_subordinate(userN)
   elsif 20 < n && n < 35

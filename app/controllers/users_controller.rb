@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:index, :show, :edit, :upload_image, :destroy]
-  before_action :correct_user,   only: [:show, :edit, :update, :upload_image, :destroy]
+  #before_action :logged_in_user, only: [:index, :coworkers, :subordinates, :show, :edit, :upload_image, :destroy]
+  skip_before_action :logged_in_user, only: [:new, :create]
+  before_action :correct_user, except: [:new, :create]  #only: [:show, :edit, :update, :upload_image, :destroy]
 
   # GET /users
   # GET /users.json
@@ -8,23 +9,27 @@ class UsersController < ApplicationController
     #@users = User.all
     @users = User.search(params[:search])
     @users = @users.paginate(:page => params[:page], :per_page => 50)
+    @title = 'All users'
     #@users = User.where(activated: true).paginate(page: params[:page])
     #@users = User.paginate(:page => params[:page], :per_page => 50)
   end
 
-  # GET /coworkers
-  # GET /coworkers.json
+  # GET /coworkers/1
+  # GET /coworkers/1.json
   def coworkers
-    @users = current_user.coworkers
+    @users = @user.coworkers
     @users = @users.paginate(:page => params[:page], :per_page => 50)
+    @title = @user.company.name.titleize + ' Employees'
     render 'index'
   end
 
-  # GET /subordinates
-  # GET /subordinates.json
+  # GET /subordinates/1
+  # GET /subordinates/1.json
   def subordinates
-    @users = current_user.subordinates
+    @users = @user.subordinates
+    puts "#{@user.subordinates.inspect}"
     @users = @users.paginate(:page => params[:page], :per_page => 50)
+    @title = @user.fname.titleize + "'s Team"
     render 'index'
   end
   # GET /users/1

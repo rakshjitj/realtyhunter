@@ -11,7 +11,7 @@ default: &default
   username: myspace
   password: Myspace722!
   host: localhost
-  port: 5433
+  port: 5432
 
 development:
   <<: *default

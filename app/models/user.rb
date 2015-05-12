@@ -109,6 +109,14 @@ class User < ActiveRecord::Base
   #  return S3_AVATAR_BUCKET.url + self.avatar_key
   #end
 
+  def is_manager?
+    self.has_role? :manager
+  end
+
+  def is_company_admin?
+    self.has_role? :company_admin
+  end
+
   def make_manager
     self.add_role :manager
   end
@@ -121,7 +129,9 @@ class User < ActiveRecord::Base
   def add_subordinate(subord)
     if self.has_role? :manager
       subord.manager = self
-      #self.subordinates << subord
+      subord.save
+      #puts "#{subord.manager.name} "
+      #puts "#{subord.manager.subordinates.length} \n\n"
     else
       raise 'Tried to add subordinate without being manager first'  
     end
@@ -130,7 +140,6 @@ class User < ActiveRecord::Base
   def remove_subordinate(subord)
     if self.has_role? :manager
       subord.manager = nil
-      #self.subordinates.delete(subord)
     else
       raise 'Tried to remove subordinate without being manager first'  
     end
@@ -149,7 +158,7 @@ class User < ActiveRecord::Base
   end
 
   def coworkers
-    @coworkers = self.company.users.dup
+    @coworkers = Array.new(self.company.users)
     @coworkers.delete(self)
     @coworkers
   end
