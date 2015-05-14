@@ -1,0 +1,21 @@
+<% provide(:title, 'Admin User Signup') %>
+
+<div class="row">
+  <div class="col-md-11 col-md-offset-1">
+    <h1>Admin Batch Signup</h1>
+    
+    <!--%= render 'new_user_form' %-->
+    <%= form_for(@user, html: { class: "directUpload" }) do |f| %>
+      <%= render 'shared/user_error_messages' %>
+
+      <%= render 'batch_new_user_row', :f => f %>
+
+      <%= link_to 'Add another row', :remote => true %>
+      <br /><br />
+      <div class="actions">
+        <%= f.submit class: "btn btn-primary" %>
+      </div>
+    <% end %>
+
+  </div>
+</div>

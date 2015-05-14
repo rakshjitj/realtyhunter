@@ -15,11 +15,15 @@ Rails.application.routes.draw do
   
   root :to => 'static_pages#home'
   
+  # TODO: clean up this path
+  get 'users/batch_new', to: 'users#batch_new', as: :users_batch_new
+  
   resources :users
   delete 'users/:id/destroy_image', to: 'users#destroy_image', as: :user_destroy_image
   patch 'users/:id/upload_image', to: 'users#upload_image', as: :user_upload_image
   get 'subordinates/:id', to: 'users#subordinates', as: :user_subordinates
   get 'coworkers/:id', to: 'users#coworkers', as: :user_coworkers
+
 
   resources :account_activations, only: [:edit]
   resources :password_resets,     only: [:new, :create, :edit, :update]

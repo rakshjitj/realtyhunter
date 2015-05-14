@@ -1,23 +1,69 @@
+
+<script>
+  $( document ).ready(function() {
+      $('.agentType').hide();
+  });
+
+  function title_onchange_handler(input) {
+    if (input.toLowerCase() === '<%= @agent_title.name %>') {
+      $('.agentType').show();
+    } else {
+      $('.agentType').hide();
+    }
+  };
+</script>
+
+
 <%= form_for(@user, html: { class: "directUpload" }) do |f| %>
   <%= render 'shared/user_error_messages' %>
 
   <div class="field">
+    <%= f.label :name, "Name" %><br>
+    <%= f.text_field :name, class: 'form-control', :required => true %>
+  </div>
+  <div class="field">
     <%= f.label :email, "Email (will be your username)" %><br>
-    <%= f.email_field :email, class: 'form-control' %>
+    <%= f.email_field :email, class: 'form-control', :required => true %>
   </div>
   <div class="field">
     <%= f.label :password %><br>
-    <%= f.password_field :password, class: 'form-control' %>
+    <%= f.password_field :password, class: 'form-control', :required => true %>
   </div>
   <div class="field">
     <%= f.label :password_confirmation, "Confirmation" %><br>
-    <%= f.password_field :password_confirmation, class: 'form-control' %>
+    <%= f.password_field :password_confirmation, class: 'form-control', :required => true %>
   </div>
-  <div class="field">
-    <%= f.label :name, "Name" %><br>
-    <%= f.text_field :name, class: 'form-control' %>
+
+  <div class="row">
+  <div class="col-md-4">
+    <div class="field">
+      <%= f.label :employee_title, "Role within the company" %><br>
+      <%= f.select(:employee_title, options_for_select(EmployeeTitle.all.collect {|t| [t.name.titleize, t.id]}), 
+        {prompt: "Choose one..."},
+        :onchange => "title_onchange_handler($(this).find('option:selected').text())",
+        :required => true, 
+        class: 'form-control',
+        :include_blank => true) %>
+    </div>
   </div>
+
+  
+
+  <div class="col-md-4 agentType">
+    <div class="field " >
+      <%= f.label :agent_types, "Areas you work in" %><br>
+      <%= f.select(:agent_types, options_for_select(AgentType.all.collect {|t| [t.name.titleize, t.id]}, [1]),
+          {},
+          {
+          :multiple => true,
+          class: 'form-control' } ) %>
+    </div>
+  </div>
+  </div>
+
+
   <div class="actions">
     <%= f.submit class: "btn btn-primary" %>
+    
   </div>
 <% end %>

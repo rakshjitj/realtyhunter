@@ -27,7 +27,10 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
                                password:              "password",
                                password_confirmation: "password",
                                name:  "Example User",
-                               bio: "dfsadfasfasf" }
+                               bio: "dfsadfasfasf",
+                                },
+                               agent_title: { 
+                                name: 'agent' }
     end
     assert_equal 1, ActionMailer::Base.deliveries.size
     user = assigns(:user)

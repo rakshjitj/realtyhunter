@@ -7,6 +7,8 @@ michael:
   bio: MyText
   activated: true
   activated_at: <%= Time.zone.now %>
+  office_id: 1
+  employee_title: 1
 
 archer:
   name: Sterling Archer
@@ -15,6 +17,8 @@ archer:
   bio: MyText
   activated: true
   activated_at: <%= Time.zone.now %>
+  office_id: 1
+  employee_title: 1
 
 lana:
   name: Lana Kane
@@ -23,6 +27,8 @@ lana:
   bio: MyText
   activated: true
   activated_at: <%= Time.zone.now %>
+  office_id: 1
+  employee_title: 1
 
 mallory:
   name: Mallory Archer
@@ -31,6 +37,8 @@ mallory:
   bio: MyText
   activated: true
   activated_at: <%= Time.zone.now %>
+  office_id: 1
+  employee_title: 1
 
 <% 75.times do |n| %>
 user_<%= n %>:
@@ -40,4 +48,6 @@ user_<%= n %>:
   bio: MyText
   activated: true
   activated_at: <%= Time.zone.now %>
+  office_id: 1
+  employee_title: 1
 <% end %>

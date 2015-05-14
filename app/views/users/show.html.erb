@@ -8,7 +8,11 @@
 </div>
 <div class="row">
   <div class="col-md-offset-3 col-md-3">
-    <%= link_to '(Edit)', edit_user_path(@user) %><br />
+    <%= link_to 'Edit', edit_user_path(@user) %>
+    <% if @user.subordinates.length > 0 && current_user.is_company_admin? %>
+      | <%= link_to 'Manage team', user_subordinates_path(@user) %><br />
+    <% end %>
+    <br />
     <br />
     <section class="user_info">
       <% if @user.avatar_id? %>
@@ -37,25 +41,30 @@
         <strong class="pull-right">Title:</strong>
       </div>
       <div class="col-md-11">
-        <!--%= @user.title %-->
+        <%= @user.employee_title.display_name %> | 
+        <%= @user.agent_specialties.join(", ") %>
       </div>
     </div>
+    <% if @user.office %>
     <div class="row">
       <div class="col-md-1">
         <strong class="pull-right">Office:</strong>
       </div>
       <div class="col-md-11">
-        <!--%= @user.office %-->
+        <%= @user.office.name %>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-1">
-        <strong class="pull-right">Manager:</strong>
+    <% end %>
+    <% if @user.manager %>
+      <div class="row">
+        <div class="col-md-1">
+          <strong class="pull-right">Manager:</strong>
+        </div>
+        <div class="col-md-11">
+          <%= link_to @user.manager.name, @user.manager %>
+        </div>
       </div>
-      <div class="col-md-11">
-        <!--%= @user.manager %-->
-      </div>
-    </div>
+    <% end %>
     <div class="row">
       <div class="col-md-1">
         <strong class="pull-right">Email:</strong>
@@ -80,7 +89,21 @@
       <div class="col-md-11">
         <%= @user.bio %>
       </div>
-    </div>    
+    </div>
+
+    <% if @user.subordinates.length > 0 %>
+      <div class="row">
+        <div class="col-md-1">
+          <strong class="pull-right">Team:</strong>
+        </div>
+        <div class="col-md-11">
+          <% for subo in @user.subordinates %>
+            <%= link_to subo.name, subo %><br />
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
   </div>
 </div>
 

@@ -3,10 +3,11 @@ class User < ActiveRecord::Base
   belongs_to :office
   belongs_to :company
   belongs_to :manager, :class_name => "User"
+  belongs_to :employee_title
   has_many :subordinates, :class_name => "User", :foreign_key => "manager_id"
-
   attachment :avatar #, extension: ["jpg", "jpeg", "png", "gif"]
-	attr_accessor :remember_token, :activation_token, :reset_token
+
+	attr_accessor :remember_token, :activation_token, :reset_token, :agent_types
   before_create :create_activation_digest
   before_save :downcase_email
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
@@ -80,10 +81,6 @@ class User < ActiveRecord::Base
     reset_sent_at < 2.hours.ago
   end
 
-  #def avatar_thumbnail_url
-  #  S3_AVATAR_RESIZED_BUCKET['avatar_url']
-  #end
-
   def self.search(query_string)
     @running_list = User.all
 
@@ -108,6 +105,36 @@ class User < ActiveRecord::Base
   #def avatar_url
   #  return S3_AVATAR_BUCKET.url + self.avatar_key
   #end
+
+  # copies in new roles from 
+  # user.agent_types & user.employee_title
+  def update_roles
+    # clear out old roles
+    self.roles = [];
+    
+    # add a role representing your position in the company.
+    # default to an agent if none otherwise specified
+    if !self.employee_title
+      self.employee_title = EmployeeTitle.agent
+    end
+    self.save
+
+    # if you're an agent, add in specific roles for the type of
+    # agent that you are
+    if self.employee_title == EmployeeTitle.agent
+      # always make sure they at least have one area selected
+      if !self.agent_types || self.agent_types.length == 0
+        self.add_role :residential_agent
+      else
+        for role in self.agent_types do
+          @real_role_name = role.downcase.gsub(' ', '_')
+          self.add_role @real_role_name
+        end
+      end
+    else 
+      self.add_role self.employee_title.name
+    end
+  end
 
   def is_manager?
     self.has_role? :manager
@@ -163,6 +190,46 @@ class User < ActiveRecord::Base
     @coworkers
   end
 
+  # this is just so we can define the busines logic in a centralized place.
+  # this is a non-functional user
+  def self.define_roles
+    @user = User.create({
+      email: 'topsecret@admin.com', 
+      name: "Roles Definition",
+      password:"test123" });
+    # Inactive Agent:
+    @user.add_role :inactive_agent
+    # Licensed Agent:
+    @user.add_role :residential_agent
+    @user.add_role :commercial_agent
+    @user.add_role :sales_agent
+    @user.add_role :roomsharing_agent
+    @user.add_role :associate_broker
+    @user.add_role :broker
+    # Executive Agent:
+    @user.add_role :manager
+    @user.add_role :closing_manager
+    @user.add_role :marketing
+    @user.add_role :operations
+    @user.add_role :company_admin
+    # Not for nestio:
+    @user.add_role :super_admin
+
+    @user.delete
+  end
+
+  def agent_specialties
+    @specialities = []
+    AgentType.all.each do |a|
+      if self.has_role? a.name + "_agent"
+        @specialities << a.name.titleize
+      end
+    end
+
+    @specialities
+  end
+
+
   private
 
     # Converts email to all lower-case.
@@ -175,5 +242,7 @@ class User < ActiveRecord::Base
       self.activation_token  = User.new_token
       self.activation_digest = User.digest(activation_token)
     end
+
+
 
 end

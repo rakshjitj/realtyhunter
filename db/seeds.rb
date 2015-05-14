@@ -17,8 +17,25 @@
   {company: @company, name: "Williamsburg - Leasing", street_address: "297 Broadway, 2nd Fl", city: "Brooklyn", state: "NY", zipcode: "11211", telephone: "555-555-5555", fax: "555-555-5555"},
   ])
 
-@password = "713lorimer"
+@agent_types = AgentType.create([
+  {name: "residential"},
+  {name: "commercial"},
+  {name: "sales"},
+  {name: "roomsharing"},
+  ])
 
+@employee_titles = EmployeeTitle.create([
+  {name: "agent"},
+  {name: "associate broker"},
+  {name: "broker"},
+  {name: "Manager"},
+  {name: "closing manager"},
+  {name: "marketing"},
+  {name: "operations"},
+  {name: "company admin"},
+  ])
+
+@password = "713lorimer"
 users = User.create([
   { name: 'Super Admin', 
     email: 'admin@realtymonster.com', 
@@ -27,7 +44,8 @@ users = User.create([
     activated: true, 
     activated_at: Time.zone.now,
     company: @company, 
-    office: @offices[0]
+    office: @offices[0],
+    employee_title: @employee_titles[@employee_titles.length-1],
   },
 	{ name: 'Raquel Bujans', 
     email: 'rbujans@myspacenyc.com', 
@@ -37,7 +55,8 @@ users = User.create([
     activated: true, 
     activated_at: Time.zone.now,
     company: @company, 
-    office: @offices[0]
+    office: @offices[0],
+    employee_title: @employee_titles[@employee_titles.length-1],
  },
 	{ name: 'Nir Mizrachi', 
     email: 'nir@myspacenyc.com',     
@@ -47,7 +66,8 @@ users = User.create([
     activated: true, 
     activated_at: Time.zone.now,
     company: @company, 
-    office: @offices[0]
+    office: @offices[0],
+    employee_title: @employee_titles[@employee_titles.length-1],
   },
 	{ name: 'Cheryl Hoyles', 
     email: 'info@myspacenyc.com',    
@@ -57,9 +77,11 @@ users = User.create([
     activated: true, 
     activated_at: Time.zone.now,
     company: @company, 
-    office: @offices[0]
+    office: @offices[0],
+    employee_title: @employee_titles[@employee_titles.length-1],
  }
 	])
+User.define_roles()
 users[0].add_role :super_admin
 users[1].add_role :company_admin
 users[2].add_role :company_admin
@@ -83,9 +105,10 @@ users[3].make_manager
                activated: true,
                activated_at: Time.zone.now,
                company: @company, 
-               office: @offices[0])
+               office: @offices[0],
+               employee_title: @employee_titles[0]
+               )
   userN.add_role :residential_agent
-  puts "#{n} "
   if n < 20
     users[1].add_subordinate(userN)
   elsif 20 < n && n < 35

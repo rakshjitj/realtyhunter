@@ -116,6 +116,24 @@ class UserTest < ActiveSupport::TestCase
     assert @results.length, 0
   end
 
+  # test the roles out
+  test "update_roles sets residential agent as default" do
+    @user.agent_types = nil
+    @user.employee_title = EmployeeTitle.agent
+    @user.update_roles
+    assert @user.employee_title.name, EmployeeTitle.agent.name
+    assert @user.has_role? :residential_agent
+  end
+
+  test "update_roles updates employee_title" do
+    @user.agent_types = nil
+    @user.employee_title = EmployeeTitle.broker
+    @user.update_roles
+    assert @user.employee_title.name, EmployeeTitle.broker.name
+    assert @user.has_role? :broker
+    assert_not @user.has_role? :residential_agent
+  end
+
   test "make manager works" do
     @manager.make_manager
     assert @manager.has_role? :manager
@@ -178,5 +196,13 @@ class UserTest < ActiveSupport::TestCase
 
   #test "super admin can see users from all companies" do
   #end 
+
+  test "can get agent specialties" do
+    @user.employee_title = EmployeeTitle.agent
+    @user.update_roles
+    assert @user.has_role? :residential_agent
+    #@user.agent_specialties
+    assert @user.agent_specialties[0], "Residential"
+  end
 
 end

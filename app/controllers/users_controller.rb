@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  #before_action :logged_in_user, only: [:index, :coworkers, :subordinates, :show, :edit, :upload_image, :destroy]
   skip_before_action :logged_in_user, only: [:new, :create]
-  before_action :correct_user, except: [:new, :create]  #only: [:show, :edit, :update, :upload_image, :destroy]
+  before_action :lookup_user, except: [:index, :new, :batch_new, :create]  #only: [:show, :edit, :update, :upload_image, :destroy]
+  #before_action :must_be_manager, except: [:subordinates]
 
   # GET /users
   # GET /users.json
@@ -26,22 +26,31 @@ class UsersController < ApplicationController
   # GET /subordinates/1
   # GET /subordinates/1.json
   def subordinates
-    @users = @user.subordinates
-    puts "#{@user.subordinates.inspect}"
-    @users = @users.paginate(:page => params[:page], :per_page => 50)
-    @title = @user.fname.titleize + "'s Team"
-    render 'index'
+    @manager = User.find(params[:id])
+    @subordinates = @manager.subordinates
+    @subordinates = @subordinates.paginate(:page => params[:page], :per_page => 50)
+    @title = @manager.fname.titleize + "'s Team"
+    render 'subordinates'
   end
   # GET /users/1
   # GET /users/1.json
   def show
+    #puts "***ID**** #{params.inspect}"
     # TODO: only show if this is an active user
     redirect_to root_url and return unless @user.activated == true
   end
 
   # GET /users/new
   def new
+    @agent_title = EmployeeTitle.agent
     @user = User.new
+  end
+
+  # GET /users/batch_new
+  def batch_new
+    @user = User.new
+    @roles = Role.where.not(name: 'super_admin')
+    render 'admin.new'
   end
 
   # GET /users/1/edit
@@ -53,7 +62,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      #flash[:success] = "Welcome " + @user.name + "!"
+      # add in each role type
+      @user.update_roles
       @user.send_activation_email
       flash[:info] = "Please check your email to activate your account."
       #log_out
@@ -79,8 +89,7 @@ class UsersController < ApplicationController
 
   # PATCH /users/1
   def upload_image
-    # TODO: 
-    # resize image & upload new image to S3
+    # TODO: lock down params
     @user = User.find(params[:id])
     if @user.update_attributes(user_params)
       flash[:success] = "Profile image updated!"
@@ -104,16 +113,18 @@ class UsersController < ApplicationController
   private
 
     # Confirms the correct user.
-    def correct_user
-      @user = User.find(params[:id])
+    def lookup_user
+    #def correct_user
       #puts "***ID**** #{params.inspect}"
       #redirect_back_or users_path unless @user == current_user
-      unless (@user.has_role?(:admin) || @user == current_user)
-        flash[:danger] = "You are not authorized to go there."
-        redirect_back_or users_url
-        #redirect_to(users_url)
-      end
-      #redirect_to(root_url) unless @user == current_user
+      @user = User.find(params[:id])
+
+      #unless (@current_user.is_management? || @user == current_user)
+      #  flash[:danger] = "You are not authorized to go there."
+      #  redirect_back_or users_url
+      #  #redirect_to(users_url)
+      #end
+      ##redirect_to(root_url) unless @user == current_user
     end
 
     # Use callbacks to share common setup or constraints between actions.
@@ -124,6 +135,7 @@ class UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:email, :name, :mobile_phone_number, :bio, :password, 
-        :password_confirmation, :avatar, :remove_avatar, :remote_avatar_url, :phone_number, :mobile_phone_number)
+        :password_confirmation, :avatar, :remove_avatar, :remote_avatar_url, :phone_number, 
+        :mobile_phone_number, :employeeTitle, :agentTypes)
     end
 end

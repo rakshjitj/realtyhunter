@@ -1,0 +1,7 @@
+residential: {
+  name: "residential"
+}
+
+commerical: {
+  name: "commerical"
+}

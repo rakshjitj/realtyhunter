@@ -23,6 +23,17 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.timestamps null: false
     end
 
+    create_table :employee_titles do |t|
+      t.string :name, unique: true
+      t.references :users, index: true
+      t.timestamps null: false
+    end
+
+    create_table :agent_types do |t|
+      t.string :name, unique: true
+      t.timestamps null: false
+    end
+
     create_table :users do |t|
       t.string :name
       t.string :email
@@ -39,6 +50,7 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.datetime :reset_sent_at
       t.belongs_to :company
       t.belongs_to :office
+      t.references :employee_title, index: true
       t.references :manager, index: true
     end
     add_index :users, :email, unique: true

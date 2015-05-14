@@ -26,9 +26,9 @@
 <div class="row">
   <div class="col-md-offset-3 col-md-5">
   <br />
+    <%= link_to 'All Companies', companies_path %> | 
   	<%= link_to 'Edit', edit_company_path(@company) %> |
-		<%= link_to 'Companies List', companies_path %> | 
-		<%= link_to 'View Offices', company_offices_path(@company) %>
-
+		<%= link_to 'Offices', company_offices_path(@company) %> |
+    <%= link_to 'Agents', users_path %>
   </div>
 </div>

@@ -16,6 +16,12 @@ ActiveRecord::Schema.define(version: 20150508170449) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "agent_types", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "companies", force: :cascade do |t|
     t.string   "name"
     t.string   "logo_id"
@@ -28,6 +34,15 @@ ActiveRecord::Schema.define(version: 20150508170449) do
 
   add_index "companies", ["offices_id"], name: "index_companies_on_offices_id", using: :btree
   add_index "companies", ["users_id"], name: "index_companies_on_users_id", using: :btree
+
+  create_table "employee_titles", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "users_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "employee_titles", ["users_id"], name: "index_employee_titles_on_users_id", using: :btree
 
   create_table "offices", force: :cascade do |t|
     t.string   "name"
@@ -71,11 +86,13 @@ ActiveRecord::Schema.define(version: 20150508170449) do
     t.datetime "reset_sent_at"
     t.integer  "company_id"
     t.integer  "office_id"
+    t.integer  "employee_title_id"
     t.integer  "manager_id"
     t.string   "avatar_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["employee_title_id"], name: "index_users_on_employee_title_id", using: :btree
   add_index "users", ["manager_id"], name: "index_users_on_manager_id", using: :btree
 
   create_table "users_roles", id: false, force: :cascade do |t|
