@@ -194,15 +194,16 @@ class UserTest < ActiveSupport::TestCase
     assert @user.coworkers[0], @user2
   end 
 
-  #test "super admin can see users from all companies" do
-  #end 
+  test "super admin can see users from all companies" do
+  end 
 
   test "can get agent specialties" do
     @user.employee_title = EmployeeTitle.agent
+    @user.agent_types = ['Residential', 'Commercial']
     @user.update_roles
-    assert @user.has_role? :residential_agent
-    #@user.agent_specialties
+    assert @user.has_role? :residential
     assert @user.agent_specialties[0], "Residential"
+    assert @user.agent_specialties[1], "Commercial"
   end
 
 end

@@ -1,14 +1,14 @@
 
 <script>
   $( document ).ready(function() {
-      $('.agentType').hide();
+      $('.agent-type').hide();
   });
 
   function title_onchange_handler(input) {
     if (input.toLowerCase() === '<%= @agent_title.name %>') {
-      $('.agentType').show();
+      $('.agent-type').show();
     } else {
-      $('.agentType').hide();
+      $('.agent-type').hide();
     }
   };
 </script>
@@ -35,30 +35,28 @@
   </div>
 
   <div class="row">
-  <div class="col-md-4">
-    <div class="field">
-      <%= f.label :employee_title, "Role within the company" %><br>
-      <%= f.select(:employee_title, options_for_select(EmployeeTitle.all.collect {|t| [t.name.titleize, t.id]}), 
-        {prompt: "Choose one..."},
-        :onchange => "title_onchange_handler($(this).find('option:selected').text())",
-        :required => true, 
-        class: 'form-control',
-        :include_blank => true) %>
+    <div class="col-md-4">
+      <div class="field">
+        <%= f.label :employee_title_id, "Role within the company" %><br>
+        <%= f.select(:employee_title_id, options_for_select(EmployeeTitle.all.collect {|t| [t.name.titleize, t.id]}), 
+          {prompt: "Choose one..."},
+          :onchange => "title_onchange_handler($(this).find('option:selected').text())",
+          :required => true, 
+          class: 'form-control',
+          :include_blank => true) %>
+      </div>
     </div>
-  </div>
 
-  
-
-  <div class="col-md-4 agentType">
-    <div class="field " >
-      <%= f.label :agent_types, "Areas you work in" %><br>
-      <%= f.select(:agent_types, options_for_select(AgentType.all.collect {|t| [t.name.titleize, t.id]}, [1]),
-          {},
-          {
-          :multiple => true,
-          class: 'form-control' } ) %>
+    <div class="col-md-4 agent-type">
+      <div class="field " >
+        <%= f.label :agent_types, "Areas you work in" %><br>
+        <%= f.select(:agent_types, options_for_select(AgentType.all.collect {|t| [t.name.titleize, t.id]}, [1]),
+            {},
+            {
+            :multiple => true,
+            class: 'form-control' } ) %>
+      </div>
     </div>
-  </div>
   </div>
 
 

@@ -12,7 +12,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       post users_path, user: { name:  "",
                                email: "user@invalid",
                                password:              "foo",
-                               password_confirmation: "bar" }
+                               password_confirmation: "bar",
+                               employee_title_id: 2 }
     end
     assert_template 'users/new'
     # test that error msgs appear
@@ -27,13 +28,14 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
                                password:              "password",
                                password_confirmation: "password",
                                name:  "Example User",
-                               bio: "dfsadfasfasf",
-                                },
-                               agent_title: { 
-                                name: 'agent' }
+                               employee_title_id: 2,
+                                }
     end
     assert_equal 1, ActionMailer::Base.deliveries.size
     user = assigns(:user)
+
+    # TODO: employee_title_id, agent_types not working right
+
     assert_not user.activated?
     # Try to log in before activation.
     log_in_as(user)

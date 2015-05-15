@@ -35,12 +35,14 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    @agent_title = EmployeeTitle.agent
     #puts "***ID**** #{params.inspect}"
     # TODO: only show if this is an active user
     redirect_to root_url and return unless @user.activated == true
   end
 
   # GET /users/new
+  # GET /signup
   def new
     @agent_title = EmployeeTitle.agent
     @user = User.new
@@ -55,6 +57,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    @agent_title = EmployeeTitle.agent
   end
 
   # POST /users
@@ -79,6 +82,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update_attributes(user_params)
+      @user.update_roles
       flash[:success] = "Profile updated!"
       redirect_to @user
     else
@@ -136,6 +140,6 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:email, :name, :mobile_phone_number, :bio, :password, 
         :password_confirmation, :avatar, :remove_avatar, :remote_avatar_url, :phone_number, 
-        :mobile_phone_number, :employeeTitle, :agentTypes)
+        :mobile_phone_number, :employee_title_id, agent_types: [])
     end
 end

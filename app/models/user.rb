@@ -108,32 +108,40 @@ class User < ActiveRecord::Base
 
   # copies in new roles from 
   # user.agent_types & user.employee_title
+  
   def update_roles
     # clear out old roles
     self.roles = [];
-    
     # add a role representing your position in the company.
     # default to an agent if none otherwise specified
     if !self.employee_title
       self.employee_title = EmployeeTitle.agent
+      self.save
     end
-    self.save
-
+    
     # if you're an agent, add in specific roles for the type of
     # agent that you are
     if self.employee_title == EmployeeTitle.agent
-      # always make sure they at least have one area selected
+      # always make sure they at least have one specialty area selected
       if !self.agent_types || self.agent_types.length == 0
         self.add_role :residential_agent
       else
-        for role in self.agent_types do
+        # otherwise, note the specialities they indicated
+        self.agent_types.each do |role|
           @real_role_name = role.downcase.gsub(' ', '_')
-          self.add_role @real_role_name
+          # don't allow roles that are not approved by us
+          @real_role = AgentType.where(name: @real_role_name).first
+          if @real_role
+            self.add_role @real_role.name
+          end
         end
+
+        #puts "\n *** #{self.agent_specialties.inspect}"
       end
     else 
       self.add_role self.employee_title.name
     end
+    
   end
 
   def is_manager?
@@ -200,10 +208,10 @@ class User < ActiveRecord::Base
     # Inactive Agent:
     @user.add_role :inactive_agent
     # Licensed Agent:
-    @user.add_role :residential_agent
-    @user.add_role :commercial_agent
-    @user.add_role :sales_agent
-    @user.add_role :roomsharing_agent
+    @user.add_role :residential
+    @user.add_role :commercial
+    @user.add_role :sales
+    @user.add_role :roomsharing
     @user.add_role :associate_broker
     @user.add_role :broker
     # Executive Agent:
@@ -221,8 +229,18 @@ class User < ActiveRecord::Base
   def agent_specialties
     @specialities = []
     AgentType.all.each do |a|
-      if self.has_role? a.name + "_agent"
+      if self.has_role? a.name
         @specialities << a.name.titleize
+      end
+    end
+    @specialities
+  end
+
+  def agent_specialties_as_indicies
+    @specialities = []
+    AgentType.all.each do |a|
+      if self.has_role? a.name
+        @specialities << a.id
       end
     end
 

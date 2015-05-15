@@ -41,8 +41,10 @@
         <strong class="pull-right">Title:</strong>
       </div>
       <div class="col-md-11">
-        <%= @user.employee_title.display_name %> | 
-        <%= @user.agent_specialties.join(", ") %>
+        <%= @user.employee_title.display_name %> 
+        <% @sp = @user.agent_specialties; if @sp.length > 0 %> 
+          | <%= @sp.join(", ") %>
+        <% end %>
       </div>
     </div>
     <% if @user.office %>
