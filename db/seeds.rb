@@ -25,6 +25,7 @@
   ])
 
 @employee_titles = EmployeeTitle.create([
+  {name: "unlicensed agent"},
   {name: "agent"},
   {name: "associate broker"},
   {name: "broker"},

@@ -11,7 +11,7 @@
   		<div class="col-md-12">
   			<%= link_to 'Edit', edit_company_office_path %> | 
 		    <%= link_to 'List', company_offices_path %> | 
-		    <%= link_to 'View Company', company_path(@office.company) %> |
+		    <%= link_to 'View Company', company_path(@office.company) %>
 		    <br />
 		    <br />
   		</div>
@@ -84,10 +84,20 @@
     </div>
     <div class="row">
       <div class="col-md-3">
+        <strong class="pull-right">Managers:</strong>
+      </div>
+      <div class="col-md-9" >
+        <% @office.managers.each do |manager| %>
+          <%= link_to manager.name, manager %><br />
+        <% end %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
         <strong class="pull-right">Agents:</strong>
       </div>
       <div class="col-md-9" >
-        <% @office.users.each do |agent| %>
+        <% @office.agents.each do |agent| %>
           <%= link_to agent.name, agent %><br />
         <% end %>
       </div>

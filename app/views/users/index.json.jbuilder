@@ -13,11 +13,11 @@ json.array!(@users) do |user|
   	end
   end
   
-  if user.has_role? :admin
-  	json.title "Executive Agent"
-  elsif user.has_role? :lic_agent
-	  json.title "Licensed Real-Estate Agent"
-	elsif user.has_role? :unlic_agent
-		json.title "Inactive Real-Estate Agent"
-	end
+  if user.is_management?
+    json.title "Executive Agent"
+  elsif user.has_role? :agent
+    json.title "Licensed Real-Estate Agent"
+  elsif user.has_role? :unlic_agent
+    json.title "Inactive Real-Estate Agent"
+  end
 end

@@ -17,4 +17,11 @@ class Office < ActiveRecord::Base
 	validates :telephone, presence: true, length: {maximum: 20}, 
 						format: { with: VALID_TELEPHONE_REGEX }
 
+	def managers
+		@managers = self.users.select{|u| u if u.is_manager?}
+	end
+
+	def agents
+		@agents = self.users.select{|u| u if !u.is_manager?}
+	end
 end

@@ -12,9 +12,9 @@ else
 	end
 end
 
-if @user.has_role? :admin
+if @user.is_management?
 	json.title "Executive Agent"
-elsif @user.has_role? :lic_agent
+elsif @user.has_role? :agent
   json.title "Licensed Real-Estate Agent"
 elsif @user.has_role? :unlic_agent
 	json.title "Inactive Real-Estate Agent"
