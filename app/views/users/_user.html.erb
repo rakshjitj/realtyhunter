@@ -27,18 +27,10 @@
   	<% end %>
   </td>
   <td>
-  	<%= link_to 'Edit', edit_user_path(user) %> | 
-  	<%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' } %>
-  	<% if current_user.can_approve(user) %>
-  		<% if !user.approved? %>
-	  		| <%= link_to 'Approve', admin_approve_user_path(user), method: :patch, data: { confirm: 'Are you sure you want to approve this person?' } %>
-	  	<% else %>
-	  		| <%= link_to 'Unapprove', admin_unapprove_user_path(user), method: :patch, data: { confirm: 'Are you sure you want to unapprove this person?' } %>
-	  	<% end %>
-	  <% end %>
-		<% if current_user.can_kick(user) %>
-	  	| <%= link_to 'Kick', admin_approve_user_path(user), method: :patch, data: { confirm: 'Are you sure you want to kick this person off the team?' } %>
-	  <% end %>
+  	
+  <%= render 'actions', :user => user %>
+  	
+		
 		
 	</td>
 </tr>

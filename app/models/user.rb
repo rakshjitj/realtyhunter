@@ -297,10 +297,22 @@ class User < ActiveRecord::Base
   end
 
   # In order to kick another user from their team, we must be:
+  # - at the same company
   # - either their direct manager or a company admin
   def can_kick(other_user)
-    return (self.is_company_admin? && other_user.manager) ||
-    (self == other_user.manager)
+    return (self.company == other_user.company) &&
+    ((self.is_company_admin? && other_user.manager) ||
+    (self == other_user.manager))
+  end
+
+  # In order to manage a team:
+  # - The other user must be a manager
+  # - We need to be a company admin
+  # - We must both work for the same company
+  def can_manage_team(other_user)
+    return other_user.is_manager? && 
+    self.is_company_admin? &&
+    self.company == other_user.company
   end
 
   private
