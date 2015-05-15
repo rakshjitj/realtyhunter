@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   belongs_to :company
   belongs_to :manager, :class_name => "User"
   belongs_to :employee_title
-  has_many :subordinates, :class_name => "User", :foreign_key => "manager_id"
+  has_many   :subordinates, :class_name => "User", :foreign_key => "manager_id"
   attachment :avatar #, extension: ["jpg", "jpeg", "png", "gif"]
 
 	attr_accessor :remember_token, :activation_token, :reset_token, :approval_token, :agent_types
@@ -314,11 +314,11 @@ class User < ActiveRecord::Base
 
   # In order to manage a team:
   # - The other user must be a manager
-  # - We need to be a company admin
+  # - We need to be a company admin or the manager in question
   # - We must both work for the same company
   def can_manage_team(other_user)
     return other_user.is_manager? && 
-    self.is_company_admin? &&
+    (self.is_company_admin? || self == other_user) &&
     self.company == other_user.company
   end
 

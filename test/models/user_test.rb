@@ -201,5 +201,6 @@ class UserTest < ActiveSupport::TestCase
   test "super admin can see users from all companies" do
   end 
   # TODO: can_kick, can_approve, unapprove
+  # office switching
 
 end

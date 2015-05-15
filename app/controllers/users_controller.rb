@@ -28,10 +28,11 @@ class UsersController < ApplicationController
   # GET /subordinates/1.json
   def subordinates
     @manager = User.find(params[:id])
-    @subordinates = @manager.subordinates
-    @subordinates = @subordinates.paginate(:page => params[:page], :per_page => 50)
+    @users = @manager.subordinates
+    @users = @users.paginate(:page => params[:page], :per_page => 50)
     @title = @manager.fname.titleize + "'s Team"
-    render 'subordinates'
+    #render 'subordinates'
+    render 'index'
   end
   # GET /users/1
   # GET /users/1.json
