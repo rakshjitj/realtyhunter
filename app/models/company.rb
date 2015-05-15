@@ -5,4 +5,8 @@ class Company < ActiveRecord::Base
 	
 	validates :name, presence: true, length: {maximum: 50},
 		uniqueness: { case_sensitive: false }
+
+	def admins
+		@admins = self.users.select{|u| u if u.is_company_admin? }
+	end
 end

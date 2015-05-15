@@ -5,11 +5,11 @@
 # below each fixture, per the syntax in the comments below
 #
 one: {
-  name: "One"
+  name: "MyspaceNYC"
 }
 # column: value
 #
 two: {
-  name: "Two"
+  name: "Nooklyn"
 }
 #  column: value

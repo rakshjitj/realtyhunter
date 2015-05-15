@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
   skip_before_action :logged_in_user, only: [:new, :create]
   before_action :lookup_user, except: [:index, :new, :batch_new, :create]  #only: [:show, :edit, :update, :upload_image, :destroy]
-  #before_action :must_be_manager, except: [:subordinates]
 
   # GET /users
   # GET /users.json
@@ -44,6 +43,8 @@ class UsersController < ApplicationController
   # GET /users/new
   # GET /signup
   def new
+    @company = Company.where(name: 'MyspaceNYC').first
+    puts "^^^^^#{@company} #{@company.admins.inspect}"
     @agent_title = EmployeeTitle.agent
     @user = User.new
   end
@@ -63,18 +64,21 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
+
     @user = User.new(user_params)
     # TODO: extend to other companies
-    @user.company = Company.find_or_create_by(name: 'Myspace')
+    @user.company = Company.where(name: 'MyspaceNYC').first
     if @user.save
       # add in each role type
       @user.update_roles
       @user.send_activation_email
+      @user.send_company_approval_email
       flash[:info] = "Please check your email to activate your account."
       #log_out
       redirect_to root_url
     else
       #puts "**** #{@user.errors.inspect}"
+      @agent_title = EmployeeTitle.agent
       render 'new'
     end
   end

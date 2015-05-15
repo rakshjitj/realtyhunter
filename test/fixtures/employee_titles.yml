@@ -7,3 +7,11 @@ broker: {
   name: "broker"
 }
 #  column: value
+
+company_admin: {
+	name: "company_admin"
+}
+
+closing_manager: {
+	name: "closing_manager"
+}

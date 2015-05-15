@@ -1,0 +1,10 @@
+Congrats <%= @company.name %>! 
+
+You have a new user who's requested to join your company. Click the following click to approve them, or visit your company dashboard.
+
+Name: <%= @user.name %>
+Email: <%= @user.email %>
+Title: <%= @user.employee_title.name %>
+Signed up on: <%= @user.created_at %>
+
+<%= link_to "Approve", edit_account_approval_url(@user.approval_token,email:@user.email) %>

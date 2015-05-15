@@ -6,7 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-@company = Company.create({name: "Myspace"})
+@company = Company.create({name: "MyspaceNYC"})
 @company2 = Company.create({name: "Nooklyn"})
 
 @offices = Office.create([
@@ -70,7 +70,7 @@
     activated_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[3],
+    employee_title: @employee_titles[4],
   })
 @manager2 = User.create({ name: 'Cheryl Hoyles', 
     email: 'info@myspacenyc.com',    
@@ -80,11 +80,12 @@
     activated: true, 
     activated_at: Time.zone.now,
     company: @company, 
-    office: @offices[],
-    employee_title: @employee_titles[3],
+    office: @offices[0],
+    employee_title: @employee_titles[4],
  })
 
 User.define_roles()
+@super_admin.update_roles
 @super_admin.add_role :super_admin
 
 @company_admin1.update_roles

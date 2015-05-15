@@ -1,0 +1,9 @@
+<p>Hi <%= @user.fname %>,</p>
+
+<p>
+Congrats! You're account has been approved by one of the admins over at <%= @user.company.name.titleize %>. Welcome to the team!
+</p>
+
+<p>
+Why don't you have a look at some of your new <%= link_to "listings", users_url %> to get started?
+</p>

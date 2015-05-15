@@ -82,12 +82,17 @@ ActiveRecord::Schema.define(version: 20150508170449) do
     t.string   "activation_digest"
     t.boolean  "activated",           default: false
     t.datetime "activated_at"
+    t.string   "approval_digest"
+    t.boolean  "approved",            default: false
+    t.datetime "approved_at"
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
     t.integer  "company_id"
     t.integer  "office_id"
     t.integer  "employee_title_id"
     t.integer  "manager_id"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.string   "avatar_id"
   end
 

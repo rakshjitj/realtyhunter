@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   has_many :subordinates, :class_name => "User", :foreign_key => "manager_id"
   attachment :avatar #, extension: ["jpg", "jpeg", "png", "gif"]
 
-	attr_accessor :remember_token, :activation_token, :reset_token, :agent_types
+	attr_accessor :remember_token, :activation_token, :reset_token, :approval_token, :agent_types
   before_create :create_activation_digest
   before_save :downcase_email
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
@@ -55,6 +55,11 @@ class User < ActiveRecord::Base
     update_columns(activated: true, activated_at: Time.zone.now)
   end
 
+  # Marks an account as approved by an admin
+  def approve
+    update_columns(approved: true, approved_at: Time.zone.now)
+  end
+
   def fname
     self.name.split(' ')[0]
   end
@@ -62,6 +67,12 @@ class User < ActiveRecord::Base
   # Sends activation email.
   def send_activation_email
     UserMailer.account_activation(self).deliver_now
+  end
+
+  # sends the company admin a notification, asking to 
+  # approve this user
+  def send_company_approval_email
+    UserMailer.account_approval_needed(self, self.company).deliver_now
   end
 
   # Sets the password reset attributes.
@@ -75,6 +86,11 @@ class User < ActiveRecord::Base
   def send_password_reset_email
     UserMailer.password_reset(self).deliver_now
   end
+
+  # Sends account_created_by_admin email
+  #def send_account_created_by_admin
+  #  UserMailer.account_created_by_admin(self).deliver_now
+  #end
 
   # Returns true if a password reset has expired.
   def password_reset_expired?
@@ -132,19 +148,13 @@ class User < ActiveRecord::Base
       else
         # otherwise, note the specialities they indicated
         self.agent_types.each do |role|
-          @real_role_name = role.downcase.gsub(' ', '_')
-          # don't allow roles that are not approved by us
-          @real_role = AgentType.where(name: @real_role_name).first
-          if @real_role
-            self.add_role @real_role.name
-          end
+          self.add_sanitized_role(role, true)
         end
 
       end
     else 
-      self.add_role self.employee_title.name
+      self.add_sanitized_role(self.employee_title.name, false)
     end
-    
   end
 
   def is_manager?
@@ -251,9 +261,29 @@ class User < ActiveRecord::Base
     @specialities
   end
 
+  def add_sanitized_role(unsan_role_name, is_agent_type)
+    # input has not been sanitized. let's translate it into our 
+    # naming scheme
+    
+    # don't allow roles that are not approved by us
+    @real_role_name = nil
+    if is_agent_type
+      @name = unsan_role_name.downcase.gsub(' ', '_')
+      @real_role = AgentType.where(name: @name).first
+      @real_role_name = @real_role.name
+    else
+      @real_role = EmployeeTitle.where(name: unsan_role_name).first
+      @real_role_name = @real_role.name.downcase.gsub(' ', '_')  
+    end
+
+    if @real_role_name
+      self.add_role @real_role_name
+    else
+      raise "No role found by that name [#{@unsan_role_name}]"
+    end
+  end
 
   private
-
     # Converts email to all lower-case.
     def downcase_email
       self.email = email.downcase
@@ -263,6 +293,8 @@ class User < ActiveRecord::Base
       # Create the token and digest.
       self.activation_token  = User.new_token
       self.activation_digest = User.digest(activation_token)
+      self.approval_token  = User.new_token
+      self.approval_digest = User.digest(approval_token)
     end
 
 

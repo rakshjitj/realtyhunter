@@ -127,10 +127,10 @@ class UserTest < ActiveSupport::TestCase
 
   test "update_roles updates employee_title" do
     @user.agent_types = nil
-    @user.employee_title = EmployeeTitle.broker
+    @user.employee_title = EmployeeTitle.closing_manager
     @user.update_roles
-    assert @user.employee_title.name, EmployeeTitle.broker.name
-    assert @user.has_role? :broker
+    assert @user.employee_title.name, EmployeeTitle.closing_manager.name
+    assert @user.has_role? :closing_manager
     assert_not @user.has_role? :residential
   end
 
@@ -158,11 +158,6 @@ class UserTest < ActiveSupport::TestCase
     assert @manager.add_role :company_admin
     assert @manager.is_company_admin?
   end
-
-  # test "remove manager works" do
-  #   @manager.remove_manager
-  #   assert_not @manager.has_role? :manager
-  # end
 
   test "managers can add subordinates" do
     @manager.save
