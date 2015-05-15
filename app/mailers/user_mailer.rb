@@ -15,7 +15,7 @@ class UserMailer < ApplicationMailer
     @user = user
     @company = company
     @emails = @company.admins.map(&:email)
-    puts "--- #{@user} #{@company} #{@company.admins.inspect}"
+    #puts "--- #{@user} #{@company} #{@company.admins.inspect}"
     mail to: @emails, subject: "Account approval needed"
   end
 
@@ -36,8 +36,9 @@ class UserMailer < ApplicationMailer
     mail to: user.email, subject: "Password reset"
   end
 
-  def account_created_by_admin(user)
+  def added_by_admin(company, user)
     @user = user
-    mail to: user.email, subject: "Your account has been created"
+    @company = company
+    mail to: user.email, subject: "You have been added to #{company}"
   end
 end

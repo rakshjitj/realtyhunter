@@ -57,4 +57,16 @@ class UserMailerTest < ActionMailer::TestCase
     assert_match user.company.name, mail.body.encoded
   end
 
+  test "added_by_admin" do
+    company = companies(:one)
+    user = users(:michael)
+    user.reset_token = User.new_token
+    mail = UserMailer.added_by_admin(company, user)
+    assert_match "You have been added to", mail.subject
+    assert_equal [user.email], mail.to
+    assert_equal ["admin-no-reply@myspacenyc.com"], mail.from
+    assert_match user.reset_token,        mail.body.encoded
+    assert_match CGI::escape(user.email), mail.body.encoded
+  end
+
 end

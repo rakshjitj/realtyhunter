@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   skip_before_action :logged_in_user, only: [:new, :create]
-  before_action :lookup_user, except: [:index, :teams, :new, :batch_new, :create]
-
+  before_action :lookup_user, except: [:index, :teams, :new, :batch_new, :create, :batch_create]
+  before_action :set_company
   # GET /users
   # GET /users.json
   def index
@@ -18,7 +18,6 @@ class UsersController < ApplicationController
   # GET /team/1
   # GET /teams/1.json
   def teams
-    @company = Company.where(name: 'MyspaceNYC').first
     @users = @company.managers
   end
 
@@ -51,17 +50,14 @@ class UsersController < ApplicationController
   # GET /users/new
   # GET /signup
   def new
-    @company = Company.where(name: 'MyspaceNYC').first
     @agent_title = EmployeeTitle.agent
     @user = User.new
   end
 
   # GET /users/batch_new
   def batch_new
-    @user = User.new
     @agent_title = EmployeeTitle.agent
-    @roles = Role.where.not(name: 'super_admin')
-    render 'admin.new'
+    @user = User.new
   end
 
   # GET /users/1/edit
@@ -71,10 +67,8 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-
     @user = User.new(user_params)
     # TODO: extend to other companies
-    @user.company = Company.where(name: 'MyspaceNYC').first
     if @user.save
       # add in each role type
       @user.update_roles
@@ -86,6 +80,26 @@ class UsersController < ApplicationController
     else
       #puts "**** #{@user.errors.inspect}"
       render 'new'
+    end
+  end
+
+  # POST /users/batch_create
+  # POST /users/batch_create
+  def batch_create
+    @user = User.new(user_params)
+    @user.company = @company
+    @user.assign_random_password
+    if @user.save
+      @user.approve
+      # add in each role type
+      @user.update_roles
+      # send users an email prompting them to change pass & login
+      @user.create_reset_digest
+      @user.send_added_by_admin_email(current_user.company)
+      flash[:info] = "Users have been notified"
+      redirect_to root_url
+    else
+      render 'batch_new'
     end
   end
 
@@ -131,15 +145,19 @@ class UsersController < ApplicationController
   # PATCH /users/1/admin_approve
   def admin_approve
     @user.approve
-    redirect_to users_path
+    redirect_to users_url
   end
 
   def admin_unapprove
     @user.unapprove
-    redirect_to users_path
+    redirect_to users_url
   end
 
   private
+    def set_company
+      @company = Company.where(name: 'MyspaceNYC').first
+      @agent_title = EmployeeTitle.agent
+    end
 
     # Confirms the correct user.
     def lookup_user
@@ -148,7 +166,6 @@ class UsersController < ApplicationController
       #redirect_back_or users_path unless @user == current_user
       @user = User.find(params[:id])
       @agent_title = EmployeeTitle.agent
-      @company = Company.where(name: "MyspaceNYC").first!
       #unless (@current_user.is_management? || @user == current_user)
       #  flash[:danger] = "You are not authorized to go there."
       #  redirect_back_or users_url

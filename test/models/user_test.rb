@@ -198,9 +198,53 @@ class UserTest < ActiveSupport::TestCase
     assert @user.coworkers[0], @user2
   end 
 
-  test "super admin can see users from all companies" do
-  end 
-  # TODO: can_kick, can_approve, unapprove
-  # office switching
+  #test "super admin can see users from all companies" do
+  #end 
+
+  test "agent can't kick anyone" do
+    assert_not @user.can_kick(@user2)
+  end
+
+  test "manager can kick a subordinate" do
+    @manager.make_manager
+    @manager.add_subordinate(@user)
+    assert @manager.can_kick(@user)
+  end
+
+  test "manager can't kick who's not on their team" do
+    @manager.make_manager
+    assert_not @manager.can_kick(@user)
+  end
+
+  test "company admins can kick anyone" do
+    assert @manager.add_role :company_admin
+    assert @manager.is_company_admin?
+    assert @manager.can_kick(@user)
+  end
+
+  test "agents can't approve anyone" do
+    assert_not @user.can_approve(@user2)
+  end
+
+  test "lower ran can't approve a higher rank" do
+    @user.employee_title = EmployeeTitle.broker
+    @user2.employee_title = EmployeeTitle.closing_manager
+    @user.update_roles
+    @user2.update_roles
+    assert_not @user.can_approve(@user2)
+  end
+
+  test "agent can't manage another person's team" do
+    assert_not @user.can_manage_team(@user2)
+  end
+
+  test "can't manage another's team if i am not a manager" do
+    assert_not @manager.can_manage_team(@user)
+  end
+
+  test "can manage a team if i am their manager" do
+    @manager.make_manager
+    assert @manager.can_manage_team(@manager)
+  end
 
 end

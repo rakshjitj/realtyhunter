@@ -59,7 +59,7 @@
                 <li><%= link_to "My Team Members", user_subordinates_path(current_user) %></li>
               <% end %>
               <% if current_user.is_company_admin? %>
-                <li><%= link_to "Add Team Member", new_user_path %></li>
+                <li><%= link_to "Add New Member", users_batch_new_path %></li>
                 <li><%= link_to "Add Office", new_company_office_path(current_user.company) %></li>
               <% end %>
               <li class="divider"></li>

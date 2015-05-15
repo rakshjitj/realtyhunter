@@ -91,10 +91,14 @@ class User < ActiveRecord::Base
     UserMailer.password_reset(self).deliver_now
   end
 
-  # Sends account_created_by_admin email
-  #def send_account_created_by_admin
-  #  UserMailer.account_created_by_admin(self).deliver_now
-  #end
+  def assign_random_password
+    self.password = SecureRandom.base64
+  end
+
+  # Sends password reset email.
+  def send_added_by_admin_email(company)
+    UserMailer.added_by_admin(company, self).deliver_now
+  end
 
   # Returns true if a password reset has expired.
   def password_reset_expired?
@@ -308,7 +312,7 @@ class User < ActiveRecord::Base
   # - either their direct manager or a company admin
   def can_kick(other_user)
     return (self.company == other_user.company) &&
-    ((self.is_company_admin? && other_user.manager) ||
+    (self.is_company_admin? ||
     (self == other_user.manager))
   end
 

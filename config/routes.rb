@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   
   # TODO: clean up this path
   get 'users/batch_new', to: 'users#batch_new', as: :users_batch_new
-  
+  post 'users/batch_create', to: 'users#batch_create', as: :users_batch_create
   resources :users
   delete 'users/:id/destroy_image', to: 'users#destroy_image', as: :user_destroy_image
   patch 'users/:id/upload_image', to: 'users#upload_image', as: :user_upload_image
@@ -30,6 +30,7 @@ Rails.application.routes.draw do
 
   resources :account_activations, only: [:edit]
   resources :account_approvals,   only: [:edit]
+  resources :added_by_admins,     only: [:edit, :update]
   resources :password_resets,     only: [:new, :create, :edit, :update]
 
   # The priority is based upon order of creation: first created -> highest priority.

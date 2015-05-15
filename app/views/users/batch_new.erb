@@ -12,7 +12,18 @@
   };
 </script>
 
+
+<% provide(:title, 'Admin User Signup') %>
+
 <div class="row">
+  <div class="col-md-12">
+    <h1><%= @company.name.titleize %> - Admin Batch Signup</h1>
+    
+    <!--%= render 'new_user_form' %-->
+    <%= form_for(@user, :url => users_batch_create_path(@user), html: { class: "directUpload" }) do |f| %>
+      <%= render 'shared/user_error_messages' %>
+
+      <div class="row">
   <div class="col-md-3">
     <div class="field">
       <%= f.label :name, "Name" %><br>
@@ -60,4 +71,14 @@
       </div>
     </div>
 
+</div>
+
+      <!--%= link_to 'Add another row', :remote => true %-->
+      <br /><br />
+      <div class="actions">
+        <%= f.submit class: "btn btn-primary" %>
+      </div>
+    <% end %>
+
+  </div>
 </div>

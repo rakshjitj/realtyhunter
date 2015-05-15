@@ -61,7 +61,7 @@
     <div class="col-md-4 agent-type">
       <div class="field " >
         <%= f.label :agent_types, "Areas you work in" %><br>
-        <%= f.select(:agent_types, options_for_select(AgentType.all.collect {|t| [t.name.titleize]}, ['Roleesidential']),
+        <%= f.select(:agent_types, options_for_select(AgentType.all.collect {|t| [t.name.titleize]}, ['Residential']),
             {},
             {
             :multiple => true,
