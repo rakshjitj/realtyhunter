@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   skip_before_action :logged_in_user, only: [:new, :create]
-  before_action :lookup_user, except: [:index, :new, :batch_new, :create]  #only: [:show, :edit, :update, :upload_image, :destroy]
+  before_action :lookup_user, except: [:index, :new, :batch_new, :create]
 
   # GET /users
   # GET /users.json
@@ -37,14 +37,13 @@ class UsersController < ApplicationController
     @agent_title = EmployeeTitle.agent
     #puts "***ID**** #{params.inspect}"
     # TODO: only show if this is an active user
-    redirect_to root_url and return unless @user.activated == true
+    #redirect_to root_url and return unless @user.activated == true
   end
 
   # GET /users/new
   # GET /signup
   def new
     @company = Company.where(name: 'MyspaceNYC').first
-    puts "^^^^^#{@company} #{@company.admins.inspect}"
     @agent_title = EmployeeTitle.agent
     @user = User.new
   end
@@ -87,7 +86,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     @agent_title = EmployeeTitle.agent
-    @user = User.find(params[:id])
+    #@user = User.find(params[:id])
     if @user.update_attributes(user_params)
       @user.update_roles
       flash[:success] = "Profile updated!"
@@ -101,7 +100,7 @@ class UsersController < ApplicationController
   # PATCH /users/1
   def upload_image
     # TODO: lock down params
-    @user = User.find(params[:id])
+    #@user = User.find(params[:id])
     if @user.update_attributes(user_params)
       flash[:success] = "Profile image updated!"
       redirect_to @user
@@ -119,6 +118,19 @@ class UsersController < ApplicationController
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  # happens when an admin approves a user account through
+  # the webpage instead of through email
+  # PATCH /users/1/admin_approve
+  def admin_approve
+    @user.approve
+    redirect_to users_path
+  end
+
+  def admin_unapprove
+    @user.unapprove
+    redirect_to users_path
   end
 
   private

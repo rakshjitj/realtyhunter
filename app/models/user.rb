@@ -60,6 +60,10 @@ class User < ActiveRecord::Base
     update_columns(approved: true, approved_at: Time.zone.now)
   end
 
+  def unapprove
+    update_columns(approved: false, approved_at: nil)
+  end
+
   def fname
     self.name.split(' ')[0]
   end
@@ -281,6 +285,22 @@ class User < ActiveRecord::Base
     else
       raise "No role found by that name [#{@unsan_role_name}]"
     end
+  end
+
+  # In order to approve another user, we must be:
+  # - A company admin
+  # - From the same company as the other user
+  # - Higher in rank than the other user
+  def can_approve(other_user)
+    return self.is_company_admin? && self.company == other_user.company &&
+    other_user.employee_title.id < self.employee_title.id
+  end
+
+  # In order to kick another user from their team, we must be:
+  # - either their direct manager or a company admin
+  def can_kick(other_user)
+    return (self.is_company_admin? && other_user.manager) ||
+    (self == other_user.manager)
   end
 
   private
