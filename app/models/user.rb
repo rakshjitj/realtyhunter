@@ -169,6 +169,13 @@ class User < ActiveRecord::Base
     self.has_role? :company_admin
   end
 
+  def is_agent?
+    AgentType.all.each do |at|
+      return true if self.has_role? at.name
+    end
+    return false
+  end
+
   def make_manager
     self.employee_title = EmployeeTitle.manager
     self.update_roles

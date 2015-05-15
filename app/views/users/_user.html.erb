@@ -14,6 +14,16 @@
   
   <td><%= link_to user.name, user %></td>
   <td><%= user.email %></td>
+  <td>
+  	<%= user.employee_title.name.titleize %>
+  	<% if user.is_company_admin? %>
+  		<span class="glyphicon glyphicon-star dark-orange" aria-hidden="true"></span>
+  	<% end %>
+
+  	<% if user.is_agent? %>
+  		| <%= user.agent_specialties.join(", ") %>
+  	<% end %>
+  </td>
   <td><% if user.activated? %>
   	<span class="glyphicon glyphicon-ok green" aria-hidden="true"></span>
   	<% else %>

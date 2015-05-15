@@ -6,6 +6,8 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     #@users = User.all
+    @agent_title = EmployeeTitle.agent
+
     @users = User.search(params[:search])
     @users = @users.paginate(:page => params[:page], :per_page => 50)
     @title = 'All users'
@@ -34,7 +36,6 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @agent_title = EmployeeTitle.agent
     #puts "***ID**** #{params.inspect}"
     # TODO: only show if this is an active user
     #redirect_to root_url and return unless @user.activated == true
@@ -51,13 +52,13 @@ class UsersController < ApplicationController
   # GET /users/batch_new
   def batch_new
     @user = User.new
+    @agent_title = EmployeeTitle.agent
     @roles = Role.where.not(name: 'super_admin')
     render 'admin.new'
   end
 
   # GET /users/1/edit
   def edit
-    @agent_title = EmployeeTitle.agent
   end
 
   # POST /users
@@ -77,7 +78,6 @@ class UsersController < ApplicationController
       redirect_to root_url
     else
       #puts "**** #{@user.errors.inspect}"
-      @agent_title = EmployeeTitle.agent
       render 'new'
     end
   end
@@ -85,7 +85,6 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    @agent_title = EmployeeTitle.agent
     #@user = User.find(params[:id])
     if @user.update_attributes(user_params)
       @user.update_roles
@@ -141,6 +140,7 @@ class UsersController < ApplicationController
       #puts "***ID**** #{params.inspect}"
       #redirect_back_or users_path unless @user == current_user
       @user = User.find(params[:id])
+      @agent_title = EmployeeTitle.agent
 
       #unless (@current_user.is_management? || @user == current_user)
       #  flash[:danger] = "You are not authorized to go there."
