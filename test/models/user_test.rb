@@ -122,7 +122,7 @@ class UserTest < ActiveSupport::TestCase
     @user.employee_title = EmployeeTitle.agent
     @user.update_roles
     assert @user.employee_title.name, EmployeeTitle.agent.name
-    assert @user.has_role? :residential_agent
+    assert @user.has_role? :residential
   end
 
   test "update_roles updates employee_title" do
@@ -131,7 +131,16 @@ class UserTest < ActiveSupport::TestCase
     @user.update_roles
     assert @user.employee_title.name, EmployeeTitle.broker.name
     assert @user.has_role? :broker
-    assert_not @user.has_role? :residential_agent
+    assert_not @user.has_role? :residential
+  end
+
+  test "can get agent specialties" do
+    @user.employee_title = EmployeeTitle.agent
+    @user.agent_types = ['Residential', 'Commercial']
+    @user.update_roles
+    assert @user.has_role? :residential
+    assert @user.agent_specialties[0], "Residential"
+    assert @user.agent_specialties[1], "Commercial"
   end
 
   test "make manager works" do
@@ -150,10 +159,10 @@ class UserTest < ActiveSupport::TestCase
     assert @manager.is_company_admin?
   end
 
-  test "remove manager works" do
-    @manager.remove_manager
-    assert_not @manager.has_role? :manager
-  end
+  # test "remove manager works" do
+  #   @manager.remove_manager
+  #   assert_not @manager.has_role? :manager
+  # end
 
   test "managers can add subordinates" do
     @manager.save
@@ -197,13 +206,5 @@ class UserTest < ActiveSupport::TestCase
   test "super admin can see users from all companies" do
   end 
 
-  test "can get agent specialties" do
-    @user.employee_title = EmployeeTitle.agent
-    @user.agent_types = ['Residential', 'Commercial']
-    @user.update_roles
-    assert @user.has_role? :residential
-    assert @user.agent_specialties[0], "Residential"
-    assert @user.agent_specialties[1], "Commercial"
-  end
 
 end

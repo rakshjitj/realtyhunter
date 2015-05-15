@@ -122,9 +122,13 @@ class User < ActiveRecord::Base
     # if you're an agent, add in specific roles for the type of
     # agent that you are
     if self.employee_title == EmployeeTitle.agent
+      # cull out empty selections
+      if self.agent_types
+        self.agent_types = self.agent_types.select(&:present?)
+      end
       # always make sure they at least have one specialty area selected
-      if !self.agent_types || self.agent_types.length == 0
-        self.add_role :residential_agent
+      if !self.agent_types || !self.agent_types.any?
+        self.add_role :residential
       else
         # otherwise, note the specialities they indicated
         self.agent_types.each do |role|
@@ -136,7 +140,6 @@ class User < ActiveRecord::Base
           end
         end
 
-        #puts "\n *** #{self.agent_specialties.inspect}"
       end
     else 
       self.add_role self.employee_title.name
@@ -153,13 +156,14 @@ class User < ActiveRecord::Base
   end
 
   def make_manager
-    self.add_role :manager
+    self.employee_title = EmployeeTitle.manager
+    self.update_roles
   end
 
-  def remove_manager
-    subordinates.clear
-    self.remove_role :manager
-  end
+  #def remove_manager
+  #  subordinates.clear
+  #  self.remove_role :manager
+  #end
 
   def add_subordinate(subord)
     if self.has_role? :manager

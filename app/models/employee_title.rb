@@ -28,4 +28,13 @@ class EmployeeTitle < ActiveRecord::Base
 		@agent_title
 	end
 
+	def self.manager
+		@agent_title = EmployeeTitle.where(name: "manager").first;
+		if !@agent_title
+			@agent_title = EmployeeTitle.create(name: "manager")
+		end
+
+		@agent_title
+	end
+
 end

@@ -64,6 +64,8 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
+    # TODO: extend to other companies
+    @user.company = Company.find_or_create_by(name: 'Myspace')
     if @user.save
       # add in each role type
       @user.update_roles
@@ -80,6 +82,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+    @agent_title = EmployeeTitle.agent
     @user = User.find(params[:id])
     if @user.update_attributes(user_params)
       @user.update_roles
@@ -140,6 +143,6 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:email, :name, :mobile_phone_number, :bio, :password, 
         :password_confirmation, :avatar, :remove_avatar, :remote_avatar_url, :phone_number, 
-        :mobile_phone_number, :employee_title_id, agent_types: [])
+        :mobile_phone_number, :employee_title_id, :company_id, :office_id, agent_types: [])
     end
 end

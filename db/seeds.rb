@@ -28,7 +28,7 @@
   {name: "agent"},
   {name: "associate broker"},
   {name: "broker"},
-  {name: "Manager"},
+  {name: "manager"},
   {name: "closing manager"},
   {name: "marketing"},
   {name: "operations"},
@@ -36,7 +36,9 @@
   ])
 
 @password = "713lorimer"
-users = User.create([
+
+# super admin
+@super_admin = User.create(
   { name: 'Super Admin', 
     email: 'admin@realtymonster.com', 
     password: @password, 
@@ -46,8 +48,8 @@ users = User.create([
     company: @company, 
     office: @offices[0],
     employee_title: @employee_titles[@employee_titles.length-1],
-  },
-	{ name: 'Raquel Bujans', 
+  })
+@company_admin1 = User.create({ name: 'Raquel Bujans', 
     email: 'rbujans@myspacenyc.com', 
     bio: "blah blah blah", 
     password: @password, 
@@ -57,8 +59,8 @@ users = User.create([
     company: @company, 
     office: @offices[0],
     employee_title: @employee_titles[@employee_titles.length-1],
- },
-	{ name: 'Nir Mizrachi', 
+ })
+@manager1 = User.create({ name: 'Nir Mizrachi', 
     email: 'nir@myspacenyc.com',     
     bio: "blah blah blah", 
     password: @password, 
@@ -67,9 +69,9 @@ users = User.create([
     activated_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[@employee_titles.length-1],
-  },
-	{ name: 'Cheryl Hoyles', 
+    employee_title: @employee_titles[3],
+  })
+@manager2 = User.create({ name: 'Cheryl Hoyles', 
     email: 'info@myspacenyc.com',    
     bio: "blah blah blah", 
     password: @password, 
@@ -77,18 +79,17 @@ users = User.create([
     activated: true, 
     activated_at: Time.zone.now,
     company: @company, 
-    office: @offices[0],
-    employee_title: @employee_titles[@employee_titles.length-1],
- }
-	])
+    office: @offices[],
+    employee_title: @employee_titles[3],
+ })
+
 User.define_roles()
-users[0].add_role :super_admin
-users[1].add_role :company_admin
-users[2].add_role :company_admin
-users[3].add_role :company_admin
-users[1].make_manager
-users[2].make_manager
-users[3].make_manager
+@super_admin.add_role :super_admin
+
+@company_admin1.update_roles
+@manager1.update_roles
+@manager2.update_roles
+
 
 50.times do |n|
   name  = Faker::Name.name
@@ -108,13 +109,14 @@ users[3].make_manager
                office: @offices[0],
                employee_title: @employee_titles[0]
                )
-  userN.add_role :residential_agent
-  if n < 20
-    users[1].add_subordinate(userN)
-  elsif 20 < n && n < 35
-    users[2].add_subordinate(userN)
+  userN.update_roles
+  #if n < 20
+  #  @company_admin1.add_subordinate(userN)
+  #elsif 20 < n && n < 35
+  if n < 25
+    @manager1.add_subordinate(userN)
   else
-    users[3].add_subordinate(userN)
+    @manager2.add_subordinate(userN)
   end
 end
 
