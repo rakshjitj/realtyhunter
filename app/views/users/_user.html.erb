@@ -24,7 +24,8 @@
   		| <%= user.agent_specialties.join(", ") %>
   	<% end %>
   </td>
-  <td><%= user.office.name %></td>
+  <td>
+    <%= link_to user.office.name, company_office_path(user.office.company, user.office) %></td>
   <td><% if user.activated? %>
   	<span class="glyphicon glyphicon-ok green" aria-hidden="true"></span>
   	<% else %>

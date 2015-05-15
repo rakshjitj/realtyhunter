@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   skip_before_action :logged_in_user, only: [:new, :create]
-  before_action :lookup_user, except: [:index, :new, :batch_new, :create]
+  before_action :lookup_user, except: [:index, :teams, :new, :batch_new, :create]
 
   # GET /users
   # GET /users.json
@@ -13,6 +13,13 @@ class UsersController < ApplicationController
     @title = 'All users'
     #@users = User.where(activated: true).paginate(page: params[:page])
     #@users = User.paginate(:page => params[:page], :per_page => 50)
+  end
+
+  # GET /team/1
+  # GET /teams/1.json
+  def teams
+    @company = Company.where(name: 'MyspaceNYC').first
+    @users = @company.managers
   end
 
   # GET /coworkers/1
@@ -31,7 +38,6 @@ class UsersController < ApplicationController
     @users = @manager.subordinates
     @users = @users.paginate(:page => params[:page], :per_page => 50)
     @title = @manager.fname.titleize + "'s Team"
-    #render 'subordinates'
     render 'index'
   end
   # GET /users/1
@@ -142,7 +148,7 @@ class UsersController < ApplicationController
       #redirect_back_or users_path unless @user == current_user
       @user = User.find(params[:id])
       @agent_title = EmployeeTitle.agent
-
+      @company = Company.where(name: "MyspaceNYC").first!
       #unless (@current_user.is_management? || @user == current_user)
       #  flash[:danger] = "You are not authorized to go there."
       #  redirect_back_or users_url

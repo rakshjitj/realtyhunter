@@ -2,15 +2,19 @@
 
 <div class="row">
   <div class="col-md-offset-3 col-md-5">
+
+  <div class="row">
     <h1><%= @company.name.titleize %> Company Profile</h1>
-    <br />
-    
   </div>
-</div>
-<div class="row">
-  <div class="col-md-offset-3 col-md-5">
-  	<strong>Logo:</strong>
+  <div class="row">
+    <br />
+    <%= link_to 'All Companies', companies_path %> | 
+    <%= link_to 'Edit', edit_company_path(@company) %> |
+    <%= link_to 'Offices', company_offices_path(@company) %> |
+    <%= link_to 'Agents', users_path %>
     <br /><br />
+  </div>
+  <div class="row">  
     <% if @company.logo_id? %>
       <%= attachment_image_tag(@company, :logo, :fill, 300, 300) %>
     <% else %>
@@ -21,14 +25,13 @@
       </td>
     <% end %>
   </div>
-</div>
-
-<div class="row">
-  <div class="col-md-offset-3 col-md-5">
-  <br />
-    <%= link_to 'All Companies', companies_path %> | 
-  	<%= link_to 'Edit', edit_company_path(@company) %> |
-		<%= link_to 'Offices', company_offices_path(@company) %> |
-    <%= link_to 'Agents', users_path %>
+  <div class="row">
+    <br />
+    <% @company.offices.each do |office| %>
+      <p><b><%= link_to office.name, company_office_path(office.company, office) %></b>
+       - <%= office.street_address %>,
+      <%= office.telephone %>
+      </p>
+    <% end %>
   </div>
 </div>

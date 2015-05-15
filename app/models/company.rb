@@ -9,4 +9,8 @@ class Company < ActiveRecord::Base
 	def admins
 		@admins = self.users.select{|u| u if u.is_company_admin? }
 	end
+
+	def managers
+		@managers = self.users.select{|u| u if u.is_manager? }
+	end
 end
