@@ -46,6 +46,8 @@
     password_confirmation: @password, 
     activated: true, 
     activated_at: Time.zone.now,
+    approved: true, 
+    approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
     employee_title: @employee_titles[@employee_titles.length-1],
@@ -57,6 +59,8 @@
     password_confirmation: @password, 
     activated: true, 
     activated_at: Time.zone.now,
+    approved: true, 
+    approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
     employee_title: @employee_titles[@employee_titles.length-1],
@@ -68,6 +72,8 @@
     password_confirmation: @password, 
     activated: true, 
     activated_at: Time.zone.now,
+    approved: true, 
+    approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
     employee_title: @employee_titles[4],
@@ -79,6 +85,8 @@
     password_confirmation: @password, 
     activated: true, 
     activated_at: Time.zone.now,
+    approved: true, 
+    approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
     employee_title: @employee_titles[4],
@@ -107,9 +115,11 @@ User.define_roles()
                password_confirmation: password,
                activated: true,
                activated_at: Time.zone.now,
+               approved: true, 
+               approved_at: Time.zone.now,
                company: @company, 
                office: @offices[0],
-               employee_title: @employee_titles[0]
+               employee_title: @employee_titles[1]
                )
   userN.update_roles
   #if n < 20

@@ -18,6 +18,8 @@ class SessionsController < ApplicationController
         elsif !user.approved
           message  = "Account not approved. "
           message += "Contact your company's admin if you don't receive an approval in the next 24hrs."
+        else
+          message = "Some shit went wrong"
         end
         flash[:warning] = message
         redirect_to root_url
