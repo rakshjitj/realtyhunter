@@ -46,4 +46,13 @@ class EmployeeTitle < ActiveRecord::Base
 		@agent_title
 	end
 
+	def self.company_admin
+		@agent_title = EmployeeTitle.where(name: "company admin").first;
+		if !@agent_title
+			@agent_title = EmployeeTitle.create(name: "company admin")
+		end
+
+		@agent_title
+	end
+
 end

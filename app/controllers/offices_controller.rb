@@ -1,11 +1,11 @@
 class OfficesController < ApplicationController
-  #before_action :logged_in_user #, only: [:index, :show, :edit, :destroy]
   before_action :set_office, only: [:show, :edit, :update, :destroy]
 
   # GET /offices
   # GET /offices.json
   def index
-    @offices = Office.all
+    #@offices = Office.all
+    @offices = Office.where(company: @company)
   end
 
   # GET /offices/1

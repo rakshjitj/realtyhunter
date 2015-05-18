@@ -44,6 +44,14 @@
         <% end %>
       </div>
     </div>
+    <div class="row">
+      <div class="col-md-1">
+        <strong class="pull-right">Company:</strong>
+      </div>
+      <div class="col-md-11">
+        <%= @user.company.name.titleize %> 
+      </div>
+    </div>
     <% if @user.office %>
     <div class="row">
       <div class="col-md-1">

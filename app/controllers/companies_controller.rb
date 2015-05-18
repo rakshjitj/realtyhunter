@@ -1,6 +1,6 @@
 class CompaniesController < ApplicationController
-  #before_action :logged_in_user #, only: [:index, :new, :show, :create, :update, :edit, :destroy]
-  before_action :set_company, only: [:show, :edit, :update, :destroy]
+  skip_before_action :logged_in_user, only: [:new, :create]
+  before_action :set_company, except: [:new, :create]
 
   # GET /companies
   # GET /companies.json
@@ -16,27 +16,48 @@ class CompaniesController < ApplicationController
   # GET /companies/new
   def new
     @company = Company.new
+    # build 1 user
+    @company.users.build
   end
 
   # GET /companies/1/edit
   def edit
   end
 
+  # GET /team/1
+  # GET /teams/1.json
+  def teams
+    @users = @company.managers
+  end
+
+  def employees
+    @users = @company.users.paginate(:page => params[:page], :per_page => 50)
+    render 'users/index'
+  end
+
   # POST /companies
   # POST /companies.json
   def create
-    @company = Company.new(company_params)
-
-    respond_to do |format|
-      if @company.save
-        flash[:success] = 'Company was successfully created.'
-        format.html { redirect_to @company }
-        format.json { render :show, status: :created, location: @company }
-      else
-        format.html { render :new }
-        format.json { render json: @company.errors, status: :unprocessable_entity }
-      end
+    @saved = false
+    Company.transaction do
+      @company = Company.new(company_params)
+      @company.save
+      @company_admin = @company.users[0]
+      @company_admin.make_company_admin
+      @company_admin.send_activation_email
+      @company_admin.approve
+      @company_admin.save
+      @saved = true
     end
+
+    if @saved
+      flash[:success] = 'Company was successfully created. Please check your email to activate your account.'
+      redirect_to root_url
+    else
+      #puts "**** #{@user.errors.inspect}"
+      render 'new'
+    end
+
   end
 
   # PATCH/PUT /companies/1
@@ -73,6 +94,7 @@ class CompaniesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def company_params
-      params.require(:company).permit(:name, :logo, :remove_logo, :remote_logo_url)
+      params.require(:company).permit(:name, :logo, :remove_logo, :remote_logo_url,
+        users_attributes: [:name, :email, :password, :password_confirmation])
     end
 end

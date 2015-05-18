@@ -15,12 +15,6 @@ class UsersController < ApplicationController
     #@users = User.paginate(:page => params[:page], :per_page => 50)
   end
 
-  # GET /team/1
-  # GET /teams/1.json
-  def teams
-    @users = @company.managers
-  end
-
   # GET /coworkers/1
   # GET /coworkers/1.json
   def coworkers
@@ -155,7 +149,6 @@ class UsersController < ApplicationController
 
   private
     def set_company
-      @company = Company.where(name: 'MyspaceNYC').first
       @agent_title = EmployeeTitle.agent
     end
 
@@ -181,7 +174,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:email, :name, :mobile_phone_number, :bio, :password, 
+      params.require(:user).permit(:company_id, :email, :name, :mobile_phone_number, :bio, :password, 
         :password_confirmation, :avatar, :remove_avatar, :remote_avatar_url, :phone_number, 
         :mobile_phone_number, :employee_title_id, :company_id, :office_id, agent_types: [])
     end

@@ -114,7 +114,6 @@ class User < ActiveRecord::Base
     
     @terms = query_string.split(" ")
     @terms.each do |term|
-      #puts "**** #{term} ****\n"
       term = "%#{term}%"
       @running_list = @running_list.where('name ILIKE ? or email ILIKE ?', "%#{term}%", "%#{term}%").all
     end
@@ -182,6 +181,11 @@ class User < ActiveRecord::Base
 
   def make_manager
     self.employee_title = EmployeeTitle.manager
+    self.update_roles
+  end
+
+  def make_company_admin
+    self.employee_title = EmployeeTitle.company_admin
     self.update_roles
   end
 

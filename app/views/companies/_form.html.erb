@@ -1,10 +1,10 @@
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-12">
     <%= form_for(@company) do |f| %>
       <%= render 'shared/company_error_messages' %>
 
       <div class="field">
-        <%= f.label :name, "Name:" %><br>
+        <%= f.label :name, "Company name:" %><br>
         <%= f.text_field :name, class: 'form-control' %>
       </div>
 
@@ -15,8 +15,33 @@
       <div class="field">
         <%= f.label :remote_logo_url, "Or specify URL:" %>
         <%= f.text_field :remote_logo_url, class: 'form-control' %>
-      </div>  
-      
+      </div>
+
+      <p><br />And now for some details about your first admin account:</p>
+      <!-- Need to specify new company admin -->
+      <%= f.fields_for :users do |builder| %>
+      <div class="field">
+        <%= builder.label :name, "Company admin - Full name" %><br>
+        <%= builder.text_field :name, class: 'form-control', 
+            :required => true %>
+      </div>
+      <div class="field">
+        <%= builder.label :email, "Email (will be your username)" %><br>
+        <%= builder.email_field :email, class: 'form-control', 
+            :required => true %>
+      </div>
+            
+
+      <div class="field">
+        <%= builder.label :password, "Password (must re-enter to save changes!)" %><br>
+        <%= builder.password_field :password, class: 'form-control', 
+            :required => true %>
+      </div>
+      <div class="field">
+        <%= builder.label :password_confirmation, "Confirmation" %><br>
+        <%= builder.password_field :password_confirmation, class: 'form-control' %>
+      </div>
+      <% end %>
 
       <div class="actions">
         <%= f.submit %>

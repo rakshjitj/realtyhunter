@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   resources :companies do
     resources :offices
   end
-  
+  get 'employees/:id', to: 'companies#employees', as: :company_employees
+  get 'teams/:id', to: 'companies#teams', as: :teams
+
   get 'static_pages/home'
 #  get 'static_pages/help'
 
@@ -23,7 +25,6 @@ Rails.application.routes.draw do
   patch 'users/:id/upload_image', to: 'users#upload_image', as: :user_upload_image
   get 'subordinates/:id', to: 'users#subordinates', as: :user_subordinates
   get 'coworkers/:id', to: 'users#coworkers', as: :user_coworkers
-  get 'teams', to: 'users#teams', as: :teams
   patch 'users/:id/admin_approve', to: 'users#admin_approve', as: :admin_approve_user
   patch 'users/:id/admin_unapprove', to: 'users#admin_unapprove', as: :admin_unapprove_user
 
