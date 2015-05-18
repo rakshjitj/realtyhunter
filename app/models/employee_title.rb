@@ -3,7 +3,11 @@ class EmployeeTitle < ActiveRecord::Base
 	before_save :sanitize_name
 
   def sanitize_name
-    name.downcase.gsub!(' ', '_')
+    name.downcase
+  end
+
+  def self.sanitize_name(str)
+    return str.downcase
   end
 
   def display_name

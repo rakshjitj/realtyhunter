@@ -12,9 +12,10 @@
     <%= link_to 'Edit', edit_company_path(@company) %> |
     <%= link_to 'Offices', company_offices_path(@company) %> |
     <%= link_to 'Agents', company_employees_path(@company) %>
-    <br /><br />
+    <br />
+    <br />
   </div>
-  <div class="row">  
+  <div class="row">
     <% if @company.logo_id? %>
       <%= attachment_image_tag(@company, :logo, :fill, 300, 300) %>
     <% else %>
@@ -37,5 +38,9 @@
         </p>
       <% end %>
     <% end %>
+  </div>
+  <div class="row">
+    <p>Departments: <%= @employee_titles.join(", ") %></p>
+    <p>Agent Specialties: <%= @agent_types.join(", ") %></p>
   </div>
 </div>

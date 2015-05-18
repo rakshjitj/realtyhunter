@@ -4,7 +4,7 @@ class OfficesController < ApplicationController
   # GET /offices
   # GET /offices.json
   def index
-    #@offices = Office.all
+    @company = Company.find(params[:company_id])
     @offices = Office.where(company: @company)
   end
 

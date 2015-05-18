@@ -11,6 +11,8 @@ class CompaniesController < ApplicationController
   # GET /companies/1
   # GET /companies/1.json
   def show
+    @employee_titles = EmployeeTitle.all.map{|e| e.display_name}
+    @agent_types = AgentType.all.map{|e| e.display_name}
   end
 
   # GET /companies/new
@@ -22,6 +24,10 @@ class CompaniesController < ApplicationController
 
   # GET /companies/1/edit
   def edit
+    @agent_types = AgentType.all.map{|e| e.display_name}
+    @company.agent_types = @agent_types.join("\n")
+    @employee_titles = EmployeeTitle.all.map{|e| e.display_name}
+    @company.employee_titles = @employee_titles.join("\n")
   end
 
   # GET /team/1
@@ -66,6 +72,9 @@ class CompaniesController < ApplicationController
     respond_to do |format|
       if @company.update(company_params)
         flash[:success] = 'Company was successfully updated.'
+        # TODO: tie these values to a company
+        @company.update_agent_types
+        @company.update_employee_titles
         format.html { redirect_to @company }
         format.json { render :show, status: :ok, location: @company }
       else
@@ -95,6 +104,7 @@ class CompaniesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def company_params
       params.require(:company).permit(:name, :logo, :remove_logo, :remote_logo_url,
+        :agent_types, :employee_titles,
         users_attributes: [:name, :email, :password, :password_confirmation])
     end
 end
