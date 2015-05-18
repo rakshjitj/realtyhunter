@@ -1,3 +1,17 @@
+<script>
+	$(document).ready(function() {
+    $('#companies_select').change(function() {
+      $.ajax({
+        url: "<%= update_offices_path %>",
+        data: {
+          company_id : $('#companies_select').val()
+        },
+        dataType: "script"
+      });
+    });
+  });
+</script>
+
 <% provide(:title, 'New User Signup') %>
 
 <div class="row">

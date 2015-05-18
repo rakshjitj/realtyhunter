@@ -7,9 +7,6 @@ class AccountApprovalsController < ApplicationController
       user.approve
       UserMailer.account_approval_done(user).deliver_now
       company = Company.find_by(name: params[:company])
-      #puts "***** #{@company} #{@company.admins}"
-      user.company = company
-      user.save
       flash[:success] = "#{user.name} Approved!"
       redirect_to user #TODO: send to admin dash?
     else

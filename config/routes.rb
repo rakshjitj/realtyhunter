@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   root :to => 'static_pages#home'
   
   # TODO: clean up this path
+  get 'update_offices', to: 'users#update_offices', as: 'update_offices'
   get 'users/batch_new', to: 'users#batch_new', as: :users_batch_new
   post 'users/batch_create', to: 'users#batch_create', as: :users_batch_create
   resources :users
@@ -27,8 +28,7 @@ Rails.application.routes.draw do
   get 'coworkers/:id', to: 'users#coworkers', as: :user_coworkers
   patch 'users/:id/admin_approve', to: 'users#admin_approve', as: :admin_approve_user
   patch 'users/:id/admin_unapprove', to: 'users#admin_unapprove', as: :admin_unapprove_user
-
-
+  
   resources :account_activations, only: [:edit]
   resources :account_approvals,   only: [:edit]
   resources :added_by_admins,     only: [:edit, :update]

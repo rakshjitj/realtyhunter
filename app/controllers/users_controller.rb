@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
-  skip_before_action :logged_in_user, only: [:new, :create]
-  before_action :lookup_user, except: [:index, :teams, :new, :batch_new, :create, :batch_create]
-  before_action :set_company
+  skip_before_action :logged_in_user, only: [:new, :create, :update_offices]
+  before_action :lookup_user, except: [:index, :teams, :new, :batch_new, :create, :batch_create, :update_offices]
+  before_action :set_company, except: [:update_offices]
+
   # GET /users
   # GET /users.json
   def index
@@ -36,15 +37,24 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    #puts "***ID**** #{params.inspect}"
     # TODO: only show if this is an active user
     #redirect_to root_url and return unless @user.activated == true
+  end
+
+  # GET /update_offices
+  # AJAX call - updates drop down on user signup page
+  def update_offices
+    @offices = Office.where("company_id = ?", params[:company_id])
+    @offices = @offices.map{|o| [o.name, o.id]}.insert(0, "Select an office")
   end
 
   # GET /users/new
   # GET /signup
   def new
-    @company = Company.find_by(name: "MyspaceNYC")
+    #@company = Company.find_by(name: "MyspaceNYC")
+    @companies = Company.all
+    @offices = []
+    @employtee_titles = EmployeeTitle.where.not("name like ?", "%admin%")
     @agent_title = EmployeeTitle.agent
     @user = User.new
   end
@@ -175,7 +185,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:company_id, :email, :name, :mobile_phone_number, :bio, :password, 
+      params.require(:user).permit(:email, :name, :mobile_phone_number, :bio, :password, 
         :password_confirmation, :avatar, :remove_avatar, :remote_avatar_url, :phone_number, 
         :mobile_phone_number, :employee_title_id, :company_id, :office_id, agent_types: [])
     end

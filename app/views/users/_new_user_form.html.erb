@@ -16,9 +16,7 @@
 
 <%= form_for(@user, html: { class: "directUpload" }) do |f| %>
   <%= render 'shared/user_error_messages' %>
-
-  <p>You are joining: MyspaceNYC</p>
-
+  
   <div class="field">
     <%= f.label :name, "Name" %><br>
     <%= f.text_field :name, class: 'form-control', :required => true %>
@@ -37,19 +35,30 @@
   </div>
 
   <div class="field">
-    <%= f.label :office_id, "Office" %><br>
-    <%= f.select(:office_id, options_for_select(@company.offices.collect {|t| [t.name.titleize, t.id]}), 
+    <%= f.label :company_id, "Company:" %><br>
+    <%= f.select(:company_id, options_for_select(@companies.collect {|t| [t.name.titleize, t.id]}), 
       {prompt: "Choose one..."},
-      :required => true, 
+      { id: 'companies_select',
+        :required => true, 
       class: 'form-control',
-      :include_blank => true) %>
+      :include_blank => true}) %>
+  </div>
+
+  <div class="field">
+    <%= f.label :office_id, "Office" %><br>
+    <%= f.select(:office_id, options_for_select(@offices.collect {|t| [t.name.titleize, t.id]}), 
+      {prompt: "Choose one..."},
+      { id: 'offices_select',
+        :required => true, 
+        class: 'form-control',
+        :include_blank => true}) %>
   </div>
 
   <div class="row">
     <div class="col-md-4">
       <div class="field">
         <%= f.label :employee_title_id, "Role within the company" %><br>
-        <%= f.select(:employee_title_id, options_for_select(EmployeeTitle.all.collect {|t| [t.name.titleize, t.id]}), 
+        <%= f.select(:employee_title_id, options_for_select(@employtee_titles.collect {|t| [t.name.titleize, t.id]}), 
           {prompt: "Choose one..."},
           :onchange => "title_onchange_handler($(this).find('option:selected').text())",
           :required => true, 
