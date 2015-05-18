@@ -29,7 +29,7 @@
   <div class="col-md-2">
     <div class="field">
       <%= f.label :office_id, "Office" %><br>
-      <%= f.select(:office_id, options_for_select(@company.offices.collect {|t| [t.name.titleize, t.id]}), 
+      <%= f.select(:office_id, options_for_select(current_user.company.offices.collect {|t| [t.name.titleize, t.id]}), 
         {prompt: "Choose one..."},
         :required => true, 
         class: 'form-control',

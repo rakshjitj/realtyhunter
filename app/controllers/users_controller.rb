@@ -44,6 +44,7 @@ class UsersController < ApplicationController
   # GET /users/new
   # GET /signup
   def new
+    @company = Company.find_by(name: "MyspaceNYC")
     @agent_title = EmployeeTitle.agent
     @user = User.new
   end
