@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get 'update_offices', to: 'users#update_offices', as: 'update_offices'
   get 'users/batch_new', to: 'users#batch_new', as: :users_batch_new
   post 'users/batch_create', to: 'users#batch_create', as: :users_batch_create
+  get 'users/batch_add_user', to: 'users#batch_add_user', as: :users_batch_add_user
   resources :users
   delete 'users/:id/destroy_image', to: 'users#destroy_image', as: :user_destroy_image
   patch 'users/:id/upload_image', to: 'users#upload_image', as: :user_upload_image

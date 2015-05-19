@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   skip_before_action :logged_in_user, only: [:new, :create, :update_offices]
-  before_action :lookup_user, except: [:index, :teams, :new, :batch_new, :create, :batch_create, :update_offices]
+  before_action :lookup_user, except: [:index, :teams, :new, :batch_new, :create, :batch_create, :batch_add_user, :update_offices]
   before_action :set_company, except: [:update_offices]
 
   # GET /users
@@ -62,7 +62,15 @@ class UsersController < ApplicationController
   # GET /users/batch_new
   def batch_new
     @agent_title = EmployeeTitle.agent
-    @user = User.new
+    @users = []
+    @users << User.new
+  end
+
+  def batch_add_user
+    @builder = User.new
+    respond_to do |format|
+      format.js #batch_add_user.js.erb
+    end
   end
 
   # GET /users/1/edit
@@ -91,21 +99,21 @@ class UsersController < ApplicationController
   # POST /users/batch_create
   # POST /users/batch_create
   def batch_create
-    @user = User.new(user_params)
-    @user.company = @company
-    @user.assign_random_password
-    if @user.save
-      @user.approve
-      # add in each role type
-      @user.update_roles
-      # send users an email prompting them to change pass & login
-      @user.create_reset_digest
-      @user.send_added_by_admin_email(current_user.company)
-      flash[:info] = "Users have been notified"
-      redirect_to root_url
-    else
-      render 'batch_new'
-    end
+    #@user = User.new(user_params)
+    # @user.company = @company
+    # @user.assign_random_password
+    # if @user.save
+    #   @user.approve
+    #   # add in each role type
+    #   @user.update_roles
+    #   # send users an email prompting them to change pass & login
+    #   @user.create_reset_digest
+    #   @user.send_added_by_admin_email(current_user.company)
+    #   flash[:info] = "Users have been notified"
+    #   redirect_to root_url
+    # else
+    #   render 'batch_new'
+    # end
   end
 
   # PATCH/PUT /users/1
