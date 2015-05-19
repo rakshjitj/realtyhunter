@@ -1,4 +1,5 @@
 class CompaniesController < ApplicationController
+  load_and_authorize_resource
   skip_before_action :logged_in_user, only: [:new, :create]
   before_action :set_company, except: [:new, :create, :index]
 

@@ -8,5 +8,10 @@
   <td><%= office.telephone %></td>
 	<td><%= office.fax %></td>
 
-  <td><%= link_to 'Delete', company_office_path(office.company, office), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  <td>
+  	<% if can? :update, office %>
+	  	<%= link_to 'Edit', edit_company_office_path(office.company, office) %>
+	  	<%= link_to 'Delete', company_office_path(office.company, office), method: :delete, data: { confirm: 'Are you sure?' } %>
+	  <% end %>
+  </td>
 </tr>

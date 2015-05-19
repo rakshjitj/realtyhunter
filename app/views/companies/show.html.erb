@@ -29,8 +29,10 @@
   <div class="row">
     <br />
     <% if @company.offices.empty? %>
-      No offices added yet. Why don't you <%= link_to "create one?", new_company_office_path(@company) %>
+      <p>No offices added yet. Why don't you <%= link_to "create one?", new_company_office_path(@company) %></p>
+      <br />
     <% else %>
+
       <% @company.offices.each do |office| %>
         <p><b><%= link_to office.name, company_office_path(office.company, office) %></b>
          - <%= office.street_address %>,
@@ -40,7 +42,8 @@
     <% end %>
   </div>
   <div class="row">
-    <p>Departments: <%= @employee_titles.join(", ") %></p>
-    <p>Agent Specialties: <%= @agent_types.join(", ") %></p>
+    <hr />
+    <p><strong>Departments:</strong> <%= @employee_titles.join(", ") %></p>
+    <p><strong>Agent Specializations</strong>: <%= @agent_types.join(", ") %></p>
   </div>
 </div>

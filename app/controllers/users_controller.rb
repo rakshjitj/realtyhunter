@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  load_and_authorize_resource
   skip_before_action :logged_in_user, only: [:new, :create, :update_offices]
   before_action :lookup_user, except: [:index, :teams, :new, :batch_new, :create, :batch_create, :batch_add_user, :update_offices]
   before_action :set_company, except: [:update_offices]
@@ -81,14 +82,13 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-    # TODO: extend to other companies
+    log_out if logged_in?
     if @user.save
       # add in each role type
       @user.update_roles
       @user.send_activation_email
       @user.send_company_approval_email
       flash[:info] = "Please check your email to activate your account."
-      #log_out
       redirect_to root_url
     else
       #puts "**** #{@user.errors.inspect}"
