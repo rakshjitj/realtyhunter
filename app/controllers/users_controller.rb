@@ -16,8 +16,8 @@ class UsersController < ApplicationController
   # GET /coworkers/1.json
   def coworkers
     @users = @user.coworkers
-    @users = @users.paginate(:page => params[:page], :per_page => 50)
-    @title = @user.company.name.titleize + ' Employees'
+    @users = @users.paginate(:page => params[:page], :per_page => 50).order("created_at ASC")
+    @title = @user.company.name + ' Employees'
     render 'index'
   end
 
@@ -26,7 +26,7 @@ class UsersController < ApplicationController
   def subordinates
     @manager = User.find(params[:id])
     @users = @manager.subordinates
-    @users = @users.paginate(:page => params[:page], :per_page => 50)
+    @users = @users.paginate(:page => params[:page], :per_page => 50).order("created_at ASC")
     @title = @manager.fname.titleize + "'s Team"
     render 'index'
   end

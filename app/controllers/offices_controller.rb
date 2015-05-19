@@ -1,6 +1,6 @@
 class OfficesController < ApplicationController
   load_and_authorize_resource
-  before_action :set_office, only: [:show, :edit, :update, :destroy]
+  before_action :set_office, except: [:new, :create, :index]
 
   # GET /offices
   # GET /offices.json
@@ -18,11 +18,21 @@ class OfficesController < ApplicationController
   def new
     @company = Company.find(params[:company_id])
     @office = @company.offices.build
-    #respond_with(@office)
   end
 
   # GET /offices/1/edit
   def edit
+  end
+
+  def managers
+    @users = @office.managers
+  end
+
+  def agents
+    @users = @office.agents
+    @users.sort_by!{|u| u.name.downcase }
+    @users = @users.paginate(:page => params[:page], :per_page => 50)
+    render 'users/index'    
   end
 
   # POST /offices

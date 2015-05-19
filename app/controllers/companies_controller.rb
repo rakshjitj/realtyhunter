@@ -33,8 +33,11 @@ class CompaniesController < ApplicationController
 
   # GET /team/1
   # GET /teams/1.json
-  def teams
+  def managers
     @users = @company.managers
+    @users.sort_by!{|u| u.name.downcase }
+    @users = @users.paginate(:page => params[:page], :per_page => 50)
+    render 'users/index'
   end
 
   def employees

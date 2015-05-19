@@ -4,7 +4,9 @@ Rails.application.routes.draw do
     resources :offices
   end
   get 'employees/:id', to: 'companies#employees', as: :company_employees
-  get 'teams/:id', to: 'companies#teams', as: :teams
+  get 'companies/:id/managers', to: 'companies#managers', as: :company_managers
+  get 'companies/:company_id/offices/:id/managers', to: 'offices#managers', as: :office_managers
+  get 'companies/:company_id/offices/:id/agents', to: 'offices#agents', as: :office_agents
 
   get 'static_pages/home'
 #  get 'static_pages/help'
