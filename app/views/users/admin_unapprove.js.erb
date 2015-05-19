@@ -1,1 +1,3 @@
 $('.users_table_body').html("<%= escape_javascript (render :partial => @users, :locals => {:manager => nil}) %>");
+
+$('.user_detail').html("<%= escape_javascript (render :partial => 'show_detail', :locals => {:user => @user}) %>");

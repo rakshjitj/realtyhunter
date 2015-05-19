@@ -315,9 +315,15 @@ class User < ActiveRecord::Base
   # - at the same company
   # - either their direct manager or a company admin
   def can_kick(other_user)
+
     return (self.company == other_user.company && other_user.manager) &&
     (self.is_company_admin? ||
     (self == other_user.manager))
+  end
+
+  def kick
+    self.manager = nil
+    self.save
   end
 
   # In order to manage a team:

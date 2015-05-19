@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   get 'coworkers/:id', to: 'users#coworkers', as: :user_coworkers
   post 'users/:id/admin_approve', to: 'users#admin_approve', as: :admin_approve_user
   post 'users/:id/admin_unapprove', to: 'users#admin_unapprove', as: :admin_unapprove_user
+  post 'users/:id/admin_kick', to: 'users#admin_kick', as: :admin_kick_user
   
   resources :account_activations, only: [:edit]
   resources :account_approvals,   only: [:edit]

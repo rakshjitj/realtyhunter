@@ -211,7 +211,7 @@ class UserTest < ActiveSupport::TestCase
     assert @manager.can_kick(@user)
   end
 
-  test "manager can't kick who's not on their team" do
+  test "manager can't kick someone who's not on their team" do
     @manager.make_manager
     assert_not @manager.can_kick(@user)
   end
@@ -219,7 +219,17 @@ class UserTest < ActiveSupport::TestCase
   test "company admins can kick anyone" do
     assert @manager.add_role :company_admin
     assert @manager.is_company_admin?
+    @manager.make_manager
+    @manager.add_subordinate(@user)
     assert @manager.can_kick(@user)
+  end
+
+  test "kicking someone off a team works" do
+    assert @manager.add_role :company_admin
+    @manager.make_manager
+    @manager.add_subordinate(@user)
+    @manager.kick(@user)
+    assert_nil @user.manager
   end
 
   test "agents can't approve anyone" do

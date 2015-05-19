@@ -142,10 +142,18 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
     @user.destroy
+     # TODO: we probably don't want to actually destroy here
+    set_user
     set_users
-    respond_to do |format|
-      format.js
+    # if this is us, log us out
+    if (current_user == @user)
+      log_out if logged_in?
+    else
+      respond_to do |format|
+        format.js  
+      end
     end
+    
     #respond_to do |format|
     #  format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
     #  format.json { head :no_content }
@@ -155,21 +163,46 @@ class UsersController < ApplicationController
 
   # happens when an admin approves a user account through
   # the webpage instead of through email
-  # PATCH /users/1/admin_approve
+  # POST /users/1/admin_approve
   def admin_approve
-    @user.approve
+    if current_user.can_approve(@user)
+      @user.approve
+    else
+      flash[:danger] = "You are not authorized to do that."
+    end
+    set_user
     set_users
     respond_to do |format|
       format.js
-     end
+    end
   end
 
+  # POST
   def admin_unapprove
-    @user.unapprove
+    if current_user.can_approve(@user)
+      @user.unapprove
+    else
+      flash[:danger] = "You are not authorized to do that."
+    end
+    set_user
     set_users
     respond_to do |format|
-     format.js
-   end
+      format.js
+    end
+  end
+
+  # POST
+  def admin_kick
+    if current_user.can_kick(@user)
+      @user.kick
+    else
+      flash[:danger] = "You are not authorized to do that."
+    end
+    set_user
+    set_users
+    respond_to do |format|
+      format.js
+    end
   end
 
   private
