@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ResidentialUnitTest < ActiveSupport::TestCase
   def setup
-  	# fixtures not working, not sure why
+  	# fixtures not working, MTI messes things up
     @unit = ResidentialUnit.new({
     	rent: 1,
     	building_unit: "sfddsfds",

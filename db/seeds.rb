@@ -136,5 +136,17 @@ User.define_roles()
 end
 
 # seed property data -----------------------------------------
+@bldg = Building.create({
+  street_address: '1062 Bergen',
+  zip: '11216',
+  private_notes: 'These are some notes blah blah blah',
+  company: @company,
+  })
 
+@runit = ResidentialUnit.new({
+  rent: 2399,
+  building_unit: "3F",
+  beds: 1,
+  baths: 2.5
+  })
 
