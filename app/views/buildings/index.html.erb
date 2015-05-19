@@ -1,0 +1,61 @@
+<% provide(:title, 'Buildings') %>
+<h1>Buildings</h1>
+
+
+<%= link_to 'Add a Building', new_building_path %>
+
+<div class="row">
+  <div class="col-md-2">
+    <%= form_tag buildings_path, :method => 'get' do %>
+      Search:
+      <%= text_field_tag :search, params[:search], placeholder: "name/address", size: 50 %>
+      <%= submit_tag "Go", :name => nil %>
+      <%= link_to "Clear All Filters", users_path, class: 'btn btn-xs btn-default' %>
+      <!-- TODO: Has Active Units checkbox -->
+      <!-- TODO: sortable columns -->
+    <% end %>
+  </div>
+  <div class="col-md-offset-10">
+    <%= link_to 'Add a Building', new_building_path %><br />
+    <%= will_paginate @buildings %>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-12">
+    
+    <table class="table table-striped table-hover table-condensed table-responsive">
+      <thead>
+        <tr>
+          <th>Address</th>
+          <th>Active Units</th>
+          <th>Total Units</th>
+          <th>Last Unit Updated</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @buildings.each do |building| %>
+          <tr>
+            <td><strong><%= building.address %></strong> Brooklyn, NY <%= building.zipcode %></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td><%= link_to 'Show', building %></td>
+            <td><%= link_to 'Edit', edit_building_path(building) %></td>
+            <td><%= link_to 'Destroy', building, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-offset-10">
+    <%= will_paginate @buildings %>
+  </div>
+</div>
+

@@ -1,15 +1,12 @@
-residential: {
+residential:
   name: "residential"
-}
 
-commercial: {
+commercial:
   name: "commercial"
-}
 
-sales: {
+sales:
   name: "sales"
-}
 
-roomsharing: {
+roomsharing:
   name: "roomsharing"
-}
+

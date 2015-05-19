@@ -6,6 +6,9 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.timestamps null: false
       t.references :offices, index: true
       t.references :users, index: true
+      t.references :buildings, index: true
+      #t.references :units, index: true
+      # t.references :landlords, index: true
     end
 
     # TODO: code smell? companies, offices, users
@@ -41,7 +44,6 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.string :mobile_phone_number
       t.string :password_digest
       t.string :remember_digest
-      t.string :avatar_key
       t.text   :bio
       t.string :activation_digest
       t.boolean :activated, default: false
@@ -58,6 +60,50 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.timestamps null: false
     end
     add_index :users, :email, unique: true
+
+    create_table :neighborhoods do |t|
+      t.string :name
+      t.string :borough
+
+      t.timestamps null: false
+    end
+
+    create_table :buildings do |t|
+      t.string :street_address
+      t.string :zip
+      t.string :private_notes
+      t.belongs_to :company
+      #t.belongs_to :landlord
+      t.timestamps null: false
+    end
+
+    create_table :units do |t|
+      t.string :building_unit
+      t.integer :rent
+      t.belongs_to :building
+      #  this causes a problem with our MTI setup
+      #t.timestamps null: false
+    end
+
+    create_table :residential_units do |t|
+      t.integer :beds
+      t.float :baths
+    end
+
+    create_table :commercial_units do |t|
+      t.string :sq_footage
+      t.string :floor
+      t.string :property_type
+    end
+
+    # create_table :landlords do |t|
+    #   t.string :code
+    #   t.string :private_notes
+    #   t.string :shared_notes
+    #   t.belongs_to :company
+    #   t.references :buildings, index: true
+    #   t.timestamps null: false
+    # end
 
   end
 end

@@ -1,6 +1,8 @@
 class RenameImageFields < ActiveRecord::Migration
   def change
-  	remove_column :users, :avatar_key, :string
-  	add_column :users, :avatar_id, :string
+  	change_table :users do |t|
+		  t.string :avatar_id
+  		t.string :avatar_key
+		end
   end
 end

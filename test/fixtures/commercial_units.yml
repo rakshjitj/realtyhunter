@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sq_footage: MyString
+  floor: MyString
+  property_type: MyString
+
+two:
+  sq_footage: MyString
+  floor: MyString
+  property_type: MyString

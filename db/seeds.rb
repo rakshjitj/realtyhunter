@@ -17,6 +17,9 @@
   {company: @company, name: "Williamsburg - Leasing", street_address: "297 Broadway, 2nd Fl", city: "Brooklyn", state: "NY", zipcode: "11211", telephone: "555-555-5555", fax: "555-555-5555"},
   ])
 
+
+# seed user data -----------------------------------------
+
 @agent_types = AgentType.create([
   {name: "residential"},
   {name: "commercial"},
@@ -131,4 +134,7 @@ User.define_roles()
     @manager2.add_subordinate(userN)
   end
 end
+
+# seed property data -----------------------------------------
+
 

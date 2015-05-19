@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150508170449) do
+ActiveRecord::Schema.define(version: 20150519180148) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,16 +22,33 @@ ActiveRecord::Schema.define(version: 20150508170449) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "buildings", force: :cascade do |t|
+    t.string   "street_address"
+    t.string   "zip"
+    t.string   "private_notes"
+    t.integer  "company_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  create_table "commercial_units", force: :cascade do |t|
+    t.string "sq_footage"
+    t.string "floor"
+    t.string "property_type"
+  end
+
   create_table "companies", force: :cascade do |t|
     t.string   "name"
     t.string   "logo_id"
     t.string   "string"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.integer  "offices_id"
     t.integer  "users_id"
+    t.integer  "buildings_id"
   end
 
+  add_index "companies", ["buildings_id"], name: "index_companies_on_buildings_id", using: :btree
   add_index "companies", ["offices_id"], name: "index_companies_on_offices_id", using: :btree
   add_index "companies", ["users_id"], name: "index_companies_on_users_id", using: :btree
 
@@ -43,6 +60,13 @@ ActiveRecord::Schema.define(version: 20150508170449) do
   end
 
   add_index "employee_titles", ["users_id"], name: "index_employee_titles_on_users_id", using: :btree
+
+  create_table "neighborhoods", force: :cascade do |t|
+    t.string   "name"
+    t.string   "borough"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "offices", force: :cascade do |t|
     t.string   "name"
@@ -60,6 +84,11 @@ ActiveRecord::Schema.define(version: 20150508170449) do
 
   add_index "offices", ["users_id"], name: "index_offices_on_users_id", using: :btree
 
+  create_table "residential_units", force: :cascade do |t|
+    t.integer "beds"
+    t.float   "baths"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.integer  "resource_id"
@@ -70,6 +99,14 @@ ActiveRecord::Schema.define(version: 20150508170449) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
+
+  create_table "units", force: :cascade do |t|
+    t.string  "building_unit"
+    t.integer "rent"
+    t.integer "building_id"
+    t.integer "actable_id"
+    t.string  "actable_type"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
@@ -94,6 +131,7 @@ ActiveRecord::Schema.define(version: 20150508170449) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "avatar_id"
+    t.string   "avatar_key"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

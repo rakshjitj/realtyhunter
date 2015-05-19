@@ -1,17 +1,11 @@
-agent: {
+agent:
   name: "agent"
-}
-# column: value
-#
-broker: {
+
+broker:
   name: "broker"
-}
-#  column: value
 
-company_admin: {
-	name: "company_admin"
-}
+company_admin:
+  name: "company_admin"
 
-closing_manager: {
-	name: "closing_manager"
-}
+closing_manager:
+  name: "closing_manager"

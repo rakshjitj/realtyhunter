@@ -33,6 +33,7 @@ gem 'bootstrap-sass', '~> 3.3.4'
 gem 'bootstrap-will_paginate'
 gem 'autoprefixer-rails'
 gem 'rails_12factor', group: :production
+gem 'better_errors'
 
 # for handling image uploads
 gem 'aws-sdk', '< 2'
@@ -51,6 +52,9 @@ gem 'cancancan', '~> 1.10'
 
 #used to add semi-realistic users
 gem 'faker', '1.4.2'
+
+# simulate multiple table inheritance
+gem 'active_record-acts_as'
 
 group :production do
 	gem 'puma'

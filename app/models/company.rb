@@ -1,8 +1,14 @@
 class Company < ActiveRecord::Base
 	attachment :logo
+	validates :name, presence: true, length: {maximum: 100}, 
+						uniqueness: { case_sensitive: false }
+
 	has_many :offices, :dependent => :destroy
 	has_many :users
 	accepts_nested_attributes_for :users
+	has_many :buildings
+	#has_many :units
+	#has_many :landlords
 
 	attr_accessor :agent_types, :employee_titles
 	#has_many :agent_types, :

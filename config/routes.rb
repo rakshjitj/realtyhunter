@@ -1,13 +1,6 @@
 Rails.application.routes.draw do
-  
-  resources :companies do
-    resources :offices
-  end
-  get 'employees/:id', to: 'companies#employees', as: :company_employees
-  get 'companies/:id/managers', to: 'companies#managers', as: :company_managers
-  get 'companies/:company_id/offices/:id/managers', to: 'offices#managers', as: :office_managers
-  get 'companies/:company_id/offices/:id/agents', to: 'offices#agents', as: :office_agents
 
+  resources :neighborhoods
   get 'static_pages/home'
 #  get 'static_pages/help'
 
@@ -37,7 +30,18 @@ Rails.application.routes.draw do
   resources :account_approvals,   only: [:edit]
   resources :added_by_admins,     only: [:edit, :update]
   resources :password_resets,     only: [:new, :create, :edit, :update]
+ 
+  resources :companies do
+    resources :offices
+  end
+  get 'employees/:id', to: 'companies#employees', as: :company_employees
+  get 'companies/:id/managers', to: 'companies#managers', as: :company_managers
+  get 'companies/:company_id/offices/:id/managers', to: 'offices#managers', as: :office_managers
+  get 'companies/:company_id/offices/:id/agents', to: 'offices#agents', as: :office_agents
 
+  resources :buildings
+  resources :listings
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
