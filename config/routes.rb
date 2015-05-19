@@ -27,8 +27,8 @@ Rails.application.routes.draw do
   patch 'users/:id/upload_image', to: 'users#upload_image', as: :user_upload_image
   get 'subordinates/:id', to: 'users#subordinates', as: :user_subordinates
   get 'coworkers/:id', to: 'users#coworkers', as: :user_coworkers
-  patch 'users/:id/admin_approve', to: 'users#admin_approve', as: :admin_approve_user
-  patch 'users/:id/admin_unapprove', to: 'users#admin_unapprove', as: :admin_unapprove_user
+  post 'users/:id/admin_approve', to: 'users#admin_approve', as: :admin_approve_user
+  post 'users/:id/admin_unapprove', to: 'users#admin_unapprove', as: :admin_unapprove_user
   
   resources :account_activations, only: [:edit]
   resources :account_approvals,   only: [:edit]

@@ -1,20 +1,15 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
   skip_before_action :logged_in_user, only: [:new, :create, :update_offices]
-  before_action :lookup_user, except: [:index, :teams, :new, :batch_new, :create, :batch_create, :batch_add_user, :update_offices]
+  before_action :set_user, except: [:index, :teams, :new, :batch_new, :create, :batch_create, :batch_add_user, :update_offices]
   before_action :set_company, except: [:update_offices]
 
   # GET /users
   # GET /users.json
   def index
-    #@users = User.all
     @agent_title = EmployeeTitle.agent
-
-    @users = User.search(params[:search])
-    @users = @users.paginate(:page => params[:page], :per_page => 50)
+    set_users
     @title = 'All users'
-    #@users = User.where(activated: true).paginate(page: params[:page])
-    #@users = User.paginate(:page => params[:page], :per_page => 50)
   end
 
   # GET /coworkers/1
@@ -147,10 +142,15 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
     @user.destroy
+    set_users
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
+      format.js
     end
+    #respond_to do |format|
+    #  format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+    #  format.json { head :no_content }
+    #  format.js
+    #end
   end
 
   # happens when an admin approves a user account through
@@ -158,12 +158,18 @@ class UsersController < ApplicationController
   # PATCH /users/1/admin_approve
   def admin_approve
     @user.approve
-    redirect_to users_url
+    set_users
+    respond_to do |format|
+      format.js
+     end
   end
 
   def admin_unapprove
     @user.unapprove
-    redirect_to users_url
+    set_users
+    respond_to do |format|
+     format.js
+   end
   end
 
   private
@@ -172,7 +178,7 @@ class UsersController < ApplicationController
     end
 
     # Confirms the correct user.
-    def lookup_user
+    def set_user
     #def correct_user
       #puts "***ID**** #{params.inspect}"
       #redirect_back_or users_path unless @user == current_user
@@ -184,6 +190,12 @@ class UsersController < ApplicationController
       #  #redirect_to(users_url)
       #end
       ##redirect_to(root_url) unless @user == current_user
+    end
+
+    def set_users
+      #@users = User.where(activated: true).paginate(page: params[:page])
+      @users = User.search(params[:search])
+      @users = @users.paginate(:page => params[:page], :per_page => 50).order("created_at ASC")
     end
 
     # Use callbacks to share common setup or constraints between actions.
