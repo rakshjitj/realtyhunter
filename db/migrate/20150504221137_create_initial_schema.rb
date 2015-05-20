@@ -73,6 +73,10 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.string :zip
       t.string :private_notes
       t.belongs_to :company
+      # borough, city, state
+      # default agent
+      # neighborhood
+      # features
       #t.belongs_to :landlord
       t.timestamps null: false
     end
@@ -80,7 +84,15 @@ class CreateInitialSchema < ActiveRecord::Migration
     create_table :units do |t|
       t.string :building_unit
       t.integer :rent
+      t.timestamp :available_by
+      t.string :access_info
+      t.string :status
+      #t.string :listing_type
+      t.string :open_house
+      t.float :weeks_free_offered
       t.belongs_to :building
+      # primary agent
+      # updated_by
       #  this causes a problem with our MTI setup
       #t.timestamps null: false
     end
@@ -88,17 +100,23 @@ class CreateInitialSchema < ActiveRecord::Migration
     create_table :residential_units do |t|
       t.integer :beds
       t.float :baths
+      t.string :lease_duration
     end
 
     create_table :commercial_units do |t|
       t.string :sq_footage
       t.string :floor
       t.string :property_type
+      t.string :property_sub_type
+      t.string :listing_id
+      t.string :building_size
+      t.string :description
     end
 
     # create_table :landlords do |t|
     #   t.string :code
     #   t.string :private_notes
+    #   t.string :internal_notes
     #   t.string :shared_notes
     #   t.belongs_to :company
     #   t.references :buildings, index: true

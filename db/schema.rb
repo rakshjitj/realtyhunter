@@ -35,6 +35,10 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string "sq_footage"
     t.string "floor"
     t.string "property_type"
+    t.string "property_sub_type"
+    t.string "listing_id"
+    t.string "building_size"
+    t.string "description"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -87,6 +91,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   create_table "residential_units", force: :cascade do |t|
     t.integer "beds"
     t.float   "baths"
+    t.string  "lease_duration"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -101,11 +106,16 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
   create_table "units", force: :cascade do |t|
-    t.string  "building_unit"
-    t.integer "rent"
-    t.integer "building_id"
-    t.integer "actable_id"
-    t.string  "actable_type"
+    t.string   "building_unit"
+    t.integer  "rent"
+    t.datetime "available_by"
+    t.string   "access_info"
+    t.string   "status"
+    t.string   "open_house"
+    t.float    "weeks_free_offered"
+    t.integer  "building_id"
+    t.integer  "actable_id"
+    t.string   "actable_type"
   end
 
   create_table "users", force: :cascade do |t|

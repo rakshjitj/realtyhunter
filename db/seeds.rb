@@ -139,14 +139,19 @@ end
 @bldg = Building.create({
   street_address: '1062 Bergen',
   zip: '11216',
-  private_notes: 'These are some notes blah blah blah',
   company: @company,
   })
 
 @runit = ResidentialUnit.new({
-  rent: 2399,
   building_unit: "3F",
+  rent: 2399,
   beds: 1,
-  baths: 2.5
+  baths: 2.5,
+  available_by: Time.zone.now,
+  access_info: "Tenant Jerry 555-555-5555",
+  status: "active",
+  lease_duration: "year",
+  weeks_free_offered: 2,
+  building: @bldg,
   })
 

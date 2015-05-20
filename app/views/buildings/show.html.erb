@@ -1,13 +1,23 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Address:</strong>
-  <%= @building.address %>
+  <strong>Street Address:</strong>
+  <%= @building.street_address %>
+</p>
+
+<p>
+  <strong>Zip:</strong>
+  <%= @building.zip %>
 </p>
 
 <p>
   <strong>Private notes:</strong>
   <%= @building.private_notes %>
+</p>
+
+<p>
+  <strong>Last Updated:</strong>
+  <%= @building.updated_at.strftime("%F") %>
 </p>
 
 <%= link_to 'Edit', edit_building_path(@building) %> |

@@ -4,7 +4,7 @@ class BuildingsController < ApplicationController
   # GET /buildings
   # GET /buildings.json
   def index
-    @buildings = Building.all
+    @buildings = Building.all.paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")
   end
 
   # GET /buildings/1

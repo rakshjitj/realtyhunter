@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   get 'companies/:company_id/offices/:id/agents', to: 'offices#agents', as: :office_agents
 
   resources :buildings
-  resources :listings
+  resources :residential_units
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

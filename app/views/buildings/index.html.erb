@@ -39,10 +39,10 @@
       <tbody>
         <% @buildings.each do |building| %>
           <tr>
-            <td><strong><%= building.address %></strong> Brooklyn, NY <%= building.zipcode %></td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
+            <td><strong><%= building.street_address %></strong>&nbsp;&nbsp; Brooklyn, NY <%= building.zip %></td>
+            <td><%= building.active_units.count %></td>
+            <td><%= building.units.count %></td>
+            <td><%= building.updated_at.strftime("%F") %></td>
             <td><%= link_to 'Show', building %></td>
             <td><%= link_to 'Edit', edit_building_path(building) %></td>
             <td><%= link_to 'Destroy', building, method: :delete, data: { confirm: 'Are you sure?' } %></td>

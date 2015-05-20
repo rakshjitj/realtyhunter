@@ -1,1 +1,1 @@
-json.extract! @building, :id, :address, :private_notes, :created_at, :updated_at
+json.extract! @building, :id, :street_address, :zip, :private_notes, :created_at, :updated_at
