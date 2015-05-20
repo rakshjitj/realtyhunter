@@ -16,3 +16,4 @@
 //= require refile
 //= require_tree .
 //= require bootstrap-sprockets
+//= require jquery.geocomplete.min

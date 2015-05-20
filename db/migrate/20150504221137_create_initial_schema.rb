@@ -100,7 +100,7 @@ class CreateInitialSchema < ActiveRecord::Migration
     create_table :residential_units do |t|
       t.integer :beds
       t.float :baths
-      t.float :notes
+      t.string :notes
       t.integer :lease_duration, default: 0
     end
 
