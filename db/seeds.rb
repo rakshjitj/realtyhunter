@@ -137,9 +137,19 @@ end
 
 # seed property data -----------------------------------------
 @bldg = Building.create({
-  street_address: '1062 Bergen St',
-  zip: '11216',
+  formatted_street_address: '1062 Bergen St, Brooklyn, NY 11216',
+  street_number: '1062',
+  route: 'Bergen St',
+  neighborhood: 'Crown Heights',
+  sublocality: 'Brooklyn',
+  administrative_area_level_2_short: 'New York',
+  administrative_area_level_1_short: 'NY',
+  country_short: 'USA',
+  lat: '10',
+  lng: '11',
+  place_id: 1,
   company: @company,
+  notes: "Building has parking spots available, laundry in the basement."
   })
 
 @runit = ResidentialUnit.create({
@@ -152,7 +162,7 @@ end
   status: "active",
   lease_duration: "year",
   weeks_free_offered: 2,
-  notes: "here are some notes blah blah blah",
+  notes: "Apartment has a finicky door.",
   building: @bldg,
   })
 

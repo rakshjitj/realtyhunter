@@ -25,16 +25,19 @@ class BuildingsController < ApplicationController
   # POST /buildings
   # POST /buildings.json
   def create
-    @building = Building.new(building_params)
-
-    respond_to do |format|
-      if @building.save
-        format.html { redirect_to @building, notice: 'Building was successfully created.' }
-        format.json { render :show, status: :created, location: @building }
-      else
-        format.html { render :new }
-        format.json { render json: @building.errors, status: :unprocessable_entity }
-      end
+    # get the whitelisted set of params, then arrange data
+    # into the right format for our model
+    param_obj = building_params
+    param_obj[:notes] = param_obj[:building][:notes]
+    param_obj[:formatted_street_address] = param_obj[:building][:formatted_street_address]
+    param_obj.delete("building")
+    @building = Building.new(param_obj)
+    @building.company = current_user.company
+     if @building.save
+      redirect_to @building
+    else
+      #puts "**** #{@user.errors.inspect}"
+      render 'new'
     end
   end
 
@@ -69,7 +72,11 @@ class BuildingsController < ApplicationController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
+    # Need to take in additional params here. Can't rename them, or the geocode plugin
+    # will not map to them correctly
     def building_params
-      params.require(:building).permit(:address, :private_notes)
+      params.permit(:street_number, :route, :neighborhood, :sublocality, 
+       :administrative_area_level_2_short, :administrative_area_level_1_short, 
+       :country_short, :lat, :lng, :place_id, :building => [:formatted_street_address, :notes])
     end
 end

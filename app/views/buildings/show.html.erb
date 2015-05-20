@@ -1,31 +1,52 @@
-<% provide(:title, @building.street_address) %>
+<script>
+$( document ).ready(function() {
+    //console.log( "autocomplete plugin ready!" );
+
+    $(".panel").geocomplete({
+    	map: "#map_canvas",
+    	location: "<%= @building.formatted_street_address %>" ,
+    	details: ".details"
+    }).bind("geocode:result", function(event, result){
+        // if (this.value == "New York, NY, USA") {
+        //     this.value = '';
+        // }
+        console.log(result);
+    }).bind("geocode:error", function(event, result){
+        console.log("[ERROR]: " + result);
+    });
+
+});
+</script>
+
+<% provide(:title, @building.formatted_street_address) %>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
 		<h1 class="page-header">
-			<%= @building.street_address %>
+			<%= @building.formatted_street_address %>
 		</h1>
 		<p><%= @building.active_units.count %> available units on the market.
-			<%= @building.units.count %> total units.</p>
+			<%= @building.units.count %> total units. | 
+			<%= link_to 'Edit', edit_building_path(@building) %>
+
+		</p>
 
 		<div class="panel panel-default">
 		  <div class="panel-heading">
 		    <h3 class="panel-title">Basic Details</h3>
 		  </div>
 		  <div class="panel-body">
+		  	<div id="map_canvas" style="width: 400px; height: 400px"></div>
+
 		    <p>
+		    
 				  <strong>Street Address:</strong>
-				  <%= @building.street_address %>
+				  <%= @building.formatted_street_address %>
 				</p>
 
 				<p>
-				  <strong>Zip:</strong>
-				  <%= @building.zip %>
-				</p>
-
-				<p>
-				  <strong>Private notes:</strong>
-				  <%= @building.private_notes %>
+				  <strong>Building Notes:</strong>
+				  <%= @building.notes %>
 				</p>
 
 				<p>

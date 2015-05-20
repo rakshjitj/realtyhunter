@@ -1,9 +1,6 @@
 <% provide(:title, 'Buildings') %>
 <h1 class="page-header">Buildings</h1>
 
-
-<%= link_to 'Add a unit', new_building_path %>
-
 <div class="row">
   <div class="col-md-2">
     <%= form_tag buildings_path, :method => 'get' do %>
@@ -16,7 +13,7 @@
     <% end %>
   </div>
   <div class="col-md-offset-10">
-    <%= link_to 'Add a unit', new_building_path %><br />
+    <%= link_to 'Add a building', new_building_path %><br />
     <%= will_paginate @buildings %>
   </div>
 </div>
@@ -39,7 +36,7 @@
       <tbody>
         <% @buildings.each do |building| %>
           <tr>
-            <td><%= link_to "#{building.street_address}, Brooklyn, NY #{building.zip}", building %>
+            <td><%= link_to "#{building.formatted_street_address}, Brooklyn, NY", building %>
               </td>
             <td><%= building.active_units.count %></td>
             <td><%= building.units.count %></td>

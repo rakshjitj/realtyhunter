@@ -69,11 +69,19 @@ class CreateInitialSchema < ActiveRecord::Migration
     end
 
     create_table :buildings do |t|
-      t.string :street_address
-      t.string :zip
-      t.string :private_notes
+      t.string :formatted_street_address
+      t.string :street_number
+      t.string :route
+      t.string :neighborhood
+      t.string :sublocality
+      t.string :administrative_area_level_2_short
+      t.string :administrative_area_level_1_short
+      t.string :country_short
+      t.string :lat
+      t.string :lng
+      t.string :place_id
+      t.string :notes
       t.belongs_to :company
-      # borough, city, state
       # default agent
       # neighborhood
       # features

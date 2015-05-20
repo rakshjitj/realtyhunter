@@ -28,15 +28,15 @@ class ResidentialUnitsController < ApplicationController
   def create
     @unit = ResidentialUnit.new(residential_unit_params)
 
-    respond_to do |format|
-      if @unit.save
-        format.html { redirect_to @unit, notice: 'Residential unit was successfully created.' }
-        format.json { render :show, status: :created, location: @unit }
-      else
+    # respond_to do |format|
+    #   if @unit.save
+    #     format.html { redirect_to @unit, notice: 'Residential unit was successfully created.' }
+    #     format.json { render :show, status: :created, location: @unit }
+    #   else
         format.html { render :new }
         format.json { render json: @unit.errors, status: :unprocessable_entity }
-      end
-    end
+    #   end
+    # end
   end
 
   # PATCH/PUT /residential_units/1
@@ -71,6 +71,6 @@ class ResidentialUnitsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def residential_unit_params
-      params[:residential_unit]
+      params[:residential_unit].permit()
     end
 end

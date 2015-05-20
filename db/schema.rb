@@ -23,12 +23,21 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   end
 
   create_table "buildings", force: :cascade do |t|
-    t.string   "street_address"
-    t.string   "zip"
-    t.string   "private_notes"
+    t.string   "formatted_street_address"
+    t.string   "street_number"
+    t.string   "route"
+    t.string   "neighborhood"
+    t.string   "sublocality"
+    t.string   "administrative_area_level_2_short"
+    t.string   "administrative_area_level_1_short"
+    t.string   "country_short"
+    t.string   "lat"
+    t.string   "lng"
+    t.string   "place_id"
+    t.string   "notes"
     t.integer  "company_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
   create_table "commercial_units", force: :cascade do |t|

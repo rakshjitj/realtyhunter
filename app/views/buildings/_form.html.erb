@@ -1,39 +1,65 @@
+<script>
+$( document ).ready(function() {
+    console.log( "autocomplete plugin ready!" );
+
+    $(".autocomplete-input").geocomplete({
+      map: "#map_canvas",
+      location: "<%= @building.nil? ? @building.formatted_street_address : 'New York, NY, USA' %>" ,
+      details: ".details"
+    }).bind("geocode:result", function(event, result){
+         if (this.value == "New York, NY, USA") {
+             this.value = '';
+         }
+        console.log(result);
+    }).bind("geocode:error", function(event, result){
+        console.log("<%= @building.formatted_street_address %>", "[ERROR]: " + result);
+    });
+
+});
+</script>
 
 <%= form_for(@building) do |f| %>
-  <%= render :partial => 'shared/error_messages', 
-    :locals => {:model => @building} %>
-
   <div class="panel panel-default">
-    <div class="panel-heading">
+    <!--div class="panel-heading">
       <h3 class="panel-title">Basic Details</h3>
-    </div>
+    </div-->
     <div class="panel-body">
+
+      <%= render :partial => 'shared/error_messages', 
+        :locals => {:model => @building} %>
+
       <div class="field">
-        <%= f.label :street_address %><br>
-        <%= f.text_field :street_address, class: 'form-control autocomplete-input', placeholder: "" %>
+
+        <%= f.label :formatted_street_address, "Street Address" %><br>
+        <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input', placeholder: "123 Main St" %>
       </div>
       <div class="field">
-        <%= f.label :zip %><br>
-        <%= f.text_field :zip, class: 'form-control' %>
+        <%= f.label :notes, "Building Notes" %><br>
+        <%= f.text_area :notes, class: 'form-control', rows: 5 %>
       </div>
-      <div class="field">
-        <%= f.label :private_notes %><br>
-        <%= f.text_field :private_notes, class: 'form-control' %>
+      <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
+      <div class="details field">
+        <%= f.hidden_field :street_number, name: "street_number" %>
+        <%= f.hidden_field :route, name: "route" %>
+        <%= f.hidden_field :neighborhood, name:"neighborhood" %>
+        <%= f.hidden_field :sublocality, name:"sublocality" %>
+        <%= f.hidden_field :administrative_area_level_2_short, name:"administrative_area_level_2_short" %>
+        <%= f.hidden_field :administrative_area_level_1_short, name:"administrative_area_level_1_short" %>
+        <%= f.hidden_field :country_short, name:"country_short" %>
+        <%= f.hidden_field :lat, name:"lat" %>
+        <%= f.hidden_field :lng, name:"lng" %>
+        <%= f.hidden_field :place_id, name:"place_id" %>
       </div>
-    </div>
-  </div>
+
+    </div><!-- panel-body-->
+  </div><!-- panel -->
   
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+<div class="actions">
+  <%= f.submit %>
+  <%= link_to 'Cancel', buildings_path %>
+</div>
 
 <% end %>
 
-<!--div class="details">
-  Latitude:     <div name="lat"></div><br />
-  Longitude:    <div name="lng"></div><br />
-  Address:      <div name="formatted_address"></div><br />
-  Country Code: <div name="country_short"></div>
-</div-->
-
+<p>Visually check the building's location:</p>
 <div id="map_canvas" style="width: 400px; height: 400px"></div>
