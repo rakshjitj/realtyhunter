@@ -1,3 +1,20 @@
+<script>
+$( document ).ready(function() {
+    //console.log( "autocomplete plugin ready!" );
+
+    $(".panel").geocomplete({
+    	map: "#map_canvas",
+    	location: "<%= @unit.building.formatted_street_address %>" ,
+    	details: ".details"
+    }).bind("geocode:result", function(event, result){
+        //console.log(result);
+    }).bind("geocode:error", function(event, result){
+        //console.log("[ERROR]: " + result);
+    });
+
+});
+</script>
+
 <% provide(:title, 'Office') %>
 
 <div class="row">
@@ -6,7 +23,7 @@
   		<div class="col-md">
 	  		<h1 class="page-header">
 	  			<%= number_to_currency(@unit.rent, {precision: 0}) %> - 
-	  			<%= @unit.building.street_address %>, <%= @unit.building_unit %></h1>
+	  			<%= @unit.building.formatted_street_address %>, <%= @unit.building_unit %></h1>
 	  			
 	  			<p>
 	  			<% if @unit.status == "active" %>
@@ -18,6 +35,7 @@
           <% end %>
 
           | <%= link_to 'Edit', edit_residential_unit_path(@unit) %>
+          | <%= link_to 'View all', residential_units_path %>
           </p>
 	  	</div>
     </div>
@@ -29,9 +47,12 @@
 				    <h3 class="panel-title">Unit Details</h3>
 				  </div>
 				  <div class="panel-body">
+
+				  	<div id="map_canvas" style="width: 400px; height: 400px"></div>
+
 				    <p>
 				    	<strong>Building:</strong>
-  						<%= @unit.building.street_address %>
+  						<%= @unit.building.formatted_street_address %>
 						</p>
 						<p>
 							<strong>Access Info:</strong>
@@ -46,7 +67,11 @@
 							<%= @unit.lease_duration.titleize %>
 						</p>
 						<p>
-							<strong>Notes:</strong>
+							<strong>Building Notes:</strong>
+							<%= @unit.building.notes %>
+						</p>
+						<p>
+							<strong>Unit Notes:</strong>
 							<%= @unit.notes %>
 						</p>
 					</div>

@@ -41,7 +41,7 @@
         <% @units.each do |unit| %>
           <tr>
             <td>
-              <%= link_to "#{unit.building.street_address} # #{unit.building_unit}", unit %>
+              <%= link_to "#{unit.building.formatted_street_address} # #{unit.building_unit}", unit %>
               </td>
             <td>--</td>
             <td><%= unit.access_info %></td>

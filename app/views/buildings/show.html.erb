@@ -7,12 +7,9 @@ $( document ).ready(function() {
     	location: "<%= @building.formatted_street_address %>" ,
     	details: ".details"
     }).bind("geocode:result", function(event, result){
-        // if (this.value == "New York, NY, USA") {
-        //     this.value = '';
-        // }
-        console.log(result);
+        //console.log(result);
     }).bind("geocode:error", function(event, result){
-        console.log("[ERROR]: " + result);
+        //console.log("[ERROR]: " + result);
     });
 
 });
@@ -27,7 +24,8 @@ $( document ).ready(function() {
 		</h1>
 		<p><%= @building.active_units.count %> available units on the market.
 			<%= @building.units.count %> total units. | 
-			<%= link_to 'Edit', edit_building_path(@building) %>
+			<%= link_to 'Edit', edit_building_path(@building) %> | 
+			<%= link_to 'View all', buildings_path %>
 
 		</p>
 
@@ -50,8 +48,16 @@ $( document ).ready(function() {
 				</p>
 
 				<p>
+				  <strong>Created:</strong>
+				  <%= @building.created_at.strftime("%b %e, %Y") %>
+				</p>
+				<p>
 				  <strong>Last Updated:</strong>
-				  <%= @building.updated_at.strftime("%F") %>
+				  <%= @building.updated_at.strftime("%b %e, %Y") %>
+				</p>
+				<p>
+				  <strong>Last Unit Updated:</strong>--
+				  <!--%= @building.updated_at.strftime("%b %e, %Y") %-->
 				</p>
 		  </div>
 		</div>		
