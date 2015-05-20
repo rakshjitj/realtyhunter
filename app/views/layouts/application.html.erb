@@ -17,6 +17,9 @@
     <nav>
       <ul class="nav navbar-nav navbar-right">
         <li><%= link_to "Home", root_path %></li>
+
+        <li><%= link_to "Buildings", buildings_path %></li>
+        <li><%= link_to "Residential Listings", residential_units_path %></li>
         
         <% if logged_in? %>
           <!-- COMPANY ADMIN -->
@@ -32,19 +35,6 @@
               </ul>
             </li>
           <!--% end %-->
-
-          <!-- SUPER ADMIN -->
-          <% if (logged_in?) && (current_user.has_role? :super_admin) %>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              Super Admin <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><%= link_to "Companies", companies_path %></li>
-              <li><%= link_to "Users", users_path %></li>
-            </ul>
-            </li>
-          <% end %>
-        <% end %>
 
         <% if logged_in? %>
           <li class="dropdown">
@@ -72,6 +62,20 @@
         <% else %>
           <li><%= link_to "Log in", login_path %></li>
         <% end %><!-- if logged_in? -->
+
+        <!-- SUPER ADMIN -->
+        <% if (logged_in?) && (current_user.has_role? :super_admin) %>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            Administrator Menu <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><%= link_to "Companies", companies_path %></li>
+            <li><%= link_to "Users", users_path %></li>
+          </ul>
+          </li>
+        <% end %>
+      <% end %>
+
 
       </ul>
     </nav>

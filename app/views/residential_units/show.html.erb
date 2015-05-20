@@ -1,4 +1,60 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, 'Office') %>
 
-<%= link_to 'Edit', edit_residential_unit_path(@residential_unit) %> |
-<%= link_to 'Back', residential_units_path %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+  	<div class="row">
+  		<div class="col-md">
+	  		<h1 class="page-header">
+	  			<%= number_to_currency(@unit.rent, {precision: 0}) %> - 
+	  			<%= @unit.building.street_address %>, <%= @unit.building_unit %></h1>
+	  			
+	  			<p>
+	  			<% if @unit.status == "active" %>
+            <span class="green">On Market</span>
+          <% elsif @unit.status == "pending" %>
+            <span class="dark-orange">Pending Application</span>
+          <% elsif @unit.status == "off" %>
+            <span class="grey">Off Market</span>
+          <% end %>
+
+          | <%= link_to 'Edit', edit_residential_unit_path(@unit) %>
+          </p>
+	  	</div>
+    </div>
+    <div class="row">
+  		<div class="col-md-12">
+
+  			<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Unit Details</h3>
+				  </div>
+				  <div class="panel-body">
+				    <p>
+				    	<strong>Building:</strong>
+  						<%= @unit.building.street_address %>
+						</p>
+						<p>
+							<strong>Access Info:</strong>
+							<%= @unit.access_info %>
+						</p>
+						<p>
+							<strong>Beds/Baths:</strong>
+							<%= @unit.beds %> / <%= @unit.baths %>
+						</p>
+						<p>
+							<strong>Lease Duration:</strong>
+							<%= @unit.lease_duration.titleize %>
+						</p>
+						<p>
+							<strong>Notes:</strong>
+							<%= @unit.notes %>
+						</p>
+					</div>
+				</div><!-- end panel -->
+
+
+  		</div>
+  	</div>
+	</div>
+</div>
+  

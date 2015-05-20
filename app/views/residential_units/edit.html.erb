@@ -1,6 +1,10 @@
-<h1>Editing Residential Unit</h1>
+<div class="row">
+	<div class="col-md-6 col-md-offset-3">
+		<% provide(:title, 'Editing Unit') %>
+		<h1 class="page-header">
+			<%= @unit.building.street_address %>, <%= @unit.building_unit %></h1>
+	  			
+		<%= render 'form' %>
 
-<%= render 'form' %>
-
-<%= link_to 'Show', @residential_unit %> |
-<%= link_to 'Back', residential_units_path %>
+	</div>
+</div>

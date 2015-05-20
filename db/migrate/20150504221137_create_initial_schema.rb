@@ -86,7 +86,7 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.integer :rent
       t.timestamp :available_by
       t.string :access_info
-      t.string :status
+      t.integer :status, default: 0
       #t.string :listing_type
       t.string :open_house
       t.float :weeks_free_offered
@@ -100,7 +100,8 @@ class CreateInitialSchema < ActiveRecord::Migration
     create_table :residential_units do |t|
       t.integer :beds
       t.float :baths
-      t.string :lease_duration
+      t.float :notes
+      t.integer :lease_duration, default: 0
     end
 
     create_table :commercial_units do |t|

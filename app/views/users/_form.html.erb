@@ -58,7 +58,8 @@
   <div class="col-md-6">
     <!-- All other fields form -->
     <%= form_for(@user) do |f| %>
-      <%= render 'shared/user_error_messages' %>
+      <%= render :partial => 'shared/error_messages', 
+        :locals => {:model => @user} %>
 
       <div class="field">
         <%= f.label :email, "Email (will be your username)" %><br>

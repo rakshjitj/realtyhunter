@@ -1,28 +1,28 @@
 <%= form_for(@building) do |f| %>
-  <% if @building.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@building.errors.count, "error") %> prohibited this building from being saved:</h2>
+  <%= render :partial => 'shared/error_messages', 
+    :locals => {:model => @building} %>
 
-      <ul>
-      <% @building.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Basic Details</h3>
     </div>
-  <% end %>
+    <div class="panel-body">
+      <div class="field">
+        <%= f.label :street_address %><br>
+        <%= f.text_field :street_address, class: 'form-control' %>
+      </div>
+      <div class="field">
+        <%= f.label :zip %><br>
+        <%= f.text_field :zip, class: 'form-control' %>
+      </div>
+      <div class="field">
+        <%= f.label :private_notes %><br>
+        <%= f.text_field :private_notes, class: 'form-control' %>
+      </div>
+    </div>
+  </div>
 
-  <div class="field">
-    <%= f.label :street_address %><br>
-    <%= f.text_field :street_address %>
-  </div>
-  <div class="field">
-    <%= f.label :zip %><br>
-    <%= f.text_field :zip %>
-  </div>
-  <div class="field">
-    <%= f.label :private_notes %><br>
-    <%= f.text_field :private_notes %>
-  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

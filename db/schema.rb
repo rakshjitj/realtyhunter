@@ -91,7 +91,8 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   create_table "residential_units", force: :cascade do |t|
     t.integer "beds"
     t.float   "baths"
-    t.string  "lease_duration"
+    t.float   "notes"
+    t.integer "lease_duration", default: 0
   end
 
   create_table "roles", force: :cascade do |t|
@@ -110,7 +111,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "rent"
     t.datetime "available_by"
     t.string   "access_info"
-    t.string   "status"
+    t.integer  "status",             default: 0
     t.string   "open_house"
     t.float    "weeks_free_offered"
     t.integer  "building_id"

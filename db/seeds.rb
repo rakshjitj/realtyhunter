@@ -137,12 +137,12 @@ end
 
 # seed property data -----------------------------------------
 @bldg = Building.create({
-  street_address: '1062 Bergen',
+  street_address: '1062 Bergen St',
   zip: '11216',
   company: @company,
   })
 
-@runit = ResidentialUnit.new({
+@runit = ResidentialUnit.create({
   building_unit: "3F",
   rent: 2399,
   beds: 1,
@@ -152,6 +152,7 @@ end
   status: "active",
   lease_duration: "year",
   weeks_free_offered: 2,
+  notes: "here are some notes blah blah blah",
   building: @bldg,
   })
 

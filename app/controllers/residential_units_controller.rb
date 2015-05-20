@@ -5,7 +5,8 @@ class ResidentialUnitsController < ApplicationController
   # GET /residential_units
   # GET /residential_units.json
   def index
-    @residential_units = ResidentialUnit.all
+    #@residential_units = ResidentialUnit.all
+    @units = ResidentialUnit.all.paginate(:page => params[:page], :per_page => 50)#.order("updated_at ASC")
   end
 
   # GET /residential_units/1
@@ -15,7 +16,7 @@ class ResidentialUnitsController < ApplicationController
 
   # GET /residential_units/new
   def new
-    @residential_unit = ResidentialUnit.new
+    @unit = ResidentialUnit.new
   end
 
   # GET /residential_units/1/edit
@@ -25,15 +26,15 @@ class ResidentialUnitsController < ApplicationController
   # POST /residential_units
   # POST /residential_units.json
   def create
-    @residential_unit = ResidentialUnit.new(residential_unit_params)
+    @unit = ResidentialUnit.new(residential_unit_params)
 
     respond_to do |format|
-      if @residential_unit.save
-        format.html { redirect_to @residential_unit, notice: 'Residential unit was successfully created.' }
-        format.json { render :show, status: :created, location: @residential_unit }
+      if @unit.save
+        format.html { redirect_to @unit, notice: 'Residential unit was successfully created.' }
+        format.json { render :show, status: :created, location: @unit }
       else
         format.html { render :new }
-        format.json { render json: @residential_unit.errors, status: :unprocessable_entity }
+        format.json { render json: @unit.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -42,12 +43,12 @@ class ResidentialUnitsController < ApplicationController
   # PATCH/PUT /residential_units/1.json
   def update
     respond_to do |format|
-      if @residential_unit.update(residential_unit_params)
-        format.html { redirect_to @residential_unit, notice: 'Residential unit was successfully updated.' }
-        format.json { render :show, status: :ok, location: @residential_unit }
+      if @unit.update(residential_unit_params)
+        format.html { redirect_to @unit, notice: 'Residential unit was successfully updated.' }
+        format.json { render :show, status: :ok, location: @unit }
       else
         format.html { render :edit }
-        format.json { render json: @residential_unit.errors, status: :unprocessable_entity }
+        format.json { render json: @unit.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -55,7 +56,7 @@ class ResidentialUnitsController < ApplicationController
   # DELETE /residential_units/1
   # DELETE /residential_units/1.json
   def destroy
-    @residential_unit.destroy
+    @unit.destroy
     respond_to do |format|
       format.html { redirect_to residential_units_url, notice: 'Residential unit was successfully destroyed.' }
       format.json { head :no_content }
@@ -65,7 +66,7 @@ class ResidentialUnitsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_residential_unit
-      @residential_unit = ResidentialUnit.find(params[:id])
+      @unit = ResidentialUnit.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

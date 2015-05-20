@@ -1,24 +1,41 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, @building.street_address) %>
 
-<p>
-  <strong>Street Address:</strong>
-  <%= @building.street_address %>
-</p>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+		<h1 class="page-header">
+			<%= @building.street_address %>
+		</h1>
+		<p><%= @building.active_units.count %> available units on the market.
+			<%= @building.units.count %> total units.</p>
 
-<p>
-  <strong>Zip:</strong>
-  <%= @building.zip %>
-</p>
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Basic Details</h3>
+		  </div>
+		  <div class="panel-body">
+		    <p>
+				  <strong>Street Address:</strong>
+				  <%= @building.street_address %>
+				</p>
 
-<p>
-  <strong>Private notes:</strong>
-  <%= @building.private_notes %>
-</p>
+				<p>
+				  <strong>Zip:</strong>
+				  <%= @building.zip %>
+				</p>
 
-<p>
-  <strong>Last Updated:</strong>
-  <%= @building.updated_at.strftime("%F") %>
-</p>
+				<p>
+				  <strong>Private notes:</strong>
+				  <%= @building.private_notes %>
+				</p>
 
-<%= link_to 'Edit', edit_building_path(@building) %> |
-<%= link_to 'Back', buildings_path %>
+				<p>
+				  <strong>Last Updated:</strong>
+				  <%= @building.updated_at.strftime("%F") %>
+				</p>
+		  </div>
+		</div>		
+
+		<%= link_to 'Edit', edit_building_path(@building) %> |
+		<%= link_to 'Back', buildings_path %>
+	</div>
+</div>

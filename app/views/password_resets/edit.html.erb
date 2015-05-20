@@ -5,7 +5,8 @@
     <h1>Reset password</h1>
 
     <%= form_for(@user, url: password_reset_path(params[:id])) do |f| %>
-      <%= render 'shared/user_error_messages' %>
+      <%= render :partial => 'shared/error_messages', 
+        :locals => {:model => @user} %>
 
       <%= hidden_field_tag :email, @user.email %>
 
