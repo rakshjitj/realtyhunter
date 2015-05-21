@@ -1,11 +1,29 @@
+<script>
+   // unobstrusive: attach method call here
+   // call when typing or enter or focus leaving
+  //$('#code_name_filter').keyup(function() {
+    //console.log("CALLING FILTER");
+    // $.ajax({
+    //   url: "<%= landlords_filter_path %>",
+    //   data: {
+    //     filter : $('#code_name_filter').val()
+    //   },
+    //   dataType: "script"
+    // }).fail(function() {
+    //   //$( this ).addClass( "done" );
+    //   console.log("[FAILED] search update failed");
+    // });
+  //});
+</script>
+
 <% provide(:title, 'Landlords') %>
 <h1 class="page-header">Landlords</h1>
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-6">
     <%= form_tag landlords_path, :method => 'get' do %>
-      <%= label_tag(:code_name, "Filter:") %>
-      <%= text_field_tag :code_name, params[:code_name], placeholder: "code/name", size: 20 %>
+      <%= label_tag(:code_name_filter, "Filter:") %>
+      <%= text_field_tag :code_name_filter, params[:code_name], placeholder: "code/name", size: 20 %>
       &nbsp;&nbsp;
       <%= label_tag(:agent, "Primary Agent:") %>
       <%= text_field_tag :agent, params[:agent], placeholder: "Agent Name", size: 20 %>
@@ -15,11 +33,7 @@
     <% end %>
 
   </div>
-</div>
-
-<div class="row">
-  <div class="col-md-12">
-    <br />
+  <div class="col-md-3 pull-right">
     <%= link_to 'Add a Landlord', new_landlord_path %>
     <%= will_paginate @landlords %>
   </div>

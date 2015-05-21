@@ -146,6 +146,28 @@ end
   management_info: "Managemnt Company LLC - Call Bob M-W 12-2pm"
   })
 
+50.times do |n|
+  ll_phone_number = Faker::PhoneNumber.phone_number
+  ll_mobile_phone_number = Faker::PhoneNumber.cell_phone
+  ll_name = Faker::Name.name
+  landlordN = Landlord.create!(
+    code: Faker::Lorem.characters(10),
+    name: ll_name,
+    phone: "777-777-7777",
+    mobile: "777-777-7777",
+    fax: "777-777-7777",
+    email: Faker::Internet.email(ll_name),
+    website: Faker::Internet.url,
+    street_address: Faker::Address.street_address,
+    city: Faker::Address.city,
+    state: Faker::Address.state,
+    zipcode: Faker::Address.zip,
+    notes: Faker::Lorem.sentence,
+    listing_agent_percentage: "15",
+    months_required: "first_month",
+    management_info: Faker::Lorem.sentence)
+end
+
 @bldg = Building.create({
   formatted_street_address: '1062 Bergen St, Brooklyn, NY 11216',
   street_number: '1062',
@@ -163,17 +185,18 @@ end
   landlord: @landlord
   })
 
-@runit = ResidentialUnit.create({
-  building_unit: "3F",
-  rent: 2399,
-  beds: 1,
-  baths: 2.5,
-  available_by: Time.zone.now,
-  access_info: "Tenant Jerry 555-555-5555",
-  status: "active",
-  lease_duration: "year",
-  weeks_free_offered: 2,
-  notes: "Apartment has a finicky door.",
-  building: @bldg,
-  })
-
+50.times do |n|
+  ResidentialUnit.create({
+    building_unit: Faker::Number.digit + Faker::Lorem.characters(1),
+    rent: Faker::Number.number(4),
+    beds: Faker::Number.digit,
+    baths: Faker::Number.digit,
+    available_by: Time.zone.now,
+    access_info: Faker::Lorem.sentence,
+    status: "active",
+    lease_duration: "year",
+    weeks_free_offered: Faker::Number.digit,
+    notes: Faker::Lorem.sentence,
+    building: @bldg,
+    })
+end

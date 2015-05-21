@@ -10,11 +10,11 @@ class Landlord < ActiveRecord::Base
 		uniqueness: { case_sensitive: false }
 
 	VALID_TELEPHONE_REGEX = /(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/
-	validates :mobile, presence: true, length: {maximum: 20}, 
+	validates :mobile, presence: true, length: {maximum: 25}, 
 		format: { with: VALID_TELEPHONE_REGEX }
-	validates :phone, presence: true, length: {maximum: 20}, 
+	validates :phone, presence: true, length: {maximum: 25}, 
 		format: { with: VALID_TELEPHONE_REGEX }
-	validates :fax, presence: true, length: {maximum: 20}, 
+	validates :fax, presence: true, length: {maximum: 25}, 
 		format: { with: VALID_TELEPHONE_REGEX }
 
 	before_save :downcase_email
@@ -36,6 +36,22 @@ class Landlord < ActiveRecord::Base
 	def last_unit_updated_on
 		return '-' # TODO
 	end	
+
+	def search(query_str)
+		@running_list = Landlord.all
+
+    if !query_string
+      return @running_list
+    end
+    
+    @terms = query_string.split(" ")
+    @terms.each do |term|
+      term = "%#{term}%"
+      @running_list = @running_list.where('name ILIKE ? or code ILIKE ?', "%#{term}%", "%#{term}%").all
+    end
+
+    @running_list.uniq
+	end
 
 	private
     # Converts email to all lower-case.

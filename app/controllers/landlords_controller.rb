@@ -1,11 +1,16 @@
 class LandlordsController < ApplicationController
   load_and_authorize_resource
   before_action :set_landlord, only: [:show, :edit, :update, :destroy]
+  #before_action :set_landlords, only: [:index, :filter_landlords]
 
   # GET /landlords
   # GET /landlords.json
   def index
-    @landlords = Landlord.all.paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")
+    @landlords = Landlord.all.paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")    
+  end
+
+  def filter_landlords
+    #set_landlords
   end
 
   # GET /landlords/1
@@ -68,8 +73,16 @@ class LandlordsController < ApplicationController
       @landlord = Landlord.find(params[:id])
     end
 
+    def set_landlords
+      @landlords = Landlord.search(landlord_params[:filter])
+      @landlords = @landlords.paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def landlord_params
-      params.require(:landlord).permit(:code, :name, :phone, :mobile, :fax, :email, :website, :street_address, :city, :state, :zipcode, :notes, :listing_agent_percentage, :months_required, :pet_policy, :management_info)
+      params.require(:landlord).permit(:code, :name, :phone, :mobile, :fax, 
+        email, :website, :street_address, :city, :state, :zipcode, :notes, 
+        :listing_agent_percentage, :months_required, :pet_policy, 
+        :management_info, :filter)
     end
 end
