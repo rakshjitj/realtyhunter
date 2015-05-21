@@ -97,25 +97,23 @@ User.define_roles()
 
 
 50.times do |n|
-  name  = Faker::Name.name
-  phone_number = Faker::PhoneNumber.phone_number
-  mobile_phone_number = Faker::PhoneNumber.cell_phone
+  name  = FFaker::Name.name
   email = "example-#{n+1}@railstutorial.org"
   password = "password"
   userN = User.create!(name: name,
-               email: email,
-               phone_number: phone_number,
-               mobile_phone_number: mobile_phone_number,
-               password:              password,
-               password_confirmation: password,
-               activated: true,
-               activated_at: Time.zone.now,
-               approved: true, 
-               approved_at: Time.zone.now,
-               company: @company, 
-               office: @offices[0],
-               employee_title: @employee_titles[1]
-               )
+   email: email,
+   phone_number: FFaker::PhoneNumber.short_phone_number,
+   mobile_phone_number: FFaker::PhoneNumber.short_phone_number,
+   password:              password,
+   password_confirmation: password,
+   activated: true,
+   activated_at: Time.zone.now,
+   approved: true, 
+   approved_at: Time.zone.now,
+   company: @company, 
+   office: @offices[0],
+   employee_title: @employee_titles[1]
+   )
   userN.update_roles
   #if n < 20
   #  @company_admin1.add_subordinate(userN)
@@ -131,10 +129,10 @@ end
 @landlord = Landlord.create({
   code: 'ZT', 
   name: "Billy Bob", 
-  phone: "555-555-5555", 
-  mobile: "333-333-3333", 
-  fax: "777-777-7777",
-  email: "zt@zt.com",
+  phone: FFaker::PhoneNumber.short_phone_number,
+  mobile: FFaker::PhoneNumber.short_phone_number,
+  fax: FFaker::PhoneNumber.short_phone_number,
+  email: FFaker::Internet.email('ZT'),
   website: "www.zt.com",
   street_address: "123 Main St",
   city: "Brooklyn",
@@ -147,25 +145,24 @@ end
   })
 
 50.times do |n|
-  ll_phone_number = Faker::PhoneNumber.phone_number
-  ll_mobile_phone_number = Faker::PhoneNumber.cell_phone
-  ll_name = Faker::Name.name
+  ll_name = FFaker::Name.name
+  
   landlordN = Landlord.create!(
-    code: Faker::Lorem.characters(10),
+    code: FFaker::DizzleIpsum.characters(10),
     name: ll_name,
-    phone: "777-777-7777",
+    phone: FFaker::PhoneNumber.short_phone_number
     mobile: "777-777-7777",
     fax: "777-777-7777",
-    email: Faker::Internet.email(ll_name),
-    website: Faker::Internet.url,
-    street_address: Faker::Address.street_address,
-    city: Faker::Address.city,
-    state: Faker::Address.state,
-    zipcode: Faker::Address.zip,
-    notes: Faker::Lorem.sentence,
+    email: FFaker::Internet.email(ll_name),
+    website: FFaker::Internet.http_url,
+    street_address: FFaker::AddressUS.street_address,
+    city: FFaker::AddressUS.city,
+    state: FFaker::AddressUS.state_abbr,
+    zipcode: FFaker::AddressUS.zip_code,
+    notes: FFaker::DizzleIpsum.sentence,
     listing_agent_percentage: "15",
     months_required: "first_month",
-    management_info: Faker::Lorem.sentence)
+    management_info: FFaker::DizzleIpsum.phrase)
 end
 
 @bldg = Building.create({
@@ -187,16 +184,16 @@ end
 
 50.times do |n|
   ResidentialUnit.create({
-    building_unit: Faker::Number.digit + Faker::Lorem.characters(1),
+    building_unit: Faker::Number.number(1),
     rent: Faker::Number.number(4),
-    beds: Faker::Number.digit,
-    baths: Faker::Number.digit,
+    beds: Faker::Number.number(1),
+    baths: Faker::Number.number(1),
     available_by: Time.zone.now,
-    access_info: Faker::Lorem.sentence,
+    access_info: FFaker::DizzleIpsum.phrase,
     status: "active",
     lease_duration: "year",
-    weeks_free_offered: Faker::Number.digit,
-    notes: Faker::Lorem.sentence,
+    weeks_free_offered: Faker::Number.number(1),
+    notes: FFaker::DizzleIpsum.sentence,
     building: @bldg,
     })
 end

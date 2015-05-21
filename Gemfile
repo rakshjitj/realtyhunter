@@ -44,7 +44,8 @@ gem 'cancancan', '~> 1.10'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 #used to add semi-realistic users
-gem 'faker', '1.4.2'
+gem 'faker'
+gem 'ffaker'
 # simulate multiple table inheritance
 gem 'active_record-acts_as'
 
