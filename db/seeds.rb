@@ -148,7 +148,7 @@ end
   ll_name = FFaker::Name.name
   
   landlordN = Landlord.create!(
-    code: FFaker::DizzleIpsum.characters(10),
+    code: FFaker::HipsterIpsum.characters(10),
     name: ll_name,
     phone: "777-777-7777",
     mobile: "777-777-7777",
@@ -159,10 +159,10 @@ end
     city: FFaker::AddressUS.city,
     state: FFaker::AddressUS.state_abbr,
     zipcode: FFaker::AddressUS.zip_code,
-    notes: FFaker::DizzleIpsum.sentence,
+    notes: FFaker::HipsterIpsum.sentence,
     listing_agent_percentage: "15",
     months_required: "first_month",
-    management_info: FFaker::DizzleIpsum.phrase)
+    management_info: FFaker::HipsterIpsum.phrase)
 end
 
 @bldg = Building.create({
@@ -189,11 +189,11 @@ end
     beds: Faker::Number.number(1),
     baths: Faker::Number.number(1),
     available_by: Time.zone.now,
-    access_info: FFaker::DizzleIpsum.phrase,
+    access_info: FFaker::HipsterIpsum.phrase,
     status: "active",
     lease_duration: "year",
     weeks_free_offered: Faker::Number.number(1),
-    notes: FFaker::DizzleIpsum.sentence,
+    notes: FFaker::HipsterIpsum.sentence,
     building: @bldg,
     })
 end
