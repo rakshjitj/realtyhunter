@@ -144,13 +144,13 @@ end
   management_info: "Managemnt Company LLC - Call Bob M-W 12-2pm"
   })
 
-50.times do |n|
+55.times do |n|
   ll_name = FFaker::Name.name
   
   landlordN = Landlord.create!(
     code: FFaker::DizzleIpsum.characters(10),
     name: ll_name,
-    phone: FFaker::PhoneNumber.short_phone_number
+    phone: "777-777-7777",
     mobile: "777-777-7777",
     fax: "777-777-7777",
     email: FFaker::Internet.email(ll_name),
@@ -182,7 +182,7 @@ end
   landlord: @landlord
   })
 
-50.times do |n|
+55.times do |n|
   ResidentialUnit.create({
     building_unit: Faker::Number.number(1),
     rent: Faker::Number.number(4),
