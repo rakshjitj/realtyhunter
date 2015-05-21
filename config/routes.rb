@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   resources :buildings
   resources :residential_units
   resources :landlords
-  get 'landlords/filter_landlords', to: 'landlords#filter_landlords', as: :landlords_filter
+  get 'search/landlords', to: 'landlords#filter_landlords', as: :landlords_filter
 
   resources :neighborhoods
   get 'static_pages/home'

@@ -1,0 +1,13 @@
+<% @landlords.each do |landlord| %>
+  <tr>
+    <td><%= link_to landlord.code, landlord %></td>
+    <td><%= landlord.name %></td>
+    <td><%= landlord.mobile %></td>
+    <td><%= landlord.active_units %></td>
+    <td><%= landlord.total_units %></td>
+    <td><%= landlord.last_unit_updated_on %></td>
+    <td>
+      <%= link_to 'Edit', edit_landlord_path(landlord) %> |
+      <%= link_to 'Destroy', landlord, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>

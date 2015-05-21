@@ -1,19 +1,26 @@
 <script>
-   // unobstrusive: attach method call here
-   // call when typing or enter or focus leaving
-  //$('#code_name_filter').keyup(function() {
-    //console.log("CALLING FILTER");
-    // $.ajax({
-    //   url: "<%= landlords_filter_path %>",
-    //   data: {
-    //     filter : $('#code_name_filter').val()
-    //   },
-    //   dataType: "script"
-    // }).fail(function() {
-    //   //$( this ).addClass( "done" );
-    //   console.log("[FAILED] search update failed");
-    // });
-  //});
+   //unobstrusive: attach method call here
+   //call when typing or enter or focus leaving
+   $( document ).ready(function() {
+
+    function doSearch() {
+      $.ajax({
+        url: "<%= landlords_filter_path %>",
+        data: {
+          filter : $('#code_name_filter').val()
+        },
+        dataType: "script"
+      }).fail(function() {
+        //console.log("[FAILED] search update failed");
+      });
+    };
+
+    var timer;
+    $('#code_name_filter').keyup(function() {
+      clearInterval(timer);  //clear any interval on key up
+      timer = setTimeout(doSearch, 500);
+    });
+  });
 </script>
 
 <% provide(:title, 'Landlords') %>
@@ -23,7 +30,8 @@
   <div class="col-md-6">
     <%= form_tag landlords_path, :method => 'get' do %>
       <%= label_tag(:code_name_filter, "Filter:") %>
-      <%= text_field_tag :code_name_filter, params[:code_name], placeholder: "code/name", size: 20 %>
+      <%= text_field_tag :code_name_filter, params[:code_name], 
+        placeholder: "code/name", size: 20 %>
       &nbsp;&nbsp;
       <%= label_tag(:agent, "Primary Agent:") %>
       <%= text_field_tag :agent, params[:agent], placeholder: "Agent Name", size: 20 %>
@@ -55,20 +63,8 @@
         </tr>
       </thead>
 
-      <tbody>
-        <% @landlords.each do |landlord| %>
-          <tr>
-            <td><%= link_to landlord.code, landlord %></td>
-            <td><%= landlord.name %></td>
-            <td><%= landlord.mobile %></td>
-            <td><%= landlord.active_units %></td>
-            <td><%= landlord.total_units %></td>
-            <td><%= landlord.last_unit_updated_on %></td>
-            <td>
-              <%= link_to 'Edit', edit_landlord_path(landlord) %> |
-              <%= link_to 'Destroy', landlord, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-          </tr>
-        <% end %>
+      <tbody class="landlords_table_body">
+        <%= render @landlords %>
       </tbody>
     </table>
 

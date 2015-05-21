@@ -37,14 +37,14 @@ class Landlord < ActiveRecord::Base
 		return '-' # TODO
 	end	
 
-	def search(query_str)
+	def self.search(query_str)
 		@running_list = Landlord.all
 
-    if !query_string
+    if !query_str
       return @running_list
     end
     
-    @terms = query_string.split(" ")
+    @terms = query_str.split(" ")
     @terms.each do |term|
       term = "%#{term}%"
       @running_list = @running_list.where('name ILIKE ? or code ILIKE ?', "%#{term}%", "%#{term}%").all

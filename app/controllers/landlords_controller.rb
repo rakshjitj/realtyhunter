@@ -9,8 +9,10 @@ class LandlordsController < ApplicationController
     @landlords = Landlord.all.paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")    
   end
 
+  # GET /filter_landlords
+  # AJAX call
   def filter_landlords
-    #set_landlords
+    set_landlords
   end
 
   # GET /landlords/1
@@ -74,7 +76,9 @@ class LandlordsController < ApplicationController
     end
 
     def set_landlords
-      @landlords = Landlord.search(landlord_params[:filter])
+      @landlords = Landlord.search(params[:filter])
+      @names = @landlords.map{|l| l.name}
+      #puts "\n ^^^^^#{@names.count}^^ #{@names.inspect}"
       @landlords = @landlords.paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")
     end
 
@@ -83,6 +87,6 @@ class LandlordsController < ApplicationController
       params.require(:landlord).permit(:code, :name, :phone, :mobile, :fax, 
         email, :website, :street_address, :city, :state, :zipcode, :notes, 
         :listing_agent_percentage, :months_required, :pet_policy, 
-        :management_info, :filter)
+        :management_info)
     end
 end
