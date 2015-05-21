@@ -1,6 +1,11 @@
-<h1>Editing Landlord</h1>
+<div class="row">
+	<div class="col-md-6 col-md-offset-3">
+		<% provide(:title, 'Editing ' + @landlord.code) %>
+		<h1>Editing <%= @landlord.code %></h1>
 
-<%= render 'form' %>
+		<%= render 'form' %>
 
-<%= link_to 'Show', @landlord %> |
-<%= link_to 'Back', landlords_path %>
+		<%= link_to 'Show', @landlord %> |
+		<%= link_to 'View all', landlords_path %>
+	</div>
+</div>

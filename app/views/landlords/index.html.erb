@@ -1,57 +1,54 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, 'Landlords') %>
+<h1 class="page-header">Landlords</h1>
 
-<h1>Listing Landlords</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Code</th>
-      <th>Name</th>
-      <th>Phone</th>
-      <th>Mobile</th>
-      <th>Fax</th>
-      <th>Email</th>
-      <th>Website</th>
-      <th>Street address</th>
-      <th>City</th>
-      <th>State</th>
-      <th>Zipcode</th>
-      <th>Notes</th>
-      <th>Listing agent percentage</th>
-      <th>Months required</th>
-      <th>Pet policy</th>
-      <th>Management info</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @landlords.each do |landlord| %>
-      <tr>
-        <td><%= landlord.code %></td>
-        <td><%= landlord.name %></td>
-        <td><%= landlord.phone %></td>
-        <td><%= landlord.mobile %></td>
-        <td><%= landlord.fax %></td>
-        <td><%= landlord.email %></td>
-        <td><%= landlord.website %></td>
-        <td><%= landlord.street_address %></td>
-        <td><%= landlord.city %></td>
-        <td><%= landlord.state %></td>
-        <td><%= landlord.zipcode %></td>
-        <td><%= landlord.notes %></td>
-        <td><%= landlord.listing_agent_percentage %></td>
-        <td><%= landlord.months_required %></td>
-        <td><%= landlord.pet_policy %></td>
-        <td><%= landlord.management_info %></td>
-        <td><%= link_to 'Show', landlord %></td>
-        <td><%= link_to 'Edit', edit_landlord_path(landlord) %></td>
-        <td><%= link_to 'Destroy', landlord, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+<div class="row">
+  <div class="col-md-2">
+    <%= form_tag landlords_path, :method => 'get' do %>
+      Search:
+      <%= text_field_tag :search, params[:search], placeholder: "code/name", size: 50 %>
+      <%= submit_tag "Go", :name => nil %>
+      <%= link_to "Clear All Filters", landlords_path, class: 'btn btn-xs btn-default' %>
     <% end %>
-  </tbody>
-</table>
+  </div>
+  <div class="col-md-offset-10">
+    <%= link_to 'Add a Landlord', new_landlord_path %>
+    <%= will_paginate @landlords %>
+  </div>
+</div>
 
-<br>
 
-<%= link_to 'New Landlord', new_landlord_path %>
+<div class="row">
+  <div class="col-md-12">
+
+    <table class="table table-striped table-hover table-condensed table-responsive">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Mobile</th>
+          <th>Active Units</th>
+          <th>Total Units</th>
+          <th>Last Unit Updated</th>
+          <th colspan="1"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @landlords.each do |landlord| %>
+          <tr>
+            <td><%= link_to landlord.code, landlord %></td>
+            <td><%= landlord.name %></td>
+            <td><%= landlord.mobile %></td>
+            <td><%= landlord.active_units %></td>
+            <td><%= landlord.total_units %></td>
+            <td><%= landlord.last_unit_updated_on %></td>
+            <td>
+              <%= link_to 'Edit', edit_landlord_path(landlord) %> |
+              <%= link_to 'Destroy', landlord, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>

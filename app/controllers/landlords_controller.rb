@@ -5,7 +5,7 @@ class LandlordsController < ApplicationController
   # GET /landlords
   # GET /landlords.json
   def index
-    @landlords = Landlord.all
+    @landlords = Landlord.all.paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")
   end
 
   # GET /landlords/1

@@ -25,6 +25,18 @@ class Landlord < ActiveRecord::Base
 
 	validates :months_required, presence: true, length: {maximum: 100}
 	
+	def active_units
+		buildings.reduce(0){|sum, bldg| sum + bldg.active_units.count }
+	end
+
+	def total_units
+		buildings.reduce(0){|sum, bldg| sum + bldg.units.count }
+	end
+
+	def last_unit_updated_on
+		return '-' # TODO
+	end	
+
 	private
     # Converts email to all lower-case.
     def downcase_email

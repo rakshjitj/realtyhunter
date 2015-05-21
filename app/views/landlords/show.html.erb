@@ -1,84 +1,100 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, @landlord.code) %>
 
-<p>
-  <strong>Code:</strong>
-  <%= @landlord.code %>
-</p>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="row">
+      <div class="col-md">
+        <h1 class="page-header"><%= @landlord.code %></h1>
 
-<p>
-  <strong>Name:</strong>
-  <%= @landlord.name %>
-</p>
+        <%= link_to 'Edit', edit_landlord_path(@landlord) %> |
+        <%= link_to 'View all', landlords_path %>
 
-<p>
-  <strong>Phone:</strong>
-  <%= @landlord.phone %>
-</p>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <p>
+              <strong>Code:</strong>
+              <%= @landlord.code %>
+            </p>
 
-<p>
-  <strong>Mobile:</strong>
-  <%= @landlord.mobile %>
-</p>
+            <p>
+              <strong>Name:</strong>
+              <%= @landlord.name %>
+            </p>
 
-<p>
-  <strong>Fax:</strong>
-  <%= @landlord.fax %>
-</p>
+            <p>
+              <strong>Phone:</strong>
+              <%= @landlord.phone %>
+            </p>
 
-<p>
-  <strong>Email:</strong>
-  <%= @landlord.email %>
-</p>
+            <p>
+              <strong>Mobile:</strong>
+              <%= @landlord.mobile %>
+            </p>
 
-<p>
-  <strong>Website:</strong>
-  <%= @landlord.website %>
-</p>
+            <p>
+              <strong>Fax:</strong>
+              <%= @landlord.fax %>
+            </p>
 
-<p>
-  <strong>Street address:</strong>
-  <%= @landlord.street_address %>
-</p>
+            <p>
+              <strong>Email:</strong>
+              <%= @landlord.email %>
+            </p>
 
-<p>
-  <strong>City:</strong>
-  <%= @landlord.city %>
-</p>
+            <p>
+              <strong>Website:</strong>
+              <%= @landlord.website %>
+            </p>
 
-<p>
-  <strong>State:</strong>
-  <%= @landlord.state %>
-</p>
+            <p>
+              <strong>Street address:</strong>
+              <%= @landlord.street_address %>
+            </p>
 
-<p>
-  <strong>Zipcode:</strong>
-  <%= @landlord.zipcode %>
-</p>
+            <p>
+              <strong>City:</strong>
+              <%= @landlord.city %>
+            </p>
 
-<p>
-  <strong>Notes:</strong>
-  <%= @landlord.notes %>
-</p>
+            <p>
+              <strong>State:</strong>
+              <%= @landlord.state %>
+            </p>
 
-<p>
-  <strong>Listing agent percentage:</strong>
-  <%= @landlord.listing_agent_percentage %>
-</p>
+            <p>
+              <strong>Zipcode:</strong>
+              <%= @landlord.zipcode %>
+            </p>
 
-<p>
-  <strong>Months required:</strong>
-  <%= @landlord.months_required %>
-</p>
+            <p>
+              <strong>Notes:</strong>
+              <%= @landlord.notes %>
+            </p>
 
-<p>
-  <strong>Pet policy:</strong>
-  <%= @landlord.pet_policy %>
-</p>
+            <p>
+              <strong>Listing agent percentage:</strong>
+              <%= @landlord.listing_agent_percentage %>
+            </p>
 
-<p>
-  <strong>Management info:</strong>
-  <%= @landlord.management_info %>
-</p>
+            <p>
+              <strong>Months required:</strong>
+              <%= @landlord.months_required %>
+            </p>
 
-<%= link_to 'Edit', edit_landlord_path(@landlord) %> |
-<%= link_to 'Back', landlords_path %>
+            <p>
+              <strong>Pet policy:</strong>
+              <%= @landlord.pet_policy %>
+            </p>
+
+            <p>
+              <strong>Management info:</strong>
+              <%= @landlord.management_info %>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+  
