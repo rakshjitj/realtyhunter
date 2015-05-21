@@ -1,0 +1,37 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  code: MyString
+  name: MyString
+  phone: 555-555-5555
+  mobile: 555-555-5555
+  fax: 555-555-5555
+  email: Foo@example.com
+  website: MyString
+  street_address: MyString
+  city: MyString
+  state: MyString
+  zipcode: MyString
+  notes: MyText
+  listing_agent_percentage: 1.5
+  months_required: 1
+  pet_policy: MyString
+  management_info: MyString
+
+two:
+  code: MyString1
+  name: MyString1
+  phone: 555-555-5555
+  mobile: 555-555-5555
+  fax: 555-555-5555
+  email: foo3@example.com
+  website: MyString
+  street_address: MyString
+  city: MyString
+  state: MyString
+  zipcode: MyString
+  notes: MyText
+  listing_agent_percentage: 1.5
+  months_required: 1
+  pet_policy: MyString
+  management_info: MyString

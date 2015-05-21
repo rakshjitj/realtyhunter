@@ -1,5 +1,6 @@
 class Building < ActiveRecord::Base
 	belongs_to :company
+	belongs_to :landlord
 	has_many :units
 	
 	# TODO: remove this line

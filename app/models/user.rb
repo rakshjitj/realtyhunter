@@ -350,6 +350,4 @@ class User < ActiveRecord::Base
       self.approval_digest = User.digest(approval_token)
     end
 
-
-
 end

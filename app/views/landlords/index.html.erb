@@ -1,0 +1,57 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Landlords</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Code</th>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Mobile</th>
+      <th>Fax</th>
+      <th>Email</th>
+      <th>Website</th>
+      <th>Street address</th>
+      <th>City</th>
+      <th>State</th>
+      <th>Zipcode</th>
+      <th>Notes</th>
+      <th>Listing agent percentage</th>
+      <th>Months required</th>
+      <th>Pet policy</th>
+      <th>Management info</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @landlords.each do |landlord| %>
+      <tr>
+        <td><%= landlord.code %></td>
+        <td><%= landlord.name %></td>
+        <td><%= landlord.phone %></td>
+        <td><%= landlord.mobile %></td>
+        <td><%= landlord.fax %></td>
+        <td><%= landlord.email %></td>
+        <td><%= landlord.website %></td>
+        <td><%= landlord.street_address %></td>
+        <td><%= landlord.city %></td>
+        <td><%= landlord.state %></td>
+        <td><%= landlord.zipcode %></td>
+        <td><%= landlord.notes %></td>
+        <td><%= landlord.listing_agent_percentage %></td>
+        <td><%= landlord.months_required %></td>
+        <td><%= landlord.pet_policy %></td>
+        <td><%= landlord.management_info %></td>
+        <td><%= link_to 'Show', landlord %></td>
+        <td><%= link_to 'Edit', edit_landlord_path(landlord) %></td>
+        <td><%= link_to 'Destroy', landlord, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Landlord', new_landlord_path %>

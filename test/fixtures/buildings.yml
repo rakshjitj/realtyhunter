@@ -1,12 +1,32 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 one:
-  street_address: MyString1
-  zip: MyString
-  private_notes: MyString
+  formatted_street_address: MyString1
+  street_number: MyString
+  route: MyString
+  neighborhood: MyString
+  sublocality: MyString
+  administrative_area_level_2_short: MyString
+  administrative_area_level_1_short: MyString
+  country_short: MyString
+  lat: MyString
+  lng: MyString
+  place_id: MyString
+  notes: MyString
   company_id: 1
+  landlord_id: 1
 
 two:
-  street_address: MyString2
-  zip: MyString
-  private_notes: MyString
+  formatted_street_address: MyString2
+  street_number: MyString
+  route: MyString
+  neighborhood: MyString
+  sublocality: MyString
+  administrative_area_level_2_short: MyString
+  administrative_area_level_1_short: MyString
+  country_short: MyString
+  lat: MyString
+  lng: MyString
+  place_id: MyString
+  notes: MyString
   company_id: 1
+  landlord_id: 1

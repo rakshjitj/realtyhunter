@@ -14,7 +14,7 @@ class Ability
       can :manage, User, :company_id => user.company_id
       can :manage, Building
       can :manage, ResidentialUnit
-      #can :manage, Landlord
+      can :manage, Landlord
     else
       # can only see info for his/her particular company
       # can only manage his/her profile

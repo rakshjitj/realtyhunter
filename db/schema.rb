@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "place_id"
     t.string   "notes"
     t.integer  "company_id"
+    t.integer  "landlord_id"
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
   end
@@ -73,6 +74,30 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   end
 
   add_index "employee_titles", ["users_id"], name: "index_employee_titles_on_users_id", using: :btree
+
+  create_table "landlords", force: :cascade do |t|
+    t.string   "code"
+    t.string   "name"
+    t.string   "phone"
+    t.string   "mobile"
+    t.string   "fax"
+    t.string   "email"
+    t.string   "website"
+    t.string   "street_address"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zipcode"
+    t.text     "notes"
+    t.integer  "listing_agent_percentage"
+    t.integer  "months_required"
+    t.string   "pet_policy"
+    t.string   "management_info"
+    t.integer  "buildings_id"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "landlords", ["buildings_id"], name: "index_landlords_on_buildings_id", using: :btree
 
   create_table "neighborhoods", force: :cascade do |t|
     t.string   "name"

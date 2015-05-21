@@ -1,11 +1,3 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
-
 @company = Company.create({name: "MyspaceNYC"})
 @company2 = Company.create({name: "Nooklyn"})
 
@@ -136,6 +128,24 @@ User.define_roles()
 end
 
 # seed property data -----------------------------------------
+@landlord = Landlord.create({
+  code: 'ZT', 
+  name: "Billy Bob", 
+  phone: "555-555-5555", 
+  mobile: "333-333-3333", 
+  fax: "777-777-7777",
+  email: "zt@zt.com",
+  website: "www.zt.com",
+  street_address: "123 Main St",
+  city: "Brooklyn",
+  state: "NY",
+  zipcode: "12345",
+  notes: "This landlord is super awesome",
+  listing_agent_percentage: "15",
+  months_required: "first_month",
+  management_info: "Managemnt Company LLC - Call Bob M-W 12-2pm"
+  })
+
 @bldg = Building.create({
   formatted_street_address: '1062 Bergen St, Brooklyn, NY 11216',
   street_number: '1062',
@@ -149,7 +159,8 @@ end
   lng: '11',
   place_id: 1,
   company: @company,
-  notes: "Building has parking spots available, laundry in the basement."
+  notes: "Building has parking spots available, laundry in the basement.",
+  landlord: @landlord
   })
 
 @runit = ResidentialUnit.create({

@@ -7,11 +7,7 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.references :offices, index: true
       t.references :users, index: true
       t.references :buildings, index: true
-      #t.references :units, index: true
-      # t.references :landlords, index: true
     end
-
-    # TODO: code smell? companies, offices, users
 
     create_table :offices do |t|
       t.string :name
@@ -82,10 +78,10 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.string :place_id
       t.string :notes
       t.belongs_to :company
+      t.belongs_to :landlord
       # default agent
       # neighborhood
       # features
-      #t.belongs_to :landlord
       t.timestamps null: false
     end
 
@@ -122,15 +118,27 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.string :description
     end
 
-    # create_table :landlords do |t|
-    #   t.string :code
-    #   t.string :private_notes
-    #   t.string :internal_notes
-    #   t.string :shared_notes
-    #   t.belongs_to :company
-    #   t.references :buildings, index: true
-    #   t.timestamps null: false
-    # end
+    create_table :landlords do |t|
+      t.string :code
+      t.string :name
+      t.string :phone
+      t.string :mobile
+      t.string :fax
+      t.string :email
+      t.string :website
+      t.string :street_address
+      t.string :city
+      t.string :state
+      t.string :zipcode
+      t.text :notes
+      t.integer :listing_agent_percentage
+      t.integer :months_required
+      t.string :pet_policy
+      t.string :management_info
+      t.references :buildings, index: true
+
+      t.timestamps null: false
+    end
 
   end
 end
