@@ -2,20 +2,28 @@
 <h1 class="page-header">Landlords</h1>
 
 <div class="row">
-  <div class="col-md-2">
+  <div class="col-md-12">
     <%= form_tag landlords_path, :method => 'get' do %>
-      Search:
-      <%= text_field_tag :search, params[:search], placeholder: "code/name", size: 50 %>
-      <%= submit_tag "Go", :name => nil %>
-      <%= link_to "Clear All Filters", landlords_path, class: 'btn btn-xs btn-default' %>
+      <%= label_tag(:code_name, "Filter:") %>
+      <%= text_field_tag :code_name, params[:code_name], placeholder: "code/name", size: 20 %>
+      &nbsp;&nbsp;
+      <%= label_tag(:agent, "Primary Agent:") %>
+      <%= text_field_tag :agent, params[:agent], placeholder: "Agent Name", size: 20 %>
+      &nbsp;&nbsp;
+      <%= check_box_tag(:checkbox_active, class: "checkbox inline") %>
+      <%= label_tag :checkbox_active, "Has active units" %>
     <% end %>
+
   </div>
-  <div class="col-md-offset-10">
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <br />
     <%= link_to 'Add a Landlord', new_landlord_path %>
     <%= will_paginate @landlords %>
   </div>
 </div>
-
 
 <div class="row">
   <div class="col-md-12">
