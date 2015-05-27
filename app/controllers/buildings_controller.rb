@@ -1,11 +1,17 @@
 class BuildingsController < ApplicationController
   load_and_authorize_resource
-  before_action :set_building, except: [:index, :new, :create]
+  before_action :set_building, except: [:index, :new, :create, :filter]
 
   # GET /buildings
   # GET /buildings.json
   def index
     @buildings = Building.all.paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")
+  end
+  
+  # GET /filter_buildings
+  # AJAX call
+  def filter
+    set_buildings
   end
 
   # GET /buildings/1
@@ -71,12 +77,17 @@ class BuildingsController < ApplicationController
       @building = Building.find(params[:id])
     end
 
+    def set_buildings
+      @buildings = Building.search(building_params[:filter], building_params[:active_only])
+      @buildings = @buildings.paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     # Need to take in additional params here. Can't rename them, or the geocode plugin
     # will not map to them correctly
     def building_params
-      params.permit(:street_number, :route, :neighborhood, :sublocality, 
-       :administrative_area_level_2_short, :administrative_area_level_1_short, 
+      params.permit(:filter, :active_only, :street_number, :route, :neighborhood, :sublocality, 
+       :administrative_area_level_2_short, :administrative_area_level_1_short, :postal_code,
        :country_short, :lat, :lng, :place_id, :building => [:formatted_street_address, :notes])
     end
 end

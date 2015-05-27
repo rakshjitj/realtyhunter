@@ -31,4 +31,24 @@ class Building < ActiveRecord::Base
 		self.units.where(status: "active")
 	end
 
+	def self.search(query_str, active_only)
+		@running_list = Building.all
+
+    if !query_str
+      return @running_list
+    end
+    
+    @terms = query_str.split(" ")
+    @terms.each do |term|
+      term = "%#{term}%"
+      @running_list = @running_list.where('formatted_street_address ILIKE ?', "%#{term}%")
+    end
+
+    if active_only
+    	@running_list = @running_list.joins(:units).where(units: {status:"active"})
+    end
+
+    @running_list.uniq
+	end
+
 end

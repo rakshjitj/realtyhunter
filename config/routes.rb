@@ -38,9 +38,10 @@ Rails.application.routes.draw do
   get 'companies/:company_id/offices/:id/agents', to: 'offices#agents', as: :office_agents
 
   resources :buildings
+  get 'search/buildings', to: 'buildings#filter', as: :buildings_filter
   resources :residential_units
   resources :landlords
-  get 'search/landlords', to: 'landlords#filter_landlords', as: :landlords_filter
+  get 'search/landlords', to: 'landlords#filter', as: :landlords_filter
 
   resources :neighborhoods
   get 'static_pages/home'

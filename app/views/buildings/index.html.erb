@@ -1,20 +1,76 @@
+<script>
+   //unobstrusive: attach method call here
+   //call when typing or enter or focus leaving
+   $( document ).ready(function() {
+
+    function doSearch() {
+      $.ajax({
+        url: "<%= buildings_filter_path %>",
+        data: {
+          filter: $('#filter').val(),
+          active_only: $('#checkbox_active').checked
+        },
+        dataType: "script"
+      }).fail(function() {
+        //console.log("[FAILED] search update failed");
+      });
+    };
+
+    // change enter key to tab
+    $('#filter').keydown(function(event) {
+      if (event.keyCode == 13) {
+        $('#checkbox_active').focus();
+        return false;
+      }
+    });
+
+    // search as user types
+    var timer;
+    $('#filter').keyup(function() {
+      clearInterval(timer); // clear any interval on key up
+      timer = setTimeout(doSearch, 500);
+    });
+
+    // toggle between active and inactive units
+    $('#checkbox_active').click(function(event){
+      $.ajax({
+        url: "<%= buildings_filter_path %>",
+        data: {
+          filter: $('#filter').val(),
+          active_only: $('#checkbox_active').prop('checked')
+        },
+        dataType: "script"
+      });
+    });
+
+  });
+</script>
+
 <% provide(:title, 'Buildings') %>
 <h1 class="page-header">Buildings</h1>
 
 <div class="row">
-  <div class="col-md-2">
+  <div class="col-md-6">
     <%= form_tag buildings_path, :method => 'get' do %>
-      Search:
-      <%= text_field_tag :search, params[:search], placeholder: "name/address", size: 50 %>
-      <%= submit_tag "Go", :name => nil %>
-      <%= link_to "Clear All Filters", users_path, class: 'btn btn-xs btn-default' %>
-      <!-- TODO: Has Active Units checkbox -->
-      <!-- TODO: sortable columns -->
+      <%= label_tag(:filter, "Filter:") %>
+      <%= text_field_tag :filter, params[:code_name], 
+        placeholder: "name/address", size: 50 %>
+      &nbsp;&nbsp;
+      <%= check_box_tag(:checkbox_active, class: "checkbox inline") %>
+      <%= label_tag :checkbox_active, "Has active units" %>
     <% end %>
   </div>
-  <div class="col-md-offset-10">
-    <%= link_to 'Add a building', new_building_path %><br />
-    <%= will_paginate @buildings %>
+  <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-offset-9 col-md-3 right">
+        <%= link_to 'Add a building', new_building_path %><br />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md pull-right">
+        <%= will_paginate @buildings %>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -33,19 +89,8 @@
         </tr>
       </thead>
 
-      <tbody>
-        <% @buildings.each do |building| %>
-          <tr>
-            <td><%= link_to "#{building.formatted_street_address}, Brooklyn, NY", building %>
-              </td>
-            <td><%= building.active_units.count %></td>
-            <td><%= building.units.count %></td>
-            <td><%= building.updated_at.strftime("%F") %></td>
-            <td><%= link_to 'Show', building %></td>
-            <td><%= link_to 'Edit', edit_building_path(building) %></td>
-            <td><%= link_to 'Destroy', building, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-          </tr>
-        <% end %>
+      <tbody class="buildings_table_body">
+        <%= render @buildings %>
       </tbody>
     </table>
   </div>

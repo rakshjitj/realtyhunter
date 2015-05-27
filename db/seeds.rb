@@ -173,6 +173,7 @@ end
   sublocality: 'Brooklyn',
   administrative_area_level_2_short: 'New York',
   administrative_area_level_1_short: 'NY',
+  postal_code: '11216',
   country_short: 'USA',
   lat: '10',
   lng: '11',

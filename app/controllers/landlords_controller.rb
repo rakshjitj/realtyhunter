@@ -1,7 +1,6 @@
 class LandlordsController < ApplicationController
   load_and_authorize_resource
-  before_action :set_landlord, only: [:show, :edit, :update, :destroy]
-  #before_action :set_landlords, only: [:index, :filter_landlords]
+  before_action :set_landlord, only: [:show, :edit, :update, :destroy, :filter]
 
   # GET /landlords
   # GET /landlords.json
@@ -9,9 +8,9 @@ class LandlordsController < ApplicationController
     @landlords = Landlord.all.paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")    
   end
 
-  # GET /filter_landlords
+  # GET /filter
   # AJAX call
-  def filter_landlords
+  def filter
     set_landlords
   end
 
