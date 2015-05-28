@@ -13,6 +13,6 @@ module ApplicationHelper
     title ||= column.titleize
     direction = (column == params[:sort_by] && params[:direction] == "asc") ? "desc" : "asc"
     css_class = (direction == "asc") ? "glyphicon glyphicon-triangle-top" : "glyphicon glyphicon-triangle-bottom"
-    link_to "<i class=\"#{css_class}\"></i> #{title}".html_safe, {:sort_by => column, :direction => direction}#, {:class => "glyphicon glyphicon-star"}
+    link_to "<i class=\"#{css_class}\"></i> #{title}".html_safe, {:sort_by => column, :direction => direction}
   end  
 end
