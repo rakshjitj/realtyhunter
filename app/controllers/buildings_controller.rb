@@ -7,7 +7,7 @@ class BuildingsController < ApplicationController
   # GET /buildings.json
   def index
     set_buildings
-    
+
     respond_to do |format|
       format.html
       format.csv do
@@ -75,14 +75,11 @@ class BuildingsController < ApplicationController
   # PATCH/PUT /buildings/1
   # PATCH/PUT /buildings/1.json
   def update
-    respond_to do |format|
-      if @building.update(building_params)
-        format.html { redirect_to @building, notice: 'Building was successfully updated.' }
-        format.json { render :show, status: :ok, location: @building }
-      else
-        format.html { render :edit }
-        format.json { render json: @building.errors, status: :unprocessable_entity }
-      end
+    if @building.update(building_params)
+      flash[:success] = "Building updated!"
+      redirect_to @building
+    else
+      render 'edit'
     end
   end
 
