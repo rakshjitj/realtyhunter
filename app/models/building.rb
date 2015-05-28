@@ -35,25 +35,26 @@ class Building < ActiveRecord::Base
 		self.street_number + ' ' + self.route
 	end
 
+	#def self.by_active_units
+	#	order('units_count DESC')
+	#end
+
 	def active_units
 		self.units.where(status: "active")
 	end
 
 	def self.search(query_str, active_only)
 		@running_list = Building.all
-
     if !query_str
       return @running_list
     end
     
     @terms = query_str.split(" ")
     @terms.each do |term|
-      term = "%#{term}%"
-      @running_list = @running_list.where('formatted_street_address ILIKE ?', "%#{term}%")
+      @running_list = @running_list.where('formatted_street_address ILIKE ? OR sublocality ILIKE ?', "%#{term}%", "%#{term}%")
     end
 
-    # TODO: I don't think this works...
-    if active_only
+    if active_only == "true"
     	@running_list = @running_list.joins(:units).where(units: {status:"active"})
     end
 

@@ -115,16 +115,14 @@ class BuildingTest < ActiveSupport::TestCase
     assert @bldg.street_address, @bldg.street_number + ' ' + @bldg.route
   end
 
-  # TODO: fix... 
   test "search can find any address" do
-    #@bldgs = Building.search("MyString1", false)
-    #assert_not @bldgs.count, 0
+    @bldgs = Building.search("MyString1", false)
+    assert @bldgs.count, 1
   end
 
-  # TODO: fix... 
   test "search can find only buildings with active units" do
-    #@bldgs = Building.search("MyString1", true)
-    #assert @bldgs.count, 0
+    @bldgs = Building.search("MyString1", true)
+    assert @bldgs.count, 0
   end
 
   test "save and add neighborhood creates neighborhood" do

@@ -102,15 +102,13 @@ class BuildingsController < ApplicationController
     end
 
     def set_buildings
-      @buildings = Building.search(params[:filter], building_params[:active_only])
+      @buildings = Building.search(building_params[:filter], building_params[:active_only])
       @buildings = @buildings.order(sort_order).paginate(:page => params[:page], :per_page => 50)
     end
 
     def sort_order
       sort_column = building_params[:sort_by] || "formatted_street_address"
-      #sort_column = Building.column_names.include?(params[:sort_by]) ? params[:sort_by] : "formatted_street_address"
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
-
       @sort_by = sort_column + ' ' + sort_order
     end
 

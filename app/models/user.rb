@@ -114,7 +114,7 @@ class User < ActiveRecord::Base
     
     @terms = query_string.split(" ")
     @terms.each do |term|
-      term = "%#{term}%"
+      #term = "%#{term}%"
       @running_list = @running_list.where('name ILIKE ? or email ILIKE ?', "%#{term}%", "%#{term}%").all
     end
 
