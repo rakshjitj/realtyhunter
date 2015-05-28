@@ -2,8 +2,10 @@ class Building < ActiveRecord::Base
 	belongs_to :company
 	belongs_to :landlord
 	has_many :units #, -> { order('posted_at DESC') }
+	#scope :active_units, -> { units.where(status: "active") }
 	belongs_to :neighborhood
 	
+
 	# TODO: remove this line
 	# this is some BS we need to make cancancan happy, because it 
 	# does not like our strong parameters
@@ -43,7 +45,24 @@ class Building < ActiveRecord::Base
 		self.units.where(status: "active")
 	end
 
+	def total_units_count
+		self.units.count
+	end
+
+	def active_units_count
+		self.units.where(status: "active").count
+	end
+
 	def self.search(query_str, active_only)
+
+		# @resources = Building.select("buildings.*, COUNT(units.id) unit_count")
+		# 	.joins(:units).where("units.status" => "active")
+		# 	.group("buildings.id")
+		# 	.order("unit_count DESC")
+		# puts "#{@resources.inspect}"
+
+		#Building.order(count(units.where(status: "active"))
+
 		@running_list = Building.all
     if !query_str
       return @running_list

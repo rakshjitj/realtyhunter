@@ -237,3 +237,14 @@ aside {
   width: 100%;
   height: 100px;
 }
+// doesn't seem to work...
+.button-to {
+  background-color: purple;
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+.link-as-button {
+  color: white !important;
+}

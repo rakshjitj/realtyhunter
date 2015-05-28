@@ -1,12 +1,13 @@
 class BuildingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
-  before_action :set_building, except: [:index, :new, :create, :filter]
+  before_action :set_building, except: [:index, :new, :create, :filter, :delete_modal]
 
   # GET /buildings
   # GET /buildings.json
   def index
     @buildings = Building.order(sort_order).paginate(:page => params[:page])
+
     respond_to do |format|
       format.html
       format.csv do
@@ -85,13 +86,26 @@ class BuildingsController < ApplicationController
     end
   end
 
+  # GET 
+  # handles ajax call. uses latest data in modal
+  def delete_modal
+    @building = Building.find(params[:id])
+    respond_to do |format|
+      format.js  
+    end
+  end
+
   # DELETE /buildings/1
   # DELETE /buildings/1.json
   def destroy
-    @building.destroy
+    if @building
+      @building.destroy
+      set_buildings
+    end
     respond_to do |format|
       format.html { redirect_to buildings_url, notice: 'Building was successfully destroyed.' }
       format.json { head :no_content }
+      format.js  
     end
   end
 

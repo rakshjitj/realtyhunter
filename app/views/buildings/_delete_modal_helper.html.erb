@@ -1,0 +1,9 @@
+<% if building.units.count > 0 %>
+  <p>Deleting <strong><%= building.street_address %></strong> will also delete the building's 
+  <strong><%= building.units.count %> units.</strong></p>
+  <br />
+<% end %>
+
+<p>Are you sure you want to delete <strong><%= building.street_address %>?</strong></p>
+<br />
+<p>This action can't be undone.</p>

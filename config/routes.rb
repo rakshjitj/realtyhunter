@@ -39,6 +39,7 @@ Rails.application.routes.draw do
 
   resources :buildings
   get 'search/buildings', to: 'buildings#filter', as: :buildings_filter
+  get 'buildings/:id/delete_modal', to: 'buildings#delete_modal', as: :buildings_delete_modal
   resources :residential_units
   resources :landlords
   get 'search/landlords', to: 'landlords#filter', as: :landlords_filter
