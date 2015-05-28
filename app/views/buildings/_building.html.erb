@@ -1,5 +1,6 @@
-<% @buildings.each do |building| %>
-  <tr>
+
+
+  <tr class="<%= cycle('even', 'odd') -%>">
     <td>
       <%= link_to "#{building.street_address}", building %>&nbsp;&nbsp;
       <%= building.sublocality %>, <%= building.administrative_area_level_1_short %>
@@ -15,4 +16,3 @@
       <%= link_to 'Destroy', building, method: :delete, data: { confirm: 'Are you sure?' } %>
     </td>
   </tr>
-<% end %>

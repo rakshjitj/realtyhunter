@@ -6,7 +6,7 @@ class BuildingsController < ApplicationController
   # GET /buildings
   # GET /buildings.json
   def index
-    @buildings = Building.all.paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")
+    @buildings = Building.order(sort_order).paginate(:page => params[:page])
     respond_to do |format|
       format.html
       format.csv do
@@ -102,15 +102,23 @@ class BuildingsController < ApplicationController
     end
 
     def set_buildings
-      @buildings = Building.search(building_params[:filter], building_params[:active_only])
-      @buildings = @buildings.paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")
+      @buildings = Building.search(params[:filter], building_params[:active_only])
+      @buildings = @buildings.order(sort_order).paginate(:page => params[:page], :per_page => 50)
+    end
+
+    def sort_order
+      sort_column = building_params[:sort_by] || "formatted_street_address"
+      #sort_column = Building.column_names.include?(params[:sort_by]) ? params[:sort_by] : "formatted_street_address"
+      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+
+      @sort_by = sort_column + ' ' + sort_order
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     # Need to take in additional params here. Can't rename them, or the geocode plugin
     # will not map to them correctly
     def building_params
-      params.permit(:filter, :active_only, :street_number, :route, :neighborhood, :sublocality, 
+      params.permit(:sort_by, :filter, :active_only, :street_number, :route, :neighborhood, :sublocality, 
        :administrative_area_level_2_short, :administrative_area_level_1_short, :postal_code,
        :country_short, :lat, :lng, :place_id, :building => [:formatted_street_address, :notes, :landlord_id])
     end

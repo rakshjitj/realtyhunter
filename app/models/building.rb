@@ -1,7 +1,7 @@
 class Building < ActiveRecord::Base
 	belongs_to :company
 	belongs_to :landlord
-	has_many :units
+	has_many :units #, -> { order('posted_at DESC') }
 	belongs_to :neighborhood
 	
 	# TODO: remove this line
