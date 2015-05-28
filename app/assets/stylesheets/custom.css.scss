@@ -225,4 +225,15 @@ aside {
 
 .right {
   text-align: right;
+  padding-right: 10px;
+}
+
+#map_canvas {
+  width: 100%;
+  height: 400px;
+}
+
+#map_canvas_big {
+  width: 100%;
+  height: 100px;
 }

@@ -1,11 +1,20 @@
 class BuildingsController < ApplicationController
   load_and_authorize_resource
+  skip_load_resource :only => :create
   before_action :set_building, except: [:index, :new, :create, :filter]
 
   # GET /buildings
   # GET /buildings.json
   def index
     @buildings = Building.all.paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")
+    respond_to do |format|
+      format.html
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"building-list.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+    end
+
   end
   
   # GET /filter_buildings
@@ -36,14 +45,29 @@ class BuildingsController < ApplicationController
     param_obj = building_params
     param_obj[:notes] = param_obj[:building][:notes]
     param_obj[:formatted_street_address] = param_obj[:building][:formatted_street_address]
+    param_obj[:landlord_id] = param_obj[:building][:landlord_id]
     param_obj.delete("building")
+    
+    # delete so that this field doesn't conflict with our foreign key
+    @neighborhood_name = param_obj[:neighborhood]
+    param_obj.delete("neighborhood")
+
     @building = Building.new(param_obj)
     @building.company = current_user.company
-     if @building.save
+    # TODO: once this data has been populate enough by google
+    # revert to regular save  #.save
+    if @building.save_and_create_neighborhood(@neighborhood_name, param_obj[:sublocality], 
+      param_obj[:administrative_area_level_2_short], param_obj[:administrative_area_level_1_short])
       redirect_to @building
     else
       #puts "**** #{@user.errors.inspect}"
-      render 'new'
+      @bldg = Building.find_by(formatted_street_address: param_obj[:formatted_street_address])
+      if @bldg
+        flash[:info] = "Building already exists!"
+        redirect_to @bldg
+      else 
+        render 'new'
+      end
     end
   end
 
@@ -88,6 +112,6 @@ class BuildingsController < ApplicationController
     def building_params
       params.permit(:filter, :active_only, :street_number, :route, :neighborhood, :sublocality, 
        :administrative_area_level_2_short, :administrative_area_level_1_short, :postal_code,
-       :country_short, :lat, :lng, :place_id, :building => [:formatted_street_address, :notes])
+       :country_short, :lat, :lng, :place_id, :building => [:formatted_street_address, :notes, :landlord_id])
     end
 end

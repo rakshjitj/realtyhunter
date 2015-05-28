@@ -4,15 +4,15 @@ $( document ).ready(function() {
 
     $(".autocomplete-input").geocomplete({
       map: "#map_canvas",
-      location: "<%= @building.nil? ? @building.formatted_street_address : 'New York, NY, USA' %>" ,
+      location: "<%= @building.formatted_street_address ? @building.formatted_street_address : 'New York, NY, USA' %>" ,
       details: ".details"
     }).bind("geocode:result", function(event, result){
-         if (this.value == "New York, NY, USA") {
-             this.value = '';
-         }
-        console.log(result);
+      if (this.value == "New York, NY, USA") {
+        this.value = '';
+      }
+      console.log(result);
     }).bind("geocode:error", function(event, result){
-        console.log("<%= @building.formatted_street_address %>", "[ERROR]: " + result);
+      console.log("<%= @building.formatted_street_address %>", "[ERROR]: " + result);
     });
 
 });
@@ -32,6 +32,18 @@ $( document ).ready(function() {
 
         <%= f.label :formatted_street_address, "Street Address" %><br>
         <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input', placeholder: "123 Main St" %>
+        <br/>
+        <p>Visually confirm the building's location:</p>
+        <div id="map_canvas"></div>
+
+      </div>
+      <div class="field">
+        <%= f.label :landlord_id, "Landlord" %><br>
+        <%= f.select(:landlord_id, options_for_select(current_user.company.landlords.collect {|l| [l.code, l.id]},), 
+          {prompt: "Choose one..."},
+          :required => true, 
+          class: 'form-control',
+          :include_blank => true) %>
       </div>
       <div class="field">
         <%= f.label :notes, "Building Notes" %><br>
@@ -61,6 +73,3 @@ $( document ).ready(function() {
 </div>
 
 <% end %>
-
-<p>Visually check the building's location:</p>
-<div id="map_canvas" style="width: 400px; height: 400px"></div>

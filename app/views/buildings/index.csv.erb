@@ -1,0 +1,7 @@
+<%- headers = ['Street Address', 'Borough', 'City', 'State', 'PostalCode', 'Active Units', 'Total Units', 'Last Updated At'] -%>
+<%= CSV.generate_line headers %>
+<%- @buildings.each do |building| -%>
+  <%= CSV.generate_line([building.street_address, building.sublocality, building.administrative_area_level_2_short,
+  		building.administrative_area_level_1_short, building.postal_code, building.active_units.count, building.units.count,
+  		building.updated_at.strftime("%Y-%b-%d")]) %>
+<%- end -%>

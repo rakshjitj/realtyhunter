@@ -20,13 +20,13 @@ $( document ).ready(function() {
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
 		<h1 class="page-header">
-			<%= @building.formatted_street_address %>
+			<%= @building.street_address %>
 		</h1>
 		<p><%= @building.active_units.count %> available units on the market.
 			<%= @building.units.count %> total units. | 
 			<%= link_to 'Edit', edit_building_path(@building) %> | 
-			<%= link_to 'View all', buildings_path %>
-
+			<%= link_to 'View all', buildings_path %> |
+			<%= link_to 'Add a Unit', new_residential_unit_path %><br />
 		</p>
 
 		<div class="panel panel-default">
@@ -34,17 +34,46 @@ $( document ).ready(function() {
 		    <h3 class="panel-title">Basic Details</h3>
 		  </div>
 		  <div class="panel-body">
-		  	<div id="map_canvas" style="width: 400px; height: 400px"></div>
-
+		  	<div id="map_canvas"></div>
+		  	<br />
 		    <p>
-		    
 				  <strong>Street Address:</strong>
 				  <%= @building.formatted_street_address %>
 				</p>
 
 				<p>
+				  <strong>Neighborhood:</strong>
+				  <%= @building.neighborhood.name %>
+				</p>
+
+				<p>
 				  <strong>Building Notes:</strong>
 				  <%= @building.notes %>
+				</p>
+
+				<p>
+				  <strong>Landlord Code:</strong>
+				  <%= @building.landlord.code %>
+				</p>
+
+				<p>
+				  <strong>Listing Agent:</strong>
+				  <!-- %= %-->
+				</p>
+
+				<p>
+				  <strong>Primary Agent:</strong>
+				  <!-- %= %-->
+				</p>
+
+				<p>
+				  <strong>Features:</strong>
+				  <!-- %= %-->
+				</p>
+
+				<p>
+				  <strong>Rental Terms:</strong>
+				  <!-- %= %-->
 				</p>
 
 				<p>
@@ -63,6 +92,7 @@ $( document ).ready(function() {
 		</div>		
 
 		<%= link_to 'Edit', edit_building_path(@building) %> |
-		<%= link_to 'Back', buildings_path %>
+		<%= link_to 'View All', buildings_path %> |
+			<%= link_to 'Add a Unit', new_residential_unit_path %>
 	</div>
 </div>

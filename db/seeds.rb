@@ -95,7 +95,6 @@ User.define_roles()
 @manager1.update_roles
 @manager2.update_roles
 
-
 50.times do |n|
   name  = FFaker::Name.name
   email = "example-#{n+1}@railstutorial.org"
@@ -126,22 +125,23 @@ User.define_roles()
 end
 
 # seed property data -----------------------------------------
+@neighborhood = Neighborhood.create({
+  name: "Crown Heights",
+  borough: "Brooklyn",
+  city: "New York",
+  state: "NY"
+  })
+
 @landlord = Landlord.create({
-  code: 'ZT', 
-  name: "Billy Bob", 
-  phone: FFaker::PhoneNumber.short_phone_number,
-  mobile: FFaker::PhoneNumber.short_phone_number,
-  fax: FFaker::PhoneNumber.short_phone_number,
-  email: FFaker::Internet.email('ZT'),
-  website: "www.zt.com",
-  street_address: "123 Main St",
-  city: "Brooklyn",
-  state: "NY",
-  zipcode: "12345",
-  notes: "This landlord is super awesome",
+  code: "Unassigned", 
+  name: "Unassigned", 
+  phone: "777-777-7777",
+  mobile: "777-777-7777",
+  email: FFaker::Internet.email("Unassigned"),
+  notes: "Catch-all landlord used to find unassigned buildings",
   listing_agent_percentage: "15",
   months_required: "first_month",
-  management_info: "Managemnt Company LLC - Call Bob M-W 12-2pm"
+  company: @company
   })
 
 55.times do |n|
@@ -162,14 +162,14 @@ end
     notes: FFaker::HipsterIpsum.sentence,
     listing_agent_percentage: "15",
     months_required: "first_month",
-    management_info: FFaker::HipsterIpsum.phrase)
+    management_info: FFaker::HipsterIpsum.phrase,
+    company: @company)
 end
 
 @bldg = Building.create({
   formatted_street_address: '1062 Bergen St, Brooklyn, NY 11216',
   street_number: '1062',
   route: 'Bergen St',
-  neighborhood: 'Crown Heights',
   sublocality: 'Brooklyn',
   administrative_area_level_2_short: 'New York',
   administrative_area_level_1_short: 'NY',
@@ -178,9 +178,10 @@ end
   lat: '10',
   lng: '11',
   place_id: 1,
-  company: @company,
   notes: "Building has parking spots available, laundry in the basement.",
-  landlord: @landlord
+  company: @company, 
+  landlord: @landlord,
+  neighborhood: @neighborhood
   })
 
 55.times do |n|

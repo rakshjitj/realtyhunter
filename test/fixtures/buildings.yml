@@ -3,11 +3,11 @@ one:
   formatted_street_address: MyString1
   street_number: MyString
   route: MyString
-  neighborhood: MyString
   sublocality: MyString
   administrative_area_level_2_short: MyString
   administrative_area_level_1_short: MyString
   country_short: MyString
+  postal_code: MyString
   lat: MyString
   lng: MyString
   place_id: MyString
@@ -19,11 +19,11 @@ two:
   formatted_street_address: MyString2
   street_number: MyString
   route: MyString
-  neighborhood: MyString
   sublocality: MyString
   administrative_area_level_2_short: MyString
   administrative_area_level_1_short: MyString
   country_short: MyString
+  postal_code: MyString
   lat: MyString
   lng: MyString
   place_id: MyString

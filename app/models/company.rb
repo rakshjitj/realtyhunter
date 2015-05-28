@@ -7,11 +7,9 @@ class Company < ActiveRecord::Base
 	has_many :users
 	accepts_nested_attributes_for :users
 	has_many :buildings
-	#has_many :units
-	#has_many :landlords
+	has_many :landlords
 
 	attr_accessor :agent_types, :employee_titles
-	#has_many :agent_types, :
 
 	validates :name, presence: true, length: {maximum: 50},
 		uniqueness: { case_sensitive: false }

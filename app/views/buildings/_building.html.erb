@@ -1,14 +1,18 @@
 <% @buildings.each do |building| %>
   <tr>
     <td>
-      <%= link_to "#{building.street_number} #{building.route}", building %>&nbsp;&nbsp;
+      <%= link_to "#{building.street_address}", building %>&nbsp;&nbsp;
       <%= building.sublocality %>, <%= building.administrative_area_level_1_short %>
       &nbsp;&nbsp;<%= building.postal_code %>
     </td>
     <td><%= building.active_units.count %></td>
     <td><%= building.units.count %></td>
-    <td><%= building.updated_at.strftime("%F") %></td>
+    <td><%= building.updated_at.strftime("%Y-%b-%d") %></td>
     <td><%= link_to 'Edit', edit_building_path(building) %></td>
-    <td><%= link_to 'Destroy', building, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <!--td><%= link_to 'Destroy', building, method: :delete, data: { confirm: 'Are you sure?' } %></td-->
+    <td>
+    
+      <%= link_to 'Destroy', building, method: :delete, data: { confirm: 'Are you sure?' } %>
+    </td>
   </tr>
 <% end %>

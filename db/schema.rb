@@ -26,7 +26,6 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "formatted_street_address"
     t.string   "street_number"
     t.string   "route"
-    t.string   "neighborhood"
     t.string   "sublocality"
     t.string   "administrative_area_level_2_short"
     t.string   "administrative_area_level_1_short"
@@ -38,6 +37,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "notes"
     t.integer  "company_id"
     t.integer  "landlord_id"
+    t.integer  "neighborhood_id"
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
   end
@@ -61,9 +61,11 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "offices_id"
     t.integer  "users_id"
     t.integer  "buildings_id"
+    t.integer  "landlords_id"
   end
 
   add_index "companies", ["buildings_id"], name: "index_companies_on_buildings_id", using: :btree
+  add_index "companies", ["landlords_id"], name: "index_companies_on_landlords_id", using: :btree
   add_index "companies", ["offices_id"], name: "index_companies_on_offices_id", using: :btree
   add_index "companies", ["users_id"], name: "index_companies_on_users_id", using: :btree
 
@@ -93,6 +95,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "months_required"
     t.string   "pet_policy"
     t.string   "management_info"
+    t.integer  "company_id"
     t.integer  "buildings_id"
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
@@ -103,9 +106,14 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   create_table "neighborhoods", force: :cascade do |t|
     t.string   "name"
     t.string   "borough"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "city"
+    t.string   "state"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "buildings_id"
   end
+
+  add_index "neighborhoods", ["buildings_id"], name: "index_neighborhoods_on_buildings_id", using: :btree
 
   create_table "offices", force: :cascade do |t|
     t.string   "name"

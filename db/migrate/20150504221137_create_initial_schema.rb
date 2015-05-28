@@ -1,4 +1,4 @@
-class CreateInitialSchema < ActiveRecord::Migration
+  class CreateInitialSchema < ActiveRecord::Migration
   def change
     create_table :companies do |t|
       t.string :name
@@ -7,6 +7,7 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.references :offices, index: true
       t.references :users, index: true
       t.references :buildings, index: true
+      t.references :landlords, index: true
     end
 
     create_table :offices do |t|
@@ -60,15 +61,16 @@ class CreateInitialSchema < ActiveRecord::Migration
     create_table :neighborhoods do |t|
       t.string :name
       t.string :borough
-
+      t.string :city
+      t.string :state
       t.timestamps null: false
+      t.references :buildings, index: true
     end
 
     create_table :buildings do |t|
       t.string :formatted_street_address
       t.string :street_number
       t.string :route
-      t.string :neighborhood
       t.string :sublocality
       t.string :administrative_area_level_2_short
       t.string :administrative_area_level_1_short
@@ -80,8 +82,8 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.string :notes
       t.belongs_to :company
       t.belongs_to :landlord
+      t.belongs_to :neighborhood
       # default agent
-      # neighborhood
       # features
       t.timestamps null: false
     end
@@ -136,8 +138,9 @@ class CreateInitialSchema < ActiveRecord::Migration
       t.integer :months_required
       t.string :pet_policy
       t.string :management_info
-      t.references :buildings, index: true
 
+      t.belongs_to :company
+      t.references :buildings, index: true
       t.timestamps null: false
     end
 

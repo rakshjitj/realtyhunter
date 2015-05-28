@@ -97,7 +97,8 @@
 </div>
 
 <div class="row">
-  <div class="col-md-offset-10">
+  <div class="col-md-2 col-md-offset-10 right">
+    <%= link_to 'Download CSV', buildings_path(format: :csv) %><br />
     <%= will_paginate @buildings %>
   </div>
 </div>

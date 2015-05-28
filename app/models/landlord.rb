@@ -1,5 +1,6 @@
 class Landlord < ActiveRecord::Base
 	has_many :buildings
+	belongs_to :company
 
 	enum months_required: [:first_month, :last_month, :first_and_last_months]
 
@@ -14,8 +15,8 @@ class Landlord < ActiveRecord::Base
 		format: { with: VALID_TELEPHONE_REGEX }
 	validates :phone, presence: true, length: {maximum: 25}, 
 		format: { with: VALID_TELEPHONE_REGEX }
-	validates :fax, presence: true, length: {maximum: 25}, 
-		format: { with: VALID_TELEPHONE_REGEX }
+	validates :fax, length: {maximum: 25}, 
+		format: { with: VALID_TELEPHONE_REGEX }, allow_blank: true
 
 	before_save :downcase_email
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
@@ -24,7 +25,10 @@ class Landlord < ActiveRecord::Base
     uniqueness: { case_sensitive: false }
 
 	validates :months_required, presence: true, length: {maximum: 100}
-	
+	validates :listing_agent_percentage, presence: true, length: {maximum: 3}
+
+
+
 	def active_units
 		buildings.reduce(0){|sum, bldg| sum + bldg.active_units.count }
 	end

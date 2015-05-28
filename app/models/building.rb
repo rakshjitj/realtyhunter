@@ -2,30 +2,38 @@ class Building < ActiveRecord::Base
 	belongs_to :company
 	belongs_to :landlord
 	has_many :units
+	belongs_to :neighborhood
 	
 	# TODO: remove this line
 	# this is some BS we need to make cancancan happy, because it 
 	# does not like our strong parameters
-	attr_accessor :building
+	attr_accessor :building #, :neighborhood_name
 
-	validates :formatted_street_address, presence: true, length: {maximum: 100}, 
+	validates :formatted_street_address, presence: true, length: {maximum: 200}, 
 						uniqueness: { case_sensitive: false }
 						
-	validates :street_number, presence: true, length: {maximum: 50}
+	validates :street_number, presence: true, length: {maximum: 20}
 	validates :route, presence: true, length: {maximum: 100}
-	# neighborhood can be blank
-	#validates :neighborhood, presence: true, length: {maximum: 100}
 	# borough
 	#:sublocality can be blank
 	# city
 	validates :administrative_area_level_2_short, presence: true, length: {maximum: 100}
 	# state
 	validates :administrative_area_level_1_short, presence: true, length: {maximum: 100}
+	validates :postal_code, presence: true, length: {maximum: 15}
 	validates :country_short, presence: true, length: {maximum: 100}
 	validates :lat, presence: true, length: {maximum: 100}
 	validates :lng, presence: true, length: {maximum: 100}
 	validates :place_id, presence: true, length: {maximum: 100}
 
+	# TODO: can you validate relations?
+	# validates :company, presence: true
+	# validates :landlord, presence: true
+	# validates :neighborhood, presence: true
+
+	def street_address
+		self.street_number + ' ' + self.route
+	end
 
 	def active_units
 		self.units.where(status: "active")
@@ -44,11 +52,26 @@ class Building < ActiveRecord::Base
       @running_list = @running_list.where('formatted_street_address ILIKE ?', "%#{term}%")
     end
 
+    # TODO: I don't think this works...
     if active_only
     	@running_list = @running_list.joins(:units).where(units: {status:"active"})
     end
 
     @running_list.uniq
 	end
+
+
+  def save_and_create_neighborhood(neighborhood, borough, city, state)
+		@neigh = Neighborhood.find_by(name: neighborhood)
+    if !@neigh
+      @neigh = Neighborhood.create(
+        name: neighborhood, 
+        borough: borough,
+        city: city,
+        state: state)
+    end
+    self.neighborhood = @neigh
+    self.save
+  end
 
 end
