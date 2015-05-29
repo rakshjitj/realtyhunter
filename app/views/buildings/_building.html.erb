@@ -9,7 +9,7 @@
   <td><%= building.updated_at.strftime("%Y-%b-%d") %></td>
   <td>
     <%= link_to 'Edit', edit_building_path(building) %> | 
-    <%= link_to 'Delete', buildings_delete_modal_path(building), 
+    <%= link_to 'Delete', building_delete_modal_path(building), 
       data: {toggle: "modal", target: "#bldgDeleteModal"}, remote: true %>
   </td>
 </tr>

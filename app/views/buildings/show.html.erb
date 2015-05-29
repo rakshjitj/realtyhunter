@@ -26,7 +26,10 @@ $( document ).ready(function() {
 			<%= @building.units.count %> total units. | 
 			<%= link_to 'Edit', edit_building_path(@building) %> | 
 			<%= link_to 'View all', buildings_path %> |
-			<%= link_to 'Add a Unit', new_residential_unit_path %><br />
+			<%= link_to 'Add a Unit', new_residential_unit_path %> | 
+			<%= link_to 'Report Inaccuracy', building_inaccuracy_modal_path(@building), 
+      	data: {toggle: "modal", target: "#bldgInaccuracyModal"}, remote: true %>
+			<br />
 		</p>
 
 		<div class="panel panel-default">
@@ -90,4 +93,20 @@ $( document ).ready(function() {
 		<%= link_to 'View All', buildings_path %> |
 		<%= link_to 'Add a Unit', new_residential_unit_path %>
 	</div>
+</div>
+
+
+<!-- Inaccuracy Modal -->
+<div class="modal fade" id="bldgInaccuracyModal" tabindex="-1" role="dialog" 
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Report Building Inaccuracy</h4>
+      </div>
+      <div id="placeholder-body"></div>
+
+    </div>
+  </div>
 </div>

@@ -1,7 +1,9 @@
 class BuildingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
-  before_action :set_building, except: [:index, :new, :create, :filter, :delete_modal]
+  before_action :set_building, except: [:index, :new, :create, :filter, 
+    :delete_modal, :inaccuracy_modal, :send_inaccuracy]
+  after_action :clear_xhr_flash, only: [:send_inaccuracy]
 
   # GET /buildings
   # GET /buildings.json
@@ -86,9 +88,26 @@ class BuildingsController < ApplicationController
       set_buildings
     end
     respond_to do |format|
-      format.html { redirect_to buildings_url, notice: 'Building was successfully destroyed.' }
+      format.html { redirect_to buildings_url, notice: 'Building was successfully deleted.' }
       format.json { head :no_content }
       format.js  
+    end
+  end
+
+  # GET 
+  # handles ajax call. uses latest data in modal
+  def inaccuracy_modal
+    @building = Building.find(params[:id])
+    respond_to do |format|
+      format.js  
+    end
+  end
+
+  # triggers email to staff notifying them of the inaccuracy
+  def send_inaccuracy
+    @building.send_inaccuracy_report(current_user)
+    respond_to do |format|
+      format.js { flash[:notice] = "Report submitted! Thank you." }
     end
   end
 
@@ -146,6 +165,12 @@ class BuildingsController < ApplicationController
       param_obj
     end
 
+    def clear_xhr_flash
+      if request.xhr?
+        # Also modify 'flash' to other attributes which you use in your common/flashes for js
+        flash.discard
+      end
+    end
     # Never trust parameters from the scary internet, only allow the white list through.
     # Need to take in additional params here. Can't rename them, or the geocode plugin
     # will not map to them correctly
@@ -153,7 +178,8 @@ class BuildingsController < ApplicationController
       params.permit(:sort_by, :direction, :filter, :active_only, :street_number, :route, :neighborhood, :sublocality, 
        :administrative_area_level_2_short, :administrative_area_level_1_short, :postal_code,
        :country_short, :lat, :lng, :place_id, 
-       :building => [:formatted_street_address, :notes, :landlord_id, :user_id, :building_amenity_ids => [],
+       :building => [:formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description, 
+        :building_amenity_ids => [],
         :rental_term_ids => [] ])
     end
 end

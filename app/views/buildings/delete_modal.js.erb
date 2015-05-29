@@ -4,7 +4,6 @@ $('#bldgDeleteModal .modal-body').html("<%= j(render :partial => "delete_modal_h
 //$('#bldgDeleteModal .delete-btn').replaceWith("<%= j(button_to 'Delete', @building, remote: true, method: :delete, class: 'btn btn-danger') %>");
 $('#bldgDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', @building, remote: true, method: :delete, class: 'btn btn-danger link-as-button', id: 'delete-link') %>");
 $('#bldgDeleteModal #delete-link').click( function(event) {
-	console.log('sdffdsfds');
 	$('#bldgDeleteModal').modal('hide');
 	event.preventDefault();
 });

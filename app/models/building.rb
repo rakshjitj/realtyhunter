@@ -10,7 +10,7 @@ class Building < ActiveRecord::Base
 	# TODO: remove this line
 	# this is some BS we need to make cancancan happy, because it 
 	# does not like our strong parameters
-	attr_accessor :building
+	attr_accessor :building, :inaccuracy_description
 
 	validates :formatted_street_address, presence: true, length: {maximum: 200}, 
 						uniqueness: { case_sensitive: false }
@@ -96,6 +96,10 @@ class Building < ActiveRecord::Base
         state: state)
     end
     self.neighborhood = @neigh
+  end
+
+  def send_inaccuracy_report(reporter)
+    BuildingMailer.inaccuracy_reported(self, reporter).deliver_now
   end
 
 end

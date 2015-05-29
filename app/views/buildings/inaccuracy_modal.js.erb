@@ -1,0 +1,8 @@
+$('#bldgInaccuracyModal #placeholder-body').html("<%= j(render :partial => "inaccuracy_modal_helper", locals: { building: @building }) %>");
+
+$('#bldgInaccuracyModal .submit-link').click( function(event) {
+	$('#bldgInaccuracyModal').modal('hide');
+	event.preventDefault();
+});
+
+$('#bldgInaccuracyModal').modal('show');
