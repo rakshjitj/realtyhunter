@@ -54,6 +54,7 @@
       t.belongs_to :office
       t.references :employee_title, index: true
       t.references :manager, index: true
+      t.references :buildings, index: true
       t.timestamps null: false
     end
     add_index :users, :email, unique: true
@@ -83,6 +84,7 @@
       t.belongs_to :company
       t.belongs_to :landlord
       t.belongs_to :neighborhood
+      t.belongs_to :user
       # default agent
       # features
       t.timestamps null: false

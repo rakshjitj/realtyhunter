@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "company_id"
     t.integer  "landlord_id"
     t.integer  "neighborhood_id"
+    t.integer  "user_id"
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
   end
@@ -182,12 +183,14 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "office_id"
     t.integer  "employee_title_id"
     t.integer  "manager_id"
+    t.integer  "buildings_id"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "avatar_id"
     t.string   "avatar_key"
   end
 
+  add_index "users", ["buildings_id"], name: "index_users_on_buildings_id", using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["employee_title_id"], name: "index_users_on_employee_title_id", using: :btree
   add_index "users", ["manager_id"], name: "index_users_on_manager_id", using: :btree

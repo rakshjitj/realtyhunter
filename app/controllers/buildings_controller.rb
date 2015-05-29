@@ -41,28 +41,14 @@ class BuildingsController < ApplicationController
   # POST /buildings
   # POST /buildings.json
   def create
-    # get the whitelisted set of params, then arrange data
-    # into the right format for our model
-    param_obj = building_params
-    param_obj[:notes] = param_obj[:building][:notes]
-    param_obj[:formatted_street_address] = param_obj[:building][:formatted_street_address]
-    param_obj[:landlord_id] = param_obj[:building][:landlord_id]
-    param_obj.delete("building")
-    
-    # delete so that this field doesn't conflict with our foreign key
-    @neighborhood_name = param_obj[:neighborhood]
-    param_obj.delete("neighborhood")
-
-    @building = Building.new(param_obj)
-    @building.company = current_user.company
-    # TODO: once this data has been populate enough by google
-    # revert to regular save  #.save
-    if @building.save_and_create_neighborhood(@neighborhood_name, param_obj[:sublocality], 
-      param_obj[:administrative_area_level_2_short], param_obj[:administrative_area_level_1_short])
+    @formatted_street_address = building_params[:building][:formatted_street_address]
+    @building = Building.new(building_params)
+    format_params_before_save
+    if @building.save
       redirect_to @building
     else
       #puts "**** #{@user.errors.inspect}"
-      @bldg = Building.find_by(formatted_street_address: param_obj[:formatted_street_address])
+      @bldg = Building.find_by(formatted_street_address: @formatted_street_address)
       if @bldg
         flash[:info] = "Building already exists!"
         redirect_to @bldg
@@ -75,7 +61,7 @@ class BuildingsController < ApplicationController
   # PATCH/PUT /buildings/1
   # PATCH/PUT /buildings/1.json
   def update
-    if @building.update(building_params)
+    if @building.update(format_params_before_save)
       flash[:success] = "Building updated!"
       redirect_to @building
     else
@@ -135,12 +121,34 @@ class BuildingsController < ApplicationController
       @buildings
     end
 
+    def format_params_before_save
+      # get the whitelisted set of params, then arrange data
+      # into the right format for our model
+      param_obj = building_params
+      param_obj[:notes] = param_obj[:building][:notes]
+      param_obj[:formatted_street_address] = param_obj[:building][:formatted_street_address]
+      param_obj[:landlord_id] = param_obj[:building][:landlord_id]
+      param_obj[:user_id] = param_obj[:building][:user_id]
+      param_obj.delete("building")
+      
+      # delete so that this field doesn't conflict with our foreign key
+      @neighborhood_name = param_obj[:neighborhood]
+      param_obj.delete("neighborhood")
+
+      @building.company = current_user.company
+      # TODO: once this data has been populate enough by google
+      # revert to regular save  #.save
+      @building.neighborhood = @building.find_or_create_neighborhood(@neighborhood_name, param_obj[:sublocality], 
+        param_obj[:administrative_area_level_2_short], param_obj[:administrative_area_level_1_short])
+      param_obj
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     # Need to take in additional params here. Can't rename them, or the geocode plugin
     # will not map to them correctly
     def building_params
       params.permit(:sort_by, :direction, :filter, :active_only, :street_number, :route, :neighborhood, :sublocality, 
        :administrative_area_level_2_short, :administrative_area_level_1_short, :postal_code,
-       :country_short, :lat, :lng, :place_id, :building => [:formatted_street_address, :notes, :landlord_id])
+       :country_short, :lat, :lng, :place_id, :building => [:formatted_street_address, :notes, :landlord_id, :user_id])
     end
 end

@@ -1,10 +1,9 @@
 class Building < ActiveRecord::Base
 	belongs_to :company
 	belongs_to :landlord
+	belongs_to :listing_agent, :foreign_key => 'user_id', :class_name => 'User'
 	has_many :units #, -> { order('posted_at DESC') }
-	#scope :active_units, -> { units.where(status: "active") }
 	belongs_to :neighborhood
-	
 
 	# TODO: remove this line
 	# this is some BS we need to make cancancan happy, because it 
@@ -28,18 +27,14 @@ class Building < ActiveRecord::Base
 	validates :lng, presence: true, length: {maximum: 100}
 	validates :place_id, presence: true, length: {maximum: 100}
 
-	# TODO: can you validate relations?
-	# validates :company, presence: true
-	# validates :landlord, presence: true
-	# validates :neighborhood, presence: true
+	validates :company, presence: true
+	validates :landlord, presence: true
+	validates :neighborhood, presence: true
+	validates :listing_agent, presence: true
 
 	def street_address
 		self.street_number + ' ' + self.route
 	end
-
-	#def self.by_active_units
-	#	order('units_count DESC')
-	#end
 
 	def active_units
 		self.units.where(status: "active")
@@ -54,15 +49,6 @@ class Building < ActiveRecord::Base
 	end
 
 	def self.search(query_str, active_only)
-
-		# @resources = Building.select("buildings.*, COUNT(units.id) unit_count")
-		# 	.joins(:units).where("units.status" => "active")
-		# 	.group("buildings.id")
-		# 	.order("unit_count DESC")
-		# puts "#{@resources.inspect}"
-
-		#Building.order(count(units.where(status: "active"))
-
 		@running_list = Building.all
     if !query_str
       return @running_list
@@ -80,8 +66,7 @@ class Building < ActiveRecord::Base
     @running_list.uniq
 	end
 
-
-  def save_and_create_neighborhood(neighborhood, borough, city, state)
+  def find_or_create_neighborhood(neighborhood, borough, city, state)
 		@neigh = Neighborhood.find_by(name: neighborhood)
     if !@neigh
       @neigh = Neighborhood.create(
@@ -91,7 +76,6 @@ class Building < ActiveRecord::Base
         state: state)
     end
     self.neighborhood = @neigh
-    self.save
   end
 
 end

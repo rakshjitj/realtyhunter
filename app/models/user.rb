@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   belongs_to :manager, :class_name => "User"
   belongs_to :employee_title
   has_many   :subordinates, :class_name => "User", :foreign_key => "manager_id"
+  has_many   :buildings
   attachment :avatar #, extension: ["jpg", "jpeg", "png", "gif"]
 
 	attr_accessor :remember_token, :activation_token, :reset_token, :approval_token, :agent_types

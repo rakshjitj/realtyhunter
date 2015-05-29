@@ -181,7 +181,8 @@ end
   notes: "Building has parking spots available, laundry in the basement.",
   company: @company, 
   landlord: @landlord,
-  neighborhood: @neighborhood
+  neighborhood: @neighborhood,
+  listing_agent: @manager1
   })
 
 55.times do |n|

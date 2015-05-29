@@ -58,12 +58,7 @@ $( document ).ready(function() {
 
 				<p>
 				  <strong>Listing Agent:</strong>
-				  <!-- %= %-->
-				</p>
-
-				<p>
-				  <strong>Primary Agent:</strong>
-				  <!-- %= %-->
+				  <%= @building.listing_agent.name %>
 				</p>
 
 				<p>
@@ -93,6 +88,6 @@ $( document ).ready(function() {
 
 		<%= link_to 'Edit', edit_building_path(@building) %> |
 		<%= link_to 'View All', buildings_path %> |
-			<%= link_to 'Add a Unit', new_residential_unit_path %>
+		<%= link_to 'Add a Unit', new_residential_unit_path %>
 	</div>
 </div>
