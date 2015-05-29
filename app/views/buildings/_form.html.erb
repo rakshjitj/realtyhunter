@@ -20,23 +20,18 @@ $( document ).ready(function() {
 
 <%= form_for(@building) do |f| %>
   <div class="panel panel-default">
-    <!--div class="panel-heading">
-      <h3 class="panel-title">Basic Details</h3>
-    </div-->
     <div class="panel-body">
 
-      <%= render :partial => 'shared/error_messages', 
-        :locals => {:model => @building} %>
+      <%= render :partial => 'shared/error_messages', :locals => {:model => @building} %>
 
       <div class="field">
-
         <%= f.label :formatted_street_address, "Street Address" %><br>
         <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input', placeholder: "123 Main St" %>
         <br/>
         <p>Visually confirm the building's location:</p>
         <div id="map_canvas"></div>
-
       </div>
+
       <div class="field">
         <%= f.label :landlord_id, "Landlord" %><br>
         <%= f.select(:landlord_id, options_for_select(current_user.company.landlords.collect {|l| [l.code, l.id]},[@building.landlord.id]),
@@ -45,6 +40,7 @@ $( document ).ready(function() {
           class: 'form-control',
           :include_blank => true) %>
       </div>
+
       <div class="field">
         <%= f.label :user_id, "Listing Agent" %><br>
         <%= f.select(:user_id, options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
@@ -57,6 +53,15 @@ $( document ).ready(function() {
       <div class="field">
         <%= f.label :notes, "Building Notes" %><br>
         <%= f.text_area :notes, class: 'form-control', rows: 5 %>
+      </div>
+
+      <div class="field">
+        <%= f.label :building_amenity_ids, "Building-Level Features" %><br>
+        <%= f.select(:building_amenity_ids, options_for_select(current_user.company.building_amenities.collect {|a| [a.name, a.id]},
+          @building.building_amenity_ids), 
+          {},
+          {:multiple => true, :size => 10,
+            class: 'form-control'}) %>
       </div>
       <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
       <div class="details field">

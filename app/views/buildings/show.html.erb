@@ -53,17 +53,17 @@ $( document ).ready(function() {
 
 				<p>
 				  <strong>Landlord Code:</strong>
-				  <%= @building.landlord.code %>
+				  <%= link_to @building.landlord.code, landlord_path(@building.landlord) %>
 				</p>
 
 				<p>
 				  <strong>Listing Agent:</strong>
-				  <%= @building.listing_agent.name %>
+				  <%= link_to @building.listing_agent.name, user_path(@building.listing_agent) %>
 				</p>
 
 				<p>
 				  <strong>Features:</strong>
-				  <!-- %= %-->
+				  <%= @building.amenities %>
 				</p>
 
 				<p>

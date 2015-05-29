@@ -4,11 +4,12 @@ class Building < ActiveRecord::Base
 	belongs_to :listing_agent, :foreign_key => 'user_id', :class_name => 'User'
 	has_many :units #, -> { order('posted_at DESC') }
 	belongs_to :neighborhood
+	has_and_belongs_to_many :building_amenities
 
 	# TODO: remove this line
 	# this is some BS we need to make cancancan happy, because it 
 	# does not like our strong parameters
-	attr_accessor :building #, :neighborhood_name
+	attr_accessor :building
 
 	validates :formatted_street_address, presence: true, length: {maximum: 200}, 
 						uniqueness: { case_sensitive: false }
@@ -64,6 +65,15 @@ class Building < ActiveRecord::Base
     end
 
     @running_list.uniq
+	end
+
+	def amenities
+		amenities = self.building_amenities.map{|a| a.name}
+		if amenities
+			amenities.join(", ")
+		else
+			"None"
+		end
 	end
 
   def find_or_create_neighborhood(neighborhood, borough, city, state)

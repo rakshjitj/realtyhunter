@@ -1,5 +1,5 @@
-@company = Company.create({name: "MyspaceNYC"})
-@company2 = Company.create({name: "Nooklyn"})
+@company = Company.create_with_environment({name: "MyspaceNYC"})
+@company2 = Company.create_with_environment({name: "Nooklyn"})
 
 @offices = Office.create([
   {company: @company, name: "Crown Heights", street_address: "722 Franklin Ave", city: "Brooklyn", state: "NY", zipcode: "11238", telephone: "718.399.3444", fax: "718.399.3444"},

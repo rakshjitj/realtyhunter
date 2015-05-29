@@ -8,6 +8,7 @@ class Company < ActiveRecord::Base
 	accepts_nested_attributes_for :users
 	has_many :buildings
 	has_many :landlords
+	has_many :building_amenities
 
 	attr_accessor :agent_types, :employee_titles
 
@@ -37,5 +38,21 @@ class Company < ActiveRecord::Base
     }
 	end
 
-
+	def self.create_with_environment(params)
+		# create default set of employee titles
+		# create default set of agent specializations
+		# create default set of building amenities
+		@company = Company.create(params)
+		BuildingAmenity.create([
+			{name: "Gym/Atheletic Facility", company: @company},
+			{name: "Sauna", company: @company},
+			{name: "Doorman", company: @company},
+			{name: "Laundry in bldg", company: @company},
+			{name: "Bike Room", company: @company},
+			{name: "Brownstone", company: @company},
+			{name: "Roof deck", company: @company},
+			{name: "Garage parking", company: @company}
+		])
+		@company
+	end
 end

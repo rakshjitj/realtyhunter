@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150519180148) do
+ActiveRecord::Schema.define(version: 20150529144212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,18 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "building_amenities", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "company_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "building_amenities_buildings", id: false, force: :cascade do |t|
+    t.integer "building_id"
+    t.integer "building_amenity_id"
   end
 
   create_table "buildings", force: :cascade do |t|
@@ -57,14 +69,16 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "name"
     t.string   "logo_id"
     t.string   "string"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.integer  "offices_id"
     t.integer  "users_id"
     t.integer  "buildings_id"
     t.integer  "landlords_id"
+    t.integer  "building_amenities_id"
   end
 
+  add_index "companies", ["building_amenities_id"], name: "index_companies_on_building_amenities_id", using: :btree
   add_index "companies", ["buildings_id"], name: "index_companies_on_buildings_id", using: :btree
   add_index "companies", ["landlords_id"], name: "index_companies_on_landlords_id", using: :btree
   add_index "companies", ["offices_id"], name: "index_companies_on_offices_id", using: :btree

@@ -129,6 +129,7 @@ class BuildingsController < ApplicationController
       param_obj[:formatted_street_address] = param_obj[:building][:formatted_street_address]
       param_obj[:landlord_id] = param_obj[:building][:landlord_id]
       param_obj[:user_id] = param_obj[:building][:user_id]
+      param_obj[:building_amenity_ids] = param_obj[:building][:building_amenity_ids]
       param_obj.delete("building")
       
       # delete so that this field doesn't conflict with our foreign key
@@ -140,6 +141,7 @@ class BuildingsController < ApplicationController
       # revert to regular save  #.save
       @building.neighborhood = @building.find_or_create_neighborhood(@neighborhood_name, param_obj[:sublocality], 
         param_obj[:administrative_area_level_2_short], param_obj[:administrative_area_level_1_short])
+
       param_obj
     end
 
@@ -149,6 +151,7 @@ class BuildingsController < ApplicationController
     def building_params
       params.permit(:sort_by, :direction, :filter, :active_only, :street_number, :route, :neighborhood, :sublocality, 
        :administrative_area_level_2_short, :administrative_area_level_1_short, :postal_code,
-       :country_short, :lat, :lng, :place_id, :building => [:formatted_street_address, :notes, :landlord_id, :user_id])
+       :country_short, :lat, :lng, :place_id, 
+       :building => [:formatted_street_address, :notes, :landlord_id, :user_id, :building_amenity_ids => [] ])
     end
 end

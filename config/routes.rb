@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :building_amenities
+  resources :building_amenities
   get 'static_pages/help'
 
   get 'signup'  => 'users#new'

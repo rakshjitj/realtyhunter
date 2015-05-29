@@ -8,6 +8,7 @@
       t.references :users, index: true
       t.references :buildings, index: true
       t.references :landlords, index: true
+      t.references :building_amenities, index: true
     end
 
     create_table :offices do |t|
@@ -85,7 +86,7 @@
       t.belongs_to :landlord
       t.belongs_to :neighborhood
       t.belongs_to :user
-      # default agent
+      #t.references :building_amenities, index: true
       # features
       t.timestamps null: false
     end
@@ -144,6 +145,17 @@
       t.belongs_to :company
       t.references :buildings, index: true
       t.timestamps null: false
+    end
+
+    create_table :building_amenities do |t|
+      t.string :name
+      t.belongs_to :company
+      t.timestamps null: false
+    end
+
+    create_table :building_amenities_buildings, id: false do |t|
+      t.belongs_to :building
+      t.belongs_to :building_amenity
     end
 
   end
