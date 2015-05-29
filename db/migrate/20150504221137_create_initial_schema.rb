@@ -11,6 +11,7 @@
       t.references :building_amenities, index: true
       t.references :rental_terms, index: true
       t.references :required_securities, index: true
+      t.references :pet_policies, index: true
     end
 
     create_table :offices do |t|
@@ -142,6 +143,7 @@
       t.string :pet_policy
       t.string :management_info
       t.belongs_to :required_security
+      t.belongs_to :pet_policy
       t.belongs_to :company
       t.references :buildings, index: true
       t.timestamps null: false
@@ -176,7 +178,12 @@
       t.timestamps null: false
     end
 
-
+    create_table :pet_policies do |t|
+      t.string :name
+      t.belongs_to :company
+      t.references :landlords, index: true
+      t.timestamps null: false
+    end
 
   end
 end

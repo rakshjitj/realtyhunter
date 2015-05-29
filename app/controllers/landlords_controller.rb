@@ -102,7 +102,7 @@ class LandlordsController < ApplicationController
     def landlord_params
       params.require(:landlord).permit(:code, :name, :phone, :mobile, :fax, 
         :email, :website, :street_address, :city, :state, :zipcode, :notes, 
-        :listing_agent_percentage, :required_security_id, :pet_policy, 
+        :listing_agent_percentage, :required_security_id, :pet_policy_id, 
         :management_info)
     end
 end

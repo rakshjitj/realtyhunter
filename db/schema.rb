@@ -83,12 +83,14 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "building_amenities_id"
     t.integer  "rental_terms_id"
     t.integer  "required_securities_id"
+    t.integer  "pet_policies_id"
   end
 
   add_index "companies", ["building_amenities_id"], name: "index_companies_on_building_amenities_id", using: :btree
   add_index "companies", ["buildings_id"], name: "index_companies_on_buildings_id", using: :btree
   add_index "companies", ["landlords_id"], name: "index_companies_on_landlords_id", using: :btree
   add_index "companies", ["offices_id"], name: "index_companies_on_offices_id", using: :btree
+  add_index "companies", ["pet_policies_id"], name: "index_companies_on_pet_policies_id", using: :btree
   add_index "companies", ["rental_terms_id"], name: "index_companies_on_rental_terms_id", using: :btree
   add_index "companies", ["required_securities_id"], name: "index_companies_on_required_securities_id", using: :btree
   add_index "companies", ["users_id"], name: "index_companies_on_users_id", using: :btree
@@ -119,6 +121,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "pet_policy"
     t.string   "management_info"
     t.integer  "required_security_id"
+    t.integer  "pet_policy_id"
     t.integer  "company_id"
     t.integer  "buildings_id"
     t.datetime "created_at",               null: false
@@ -154,6 +157,16 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   end
 
   add_index "offices", ["users_id"], name: "index_offices_on_users_id", using: :btree
+
+  create_table "pet_policies", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "company_id"
+    t.integer  "landlords_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "pet_policies", ["landlords_id"], name: "index_pet_policies_on_landlords_id", using: :btree
 
   create_table "rental_terms", force: :cascade do |t|
     t.string   "name"

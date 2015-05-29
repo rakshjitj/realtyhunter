@@ -79,8 +79,13 @@
               :include_blank => true) %>
           </div>
           <div class="field">
-            <%= f.label :pet_policy %><br>
-            <%= f.text_field :pet_policy, class: 'form-control' %>
+            <%= f.label :pet_policy_id %><br>
+            <%= f.select(:pet_policy_id, options_for_select(@landlord.company.pet_policies.all.collect { |r| [r.name, r.id] }, 
+              [@landlord.pet_policy ? @landlord.pet_policy.id : '']),
+               {prompt: "Choose one..."},
+              :required => true, 
+              class: 'form-control',
+              :include_blank => true) %>
           </div>
           <div class="field">
             <%= f.label :management_info, "Additional Management Info" %><br>
@@ -90,20 +95,7 @@
             <%= f.submit %>
           </div>
 
-          <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
-          <!-- <div class="details field">
-            <%= f.hidden_field :street_number, name: "street_number" %>
-            <%= f.hidden_field :route, name: "route" %>
-            <%= f.hidden_field :neighborhood, name:"neighborhood" %>
-            <%= f.hidden_field :sublocality, name:"sublocality" %>
-            <%= f.hidden_field :administrative_area_level_2_short, name:"administrative_area_level_2_short" %>
-            <%= f.hidden_field :administrative_area_level_1_short, name:"administrative_area_level_1_short" %>
-            <%= f.hidden_field :postal_code, name:"postal_code" %>
-            <%= f.hidden_field :country_short, name:"country_short" %>
-            <%= f.hidden_field :lat, name:"lat" %>
-            <%= f.hidden_field :lng, name:"lng" %>
-            <%= f.hidden_field :place_id, name:"place_id" %>
-          </div> -->
+
 
         <% end %>
       </div>

@@ -7,6 +7,9 @@ class Landlord < ActiveRecord::Base
 	belongs_to :required_security
 	validates :required_security, presence: true
 
+	belongs_to :pet_policy
+	validates :pet_policy, presence: true
+
 	validates :code, presence: true, length: {maximum: 100}, 
 		uniqueness: { case_sensitive: false }
 
