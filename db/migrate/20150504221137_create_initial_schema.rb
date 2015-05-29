@@ -73,6 +73,7 @@
       t.references :buildings, index: true
     end
 
+    # TODO: pull address info into it's own table?
     create_table :buildings do |t|
       t.string :formatted_street_address
       t.string :street_number
@@ -85,6 +86,7 @@
       t.string :lat
       t.string :lng
       t.string :place_id
+
       t.string :notes
       t.belongs_to :company
       t.belongs_to :landlord
@@ -127,17 +129,26 @@
     end
 
     create_table :landlords do |t|
+      t.string :formatted_street_address
+      t.string :street_number
+      t.string :route
+      t.string :sublocality
+      t.string :administrative_area_level_2_short
+      t.string :administrative_area_level_1_short
+      t.string :postal_code
+      t.string :neighborhood
+      t.string :country_short
+      t.string :lat
+      t.string :lng
+      t.string :place_id
+
       t.string :code
       t.string :name
-      t.string :phone
+      t.string :office_phone
       t.string :mobile
       t.string :fax
       t.string :email
       t.string :website
-      t.string :street_address
-      t.string :city
-      t.string :state
-      t.string :zipcode
       t.text :notes
       t.integer :listing_agent_percentage
       t.string :pet_policy

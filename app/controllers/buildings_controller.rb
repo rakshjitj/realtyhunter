@@ -54,11 +54,13 @@ class BuildingsController < ApplicationController
       redirect_to @building
     else
       #puts "**** #{@user.errors.inspect}"
+      # if this building has already been entered, redirect to that page
       @bldg = Building.find_by(formatted_street_address: @formatted_street_address)
       if @bldg
         flash[:info] = "Building already exists!"
         redirect_to @bldg
       else 
+        # error
         render 'new'
       end
     end
@@ -148,12 +150,13 @@ class BuildingsController < ApplicationController
       # get the whitelisted set of params, then arrange data
       # into the right format for our model
       param_obj = building_params
-      param_obj[:notes] = param_obj[:building][:notes]
-      param_obj[:formatted_street_address] = param_obj[:building][:formatted_street_address]
-      param_obj[:landlord_id] = param_obj[:building][:landlord_id]
-      param_obj[:user_id] = param_obj[:building][:user_id]
-      param_obj[:building_amenity_ids] = param_obj[:building][:building_amenity_ids]
-      param_obj[:rental_term_ids] = param_obj[:building][:rental_term_ids]
+      # param_obj[:notes] = param_obj[:building][:notes]
+      # param_obj[:formatted_street_address] = param_obj[:building][:formatted_street_address]
+      # param_obj[:landlord_id] = param_obj[:building][:landlord_id]
+      # param_obj[:user_id] = param_obj[:building][:user_id]
+      # param_obj[:building_amenity_ids] = param_obj[:building][:building_amenity_ids]
+      # param_obj[:rental_term_ids] = param_obj[:building][:rental_term_ids]
+      param_obj[:building].each{ |k,v| param_obj[k] = v };
       param_obj.delete("building")
       
       # delete so that this field doesn't conflict with our foreign key

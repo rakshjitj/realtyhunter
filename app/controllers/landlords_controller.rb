@@ -41,29 +41,23 @@ class LandlordsController < ApplicationController
   # POST /landlords.json
   def create
     @landlord = Landlord.new(landlord_params)
-    @landlord.company = current_user.company
-    respond_to do |format|
-      if @landlord.save
-        format.html { redirect_to @landlord, notice: 'Landlord was successfully created.' }
-        format.json { render :show, status: :created, location: @landlord }
-      else
-        format.html { render :new }
-        format.json { render json: @landlord.errors, status: :unprocessable_entity }
-      end
+    format_params_before_save
+    if @landlord.save
+      redirect_to @landlord
+    else
+      # error
+      render 'new'
     end
   end
 
   # PATCH/PUT /landlords/1
   # PATCH/PUT /landlords/1.json
   def update
-    respond_to do |format|
-      if @landlord.update(landlord_params)
-        format.html { redirect_to @landlord, notice: 'Landlord was successfully updated.' }
-        format.json { render :show, status: :ok, location: @landlord }
-      else
-        format.html { render :edit }
-        format.json { render json: @landlord.errors, status: :unprocessable_entity }
-      end
+    if @landlord.update(format_params_before_save)
+      flash[:success] = "Landlord updated!"
+      redirect_to @landlord
+    else
+      render 'edit'
     end
   end
 
@@ -106,11 +100,27 @@ class LandlordsController < ApplicationController
       @landlords
     end
 
+    def format_params_before_save
+      # get the whitelisted set of params, then arrange data
+      # into the right format for our model
+      param_obj = landlord_params
+      param_obj[:landlord].each{ |k,v| param_obj[k] = v };
+      puts "\n\n**** #{param_obj.inspect}"
+      param_obj.delete("landlord")
+
+      @landlord.company = current_user.company
+      
+      param_obj
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def landlord_params
-      params.require(:landlord).permit(:code, :name, :phone, :mobile, :fax, 
-        :email, :website, :street_address, :city, :state, :zipcode, :notes, 
-        :listing_agent_percentage, :required_security_id, :pet_policy_id, 
-        :management_info)
+      params.permit(:sort_by, :filter, :agent_filter, :active_only, :street_number, :route, 
+        :neighborhood, :sublocality, :administrative_area_level_2_short, 
+        :administrative_area_level_1_short, :postal_code, :country_short, :lat, :lng, :place_id, 
+        :landlord => [:code, :name, :mobile, :office_phone, :fax, 
+          :email, :website, :formatted_street_address, :notes, 
+          :listing_agent_percentage, :required_security_id, :pet_policy_id, 
+          :management_info])
     end
 end

@@ -105,26 +105,35 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   add_index "employee_titles", ["users_id"], name: "index_employee_titles_on_users_id", using: :btree
 
   create_table "landlords", force: :cascade do |t|
+    t.string   "formatted_street_address"
+    t.string   "street_number"
+    t.string   "route"
+    t.string   "sublocality"
+    t.string   "administrative_area_level_2_short"
+    t.string   "administrative_area_level_1_short"
+    t.string   "postal_code"
+    t.string   "neighborhood"
+    t.string   "country_short"
+    t.string   "lat"
+    t.string   "lng"
+    t.string   "place_id"
     t.string   "code"
     t.string   "name"
-    t.string   "phone"
+    t.string   "office_phone"
     t.string   "mobile"
     t.string   "fax"
     t.string   "email"
     t.string   "website"
-    t.string   "street_address"
-    t.string   "city"
-    t.string   "state"
-    t.string   "zipcode"
     t.text     "notes"
     t.integer  "listing_agent_percentage"
+    t.string   "pet_policy"
     t.string   "management_info"
     t.integer  "required_security_id"
     t.integer  "pet_policy_id"
     t.integer  "company_id"
     t.integer  "buildings_id"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
   add_index "landlords", ["buildings_id"], name: "index_landlords_on_buildings_id", using: :btree

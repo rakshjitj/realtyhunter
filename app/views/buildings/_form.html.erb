@@ -9,7 +9,7 @@ $( document ).ready(function() {
         this.value = '';
       }
     }).bind("geocode:error", function(event, result){
-      console.log("<%= @building.formatted_street_address %>", "[ERROR]: " + result);
+      //console.log("<%= @building.formatted_street_address %>", "[ERROR]: " + result);
     });
 
 });

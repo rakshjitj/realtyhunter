@@ -24,8 +24,8 @@
             </p>
 
             <p>
-              <strong>Phone:</strong>
-              <%= @landlord.phone %>
+              <strong>Office Phone:</strong>
+              <%= @landlord.office_phone %>
             </p>
 
             <p>
@@ -50,22 +50,7 @@
 
             <p>
               <strong>Street address:</strong>
-              <%= @landlord.street_address %>
-            </p>
-
-            <p>
-              <strong>City:</strong>
-              <%= @landlord.city %>
-            </p>
-
-            <p>
-              <strong>State:</strong>
-              <%= @landlord.state %>
-            </p>
-
-            <p>
-              <strong>Zipcode:</strong>
-              <%= @landlord.zipcode %>
+              <%= @landlord.formatted_street_address %>
             </p>
 
             <p>
