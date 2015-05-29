@@ -34,6 +34,10 @@ class BuildingsController < ApplicationController
   # GET /buildings/new
   def new
     @building = Building.new
+    landlord_id = params[:landlord_id]
+    if landlord_id && Landlord.find(landlord_id)
+      @building.landlord_id = landlord_id
+    end
   end
 
   # GET /buildings/1/edit
@@ -177,7 +181,7 @@ class BuildingsController < ApplicationController
     def building_params
       params.permit(:sort_by, :direction, :filter, :active_only, :street_number, :route, :neighborhood, :sublocality, 
        :administrative_area_level_2_short, :administrative_area_level_1_short, :postal_code,
-       :country_short, :lat, :lng, :place_id, 
+       :country_short, :lat, :lng, :place_id, :landlord_id,
        :building => [:formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description, 
         :building_amenity_ids => [],
         :rental_term_ids => [] ])

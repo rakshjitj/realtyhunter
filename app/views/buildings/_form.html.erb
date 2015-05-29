@@ -1,7 +1,5 @@
 <script>
 $( document ).ready(function() {
-    console.log( "autocomplete plugin ready!" );
-
     $(".autocomplete-input").geocomplete({
       map: "#map_canvas",
       location: "<%= @building.formatted_street_address ? @building.formatted_street_address : 'New York, NY, USA' %>" ,
@@ -10,7 +8,6 @@ $( document ).ready(function() {
       if (this.value == "New York, NY, USA") {
         this.value = '';
       }
-      console.log(result);
     }).bind("geocode:error", function(event, result){
       console.log("<%= @building.formatted_street_address %>", "[ERROR]: " + result);
     });

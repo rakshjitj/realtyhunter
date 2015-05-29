@@ -7,7 +7,9 @@
         <h1 class="page-header">Landlord <%= @landlord.code %></h1>
 
         <%= link_to 'Edit', edit_landlord_path(@landlord) %> |
-        <%= link_to 'View all', landlords_path %>
+        <%= link_to 'View all', landlords_path %> |
+        <%= link_to 'Add building', new_building_path(landlord_id: @landlord.id) %><br  />
+        <br  />
 
         <div class="panel panel-default">
           <div class="panel-body">
