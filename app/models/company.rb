@@ -10,6 +10,7 @@ class Company < ActiveRecord::Base
 	has_many :landlords
 	has_many :building_amenities
 	has_many :rental_terms
+	has_many :required_securities
 
 	attr_accessor :agent_types, :employee_titles
 
@@ -69,6 +70,16 @@ class Company < ActiveRecord::Base
 			{name: "Water not included", company: @company},
 			{name: "Trash not included", company: @company},
 		])
+
+		RequiredSecurity.create([
+			{name: "First month", company: @company},
+			{name: "First and last month", company: @company},
+			{name: "First, last and 2 months", company: @company},
+			{name: "First, last and 3 months", company: @company},
+			{name: "Broker's fee", company: @company},
+			{name: "Broker's fee and first month", company: @company},
+		])
+
 		@company
 	end
 end

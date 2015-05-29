@@ -4,7 +4,7 @@
   <div class="col-md-6 col-md-offset-3">
     <div class="row">
       <div class="col-md">
-        <h1 class="page-header"><%= @landlord.code %></h1>
+        <h1 class="page-header">Landlord <%= @landlord.code %></h1>
 
         <%= link_to 'Edit', edit_landlord_path(@landlord) %> |
         <%= link_to 'View all', landlords_path %>
@@ -67,7 +67,7 @@
             </p>
 
             <p>
-              <strong>Notes:</strong>
+              <strong>Notes: (Shared on listings)</strong>
               <%= @landlord.notes %>
             </p>
 
@@ -77,8 +77,8 @@
             </p>
 
             <p>
-              <strong>Months required:</strong>
-              <%= @landlord.months_required %>
+              <strong>Required securities:</strong>
+              <%= @landlord.required_security.name %>
             </p>
 
             <p>
@@ -87,7 +87,7 @@
             </p>
 
             <p>
-              <strong>Management info:</strong>
+              <strong>Additional Management info:</strong>
               <%= @landlord.management_info %>
             </p>
 

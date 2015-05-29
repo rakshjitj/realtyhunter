@@ -10,6 +10,7 @@
       t.references :landlords, index: true
       t.references :building_amenities, index: true
       t.references :rental_terms, index: true
+      t.references :required_securities, index: true
     end
 
     create_table :offices do |t|
@@ -57,6 +58,7 @@
       t.references :employee_title, index: true
       t.references :manager, index: true
       t.references :buildings, index: true
+      #t.references :landlords, index: true
       t.timestamps null: false
     end
     add_index :users, :email, unique: true
@@ -137,10 +139,9 @@
       t.string :zipcode
       t.text :notes
       t.integer :listing_agent_percentage
-      t.integer :months_required
       t.string :pet_policy
       t.string :management_info
-
+      t.belongs_to :required_security
       t.belongs_to :company
       t.references :buildings, index: true
       t.timestamps null: false
@@ -167,6 +168,15 @@
       t.belongs_to :building
       t.belongs_to :rental_term
     end
+
+    create_table :required_securities do |t|
+      t.string :name
+      t.belongs_to :company
+      t.references :landlords, index: true
+      t.timestamps null: false
+    end
+
+
 
   end
 end

@@ -1,8 +1,11 @@
 class Landlord < ActiveRecord::Base
 	has_many :buildings
+	
 	belongs_to :company
+	validates :company, presence: true
 
-	enum months_required: [:first_month, :last_month, :first_and_last_months]
+	belongs_to :required_security
+	validates :required_security, presence: true
 
 	validates :code, presence: true, length: {maximum: 100}, 
 		uniqueness: { case_sensitive: false }
@@ -24,16 +27,13 @@ class Landlord < ActiveRecord::Base
 		format: { with: VALID_EMAIL_REGEX }, 
     uniqueness: { case_sensitive: false }
 
-	validates :months_required, presence: true, length: {maximum: 100}
 	validates :listing_agent_percentage, presence: true, length: {maximum: 3}
 
-
-
-	def active_units
+	def active_units_count
 		buildings.reduce(0){|sum, bldg| sum + bldg.active_units.count }
 	end
 
-	def total_units
+	def total_units_count
 		buildings.reduce(0){|sum, bldg| sum + bldg.units.count }
 	end
 
@@ -41,17 +41,30 @@ class Landlord < ActiveRecord::Base
 		return '-' # TODO
 	end	
 
-	def self.search(query_str)
+	def self.search(query_str, agent_query, active_only)
 		@running_list = Landlord.all
-
     if !query_str
       return @running_list
     end
     
-    @terms = query_str.split(" ")
-    @terms.each do |term|
-      term = "%#{term}%"
-      @running_list = @running_list.where('name ILIKE ? or code ILIKE ?', "%#{term}%", "%#{term}%").all
+    terms = query_str.split(" ")
+    terms.each do |term|
+      running_list = @running_list.where('name ILIKE ? or code ILIKE ?', "%#{term}%", "%#{term}%")
+    end
+
+    # TODO:
+    if agent_query
+    	#terms = agent_query.split(" ")
+	    #terms.each do |term|
+	    #  running_list = @running_list.joins(:users).where('users.name ILIKE ?', "%#{term}%")
+	    #end
+    end
+
+    if active_only == "true"
+    	# TODO
+    	#@running_list = @running_list
+	    #	.joins(:buildings)
+	    #	.where(buildings: { units: {status:"active"}})
     end
 
     @running_list.uniq

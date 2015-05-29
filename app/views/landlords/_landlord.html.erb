@@ -2,8 +2,9 @@
     <td><%= link_to landlord.code, landlord %></td>
     <td><%= landlord.name %></td>
     <td><%= landlord.mobile %></td>
-    <td><%= landlord.active_units %></td>
-    <td><%= landlord.total_units %></td>
+    <td><!--%= landlord.primary_agent.name %--></td>
+    <td><%= landlord.active_units_count %></td>
+    <td><%= landlord.total_units_count %></td>
     <td><%= landlord.last_unit_updated_on %></td>
     <td>
       <%= link_to 'Edit', edit_landlord_path(landlord) %> |

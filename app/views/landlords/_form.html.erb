@@ -61,29 +61,50 @@
             <%= f.text_field :zipcode, class: 'form-control' %>
           </div>
           <div class="field">
-            <%= f.label :notes %><br>
+            <%= f.label :notes, "Notes (will be shared on listings)" %><br>
             <%= f.text_area :notes, class: 'form-control',
             rows: 4 %>
           </div>
           <div class="field">
             <%= f.label :listing_agent_percentage %><br>
-            <%= f.text_field :listing_agent_percentage, class: 'form-control' %>
+            <%= f.number_field :listing_agent_percentage, class: 'form-control', min: 0, max: 100 %>
           </div>
           <div class="field">
-            <%= f.label :months_required %><br>
-            <%= f.select :months_required, options_for_select(Landlord.months_requireds.collect { |s| [s[0].humanize, s[0]] }, selected: @landlord.months_required), {} , class: "form-control" %>
+            <%= f.label :required_security_id %><br>
+            <%= f.select(:required_security_id, options_for_select(@landlord.company.required_securities.all.collect { |r| [r.name, r.id] }, 
+              [@landlord.required_security ? @landlord.required_security.id : '']),
+               {prompt: "Choose one..."},
+              :required => true, 
+              class: 'form-control',
+              :include_blank => true) %>
           </div>
           <div class="field">
             <%= f.label :pet_policy %><br>
             <%= f.text_field :pet_policy, class: 'form-control' %>
           </div>
           <div class="field">
-            <%= f.label :management_info %><br>
+            <%= f.label :management_info, "Additional Management Info" %><br>
             <%= f.text_area :management_info, class: 'form-control', rows: 4 %>
           </div>
           <div class="actions">
             <%= f.submit %>
           </div>
+
+          <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
+          <!-- <div class="details field">
+            <%= f.hidden_field :street_number, name: "street_number" %>
+            <%= f.hidden_field :route, name: "route" %>
+            <%= f.hidden_field :neighborhood, name:"neighborhood" %>
+            <%= f.hidden_field :sublocality, name:"sublocality" %>
+            <%= f.hidden_field :administrative_area_level_2_short, name:"administrative_area_level_2_short" %>
+            <%= f.hidden_field :administrative_area_level_1_short, name:"administrative_area_level_1_short" %>
+            <%= f.hidden_field :postal_code, name:"postal_code" %>
+            <%= f.hidden_field :country_short, name:"country_short" %>
+            <%= f.hidden_field :lat, name:"lat" %>
+            <%= f.hidden_field :lng, name:"lng" %>
+            <%= f.hidden_field :place_id, name:"place_id" %>
+          </div> -->
+
         <% end %>
       </div>
     </div>

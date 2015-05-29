@@ -140,7 +140,7 @@ end
   email: FFaker::Internet.email("Unassigned"),
   notes: "Catch-all landlord used to find unassigned buildings",
   listing_agent_percentage: "15",
-  months_required: "first_month",
+  required_security: @company.required_securities[0],
   company: @company
   })
 
@@ -161,8 +161,8 @@ end
     zipcode: FFaker::AddressUS.zip_code,
     notes: FFaker::HipsterIpsum.sentence,
     listing_agent_percentage: "15",
-    months_required: "first_month",
     management_info: FFaker::HipsterIpsum.phrase,
+    required_security: @company.required_securities[0],
     company: @company)
 end
 

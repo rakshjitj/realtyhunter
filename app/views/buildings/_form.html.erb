@@ -34,7 +34,8 @@ $( document ).ready(function() {
 
       <div class="field">
         <%= f.label :landlord_id, "Landlord" %><br>
-        <%= f.select(:landlord_id, options_for_select(current_user.company.landlords.collect {|l| [l.code, l.id]},[@building.landlord.id]),
+        <%= f.select(:landlord_id, options_for_select(current_user.company.landlords.collect {|l| [l.code, l.id]},
+          [@building.landlord ? @building.landlord.id : '']),
           {prompt: "Choose one..."},
           :required => true, 
           class: 'form-control',
@@ -44,7 +45,7 @@ $( document ).ready(function() {
       <div class="field">
         <%= f.label :user_id, "Listing Agent" %><br>
         <%= f.select(:user_id, options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
-          [@building.listing_agent.id]), 
+          [@building.listing_agent ? @building.listing_agent.id : '']), 
           {prompt: "Choose one..."},
           :required => true, 
           class: 'form-control',
