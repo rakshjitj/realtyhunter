@@ -2,7 +2,7 @@ class BuildingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
   before_action :set_building, except: [:index, :new, :create, :filter, 
-    :delete_modal, :inaccuracy_modal, :send_inaccuracy]
+    :inaccuracy_modal, :send_inaccuracy]
   after_action :clear_xhr_flash, only: [:send_inaccuracy]
 
   # GET /buildings
@@ -80,7 +80,6 @@ class BuildingsController < ApplicationController
   # GET 
   # handles ajax call. uses latest data in modal
   def delete_modal
-    @building = Building.find(params[:id])
     respond_to do |format|
       format.js  
     end
@@ -89,14 +88,12 @@ class BuildingsController < ApplicationController
   # DELETE /buildings/1
   # DELETE /buildings/1.json
   def destroy
-    if @building
-      @building.destroy
-      set_buildings
-    end
+    @building.destroy
+    set_buildings
     respond_to do |format|
       format.html { redirect_to buildings_url, notice: 'Building was successfully deleted.' }
       format.json { head :no_content }
-      format.js  
+      format.js
     end
   end
 
@@ -150,12 +147,6 @@ class BuildingsController < ApplicationController
       # get the whitelisted set of params, then arrange data
       # into the right format for our model
       param_obj = building_params
-      # param_obj[:notes] = param_obj[:building][:notes]
-      # param_obj[:formatted_street_address] = param_obj[:building][:formatted_street_address]
-      # param_obj[:landlord_id] = param_obj[:building][:landlord_id]
-      # param_obj[:user_id] = param_obj[:building][:user_id]
-      # param_obj[:building_amenity_ids] = param_obj[:building][:building_amenity_ids]
-      # param_obj[:rental_term_ids] = param_obj[:building][:rental_term_ids]
       param_obj[:building].each{ |k,v| param_obj[k] = v };
       param_obj.delete("building")
       

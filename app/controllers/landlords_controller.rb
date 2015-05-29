@@ -61,13 +61,23 @@ class LandlordsController < ApplicationController
     end
   end
 
+  # GET 
+  # handles ajax call. uses latest data in modal
+  def delete_modal
+    respond_to do |format|
+      format.js  
+    end
+  end
+
   # DELETE /landlords/1
   # DELETE /landlords/1.json
   def destroy
     @landlord.destroy
+    set_landlords
     respond_to do |format|
       format.html { redirect_to landlords_url, notice: 'Landlord was successfully destroyed.' }
       format.json { head :no_content }
+      format.js
     end
   end
 
@@ -79,8 +89,8 @@ class LandlordsController < ApplicationController
 
     def set_landlords
       @landlords = Landlord.search(params[:filter], params[:agent_filter], params[:active_only])
-      #names = @landlords.map{|l| l.name}
-      @landlords = @landlords.paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")
+      @landlords = custom_sort
+      @landlords = @landlords.paginate(:page => params[:page], :per_page => 50)
     end
 
     def custom_sort
@@ -105,7 +115,6 @@ class LandlordsController < ApplicationController
       # into the right format for our model
       param_obj = landlord_params
       param_obj[:landlord].each{ |k,v| param_obj[k] = v };
-      puts "\n\n**** #{param_obj.inspect}"
       param_obj.delete("landlord")
 
       @landlord.company = current_user.company

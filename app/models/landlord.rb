@@ -52,7 +52,7 @@ class Landlord < ActiveRecord::Base
     
     terms = query_str.split(" ")
     terms.each do |term|
-      running_list = @running_list.where('name ILIKE ? or code ILIKE ?', "%#{term}%", "%#{term}%")
+      @running_list = @running_list.where('name ILIKE ? or code ILIKE ?', "%#{term}%", "%#{term}%").all
     end
 
     # TODO:

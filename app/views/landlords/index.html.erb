@@ -7,8 +7,8 @@
       $.ajax({
         url: "<%= landlords_filter_path %>",
         data: {
-          filter : $('#filter').val(),
-          agent_filter: $('#agent_     filter').val(),
+          filter: $('#filter').val(),
+          agent_filter: $('#agent_filter').val(),
           active_only: $('#checkbox_active').checked
         },
         dataType: "script"
@@ -105,5 +105,26 @@
   <div class="col-md-6 col-md-offset-6 right">
     <%= link_to 'Download CSV', landlords_path(format: :csv) %><br />
     <%= will_paginate @landlords %>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="landlordDeleteModal" tabindex="-1" role="dialog" 
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Deleting Landlord</h4>
+      </div>
+      <div class="modal-body">
+        Placeholder
+      </div>
+      <div class="modal-footer">
+        <button class="delete-btn">Placeholder</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+      </div>
+
+    </div>
   </div>
 </div>

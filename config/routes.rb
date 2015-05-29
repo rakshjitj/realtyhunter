@@ -44,9 +44,12 @@ Rails.application.routes.draw do
   get 'buildings/:id/delete_modal', to: 'buildings#delete_modal', as: :building_delete_modal
   get 'buildings/:id/inaccuracy_modal', to: 'buildings#inaccuracy_modal', as: :building_inaccuracy_modal
   patch 'buildings/:id/send_inaccuracy', to: 'buildings#send_inaccuracy', as: :building_send_inaccuracy
+  
   resources :residential_units
+  
   resources :landlords
   get 'search/landlords', to: 'landlords#filter', as: :landlords_filter
+  get 'landlords/:id/delete_modal', to: 'landlords#delete_modal', as: :landlord_delete_modal
 
   resources :neighborhoods
   get 'static_pages/home'

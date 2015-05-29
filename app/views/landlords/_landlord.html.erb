@@ -1,12 +1,15 @@
-  <tr>
-    <td><%= link_to landlord.code, landlord %></td>
-    <td><%= landlord.name %></td>
-    <td><%= landlord.mobile %></td>
-    <td><!--%= landlord.primary_agent.name %--></td>
-    <td><%= landlord.active_units_count %></td>
-    <td><%= landlord.total_units_count %></td>
-    <td><%= landlord.last_unit_updated_on %></td>
-    <td>
-      <%= link_to 'Edit', edit_landlord_path(landlord) %> |
-      <%= link_to 'Destroy', landlord, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
+<tr class="<%= cycle('even', 'odd') -%>">
+  <td><%= link_to landlord.code, landlord %></td>
+  <td><%= landlord.name %></td>
+  <td><%= landlord.mobile %></td>
+  <td><!--%= landlord.primary_agent.name %--></td>
+  <td><%= landlord.active_units_count %></td>
+  <td><%= landlord.total_units_count %></td>
+  <td><%= landlord.last_unit_updated_on %></td>
+  <td>
+    <%= link_to 'Edit', edit_landlord_path(landlord) %> |
+    <!--%= link_to 'Destroy', landlord, method: :delete, data: { confirm: 'Are you sure?' } %-->
+    <%= link_to 'Delete', landlord_delete_modal_path(landlord), 
+    data: {toggle: "modal", target: "#landlordDeleteModal"}, remote: true %>
+  </td>
+</tr>
