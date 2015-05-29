@@ -6,6 +6,14 @@ class LandlordsController < ApplicationController
   # GET /landlords.json
   def index
     set_landlords
+
+    respond_to do |format|
+      format.html
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"landlords-list.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+    end
   end
 
   # GET /filter

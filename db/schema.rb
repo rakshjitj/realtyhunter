@@ -118,7 +118,6 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "zipcode"
     t.text     "notes"
     t.integer  "listing_agent_percentage"
-    t.string   "pet_policy"
     t.string   "management_info"
     t.integer  "required_security_id"
     t.integer  "pet_policy_id"
