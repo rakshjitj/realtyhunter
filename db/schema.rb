@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150529144212) do
+ActiveRecord::Schema.define(version: 20150519180148) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,11 @@ ActiveRecord::Schema.define(version: 20150529144212) do
     t.datetime "updated_at",                        null: false
   end
 
+  create_table "buildings_rental_terms", id: false, force: :cascade do |t|
+    t.integer "building_id"
+    t.integer "rental_term_id"
+  end
+
   create_table "commercial_units", force: :cascade do |t|
     t.string "sq_footage"
     t.string "floor"
@@ -76,12 +81,14 @@ ActiveRecord::Schema.define(version: 20150529144212) do
     t.integer  "buildings_id"
     t.integer  "landlords_id"
     t.integer  "building_amenities_id"
+    t.integer  "rental_terms_id"
   end
 
   add_index "companies", ["building_amenities_id"], name: "index_companies_on_building_amenities_id", using: :btree
   add_index "companies", ["buildings_id"], name: "index_companies_on_buildings_id", using: :btree
   add_index "companies", ["landlords_id"], name: "index_companies_on_landlords_id", using: :btree
   add_index "companies", ["offices_id"], name: "index_companies_on_offices_id", using: :btree
+  add_index "companies", ["rental_terms_id"], name: "index_companies_on_rental_terms_id", using: :btree
   add_index "companies", ["users_id"], name: "index_companies_on_users_id", using: :btree
 
   create_table "employee_titles", force: :cascade do |t|
@@ -145,6 +152,13 @@ ActiveRecord::Schema.define(version: 20150529144212) do
   end
 
   add_index "offices", ["users_id"], name: "index_offices_on_users_id", using: :btree
+
+  create_table "rental_terms", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "company_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "residential_units", force: :cascade do |t|
     t.integer "beds"

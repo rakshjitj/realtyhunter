@@ -9,6 +9,7 @@ class Company < ActiveRecord::Base
 	has_many :buildings
 	has_many :landlords
 	has_many :building_amenities
+	has_many :rental_terms
 
 	attr_accessor :agent_types, :employee_titles
 
@@ -41,17 +42,32 @@ class Company < ActiveRecord::Base
 	def self.create_with_environment(params)
 		# create default set of employee titles
 		# create default set of agent specializations
+
 		# create default set of building amenities
 		@company = Company.create(params)
 		BuildingAmenity.create([
-			{name: "Gym/Atheletic Facility", company: @company},
+			{name: "Gym/atheletic facility", company: @company},
 			{name: "Sauna", company: @company},
 			{name: "Doorman", company: @company},
 			{name: "Laundry in bldg", company: @company},
-			{name: "Bike Room", company: @company},
+			{name: "Bike room", company: @company},
 			{name: "Brownstone", company: @company},
 			{name: "Roof deck", company: @company},
 			{name: "Garage parking", company: @company}
+		])
+
+		RentalTerm.create([
+			{name: "Heat included", company: @company},
+			{name: "Hot water included", company: @company},
+			{name: "Heat/hot water included", company: @company},
+			{name: "Gas included", company: @company},
+			{name: "Electric included", company: @company},
+			{name: "Cable included", company: @company},
+			{name: "Internet included", company: @company},
+			{name: "All utils included", company: @company},
+			{name: "No utils included", company: @company},
+			{name: "Water not included", company: @company},
+			{name: "Trash not included", company: @company},
 		])
 		@company
 	end

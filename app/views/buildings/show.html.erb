@@ -63,12 +63,12 @@ $( document ).ready(function() {
 
 				<p>
 				  <strong>Features:</strong>
-				  <%= @building.amenities %>
+				  <%= @building.amenities_to_s %>
 				</p>
 
 				<p>
 				  <strong>Rental Terms:</strong>
-				  <!-- %= %-->
+				  <%= @building.rental_terms_to_s %>
 				</p>
 
 				<p>

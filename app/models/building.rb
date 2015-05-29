@@ -5,6 +5,7 @@ class Building < ActiveRecord::Base
 	has_many :units #, -> { order('posted_at DESC') }
 	belongs_to :neighborhood
 	has_and_belongs_to_many :building_amenities
+	has_and_belongs_to_many :rental_terms
 
 	# TODO: remove this line
 	# this is some BS we need to make cancancan happy, because it 
@@ -67,10 +68,19 @@ class Building < ActiveRecord::Base
     @running_list.uniq
 	end
 
-	def amenities
+	def amenities_to_s
 		amenities = self.building_amenities.map{|a| a.name}
 		if amenities
 			amenities.join(", ")
+		else
+			"None"
+		end
+	end
+
+	def rental_terms_to_s
+		terms = self.rental_terms.map{|a| a.name}
+		if terms
+			terms.join(", ")
 		else
 			"None"
 		end

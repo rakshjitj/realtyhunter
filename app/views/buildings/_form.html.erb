@@ -55,14 +55,29 @@ $( document ).ready(function() {
         <%= f.text_area :notes, class: 'form-control', rows: 5 %>
       </div>
 
-      <div class="field">
-        <%= f.label :building_amenity_ids, "Building-Level Features" %><br>
-        <%= f.select(:building_amenity_ids, options_for_select(current_user.company.building_amenities.collect {|a| [a.name, a.id]},
-          @building.building_amenity_ids), 
-          {},
-          {:multiple => true, :size => 10,
-            class: 'form-control'}) %>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="field">
+            <%= f.label :building_amenity_ids, "Building-Level Features" %><br>
+            <%= f.select(:building_amenity_ids, options_for_select(current_user.company.building_amenities.collect {|a| [a.name, a.id]},
+              @building.building_amenity_ids), 
+              {},
+              {:multiple => true, :size => 10,
+                class: 'form-control'}) %>
+          </div>
+        </div>
+        <div class="col-md-6">                
+          <div class="field">
+            <%= f.label :rental_term_ids, "Rental Terms" %><br>
+            <%= f.select(:rental_term_ids, options_for_select(current_user.company.rental_terms.collect {|a| [a.name, a.id]},
+              @building.rental_term_ids), 
+              {},
+              {:multiple => true, :size => 10,
+                class: 'form-control'}) %>
+          </div>
+        </div>
       </div>
+
       <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
       <div class="details field">
         <%= f.hidden_field :street_number, name: "street_number" %>
