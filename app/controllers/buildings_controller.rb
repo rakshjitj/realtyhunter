@@ -48,8 +48,8 @@ class BuildingsController < ApplicationController
   # POST /buildings.json
   def create
     @formatted_street_address = building_params[:building][:formatted_street_address]
-    @building = Building.new(building_params)
-    format_params_before_save
+    format_params_before_save(true)
+
     if @building.save
       redirect_to @building
     else
@@ -69,7 +69,7 @@ class BuildingsController < ApplicationController
   # PATCH/PUT /buildings/1
   # PATCH/PUT /buildings/1.json
   def update
-    if @building.update(format_params_before_save)
+    if @building.update(format_params_before_save(false))
       flash[:success] = "Building updated!"
       redirect_to @building
     else
@@ -143,7 +143,7 @@ class BuildingsController < ApplicationController
       @buildings
     end
 
-    def format_params_before_save
+    def format_params_before_save(is_new)
       # get the whitelisted set of params, then arrange data
       # into the right format for our model
       param_obj = building_params
@@ -154,8 +154,12 @@ class BuildingsController < ApplicationController
       @neighborhood_name = param_obj[:neighborhood]
       param_obj.delete("neighborhood")
 
+      if is_new
+        @building = Building.new(param_obj)
+      end
+
       @building.company = current_user.company
-      # TODO: once this data has been populate enough by google
+      # TODO: once this data has been populated enough by google
       # revert to regular save  #.save
       @building.neighborhood = @building.find_or_create_neighborhood(@neighborhood_name, param_obj[:sublocality], 
         param_obj[:administrative_area_level_2_short], param_obj[:administrative_area_level_1_short])
@@ -173,11 +177,11 @@ class BuildingsController < ApplicationController
     # Need to take in additional params here. Can't rename them, or the geocode plugin
     # will not map to them correctly
     def building_params
-      params.permit(:sort_by, :direction, :filter, :active_only, :street_number, :route, :neighborhood, :sublocality, 
-       :administrative_area_level_2_short, :administrative_area_level_1_short, :postal_code,
-       :country_short, :lat, :lng, :place_id, :landlord_id,
-       :building => [:formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description, 
-        :building_amenity_ids => [],
-        :rental_term_ids => [] ])
+      params.permit(:sort_by, :direction, :filter, :active_only, :street_number, :route, :neighborhood, 
+        :sublocality, :administrative_area_level_2_short, :administrative_area_level_1_short, 
+        :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id,
+        :building => [:formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description, 
+          :building_amenity_ids => [],
+          :rental_term_ids => [] ])
     end
 end
