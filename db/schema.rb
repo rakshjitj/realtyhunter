@@ -74,8 +74,8 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "name"
     t.string   "logo_id"
     t.string   "string"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.integer  "offices_id"
     t.integer  "users_id"
     t.integer  "buildings_id"
@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "rental_terms_id"
     t.integer  "required_securities_id"
     t.integer  "pet_policies_id"
+    t.integer  "residential_amenities_id"
   end
 
   add_index "companies", ["building_amenities_id"], name: "index_companies_on_building_amenities_id", using: :btree
@@ -93,6 +94,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   add_index "companies", ["pet_policies_id"], name: "index_companies_on_pet_policies_id", using: :btree
   add_index "companies", ["rental_terms_id"], name: "index_companies_on_rental_terms_id", using: :btree
   add_index "companies", ["required_securities_id"], name: "index_companies_on_required_securities_id", using: :btree
+  add_index "companies", ["residential_amenities_id"], name: "index_companies_on_residential_amenities_id", using: :btree
   add_index "companies", ["users_id"], name: "index_companies_on_users_id", using: :btree
 
   create_table "employee_titles", force: :cascade do |t|
@@ -126,10 +128,10 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "website"
     t.text     "notes"
     t.integer  "listing_agent_percentage"
-    t.string   "pet_policy"
     t.string   "management_info"
     t.integer  "required_security_id"
     t.integer  "pet_policy_id"
+    t.integer  "fee_percentage"
     t.integer  "company_id"
     t.integer  "buildings_id"
     t.datetime "created_at",                        null: false
@@ -193,6 +195,18 @@ ActiveRecord::Schema.define(version: 20150519180148) do
 
   add_index "required_securities", ["landlords_id"], name: "index_required_securities_on_landlords_id", using: :btree
 
+  create_table "residential_amenities", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "company_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "residential_amenities_units", id: false, force: :cascade do |t|
+    t.integer "residential_unit_id"
+    t.integer "residential_amenity_id"
+  end
+
   create_table "residential_units", force: :cascade do |t|
     t.integer "beds"
     t.float   "baths"
@@ -220,6 +234,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "open_house"
     t.float    "weeks_free_offered"
     t.integer  "building_id"
+    t.integer  "user_id"
     t.integer  "actable_id"
     t.string   "actable_type"
   end
@@ -245,6 +260,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "employee_title_id"
     t.integer  "manager_id"
     t.integer  "buildings_id"
+    t.integer  "units_id"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "avatar_id"
@@ -255,6 +271,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["employee_title_id"], name: "index_users_on_employee_title_id", using: :btree
   add_index "users", ["manager_id"], name: "index_users_on_manager_id", using: :btree
+  add_index "users", ["units_id"], name: "index_users_on_units_id", using: :btree
 
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"

@@ -73,8 +73,8 @@ $( document ).ready(function() {
             rows: 4 %>
           </div>
           <div class="field">
-            <%= f.label :listing_agent_percentage %><br>
-            <%= f.number_field :listing_agent_percentage, class: 'form-control', min: 0, max: 100 %>
+            <%= f.label :listing_agent_percentage, 'Listing agent %' %><br>
+            <%= f.text_field :listing_agent_percentage, class: 'form-control' %>
           </div>
           <div class="field">
             <%= f.label :required_security_id %><br>
@@ -85,6 +85,12 @@ $( document ).ready(function() {
               class: 'form-control',
               :include_blank => true) %>
           </div>
+
+          <div class="field">
+            <%= f.label :fee_percentage, 'Pays Fee %' %><br>
+            <%= f.text_field :fee_percentage, class: 'form-control' %>
+          </div>
+
           <div class="field">
             <%= f.label :pet_policy_id %><br>
             <%= f.select(:pet_policy_id, options_for_select(@landlord.company.pet_policies.all.collect { |r| [r.name, r.id] }, 

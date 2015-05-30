@@ -12,6 +12,7 @@
       t.references :rental_terms, index: true
       t.references :required_securities, index: true
       t.references :pet_policies, index: true
+      t.references :residential_amenities, index: true
     end
 
     create_table :offices do |t|
@@ -58,8 +59,9 @@
       t.belongs_to :office
       t.references :employee_title, index: true
       t.references :manager, index: true
-      t.references :buildings, index: true
+      t.references :buildings, index: true # listing agent
       #t.references :landlords, index: true
+      t.references :units, index: true # primary agent
       t.timestamps null: false
     end
     add_index :users, :email, unique: true
@@ -96,16 +98,17 @@
     end
 
     create_table :units do |t|
+      #t.integer :listing_id
       t.string :building_unit
       t.integer :rent
       t.timestamp :available_by
       t.string :access_info
       t.integer :status, default: 0
-      #t.string :listing_type
       t.string :open_house
       t.float :weeks_free_offered
       t.belongs_to :building
-      # primary agent
+      t.belongs_to :user # primary agent
+      # listing agent
       # updated_by
       #  this causes a problem with our MTI setup
       #t.timestamps null: false
@@ -151,10 +154,12 @@
       t.string :website
       t.text :notes
       t.integer :listing_agent_percentage
-      t.string :pet_policy
       t.string :management_info
       t.belongs_to :required_security
       t.belongs_to :pet_policy
+      # primary?
+      # listing?
+      t.integer :fee_percentage
       t.belongs_to :company
       t.references :buildings, index: true
       t.timestamps null: false
@@ -194,6 +199,18 @@
       t.belongs_to :company
       t.references :landlords, index: true
       t.timestamps null: false
+    end
+
+    create_table :residential_amenities do |t|
+      t.string :name
+      t.belongs_to :company
+      t.timestamps null: false
+    end
+
+    # common prefix "residential" gets factored out
+    create_table :residential_amenities_units, id: false do |t|
+      t.belongs_to :residential_unit
+      t.belongs_to :residential_amenity
     end
 
   end

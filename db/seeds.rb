@@ -141,10 +141,9 @@ end
   notes: "Catch-all landlord used to find unassigned buildings",
   listing_agent_percentage: "15",
   required_security: @company.required_securities[1],
+  fee_percentage: 95,
   pet_policy: @company.pet_policies[2],
   company: @company,
-
-
   })
 
 55.times do |n|
@@ -163,6 +162,7 @@ end
     listing_agent_percentage: "15",
     management_info: FFaker::HipsterIpsum.phrase,
     required_security: @company.required_securities[0],
+    fee_percentage: 95,
     pet_policy: @company.pet_policies[0],
     company: @company)
 end

@@ -5,8 +5,7 @@ class ResidentialUnitsController < ApplicationController
   # GET /residential_units
   # GET /residential_units.json
   def index
-    #@residential_units = ResidentialUnit.all
-    @residential_units = ResidentialUnit.all.paginate(:page => params[:page], :per_page => 50)#.order("updated_at ASC")
+    @residential_units = ResidentialUnit.all.paginate(:page => params[:page], :per_page => 50)
   end
 
   # GET /residential_units/1
@@ -71,6 +70,9 @@ class ResidentialUnitsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def residential_unit_params
-      params[:residential_unit].permit()
+      params[:residential_unit].permit(:building_unit, :rent, :available_by, 
+        :access_info, :status, :open_house, :weeks_free_offered, 
+        :building_id, :user_id, :beds, :baths, :notes, :lease_duration,
+        :residential_amenity_ids => [])
     end
 end

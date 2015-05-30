@@ -13,16 +13,21 @@ $( document ).ready(function() {
 });
 </script>
 
-<% provide(:title, 'Office') %>
-
+<% provide(:title, 'Residential Unit') %>
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
   	<div class="row">
   		<div class="col-md">
-	  		<h1 class="page-header">
-	  			<%= number_to_currency(@residential_unit.rent, {precision: 0}) %> - 
-	  			<%= @residential_unit.building.formatted_street_address %>, <%= @residential_unit.building_unit %></h1>
-	  			
+  			<div class="page-header">
+		  		<h1>
+		  			<%= rent_formatted %> - 
+		  			<%= @residential_unit.building.street_address %> #<%= @residential_unit.building_unit %>
+		  		</h1>
+		  		<p>
+	  				<%= @residential_unit.building.neighborhood.name %>, <%= @residential_unit.building.sublocality %>, <%= @residential_unit.building.administrative_area_level_2_short %> <%= @residential_unit.building.postal_code %>
+	  			</p>
+	  		</div>
+
 	  			<p>
 	  			<% if @residential_unit.status == "active" %>
             <span class="green">On Market</span>
@@ -50,10 +55,10 @@ $( document ).ready(function() {
 				  	<br />
 				    <p>
 				    	<strong>Building:</strong>
-  						<%= @residential_unit.building.formatted_street_address %>
+  						<%= link_to @residential_unit.building.formatted_street_address, @residential_unit.building %>
 						</p>
 						<p>
-							<strong>Access Info:</strong>
+							<strong>Access info:</strong>
 							<%= @residential_unit.access_info %>
 						</p>
 						<p>
@@ -61,17 +66,87 @@ $( document ).ready(function() {
 							<%= @residential_unit.beds %> / <%= @residential_unit.baths %>
 						</p>
 						<p>
-							<strong>Lease Duration:</strong>
+							<strong>Lease duration:</strong>
 							<%= @residential_unit.lease_duration.titleize %>
 						</p>
+
 						<p>
-							<strong>Building Notes:</strong>
+							<strong>Available by:</strong>
+							<% if @residential_unit.available_by < Date.today %>
+								Now
+							<% else %>
+								<%= @residential_unit.available_by.strftime("%Y-%b-%d") %>
+							<% end %>
+						</p>
+
+						<!-- TODO: integrate with dept of buildings to get
+							DOM, total floors, total units, year built, lot, block, community district, school district -->
+
+						<!-- Landlord info -->
+						<p>
+							<strong>Landlord:</strong>
+							<% if current_user.is_company_admin? || current_user.is_manager? %>
+								<%= link_to @residential_unit.building.landlord.code, @residential_unit.building.landlord %>
+							<% else %>
+								<%= @residential_unit.building.landlord.code %>
+							<% end %>
+						</p>
+						<p>
+							<strong>LL Pays Fee %:</strong>
+							<%= @residential_unit.building.landlord.fee_percentage %>
+						</p>
+						<p>
+							<strong>Pet Policy:</strong>
+							<%= @residential_unit.building.landlord.pet_policy.name %>
+						</p>
+						<p>
+							<strong>Required Security:</strong>
+							<%= @residential_unit.building.landlord.required_security.name %>
+						</p>
+						<p>
+							<strong>Landlord Notes:</strong>
+							<%= @residential_unit.building.landlord.notes %>
+						</p>
+						
+						<!-- Building info -->
+
+						<p>
+							<strong>Building notes:</strong>
 							<%= @residential_unit.building.notes %>
 						</p>
+
 						<p>
-							<strong>Unit Notes:</strong>
+							<strong>Rental Terms:</strong>
+							<%= @residential_unit.building.rental_terms_to_s %>
+						</p>
+
+						<p>
+							<strong>Building Amenities:</strong>
+							<%= @residential_unit.building.amenities_to_s %>
+						</p>
+
+						<!-- Unit info -->
+						<p>
+						  <strong>Unit Amenities:</strong>
+						  <%= @residential_unit.amenities_to_s %>
+						</p>
+						<p>
+							<strong>Unit notes:</strong>
 							<%= @residential_unit.notes %>
 						</p>
+						
+						<% if @residential_unit.primary_agent %>
+						<p>
+							<strong>Primary agent:</strong>
+							<%= @residential_unit.primary_agent.name %>
+						</p>
+						<% end %>
+
+						<p>
+							<strong>Open House:</strong>
+							<%= @residential_unit.open_house %>
+						</p>
+
 					</div>
 				</div><!-- end panel -->
 

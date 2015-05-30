@@ -1,5 +1,5 @@
 class Landlord < ActiveRecord::Base
-	has_many :buildings
+	has_many :buildings, dependent: :destroy
 	
 	belongs_to :company
 	validates :company, presence: true

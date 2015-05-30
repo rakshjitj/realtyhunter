@@ -4,14 +4,15 @@ class Company < ActiveRecord::Base
 						uniqueness: { case_sensitive: false }
 
 	has_many :offices, :dependent => :destroy
-	has_many :users
+	has_many :users, dependent: :destroy
 	accepts_nested_attributes_for :users
-	has_many :buildings
-	has_many :landlords
-	has_many :building_amenities
-	has_many :rental_terms
-	has_many :required_securities
-	has_many :pet_policies
+	has_many :buildings, dependent: :destroy
+	has_many :landlords, dependent: :destroy
+	has_many :building_amenities, dependent: :destroy
+	has_many :rental_terms, dependent: :destroy
+	has_many :required_securities, dependent: :destroy
+	has_many :pet_policies, dependent: :destroy
+	has_many :residential_amenities, dependent: :destroy
 
 	attr_accessor :agent_types, :employee_titles
 
@@ -46,6 +47,7 @@ class Company < ActiveRecord::Base
 		# Admins can always change them once the company has been created.
 		
 		@company = Company.create(params)
+
 		BuildingAmenity.create([
 			{name: "Gym/atheletic facility", company: @company},
 			{name: "Sauna", company: @company},
@@ -86,6 +88,29 @@ class Company < ActiveRecord::Base
 			{name: "Pets ok", company: @company},
 			{name: "Small pets ok (<30 lbs)", company: @company},
 			{name: "No pets", company: @company},
+		])
+
+		ResidentialAmenity.create([
+			{name: "Washer/dryer in unit", company: @company},
+			{name: "Washer/dryer hookups", company: @company},
+			{name: "Central A/C", company: @company},
+			{name: "Central heat", company: @company},
+			{name: "Airconditioning", company: @company},
+			{name: "Balcony/Terrace", company: @company},
+			{name: "Private yard", company: @company},
+			{name: "Shared yard", company: @company},
+			{name: "Bay windows", company: @company},
+			{name: "Dishwasher", company: @company},
+			{name: "Microwave", company: @company},
+			{name: "Doorman", company: @company},
+			{name: "Duplex", company: @company},
+			{name: "Triplex", company: @company},
+			{name: "Railroad", company: @company},
+			{name: "Renovated", company: @company},
+			{name: "Roof access", company: @company},
+			{name: "Skylight", company: @company},
+			{name: "Walk-in closet", company: @company},
+			{name: "Waterfront", company: @company},
 		])
 
 		@company

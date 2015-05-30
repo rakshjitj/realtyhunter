@@ -2,7 +2,7 @@ class Building < ActiveRecord::Base
 	belongs_to :company
 	belongs_to :landlord
 	belongs_to :listing_agent, :foreign_key => 'user_id', :class_name => 'User'
-	has_many :units #, -> { order('posted_at DESC') }
+	has_many :units, dependent: :destroy
 	belongs_to :neighborhood
 	has_and_belongs_to_many :building_amenities
 	has_and_belongs_to_many :rental_terms

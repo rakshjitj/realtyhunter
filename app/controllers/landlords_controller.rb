@@ -130,6 +130,6 @@ class LandlordsController < ApplicationController
         :landlord => [:code, :name, :mobile, :office_phone, :fax, 
           :email, :website, :formatted_street_address, :notes, 
           :listing_agent_percentage, :required_security_id, :pet_policy_id, 
-          :management_info])
+          :management_info, :fee_percentage])
     end
 end

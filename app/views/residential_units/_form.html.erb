@@ -9,25 +9,25 @@
     <div class="panel-body">
       <div class="field">
         <%= f.label :building_unit, "Unit" %><br>
-        <%= f.text_field :building_unit, class: 'form-control' %>
+        <%= f.text_field :building_unit, class: 'form-control', :required => true %>
       </div>
       <div class="field">
         <%= f.label :rent %><br>
-        <%= f.number_field :rent, class: 'form-control' %>
+        <%= f.number_field :rent, class: 'form-control', :required => true %>
       </div>
       <div class="field">
         <%= f.label :access_info %><br>
         <%= f.text_area :access_info, class: 'form-control',
-        rows: 4 %>
+        rows: 4, :required => true %>
       </div>
       <div class="field">
         <%= f.label :beds %><br>
         <%= f.number_field :beds, class: 'form-control',
-        in: 0.0..10.0 %>
+        in: 0.0..10.0, :required => true %>
       </div>
       <div class="field">
         <%= f.label :baths %><br>
-        <%= f.number_field :baths, class: 'form-control', step: 0.5, in: 0.0..10.0 %>
+        <%= f.number_field :baths, class: 'form-control', step: 0.5, in: 0.0..10.0 , :required => true %>
       </div>
       <div class="field">
         <%= f.label :available_by %><br>
@@ -35,14 +35,35 @@
       </div>
       <div class="field">
         <%= f.label :lease_duration %><br>
-        <%= f.select :lease_duration, options_for_select(ResidentialUnit.lease_durations.collect { |s| [s[0].humanize, s[0]] }, selected: @residential_unit.lease_duration), {} , class: "form-control" %>
+        <%= f.select :lease_duration, options_for_select(ResidentialUnit.lease_durations.collect { |s| [s[0].humanize, s[0]] }, selected: @residential_unit.lease_duration), {} , 
+        :required => true,
+        class: "form-control" %>
+      </div>
+       <div class="field">
+        <%= f.label :residential_amenity_ids, "Unit Amenities" %><br>
+        <%= f.select(:residential_amenity_ids, options_for_select(current_user.company.residential_amenities.collect {|a| [a.name, a.id]},
+          @residential_unit.residential_amenity_ids), 
+          {},
+          {:multiple => true, :size => 10,
+            class: 'form-control'}) %>
       </div>
       <div class="field">
         <%= f.label :notes %><br>
         <%= f.text_field :notes, class: 'form-control' %>
       </div>
-      
-    </div>
+      <div class="field">
+        <%= f.label :user_id, "Primary Agent" %><br>
+        <%= f.select(:user_id, options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
+          [@residential_unit.primary_agent ? @residential_unit.primary_agent.id : '']), 
+          {prompt: "Choose one..."},
+          class: 'form-control',
+          :include_blank => true) %>
+      </div>
+      <div class="field">
+        <%= f.label :open_house, "Open House Info" %><br>
+        <%= f.text_area :open_house, class: 'form-control', rows: 4 %>
+      </div>
+     
   </div>
 
 

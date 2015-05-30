@@ -56,7 +56,7 @@ $( document ).ready(function() {
       <div class="row">
         <div class="col-md-6">
           <div class="field">
-            <%= f.label :building_amenity_ids, "Building-Level Features" %><br>
+            <%= f.label :building_amenity_ids, "Building-Level Amenities" %><br>
             <%= f.select(:building_amenity_ids, options_for_select(current_user.company.building_amenities.collect {|a| [a.name, a.id]},
               @building.building_amenity_ids), 
               {},
