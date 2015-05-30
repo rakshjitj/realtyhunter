@@ -26,15 +26,16 @@ class ResidentialUnitsController < ApplicationController
   # POST /residential_units.json
   def create
     @residential_unit = ResidentialUnit.new(residential_unit_params)
+    @residential_unit.listing_id = ResidentialUnit.generate_unique_id
 
     # respond_to do |format|
-    #   if @residential_unit.save
-    #     format.html { redirect_to @residential_unit, notice: 'Residential unit was successfully created.' }
-    #     format.json { render :show, status: :created, location: @residential_unit }
-    #   else
-        format.html { render :new }
-        format.json { render json: @residential_unit.errors, status: :unprocessable_entity }
-    #   end
+    if @residential_unit.save
+      format.html { redirect_to @residential_unit, notice: 'Residential unit was successfully created.' }
+      format.json { render :show, status: :created, location: @residential_unit }
+    else
+      format.html { render :new }
+      format.json { render json: @residential_unit.errors, status: :unprocessable_entity }
+    end
     # end
   end
 

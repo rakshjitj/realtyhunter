@@ -35,9 +35,12 @@
       </div>
       <div class="field">
         <%= f.label :lease_duration %><br>
-        <%= f.select :lease_duration, options_for_select(ResidentialUnit.lease_durations.collect { |s| [s[0].humanize, s[0]] }, selected: @residential_unit.lease_duration), {} , 
-        :required => true,
-        class: "form-control" %>
+        <%= f.select :lease_duration, 
+          options_for_select(ResidentialUnit.lease_durations.collect { |s| [s[0].humanize, s[0]] }, 
+            [@residential_unit.lease_duration]), 
+          {prompt: "Choose one..."},
+          :required => true,
+          class: "form-control" %>
       </div>
        <div class="field">
         <%= f.label :residential_amenity_ids, "Unit Amenities" %><br>
@@ -49,23 +52,23 @@
       </div>
       <div class="field">
         <%= f.label :notes %><br>
-        <%= f.text_field :notes, class: 'form-control' %>
+        <%= f.text_area :notes, class: 'form-control', rows: 6 %>
       </div>
       <div class="field">
         <%= f.label :user_id, "Primary Agent" %><br>
-        <%= f.select(:user_id, options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
-          [@residential_unit.primary_agent ? @residential_unit.primary_agent.id : '']), 
+        <%= f.select(:user_id, 
+          options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
+            [@residential_unit.primary_agent ? @residential_unit.primary_agent.id : '']), 
           {prompt: "Choose one..."},
           class: 'form-control',
           :include_blank => true) %>
       </div>
       <div class="field">
         <%= f.label :open_house, "Open House Info" %><br>
-        <%= f.text_area :open_house, class: 'form-control', rows: 4 %>
+        <%= f.text_area :open_house, class: 'form-control', rows: 3 %>
       </div>
      
   </div>
-
 
   <div class="actions">
     <%= f.submit %>

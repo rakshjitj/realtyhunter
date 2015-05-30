@@ -7,5 +7,6 @@ class Unit < ActiveRecord::Base
 	
 	validates :building_unit, presence: true, length: {maximum: 50}
 	validates :rent, presence: true, numericality: true
+	validates :listing_id, presence: true, uniqueness: true
 	
 end

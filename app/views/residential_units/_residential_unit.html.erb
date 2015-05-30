@@ -6,7 +6,7 @@
   <td><%= residential_unit.access_info %></td>
   <td><%= residential_unit.beds %> / <%= residential_unit.baths %></td>
   <td><%= residential_unit.available_by.strftime("%Y-%b-%d") %></td>
-  <td><%= residential_unit.rent %></td>
+  <td><%= rent_formatted(residential_unit) %></td>
   <td>--</td>
   <td>
     <% if residential_unit.status == "active" %>

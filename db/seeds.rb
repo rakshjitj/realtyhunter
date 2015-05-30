@@ -189,6 +189,7 @@ end
 55.times do |n|
 
   ru = ResidentialUnit.create({
+    listing_id: ResidentialUnit.generate_unique_id,
     building_unit: Faker::Number.number(2),
     rent: Faker::Number.number(4),
     beds: Faker::Number.number(1),

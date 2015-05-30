@@ -226,6 +226,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
   create_table "units", force: :cascade do |t|
+    t.integer  "listing_id"
     t.string   "building_unit"
     t.integer  "rent"
     t.datetime "available_by"
