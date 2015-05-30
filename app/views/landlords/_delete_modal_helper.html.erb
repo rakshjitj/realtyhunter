@@ -1,0 +1,9 @@
+<% if landlord.buildings.count > 0 %>
+  <p>Deleting <strong><%= landlord.code %></strong> will also delete the landlords's 
+  <strong><%= landlord.buildings.count %> buildings with a total of <% landlord.total_units_count %> units.</strong></p>
+  <br />
+<% end %>
+
+<p>Are you sure you want to delete <strong><%= landlord.code %>?</strong></p>
+<br />
+<p>This action can't be undone.</p>

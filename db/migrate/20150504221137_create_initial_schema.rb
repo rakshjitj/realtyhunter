@@ -10,6 +10,8 @@
       t.references :landlords, index: true
       t.references :building_amenities, index: true
       t.references :rental_terms, index: true
+      t.references :required_securities, index: true
+      t.references :pet_policies, index: true
     end
 
     create_table :offices do |t|
@@ -57,6 +59,7 @@
       t.references :employee_title, index: true
       t.references :manager, index: true
       t.references :buildings, index: true
+      #t.references :landlords, index: true
       t.timestamps null: false
     end
     add_index :users, :email, unique: true
@@ -70,6 +73,7 @@
       t.references :buildings, index: true
     end
 
+    # TODO: pull address info into it's own table?
     create_table :buildings do |t|
       t.string :formatted_street_address
       t.string :street_number
@@ -82,6 +86,7 @@
       t.string :lat
       t.string :lng
       t.string :place_id
+
       t.string :notes
       t.belongs_to :company
       t.belongs_to :landlord
@@ -124,23 +129,32 @@
     end
 
     create_table :landlords do |t|
+      t.string :formatted_street_address
+      t.string :street_number
+      t.string :route
+      t.string :sublocality
+      t.string :administrative_area_level_2_short
+      t.string :administrative_area_level_1_short
+      t.string :postal_code
+      t.string :neighborhood
+      t.string :country_short
+      t.string :lat
+      t.string :lng
+      t.string :place_id
+
       t.string :code
       t.string :name
-      t.string :phone
+      t.string :office_phone
       t.string :mobile
       t.string :fax
       t.string :email
       t.string :website
-      t.string :street_address
-      t.string :city
-      t.string :state
-      t.string :zipcode
       t.text :notes
       t.integer :listing_agent_percentage
-      t.integer :months_required
       t.string :pet_policy
       t.string :management_info
-
+      t.belongs_to :required_security
+      t.belongs_to :pet_policy
       t.belongs_to :company
       t.references :buildings, index: true
       t.timestamps null: false
@@ -166,6 +180,20 @@
     create_table :buildings_rental_terms, id: false do |t|
       t.belongs_to :building
       t.belongs_to :rental_term
+    end
+
+    create_table :required_securities do |t|
+      t.string :name
+      t.belongs_to :company
+      t.references :landlords, index: true
+      t.timestamps null: false
+    end
+
+    create_table :pet_policies do |t|
+      t.string :name
+      t.belongs_to :company
+      t.references :landlords, index: true
+      t.timestamps null: false
     end
 
   end

@@ -2,7 +2,7 @@ class BuildingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
   before_action :set_building, except: [:index, :new, :create, :filter, 
-    :delete_modal, :inaccuracy_modal, :send_inaccuracy]
+    :inaccuracy_modal, :send_inaccuracy]
   after_action :clear_xhr_flash, only: [:send_inaccuracy]
 
   # GET /buildings
@@ -13,7 +13,7 @@ class BuildingsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        headers['Content-Disposition'] = "attachment; filename=\"building-list.csv\""
+        headers['Content-Disposition'] = "attachment; filename=\"buildings-list.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
     end
@@ -34,6 +34,10 @@ class BuildingsController < ApplicationController
   # GET /buildings/new
   def new
     @building = Building.new
+    landlord_id = params[:landlord_id]
+    if landlord_id && Landlord.find(landlord_id)
+      @building.landlord_id = landlord_id
+    end
   end
 
   # GET /buildings/1/edit
@@ -44,17 +48,19 @@ class BuildingsController < ApplicationController
   # POST /buildings.json
   def create
     @formatted_street_address = building_params[:building][:formatted_street_address]
-    @building = Building.new(building_params)
-    format_params_before_save
+    format_params_before_save(true)
+
     if @building.save
       redirect_to @building
     else
       #puts "**** #{@user.errors.inspect}"
+      # if this building has already been entered, redirect to that page
       @bldg = Building.find_by(formatted_street_address: @formatted_street_address)
       if @bldg
         flash[:info] = "Building already exists!"
         redirect_to @bldg
       else 
+        # error
         render 'new'
       end
     end
@@ -63,7 +69,7 @@ class BuildingsController < ApplicationController
   # PATCH/PUT /buildings/1
   # PATCH/PUT /buildings/1.json
   def update
-    if @building.update(format_params_before_save)
+    if @building.update(format_params_before_save(false))
       flash[:success] = "Building updated!"
       redirect_to @building
     else
@@ -74,7 +80,6 @@ class BuildingsController < ApplicationController
   # GET 
   # handles ajax call. uses latest data in modal
   def delete_modal
-    @building = Building.find(params[:id])
     respond_to do |format|
       format.js  
     end
@@ -83,14 +88,12 @@ class BuildingsController < ApplicationController
   # DELETE /buildings/1
   # DELETE /buildings/1.json
   def destroy
-    if @building
-      @building.destroy
-      set_buildings
-    end
+    @building.destroy
+    set_buildings
     respond_to do |format|
       format.html { redirect_to buildings_url, notice: 'Building was successfully deleted.' }
       format.json { head :no_content }
-      format.js  
+      format.js
     end
   end
 
@@ -140,24 +143,23 @@ class BuildingsController < ApplicationController
       @buildings
     end
 
-    def format_params_before_save
+    def format_params_before_save(is_new)
       # get the whitelisted set of params, then arrange data
       # into the right format for our model
       param_obj = building_params
-      param_obj[:notes] = param_obj[:building][:notes]
-      param_obj[:formatted_street_address] = param_obj[:building][:formatted_street_address]
-      param_obj[:landlord_id] = param_obj[:building][:landlord_id]
-      param_obj[:user_id] = param_obj[:building][:user_id]
-      param_obj[:building_amenity_ids] = param_obj[:building][:building_amenity_ids]
-      param_obj[:rental_term_ids] = param_obj[:building][:rental_term_ids]
+      param_obj[:building].each{ |k,v| param_obj[k] = v };
       param_obj.delete("building")
       
       # delete so that this field doesn't conflict with our foreign key
       @neighborhood_name = param_obj[:neighborhood]
       param_obj.delete("neighborhood")
 
+      if is_new
+        @building = Building.new(param_obj)
+      end
+
       @building.company = current_user.company
-      # TODO: once this data has been populate enough by google
+      # TODO: once this data has been populated enough by google
       # revert to regular save  #.save
       @building.neighborhood = @building.find_or_create_neighborhood(@neighborhood_name, param_obj[:sublocality], 
         param_obj[:administrative_area_level_2_short], param_obj[:administrative_area_level_1_short])
@@ -175,11 +177,11 @@ class BuildingsController < ApplicationController
     # Need to take in additional params here. Can't rename them, or the geocode plugin
     # will not map to them correctly
     def building_params
-      params.permit(:sort_by, :direction, :filter, :active_only, :street_number, :route, :neighborhood, :sublocality, 
-       :administrative_area_level_2_short, :administrative_area_level_1_short, :postal_code,
-       :country_short, :lat, :lng, :place_id, 
-       :building => [:formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description, 
-        :building_amenity_ids => [],
-        :rental_term_ids => [] ])
+      params.permit(:sort_by, :direction, :filter, :active_only, :street_number, :route, :neighborhood, 
+        :sublocality, :administrative_area_level_2_short, :administrative_area_level_1_short, 
+        :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id,
+        :building => [:formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description, 
+          :building_amenity_ids => [],
+          :rental_term_ids => [] ])
     end
 end

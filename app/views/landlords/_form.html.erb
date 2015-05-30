@@ -1,3 +1,19 @@
+<script>
+$( document ).ready(function() {
+    $(".autocomplete-input").geocomplete({
+      map: "#map_canvas",
+      location: "<%= @landlord.formatted_street_address ? @landlord.formatted_street_address : 'New York, NY, USA' %>" ,
+      details: ".details"
+    }).bind("geocode:result", function(event, result){
+      if (this.value == "New York, NY, USA") {
+        this.value = '';
+      }
+    }).bind("geocode:error", function(event, result){
+      console.log("<%= @landlord.formatted_street_address %>", "[ERROR]: " + result);
+    });
+
+});
+</script>
 <div class="row">
   <div class="col-md-12">
     <div class="panel panel-default">
@@ -25,8 +41,8 @@
             <%= f.text_field :name, class: 'form-control' %>
           </div>
           <div class="field">
-            <%= f.label :phone %><br>
-            <%= f.text_field :phone, class: 'form-control' %>
+            <%= f.label :office_phone %><br>
+            <%= f.text_field :office_phone, class: 'form-control' %>
           </div>
           <div class="field">
             <%= f.label :mobile %><br>
@@ -45,45 +61,62 @@
             <%= f.text_field :website, class: 'form-control' %>
           </div>
           <div class="field">
-            <%= f.label :street_address %><br>
-            <%= f.text_field :street_address, class: 'form-control' %>
+            <%= f.label :formatted_street_address, "Street Address" %><br>
+            <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input', placeholder: "123 Main St" %>
+            <br/>
+            <p>Visually confirm the building's location:</p>
+            <div id="map_canvas"></div>
           </div>
           <div class="field">
-            <%= f.label :city %><br>
-            <%= f.text_field :city, class: 'form-control' %>
-          </div>
-          <div class="field">
-            <%= f.label :state %><br>
-            <%= f.text_field :state, class: 'form-control' %>
-          </div>
-          <div class="field">
-            <%= f.label :zipcode %><br>
-            <%= f.text_field :zipcode, class: 'form-control' %>
-          </div>
-          <div class="field">
-            <%= f.label :notes %><br>
+            <%= f.label :notes, "Notes (will be shared on listings)" %><br>
             <%= f.text_area :notes, class: 'form-control',
             rows: 4 %>
           </div>
           <div class="field">
             <%= f.label :listing_agent_percentage %><br>
-            <%= f.text_field :listing_agent_percentage, class: 'form-control' %>
+            <%= f.number_field :listing_agent_percentage, class: 'form-control', min: 0, max: 100 %>
           </div>
           <div class="field">
-            <%= f.label :months_required %><br>
-            <%= f.select :months_required, options_for_select(Landlord.months_requireds.collect { |s| [s[0].humanize, s[0]] }, selected: @landlord.months_required), {} , class: "form-control" %>
+            <%= f.label :required_security_id %><br>
+            <%= f.select(:required_security_id, options_for_select(@landlord.company.required_securities.all.collect { |r| [r.name, r.id] }, 
+              [@landlord.required_security ? @landlord.required_security.id : '']),
+               {prompt: "Choose one..."},
+              :required => true, 
+              class: 'form-control',
+              :include_blank => true) %>
           </div>
           <div class="field">
-            <%= f.label :pet_policy %><br>
-            <%= f.text_field :pet_policy, class: 'form-control' %>
+            <%= f.label :pet_policy_id %><br>
+            <%= f.select(:pet_policy_id, options_for_select(@landlord.company.pet_policies.all.collect { |r| [r.name, r.id] }, 
+              [@landlord.pet_policy ? @landlord.pet_policy.id : '']),
+               {prompt: "Choose one..."},
+              :required => true, 
+              class: 'form-control',
+              :include_blank => true) %>
           </div>
           <div class="field">
-            <%= f.label :management_info %><br>
+            <%= f.label :management_info, "Additional Management Info" %><br>
             <%= f.text_area :management_info, class: 'form-control', rows: 4 %>
           </div>
           <div class="actions">
             <%= f.submit %>
           </div>
+
+          <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
+          <div class="details field">
+            <%= f.hidden_field :street_number, name: "street_number" %>
+            <%= f.hidden_field :route, name: "route" %>
+            <%= f.hidden_field :neighborhood, name:"neighborhood" %>
+            <%= f.hidden_field :sublocality, name:"sublocality" %>
+            <%= f.hidden_field :administrative_area_level_2_short, name:"administrative_area_level_2_short" %>
+            <%= f.hidden_field :administrative_area_level_1_short, name:"administrative_area_level_1_short" %>
+            <%= f.hidden_field :postal_code, name:"postal_code" %>
+            <%= f.hidden_field :country_short, name:"country_short" %>
+            <%= f.hidden_field :lat, name:"lat" %>
+            <%= f.hidden_field :lng, name:"lng" %>
+            <%= f.hidden_field :place_id, name:"place_id" %>
+          </div>
+
         <% end %>
       </div>
     </div>

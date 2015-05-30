@@ -10,6 +10,8 @@ class Company < ActiveRecord::Base
 	has_many :landlords
 	has_many :building_amenities
 	has_many :rental_terms
+	has_many :required_securities
+	has_many :pet_policies
 
 	attr_accessor :agent_types, :employee_titles
 
@@ -40,10 +42,9 @@ class Company < ActiveRecord::Base
 	end
 
 	def self.create_with_environment(params)
-		# create default set of employee titles
-		# create default set of agent specializations
-
-		# create default set of building amenities
+		# Create the default environment options for the company.
+		# Admins can always change them once the company has been created.
+		
 		@company = Company.create(params)
 		BuildingAmenity.create([
 			{name: "Gym/atheletic facility", company: @company},
@@ -69,6 +70,24 @@ class Company < ActiveRecord::Base
 			{name: "Water not included", company: @company},
 			{name: "Trash not included", company: @company},
 		])
+
+		RequiredSecurity.create([
+			{name: "First month", company: @company},
+			{name: "First and last month", company: @company},
+			{name: "First, last and 2 months", company: @company},
+			{name: "First, last and 3 months", company: @company},
+			{name: "Broker's fee", company: @company},
+			{name: "Broker's fee and first month", company: @company},
+		])
+
+		PetPolicy.create([
+			{name: "Cats ok", company: @company},
+			{name: "Dogs ok", company: @company},
+			{name: "Pets ok", company: @company},
+			{name: "Small pets ok (<30 lbs)", company: @company},
+			{name: "No pets", company: @company},
+		])
+
 		@company
 	end
 end

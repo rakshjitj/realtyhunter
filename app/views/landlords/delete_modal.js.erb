@@ -1,0 +1,8 @@
+$('#landlordDeleteModal .modal-body').html("<%= j(render :partial => "delete_modal_helper", locals: { landlord: @landlord }) %>");
+$('#landlordDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', @landlord, remote: true, method: :delete, class: 'btn btn-danger link-as-button', id: 'delete-link') %>");
+$('#landlordDeleteModal #delete-link').click( function(event) {
+	$('#landlordDeleteModal').modal('hide');
+	event.preventDefault();
+});
+
+$('#landlordDeleteModal').modal('show');

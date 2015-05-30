@@ -49,6 +49,7 @@ Rails.application.routes.draw do
 
   resources :landlords
   get 'search/landlords', to: 'landlords#filter', as: :landlords_filter
+  get 'landlords/:id/delete_modal', to: 'landlords#delete_modal', as: :landlord_delete_modal
 
   resources :neighborhoods
   get 'static_pages/home'

@@ -3,7 +3,7 @@
    //call when typing or enter or focus leaving
   $( document ).ready(function() {
 
-    function doSearch() {
+    function doSearch(event) {
       $.ajax({
         url: "<%= buildings_filter_path %>",
         data: {
@@ -16,32 +16,25 @@
       });
     };
 
+    // search as user types
+    var timer;
+    function throttledSearch() {
+      clearInterval(timer);  //clear any interval on key up
+      timer = setTimeout(doSearch, 500);
+    };
+    
     // change enter key to tab
-    $('#filter').keydown(function(event) {
+    function preventEnter(event) {
       if (event.keyCode == 13) {
         $('#checkbox_active').focus();
         return false;
       }
-    });
+    };
 
-    // search as user types
-    var timer;
-    $('#filter').keyup(function() {
-      clearInterval(timer); // clear any interval on key up
-      timer = setTimeout(doSearch, 500);
-    });
-
+    $('#filter').keydown(preventEnter);
+    $('#filter').keyup(throttledSearch);
     // toggle between active and inactive units
-    $('#checkbox_active').click(function(event){
-      $.ajax({
-        url: "<%= buildings_filter_path %>",
-        data: {
-          filter: $('#filter').val(),
-          active_only: $('#checkbox_active').prop('checked')
-        },
-        dataType: "script"
-      });
-    });
+    $('#checkbox_active').click(doSearch);
 
   });
 </script>
@@ -97,7 +90,7 @@
 </div>
 
 <div class="row">
-  <div class="col-md-2 col-md-offset-10 right">
+  <div class="col-md-6 col-md-offset-6 right">
     <%= link_to 'Download CSV', buildings_path(format: :csv) %><br />
     <%= will_paginate @buildings %>
   </div>
@@ -113,7 +106,7 @@
         <h4 class="modal-title" id="myModalLabel">Delete Building</h4>
       </div>
       <div class="modal-body">
-      
+        Placeholder
       </div>
       <div class="modal-footer">
         <button class="delete-btn">Placeholder</button>

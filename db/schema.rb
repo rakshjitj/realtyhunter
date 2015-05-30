@@ -74,21 +74,25 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "name"
     t.string   "logo_id"
     t.string   "string"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.integer  "offices_id"
     t.integer  "users_id"
     t.integer  "buildings_id"
     t.integer  "landlords_id"
     t.integer  "building_amenities_id"
     t.integer  "rental_terms_id"
+    t.integer  "required_securities_id"
+    t.integer  "pet_policies_id"
   end
 
   add_index "companies", ["building_amenities_id"], name: "index_companies_on_building_amenities_id", using: :btree
   add_index "companies", ["buildings_id"], name: "index_companies_on_buildings_id", using: :btree
   add_index "companies", ["landlords_id"], name: "index_companies_on_landlords_id", using: :btree
   add_index "companies", ["offices_id"], name: "index_companies_on_offices_id", using: :btree
+  add_index "companies", ["pet_policies_id"], name: "index_companies_on_pet_policies_id", using: :btree
   add_index "companies", ["rental_terms_id"], name: "index_companies_on_rental_terms_id", using: :btree
+  add_index "companies", ["required_securities_id"], name: "index_companies_on_required_securities_id", using: :btree
   add_index "companies", ["users_id"], name: "index_companies_on_users_id", using: :btree
 
   create_table "employee_titles", force: :cascade do |t|
@@ -101,26 +105,35 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   add_index "employee_titles", ["users_id"], name: "index_employee_titles_on_users_id", using: :btree
 
   create_table "landlords", force: :cascade do |t|
+    t.string   "formatted_street_address"
+    t.string   "street_number"
+    t.string   "route"
+    t.string   "sublocality"
+    t.string   "administrative_area_level_2_short"
+    t.string   "administrative_area_level_1_short"
+    t.string   "postal_code"
+    t.string   "neighborhood"
+    t.string   "country_short"
+    t.string   "lat"
+    t.string   "lng"
+    t.string   "place_id"
     t.string   "code"
     t.string   "name"
-    t.string   "phone"
+    t.string   "office_phone"
     t.string   "mobile"
     t.string   "fax"
     t.string   "email"
     t.string   "website"
-    t.string   "street_address"
-    t.string   "city"
-    t.string   "state"
-    t.string   "zipcode"
     t.text     "notes"
     t.integer  "listing_agent_percentage"
-    t.integer  "months_required"
     t.string   "pet_policy"
     t.string   "management_info"
+    t.integer  "required_security_id"
+    t.integer  "pet_policy_id"
     t.integer  "company_id"
     t.integer  "buildings_id"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
   add_index "landlords", ["buildings_id"], name: "index_landlords_on_buildings_id", using: :btree
@@ -153,12 +166,32 @@ ActiveRecord::Schema.define(version: 20150519180148) do
 
   add_index "offices", ["users_id"], name: "index_offices_on_users_id", using: :btree
 
+  create_table "pet_policies", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "company_id"
+    t.integer  "landlords_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "pet_policies", ["landlords_id"], name: "index_pet_policies_on_landlords_id", using: :btree
+
   create_table "rental_terms", force: :cascade do |t|
     t.string   "name"
     t.integer  "company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "required_securities", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "company_id"
+    t.integer  "landlords_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "required_securities", ["landlords_id"], name: "index_required_securities_on_landlords_id", using: :btree
 
   create_table "residential_units", force: :cascade do |t|
     t.integer "beds"

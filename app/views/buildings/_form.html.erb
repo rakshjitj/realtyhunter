@@ -1,7 +1,5 @@
 <script>
 $( document ).ready(function() {
-    console.log( "autocomplete plugin ready!" );
-
     $(".autocomplete-input").geocomplete({
       map: "#map_canvas",
       location: "<%= @building.formatted_street_address ? @building.formatted_street_address : 'New York, NY, USA' %>" ,
@@ -10,9 +8,8 @@ $( document ).ready(function() {
       if (this.value == "New York, NY, USA") {
         this.value = '';
       }
-      console.log(result);
     }).bind("geocode:error", function(event, result){
-      console.log("<%= @building.formatted_street_address %>", "[ERROR]: " + result);
+      //console.log("<%= @building.formatted_street_address %>", "[ERROR]: " + result);
     });
 
 });
@@ -34,7 +31,8 @@ $( document ).ready(function() {
 
       <div class="field">
         <%= f.label :landlord_id, "Landlord" %><br>
-        <%= f.select(:landlord_id, options_for_select(current_user.company.landlords.collect {|l| [l.code, l.id]},[@building.landlord.id]),
+        <%= f.select(:landlord_id, options_for_select(current_user.company.landlords.collect {|l| [l.code, l.id]},
+          [@building.landlord ? @building.landlord.id : '']),
           {prompt: "Choose one..."},
           :required => true, 
           class: 'form-control',
@@ -44,7 +42,7 @@ $( document ).ready(function() {
       <div class="field">
         <%= f.label :user_id, "Listing Agent" %><br>
         <%= f.select(:user_id, options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
-          [@building.listing_agent.id]), 
+          [@building.listing_agent ? @building.listing_agent.id : '']), 
           {prompt: "Choose one..."},
           :required => true, 
           class: 'form-control',

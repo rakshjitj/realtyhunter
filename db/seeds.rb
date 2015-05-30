@@ -135,13 +135,16 @@ end
 @landlord = Landlord.create({
   code: "Unassigned", 
   name: "Unassigned", 
-  phone: "777-777-7777",
+  office_phone: "777-777-7777",
   mobile: "777-777-7777",
   email: FFaker::Internet.email("Unassigned"),
   notes: "Catch-all landlord used to find unassigned buildings",
   listing_agent_percentage: "15",
-  months_required: "first_month",
-  company: @company
+  required_security: @company.required_securities[1],
+  pet_policy: @company.pet_policies[2],
+  company: @company,
+
+
   })
 
 55.times do |n|
@@ -150,19 +153,17 @@ end
   landlordN = Landlord.create!(
     code: FFaker::HipsterIpsum.characters(10),
     name: ll_name,
-    phone: "777-777-7777",
+    office_phone: "777-777-7777",
     mobile: "777-777-7777",
     fax: "777-777-7777",
     email: FFaker::Internet.email(ll_name),
     website: FFaker::Internet.http_url,
-    street_address: FFaker::AddressUS.street_address,
-    city: FFaker::AddressUS.city,
-    state: FFaker::AddressUS.state_abbr,
-    zipcode: FFaker::AddressUS.zip_code,
+    
     notes: FFaker::HipsterIpsum.sentence,
     listing_agent_percentage: "15",
-    months_required: "first_month",
     management_info: FFaker::HipsterIpsum.phrase,
+    required_security: @company.required_securities[0],
+    pet_policy: @company.pet_policies[0],
     company: @company)
 end
 
