@@ -1,20 +1,77 @@
+<script>
+   //unobstrusive: attach method call here
+   //call when typing or enter or focus leaving
+  $( document ).ready(function() {
+
+    function doSearch() {
+      $.ajax({
+        url: "<%= residential_units_filter_path %>",
+        data: {
+          filter: $('#filter').val(),
+          active_only: $('#checkbox_active').checked
+        },
+        dataType: "script"
+      }).fail(function() {
+        //console.log("[FAILED] search update failed");
+      });
+    };
+
+    // change enter key to tab
+    $('#filter').keydown(function(event) {
+      if (event.keyCode == 13) {
+        $('#checkbox_active').focus();
+        return false;
+      }
+    });
+
+    // search as user types
+    var timer;
+    $('#filter').keyup(function() {
+      clearInterval(timer); // clear any interval on key up
+      timer = setTimeout(doSearch, 500);
+    });
+
+    // toggle between active and inactive units
+    $('#checkbox_active').click(function(event){
+      $.ajax({
+        url: "<%= residential_units_filter_path %>",
+        data: {
+          filter: $('#filter').val(),
+          active_only: $('#checkbox_active').prop('checked')
+        },
+        dataType: "script"
+      });
+    });
+
+  });
+</script>
+
 <% provide(:title, 'Residential Listings') %>
 <h1 class="page-header">Residential Listings</h1>
 
+
 <div class="row">
-  <div class="col-md-2">
+  <div class="col-md-6">
     <%= form_tag residential_units_path, :method => 'get' do %>
-      Search:
-      <%= text_field_tag :search, params[:search], placeholder: "name/address", size: 50 %>
-      <%= submit_tag "Go", :name => nil %>
-      <%= link_to "Clear All Filters", users_path, class: 'btn btn-xs btn-default' %>
-      
-      <!-- TODO: sortable columns -->
+      <%= label_tag(:filter, "Filter:") %>
+      <%= text_field_tag :filter, params[:code_name], 
+        placeholder: "address", size: 50 %>
+      &nbsp;&nbsp;
+      <%= check_box_tag(:checkbox_active, class: "checkbox inline") %>
+      <%= label_tag :checkbox_active, "Has active units" %>
     <% end %>
   </div>
-  <div class="col-md-offset-10">
-    <%= link_to 'Add a Unit', new_residential_unit_path %><br />
-    <%= will_paginate @units %>
+  <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-offset-9 col-md-3 right">
+        <%= link_to 'Add a unit', new_residential_unit_path %><br />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md pull-right">
+        <%= will_paginate @residential_units %>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -37,32 +94,10 @@
         </tr>
       </thead>
 
-      <tbody>
-        <% @units.each do |unit| %>
-          <tr>
-            <td>
-              <%= link_to "#{unit.building.formatted_street_address} # #{unit.building_unit}", unit %>
-              </td>
-            <td>--</td>
-            <td><%= unit.access_info %></td>
-            <td><%= unit.beds %> / <%= unit.baths %></td>
-            <td><%= unit.available_by.strftime("%F") %></td>
-            <td><%= unit.rent %></td>
-            <td>--</td>
-            <td>
-              <% if unit.status == "active" %>
-                <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
-              <% elsif unit.status == "pending" %>
-                <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
-              <% elsif unit.status == "off" %>
-                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-              <% end %>
-            </td>
-            <td><%= link_to 'Show', unit %> |
-              <%= link_to 'Edit', edit_residential_unit_path(unit) %> |
-              <%= link_to 'Destroy', unit, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-          </tr>
-        <% end %>
+      <tbody class="residential_units_table_body">
+        <!--% @units.each do |unit| %-->
+          <%= render @residential_units %>
+        <!--% end %-->
       </tbody>
     </table>
   </div>
@@ -70,7 +105,7 @@
 
 <div class="row">
   <div class="col-md-offset-10">
-    <%= will_paginate @units %>
+    <%= will_paginate @residential_units %>
   </div>
 </div>
 

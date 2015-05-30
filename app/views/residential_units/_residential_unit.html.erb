@@ -1,0 +1,23 @@
+<tr class="<%= cycle('even', 'odd') -%>">
+  <td>
+    <%= link_to "#{residential_unit.building.street_address} # #{residential_unit.building_unit}", residential_unit %>
+    </td>
+  <td><%= residential_unit.building.landlord.code %></td>
+  <td><%= residential_unit.access_info %></td>
+  <td><%= residential_unit.beds %> / <%= residential_unit.baths %></td>
+  <td><%= residential_unit.available_by.strftime("%Y-%b-%d") %></td>
+  <td><%= residential_unit.rent %></td>
+  <td>--</td>
+  <td>
+    <% if residential_unit.status == "active" %>
+      <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
+    <% elsif residential_unit.status == "pending" %>
+      <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
+    <% elsif residential_unit.status == "off" %>
+      <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+    <% end %>
+  </td>
+  <td>
+    <%= link_to 'Edit', edit_residential_unit_path(residential_unit) %> |
+    <%= link_to 'Delete', residential_unit, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+</tr>

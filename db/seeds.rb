@@ -186,8 +186,9 @@ end
   })
 
 55.times do |n|
-  ResidentialUnit.create({
-    building_unit: Faker::Number.number(1),
+
+  ru = ResidentialUnit.create({
+    building_unit: Faker::Number.number(2),
     rent: Faker::Number.number(4),
     beds: Faker::Number.number(1),
     baths: Faker::Number.number(1),
@@ -199,4 +200,5 @@ end
     notes: FFaker::HipsterIpsum.sentence,
     building: @bldg,
     })
+  #puts "\nresidential unit #{n} #{ru.inspect}"
 end

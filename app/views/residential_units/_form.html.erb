@@ -1,6 +1,6 @@
-<%= form_for(@unit) do |f| %>
+<%= form_for(@residential_unit) do |f| %>
   <%= render :partial => 'shared/error_messages', 
-    :locals => {:model => @unit} %>
+    :locals => {:model => @residential_unit} %>
  
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -35,7 +35,7 @@
       </div>
       <div class="field">
         <%= f.label :lease_duration %><br>
-        <%= f.select :lease_duration, options_for_select(ResidentialUnit.lease_durations.collect { |s| [s[0].humanize, s[0]] }, selected: @unit.lease_duration), {} , class: "form-control" %>
+        <%= f.select :lease_duration, options_for_select(ResidentialUnit.lease_durations.collect { |s| [s[0].humanize, s[0]] }, selected: @residential_unit.lease_duration), {} , class: "form-control" %>
       </div>
       <div class="field">
         <%= f.label :notes %><br>

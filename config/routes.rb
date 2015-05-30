@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
 
   resources :building_amenities
-  resources :building_amenities
   get 'static_pages/help'
 
   get 'signup'  => 'users#new'
@@ -44,7 +43,10 @@ Rails.application.routes.draw do
   get 'buildings/:id/delete_modal', to: 'buildings#delete_modal', as: :building_delete_modal
   get 'buildings/:id/inaccuracy_modal', to: 'buildings#inaccuracy_modal', as: :building_inaccuracy_modal
   patch 'buildings/:id/send_inaccuracy', to: 'buildings#send_inaccuracy', as: :building_send_inaccuracy
+  
   resources :residential_units
+  get 'search/residential_units', to: 'residential_units#filter', as: :residential_units_filter
+
   resources :landlords
   get 'search/landlords', to: 'landlords#filter', as: :landlords_filter
 

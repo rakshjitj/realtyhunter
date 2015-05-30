@@ -4,7 +4,7 @@ $( document ).ready(function() {
 
     $(".panel").geocomplete({
     	map: "#map_canvas",
-    	location: "<%= @unit.building.formatted_street_address %>" ,
+    	location: "<%= @residential_unit.building.formatted_street_address %>" ,
     	details: ".details"
     }).bind("geocode:result", function(event, result){
         //console.log(result);
@@ -22,19 +22,19 @@ $( document ).ready(function() {
   	<div class="row">
   		<div class="col-md">
 	  		<h1 class="page-header">
-	  			<%= number_to_currency(@unit.rent, {precision: 0}) %> - 
-	  			<%= @unit.building.formatted_street_address %>, <%= @unit.building_unit %></h1>
+	  			<%= number_to_currency(@residential_unit.rent, {precision: 0}) %> - 
+	  			<%= @residential_unit.building.formatted_street_address %>, <%= @residential_unit.building_unit %></h1>
 	  			
 	  			<p>
-	  			<% if @unit.status == "active" %>
+	  			<% if @residential_unit.status == "active" %>
             <span class="green">On Market</span>
-          <% elsif @unit.status == "pending" %>
+          <% elsif @residential_unit.status == "pending" %>
             <span class="dark-orange">Pending Application</span>
-          <% elsif @unit.status == "off" %>
+          <% elsif @residential_unit.status == "off" %>
             <span class="grey">Off Market</span>
           <% end %>
 
-          | <%= link_to 'Edit', edit_residential_unit_path(@unit) %>
+          | <%= link_to 'Edit', edit_residential_unit_path(@residential_unit) %>
           | <%= link_to 'View all', residential_units_path %>
           </p>
 	  	</div>
@@ -48,31 +48,31 @@ $( document ).ready(function() {
 				  </div>
 				  <div class="panel-body">
 
-				  	<div id="map_canvas" style="width: 400px; height: 400px"></div>
-
+				  	<div id="map_canvas"></div>
+				  	<br />
 				    <p>
 				    	<strong>Building:</strong>
-  						<%= @unit.building.formatted_street_address %>
+  						<%= @residential_unit.building.formatted_street_address %>
 						</p>
 						<p>
 							<strong>Access Info:</strong>
-							<%= @unit.access_info %>
+							<%= @residential_unit.access_info %>
 						</p>
 						<p>
 							<strong>Beds/Baths:</strong>
-							<%= @unit.beds %> / <%= @unit.baths %>
+							<%= @residential_unit.beds %> / <%= @residential_unit.baths %>
 						</p>
 						<p>
 							<strong>Lease Duration:</strong>
-							<%= @unit.lease_duration.titleize %>
+							<%= @residential_unit.lease_duration.titleize %>
 						</p>
 						<p>
 							<strong>Building Notes:</strong>
-							<%= @unit.building.notes %>
+							<%= @residential_unit.building.notes %>
 						</p>
 						<p>
 							<strong>Unit Notes:</strong>
-							<%= @unit.notes %>
+							<%= @residential_unit.notes %>
 						</p>
 					</div>
 				</div><!-- end panel -->
