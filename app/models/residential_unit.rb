@@ -25,4 +25,27 @@ class ResidentialUnit < ActiveRecord::Base
     listing_id
   end
 
+  def self.search(query_str, active_only)
+		@running_list = ResidentialUnit.all
+    if !query_str
+      return @running_list
+    end
+    
+    # cap query string length for security reasons
+  	query_str = query_str[0, 256]
+
+    @terms = query_str.split(" ")
+    # TODO:
+    #@terms.each do |term|
+    #  @running_list = @running_list.joins(:buildings)
+    #  .where('building.formatted_street_address ILIKE ? OR unit ILIKE ?', "%#{term}%", "%#{term}%")
+    #end
+
+    if active_only == "true"
+    	@running_list = @running_list.where(status: "active")
+    end
+
+    @running_list.uniq
+	end
+
 end

@@ -17,7 +17,6 @@ class BuildingsController < ApplicationController
         headers['Content-Type'] ||= 'text/csv'
       end
     end
-
   end
   
   # GET /filter_buildings
