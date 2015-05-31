@@ -16,6 +16,17 @@ class Landlord < ActiveRecord::Base
 	validates :name, presence: true, length: {maximum: 100}, 
 		uniqueness: { case_sensitive: false }
 
+	validates :tp_fee_percentage, presence: true, length: {maximum: 3}, numericality: { only_integer: true }
+	validates_inclusion_of :tp_fee_percentage, :in => 0..100
+
+	validates :op_fee_percentage, presence: true, length: {maximum: 3}, numericality: { only_integer: true }
+	validates_inclusion_of :op_fee_percentage, :in => 0..100
+
+	validates :name, presence: true, length: {maximum: 100}, 
+		uniqueness: { case_sensitive: false }
+
+	validates :listing_agent_percentage, presence: true, length: {maximum: 3}, numericality: { only_integer: true }
+
 	VALID_TELEPHONE_REGEX = /(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/
 	validates :mobile, presence: true, length: {maximum: 25}, 
 		format: { with: VALID_TELEPHONE_REGEX }
@@ -29,8 +40,6 @@ class Landlord < ActiveRecord::Base
 	validates :email, presence: true, length: {maximum: 100}, 
 		format: { with: VALID_EMAIL_REGEX }, 
     uniqueness: { case_sensitive: false }
-
-	validates :listing_agent_percentage, presence: true, length: {maximum: 3}
 
 	def active_units_count
 		buildings.reduce(0){|sum, bldg| sum + bldg.active_units.count }

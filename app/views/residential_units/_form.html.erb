@@ -4,9 +4,19 @@
  
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Edit Listing</h3>
+      <h3 class="panel-title"><%= @panel_title %></h3>
     </div>
     <div class="panel-body">
+      <div class="field">
+        <!-- TODO: turn this into an autocomplete field -->
+        <%= f.label :building_id %><br>
+        <%= f.select(:building_id, 
+          options_for_select(current_user.company.buildings.collect {|b| [b.street_address, b.id]},
+            [@residential_unit.building ? @residential_unit.building.id : '']), 
+          {prompt: "Choose one..."},
+          class: 'form-control',
+          :include_blank => true) %>
+      </div>
       <div class="field">
         <%= f.label :building_unit, "Unit" %><br>
         <%= f.text_field :building_unit, class: 'form-control', :required => true %>

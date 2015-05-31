@@ -1,12 +1,16 @@
 class ResidentialUnit < ActiveRecord::Base
 	acts_as :unit
 	has_and_belongs_to_many :residential_amenities
-  
+
+  #autocomplete :building, :formatted_street_address
+
   attr_accessor :include_photos, :inaccuracy_description
 
 	enum lease_duration: [ :half_year, :year, :thirteen_months, :fourteen_months, :fifteen_months, 
 		:sixteen_months, :seventeen_months, :eighteen_months, :two_years ]
-	
+	validates :lease_duration, presence: true, inclusion: { 
+    in: %w(half_year year thirteen_months fourteen_months fifteen_months sixteen_months seventeen_months eighteen_months two_years) }
+
 	validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }
 	validates :baths, presence: true, :numericality => { :less_than_or_equal_to => 11 }
 

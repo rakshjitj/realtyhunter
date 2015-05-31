@@ -103,7 +103,8 @@
       t.belongs_to :pet_policy
       # primary?
       # listing?
-      t.integer :fee_percentage
+      t.integer :op_fee_percentage
+      t.integer :tp_fee_percentage
       t.belongs_to :company
       t.references :buildings, index: true
       t.timestamps null: false

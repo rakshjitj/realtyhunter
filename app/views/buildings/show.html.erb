@@ -24,7 +24,7 @@ $( document ).ready(function() {
 			<%= @building.units.count %> total units. | 
 			<%= link_to 'Edit', edit_building_path(@building) %> | 
 			<%= link_to 'View all', buildings_path %> |
-			<%= link_to 'Add a Unit', new_residential_unit_path %> | 
+			<%= link_to 'Add a Unit', new_residential_unit_path(building_id: @building.id) %> | 
 			<%= link_to 'Report Inaccuracy', building_inaccuracy_modal_path(@building), 
       	data: {toggle: "modal", target: "#bldgInaccuracyModal"}, remote: true %>
 			<br />

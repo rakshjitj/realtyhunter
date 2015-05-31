@@ -131,7 +131,8 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "management_info"
     t.integer  "required_security_id"
     t.integer  "pet_policy_id"
-    t.integer  "fee_percentage"
+    t.integer  "op_fee_percentage"
+    t.integer  "tp_fee_percentage"
     t.integer  "company_id"
     t.integer  "buildings_id"
     t.datetime "created_at",                        null: false

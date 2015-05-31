@@ -29,10 +29,17 @@ class ResidentialUnitsController < ApplicationController
   # GET /residential_units/new
   def new
     @residential_unit = ResidentialUnit.new
+    if params[:building_id]
+      building = Building.find(params[:building_id])
+      @residential_unit.building_id = building.id
+    end
+    
+    @panel_title = "Add a listing"
   end
 
   # GET /residential_units/1/edit
   def edit
+    @panel_title = "Edit listing"
   end
 
   # POST /residential_units
