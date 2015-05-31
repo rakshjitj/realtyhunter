@@ -2,7 +2,7 @@ class ResidentialUnit < ActiveRecord::Base
 	acts_as :unit
 	has_and_belongs_to_many :residential_amenities
   
-  attr_accessor :include_photos
+  attr_accessor :include_photos, :inaccuracy_description
 
 	enum lease_duration: [ :half_year, :year, :thirtheen_months, :fourteen_months, :fifteen_months, 
 		:sixteen_months, :seventeen_months, :eighteen_months, :two_years ]
@@ -57,6 +57,10 @@ class ResidentialUnit < ActiveRecord::Base
     # TODO: photos
     residential_unit_dup.save
     residential_unit_dup
+  end
+
+  def send_inaccuracy_report(reporter)
+    UnitMailer.inaccuracy_reported(self, reporter).deliver_now
   end
 
 end

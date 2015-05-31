@@ -104,6 +104,23 @@ class ResidentialUnitsController < ApplicationController
     end
   end
 
+# GET 
+  # handles ajax call. uses latest data in modal
+  def inaccuracy_modal
+    respond_to do |format|
+      format.js  
+    end
+  end
+
+  # triggers email to staff notifying them of the inaccuracy
+  def send_inaccuracy
+    @residential_unit.inaccuracy_description = residential_unit_params[:inaccuracy_description]
+    @residential_unit.send_inaccuracy_report(current_user)
+    respond_to do |format|
+      format.js { flash[:notice] = "Report submitted! Thank you." }
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_residential_unit
@@ -138,6 +155,6 @@ class ResidentialUnitsController < ApplicationController
       params[:residential_unit].permit(:building_unit, :rent, :available_by, 
         :access_info, :status, :open_house, :weeks_free_offered, 
         :building_id, :user_id, :beds, :baths, :notes, :lease_duration,
-        :include_photos, :residential_amenity_ids => [])
+        :include_photos, :inaccuracy_description, :residential_amenity_ids => [])
     end
 end

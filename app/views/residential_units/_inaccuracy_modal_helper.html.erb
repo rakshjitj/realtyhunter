@@ -1,7 +1,8 @@
-<%= form_for(building, url: building_send_inaccuracy_path(@building), remote: true) do |f| %>
+<%= form_for(residential_unit, url: residential_unit_send_inaccuracy_path(@residential_unit), remote: true) do |f| %>
 
 	<div class="modal-body">
-		<p>What's wrong at <%= @building.street_address %>? The more detail you can provide, the better.</p>
+		<p>What's wrong at <%= @residential_unit.building.street_address %> 
+		#<%= @residential_unit.building_unit %>? The more detail you can provide, the better.</p>
 
 		<div class="field">
 	    <%= f.text_area :inaccuracy_description, rows: 5, class: 'form-control' %>

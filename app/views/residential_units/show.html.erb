@@ -41,6 +41,8 @@ $( document ).ready(function() {
           | <%= link_to 'View all', residential_units_path %>
           | <%= link_to 'Duplicate', residential_unit_duplicate_modal_path(@residential_unit), 
       				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
+      		| <%= link_to 'Report Inaccuracy', residential_unit_inaccuracy_modal_path(@residential_unit), 
+        			data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
           </p>
 	  	</div>
     </div>

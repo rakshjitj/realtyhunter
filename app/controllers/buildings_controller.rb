@@ -1,7 +1,7 @@
 class BuildingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
-  before_action :set_building, except: [:index, :new, :create, :filter, :send_inaccuracy]
+  before_action :set_building, except: [:index, :new, :create, :filter]
   #after_action :clear_xhr_flash, only: [:send_inaccuracy]
 
   # GET /buildings
@@ -105,6 +105,7 @@ class BuildingsController < ApplicationController
 
   # triggers email to staff notifying them of the inaccuracy
   def send_inaccuracy
+    @building.inaccuracy_description = building_params[:inaccuracy_description]
     @building.send_inaccuracy_report(current_user)
     respond_to do |format|
       format.js { flash[:notice] = "Report submitted! Thank you." }
