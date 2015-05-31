@@ -89,6 +89,7 @@ class ResidentialUnitsController < ApplicationController
     if new_end_date
       @residential_unit.take_off_market(new_end_date)
     end
+    set_residential_units
     respond_to do |format|
       format.js  
     end

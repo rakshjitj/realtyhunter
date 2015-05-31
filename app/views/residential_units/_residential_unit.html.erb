@@ -23,5 +23,9 @@
       data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
     | <%= link_to 'Duplicate', residential_unit_duplicate_modal_path(residential_unit), 
       data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
+    <% if residential_unit.status == "active" %>
+      | <%= link_to 'Take off', residential_unit_take_off_modal_path(residential_unit), 
+        data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %>
+    <% end %>
   </td>
 </tr>

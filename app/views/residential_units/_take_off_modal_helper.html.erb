@@ -3,8 +3,12 @@
 	<div class="modal-body">
 		<p>Taking this unit off the market means it cannot be advertised, syndicated, or shared.</p>
 
+		<p>Are you sure you want take off 
+			<strong><%= @residential_unit.building.street_address %> #<%= @residential_unit.building_unit %></strong>?</p>
+		<br />
+		
 		<div class="field">
-			<%= f.label :available_by, "Update new lease end date" %>
+			<%= f.label :available_by, "Update new lease end date:" %>
 	    <%= f.date_field :available_by, value: @residential_unit.calc_lease_end_date, class: 'form-control' %>
 	  </div>
 	</div>
