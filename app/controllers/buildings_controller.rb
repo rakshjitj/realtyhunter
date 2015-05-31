@@ -1,9 +1,8 @@
 class BuildingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
-  before_action :set_building, except: [:index, :new, :create, :filter, 
-    :inaccuracy_modal, :send_inaccuracy]
-  after_action :clear_xhr_flash, only: [:send_inaccuracy]
+  before_action :set_building, except: [:index, :new, :create, :filter, :send_inaccuracy]
+  #after_action :clear_xhr_flash, only: [:send_inaccuracy]
 
   # GET /buildings
   # GET /buildings.json
@@ -99,7 +98,6 @@ class BuildingsController < ApplicationController
   # GET 
   # handles ajax call. uses latest data in modal
   def inaccuracy_modal
-    @building = Building.find(params[:id])
     respond_to do |format|
       format.js  
     end

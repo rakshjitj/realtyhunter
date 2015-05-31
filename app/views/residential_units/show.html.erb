@@ -39,6 +39,8 @@ $( document ).ready(function() {
 
           | <%= link_to 'Edit', edit_residential_unit_path(@residential_unit) %>
           | <%= link_to 'View all', residential_units_path %>
+          | <%= link_to 'Duplicate', residential_unit_duplicate_modal_path(@residential_unit), 
+      				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
           </p>
 	  	</div>
     </div>
@@ -123,7 +125,7 @@ $( document ).ready(function() {
 						<% if current_user.is_management? %>
 							<p>
 								<strong>Listing agent:</strong>
-								<%= @residential_unit.building.listing_agent.name %>
+								<%= link_to @residential_unit.building.listing_agent.name, @residential_unit.building.listing_agent %>
 							</p>
 						<% end %>
 
@@ -145,7 +147,7 @@ $( document ).ready(function() {
 						<% if @residential_unit.primary_agent %>
 						<p>
 							<strong>Primary agent:</strong>
-							<%= @residential_unit.primary_agent.name %>
+							<%= link_to @residential_unit.primary_agent.name, @residential_unit.primary_agent %>
 						</p>
 						<% end %>
 
@@ -180,3 +182,4 @@ var ws_map_modules = 'all';
 	</div>
 </div>
   
+<%= render 'modals' %>

@@ -4,10 +4,12 @@ class ResidentialUnitTest < ActiveSupport::TestCase
   def setup
   	# fixtures not working, MTI messes things up
     @unit = ResidentialUnit.new({
-    	rent: 1,
-    	building_unit: "sfddsfds",
     	beds: 1,
-    	baths: 2
+    	baths: 2,
+      listing_id: 1111,
+      building_unit: "sfddsfds",
+      rent: 1,
+      building_id: 1,
     	})
   end
 
@@ -40,11 +42,6 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     assert_not @unit.valid?
   end
 
-  test "rent should not be too long" do
-    @unit.rent = 1000000001
-    assert_not @unit.valid?
-  end
-
   test "beds should not be too long" do
     @unit.beds = 12
     assert_not @unit.valid?
@@ -60,6 +57,16 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     duplicate_bldg.building_unit = @unit.building_unit.upcase
     @unit.save
     assert_not duplicate_bldg.valid?
+  end
+
+  test "duplicate should copy all info" do
+    @unit.save
+    unit_dup = @unit.duplicate('999999', true)
+    assert_not_equal unit_dup.id, @unit.id
+    assert_not_equal unit_dup.id, nil
+    assert_not_equal unit_dup.listing_id, @unit.listing_id
+    assert unit_dup.building_id, @unit.building_id
+    assert unit_dup.building_unit, '999999'
   end
 
 end

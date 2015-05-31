@@ -71,8 +71,8 @@ class LandlordTest < ActiveSupport::TestCase
     assert_not @landlord.valid?
   end
 
-  test "phone should not be too long" do
-    @landlord.phone = "a" * 21
+  test "office_phone should not be too long" do
+    @landlord.office_phone = "a" * 21
     assert_not @landlord.valid?
   end
 
@@ -114,7 +114,7 @@ class LandlordTest < ActiveSupport::TestCase
    test "phone validation should accept valid phone numbers" do
     valid_phones = %w[(555)555-5555 555.555.5555 5555555555 555-555-5555]
     valid_phones.each do |valid_phone|
-      @landlord.phone = valid_phone
+      @landlord.office_phone = valid_phone
       assert @landlord.valid?, "#{valid_phone.inspect} should be valid"
     end
   end

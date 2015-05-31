@@ -4,8 +4,10 @@ one:
   building_unit: MyString1
   status: inactive
   rent: 1
+  listing_id: 1
 
 two:
   building_unit: MyString2
   status: inactive
   rent: 1
+  listing_id: 2

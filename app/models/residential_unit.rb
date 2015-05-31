@@ -1,6 +1,8 @@
 class ResidentialUnit < ActiveRecord::Base
 	acts_as :unit
 	has_and_belongs_to_many :residential_amenities
+  
+  attr_accessor :include_photos
 
 	enum lease_duration: [ :half_year, :year, :thirtheen_months, :fourteen_months, :fifteen_months, 
 		:sixteen_months, :seventeen_months, :eighteen_months, :two_years ]
@@ -47,5 +49,14 @@ class ResidentialUnit < ActiveRecord::Base
 
     @running_list.uniq
 	end
+
+  def duplicate(new_unit_num, include_photos)
+    residential_unit_dup = self.dup
+    residential_unit_dup.listing_id = ResidentialUnit.generate_unique_id
+    residential_unit_dup.building_unit = new_unit_num
+    # TODO: photos
+    residential_unit_dup.save
+    residential_unit_dup
+  end
 
 end

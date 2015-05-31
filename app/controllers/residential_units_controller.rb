@@ -5,7 +5,6 @@ class ResidentialUnitsController < ApplicationController
   # GET /residential_units
   # GET /residential_units.json
   def index
-    #@residential_units = ResidentialUnit.all.paginate(:page => params[:page], :per_page => 50)
     set_residential_units
     respond_to do |format|
       format.html
@@ -46,6 +45,31 @@ class ResidentialUnitsController < ApplicationController
       redirect_to @residential_unit
     else
       render 'new'
+    end
+  end
+
+  # GET 
+  # handles ajax call. uses latest data in modal
+  def duplicate_modal
+    respond_to do |format|
+      format.js  
+    end
+  end
+
+  # POST
+  # handles ajax call. uses latest data in modal
+  def duplicate
+    residential_unit_dup = @residential_unit.duplicate(
+      residential_unit_params[:building_unit], residential_unit_params[:include_photos])
+    if residential_unit_dup.valid?
+      @residential_unit = residential_unit_dup
+      render :js => "window.location.pathname = '#{residential_unit_path(@residential_unit)}'"
+    else
+      # TODO: not sure how to handle this best...
+      flash[:warning] = "Duplication failed!"
+      respond_to do |format|
+        format.js  
+      end
     end
   end
 
@@ -114,6 +138,6 @@ class ResidentialUnitsController < ApplicationController
       params[:residential_unit].permit(:building_unit, :rent, :available_by, 
         :access_info, :status, :open_house, :weeks_free_offered, 
         :building_id, :user_id, :beds, :baths, :notes, :lease_duration,
-        :residential_amenity_ids => [])
+        :include_photos, :residential_amenity_ids => [])
     end
 end

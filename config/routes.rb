@@ -47,6 +47,8 @@ Rails.application.routes.draw do
   resources :residential_units
   get 'search/residential_units', to: 'residential_units#filter', as: :residential_units_filter
   get 'residential_units/:id/delete_modal', to: 'residential_units#delete_modal', as: :residential_unit_delete_modal
+  get 'residential_units/:id/duplicate_modal', to: 'residential_units#duplicate_modal', as: :residential_unit_duplicate_modal
+  post 'residential_units/:id/duplicate', to: 'residential_units#duplicate', as: :residential_unit_duplicate
   get 'residential_units/:id/inaccuracy_modal', to: 'residential_units#inaccuracy_modal', as: :residential_unit_inaccuracy_modal
   patch 'residential_units/:id/send_inaccuracy', to: 'residential_units#send_inaccuracy', as: :residential_unit_send_inaccuracy
   
