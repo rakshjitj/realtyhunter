@@ -73,6 +73,27 @@ class ResidentialUnitsController < ApplicationController
     end
   end
 
+  # GET 
+  # handles ajax call. uses latest data in modal
+  # Modal collects info and prep unit to be taken off the market
+  def take_off_modal
+    respond_to do |format|
+      format.js  
+    end
+  end
+
+  # PATCH ajax
+  # Takes a unit off the market
+  def take_off
+    new_end_date = residential_unit_params[:available_by]
+    if new_end_date
+      @residential_unit.take_off_market(new_end_date)
+    end
+    respond_to do |format|
+      format.js  
+    end
+  end
+
   # PATCH/PUT /residential_units/1
   # PATCH/PUT /residential_units/1.json
   def update
@@ -112,6 +133,7 @@ class ResidentialUnitsController < ApplicationController
     end
   end
 
+  # PATCH
   # triggers email to staff notifying them of the inaccuracy
   def send_inaccuracy
     @residential_unit.inaccuracy_description = residential_unit_params[:inaccuracy_description]

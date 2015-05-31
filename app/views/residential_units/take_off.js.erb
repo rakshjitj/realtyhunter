@@ -1,0 +1,2 @@
+$('.market_status').html("<%= escape_javascript (render :partial => "market_status", locals: { residential_unit: @residential_unit}) %>");
+$('.available_by').html("<%= escape_javascript (render :partial => "available_by", locals: { residential_unit: @residential_unit}) %>");

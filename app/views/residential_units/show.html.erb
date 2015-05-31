@@ -29,20 +29,17 @@ $( document ).ready(function() {
 	  		</div>
 
 	  			<p>
-	  			<% if @residential_unit.status == "active" %>
-            <span class="green">On Market</span>
-          <% elsif @residential_unit.status == "pending" %>
-            <span class="dark-orange">Pending Application</span>
-          <% elsif @residential_unit.status == "off" %>
-            <span class="grey">Off Market</span>
-          <% end %>
 
-          | <%= link_to 'Edit', edit_residential_unit_path(@residential_unit) %>
+	  			<%= render 'market_status' %>
+
+          <%= link_to 'Edit', edit_residential_unit_path(@residential_unit) %>
           | <%= link_to 'View all', residential_units_path %>
           | <%= link_to 'Duplicate', residential_unit_duplicate_modal_path(@residential_unit), 
       				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
       		| <%= link_to 'Report Inaccuracy', residential_unit_inaccuracy_modal_path(@residential_unit), 
         			data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
+        	| <%= link_to 'Take off market', residential_unit_take_off_modal_path(@residential_unit), 
+        			data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %>
           </p>
 	  	</div>
     </div>
@@ -74,14 +71,7 @@ $( document ).ready(function() {
 							<%= @residential_unit.lease_duration.titleize %>
 						</p>
 
-						<p>
-							<strong>Available by:</strong>
-							<% if @residential_unit.available_by < Date.today %>
-								Now
-							<% else %>
-								<%= @residential_unit.available_by.strftime("%Y-%b-%d") %>
-							<% end %>
-						</p>
+						<%= render 'available_by' %>
 
 						<!-- TODO: integrate with dept of buildings to get
 							DOM, total floors, total units, year built, lot, block, community district, school district -->

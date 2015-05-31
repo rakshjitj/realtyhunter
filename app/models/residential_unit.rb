@@ -4,7 +4,7 @@ class ResidentialUnit < ActiveRecord::Base
   
   attr_accessor :include_photos, :inaccuracy_description
 
-	enum lease_duration: [ :half_year, :year, :thirtheen_months, :fourteen_months, :fifteen_months, 
+	enum lease_duration: [ :half_year, :year, :thirteen_months, :fourteen_months, :fifteen_months, 
 		:sixteen_months, :seventeen_months, :eighteen_months, :two_years ]
 	
 	validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }
@@ -51,16 +51,60 @@ class ResidentialUnit < ActiveRecord::Base
 	end
 
   def duplicate(new_unit_num, include_photos)
-    residential_unit_dup = self.dup
-    residential_unit_dup.listing_id = ResidentialUnit.generate_unique_id
-    residential_unit_dup.building_unit = new_unit_num
-    # TODO: photos
-    residential_unit_dup.save
-    residential_unit_dup
+    if new_unit_num
+      residential_unit_dup = self.dup
+      residential_unit_dup.listing_id = ResidentialUnit.generate_unique_id
+      residential_unit_dup.building_unit = new_unit_num
+      # TODO: photos
+      residential_unit_dup.save
+      residential_unit_dup
+    else
+      raise "no unit number specified"
+    end
   end
 
   def send_inaccuracy_report(reporter)
-    UnitMailer.inaccuracy_reported(self, reporter).deliver_now
+    if reporter
+      UnitMailer.inaccuracy_reported(self, reporter).deliver_now
+    else 
+      raise "No reporter specified"
+    end
+  end
+
+  def take_off_market(new_lease_end_date)
+    if new_lease_end_date
+      update({status: :off,
+              available_by: new_lease_end_date})
+    else
+      raise "No lease end date specified"
+    end
+  end
+
+  def calc_lease_end_date
+    end_date = Date.today
+
+    case(lease_duration)
+    when "year"
+      end_date = Date.today >> 12
+    when "thirteen_months"
+      end_date = Date.today >> 13
+    when "fourteen_months"
+      end_date = Date.today >> 14
+    when "fifteen_months"
+      end_date = Date.today >> 15
+    when "sixteen_months"
+      end_date = Date.today >> 16
+    when "seventeen_months"
+      end_date = Date.today >> 17
+    when "eighteen_months"
+      end_date = Date.today >> 18
+    when "two_years"
+      end_date = Date.today >> 24
+    else
+      end_date = Date.today >> 12
+    end
+    
+    end_date
   end
 
 end

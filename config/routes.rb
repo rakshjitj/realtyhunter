@@ -51,6 +51,8 @@ Rails.application.routes.draw do
   post 'residential_units/:id/duplicate', to: 'residential_units#duplicate', as: :residential_unit_duplicate
   get 'residential_units/:id/inaccuracy_modal', to: 'residential_units#inaccuracy_modal', as: :residential_unit_inaccuracy_modal
   patch 'residential_units/:id/send_inaccuracy', to: 'residential_units#send_inaccuracy', as: :residential_unit_send_inaccuracy
+  get 'residential_units/:id/take_off_modal', to: 'residential_units#take_off_modal', as: :residential_unit_take_off_modal
+  patch 'residential_units/:id/take_off', to: 'residential_units#take_off', as: :residential_unit_take_off
   
   resources :landlords
   get 'search/landlords', to: 'landlords#filter', as: :landlords_filter
