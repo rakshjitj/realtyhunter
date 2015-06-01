@@ -20,7 +20,7 @@ $( document ).ready(function() {
   		<div class="col-md">
   			<div class="page-header">
 		  		<h1>
-		  			<%= rent_formatted(@residential_unit) %> - 
+		  			<%= rent_formatted(@residential_unit.rent) %> - 
 		  			<%= @residential_unit.street_address_and_unit %>
 		  		</h1>
 		  		<p>
@@ -75,6 +75,15 @@ $( document ).ready(function() {
 
 						<!-- TODO: integrate with dept of buildings to get
 							DOM, total floors, total units, year built, lot, block, community district, school district -->
+						<p>
+							<strong>Rent:</strong> <%= rent_formatted(@residential_unit.rent) %>
+						</p>
+						<p>
+							<% if @residential_unit.weeks_free_offered > 0 %>
+								<strong>Net Rent:</strong> <%= rent_formatted(@residential_unit.rent) %> x <%= @residential_unit.weeks_free_offered %> weeks free = 
+								<%= rent_formatted(@residential_unit.net_rent) %>
+							<% end %>
+						</p>
 
 						<!-- Landlord info -->
 						<p>

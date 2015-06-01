@@ -46,6 +46,37 @@ class ResidentialUnit < ActiveRecord::Base
     listing_id
   end
 
+  def net_rent
+    months = 12
+
+    case(lease_duration)
+    when "year"
+      months = 12
+    when "thirteen_months"
+      months = 13
+    when "fourteen_months"
+      months = 14
+    when "fifteen_months"
+      months = 15
+    when "sixteen_months"
+      months = 16
+    when "seventeen_months"
+      months = 17
+    when "eighteen_months"
+      months = 18
+    when "two_years"
+      months = 24
+    else
+      months = 12
+    end
+    
+    total_rent = rent * months
+    rent_per_week = total_rent / (months * 4)
+    net_rent = total_rent - (rent_per_week * weeks_free_offered)
+    net_rent_per_month = net_rent / months
+    net_rent_per_month
+  end
+
   # takes in a hash of search options
   # can be formatted_street_address, landlord
   # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 

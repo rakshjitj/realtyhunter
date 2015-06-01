@@ -140,7 +140,7 @@
       t.string :access_info
       t.integer :status, default: 0
       t.string :open_house
-      t.float :weeks_free_offered
+      t.integer :weeks_free_offered
       t.belongs_to :building
       t.belongs_to :user # primary agent
       t.timestamps null: false
