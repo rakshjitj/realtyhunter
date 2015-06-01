@@ -85,6 +85,11 @@ $( document ).ready(function() {
 							<% end %>
 						</p>
 
+						<p>
+							<strong>Pet Policy:</strong>
+							<%= @residential_unit.pet_policy.name %>
+						</p>
+
 						<!-- Landlord info -->
 						<p>
 							<strong>Landlord:</strong>
@@ -97,14 +102,6 @@ $( document ).ready(function() {
 						<p>
 							<strong>LL Pays Fee %:</strong>
 							<%= @residential_unit.building.landlord.op_fee_percentage %>
-						</p>
-						<p>
-							<strong>Tenant Pays Fee %:</strong>
-							<%= @residential_unit.building.landlord.tp_fee_percentage %>
-						</p>
-						<p>
-							<strong>Pet Policy:</strong>
-							<%= @residential_unit.building.landlord.pet_policy.name %>
 						</p>
 						<p>
 							<strong>Required Security:</strong>
@@ -127,12 +124,6 @@ $( document ).ready(function() {
 							<%= @residential_unit.building.rental_terms_to_s %>
 						</p>
 
-						<% if current_user.is_management? %>
-							<p>
-								<strong>Listing agent:</strong>
-								<%= link_to @residential_unit.building.listing_agent.name, @residential_unit.building.listing_agent %>
-							</p>
-						<% end %>
 
 						<p>
 							<strong>Building Amenities:</strong>
@@ -149,13 +140,19 @@ $( document ).ready(function() {
 							<%= @residential_unit.notes %>
 						</p>
 						
+						<% if @residential_unit.listing_agent %>
+						<p>
+							<strong>Listing agent:</strong>
+							<%= link_to @residential_unit.listing_agent.name, @residential_unit.listing_agent %>
+						</p>
+						<% end %>
+
 						<% if @residential_unit.primary_agent %>
 						<p>
 							<strong>Primary agent:</strong>
 							<%= link_to @residential_unit.primary_agent.name, @residential_unit.primary_agent %>
 						</p>
 						<% end %>
-
 
 						<p>
 							<strong>Open House:</strong>

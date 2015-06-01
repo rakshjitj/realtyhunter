@@ -7,23 +7,14 @@ class Landlord < ActiveRecord::Base
 	belongs_to :required_security
 	validates :required_security, presence: true
 
-	belongs_to :pet_policy
-	validates :pet_policy, presence: true
-
 	validates :code, presence: true, length: {maximum: 100}, 
 		uniqueness: { case_sensitive: false }
 
 	validates :name, presence: true, length: {maximum: 100}, 
 		uniqueness: { case_sensitive: false }
 
-	validates :tp_fee_percentage, presence: true, length: {maximum: 3}, numericality: { only_integer: true }
-	validates_inclusion_of :tp_fee_percentage, :in => 0..100
-
 	validates :op_fee_percentage, presence: true, length: {maximum: 3}, numericality: { only_integer: true }
 	validates_inclusion_of :op_fee_percentage, :in => 0..100
-
-	validates :name, presence: true, length: {maximum: 100}, 
-		uniqueness: { case_sensitive: false }
 
 	validates :listing_agent_percentage, presence: true, length: {maximum: 3}, numericality: { only_integer: true }
 

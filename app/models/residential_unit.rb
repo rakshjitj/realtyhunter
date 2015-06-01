@@ -1,6 +1,8 @@
 class ResidentialUnit < ActiveRecord::Base
 	acts_as :unit
 	has_and_belongs_to_many :residential_amenities
+  belongs_to :pet_policy
+  validates :pet_policy, presence: true
 
   #autocomplete :building, :formatted_street_address
 
@@ -81,7 +83,7 @@ class ResidentialUnit < ActiveRecord::Base
   # can be formatted_street_address, landlord
   # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 
   # neighborhoods, has_outdoor_space, features, pet_policy
-  def self.search(params, building_id)
+  def self.search(params, building_id=nil)
     # actable_type to restrict to residential only
     if !params && !building_id
       return ResidentialUnit.all
@@ -92,7 +94,7 @@ class ResidentialUnit < ActiveRecord::Base
     @running_list = Unit.all
     
     # clear out any invalid search params
-    params.delete_if{|k,v| !v || v.empty? }
+    params.delete_if{|k,v| !(v || v > 0 || !v.empty?) }
 
     # search by address (building)
     if params[:address]
@@ -150,7 +152,7 @@ class ResidentialUnit < ActiveRecord::Base
 
     # search pet policy
     if params[:pet_policy_id]
-      @running_list = @running_list.joins(building: :landlord)
+      @running_list = @running_list
         .where('pet_policy_id = ?', params[:pet_policy_id])
     end
 

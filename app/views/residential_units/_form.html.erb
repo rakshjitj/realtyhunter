@@ -45,6 +45,15 @@
         <%= f.date_field :available_by, class: 'form-control' %>
       </div>
       <div class="field">
+        <%= f.label :pet_policy_id %><br>
+        <%= f.select(:pet_policy_id, options_for_select(current_user.company.pet_policies.all.collect { |r| [r.name, r.id] }, 
+          [@residential_unit.pet_policy ? @residential_unit.pet_policy.id : '']),
+           {prompt: "Choose one..."},
+          :required => true, 
+          class: 'form-control',
+          :include_blank => true) %>
+      </div>
+      <div class="field">
         <%= f.label :lease_duration %><br>
         <%= f.select :lease_duration, 
           options_for_select(ResidentialUnit.lease_durations.collect { |s| [s[0].humanize, s[0]] }, 
@@ -74,11 +83,18 @@
           class: 'form-control',
           :include_blank => true) %>
       </div>
+     <div class="field">
+        <%= f.label :user_id, "Listing Agent" %><br>
+        <%= f.select(:user_id, options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
+          [@residential_unit.listing_agent ? @residential_unit.listing_agent.id : '']), 
+          {prompt: "Choose one..."},
+          class: 'form-control',
+          :include_blank => true) %>
+      </div>
       <div class="field">
         <%= f.label :open_house, "Open House Info" %><br>
         <%= f.text_area :open_house, class: 'form-control', rows: 3 %>
       </div>
-     
   </div>
 
   <div class="actions">

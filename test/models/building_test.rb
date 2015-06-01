@@ -2,7 +2,14 @@ require 'test_helper'
 
 class BuildingTest < ActiveSupport::TestCase
   def setup
+    @company = companies(:one)
+    @landlord = landlords(:one)
+    @neighborhood = neighborhoods(:one)
+
     @bldg = buildings(:one)
+    @bldg.company = @company
+    @bldg.landlord = @landlord
+    @bldg.neighborhood = @neighborhood
   end
 
   test "should be valid" do
@@ -126,7 +133,7 @@ class BuildingTest < ActiveSupport::TestCase
   end
 
   test "save and add neighborhood creates neighborhood" do
-    @bldg.save_and_create_neighborhood('Crown Heights', 'Brooklyn', 'New York', 'NY')
+    @n2 = @bldg.find_or_create_neighborhood('Crown Heights', 'Brooklyn', 'New York', 'NY')
     @n = Neighborhood.find_by(name: 'Crown Heights')
     assert @n
     assert @bldg.neighborhood.name, @n.name

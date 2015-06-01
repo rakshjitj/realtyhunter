@@ -59,8 +59,7 @@
       t.belongs_to :office
       t.references :employee_title, index: true
       t.references :manager, index: true
-      t.references :buildings, index: true # listing agent
-      #t.references :landlords, index: true
+      #t.references :buildings, index: true # listing agent
       t.references :units, index: true # primary agent
       t.timestamps null: false
     end
@@ -100,11 +99,7 @@
       t.integer :listing_agent_percentage
       t.string :management_info
       t.belongs_to :required_security
-      t.belongs_to :pet_policy
-      # primary?
-      # listing?
       t.integer :op_fee_percentage
-      t.integer :tp_fee_percentage
       t.belongs_to :company
       t.references :buildings, index: true
       t.timestamps null: false
@@ -140,7 +135,7 @@
       t.string :access_info
       t.integer :status, default: 0
       t.string :open_house
-      t.integer :weeks_free_offered
+      t.integer :weeks_free_offered, default: 0
       t.belongs_to :building
       t.belongs_to :user # primary agent
       t.timestamps null: false
@@ -151,6 +146,7 @@
       t.float :baths
       t.string :notes
       t.integer :lease_duration, default: 0
+      t.belongs_to :pet_policy
     end
 
     create_table :commercial_units do |t|
@@ -195,7 +191,7 @@
     create_table :pet_policies do |t|
       t.string :name
       t.belongs_to :company
-      t.references :landlords, index: true
+      t.references :residential_units, index: true
       t.timestamps null: false
     end
 

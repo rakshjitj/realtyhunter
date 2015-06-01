@@ -3,7 +3,12 @@ require 'test_helper'
 class LandlordTest < ActiveSupport::TestCase
 
 	def setup
+    @company = companies(:one)
+    @required_security = required_securities(:one)
+
     @landlord = landlords(:one)
+    @landlord.company = @company
+    @landlord.required_security = @required_security
   end
 
   test "should be valid" do
@@ -30,8 +35,8 @@ class LandlordTest < ActiveSupport::TestCase
     assert_not @landlord.valid?
   end
 
-  test "months_required should be present" do
-    @landlord.months_required = "     "
+  test "required_security should be present" do
+    @landlord.required_security = nil
     assert_not @landlord.valid?
   end
 

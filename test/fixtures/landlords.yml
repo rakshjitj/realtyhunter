@@ -2,6 +2,16 @@
 
 one:
   formatted_street_address: MyString1
+  street_number: MyString1
+  route: MyString1
+  sublocality: MyString
+  administrative_area_level_2_short: MyString
+  administrative_area_level_1_short: MyString
+  country_short: MyString
+  postal_code: MyString
+  lat: MyString
+  lng: MyString
+  place_id: MyString
   code: MyString
   name: MyString
   office_phone: 555-555-5555
@@ -12,14 +22,22 @@ one:
   notes: MyText
   listing_agent_percentage: 15
   management_info: MyString
-  required_security_id: 1
-  pet_policy_id: 1
   op_fee_percentage: 15
-  tp_fee_percentage: 15
+  required_security_id: 1
   company_id: 1
 
 two:
   formatted_street_address: MyString2
+  street_number: MyString2
+  route: MyString2
+  sublocality: MyString
+  administrative_area_level_2_short: MyString
+  administrative_area_level_1_short: MyString
+  country_short: MyString
+  postal_code: MyString
+  lat: MyString
+  lng: MyString
+  place_id: MyString
   code: MyString2
   name: MyString2
   office_phone: 555-555-5556
@@ -30,8 +48,6 @@ two:
   notes: MyText6
   listing_agent_percentage: 15
   management_info: MyString6
-  required_security_id: 1
-  pet_policy_id: 1
   op_fee_percentage: 15
-  tp_fee_percentage: 15
+  required_security_id: 1
   company_id: 1

@@ -4,6 +4,7 @@ class Unit < ActiveRecord::Base
 	#has_many :building_amenities, through: :building
 
 	belongs_to :primary_agent, :foreign_key => 'user_id', :class_name => 'User'
+	belongs_to :listing_agent, :foreign_key => 'user_id', :class_name => 'User'
 
 	enum status: [ :active, :pending, :off ]
 	validates :status, presence: true, inclusion: { in: %w(active pending off) }

@@ -1,7 +1,6 @@
 class Building < ActiveRecord::Base
 	belongs_to :company
 	belongs_to :landlord
-	belongs_to :listing_agent, :foreign_key => 'user_id', :class_name => 'User'
 	has_many :units, dependent: :destroy
 	belongs_to :neighborhood
 	has_and_belongs_to_many :building_amenities
@@ -32,7 +31,6 @@ class Building < ActiveRecord::Base
 	validates :company, presence: true
 	validates :landlord, presence: true
 	validates :neighborhood, presence: true
-	validates :listing_agent, presence: true
 
 	def street_address
 		self.street_number + ' ' + self.route

@@ -13,12 +13,12 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @building = buildings(:one)
     @building.neighborhood_id = @n.id
     @building.save
-    
 
     @building2 = buildings(:two)
     @building2.neighborhood = @n2
     @building.save
 
+    @pet_policy = pet_policies(:one)
     #Neighborhood.all.each { |b| puts "\n--N-- #{b.id}" }
     #Building.all.each { |b| puts "\n--B-- #{b.inspect}" }
 
@@ -29,6 +29,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
       building_unit: "1111",
       rent: 10,
       building: @building,
+      pet_policy: @pet_policy
     	})
     @unit2 = ResidentialUnit.new({
       beds: 5,
@@ -37,6 +38,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
       building_unit: "2222",
       rent: 20,
       building: @building2,
+      pet_policy: @pet_policy
       })
     @unit3 = ResidentialUnit.new({
       beds: 8,
@@ -45,6 +47,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
       building_unit: "3333",
       rent: 30,
       building: @building2,
+      pet_policy: @pet_policy
       })
   end
 

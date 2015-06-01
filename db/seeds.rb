@@ -142,8 +142,6 @@ end
   listing_agent_percentage: "15",
   required_security: @company.required_securities[1],
   op_fee_percentage: 95,
-  tp_fee_percentage: 95,
-  pet_policy: @company.pet_policies[2],
   company: @company,
   })
 
@@ -158,14 +156,11 @@ end
     fax: "777-777-7777",
     email: FFaker::Internet.email(ll_name),
     website: FFaker::Internet.http_url,
-    
     notes: FFaker::HipsterIpsum.sentence,
     listing_agent_percentage: "15",
     management_info: FFaker::HipsterIpsum.phrase,
     required_security: @company.required_securities[0],
     op_fee_percentage: 95,
-    tp_fee_percentage: 95,
-    pet_policy: @company.pet_policies[0],
     company: @company)
 end
 
@@ -184,8 +179,7 @@ end
   notes: "Building has parking spots available, laundry in the basement.",
   company: @company, 
   landlord: @landlord,
-  neighborhood: @neighborhood,
-  listing_agent: @manager1
+  neighborhood: @neighborhood
   })
 
 55.times do |n|
@@ -203,6 +197,9 @@ end
     weeks_free_offered: Faker::Number.number(1),
     notes: FFaker::HipsterIpsum.sentence,
     building: @bldg,
+    pet_policy: @company.pet_policies[2],
+    listing_agent: @manager1,
+    primary_agent: @manager1
     })
   #puts "\nresidential unit #{n} #{ru.inspect}"
 end

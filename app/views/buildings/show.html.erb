@@ -58,11 +58,6 @@ $( document ).ready(function() {
 				</p>
 
 				<p>
-				  <strong>Listing Agent:</strong>
-				  <%= link_to @building.listing_agent.name, user_path(@building.listing_agent) %>
-				</p>
-
-				<p>
 				  <strong>Building-Level Amenities:</strong>
 				  <%= @building.amenities_to_s %>
 				</p>

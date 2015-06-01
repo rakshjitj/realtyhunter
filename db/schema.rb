@@ -130,9 +130,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "listing_agent_percentage"
     t.string   "management_info"
     t.integer  "required_security_id"
-    t.integer  "pet_policy_id"
     t.integer  "op_fee_percentage"
-    t.integer  "tp_fee_percentage"
     t.integer  "company_id"
     t.integer  "buildings_id"
     t.datetime "created_at",                        null: false
@@ -172,12 +170,12 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   create_table "pet_policies", force: :cascade do |t|
     t.string   "name"
     t.integer  "company_id"
-    t.integer  "landlords_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.integer  "residential_units_id"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
-  add_index "pet_policies", ["landlords_id"], name: "index_pet_policies_on_landlords_id", using: :btree
+  add_index "pet_policies", ["residential_units_id"], name: "index_pet_policies_on_residential_units_id", using: :btree
 
   create_table "rental_terms", force: :cascade do |t|
     t.string   "name"
@@ -213,6 +211,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.float   "baths"
     t.string  "notes"
     t.integer "lease_duration", default: 0
+    t.integer "pet_policy_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -234,7 +233,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "access_info"
     t.integer  "status",             default: 0
     t.string   "open_house"
-    t.float    "weeks_free_offered"
+    t.integer  "weeks_free_offered", default: 0
     t.integer  "building_id"
     t.integer  "user_id"
     t.datetime "created_at",                     null: false
@@ -263,7 +262,6 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "office_id"
     t.integer  "employee_title_id"
     t.integer  "manager_id"
-    t.integer  "buildings_id"
     t.integer  "units_id"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
@@ -271,7 +269,6 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "avatar_key"
   end
 
-  add_index "users", ["buildings_id"], name: "index_users_on_buildings_id", using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["employee_title_id"], name: "index_users_on_employee_title_id", using: :btree
   add_index "users", ["manager_id"], name: "index_users_on_manager_id", using: :btree
