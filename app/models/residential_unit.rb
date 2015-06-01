@@ -14,15 +14,17 @@ class ResidentialUnit < ActiveRecord::Base
 	validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }
 	validates :baths, presence: true, :numericality => { :less_than_or_equal_to => 11 }
 
+  # used as a sorting condition
   def street_address_and_unit
     self.building.street_number + ' ' + self.building.route + ' #' + self.building_unit
   end
 
+  # used as a sorting condition
   def landlord_by_code
     self.building.landlord.code
   end
 
-  # Move this into a view helper. violates MVC!
+  # used as a sorting condition
   def bed_and_baths
     "#{beds} / #{baths}"
   end
@@ -48,10 +50,12 @@ class ResidentialUnit < ActiveRecord::Base
   # can be formatted_street_address, landlord
   # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 
   # neighborhoods, has_outdoor_space, features, pet_policy
-  def self.search(params)
+  def self.search(params, building_id)
     # actable_type to restrict to residential only
-    if !params
+    if !params && !building_id
       return ResidentialUnit.all
+    elsif !params && building_id
+      return ResidentialUnit.where(building_id: building_id)
     end
 
     @running_list = Unit.all
@@ -199,6 +203,33 @@ class ResidentialUnit < ActiveRecord::Base
     end
     
     end_date
+  end
+
+  # collect the data we will need to access from our giant map view
+  def self.set_location_data(runits)
+    @map_infos = {}
+    for i in 0..runits.length-1
+      street_address = runits[i].building.street_address
+      bldg_info = {
+        building_id: runits[i].building.id,
+        lat: runits[i].building.lat, 
+        lng: runits[i].building.lng }
+      unit_info = {
+        id: runits[i].id,
+        building_unit: runits[i].building_unit,
+        beds: runits[i].beds,
+        baths: runits[i].baths,
+        rent: runits[i].rent }
+
+      if @map_infos.has_key?(street_address)
+        @map_infos[street_address]['units'] << unit_info
+      else
+        bldg_info['units'] = [unit_info]
+        @map_infos[street_address] = bldg_info
+      end
+    end
+
+    @map_infos
   end
 
 end

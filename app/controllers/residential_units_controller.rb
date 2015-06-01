@@ -163,11 +163,11 @@ class ResidentialUnitsController < ApplicationController
 
     def set_residential_units
       search_params = params[:search_params]
-      @residential_units = ResidentialUnit.search(search_params)
+      @residential_units = ResidentialUnit.search(search_params, params[:building_id])
       
       @residential_units = custom_sort
       @residential_units = @residential_units.paginate(:page => params[:page], :per_page => 50)
-      set_location_data
+      @map_infos = ResidentialUnit.set_location_data(@residential_units)
     end
 
     def custom_sort
@@ -178,7 +178,6 @@ class ResidentialUnitsController < ApplicationController
         @residential_units = @residential_units.order(sort_column + ' ' + sort_order)
       # otherwise call sort_by with our custom method
       else
-        
         if sort_order == "asc"
           @residential_units = @residential_units.sort_by{|b| b.send(sort_column)}
         else
@@ -186,31 +185,6 @@ class ResidentialUnitsController < ApplicationController
         end
       end
       @residential_units
-    end
-
-    def set_location_data
-      @map_infos = {}
-      for i in 0..@residential_units.length-1
-        street_address = @residential_units[i].building.street_address
-        bldg_info = {
-          lat: @residential_units[i].building.lat, 
-          lng: @residential_units[i].building.lng }
-        unit_info = {
-          id: @residential_units[i].id,
-          building_unit: @residential_units[i].building_unit,
-          beds: @residential_units[i].beds,
-          baths: @residential_units[i].baths,
-          rent: @residential_units[i].rent }
-
-        if @map_infos.has_key?(street_address)
-          @map_infos[street_address]['units'] << unit_info
-        else
-          bldg_info['units'] = [unit_info]
-          @map_infos[street_address] = bldg_info
-        end
-      end
-
-      @map_infos
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

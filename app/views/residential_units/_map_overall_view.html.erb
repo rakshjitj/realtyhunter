@@ -8,12 +8,12 @@
         var map = new google.maps.Map(document.getElementById('big_map'), mapOptions);
 
         function buildContentString(key, info) {
-          var contentString = key + '<hr />';
+          var contentString = '<strong>' + key + '</strong><hr />';
           for (var i=0; i<info['units'].length; i++) {
-            contentString += '#' + info['units'][i].building_unit + ': ' + info['units'][i].beds + ' beds / ' 
-              + info['units'][i].baths + ' baths ' + info['units'][i].rent + '<br />';
+            contentString += '#<a href="/residential_units/' + info['units'][i].id + '">' + info['units'][i].building_unit + '</a>: ' + info['units'][i].beds + ' beds / ' 
+              + info['units'][i].baths + ' baths $' + info['units'][i].rent + '<br />';
             if (i == 5) {
-              contentString += 'View more...';
+              contentString += '<a href="/residential_units?building_id=' + info['building_id'] + '">View more...</a>';
               break;
             }
           }
@@ -47,9 +47,6 @@
           });
           
         });
-
-        
-        
       }
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>

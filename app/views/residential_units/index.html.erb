@@ -59,7 +59,7 @@
   <div class="col-md-6"><h1>Residential Listings</h1><%= link_to 'Add a unit', new_residential_unit_path %><br /></div>
 
 </div>
-<hr />
+<!--hr class="thin-line" /-->
 
 <div class="row">
   <div class="col-md-8">
@@ -105,7 +105,7 @@
     <% end %>
   </div>
 </div>
-<div class="row">
+<!-- <div class="row">
   <div class="col-md-12">
     <div class="row">
       <div class="col-md-offset-9 col-md-3 right">
@@ -116,9 +116,9 @@
       <div class="col-md pull-right">
         <%= will_paginate @residential_units %>
       </div>
-    </div-->
+    </div>
   </div>
-</div>
+</div> -->
 
 <hr class="thin-line" />
 <%= render 'table', locals: { residential_units: @residential_units } %>
