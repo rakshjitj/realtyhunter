@@ -5,11 +5,12 @@ class ResidentialUnitsController < ApplicationController
   # GET /residential_units
   # GET /residential_units.json
   def index
+    
     set_residential_units
     respond_to do |format|
       format.html
       format.csv do
-        headers['Content-Disposition'] = "attachment; filename=\"buildings-list.csv\""
+        headers['Content-Disposition'] = "attachment; filename=\"listings-list.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
     end
@@ -29,10 +30,17 @@ class ResidentialUnitsController < ApplicationController
   # GET /residential_units/new
   def new
     @residential_unit = ResidentialUnit.new
+    if params[:building_id]
+      building = Building.find(params[:building_id])
+      @residential_unit.building_id = building.id
+    end
+    
+    @panel_title = "Add a listing"
   end
 
   # GET /residential_units/1/edit
   def edit
+    @panel_title = "Edit listing"
   end
 
   # POST /residential_units
@@ -89,6 +97,7 @@ class ResidentialUnitsController < ApplicationController
     if new_end_date
       @residential_unit.take_off_market(new_end_date)
     end
+    set_residential_units
     respond_to do |format|
       format.js  
     end
@@ -150,19 +159,22 @@ class ResidentialUnitsController < ApplicationController
     end
 
     def set_residential_units
-      @residential_units = ResidentialUnit.search(params[:filter], params[:active_only])
+      search_params = params[:search_params]
+      @residential_units = ResidentialUnit.search(search_params)
+      
       @residential_units = custom_sort
       @residential_units = @residential_units.paginate(:page => params[:page], :per_page => 50)
     end
 
     def custom_sort
-      sort_column = params[:sort_by] || "rent"
+      sort_column = params[:sort_by] || "updated_at"
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
       # if sorting by an actual db column, use order
       if ResidentialUnit.column_names.include?(params[:sort_by])
         @residential_units = @residential_units.order(sort_column + ' ' + sort_order)
       # otherwise call sort_by with our custom method
       else
+        
         if sort_order == "asc"
           @residential_units = @residential_units.sort_by{|b| b.send(sort_column)}
         else

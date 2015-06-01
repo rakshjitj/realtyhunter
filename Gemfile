@@ -48,6 +48,8 @@ gem 'faker'
 gem 'ffaker'
 # simulate multiple table inheritance
 gem 'active_record-acts_as'
+# autocomplete fields (like building addresses in our case)
+gem 'rails4-autocomplete'
 
 group :production do
 	gem 'puma'

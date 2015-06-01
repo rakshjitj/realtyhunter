@@ -56,7 +56,8 @@ class Company < ActiveRecord::Base
 			{name: "Bike room", company: @company},
 			{name: "Brownstone", company: @company},
 			{name: "Roof deck", company: @company},
-			{name: "Garage parking", company: @company}
+			{name: "Garage parking", company: @company},
+			{name: "Elevator", company: @company}
 		])
 
 		RentalTerm.create([

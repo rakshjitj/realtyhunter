@@ -38,7 +38,9 @@ Rails.application.routes.draw do
   get 'companies/:company_id/offices/:id/managers', to: 'offices#managers', as: :office_managers
   get 'companies/:company_id/offices/:id/agents', to: 'offices#agents', as: :office_agents
 
-  resources :buildings
+  resources :buildings do
+    get :autocomplete_building_formatted_street_address, :on => :collection
+  end
   get 'search/buildings', to: 'buildings#filter', as: :buildings_filter
   get 'buildings/:id/delete_modal', to: 'buildings#delete_modal', as: :building_delete_modal
   get 'buildings/:id/inaccuracy_modal', to: 'buildings#inaccuracy_modal', as: :building_inaccuracy_modal

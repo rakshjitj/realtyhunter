@@ -87,8 +87,13 @@ $( document ).ready(function() {
           </div>
 
           <div class="field">
-            <%= f.label :fee_percentage, 'Pays Fee %' %><br>
-            <%= f.text_field :fee_percentage, class: 'form-control' %>
+            <%= f.label :op_fee_percentage, 'Owner Pays Fee %' %><br>
+            <%= f.number_field :op_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>
+          </div>
+
+          <div class="field">
+            <%= f.label :tp_fee_percentage, 'Tenant Pays Fee %' %><br>
+            <%= f.number_field :tp_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>
           </div>
 
           <div class="field">

@@ -103,7 +103,8 @@
       t.belongs_to :pet_policy
       # primary?
       # listing?
-      t.integer :fee_percentage
+      t.integer :op_fee_percentage
+      t.integer :tp_fee_percentage
       t.belongs_to :company
       t.references :buildings, index: true
       t.timestamps null: false
@@ -142,9 +143,7 @@
       t.float :weeks_free_offered
       t.belongs_to :building
       t.belongs_to :user # primary agent
-      # updated_by
-      #  this causes a problem with our MTI setup
-      #t.timestamps null: false
+      t.timestamps null: false
     end
 
     create_table :residential_units do |t|

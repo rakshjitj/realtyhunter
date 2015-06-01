@@ -3,45 +3,53 @@
    //call when typing or enter or focus leaving
   $( document ).ready(function() {
 
-    function doSearch() {
+    function doSearch(event) {
       $.ajax({
         url: "<%= residential_units_filter_path %>",
         data: {
-          filter: $('#filter').val(),
-          active_only: $('#checkbox_active').checked
+          search_params: {
+            address: $('#address').val(),
+            unit: $('#unit').val(),
+            rent_min: $('#rent_min').val(),
+            rent_max: $('#rent_max').val(),
+            bed_min: $('#bed_min').val(),
+            bed_max: $('#bed_max').val(),
+            bath_min: $('#bath_min').val(),
+            bath_max: $('#bath_max').val(),
+            landlord: $('#landlord').val(),
+            pet_policy_id: $('#pet_policy_id').val(),
+          } 
         },
         dataType: "script"
-      }).fail(function() {
-        //console.log("[FAILED] search update failed");
       });
     };
 
-    // change enter key to tab
-    $('#filter').keydown(function(event) {
-      if (event.keyCode == 13) {
-        $('#checkbox_active').focus();
-        return false;
-      }
-    });
-
     // search as user types
     var timer;
-    $('#filter').keyup(function() {
-      clearInterval(timer); // clear any interval on key up
+    function throttledSearch() {
+      clearInterval(timer);  //clear any interval on key up
       timer = setTimeout(doSearch, 500);
-    });
+    };
+    
+    // change enter key to tab
+    function preventEnter(event) {
+      if (event.keyCode == 13) {
+        //$('#checkbox_active').focus();
+        return false;
+      }
+    };
 
-    // toggle between active and inactive units
-    $('#checkbox_active').click(function(event){
-      $.ajax({
-        url: "<%= residential_units_filter_path %>",
-        data: {
-          filter: $('#filter').val(),
-          active_only: $('#checkbox_active').prop('checked')
-        },
-        dataType: "script"
-      });
-    });
+    $('input').keydown(preventEnter);
+    $('#address').keyup(throttledSearch);
+    $('#unit').keyup(throttledSearch);
+    $('#rent_min').keyup(throttledSearch);
+    $('#rent_max').keyup(throttledSearch);
+    $('#bed_min').keyup(throttledSearch);
+    $('#bed_max').keyup(throttledSearch);
+    $('#bath_min').keyup(throttledSearch);
+    $('#bath_max').keyup(throttledSearch);
+    $('#landlord').keyup(throttledSearch);
+    $('#pet_policy_id').change(throttledSearch);
 
   });
 </script>
@@ -51,17 +59,48 @@
 
 
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-12">
+
     <%= form_tag residential_units_path, :method => 'get' do %>
-      <%= label_tag(:filter, "Filter:") %>
-      <%= text_field_tag :filter, params[:code_name], 
-        placeholder: "address", size: 50 %>
+      <%= label_tag(:address, "Address:") %>
+      <%= text_field_tag :address, params[:code_name], placeholder: "123 Main St", size: 35 %>
       &nbsp;&nbsp;
-      <%= check_box_tag(:checkbox_active, class: "checkbox inline") %>
-      <%= label_tag :checkbox_active, "Has active units" %>
+      <%= label_tag(:unit, "Unit:") %>
+      <%= text_field_tag :unit, params[:unit], size: 5 %>
+      &nbsp;&nbsp;
+      <%= label_tag(:unit, "Rent:") %>
+      <%= number_field_tag :rent_min, params[:rent_min], placeholder: "$", min: 0, max: 100000000 %>
+      to 
+      <%= number_field_tag :rent_max, params[:rent_max], placeholder: "$", min: 0, max: 100000000 %>
+      <br />
+      <%= label_tag(:unit, "Beds:") %>
+      <%= number_field_tag :bed_min, params[:bed_min], min: 0, max: 10 %>
+      to 
+      <%= number_field_tag :bed_max, params[:bed_max], min: 0, max: 10 %>
+      &nbsp;&nbsp;
+      <%= label_tag(:unit, "Baths:") %>
+      <%= number_field_tag :bath_min, params[:bath_min], min: 0, max: 10 %>
+      to 
+      <%= number_field_tag :bath_max, params[:bath_max], min: 0, max: 10 %>
+      &nbsp;&nbsp;
+      <%= label_tag(:landlord, "Landlord:") %>
+      <%= text_field_tag :landlord, params[:landlord], placeholder: "code", size: 25 %>
+      &nbsp;&nbsp;
+
+      <!-- TODO: fix plural of status to work in rails -->
+      <br />
+      <%= label_tag :pet_policy_id, "Pet policy" %><br>
+      <%= select_tag(:pet_policy_id, 
+        options_for_select(current_user.company.pet_policies.all.collect { |r| [r.name, r.id] }, params[:pet_policy_id]),
+        include_blank: true) %>
+      <br />
+      <%= check_box_tag(:outdoor_space, class: "checkbox inline") %>
+      <%= label_tag :outdoor_space, "Has outdoor space" %>
     <% end %>
   </div>
-  <div class="col-md-6">
+</div>
+<div class="row">
+  <div class="col-md-12">
     <div class="row">
       <div class="col-md-offset-9 col-md-3 right">
         <%= link_to 'Add a unit', new_residential_unit_path %><br />
@@ -82,13 +121,13 @@
     <table class="table table-striped table-hover table-condensed table-responsive">
       <thead>
         <tr>
-          <th><%= sortable 'Address' %></th>
-          <th><%= sortable 'landlord.code' %></th>
+          <th><%= sortable('street_address_and_unit', 'Address') %></th>
+          <th><%= sortable 'landlord_by_code' %></th>
           <th style="width: 20%;">Access</th>
-          <th><%= sortable 'bed_and_bath' %></th>
+          <th><%= sortable 'bed_and_baths' %></th>
           <th><%= sortable 'available_by' %></th>
           <th><%= sortable 'rent' %></th>
-          <th><%= sortable 'updated_by' %></th>
+          <th><%= sortable 'updated_at' %></th>
           <th><%= sortable 'status' %></th>
           <th colspan="1"></th>
         </tr>

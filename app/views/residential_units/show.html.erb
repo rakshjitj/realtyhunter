@@ -21,7 +21,7 @@ $( document ).ready(function() {
   			<div class="page-header">
 		  		<h1>
 		  			<%= rent_formatted(@residential_unit) %> - 
-		  			<%= @residential_unit.building.street_address %> #<%= @residential_unit.building_unit %>
+		  			<%= @residential_unit.street_address_and_unit %>
 		  		</h1>
 		  		<p>
 	  				<%= @residential_unit.building.neighborhood.name %>, <%= @residential_unit.building.sublocality %>, <%= @residential_unit.building.administrative_area_level_2_short %> <%= @residential_unit.building.postal_code %>
@@ -80,14 +80,18 @@ $( document ).ready(function() {
 						<p>
 							<strong>Landlord:</strong>
 							<% if current_user.is_management? %>
-								<%= link_to @residential_unit.building.landlord.code, @residential_unit.building.landlord %>
+								<%= link_to @residential_unit.landlord_by_code, @residential_unit.building.landlord %>
 							<% else %>
-								<%= @residential_unit.building.landlord.code %>
+								<%= @residential_unit.landlord_by_code %>
 							<% end %>
 						</p>
 						<p>
 							<strong>LL Pays Fee %:</strong>
-							<%= @residential_unit.building.landlord.fee_percentage %>
+							<%= @residential_unit.building.landlord.op_fee_percentage %>
+						</p>
+						<p>
+							<strong>Tenant Pays Fee %:</strong>
+							<%= @residential_unit.building.landlord.tp_fee_percentage %>
 						</p>
 						<p>
 							<strong>Pet Policy:</strong>
