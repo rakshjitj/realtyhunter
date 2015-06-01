@@ -158,7 +158,10 @@ class ResidentialUnitsController < ApplicationController
     end
 
     def set_residential_units
-      @residential_units = ResidentialUnit.search(params[:filter], params[:active_only])
+      search_params = params[:search_params]
+      #puts "\n\n******** #{search_params}"
+      @residential_units = ResidentialUnit.search(search_params)
+      
       @residential_units = custom_sort
       @residential_units = @residential_units.paginate(:page => params[:page], :per_page => 50)
     end
@@ -167,6 +170,7 @@ class ResidentialUnitsController < ApplicationController
       sort_column = params[:sort_by] || "rent"
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
       # if sorting by an actual db column, use order
+      #puts "\n\n ***** PARAMS #{params.inspect}"
       if ResidentialUnit.column_names.include?(params[:sort_by])
         @residential_units = @residential_units.order(sort_column + ' ' + sort_order)
       # otherwise call sort_by with our custom method

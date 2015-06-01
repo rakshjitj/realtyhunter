@@ -31,27 +31,104 @@ class ResidentialUnit < ActiveRecord::Base
     listing_id
   end
 
-  def self.search(query_str, active_only)
-		@running_list = ResidentialUnit.all
-    if !query_str
-      return @running_list
+  # takes in a hash of search options
+  # can be formatted_street_address, landlord
+  # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 
+  # neighborhoods, has_outdoor_space, features, pet_policy
+  def self.search(params)
+    # actable_type to restrict to residential only
+    if !params
+      return ResidentialUnit.all
     end
-    
-    # cap query string length for security reasons
-  	query_str = query_str[0, 256]
 
-    @terms = query_str.split(" ")
-    # TODO:
-    #@terms.each do |term|
-    #  @running_list = @running_list.joins(:buildings)
-    #  .where('building.formatted_street_address ILIKE ? OR unit ILIKE ?', "%#{term}%", "%#{term}%")
+    @running_list = Unit.all
+    
+    # clear out any invalid search params
+    params.delete_if{|k,v| !v || v.empty? }
+
+    # search by address (building)
+    if params[:address]
+      # cap query string length for security reasons
+    	address = params[:address][0, 256]
+      @terms = address.split(" ")
+      @terms.each do |term|
+       @running_list = @running_list.joins(:building)
+       .where('formatted_street_address ILIKE ?', "%#{term}%")
+      end
+    end
+
+    # search by unit
+    if params[:unit]
+      @running_list = @running_list.where("building_unit = ?", params[:unit])
+    end
+
+    # search by status
+    #status = %w[active pending off].include?(params[:status])
+    #if status
+    #  @running_list = @running_list.where("status = ?", status)
     #end
 
-    if active_only == "true"
-    	@running_list = @running_list.where(status: "active")
+    # search by rent
+    if params[:rent_min] && params[:rent_max]
+      @running_list = @running_list.where("rent >= ? AND rent <= ?", params[:rent_min], params[:rent_max])
+    elsif params[:rent_min] && !params[:rent_max]
+      @running_list = @running_list.where("rent >= ?", params[:rent_min])
+    elsif !params[:rent_min] && params[:rent_max]
+      @running_list = @running_list.where("rent <= ?", params[:rent_max])
     end
 
-    @running_list.uniq
+    # search neighborhoods
+    if params[:neighborhoods]
+      @running_list = @running_list.joins(:building)
+       .where('neighborhood_id IN (?)', params[:neighborhoods])
+    end
+
+    # search features
+    if params[:features]
+      features = params[:features][0, 256]
+      @terms = features.split(" ")
+      @terms.each do |term|
+        @running_list = @running_list.joins(building: :building_amenities)
+        .where('building_amenities.name ILIKE ?', "%#{term}%")
+        #puts "\n\n #{@running_list[0].building_amenities.inspect}"
+      end
+    end
+
+    # search landlord code
+    if params[:landlord]
+      @running_list = @running_list.joins(building: :landlord)
+      .where("code ILIKE ?", "%#{params[:landlord]}%")
+    end
+
+    # search pet policy
+    if params[:pet_policy]
+      @running_list = @running_list.joins(building: :landlord)
+        .where('landlord.pet_policy_id = ?', params[:pet_policy])
+    end
+
+    # the following fields are on ResidentialUnit not Unit, so cast the 
+    # objects first
+    @running_list = Unit.get_residential(@running_list)
+
+    # search beds
+    if params[:bed_min] && params[:bed_max]
+      @running_list = @running_list.where("beds >= ? AND beds <= ?", params[:bed_min], params[:bed_max])
+    elsif params[:bed_min] && !params[:bed_max]
+      @running_list = @running_list.where("beds >= ?", params[:bed_min])
+    elsif !params[:bed_min] && params[:bed_max]
+      @running_list = @running_list.where("beds <= ?", params[:bed_max])
+    end
+
+    # search baths
+    if params[:bath_min] && params[:bath_max]
+      @running_list = @running_list.where("baths >= ? AND baths <= ?", params[:bath_min], params[:bath_max])
+    elsif params[:bath_min] && !params[:bath_max]
+      @running_list = @running_list.where("baths >= ?", params[:bath_min])
+    elsif !params[:bath_min] && params[:bath_max]
+      @running_list = @running_list.where("baths <= ?", params[:bath_max])
+    end
+
+    @running_list
 	end
 
   def duplicate(new_unit_num, include_photos)

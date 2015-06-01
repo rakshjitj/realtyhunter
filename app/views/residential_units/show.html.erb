@@ -87,7 +87,11 @@ $( document ).ready(function() {
 						</p>
 						<p>
 							<strong>LL Pays Fee %:</strong>
-							<%= @residential_unit.building.landlord.fee_percentage %>
+							<%= @residential_unit.building.landlord.op_fee_percentage %>
+						</p>
+						<p>
+							<strong>Tenant Pays Fee %:</strong>
+							<%= @residential_unit.building.landlord.tp_fee_percentage %>
 						</p>
 						<p>
 							<strong>Pet Policy:</strong>
