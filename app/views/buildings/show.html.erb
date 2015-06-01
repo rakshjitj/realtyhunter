@@ -85,11 +85,16 @@ $( document ).ready(function() {
 				  <!--%= @building.updated_at.strftime("%b %e, %Y") %-->
 				</p>
 		  </div>
-		</div>		
+		</div>
 
 		<%= link_to 'Edit', edit_building_path(@building) %> |
 		<%= link_to 'View All', buildings_path %> |
 		<%= link_to 'Add a Unit', new_residential_unit_path %>
+
+		<hr />
+		<!-- list this building's units -->
+		<!--%= render 'residential_units/table', locals: { residential_units: @residential_units } %-->
+
 	</div>
 </div>
 

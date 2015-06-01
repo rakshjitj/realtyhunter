@@ -50,6 +50,14 @@ class Building < ActiveRecord::Base
 		self.units.where(status: "active").count
 	end
 
+	def last_unit_updated
+		if self.units
+			self.units.order('updated_at DESC').first.updated_at.strftime("%Y-%b-%d")
+		else
+			'--'
+		end
+	end
+
 	def self.search(query_str, active_only)
 		@running_list = Building.all
     if !query_str

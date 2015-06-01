@@ -6,10 +6,10 @@ class ResidentialUnit < ActiveRecord::Base
 
   attr_accessor :include_photos, :inaccuracy_description
 
-	enum lease_duration: [ :half_year, :year, :thirteen_months, :fourteen_months, :fifteen_months, 
+	enum lease_duration: [ :year, :thirteen_months, :fourteen_months, :fifteen_months, 
 		:sixteen_months, :seventeen_months, :eighteen_months, :two_years ]
 	validates :lease_duration, presence: true, inclusion: { 
-    in: %w(half_year year thirteen_months fourteen_months fifteen_months sixteen_months seventeen_months eighteen_months two_years) }
+    in: %w(year thirteen_months fourteen_months fifteen_months sixteen_months seventeen_months eighteen_months two_years) }
 
 	validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }
 	validates :baths, presence: true, :numericality => { :less_than_or_equal_to => 11 }
@@ -22,6 +22,7 @@ class ResidentialUnit < ActiveRecord::Base
     self.building.landlord.code
   end
 
+  # Move this into a view helper. violates MVC!
   def bed_and_baths
     "#{beds} / #{baths}"
   end

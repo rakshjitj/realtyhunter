@@ -48,6 +48,9 @@ class ResidentialUnitsController < ApplicationController
   def create
     @residential_unit = ResidentialUnit.new(residential_unit_params)
     @residential_unit.listing_id = ResidentialUnit.generate_unique_id
+    if !@residential_unit.available_by?
+      @residential_unit.available_by = Date.today
+    end
 
     if @residential_unit.save
       redirect_to @residential_unit
@@ -164,6 +167,7 @@ class ResidentialUnitsController < ApplicationController
       
       @residential_units = custom_sort
       @residential_units = @residential_units.paginate(:page => params[:page], :per_page => 50)
+      set_location_data
     end
 
     def custom_sort
@@ -182,6 +186,31 @@ class ResidentialUnitsController < ApplicationController
         end
       end
       @residential_units
+    end
+
+    def set_location_data
+      @map_infos = {}
+      for i in 0..@residential_units.length-1
+        street_address = @residential_units[i].building.street_address
+        bldg_info = {
+          lat: @residential_units[i].building.lat, 
+          lng: @residential_units[i].building.lng }
+        unit_info = {
+          id: @residential_units[i].id,
+          building_unit: @residential_units[i].building_unit,
+          beds: @residential_units[i].beds,
+          baths: @residential_units[i].baths,
+          rent: @residential_units[i].rent }
+
+        if @map_infos.has_key?(street_address)
+          @map_infos[street_address]['units'] << unit_info
+        else
+          bldg_info['units'] = [unit_info]
+          @map_infos[street_address] = bldg_info
+        end
+      end
+
+      @map_infos
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

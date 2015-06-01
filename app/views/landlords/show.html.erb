@@ -40,12 +40,12 @@
 
             <p>
               <strong>Email:</strong>
-              <%= @landlord.email %>
+              <%= mail_to @landlord.email %>
             </p>
 
             <p>
               <strong>Website:</strong>
-              <%= @landlord.website %>
+              <a href="<%= @landlord.website %>"><%= @landlord.website %></a>
             </p>
 
             <p>

@@ -233,9 +233,11 @@ aside {
   height: 400px;
 }
 
-#map_canvas_big {
+#big_map {
   width: 100%;
-  height: 100px;
+  height: 400px;
+  margin: 0;
+  padding: 0;
 }
 // doesn't seem to work...
 .button-to {
@@ -253,3 +255,9 @@ aside {
   padding: 0;
   margin: 5px !important;
 }
+
+.thin-line {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+

@@ -49,9 +49,18 @@ class Landlord < ActiveRecord::Base
 		buildings.reduce(0){|sum, bldg| sum + bldg.units.count }
 	end
 
-	def last_unit_updated_on
-		return '-' # TODO
-	end	
+	def last_unit_updated
+		if !self.buildings.empty?
+			buildings = self.buildings.joins(:units).order('updated_at DESC')
+			if !buildings.empty?
+				buildings.first.updated_at.strftime("%Y-%b-%d")
+			else 
+				'-No units-'
+			end
+		else
+			'-No buildings-'
+		end
+	end
 
 	def self.search(query_str, agent_query, active_only)
 		@running_list = Landlord.all

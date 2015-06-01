@@ -27,6 +27,7 @@ class BuildingsController < ApplicationController
   # GET /buildings/1
   # GET /buildings/1.json
   def show
+    @residential_units = @building.units
   end
 
   # GET /buildings/new
