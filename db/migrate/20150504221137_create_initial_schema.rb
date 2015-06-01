@@ -143,9 +143,7 @@
       t.float :weeks_free_offered
       t.belongs_to :building
       t.belongs_to :user # primary agent
-      # updated_by
-      #  this causes a problem with our MTI setup
-      #t.timestamps null: false
+      t.timestamps null: false
     end
 
     create_table :residential_units do |t|

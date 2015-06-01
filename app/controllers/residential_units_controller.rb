@@ -5,11 +5,12 @@ class ResidentialUnitsController < ApplicationController
   # GET /residential_units
   # GET /residential_units.json
   def index
+    
     set_residential_units
     respond_to do |format|
       format.html
       format.csv do
-        headers['Content-Disposition'] = "attachment; filename=\"buildings-list.csv\""
+        headers['Content-Disposition'] = "attachment; filename=\"listings-list.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
     end
@@ -159,7 +160,6 @@ class ResidentialUnitsController < ApplicationController
 
     def set_residential_units
       search_params = params[:search_params]
-      #puts "\n\n******** #{search_params}"
       @residential_units = ResidentialUnit.search(search_params)
       
       @residential_units = custom_sort
@@ -167,14 +167,14 @@ class ResidentialUnitsController < ApplicationController
     end
 
     def custom_sort
-      sort_column = params[:sort_by] || "rent"
+      sort_column = params[:sort_by] || "updated_at"
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
       # if sorting by an actual db column, use order
-      #puts "\n\n ***** PARAMS #{params.inspect}"
       if ResidentialUnit.column_names.include?(params[:sort_by])
         @residential_units = @residential_units.order(sort_column + ' ' + sort_order)
       # otherwise call sort_by with our custom method
       else
+        
         if sort_order == "asc"
           @residential_units = @residential_units.sort_by{|b| b.send(sort_column)}
         else

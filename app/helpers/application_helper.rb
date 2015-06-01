@@ -9,7 +9,8 @@ module ApplicationHelper
     end
   end
 
-  def sortable(column, title = nil)  
+  def sortable(column, title = nil)
+    puts "\n\n ****** column, title"
     title ||= column.titleize
     direction = (column == params[:sort_by] && params[:direction] == "asc") ? "desc" : "asc"
     css_class = (direction == "asc") ? "glyphicon glyphicon-triangle-top" : "glyphicon glyphicon-triangle-bottom"

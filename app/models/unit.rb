@@ -21,5 +21,14 @@ class Unit < ActiveRecord::Base
     residential_units
   end
 
+  def self.get_commercial(units)
+    running_list = units.where("actable_type = 'CommercialUnit'")
+    running_list = running_list.uniq
+    ids = running_list.map(&:id)
+
+    commercial_units = CommercialUnit.where(id: ids)
+    commercial_units
+  end
+
 	
 end

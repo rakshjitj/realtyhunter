@@ -2,12 +2,19 @@
   <td>
     <%= link_to "#{residential_unit.building.street_address} ##{residential_unit.building_unit}", residential_unit %>
     </td>
-  <td><%= residential_unit.building.landlord.code %></td>
+  <td>
+    <% if current_user.is_management? %>
+      <%= link_to residential_unit.building.landlord.code, residential_unit.building.landlord %>
+    <% else %>
+      <%= residential_unit.building.landlord.code %>
+    <% end %>
+  </td>
+
   <td><%= residential_unit.access_info %></td>
-  <td><%= residential_unit.beds %> / <%= residential_unit.baths %></td>
+  <td><%= residential_unit.bed_and_baths %></td>
   <td><%= residential_unit.available_by.strftime("%Y-%b-%d") %></td>
   <td><%= rent_formatted(residential_unit) %></td>
-  <td>--</td>
+  <td><%= residential_unit.updated_at.strftime("%Y-%b-%d") %></td>
   <td>
     <% if residential_unit.status == "active" %>
       <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>

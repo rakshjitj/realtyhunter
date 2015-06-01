@@ -14,6 +14,18 @@ class ResidentialUnit < ActiveRecord::Base
 	validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }
 	validates :baths, presence: true, :numericality => { :less_than_or_equal_to => 11 }
 
+  def street_address_and_unit
+    self.building.street_number + ' ' + self.building.route + ' #' + self.building_unit
+  end
+
+  def landlord_by_code
+    self.building.landlord.code
+  end
+
+  def bed_and_baths
+    "#{beds} / #{baths}"
+  end
+
 	def amenities_to_s
 		amenities = self.residential_amenities.map{|a| a.name}
 		if amenities
@@ -101,9 +113,9 @@ class ResidentialUnit < ActiveRecord::Base
     end
 
     # search pet policy
-    if params[:pet_policy]
+    if params[:pet_policy_id]
       @running_list = @running_list.joins(building: :landlord)
-        .where('landlord.pet_policy_id = ?', params[:pet_policy])
+        .where('pet_policy_id = ?', params[:pet_policy_id])
     end
 
     # the following fields are on ResidentialUnit not Unit, so cast the 
