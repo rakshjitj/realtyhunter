@@ -1,6 +1,6 @@
 class ResidentialUnitsController < ApplicationController
   load_and_authorize_resource
-  before_action :set_residential_unit, except: [:new, :create, :index, :filter]
+  before_action :set_residential_unit, except: [:new, :create, :index, :filter, :print_list]
 
   # GET /residential_units
   # GET /residential_units.json
@@ -115,19 +115,41 @@ class ResidentialUnitsController < ApplicationController
     end
   end
 
-  def print_private
+  def print_list
+    residential_units_no_pagination
+    render pdf: current_user.name + ' Residential Listings',
+      template: "/residential_units/print_list.pdf.erb",
+      disposition: "attachment",
+      layout:   "/layouts/pdf_layout.html",
+      orientation: 'Landscape',
+      title: current_user.name + 'Residential Listings',
+      default_header: false,
+      header: { right: '[page] of [topage]' },
+      margin: { top: 0, bottom: 0, left: 0, right: 0}
   end
+
+  def print_private
+    #respond_to do |format|
+    #  format.pdf do
+        render pdf: current_user.name + ' Listing - Private Info',
+          template: "/residential_units/print_private.pdf.erb",
+          disposition: "attachment",
+          layout:   "/layouts/pdf_layout.html"
+    #  end
+    #end
+  end
+
   # PATCH ajax
   # Takes a unit off the market
   def print_public
-    respond_to do |format|
-      format.pdf do
-        render pdf: @residential_unit.street_address_and_unit,
+    #respond_to do |format|
+    #  format.pdf do
+        render pdf: current_user.name + ' - Listing',
           template: "/residential_units/print_public.pdf.erb",
+          disposition: "attachment",
           layout:   "/layouts/pdf_layout.html"
-      end
-      format.html
-    end
+    #  end
+    #end
   end
 
   # PATCH/PUT /residential_units/1
@@ -186,6 +208,15 @@ class ResidentialUnitsController < ApplicationController
     end
 
     def set_residential_units
+      search_params = params[:search_params]
+      @residential_units = ResidentialUnit.search(search_params, params[:building_id])
+      
+      @residential_units = custom_sort
+      @residential_units = @residential_units.paginate(:page => params[:page], :per_page => 50)
+      @map_infos = ResidentialUnit.set_location_data(@residential_units)
+    end
+
+    def residential_units_no_pagination
       search_params = params[:search_params]
       @residential_units = ResidentialUnit.search(search_params, params[:building_id])
       

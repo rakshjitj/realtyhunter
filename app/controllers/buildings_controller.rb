@@ -176,8 +176,8 @@ class BuildingsController < ApplicationController
     # Need to take in additional params here. Can't rename them, or the geocode plugin
     # will not map to them correctly
     def building_params
-      params.permit(:sort_by, :direction, :filter, :active_only, :street_number, :route, :neighborhood, 
-        :sublocality, :administrative_area_level_2_short, :administrative_area_level_1_short, 
+      params.permit(:sort_by, :direction, :filter, :active_only, :street_number, :route, :intersection, 
+        :neighborhood, :sublocality, :administrative_area_level_2_short, :administrative_area_level_1_short, 
         :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id,
         :building => [:formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description, 
           :building_amenity_ids => [],

@@ -25,7 +25,7 @@ $( document ).ready(function() {
 			<%= link_to 'Edit', edit_building_path(@building) %> | 
 			<%= link_to 'View all', buildings_path %> |
 			<%= link_to 'Add a Unit', new_residential_unit_path(building_id: @building.id) %> | 
-			<%= link_to 'Report Inaccuracy', building_inaccuracy_modal_path(@building), 
+			<%= link_to 'Report Inaccuracy', inaccuracy_modal_building_path(@building), 
       	data: {toggle: "modal", target: "#bldgInaccuracyModal"}, remote: true %>
 			<br />
 		</p>
@@ -41,7 +41,7 @@ $( document ).ready(function() {
 				  <strong>Street Address:</strong>
 				  <%= @building.formatted_street_address %>
 				</p>
-
+				
 				<p>
 				  <strong>Neighborhood:</strong>
 				  <%= @building.neighborhood.name %>

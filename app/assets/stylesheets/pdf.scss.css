@@ -4,3 +4,7 @@ body { padding-top: 20px; }
 .container {
 	max-width: 940px;
 }
+
+table, tr, td {
+	page-break-inside: avoid;
+}

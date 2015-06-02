@@ -1,6 +1,7 @@
 <tr class="<%= cycle('even', 'odd') -%>">
   <td>
-    <%= link_to "#{residential_unit.building.street_address} ##{residential_unit.building_unit}", residential_unit %>
+    <%= link_to "#{residential_unit.building.street_address} ##{residential_unit.building_unit}", residential_unit %><br />
+    <small><%= residential_unit.building.neighborhood.name %></small>
     </td>
   <td>
     <% if current_user.is_management? %>
@@ -26,12 +27,12 @@
   </td>
   <td>
     <%= link_to 'Edit', edit_residential_unit_path(residential_unit) %> 
-    | <%= link_to 'Delete', residential_unit_delete_modal_path(residential_unit), 
+    | <%= link_to 'Delete', delete_modal_residential_unit_path(residential_unit), 
       data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
-    | <%= link_to 'Duplicate', residential_unit_duplicate_modal_path(residential_unit), 
+    | <%= link_to 'Duplicate', duplicate_modal_residential_unit_path(residential_unit), 
       data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
     <% if residential_unit.status == "active" %>
-      | <%= link_to 'Take off', residential_unit_take_off_modal_path(residential_unit), 
+      | <%= link_to 'Take off', take_off_modal_residential_unit_path(residential_unit), 
         data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %>
     <% end %>
   </td>

@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "formatted_street_address"
     t.string   "street_number"
     t.string   "route"
+    t.string   "intersection"
     t.string   "sublocality"
     t.string   "administrative_area_level_2_short"
     t.string   "administrative_area_level_1_short"

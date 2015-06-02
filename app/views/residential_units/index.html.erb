@@ -3,6 +3,11 @@
    //call when typing or enter or focus leaving
   $( document ).ready(function() {
 
+    $('.btn-print-list').click( function(event) {
+      // show spinner
+       $(this).toggleClass('active');
+    });
+
     function doSearch(event) {
       $.ajax({
         url: "<%= residential_units_filter_path %>",
@@ -56,7 +61,13 @@
 
 <% provide(:title, 'Residential Listings') %>
 <div class="row">
-  <div class="col-md-6"><h1>Residential Listings</h1><%= link_to 'Add a unit', new_residential_unit_path %><br /></div>
+  <div class="col-md-6">
+    <h1>Residential Listings</h1><%= link_to 'Add a unit', new_residential_unit_path %> 
+
+    <%= link_to print_list_residential_units_path, class:"btn btn-sm btn-primary link-as-button btn-print-list" do %>
+      Print
+    <% end %>
+  </div>
 
 </div>
 <!--hr class="thin-line" /-->

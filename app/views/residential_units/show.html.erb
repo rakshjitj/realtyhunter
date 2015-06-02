@@ -200,12 +200,16 @@ var ws_map_modules = 'all';
       </div>
       <div class="modal-body">
       	<div class="row">
-        	<div class="col-md-12">Please be patient, generating pdfs can take a moment.</div>
+        	<div class="col-md-12">
+        		<p>Please be patient, generating pdfs can take a few moments. </p>
+        		<br />
+        	</div>
         </div>
         <div class="row">
           <div class="col-md-3 right">
-            <%= link_to 'Private', residential_unit_print_path(@residential_unit), 
-              remote: true, class:"btn btn-primary link-as-button print-public"  %>
+            <%= link_to residential_unit_print_private_path(@residential_unit), class:"btn btn-primary link-as-button print-private-btn has-spinner" do %>
+              <span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Private
+            <% end %>
           </div>
           <div class="col-md-9">
             <p>
@@ -214,11 +218,11 @@ var ws_map_modules = 'all';
             </p>
           </div>
         </div>
-        <hr />
         <div class="row">
           <div class="col-md-3 right">
-            <%= link_to 'Public', residential_unit_print_path(@residential_unit), 
-              remote: true, class:"btn btn-primary link-as-button print-public"  %>
+            <%= link_to residential_unit_print_public_path(@residential_unit), class:"btn btn-primary link-as-button print-public-btn has-spinner" do %>
+            	<span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Public
+            <% end %>
           </div>
           <div class="col-md-9">
             <p>For <strong>external</strong> use</p>

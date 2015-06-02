@@ -1,9 +1,12 @@
-$('#print .print-public').click( function(event) {
-	
- 	$('#printModal').modal('hide');
+$('.print-private-btn').click( function(event) {
+	// show spinner
+   $(this).toggleClass('active');
+   //$('#printModal btn').disabled = true;
+ 	// no need to hide modal because the page redirects
 });
 
-$('#print .print-private').click( function(event) {
-
- 	$('#printModal').modal('hide');
+$('.print-public-btn').click( function(event) {
+	// show spinner
+	$(this).toggleClass('active');
+	// no need to hide modal because the page redirects
 });

@@ -106,7 +106,7 @@ User.define_roles()
   userN = User.create!(name: name,
    email: email,
    phone_number: FFaker::PhoneNumber.short_phone_number,
-   mobile_phone_number: FFaker::PhoneNumber.short_phone_number,
+   mobile_phone_number: '333-333-3333',
    password:              password,
    password_confirmation: password,
    activated: true,
