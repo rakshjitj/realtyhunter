@@ -106,6 +106,30 @@ class ResidentialUnitsController < ApplicationController
     end
   end
 
+  # GET
+  # handles ajax call. uses latest data in modal
+  # Modal collects info and prep unit to be taken off the market
+  def print_modal
+    respond_to do |format|
+      format.js  
+    end
+  end
+
+  def print_private
+  end
+  # PATCH ajax
+  # Takes a unit off the market
+  def print_public
+    respond_to do |format|
+      format.pdf do
+        render pdf: @residential_unit.street_address_and_unit,
+          template: "/residential_units/print_public.pdf.erb",
+          layout:   "/layouts/pdf_layout.html"
+      end
+      format.html
+    end
+  end
+
   # PATCH/PUT /residential_units/1
   # PATCH/PUT /residential_units/1.json
   def update

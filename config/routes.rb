@@ -55,7 +55,11 @@ Rails.application.routes.draw do
   patch 'residential_units/:id/send_inaccuracy', to: 'residential_units#send_inaccuracy', as: :residential_unit_send_inaccuracy
   get 'residential_units/:id/take_off_modal', to: 'residential_units#take_off_modal', as: :residential_unit_take_off_modal
   patch 'residential_units/:id/take_off', to: 'residential_units#take_off', as: :residential_unit_take_off
+  get 'residential_units/:id/print_modal', to: 'residential_units#print_modal', as: :residential_unit_print_modal
+  get 'residential_units/:id/print_public', to: 'residential_units#print_public', as: :residential_unit_print_public
+  get 'residential_units/:id/print_private', to: 'residential_units#print_private', as: :residential_unit_print_private
   
+
   resources :landlords
   get 'search/landlords', to: 'landlords#filter', as: :landlords_filter
   get 'landlords/:id/delete_modal', to: 'landlords#delete_modal', as: :landlord_delete_modal

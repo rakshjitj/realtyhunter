@@ -1,0 +1,130 @@
+<div class="row">
+  <div class="col-xs-12">
+
+  	<div class="row">
+  		<div class="col-xs-12">
+  			<div class="page-header">
+
+		  		<div class="row">
+			  		<div class="col-xs-8">
+							<h1><%= current_user.company.name %></h1>
+			  		</div>
+			  		<div class="col-xs-4 text-right">
+			  			<br />
+			  			<address>
+				  			<strong><%= current_user.name %></strong><br />
+				  			<abbr title="Phone">P:</abbr><%= current_user.mobile_phone_number %><br />
+				  			<a href="mailto:#"><%= current_user.email %></a>
+				  		</address>
+		  			</div>
+	  			</div>
+
+	  		</div><!-- page-header -->
+
+		    <div class="row">
+	        <div class="col-xs-5">
+	            <!-- TODO: photo -->
+	        </div>
+	        <div class="col-xs-7">
+	            <div class="row">
+	                <div class="col-xs-5 text-right">
+	                    <strong>Rent</strong>
+	                </div>
+	                <div class="col-xs-7">
+	                    <% if @residential_unit.weeks_free_offered > 0 %>
+	                            <%= rent_formatted(@residential_unit.rent) %> x <%= @residential_unit.weeks_free_offered %> weeks free = 
+	                            <%= rent_formatted(@residential_unit.net_rent) %> Net Rent
+	                        <% else %>
+	                            <%= rent_formatted(@residential_unit.rent) %>
+	                        <% end %>
+	                    </div>
+	            </div>
+	            <div class="row">
+	                <div class="col-xs-5 text-right">
+	                    <strong>Beds / Baths</strong>
+	                </div>
+	                <div class="col-xs-7">
+	                    <%= @residential_unit.bed_and_baths %>
+	                </div>
+	            </div>
+	            <div class="row">
+	                <div class="col-xs-5 text-right">
+	                    <strong>Neighborhood</strong>
+	                </div>
+	                <div class="col-xs-7">
+	                    <%= @residential_unit.building.neighborhood.name %>
+	                </div>
+	            </div>
+	            <div class="row">
+	                <div class="col-xs-5 text-right">
+	                    <strong>Availability</strong>
+	                </div>
+	                <div class="col-xs-7">
+	                    <% if @residential_unit.available_by < Date.today %>
+	                            Now
+	                        <% else %>
+	                            <%= @residential_unit.available_by.strftime("%Y-%b-%d") %>
+	                        <% end %>
+	                </div>
+	            </div>
+	            <div class="row">
+	                <div class="col-xs-5 text-right">
+	                    <strong>Features</strong>
+	                </div>
+	                <div class="col-xs-7">
+	                    <%= @residential_unit.building.amenities_to_s %>
+	                    <%= @residential_unit.amenities_to_s %>
+	                </div>
+	            </div>
+	            <div class="row">
+	                <div class="col-xs-5 text-right">
+	                    <strong>Rental Terms</strong>
+	                </div>
+	                <div class="col-xs-7">
+	                    <%= @residential_unit.building.rental_terms_to_s %>
+	                </div>
+	            </div>
+
+	            <div class="row">
+	                <div class="col-xs-5 text-right">
+	                    <strong>Pet policy</strong>
+	                </div>
+	                <div class="col-xs-7">
+	                    <%= @residential_unit.pet_policy.name %>
+	                </div>
+	            </div>
+	            <div class="row">
+	                <div class="col-xs-5 text-right">
+	                    <strong>Listing ID</strong>
+	                </div>
+	                <div class="col-xs-7">
+	                    <%= @residential_unit.listing_id %>
+	                </div>
+	            </div>
+	        </div><!-- body -->
+
+		  		<div class="row"><!-- footer -->
+			  		<div class="col-xs-12">
+			  			<hr >
+
+			  			<div class="row">
+			  				<div class="col-xs-6">
+			  					<%= current_user.company.name %><br />
+									<abbr title="Phone">P:</abbr><%= current_user.office.telephone %>
+			  				</div>
+			  				<div class="col-xs-6 text-right">
+			  					<address>
+						  			<%= current_user.name %><br />
+						  			<abbr title="Phone">P:</abbr><%= current_user.mobile_phone_number %><br />
+						  			<a href="mailto:#"><%= current_user.email %></a>
+						  		</address>
+			  				</div>
+			  			</div>
+		  			</div>
+	  			</div><!-- end footer -->
+
+	  	</div>
+	  </div><!-- row -->
+
+	</div><!-- end col-xs-12 -->
+</div><!-- end row -->

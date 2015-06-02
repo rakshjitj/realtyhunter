@@ -50,9 +50,13 @@ gem 'ffaker'
 gem 'active_record-acts_as'
 # autocomplete fields (like building addresses in our case)
 gem 'rails4-autocomplete'
+#gem 'pdfkit'
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary-edge', '~> 0.12.2.1'
 
 group :production do
 	gem 'puma'
+	#gem 'wkhtmltopdf-heroku'
 end
 
 group :development, :test do

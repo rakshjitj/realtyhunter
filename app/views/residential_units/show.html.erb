@@ -40,6 +40,8 @@ $( document ).ready(function() {
         			data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
         	| <%= link_to 'Take off market', residential_unit_take_off_modal_path(@residential_unit), 
         			data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %>
+        	| <%= link_to 'Print', residential_unit_print_modal_path(@residential_unit), 
+        		data: {toggle: "modal", target: "#printModal"}, remote: true %>
           </p>
 	  	</div>
     </div>
@@ -183,5 +185,51 @@ var ws_map_modules = 'all';
   	</div>
 	</div>
 </div>
-  
+
+<!-- modals that are common to show/index pages -->
 <%= render 'modals' %>
+
+<!-- Print Modal: only on the show page -->
+<div class="modal fade" id="printModal" tabindex="-1" role="dialog" 
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Generating Printable PDF</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="row">
+        	<div class="col-md-12">Please be patient, generating pdfs can take a moment.</div>
+        </div>
+        <div class="row">
+          <div class="col-md-3 right">
+            <%= link_to 'Private', residential_unit_print_path(@residential_unit), 
+              remote: true, class:"btn btn-primary link-as-button print-public"  %>
+          </div>
+          <div class="col-md-9">
+            <p>
+              For <strong>internal</strong> use only. Includes sensitive data about listings such as the 
+              address, landlord info, current tenant info, etc
+            </p>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-md-3 right">
+            <%= link_to 'Public', residential_unit_print_path(@residential_unit), 
+              remote: true, class:"btn btn-primary link-as-button print-public"  %>
+          </div>
+          <div class="col-md-9">
+            <p>For <strong>external</strong> use</p>
+          </div>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
