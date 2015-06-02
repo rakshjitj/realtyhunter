@@ -8,7 +8,7 @@
   <td>
     <%= link_to 'Edit', edit_landlord_path(landlord) %> |
     <!--%= link_to 'Destroy', landlord, method: :delete, data: { confirm: 'Are you sure?' } %-->
-    <%= link_to 'Delete', landlord_delete_modal_path(landlord), 
+    <%= link_to 'Delete', delete_modal_landlord_path(landlord), 
     data: {toggle: "modal", target: "#landlordDeleteModal"}, remote: true %>
   </td>
 </tr>

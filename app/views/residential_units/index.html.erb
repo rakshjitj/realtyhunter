@@ -3,9 +3,19 @@
    //call when typing or enter or focus leaving
   $( document ).ready(function() {
 
+    var timer2;
+    function clearSpinner() {
+      // remove the spinner after download completes.
+      // this is a very hackish way of roughly estimating how long
+      // the download takes to complete
+      clearInterval(timer2);
+      $('.btn-print-list').toggleClass('active');
+    };
+
     $('.btn-print-list').click( function(event) {
       // show spinner
-       $(this).toggleClass('active');
+      $(this).toggleClass('active');
+      timer2 = setTimeout(clearSpinner, 15000);
     });
 
     function doSearch(event) {
@@ -59,13 +69,14 @@
   });
 </script>
 
+<br />
 <% provide(:title, 'Residential Listings') %>
 <div class="row">
   <div class="col-md-6">
     <h1>Residential Listings</h1><%= link_to 'Add a unit', new_residential_unit_path %> 
 
-    <%= link_to print_list_residential_units_path, class:"btn btn-sm btn-primary link-as-button btn-print-list" do %>
-      Print
+    <%= link_to print_list_residential_units_path, class:"btn btn-sm btn-primary link-as-button btn-print-list has-spinner" do %>
+      <span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Print
     <% end %>
   </div>
 

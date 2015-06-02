@@ -1,4 +1,4 @@
-<%= form_for(building, url: building_send_inaccuracy_path(@building), remote: true) do |f| %>
+<%= form_for(building, url: send_inaccuracy_building_path(@building), remote: true) do |f| %>
 
 	<div class="modal-body">
 		<p>What's wrong at <%= @building.street_address %>? The more detail you can provide, the better.</p>

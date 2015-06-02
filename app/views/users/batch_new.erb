@@ -21,7 +21,7 @@
     
     <p>Users will be notified of their accounts immediately after creation.</p>
 
-    <%= form_for(@users, :url => users_batch_create_path(@users), html: { class: "directUpload" }) do |f| %>
+    <%= form_for(@users, :url => batch_create_users_path(@users), html: { class: "directUpload" }) do |f| %>
       <!--%= render :partial => 'shared/error_messages', 
       :locals => {:model => @building} %-->
 
@@ -30,7 +30,7 @@
       <% end %> <!-- fields_for -->
   
       <p class="red"><strong>THIS LINK NOT FUNCTIONAL YET!!</strong></p>
-      <%= link_to 'Add another row', users_batch_add_user_path, remote: true %>
+      <%= link_to 'Add another row', batch_add_user_users_path, remote: true %>
 
       <br /><br />
       <div class="actions">

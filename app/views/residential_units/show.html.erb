@@ -34,13 +34,13 @@ $( document ).ready(function() {
 
           <%= link_to 'Edit', edit_residential_unit_path(@residential_unit) %>
           | <%= link_to 'View all', residential_units_path %>
-          | <%= link_to 'Duplicate', residential_unit_duplicate_modal_path(@residential_unit), 
+          | <%= link_to 'Duplicate', duplicate_modal_residential_unit_path(@residential_unit), 
       				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
-      		| <%= link_to 'Report Inaccuracy', residential_unit_inaccuracy_modal_path(@residential_unit), 
+      		| <%= link_to 'Report Inaccuracy', inaccuracy_modal_residential_unit_path(@residential_unit), 
         			data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
-        	| <%= link_to 'Take off market', residential_unit_take_off_modal_path(@residential_unit), 
+        	| <%= link_to 'Take off market', take_off_modal_residential_unit_path(@residential_unit), 
         			data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %>
-        	| <%= link_to 'Print', residential_unit_print_modal_path(@residential_unit), 
+        	| <%= link_to 'Print', print_modal_residential_unit_path(@residential_unit), 
         		data: {toggle: "modal", target: "#printModal"}, remote: true %>
           </p>
 	  	</div>
@@ -207,7 +207,7 @@ var ws_map_modules = 'all';
         </div>
         <div class="row">
           <div class="col-md-3 right">
-            <%= link_to residential_unit_print_private_path(@residential_unit), class:"btn btn-primary link-as-button print-private-btn has-spinner" do %>
+            <%= link_to print_private_residential_unit_path(@residential_unit), class:"btn btn-primary link-as-button print-private-btn has-spinner" do %>
               <span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Private
             <% end %>
           </div>
@@ -220,7 +220,7 @@ var ws_map_modules = 'all';
         </div>
         <div class="row">
           <div class="col-md-3 right">
-            <%= link_to residential_unit_print_public_path(@residential_unit), class:"btn btn-primary link-as-button print-public-btn has-spinner" do %>
+            <%= link_to print_public_residential_unit_path(@residential_unit), class:"btn btn-primary link-as-button print-public-btn has-spinner" do %>
             	<span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Public
             <% end %>
           </div>

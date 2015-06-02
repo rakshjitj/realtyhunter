@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   resources :building_amenities
   get 'static_pages/help'
+  get 'static_pages/home'
 
   get 'signup'  => 'users#new'
   get 'sessions/new'
@@ -35,11 +36,6 @@ Rails.application.routes.draw do
   end
   #delete 'users/:id/destroy_image', to: 'users#destroy_image', as: :user_destroy_image
   #patch 'users/:id/upload_image', to: 'users#upload_image', as: :user_upload_image
-  #get 'subordinates/:id', to: 'users#subordinates', as: :user_subordinates
-  #get 'coworkers/:id', to: 'users#coworkers', as: :user_coworkers
-  #post 'users/:id/admin_approve', to: 'users#admin_approve', as: :admin_approve_user
-  #post 'users/:id/admin_unapprove', to: 'users#admin_unapprove', as: :admin_unapprove_user
-  #post 'users/:id/admin_kick', to: 'users#admin_kick', as: :admin_kick_user
   
   resources :account_activations, only: [:edit]
   resources :account_approvals,   only: [:edit]
@@ -59,10 +55,6 @@ Rails.application.routes.draw do
       end
     end
   end
-  #get 'employees/:id', to: 'companies#employees', as: :company_employees
-  #get 'companies/:id/managers', to: 'companies#managers', as: :company_managers
-  #get 'companies/:company_id/offices/:id/managers', to: 'offices#managers', as: :office_managers
-  #get 'companies/:company_id/offices/:id/agents', to: 'offices#agents', as: :office_agents
 
   resources :buildings do
     get :autocomplete_building_formatted_street_address, :on => :collection
@@ -72,10 +64,6 @@ Rails.application.routes.draw do
       patch 'send_inaccuracy'
     end
   end
-  get 'search/buildings', to: 'buildings#filter', as: :buildings_filter
-  # get 'buildings/:id/delete_modal', to: 'buildings#delete_modal', as: :building_delete_modal
-  # get 'buildings/:id/inaccuracy_modal', to: 'buildings#inaccuracy_modal', as: :building_inaccuracy_modal
-  # patch 'buildings/:id/send_inaccuracy', to: 'buildings#send_inaccuracy', as: :building_send_inaccuracy
   
   resources :residential_units do
     member do
@@ -85,7 +73,7 @@ Rails.application.routes.draw do
       get 'inaccuracy_modal'
       patch 'send_inaccuracy'
       get 'take_off_modal'
-      get 'take_off'
+      patch 'take_off'
       get 'print_modal'
       get 'print_public'
       get 'print_private'
@@ -94,26 +82,18 @@ Rails.application.routes.draw do
       get 'print_list'
     end
   end
-  get 'search/residential_units', to: 'residential_units#filter', as: :residential_units_filter
-  # get 'residential_units/:id/delete_modal', to: 'residential_units#delete_modal', as: :residential_unit_delete_modal
-  # get 'residential_units/:id/duplicate_modal', to: 'residential_units#duplicate_modal', as: :residential_unit_duplicate_modal
-  # post 'residential_units/:id/duplicate', to: 'residential_units#duplicate', as: :residential_unit_duplicate
-  # get 'residential_units/:id/inaccuracy_modal', to: 'residential_units#inaccuracy_modal', as: :residential_unit_inaccuracy_modal
-  # patch 'residential_units/:id/send_inaccuracy', to: 'residential_units#send_inaccuracy', as: :residential_unit_send_inaccuracy
-  # get 'residential_units/:id/take_off_modal', to: 'residential_units#take_off_modal', as: :residential_unit_take_off_modal
-  # patch 'residential_units/:id/take_off', to: 'residential_units#take_off', as: :residential_unit_take_off
 
   resources :landlords do
     member do
       get 'delete_modal'
     end
   end
-  get 'search/landlords', to: 'landlords#filter', as: :landlords_filter
-  #get 'landlords/:id/delete_modal', to: 'landlords#delete_modal', as: :landlord_delete_modal
 
   resources :neighborhoods
 
-  get 'static_pages/home'
+  get 'search/landlords', to: 'landlords#filter', as: :landlords_filter
+  get 'search/residential_units', to: 'residential_units#filter', as: :residential_units_filter
+  get 'search/buildings', to: 'buildings#filter', as: :buildings_filter
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
