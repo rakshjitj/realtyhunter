@@ -1,6 +1,7 @@
 class ResidentialUnitsController < ApplicationController
   load_and_authorize_resource
-  before_action :set_residential_unit, except: [:new, :create, :index, :filter, :print_list]
+  before_action :set_residential_unit, except: [:new, :create, :index, :filter, 
+    :print_list, :neighborhoods_modal]
 
   # GET /residential_units
   # GET /residential_units.json
@@ -10,7 +11,8 @@ class ResidentialUnitsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        headers['Content-Disposition'] = "attachment; filename=\"listings-list.csv\""
+        headers['Content-Disposition'] = "attachment; filename=\"" + 
+          current_user.name + " - Residential Listings.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
     end
@@ -20,6 +22,34 @@ class ResidentialUnitsController < ApplicationController
   # AJAX call
   def filter
     set_residential_units
+  end
+
+  # GET 
+  # handles ajax call. uses latest data in modal
+  def neighborhoods_modal
+    @neighborhoods = Neighborhood.where(city: current_user.office.administrative_area_level_2_short).all
+    
+    # if boroughs are defined for this area, organize the neighborhoods by boroughs
+    boroughs = @neighborhoods.collect(&:borough).uniq
+    if !boroughs.empty?
+      @by_boroughs = {}
+      @neighborhoods.each do |neighborhood|
+        if !@by_boroughs.has_key? neighborhood.borough
+          @by_boroughs[neighborhood.borough] = []
+        end
+        @by_boroughs[neighborhood.borough] << neighborhood
+      end
+
+      # alphabetize
+
+      @by_boroughs.each do |b,n_array|
+        n_array.sort_by!{|n| n.name.downcase}
+      end
+    end
+
+    respond_to do |format|
+      format.js  
+    end
   end
 
   # GET /residential_units/1

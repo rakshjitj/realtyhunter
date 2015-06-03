@@ -18,7 +18,7 @@
         <tbody>
           <% @users.each do |user| %>
           <tr>
-            <td><%= link_to user.name, user_subordinates_path(user) %></td>
+            <td><%= link_to user.name, subordinates_user_path(user) %></td>
             <td><%= user.subordinates.length %></td>
           </tr>
           <% end %>

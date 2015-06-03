@@ -94,7 +94,8 @@ class ResidentialUnit < ActiveRecord::Base
     @running_list = Unit.all
     
     # clear out any invalid search params
-    params.delete_if{|k,v| !(v || v > 0 || !v.empty?) }
+    #params.delete_if{|k,v| !(v || v > 0 || !v.empty?) }
+    params.delete_if{|k,v| (!v || v == 0 || v.empty?) }
 
     # search by address (building)
     if params[:address]
@@ -128,9 +129,10 @@ class ResidentialUnit < ActiveRecord::Base
     end
 
     # search neighborhoods
-    if params[:neighborhoods]
-      @running_list = @running_list.joins(:building)
-       .where('neighborhood_id IN (?)', params[:neighborhoods])
+    if params[:neighborhood_ids]
+      neighborhoods = params[:neighborhood_ids].split(",")
+      @running_list = @running_list.joins(building: :neighborhood)
+       .where('neighborhood_id IN (?)', neighborhoods)
     end
 
     # search features

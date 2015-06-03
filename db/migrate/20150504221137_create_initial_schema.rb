@@ -16,11 +16,24 @@
     end
 
     create_table :offices do |t|
+      t.string :formatted_street_address
+      t.string :street_number
+      t.string :route
+      t.string :sublocality
+      t.string :administrative_area_level_2_short
+      t.string :administrative_area_level_1_short
+      t.string :postal_code
+      t.string :neighborhood
+      t.string :country_short
+      t.string :lat
+      t.string :lng
+      t.string :place_id
+      
       t.string :name
-      t.string :street_address
-      t.string :city
-      t.string :state
-      t.string :zipcode
+      # t.string :street_address
+      # t.string :city
+      # t.string :state
+      # t.string :zipcode
       t.string :telephone
       t.string :fax
       t.belongs_to :company

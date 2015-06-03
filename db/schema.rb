@@ -153,17 +153,25 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   add_index "neighborhoods", ["buildings_id"], name: "index_neighborhoods_on_buildings_id", using: :btree
 
   create_table "offices", force: :cascade do |t|
+    t.string   "formatted_street_address"
+    t.string   "street_number"
+    t.string   "route"
+    t.string   "sublocality"
+    t.string   "administrative_area_level_2_short"
+    t.string   "administrative_area_level_1_short"
+    t.string   "postal_code"
+    t.string   "neighborhood"
+    t.string   "country_short"
+    t.string   "lat"
+    t.string   "lng"
+    t.string   "place_id"
     t.string   "name"
-    t.string   "street_address"
-    t.string   "city"
-    t.string   "state"
-    t.string   "zipcode"
     t.string   "telephone"
     t.string   "fax"
     t.integer  "company_id"
     t.integer  "users_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
   add_index "offices", ["users_id"], name: "index_offices_on_users_id", using: :btree

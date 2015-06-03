@@ -1,0 +1,25 @@
+$('#neighborhoodsModal #placeholder-body').html("<%= j(render :partial => "neighborhoods_modal_helper", locals: { neighborhoods: @neighborhoods }) %>");
+
+// remember the last selected neighborhoods
+var ids = $('#neighborhood_ids').val().split(", ");
+if (ids != "{:id=>\"neighborhood_ids\"}") {
+	console.log(ids);
+	$.each(ids, function(idx, val) {
+		$('#'+ val).toggleClass('active');
+	});
+}
+
+// feed info back to search form
+$('#neighborhoodsModal .btn-close').click( function(event) {
+	var selectedNeighborhoods = [];
+	var selectedIds = [];
+	$(".neighborhood-buttons .active").each(function(idx, val) {
+		selectedNeighborhoods.push($(val).attr('name'));
+		selectedIds.push(val.id);
+	});
+
+$('#selected_neighborhoods').html(selectedNeighborhoods.join(", "));
+$('#neighborhood_ids').val(selectedIds.join(", "));
+$('#neighborhood_ids').trigger('change');
+
+});

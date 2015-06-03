@@ -2,13 +2,92 @@
 @company2 = Company.create_with_environment({name: "Nooklyn"})
 
 @offices = Office.create([
-  {company: @company, name: "Crown Heights", street_address: "722 Franklin Ave", city: "Brooklyn", state: "NY", zipcode: "11238", telephone: "718.399.3444", fax: "718.399.3444"},
-  {company: @company, name: "Bushwick", street_address: "105 Central Ave", city: "Brooklyn", state: "NY", zipcode: "11206", telephone: "347.533.7777", fax: "347.533.7777"},
-  {company: @company, name: "Williamsburg", street_address: "713 Lorimer St", city: "Brooklyn", state: "NY", zipcode: "11211", telephone: "718.564.6300", fax: "718.564.6300"},
-  {company: @company, name: "Lefferts Gardens", street_address: "661 Flatbush Ave", city: "Brooklyn", state: "NY", zipcode: "11225", telephone: "718.408.8881", fax: "718.408.8881"},
-  {company: @company, name: "Williamsburg - Leasing", street_address: "297 Broadway, 2nd Fl", city: "Brooklyn", state: "NY", zipcode: "11211", telephone: "555-555-5555", fax: "555-555-5555"},
-  ])
+  { company: @company, 
+    name: "Crown Heights", 
+    telephone: "718.399.3444",
+    fax: "718.399.3444",
 
+    formatted_street_address: '722 Franklin Ave, Brooklyn, NY 11238',
+    street_number: '722',
+    route: 'Franklin Ave',
+    sublocality: 'Brooklyn',
+    administrative_area_level_2_short: 'New York',
+    administrative_area_level_1_short: 'NY',
+    postal_code: '11238',
+    country_short: 'USA',
+    lat: '40.6759645',
+    lng: '-73.9509791',
+    place_id: 1,
+    },
+  { company: @company, 
+    name: "Bushwick", 
+    telephone: "718.399.3444",
+    fax: "718.399.3444",
+
+    formatted_street_address: '105 Central Ave, Brooklyn, NY 11238',
+    street_number: '105',
+    route: 'Central Ave',
+    sublocality: 'Brooklyn',
+    administrative_area_level_2_short: 'New York',
+    administrative_area_level_1_short: 'NY',
+    postal_code: '11205',
+    country_short: 'USA',
+    lat: '40.6759645',
+    lng: '-73.9509791',
+    place_id: 1,
+    },
+  { company: @company, 
+    name: "Williamsburg", 
+    telephone: "718.564.6300",
+    fax: "718.564.6300",
+
+    formatted_street_address: '713 Lorimer St, Brooklyn, NY 11238',
+    street_number: '713',
+    route: 'Lorimer St',
+    sublocality: 'Brooklyn',
+    administrative_area_level_2_short: 'New York',
+    administrative_area_level_1_short: 'NY',
+    postal_code: '11205',
+    country_short: 'USA',
+    lat: '40.6759645',
+    lng: '-73.9509791',
+    place_id: 1,
+    },
+  { company: @company, 
+    name: "Lefferts Gardens", 
+    telephone: "718.408.8881",
+    fax: "718.408.8881",
+
+    formatted_street_address: '661 Flatbush Ave, Brooklyn, NY 11238',
+    street_number: '661',
+    route: 'Flatbush Ave',
+    sublocality: 'Brooklyn',
+    administrative_area_level_2_short: 'New York',
+    administrative_area_level_1_short: 'NY',
+    postal_code: '11205',
+    country_short: 'USA',
+    lat: '40.6759645',
+    lng: '-73.9509791',
+    place_id: 1,
+    },
+  { company: @company, 
+    name: "Williamsburg - Leasing", 
+    telephone: "718.408.88810",
+    fax: "555.555.5555",
+
+    formatted_street_address: '297 Broadway, 2nd Fl, Brooklyn, NY 11238',
+    street_number: '297',
+    route: 'Broadway',
+    sublocality: 'Brooklyn',
+    administrative_area_level_2_short: 'New York',
+    administrative_area_level_1_short: 'NY',
+    postal_code: '11205',
+    country_short: 'USA',
+    lat: '40.6759645',
+    lng: '-73.9509791',
+    place_id: 1,
+    },
+  ])
 
 # seed user data -----------------------------------------
 
@@ -135,6 +214,15 @@ end
   city: "New York",
   state: "NY"
   })
+
+20.times do |n|
+  neigh = Neighborhood.create({
+    name: FFaker::Address::neighborhood,
+    borough: (n < 10) ? "Brooklyn" : "Queens",
+    city: "New York",
+    state: "NY"
+  })
+end
 
 @landlord = Landlord.create({
   code: "Unassigned", 

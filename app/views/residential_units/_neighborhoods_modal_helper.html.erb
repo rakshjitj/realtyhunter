@@ -1,0 +1,55 @@
+<script>
+	$( document ).ready(function() {
+    $('#myTab a:first').tab('show')
+
+  });
+</script>
+
+<div class="modal-body">
+
+	<div role="tabpanel" id="myTab">
+		
+			<!-- if we have multiple boroughs defined -->
+			<% if @by_boroughs && @by_boroughs.length > 1 %>
+
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+					<% @by_boroughs.each do |b,n| %>
+						<li role="presentation"><a href="#<%= b %>" aria-controls="<%= b %>" role="tab" data-toggle="tab"><%= b %></a></li>
+					<% end %>
+				</ul>
+
+				<!-- Tab panes -->
+				<div class="tab-content">
+	  		<% @by_boroughs.each do |b,neighs| %>
+	  				
+			    	<div role="tabpanel" class="tab-pane" id="<%= b %>">
+			    		
+			    		<div class="btn-group neighborhood-buttons" data-toggle="buttons">
+				    		<% neighs.each do |neighborhood| %>
+				    			<label class="btn btn-xs btn-primary btn-as-checkbox" 
+				    				id="<%= neighborhood.id %>" name="<%= neighborhood.name %>">
+									  <input type="checkbox" autocomplete="off"><%= neighborhood.name %>
+									</label>
+				    		<% end %>
+							</div><!-- btn-group -->
+			    	</div><!-- tabpanel -->
+
+				<% end %><!-- boroughs -->
+				</div><!-- tab-content -->
+
+			<% else %>
+				<!-- No boroughs specified OR there is only 1 borough, skip the tabs. 
+					Just display the neighborhoods directly. -->
+				<% @neighborhoods.each do |neighborhood| %>
+    			<label class="btn btn-xs btn-primary btn-as-checkbox">
+					  <input type="checkbox" autocomplete="off"><%= neighborhood.name %>
+					</label>
+    		<% end %>
+
+			<% end %><!-- by_boroughs -->
+		
+	</div>
+
+
+</div>

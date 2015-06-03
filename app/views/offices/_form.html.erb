@@ -1,3 +1,18 @@
+<script>
+$( document ).ready(function() {
+    $(".autocomplete-input").geocomplete({
+      map: "#map_canvas",
+      location: "<%= @office.formatted_street_address ? @office.formatted_street_address : 'New York, NY, USA' %>" ,
+      details: ".details"
+    }).bind("geocode:result", function(event, result){
+      if (this.value == "New York, NY, USA") {
+        this.value = '';
+      }
+    });
+
+});
+</script>
+
 <div class="row">
   <div class="col-md-10">
     <%= form_for ([@company, @office]) do |f| %>
@@ -10,23 +25,11 @@
       </div>
 
       <div class="field">
-        <%= f.label :name, "Street Address" %><br>
-        <%= f.text_field :street_address, class: 'form-control' %>
-      </div>
-
-      <div class="field">
-        <%= f.label :name, "City" %><br>
-        <%= f.text_field :city, class: 'form-control' %>
-      </div>
-
-      <div class="field">
-        <%= f.label :name, "State" %><br>
-        <%= f.text_field :state, class: 'form-control' %>
-      </div>
-
-      <div class="field">
-        <%= f.label :name, "Zipcode" %><br>
-        <%= f.text_field :zipcode, class: 'form-control' %>
+        <%= f.label :formatted_street_address, "Street Address" %><br>
+        <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input', placeholder: "123 Main St" %>
+        <br/>
+        <p>Visually confirm the office's location:</p>
+        <div id="map_canvas"></div>
       </div>
 
       <div class="field">
@@ -37,6 +40,20 @@
       <div class="field">
         <%= f.label :name, "Fax" %><br>
         <%= f.telephone_field :fax, class: 'form-control' %>
+      </div>
+
+      <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
+      <div class="details field">
+        <%= f.hidden_field :street_number, name: "street_number" %>
+        <%= f.hidden_field :route, name: "route" %>
+        <%= f.hidden_field :sublocality, name:"sublocality" %>
+        <%= f.hidden_field :administrative_area_level_2_short, name:"administrative_area_level_2_short" %>
+        <%= f.hidden_field :administrative_area_level_1_short, name:"administrative_area_level_1_short" %>
+        <%= f.hidden_field :postal_code, name:"postal_code" %>
+        <%= f.hidden_field :country_short, name:"country_short" %>
+        <%= f.hidden_field :lat, name:"lat" %>
+        <%= f.hidden_field :lng, name:"lng" %>
+        <%= f.hidden_field :place_id, name:"place_id" %>
       </div>
 
       <div class="actions">

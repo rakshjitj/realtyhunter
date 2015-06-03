@@ -80,6 +80,7 @@ Rails.application.routes.draw do
     end
     collection do
       get 'print_list'
+      get 'neighborhoods_modal'
     end
   end
 
