@@ -19,6 +19,18 @@
     });
 
     function doSearch(event) {
+
+      // sanitize invalid input before submitting
+      if ($('#neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
+        $('#neighborhood_ids').val('');
+      }
+      if ($('#building_feature_ids').val() == "{:id=>\"building_feature_ids\"}") {
+        $('#building_feature_ids').val('');
+      }
+      if ($('#unit_feature_ids').val() == "{:id=>\"unit_feature_ids\"}") {
+        $('#unit_feature_ids').val('');
+      }
+
       $.ajax({
         url: "<%= residential_units_filter_path %>",
         data: {
@@ -35,6 +47,8 @@
             pet_policy_id: $('#pet_policy_id').val(),
             features: $('#features').val(),
             neighborhood_ids: $('#neighborhood_ids').val(),
+            unit_feature_ids: $('#unit_feature_ids').val(),
+            building_feature_ids: $('#building_feature_ids').val(),
           } 
         },
         dataType: "script"
@@ -69,6 +83,8 @@
     $('#pet_policy_id').change(throttledSearch);
     $('#features').change(throttledSearch);
     $('#neighborhood_ids').change(throttledSearch);
+    $('#unit_feature_ids').change(throttledSearch);
+    $('#building_feature_ids').change(throttledSearch);
   });
 </script>
 
@@ -133,6 +149,15 @@
         class: "link-as-button btn btn-xs btn-primary" %>
       <div id="selected_neighborhoods"></div>
       <%= hidden_field_tag :neighborhood_ids, id:"neighborhood_ids" %>
+
+      <hr />
+      <%= link_to 'Features', features_modal_residential_units_path(@residential_unit), 
+        data: {toggle: "modal", target: "#featuresModal"}, remote: true, 
+        class: "link-as-button btn btn-xs btn-primary" %>
+      <div id="selected_features"></div>
+      <%= hidden_field_tag :unit_feature_ids, id:"unit_feature_ids" %>
+      <%= hidden_field_tag :building_feature_ids, id:"building_feature_ids" %>
+
       <hr />
       <%= link_to 'Clear filters', residential_units_path %>
 
@@ -185,6 +210,8 @@
   </div>
 </div>
 
+<%= render 'modals' %>
+
 <!-- Neighborhood Modal -->
 <div class="modal fade" id="neighborhoodsModal" tabindex="-1" role="dialog" 
   aria-labelledby="myModalLabel" aria-hidden="true">
@@ -192,7 +219,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Select Neighborhoods</h4>
+        <h4 class="modal-title" id="neighborhood-modal-title">Select Neighborhoods</h4>
       </div>
       <div class="modal-body">
         <div id="placeholder-body"></div>
@@ -205,5 +232,22 @@
   </div>
 </div>
 
-<%= render 'modals' %>
+<!-- Features Modal -->
+<div class="modal fade" id="featuresModal" tabindex="-1" role="dialog" 
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="neighborhood-modal-title">Select Features</h4>
+      </div>
+      <div class="modal-body">
+        <div id="placeholder-body"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-close" data-dismiss="modal">Done</button>
+      </div>
 
+    </div>
+  </div>
+</div>

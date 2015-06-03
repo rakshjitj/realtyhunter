@@ -3,7 +3,6 @@ $('#neighborhoodsModal #placeholder-body').html("<%= j(render :partial => "neigh
 // remember the last selected neighborhoods
 var ids = $('#neighborhood_ids').val().split(", ");
 if (ids != "{:id=>\"neighborhood_ids\"}") {
-	console.log(ids);
 	$.each(ids, function(idx, val) {
 		$('#'+ val).toggleClass('active');
 	});

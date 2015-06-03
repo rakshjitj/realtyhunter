@@ -1,0 +1,25 @@
+<div class="modal-body">
+
+	<!-- Nav tabs -->
+	<strong>Unit</strong>
+	<div class="btn-group unit-feature-buttons" data-toggle="buttons">
+		<% @unit_amenities.each do |amenity| %>
+			<label class="btn btn-xs btn-primary btn-as-checkbox" 
+				id="<%= amenity.id %>" name="<%= amenity.name %>">
+			  <input type="checkbox" autocomplete="off"><%= amenity.name %>
+			</label>
+		<% end %>
+	</div><!-- btn-group -->
+	<br />
+	<br />
+	<strong>Building</strong>
+	<div class="btn-group building-feature-buttons" data-toggle="buttons">
+		<% @building_amenities.each do |amenity| %>
+			<label class="btn btn-xs btn-primary btn-as-checkbox" 
+				id="<%= amenity.id %>" name="<%= amenity.name %>">
+			  <input type="checkbox" autocomplete="off"><%= amenity.name %>
+			</label>
+		<% end %>
+	</div><!-- btn-group -->
+
+</div>

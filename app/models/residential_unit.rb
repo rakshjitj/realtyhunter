@@ -113,7 +113,7 @@ class ResidentialUnit < ActiveRecord::Base
       @running_list = @running_list.where("building_unit = ?", params[:unit])
     end
 
-    # search by status
+    # TODO search by status
     #status = %w[active pending off].include?(params[:status])
     #if status
     #  @running_list = @running_list.where("status = ?", status)
@@ -130,20 +130,17 @@ class ResidentialUnit < ActiveRecord::Base
 
     # search neighborhoods
     if params[:neighborhood_ids]
-      neighborhoods = params[:neighborhood_ids].split(",")
+      neighborhood_ids = params[:neighborhood_ids][0, 256]
+      neighborhoods = neighborhood_ids.split(",")
       @running_list = @running_list.joins(building: :neighborhood)
        .where('neighborhood_id IN (?)', neighborhoods)
     end
 
-    # search features
-    if params[:features]
-      features = params[:features][0, 256]
-      @terms = features.split(" ")
-      @terms.each do |term|
+    if params[:building_feature_ids]
+      features = params[:building_feature_ids][0, 256]
+      features = features.split(",")
         @running_list = @running_list.joins(building: :building_amenities)
-        .where('building_amenities.name ILIKE ?', "%#{term}%")
-        #puts "\n\n #{@running_list[0].building_amenities.inspect}"
-      end
+        .where('building_amenity_id IN (?)', features)
     end
 
     # search landlord code
@@ -180,6 +177,14 @@ class ResidentialUnit < ActiveRecord::Base
       @running_list = @running_list.where("baths <= ?", params[:bath_max])
     end
 
+    # search features
+    if params[:unit_feature_ids]
+      features = params[:unit_feature_ids][0, 256]
+      features = features.split(",")
+        @running_list = @running_list.joins(:residential_amenities)
+        .where('residential_amenity_id IN (?)', features)
+    end
+    
     @running_list
 	end
 

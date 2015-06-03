@@ -1,7 +1,7 @@
 class ResidentialUnitsController < ApplicationController
   load_and_authorize_resource
   before_action :set_residential_unit, except: [:new, :create, :index, :filter, 
-    :print_list, :neighborhoods_modal]
+    :print_list, :neighborhoods_modal, :features_modal]
 
   # GET /residential_units
   # GET /residential_units.json
@@ -41,11 +41,21 @@ class ResidentialUnitsController < ApplicationController
       end
 
       # alphabetize
-
       @by_boroughs.each do |b,n_array|
         n_array.sort_by!{|n| n.name.downcase}
       end
     end
+
+    respond_to do |format|
+      format.js  
+    end
+  end
+
+  # GET 
+  # handles ajax call. uses latest data in modal
+  def features_modal
+    @building_amenities = BuildingAmenity.where(company: current_user.company)
+    @unit_amenities = ResidentialAmenity.where(company: current_user.company)
 
     respond_to do |format|
       format.js  

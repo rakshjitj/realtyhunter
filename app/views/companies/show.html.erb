@@ -34,7 +34,7 @@
 
       <% @company.offices.each do |office| %>
         <p><b><%= link_to office.name, company_office_path(office.company, office) %></b>
-         - <%= office.street_address %>,
+         - <%= office.formatted_street_address %>,
         <%= office.telephone %>
         </p>
       <% end %>

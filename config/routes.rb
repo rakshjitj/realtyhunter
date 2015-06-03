@@ -81,6 +81,7 @@ Rails.application.routes.draw do
     collection do
       get 'print_list'
       get 'neighborhoods_modal'
+      get 'features_modal'
     end
   end
 
