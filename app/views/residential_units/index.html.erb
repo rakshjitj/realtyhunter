@@ -45,6 +45,7 @@
             bath_max: $('#bath_max').val(),
             landlord: $('#landlord').val(),
             pet_policy_id: $('#pet_policy_id').val(),
+            status: $('#status').val(),
             features: $('#features').val(),
             neighborhood_ids: $('#neighborhood_ids').val(),
             unit_feature_ids: $('#unit_feature_ids').val(),
@@ -81,6 +82,7 @@
     $('#bath_max').keyup(throttledSearch);
     $('#landlord').keyup(throttledSearch);
     $('#pet_policy_id').change(throttledSearch);
+    $('#status').change(throttledSearch);
     $('#features').change(throttledSearch);
     $('#neighborhood_ids').change(throttledSearch);
     $('#unit_feature_ids').change(throttledSearch);
@@ -135,14 +137,17 @@
       <%= text_field_tag :landlord, params[:landlord], placeholder: "code", size: 25 %>
       &nbsp;&nbsp;
 
-      <!-- TODO: fix plural of status to work in rails -->
+      <br />
+      <%= label_tag :status, "Status" %><br>
+      <%= select_tag(:status, 
+        options_for_select(%w(active pending off), params[:status]),
+        include_blank: true) %>
+
       <br />
       <%= label_tag :pet_policy_id, "Pet policy" %><br>
       <%= select_tag(:pet_policy_id, 
         options_for_select(current_user.company.pet_policies.all.collect { |r| [r.name, r.id] }, params[:pet_policy_id]),
         include_blank: true) %>
-      <!--%= check_box_tag(:outdoor_space, class: "checkbox inline") %-->
-      <!--%= label_tag :outdoor_space, "Has outdoor space" %-->
       <hr />
       <%= link_to 'Neighborhoods', neighborhoods_modal_residential_units_path(@residential_unit), 
         data: {toggle: "modal", target: "#neighborhoodsModal"}, remote: true, 

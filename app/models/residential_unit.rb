@@ -113,11 +113,13 @@ class ResidentialUnit < ActiveRecord::Base
       @running_list = @running_list.where("building_unit = ?", params[:unit])
     end
 
-    # TODO search by status
-    #status = %w[active pending off].include?(params[:status])
-    #if status
-    #  @running_list = @running_list.where("status = ?", status)
-    #end
+    # search by status
+    if params[:status]
+      included = %w[active pending off].include?(params[:status])
+      if included
+       @running_list = @running_list.where("status = ?", Unit.statuses[params[:status]])
+      end
+    end
 
     # search by rent
     if params[:rent_min] && params[:rent_max]
