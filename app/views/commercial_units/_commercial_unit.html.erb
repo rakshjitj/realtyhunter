@@ -1,0 +1,12 @@
+<tr>
+  <td><%= link_to commercial_unit.building.street_address, commercial_unit %></td>
+  <td><%= commercial_unit.summary %></td>
+  <td><%= rent_formatted(commercial_unit.rent) %></td>
+  <td><%= commercial_unit.sq_footage %></td>
+  <td><%= commercial_unit.available_by.strftime("%Y-%b-%d") %></td>
+  <td><%= commercial_unit.num_space_in_bldg %></td>
+  <td>
+    <%= link_to 'Edit', edit_commercial_unit_path(commercial_unit) %> | 
+    <%= link_to 'Delete', commercial_unit, method: :delete, data: { confirm: 'Are you sure?' } %>
+  </td>
+</tr>

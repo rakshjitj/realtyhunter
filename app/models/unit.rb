@@ -9,7 +9,7 @@ class Unit < ActiveRecord::Base
 	enum status: [ :active, :pending, :off ]
 	validates :status, presence: true, inclusion: { in: %w(active pending off) }
 	
-	validates :building_unit, presence: true, length: {maximum: 50}
+	#validates :building_unit, presence: true, length: {maximum: 50}
 	validates :rent, presence: true, numericality: { only_integer: true }
 	validates :listing_id, presence: true, uniqueness: true
 	
@@ -31,5 +31,12 @@ class Unit < ActiveRecord::Base
     commercial_units
   end
 
+	def self.generate_unique_id
+		listing_id = rand(9999999)
+    while ResidentialUnit.find_by(listing_id: listing_id) do
+      listing_id = rand(9999999)
+    end
+    listing_id
+  end
 	
 end

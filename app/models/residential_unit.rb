@@ -15,6 +15,7 @@ class ResidentialUnit < ActiveRecord::Base
 
 	validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }
 	validates :baths, presence: true, :numericality => { :less_than_or_equal_to => 11 }
+  validates :building_unit, presence: true, length: {maximum: 50}
 
   # used as a sorting condition
   def street_address_and_unit
@@ -39,14 +40,6 @@ class ResidentialUnit < ActiveRecord::Base
 			"None"
 		end
 	end
-
-	def self.generate_unique_id
-		listing_id = rand(9999999)
-    while ResidentialUnit.find_by(listing_id: listing_id) do
-      listing_id = rand(9999999)
-    end
-    listing_id
-  end
 
   def net_rent
     months = 12
@@ -193,7 +186,7 @@ class ResidentialUnit < ActiveRecord::Base
   def duplicate(new_unit_num, include_photos)
     if new_unit_num
       residential_unit_dup = self.dup
-      residential_unit_dup.listing_id = ResidentialUnit.generate_unique_id
+      residential_unit_dup.listing_id = Unit.generate_unique_id
       residential_unit_dup.building_unit = new_unit_num
       # TODO: photos
       residential_unit_dup.save

@@ -15,4 +15,8 @@ module ApplicationHelper
     css_class = (direction == "asc") ? "glyphicon glyphicon-triangle-top" : "glyphicon glyphicon-triangle-bottom"
     link_to "<i class=\"#{css_class}\"></i> #{title}".html_safe, {:sort_by => column, :direction => direction}
   end
+
+  def rent_formatted(rent)
+    number_to_currency(rent, {precision: 0})
+  end
 end

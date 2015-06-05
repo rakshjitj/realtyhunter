@@ -276,8 +276,8 @@ end
 
 55.times do |n|
 
-  ru = ResidentialUnit.create({
-    listing_id: ResidentialUnit.generate_unique_id,
+  ResidentialUnit.create({
+    listing_id: Unit.generate_unique_id,
     building_unit: Faker::Number.number(2),
     rent: Faker::Number.number(4),
     beds: Faker::Number.number(1),
@@ -293,5 +293,22 @@ end
     listing_agent: @manager1,
     primary_agent: @manager1
     })
-  #puts "\nresidential unit #{n} #{ru.inspect}"
+end
+
+55.times do |n|
+
+  CommercialUnit.create({
+    listing_id: Unit.generate_unique_id,
+    status: "active",
+    building: @bldg,
+    rent: Faker::Number.number(4),
+    sq_footage: Faker::Number.number(3),
+    floor: Faker::Number.number(1),
+    property_type: 'Retail',
+    property_sub_type: 'Other',
+    building_size: Faker::Number.number(4),
+    description: FFaker::HipsterIpsum.sentence,
+    available_by: Time.zone.now,
+    })
+
 end

@@ -1,0 +1,139 @@
+<script>
+$( document ).ready(function() {
+    $(".panel").geocomplete({
+    	map: "#map_canvas",
+    	location: "<%= @commercial_unit.building.formatted_street_address %>" ,
+    	details: ".details"
+    }).bind("geocode:result", function(event, result){
+        //console.log(result);
+    }).bind("geocode:error", function(event, result){
+        //console.log("[ERROR]: " + result);
+    });
+
+});
+</script>
+
+<% provide(:title, 'Commercial Unit') %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+  	
+  	
+  	
+  	<div class="row">
+  		<div class="col-md-12">
+	  		<p>
+          <%= link_to 'Edit', edit_commercial_unit_path(@commercial_unit) %>
+          | <%= link_to 'View all', commercial_units_path %>
+          | <%= link_to 'Duplicate', duplicate_modal_commercial_unit_path(@commercial_unit), 
+      				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
+      		| <%= link_to 'Report Inaccuracy', inaccuracy_modal_commercial_unit_path(@commercial_unit), 
+        			data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
+        	| <%= link_to 'Print', print_modal_commercial_unit_path(@commercial_unit), 
+        		data: {toggle: "modal", target: "#printModal"}, remote: true %>
+        </p>
+			</div><!-- col -->
+		</div><!-- row -->
+
+		<div class="row">
+  		<div class="col-md-12">
+
+  			<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">
+				    	
+				    	<div class="row">
+					  		<div class="col-md-6">
+					  			<h1>
+							  			<%= @commercial_unit.building.street_address %>
+							  		</h1>
+							  		<p>
+						  				<%= @commercial_unit.building.neighborhood.name %>, <%= @commercial_unit.building.sublocality %>, <%= @commercial_unit.building.administrative_area_level_2_short %> <%= @commercial_unit.building.postal_code %>
+						  			</p>
+					  		</div>
+					  		<div class="col-md-6 right">
+					  			<h1><%= rent_formatted(@commercial_unit.price_per_sq_ft) %>/SF/Month</h1>
+						  		<p><%= @commercial_unit.sq_footage %> SF | <%= @commercial_unit.property_type %></p>
+					  		</div>
+					    </div>
+				    </h3>
+				  </div>
+				  <div class="panel-body">
+
+				  	<div id="map_canvas"></div>
+				  	<br />
+				    <h3><%= @commercial_unit.property_type %> For Lease</h3>
+
+				    <div class="row">
+						  <div class="col-md-3">
+						    <strong>Total Space:</strong>
+						  </div>
+						  <div class="col-md-3">
+						    <%= @commercial_unit.sq_footage %> SF
+						  </div>
+						  <div class="col-md-3">
+						    <strong>Building Size:</strong>
+						  </div>
+						  <div class="col-md-3">
+						    <%= @commercial_unit.building_size %> SF
+						  </div>
+						</div>
+
+						<div class="row">
+						  <div class="col-md-3">
+						    <strong>Rental by Sq Ft:</strong>
+						  </div>
+						  <div class="col-md-3">
+						    <%= rent_formatted(@commercial_unit.price_per_sq_ft) %> /SF/MONTH
+						  </div>
+						  <div class="col-md-3">
+						    <strong>Rental by Month:</strong>
+						  </div>
+						  <div class="col-md-3">
+						    <%= rent_formatted(@commercial_unit.rent) %>
+						  </div>
+						  
+						</div>
+
+						<div class="row">
+						  <div class="col-md-3">
+						    <strong>Property Type:</strong>
+						  </div>
+						  <div class="col-md-3">
+						    <%= @commercial_unit.property_type %>
+						  </div>
+						  <div class="col-md-3">
+						    <strong>Listing ID:</strong>
+						  </div>
+						  <div class="col-md-3">
+						    <%= @commercial_unit.listing_id %>
+						  </div>
+						  
+						</div>
+
+						<div class="row">
+						  <div class="col-md-3">
+						    <strong>Property Sub-type:</strong>
+						  </div>
+						  <div class="col-md-3">
+						    <%= @commercial_unit.property_sub_type %>
+						  </div>
+						  <div class="col-md-3">
+						    <strong>Date Available:</strong>
+						  </div>
+						  <div class="col-md-3">
+						    <%= @commercial_unit.available_by.strftime("%Y-%b-%d") %>
+						  </div>
+						</div>
+
+						<br />
+				    <h3>Description</h3>
+				    <%= @commercial_unit.description %>
+
+				  </div><!-- panel-body-->
+				</div><!-- panel -->
+			</div><!-- col -->
+		</div><!-- row -->
+
+  
+  </div><!-- col -->
+</div><!-- row -->

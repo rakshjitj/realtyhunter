@@ -1,0 +1,72 @@
+<%= form_for(@commercial_unit) do |f| %>
+  <%= render :partial => 'shared/error_messages', 
+    :locals => {:model => @commercial_unit} %>
+ 
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><%= @panel_title %></h3>
+    </div>
+    <div class="panel-body">
+      <div class="field">
+        <!-- TODO: turn this into an autocomplete field -->
+        <%= f.label :building_id %><br>
+        <%= f.select(:building_id, 
+          options_for_select(current_user.company.buildings.collect {|b| [b.street_address, b.id]},
+            [@commercial_unit.building ? @commercial_unit.building.id : '']), 
+          {prompt: "Choose one..."},
+          class: 'form-control',
+          :include_blank => true) %>
+      </div>
+
+      <div class="field">
+        <%= f.label :building_unit, "Unit" %><br>
+        <%= f.text_field :building_unit, class: 'form-control', :required => true %>
+      </div>
+
+      <div class="field">
+        <%= f.label :rent %><br>
+        <%= f.number_field :rent, class: 'form-control', :required => true %>
+      </div>
+
+      <div class="field">
+        <%= f.label :sq_footage %><br>
+        <%= f.number_field :sq_footage, class: 'form-control', :required => true %>
+      </div>
+
+      <div class="field">
+        <%= f.label :floor %><br>
+        <%= f.number_field :floor, class: 'form-control', :required => true %>
+      </div>
+
+      <div class="field">
+        <%= f.label :property_type %><br>
+        <%= f.number_field :property_type, class: 'form-control', :required => true %>
+      </div>
+
+      <div class="field">
+        <%= f.label :property_sub_type %><br>
+        <%= f.number_field :property_sub_type, class: 'form-control', :required => true %>
+      </div>
+
+      <div class="field">
+        <%= f.label :building_size %><br>
+        <%= f.number_field :building_size, class: 'form-control', :required => true %>
+      </div>
+
+      <div class="field">
+        <%= f.label :description %><br>
+        <%= f.text_field :description, class: 'form-control', :required => true %>
+      </div>
+
+      <div class="field">
+        <%= f.label :available_by %><br>
+        <%= f.date_field :available_by, class: 'form-control' %>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

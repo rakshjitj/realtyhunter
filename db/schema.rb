@@ -62,13 +62,12 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   end
 
   create_table "commercial_units", force: :cascade do |t|
-    t.string "sq_footage"
-    t.string "floor"
-    t.string "property_type"
-    t.string "property_sub_type"
-    t.string "listing_id"
-    t.string "building_size"
-    t.string "description"
+    t.integer "sq_footage"
+    t.integer "floor"
+    t.string  "property_type"
+    t.string  "property_sub_type"
+    t.integer "building_size"
+    t.string  "description"
   end
 
   create_table "companies", force: :cascade do |t|

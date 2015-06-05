@@ -164,12 +164,11 @@
     end
 
     create_table :commercial_units do |t|
-      t.string :sq_footage
-      t.string :floor
+      t.integer :sq_footage
+      t.integer :floor
       t.string :property_type
       t.string :property_sub_type
-      t.string :listing_id
-      t.string :building_size
+      t.integer :building_size
       t.string :description
     end
 
