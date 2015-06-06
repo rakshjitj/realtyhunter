@@ -166,10 +166,20 @@
     create_table :commercial_units do |t|
       t.integer :sq_footage
       t.integer :floor
-      t.string :property_type
-      t.string :property_sub_type
       t.integer :building_size
-      t.string :description
+      t.integer :minimum_divisble
+      t.integer :maximum_contiguous
+      t.string :lease_type
+      t.boolean :is_sublease
+      t.string :property_description
+      t.string :location_description
+      t.integer :construction_status, default: 0
+      t.integer :no_parking_spaces
+      t.integer :pct_procurement_fee
+      t.integer :lease_term_months # different time frames than residential
+      t.boolean :rate_is_negotiable
+      t.integer :total_lot_size
+      t.belongs_to :commercial_property_type
     end
 
     create_table :building_amenities do |t|
@@ -220,5 +230,11 @@
       t.belongs_to :residential_amenity
     end
 
+    create_table :commercial_property_types do |t|
+      t.belongs_to :company
+      t.string :property_type
+      t.string :property_sub_type
+      t.timestamps null: false
+    end
   end
 end

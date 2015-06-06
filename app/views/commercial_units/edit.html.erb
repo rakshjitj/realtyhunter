@@ -1,17 +1,58 @@
-<h1>Editing Commercial Unit</h1>
+<script>
+$( document ).ready(function() {
+    $(".panel").geocomplete({
+    	map: "#map_canvas",
+    	location: "<%= @commercial_unit.building.formatted_street_address %>" ,
+    	details: ".details"
+    }).bind("geocode:result", function(event, result){
+        //console.log(result);
+    }).bind("geocode:error", function(event, result){
+        //console.log("[ERROR]: " + result);
+    });
 
-<%= render 'form' %>
+});
+</script>
 
-<%= link_to 'Show', @commercial_unit %> |
-<%= link_to 'View all', commercial_units_path %>
-
+<% provide(:title, 'Editing Commercial Unit') %>
 <div class="row">
-	<div class="col-md-6 col-md-offset-3">
-		<% provide(:title, 'Editing Commerical Unit') %>
-		<h1 class="page-header">
-			Commercial: <%= @commercial_unit.building.formatted_street_address %></h1>
-	  	
-		<%= render 'form' %>
+  <div class="col-md-6 col-md-offset-3">
+  	<div class="row">
+  		<div class="col-md-12">
+  			<div class="page-header">
+					<h1>
+						Edit <%= @commercial_unit.building.formatted_street_address %>
+						<% if @commercial_unit.building_unit %>
+							- <%= @commercial_unit.building_unit %>
+						<% end %>
+				  </h1>
+
+				  <div class="row">
+  					<div class="col-md-9">
+						  <a href="http://www.loopnet.com/lid/<%= @commercial_unit.listing_id %>">http://www.loopnet.com/lid/<%= @commercial_unit.listing_id %></a>
+						</div>
+						<div class="col-md-3 right">
+							<%= link_to 'Show', @commercial_unit %>
+							| <%= link_to 'View all', commercial_units_path %>
+						</div>
+					</div>
+				</div><!-- page-header -->
+
+			</div>
+		</div><!-- row -->
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<%= render 'form' %>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
 
 	</div>
 </div>
+
+

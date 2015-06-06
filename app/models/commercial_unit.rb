@@ -1,12 +1,13 @@
 class CommercialUnit < ActiveRecord::Base
 	acts_as :unit
-
+  belongs_to :commercial_property_type
+  
+  enum construction_status: [ :existing, :under_construction ]
+  validates :construction_status, presence: true, inclusion: { in: %w(existing under_construction) }
+  
 	validates :sq_footage, presence: true, :numericality => { :less_than_or_equal_to => 99999999 }
 	validates :floor, presence: true, :numericality => { :less_than_or_equal_to => 999 }
-	validates :property_type, presence: true, length: {maximum: 200}
-	validates :property_sub_type, presence: true, length: {maximum: 200}
 	validates :building_size, presence: true, :numericality => { :less_than_or_equal_to => 99999999 }
-	validates :description, presence: true, length: {maximum: 1000}
 
 	# used as a sorting condition
   def landlord_by_code

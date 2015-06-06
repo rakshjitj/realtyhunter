@@ -2,14 +2,53 @@
   <%= render :partial => 'shared/error_messages', 
     :locals => {:model => @commercial_unit} %>
  
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><%= @panel_title %></h3>
+  <div class="row">
+    <div class="col-md-4 right">
+      <strong>Current Listing Status</strong>
     </div>
-    <div class="panel-body">
+    <div class="col-md-8">
+      <div class="field">
+        <%= f.radio_button :status, "active" %>
+        <%= f.label :status_active, "Active" %>&nbsp;&nbsp;&nbsp;
+        <%= f.radio_button :status, "off" %>
+        <%= f.label :status_off, "Off" %><br>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-4 right">
+      <strong>Property Type</strong>
+    </div>
+    <div class="col-md-8">
+      
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-4 right">
+      <strong>Construction Status</strong>
+    </div>
+    <div class="col-md-8">
+      <div class="field">
+        <%= f.radio_button :status, "existing" %>
+        <%= f.label :status_existing, "Existing" %>&nbsp;&nbsp;&nbsp;
+        <%= f.radio_button :status, "under_construction" %>
+        <%= f.label :status_under_construction, "Under Construction" %><br>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-4 right">
+      <%= f.label :building_id %>
+    </div>
+    <div class="col-md-8">
       <div class="field">
         <!-- TODO: turn this into an autocomplete field -->
-        <%= f.label :building_id %><br>
         <%= f.select(:building_id, 
           options_for_select(current_user.company.buildings.collect {|b| [b.street_address, b.id]},
             [@commercial_unit.building ? @commercial_unit.building.id : '']), 
@@ -17,56 +56,196 @@
           class: 'form-control',
           :include_blank => true) %>
       </div>
-
-      <div class="field">
-        <%= f.label :building_unit, "Unit" %><br>
-        <%= f.text_field :building_unit, class: 'form-control', :required => true %>
-      </div>
-
-      <div class="field">
-        <%= f.label :rent %><br>
-        <%= f.number_field :rent, class: 'form-control', :required => true %>
-      </div>
-
-      <div class="field">
-        <%= f.label :sq_footage %><br>
-        <%= f.number_field :sq_footage, class: 'form-control', :required => true %>
-      </div>
-
-      <div class="field">
-        <%= f.label :floor %><br>
-        <%= f.number_field :floor, class: 'form-control', :required => true %>
-      </div>
-
-      <div class="field">
-        <%= f.label :property_type %><br>
-        <%= f.number_field :property_type, class: 'form-control', :required => true %>
-      </div>
-
-      <div class="field">
-        <%= f.label :property_sub_type %><br>
-        <%= f.number_field :property_sub_type, class: 'form-control', :required => true %>
-      </div>
-
-      <div class="field">
-        <%= f.label :building_size %><br>
-        <%= f.number_field :building_size, class: 'form-control', :required => true %>
-      </div>
-
-      <div class="field">
-        <%= f.label :description %><br>
-        <%= f.text_field :description, class: 'form-control', :required => true %>
-      </div>
-
-      <div class="field">
-        <%= f.label :available_by %><br>
-        <%= f.date_field :available_by, class: 'form-control' %>
-      </div>
-
     </div>
   </div>
 
-  <div class="actions">
-    <%= f.submit %>
+  <div class="row">
+    <div class="col-md-4 right">
+      <%= f.label :building_unit, "Suite/Apt/Unit" %>
+    </div>
+    <div class="col-md-2">
+      <div class="field">
+        <%= f.text_field :building_unit, class: 'form-control', :required => true %>
+      </div>
+    </div>
   </div>
+
+  <div class="row">
+    <div class="col-md-4 right">
+      <%= f.label :floor, "Unit" %>
+    </div>
+    <div class="col-md-2">
+      <div class="field">
+        <%= f.text_field :floor, class: 'form-control', :required => true %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 right">
+      <%= f.label :sq_footage, 'Space Available (SF)' %>
+    </div>
+    <div class="col-md-2">
+      <div class="field">
+        <%= f.number_field :sq_footage, class: 'form-control', :required => true %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 right">
+      <%= f.label :rent, 'Rental rate' %>
+    </div>
+    <div class="col-md-2">
+      <div class="field">
+        <%= f.number_field :rent, class: 'form-control', :required => true %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 right">
+      <%= f.label :available_by, 'Date available' %>
+    </div>
+    <div class="col-md-4">
+      <div class="field">
+        <%= f.date_field :available_by, class: 'form-control' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 right">
+      <%= f.label :lease_type %>
+    </div>
+    <div class="col-md-2">
+      <div class="field">
+        <%= f.text_field :lease_type, class: 'form-control', :required => true %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 right">
+      Sublease?
+    </div>
+    <div class="col-md-2">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 right">
+      <%= f.label :minimum_divisble, 'Minimum Divisible (SF)' %>
+    </div>
+    <div class="col-md-2">
+      <div class="field">
+        <%= f.number_field :minimum_divisble, class: 'form-control', :required => true %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 right">
+      <%= f.label :maximum_contiguous, 'Maximum Contiguous (SF)' %>
+    </div>
+    <div class="col-md-2">
+      <div class="field">
+        <%= f.number_field :maximum_contiguous, class: 'form-control', :required => true %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 right">
+      <%= f.label :lease_term_months, 'Lease Term' %>
+    </div>
+    <div class="col-md-2">
+      <div class="field">
+        <%= f.number_field :lease_term_months, class: 'form-control', :required => true %> Months
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 right">
+      <%= f.label :no_parking_spaces, '# Parking Spaces' %>
+    </div>
+    <div class="col-md-2">
+      <div class="field">
+        <%= f.number_field :no_parking_spaces, class: 'form-control', :required => true %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 right">
+      <%= f.label :pct_procurement_fee, 'Procurement Fee %' %>
+    </div>
+    <div class="col-md-2">
+      <div class="field">
+        <%= f.number_field :pct_procurement_fee, class: 'form-control', :required => true %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 right">
+      <%= f.label :property_description %>
+    </div>
+    <div class="col-md-8">
+      <div class="field">
+        <%= f.text_area :property_description, class: 'form-control', :required => true, rows: 5 %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 right">
+      <%= f.label :location_description %>
+    </div>
+    <div class="col-md-8">
+      <div class="field">
+        <%= f.text_area :location_description, class: 'form-control', :required => true, rows: 5 %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 right">
+      <%= f.label :building_size, 'Total Building Size' %>
+    </div>
+    <div class="col-md-2">
+      <div class="field">
+        
+        <%= f.number_field :building_size, class: 'form-control', :required => true %>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-4 right">
+      <%= f.label :total_lot_size, 'Total Lot Size' %>
+    </div>
+    <div class="col-md-2">
+      <div class="field">
+        <%= f.number_field :total_lot_size, class: 'form-control', :required => true %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12"><hr />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 right">
+      <div class="actions">
+        <%= f.submit 'Save Data', class:"btn btn-primary" %>
+      </div>
+    </div>
+    
+  </div>
+  
+  
 <% end %>

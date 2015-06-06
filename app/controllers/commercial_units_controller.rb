@@ -150,9 +150,9 @@ class CommercialUnitsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def commercial_unit_params
-      params[:commercial_unit].permit(:building_unit, :rent, :available_by, 
-        :access_info, :status, :open_house, :weeks_free_offered, :building_id, 
-        :user_id, :sq_footage, :floor, :property_type, :property_sub_type, 
+      params[:commercial_unit].permit(:building_unit, :rent, :status, :construction_status, 
+        :available_by, :access_info, :status, :open_house, :weeks_free_offered, 
+        :building_id, :user_id, :sq_footage, :floor, :property_sub_type, 
         :building_size, :description, :inaccuracy_description)
     end
 end

@@ -17,20 +17,10 @@ $( document ).ready(function() {
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
   	
-  	
-  	
   	<div class="row">
   		<div class="col-md-12">
-	  		<p>
-          <%= link_to 'Edit', edit_commercial_unit_path(@commercial_unit) %>
-          | <%= link_to 'View all', commercial_units_path %>
-          | <%= link_to 'Duplicate', duplicate_modal_commercial_unit_path(@commercial_unit), 
-      				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
-      		| <%= link_to 'Report Inaccuracy', inaccuracy_modal_commercial_unit_path(@commercial_unit), 
-        			data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
-        	| <%= link_to 'Print', print_modal_commercial_unit_path(@commercial_unit), 
-        		data: {toggle: "modal", target: "#printModal"}, remote: true %>
-        </p>
+  			<br />
+	  		
 			</div><!-- col -->
 		</div><!-- row -->
 
@@ -58,7 +48,17 @@ $( document ).ready(function() {
 				    </h3>
 				  </div>
 				  <div class="panel-body">
-
+				  	<p>
+		          <%= link_to 'Edit', edit_commercial_unit_path(@commercial_unit) %>
+		          | <%= link_to 'View all', commercial_units_path %>
+		          | <%= link_to 'Duplicate', duplicate_modal_commercial_unit_path(@commercial_unit), 
+		      				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
+		      		| <%= link_to 'Report Inaccuracy', inaccuracy_modal_commercial_unit_path(@commercial_unit), 
+		        			data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
+		        	| <%= link_to 'Print', print_modal_commercial_unit_path(@commercial_unit), 
+		        		data: {toggle: "modal", target: "#printModal"}, remote: true %>
+		        </p>
+		        
 				  	<div id="map_canvas"></div>
 				  	<br />
 				    <h3><%= @commercial_unit.property_type %> For Lease</h3>
@@ -123,6 +123,20 @@ $( document ).ready(function() {
 						  <div class="col-md-3">
 						    <%= @commercial_unit.available_by.strftime("%Y-%b-%d") %>
 						  </div>
+						</div>
+
+						<div class="row">
+						  <div class="col-md-3">
+						    <strong>Construction Status:</strong>
+						  </div>
+						  <div class="col-md-3">
+						  	<% if @commercial_unit.construction_status == "existing" %>
+						  		Existing
+						  	<% else %>
+						  		Under Construction/Proposed
+						  	<% end %>
+						  </div>
+
 						</div>
 
 						<br />

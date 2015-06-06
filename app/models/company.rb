@@ -13,7 +13,8 @@ class Company < ActiveRecord::Base
 	has_many :required_securities, dependent: :destroy
 	has_many :pet_policies, dependent: :destroy
 	has_many :residential_amenities, dependent: :destroy
-
+	has_many :commercial_property_types
+	
 	attr_accessor :agent_types, :employee_titles
 
 	validates :name, presence: true, length: {maximum: 50},
@@ -112,6 +113,18 @@ class Company < ActiveRecord::Base
 			{name: "Skylight", company: @company},
 			{name: "Walk-in closet", company: @company},
 			{name: "Waterfront", company: @company},
+		])
+
+		CommercialPropertyType.create([
+			{property_type: "Retail", property_sub_type: "Retail - Retail Pad", company: @company},
+			{property_type: "Retail", property_sub_type: "Retail - Free Standing Bldg", company: @company},
+			{property_type: "Retail", property_sub_type: "Retail - Street Retail", company: @company},
+			{property_type: "Retail", property_sub_type: "Retail - Vehicle Related", company: @company},
+			{property_type: "Retail", property_sub_type: "Retail - Retail (Other)", company: @company},
+			{property_type: "Office", property_sub_type: "Office - Office (Other)", company: @company},
+			{property_type: "Industrial", property_sub_type: "Industrial - Industrial (Other)", company: @company},
+			{property_type: "Land", property_sub_type: "Land - Land (Other)", company: @company},
+			{property_type: "Special Purpose", property_sub_type: "Special Purpose - Special Purpose (Other)", company: @company},
 		])
 
 		@company
