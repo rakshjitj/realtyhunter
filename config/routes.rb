@@ -110,6 +110,7 @@ Rails.application.routes.draw do
       get 'print_modal'
       get 'print_public'
     #  get 'print_private'
+      get 'update_subtype'
     end
     collection do
       get 'print_list'

@@ -167,10 +167,11 @@
       t.integer :sq_footage
       t.integer :floor
       t.integer :building_size
+      t.boolean :build_to_suit, default: false
       t.integer :minimum_divisble
       t.integer :maximum_contiguous
       t.string :lease_type
-      t.boolean :is_sublease
+      t.boolean :is_sublease, default: false
       t.string :property_description
       t.string :location_description
       t.integer :construction_status, default: 0

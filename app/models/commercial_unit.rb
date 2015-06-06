@@ -5,6 +5,8 @@ class CommercialUnit < ActiveRecord::Base
   enum construction_status: [ :existing, :under_construction ]
   validates :construction_status, presence: true, inclusion: { in: %w(existing under_construction) }
   
+  attr_accessor :property_type
+
 	validates :sq_footage, presence: true, :numericality => { :less_than_or_equal_to => 99999999 }
 	validates :floor, presence: true, :numericality => { :less_than_or_equal_to => 999 }
 	validates :building_size, presence: true, :numericality => { :less_than_or_equal_to => 99999999 }

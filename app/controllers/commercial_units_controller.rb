@@ -1,8 +1,7 @@
 class CommercialUnitsController < ApplicationController
   load_and_authorize_resource
   before_action :set_commercial_unit, except: [:new, :create, :index, :filter, 
-    :neighborhoods_modal, :features_modal]
-
+    :neighborhoods_modal, :features_modal, :update_subtype]
 
   # GET /commercial_units
   # GET /commercial_units.json
@@ -41,6 +40,30 @@ class CommercialUnitsController < ApplicationController
   # GET /commercial_units/1/edit
   def edit
     @panel_title = "Edit listing"
+
+    @property_types = current_user.company.commercial_property_types
+    .select(:property_type).order('property_type ASC').distinct
+  
+    # @property_types = {}
+    # for pt in ptypes do 
+    #   if !@property_types.has_key? pt.property_type
+    #     @property_types[pt.property_type] = [pt]
+    #   else
+    #     @property_types[pt.property_type] << pt
+    #   end
+    # end
+
+    @property_types
+  end
+
+  def update_subtype
+    ptype = params[:property_type]
+    puts "\n **** #{ptype}"
+    @property_sub_types = CommercialPropertyType.subtypes_for(ptype, current_user.company)
+
+    respond_to do |format|
+      format.js  
+    end
   end
 
   # POST /commercial_units
@@ -150,9 +173,12 @@ class CommercialUnitsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def commercial_unit_params
-      params[:commercial_unit].permit(:building_unit, :rent, :status, :construction_status, 
-        :available_by, :access_info, :status, :open_house, :weeks_free_offered, 
-        :building_id, :user_id, :sq_footage, :floor, :property_sub_type, 
-        :building_size, :description, :inaccuracy_description)
+      params[:commercial_unit].permit(:building_unit, :rent, :status, :available_by, 
+        :status, :building_id, :user_id, 
+        :sq_footage, :floor, :building_size, :build_to_suit, :minimum_divisble, :maximum_contiguous,
+        :lease_type, :is_sublease, :property_description, :location_description,
+        :construction_status, :no_parking_spaces, :pct_procurement_fee, :lease_term_months,
+        :rate_is_negotiable, :total_lot_size, :property_type, :commercial_property_type_id,
+        :inaccuracy_description)
     end
 end

@@ -8,9 +8,9 @@
     </div>
     <div class="col-md-8">
       <div class="field">
-        <%= f.radio_button :status, "active" %>
+        <%= f.radio_button :status, "active", checked: (@commercial_unit.status == "active") %>
         <%= f.label :status_active, "Active" %>&nbsp;&nbsp;&nbsp;
-        <%= f.radio_button :status, "off" %>
+        <%= f.radio_button :status, "off", checked: (@commercial_unit.status == "off") %>
         <%= f.label :status_off, "Off" %><br>
       </div>
     </div>
@@ -21,9 +21,24 @@
     <div class="col-md-4 right">
       <strong>Property Type</strong>
     </div>
-    <div class="col-md-8">
-      
+    <div class="col-md-3">
+      <div class="field">
+        <%= f.select(:property_type, 
+          options_for_select(@property_types.collect {|b| [b.property_type, b.id]},
+          [@commercial_unit.commercial_property_type.property_type]), 
+          {},
+          {:size => 8,
+            class: 'form-control'}) %>
+      </div>
     </div>
+    <div class="col-md-5">
+      <div class="field">
+        <!-- gets updated when property_type changes -->
+        <div id="property-subtypes">
+        </div>
+      </div>
+    </div>
+
   </div>
 
 
@@ -33,14 +48,26 @@
     </div>
     <div class="col-md-8">
       <div class="field">
-        <%= f.radio_button :status, "existing" %>
-        <%= f.label :status_existing, "Existing" %>&nbsp;&nbsp;&nbsp;
-        <%= f.radio_button :status, "under_construction" %>
-        <%= f.label :status_under_construction, "Under Construction" %><br>
+        <%= f.radio_button :construction_status, "existing", 
+          checked: (@commercial_unit.construction_status == "existing") %>
+        <%= f.label :construction_status_existing, "Existing" %>&nbsp;&nbsp;&nbsp;
+        <%= f.radio_button :construction_status, "under_construction", 
+          checked: (@commercial_unit.construction_status == "under_construction") %>
+        <%= f.label :construction_status_under_construction, "Under Construction" %><br>
       </div>
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-md-4 right">
+      <%= f.label :build_to_suit %>
+    </div>
+    <div class="col-md-2">
+      <div class="field">
+        <%= f.check_box :build_to_suit, class: 'form-control' %>
+      </div>
+    </div>
+  </div>
 
   <div class="row">
     <div class="col-md-4 right">
@@ -65,14 +92,14 @@
     </div>
     <div class="col-md-2">
       <div class="field">
-        <%= f.text_field :building_unit, class: 'form-control', :required => true %>
+        <%= f.text_field :building_unit, class: 'form-control' %>
       </div>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-4 right">
-      <%= f.label :floor, "Unit" %>
+      <%= f.label :floor, "Floor" %>
     </div>
     <div class="col-md-2">
       <div class="field">
@@ -118,7 +145,7 @@
     <div class="col-md-4 right">
       <%= f.label :lease_type %>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-4">
       <div class="field">
         <%= f.text_field :lease_type, class: 'form-control', :required => true %>
       </div>
@@ -157,11 +184,11 @@
 
   <div class="row">
     <div class="col-md-4 right">
-      <%= f.label :lease_term_months, 'Lease Term' %>
+      <%= f.label :lease_term_months, 'Lease Term (Months)' %>
     </div>
     <div class="col-md-2">
       <div class="field">
-        <%= f.number_field :lease_term_months, class: 'form-control', :required => true %> Months
+        <%= f.number_field :lease_term_months, class: 'form-control', :required => true %> 
       </div>
     </div>
   </div>
@@ -249,3 +276,23 @@
   
   
 <% end %>
+
+<script>
+
+  function updatePropertySubTypes(ptype) {
+    $.ajax({
+      url: "<%= update_subtype_commercial_unit_path %>",
+      data: {
+          property_type: ptype
+      },
+      dataType: "script",
+    });
+  };
+
+  $('#commercial_unit_property_type').change(function(e) {
+    var optionSelected = $("option:selected", this);
+    var textSelected   = optionSelected.text();
+    updatePropertySubTypes(textSelected);
+  });
+
+</script>

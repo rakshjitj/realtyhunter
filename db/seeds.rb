@@ -306,6 +306,8 @@ end
 
     sq_footage: Faker::Number.number(3),
     floor: Faker::Number.number(1),
+    #build_to_suit: false,
+    is_sublease: false,
     building_size: bldg_size,
     total_lot_size: bldg_size,
     minimum_divisble: bldg_size,
