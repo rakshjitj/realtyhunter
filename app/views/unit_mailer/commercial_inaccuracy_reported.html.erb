@@ -1,0 +1,6 @@
+<h2><%= @reporter.name %> has submitted this error report:</h2>
+
+<p><%= @unit.inaccuracy_description %></p>
+
+<br />
+<%= link_to "Please login and update", edit_commercial_unit_url(@unit) %> the unit's info.

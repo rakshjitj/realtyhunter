@@ -30,10 +30,6 @@
       t.string :place_id
       
       t.string :name
-      # t.string :street_address
-      # t.string :city
-      # t.string :state
-      # t.string :zipcode
       t.string :telephone
       t.string :fax
       t.belongs_to :company

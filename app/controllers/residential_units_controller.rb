@@ -171,7 +171,7 @@ class ResidentialUnitsController < ApplicationController
   def print_private
     #respond_to do |format|
     #  format.pdf do
-        render pdf: current_user.name + ' Listing - Private Info',
+        render pdf: current_user.name + ' - Residential - Private',
           template: "/residential_units/print_private.pdf.erb",
           disposition: "attachment",
           layout:   "/layouts/pdf_layout.html"
@@ -184,7 +184,7 @@ class ResidentialUnitsController < ApplicationController
   def print_public
     #respond_to do |format|
     #  format.pdf do
-        render pdf: current_user.name + ' - Listing',
+        render pdf: current_user.name + ' - Residential',
           template: "/residential_units/print_public.pdf.erb",
           disposition: "attachment",
           layout:   "/layouts/pdf_layout.html"
@@ -223,7 +223,7 @@ class ResidentialUnitsController < ApplicationController
     end
   end
 
-# GET 
+  # GET 
   # handles ajax call. uses latest data in modal
   def inaccuracy_modal
     respond_to do |format|

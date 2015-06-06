@@ -19,4 +19,8 @@ module ApplicationHelper
   def rent_formatted(rent)
     number_to_currency(rent, {precision: 0})
   end
+
+  def money_formatted(rent)
+    number_to_currency(rent, {precision: 2})
+  end
 end

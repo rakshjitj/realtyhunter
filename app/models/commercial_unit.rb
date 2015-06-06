@@ -1,7 +1,7 @@
 class CommercialUnit < ActiveRecord::Base
 	acts_as :unit
   belongs_to :commercial_property_type
-  attr_accessor :property_type
+  attr_accessor :property_type, :inaccuracy_description
 
   enum construction_status: [ :existing, :under_construction ]
   validates :construction_status, presence: true, inclusion: { in: %w(existing under_construction) }
@@ -19,21 +19,16 @@ class CommercialUnit < ActiveRecord::Base
   end
 
   def summary
-  	summary = self.status.capitalize() + ' - ' + self.property_type
-  	if self.property_sub_type
-  		summary += ' (' + self.property_sub_type + ')'
+  	summary = self.status.capitalize() + ' - ' + self.commercial_property_type.property_type
+  	if self.commercial_property_type.property_sub_type
+  		summary += ' (' + self.commercial_property_type.property_sub_type + ')'
   	end
 
   	summary
   end
 
-  # TODO
-  def num_space_in_bldg
-  	'-'
-  end
-
   def price_per_sq_ft
-    self.rent / self.sq_footage
+    self.rent.to_f / self.sq_footage
   end
 
   def self.search(params, building_id=nil)
@@ -91,6 +86,27 @@ class CommercialUnit < ActiveRecord::Base
 
     @running_list = Unit.get_commercial(@running_list)
     @running_list
+  end
+
+  def duplicate(new_unit_num, include_photos)
+    if new_unit_num
+      commercial_unit_dup = self.dup
+      commercial_unit_dup.listing_id = Unit.generate_unique_id
+      commercial_unit_dup.building_unit = new_unit_num
+      # TODO: photos
+      commercial_unit_dup.save
+      commercial_unit_dup
+    else
+      raise "no unit number specified"
+    end
+  end
+
+  def send_inaccuracy_report(reporter)
+    if reporter
+      UnitMailer.commercial_inaccuracy_reported(self, reporter).deliver_now
+    else 
+      raise "No reporter specified"
+    end
   end
 
 end

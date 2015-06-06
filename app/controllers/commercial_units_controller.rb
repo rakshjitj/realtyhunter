@@ -24,6 +24,15 @@ class CommercialUnitsController < ApplicationController
   # GET /commercial_units/1
   # GET /commercial_units/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.js
+      format.pdf do
+        render pdf: current_user.name + ' Commercial - Private',
+          template: "/commercial_units/print_private.pdf.erb",
+          layout:   "/layouts/pdf_layout.html"
+      end
+    end
   end
 
   # GET /commercial_units/new
@@ -86,10 +95,10 @@ class CommercialUnitsController < ApplicationController
   # POST
   # handles ajax call. uses latest data in modal
   def duplicate
-    commercial_unit_dup = @residential_unit.duplicate(
+    commercial_unit_dup = @commercial_unit.duplicate(
       commercial_unit_params[:building_unit], commercial_unit_params[:include_photos])
     if commercial_unit_dup.valid?
-      @residential_unit = commercial_unit_dup
+      @commercial_unit = commercial_unit_dup
       render :js => "window.location.pathname = '#{commercial_unit_path(@commercial_unit)}'"
     else
       # TODO: not sure how to handle this best...
@@ -99,6 +108,26 @@ class CommercialUnitsController < ApplicationController
       end
     end
   end
+
+  # GET
+  # handles ajax call. uses latest data in modal
+  # Modal collects info and prep unit to be taken off the market
+  def print_modal
+    respond_to do |format|
+      format.js  
+    end
+  end
+
+  #def print_private
+    #respond_to do |format|
+    #  format.pdf do
+        # render pdf: current_user.name + ' Commercial - Private',
+        #   template: "/commercial_units/print_private.pdf.erb",
+        #   disposition: "attachment",
+        #   layout:   "/layouts/pdf_layout.html"
+    #  end
+    #end
+  #end
 
   # PATCH/PUT /commercial_units/1
   # PATCH/PUT /commercial_units/1.json
@@ -121,6 +150,14 @@ class CommercialUnitsController < ApplicationController
     end
   end
 
+  # GET 
+  # handles ajax call. uses latest data in modal
+  def delete_modal
+    respond_to do |format|
+      format.js  
+    end
+  end
+
   # DELETE /commercial_units/1
   # DELETE /commercial_units/1.json
   def destroy
@@ -129,6 +166,24 @@ class CommercialUnitsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to commercial_units_url, notice: 'Commercial unit was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  # GET 
+  # handles ajax call. uses latest data in modal
+  def inaccuracy_modal
+    respond_to do |format|
+      format.js  
+    end
+  end
+
+  # PATCH
+  # triggers email to staff notifying them of the inaccuracy
+  def send_inaccuracy
+    @commercial_unit.inaccuracy_description = commercial_unit_params[:inaccuracy_description]
+    @commercial_unit.send_inaccuracy_report(current_user)
+    respond_to do |format|
+      format.js { flash[:notice] = "Report submitted! Thank you." }
     end
   end
 
@@ -177,7 +232,7 @@ class CommercialUnitsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def commercial_unit_params
       params[:commercial_unit].permit(:building_unit, :rent, :status, :available_by, 
-        :status, :building_id, :user_id, 
+        :status, :building_id, :user_id, :include_photos,
         :sq_footage, :floor, :building_size, :build_to_suit, :minimum_divisble, :maximum_contiguous,
         :lease_type, :is_sublease, :property_description, :location_description,
         :construction_status, :no_parking_spaces, :pct_procurement_fee, :lease_term_months,
