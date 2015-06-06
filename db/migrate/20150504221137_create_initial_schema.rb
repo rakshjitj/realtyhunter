@@ -144,7 +144,7 @@
     create_table :units do |t|
       t.integer :listing_id
       t.string :building_unit
-      t.integer :rent
+      t.integer :rent # always stored as monthly gross rate
       t.timestamp :available_by
       t.string :access_info
       t.integer :status, default: 0
@@ -157,8 +157,8 @@
 
     create_table :residential_units do |t|
       t.integer :beds
-      t.float :baths
-      t.string :notes
+      t.float   :baths
+      t.string  :notes
       t.integer :lease_duration, default: 0
       t.belongs_to :pet_policy
     end
@@ -170,10 +170,10 @@
       t.boolean :build_to_suit, default: false
       t.integer :minimum_divisble
       t.integer :maximum_contiguous
-      t.string :lease_type
+      t.integer :lease_type
       t.boolean :is_sublease, default: false
-      t.string :property_description
-      t.string :location_description
+      t.string  :property_description
+      t.string  :location_description
       t.integer :construction_status, default: 0
       t.integer :no_parking_spaces
       t.integer :pct_procurement_fee

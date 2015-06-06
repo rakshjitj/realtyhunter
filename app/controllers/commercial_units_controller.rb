@@ -104,10 +104,19 @@ class CommercialUnitsController < ApplicationController
   # PATCH/PUT /commercial_units/1.json
   def update
     params[:commercial_unit][:commercial_property_type_id] = params[:commercial_property_type_id]
+
     if @commercial_unit.update(commercial_unit_params)
       flash[:success] = "Unit successfully updated!"
       redirect_to @commercial_unit
     else
+      @property_types = current_user.company.commercial_property_types
+      .select(:property_type).order('property_type ASC').distinct
+
+      if @commercial_unit.commercial_property_type
+        @property_sub_types = CommercialPropertyType.subtypes_for(
+          @commercial_unit.commercial_property_type.property_type, current_user.company)
+      end
+
       render 'edit'
     end
   end

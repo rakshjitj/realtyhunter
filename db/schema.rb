@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.boolean "build_to_suit",               default: false
     t.integer "minimum_divisble"
     t.integer "maximum_contiguous"
-    t.string  "lease_type"
+    t.integer "lease_type"
     t.boolean "is_sublease",                 default: false
     t.string  "property_description"
     t.string  "location_description"

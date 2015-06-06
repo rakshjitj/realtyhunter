@@ -1,11 +1,13 @@
 class CommercialUnit < ActiveRecord::Base
 	acts_as :unit
   belongs_to :commercial_property_type
-  
+  attr_accessor :property_type
+
   enum construction_status: [ :existing, :under_construction ]
   validates :construction_status, presence: true, inclusion: { in: %w(existing under_construction) }
   
-  attr_accessor :property_type
+  enum lease_type: [ :na, :full_service, :nnn, :modified_gross, :modified_net, :industrial_gross, :other ]
+  validates :lease_type, presence: true, inclusion: { in: %w(na full_service nnn modified_gross modified_net industrial_gross other) }
 
 	validates :sq_footage, presence: true, :numericality => { :less_than_or_equal_to => 99999999 }
 	validates :floor, presence: true, :numericality => { :less_than_or_equal_to => 999 }

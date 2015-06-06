@@ -297,7 +297,7 @@ end
 
 55.times do |n|
   bldg_size = Faker::Number.number(4);
-  CommercialUnit.create({
+  CommercialUnit.create!({
     listing_id: Unit.generate_unique_id,
     status: "active",
     building: @bldg,
@@ -306,7 +306,8 @@ end
 
     sq_footage: Faker::Number.number(3),
     floor: Faker::Number.number(1),
-    #build_to_suit: false,
+    build_to_suit: false,
+    lease_type: "modified_gross",
     is_sublease: false,
     building_size: bldg_size,
     total_lot_size: bldg_size,
