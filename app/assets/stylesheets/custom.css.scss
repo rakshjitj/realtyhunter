@@ -302,3 +302,12 @@ aside {
 .btn-as-checkbox.active {
   background-color: limegreen !important;
 }
+
+.form-section-header {
+  background-color: $gray-lighter;
+}
+
+.no-vertical-padding {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
