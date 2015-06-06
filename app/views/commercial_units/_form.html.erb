@@ -42,7 +42,7 @@
       <div class="field">
         <%= f.select(:property_type, 
           options_for_select(@property_types.collect {|b| [b.property_type]},
-          [@commercial_unit.commercial_property_type.property_type]), 
+          [@commercial_unit.commercial_property_type ? @commercial_unit.commercial_property_type.property_type : '']), 
           {},
           {:size => 8,
             class: 'form-control'}) %>
@@ -323,7 +323,7 @@
 
   function updatePropertySubTypes(ptype) {
     $.ajax({
-      url: "<%= update_subtype_commercial_unit_path %>",
+      url: "<%= update_subtype_commercial_units_path %>",
       data: {
           property_type: ptype
       },

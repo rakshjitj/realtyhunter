@@ -44,19 +44,13 @@ class CommercialUnitsController < ApplicationController
     end
 
     @panel_title = "Add a listing"
+    set_property_types
   end
 
   # GET /commercial_units/1/edit
   def edit
     @panel_title = "Edit listing"
-
-    @property_types = current_user.company.commercial_property_types
-    .select(:property_type).order('property_type ASC').distinct
-
-    if @commercial_unit.commercial_property_type
-      @property_sub_types = CommercialPropertyType.subtypes_for(
-        @commercial_unit.commercial_property_type.property_type, current_user.company)
-    end
+    #set_property_types
   end
 
   def update_subtype
@@ -138,14 +132,7 @@ class CommercialUnitsController < ApplicationController
       flash[:success] = "Unit successfully updated!"
       redirect_to @commercial_unit
     else
-      @property_types = current_user.company.commercial_property_types
-      .select(:property_type).order('property_type ASC').distinct
-
-      if @commercial_unit.commercial_property_type
-        @property_sub_types = CommercialPropertyType.subtypes_for(
-          @commercial_unit.commercial_property_type.property_type, current_user.company)
-      end
-
+      set_property_types
       render 'edit'
     end
   end
@@ -211,6 +198,16 @@ class CommercialUnitsController < ApplicationController
     #   @commercial_units = @commercial_units.paginate(:page => params[:page], :per_page => 50)
     #   @map_infos = CommercialUnit.set_location_data(@commercial_units)
     # end
+
+    def set_property_types
+      @property_types = current_user.company.commercial_property_types
+      .select(:property_type).order('property_type ASC').distinct
+
+      if @commercial_unit.commercial_property_type
+        @property_sub_types = CommercialPropertyType.subtypes_for(
+          @commercial_unit.commercial_property_type.property_type, current_user.company)
+      end
+    end
 
     def custom_sort
       sort_column = params[:sort_by] || "updated_at"
