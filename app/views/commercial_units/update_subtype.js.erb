@@ -1,5 +1,1 @@
-$('#property-subtypes').html('<%= j( select_tag(:commercial_property_type_id, 
-  options_for_select(@property_sub_types.collect {|b| [b.property_sub_type, b.id]},
-  [@commercial_unit.commercial_property_type_id]), 
-  {:size => 8,
-    class: 'form-control'}) )%>')
+$('#commercial_property_type_id').html('<%= j( render 'sub_types_select', locals: { property_sub_types: @property_sub_types, commercial_unit: @commercial_unit }) %>')

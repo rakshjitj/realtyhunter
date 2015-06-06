@@ -24,7 +24,7 @@
     <div class="col-md-3">
       <div class="field">
         <%= f.select(:property_type, 
-          options_for_select(@property_types.collect {|b| [b.property_type, b.id]},
+          options_for_select(@property_types.collect {|b| [b.property_type]},
           [@commercial_unit.commercial_property_type.property_type]), 
           {},
           {:size => 8,
@@ -34,7 +34,7 @@
     <div class="col-md-5">
       <div class="field">
         <!-- gets updated when property_type changes -->
-        <div id="property-subtypes">
+        <%= render 'sub_types_select' %>
         </div>
       </div>
     </div>
@@ -239,7 +239,7 @@
 
   <div class="row">
     <div class="col-md-4 right">
-      <%= f.label :building_size, 'Total Building Size' %>
+      <%= f.label :building_size, 'Total Building Size (SF)' %>
     </div>
     <div class="col-md-2">
       <div class="field">

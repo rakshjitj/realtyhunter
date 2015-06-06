@@ -115,7 +115,7 @@ $( document ).ready(function() {
 						    <strong>Property Sub-type:</strong>
 						  </div>
 						  <div class="col-md-3">
-						    <%= @commercial_unit.property_sub_type %>
+						    <%= @commercial_unit.commercial_property_type.property_sub_type %>
 						  </div>
 						  <div class="col-md-3">
 						    <strong>Date Available:</strong>
@@ -141,7 +141,7 @@ $( document ).ready(function() {
 
 						<br />
 				    <h3>Description</h3>
-				    <%= @commercial_unit.description %>
+				    <%= @commercial_unit.property_description %>
 
 				  </div><!-- panel-body-->
 				</div><!-- panel -->
