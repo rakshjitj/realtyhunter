@@ -7,44 +7,40 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     @employee_title = employee_titles(:agent)
   end
 
-  # test "invalid signup information" do
+  test "invalid signup information" do
 
-  #   get signup_path
-  #   assert_no_difference 'User.count' do
-  #     post users_path, user: { name:  "",
-  #                              email: "user@invalid",
-  #                              password:              "foo",
-  #                              password_confirmation: "bar",
-  #                              employee_title_id: 2 },
-  #                       agent_title: @employee_title
-  #   end
-  #   assert_template 'users/new'
-  #   # test that error msgs appear
-  #   assert_select 'div#error_explanation'
-  #   assert_select 'div.field_with_errors'
-  # end
+    get signup_path
+    assert_no_difference 'User.count' do
+      post users_path, user: { name:  "",
+                               email: "user@invalid",
+                               password:              "foo",
+                               password_confirmation: "bar",
+                               mobile_phone_number: '666-666-6666',
+                               employee_title_id: 2 },
+                        agent_title: @employee_title
+    end
+    assert_template 'users/new'
+    # test that error msgs appear
+    assert_select 'div#error_explanation'
+    assert_select 'div.field_with_errors'
+  end
 
   test "valid signup information" do
     get signup_path
     assert_difference 'User.count', 1 do
-      post users_path, user: { email: "user@example.com",
+      post users_path, user: { name:  "Example User",
+                               email: "user@example.com",
                                password:              "password",
                                password_confirmation: "password",
-                               name:  "Example User",
                                employee_title_id: 2,
-                               company_id: 1
+                               company_id: 1,
+                               office_id: 1,
+                               mobile_phone_number: '666-666-6666',
                                 },
                         agent_title: @employee_title
     end
     assert_equal 1, ActionMailer::Base.deliveries.size
     user = assigns(:user)
-    company_admin = users(:lana)
-    @company = companies(:one)
-    @company.users << [user, company_admin]
-    company_admin.update_roles
-    user.update_roles
-    user.reload
-    # TODO: employee_title_id, agent_types not working right
 
     assert_not user.activated?
     assert_not user.approved?
@@ -62,10 +58,13 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert user.reload.activated?
     # still needs approval
     assert_not is_logged_in?
-    
+    # Valid approval token
+    get edit_account_approval_path(user.approval_token, email: user.email)
+    assert user.reload.activated?
 
-    follow_redirect!
-    assert_template 'users/show'
+    log_in_as(user)
+    # follow_redirect!
+    #assert_template 'users/show'
     assert is_logged_in?
   end
 
