@@ -52,6 +52,7 @@
 
     create_table :users do |t|
       t.boolean :archived, default: false
+      t.string :auth_token
       t.string :name
       t.string :email
       t.string :phone_number

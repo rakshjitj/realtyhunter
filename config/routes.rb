@@ -124,10 +124,10 @@ Rails.application.routes.draw do
   # designed to match nestio's API endpoints, so we can feed our data seamlessly to 
   # our public-facing website
   namespace :api, :defaults => {:format => :json}, :path => "/", :constraints => {:subdomain => "api"}  do
-    namespace :v1 destroy
+    namespace :v1 do
       resources :agents
-      #resources :neighborhoods
-      #resources :listings
+      resources :neighborhoods
+      resources :listings
     end
   end
 

@@ -24,6 +24,10 @@ class ActiveSupport::TestCase
     end
   end
 
+  def json(body)
+    JSON.parse(body, symbolize_names: true)
+  end
+
   private
 
     # Returns true inside an integration test.

@@ -3,7 +3,6 @@ require 'csv'
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  #check_authorization
   skip_authorize_resource :only => :logged_in_user
   before_action :logged_in_user
   #before_action :set_locale

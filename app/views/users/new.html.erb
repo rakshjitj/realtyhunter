@@ -2,7 +2,7 @@
 	$(document).ready(function() {
     $('#companies_select').change(function() {
       $.ajax({
-        url: "<%= update_offices_path %>",
+        url: "<%= update_offices_users_path %>",
         data: {
           company_id : $('#companies_select').val()
         },

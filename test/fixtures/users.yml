@@ -1,5 +1,4 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 michael:
   name: Michael Example
   email: michaelexample@whatever.com
@@ -7,9 +6,13 @@ michael:
   bio: MyText
   activated: true
   activated_at: <%= Time.zone.now %>
+  approved: true
+  approved_at: <%= Time.zone.now %>
   company_id: 1
   office_id: 1
   employee_title_id: 1
+  mobile_phone_number: 666-666-6666
+  auth_token: MyText
 
 archer:
   name: Sterling Archer
@@ -18,9 +21,12 @@ archer:
   bio: MyText
   activated: true
   activated_at: <%= Time.zone.now %>
+  approved: true
+  approved_at: <%= Time.zone.now %>
   company_id: 1
   office_id: 1
   employee_title_id: 1
+  mobile_phone_number: 666-666-6666
 
 lana:
   name: Lana Kane
@@ -29,9 +35,12 @@ lana:
   bio: MyText
   activated: true
   activated_at: <%= Time.zone.now %>
+  approved: true
+  approved_at: <%= Time.zone.now %>
   company_id: 1
   office_id: 1
   employee_title_id: 3
+  mobile_phone_number: 666-666-6666
 
 mallory:
   name: Mallory Archer
@@ -40,9 +49,12 @@ mallory:
   bio: MyText
   activated: true
   activated_at: <%= Time.zone.now %>
+  approved: true
+  approved_at: <%= Time.zone.now %>
   company_id: 1
   office_id: 1
   employee_title_id: 3
+  mobile_phone_number: 666-666-6666
 
 <% 75.times do |n| %>
 user_<%= n %>:
@@ -52,8 +64,11 @@ user_<%= n %>:
   bio: MyText
   activated: true
   activated_at: <%= Time.zone.now %>
+  approved: true
+  approved_at: <%= Time.zone.now %>
   company_id: 1
   office_id: 1
   employee_title_id: 1
+  mobile_phone_number: 666-666-6666
 <% end %>
 

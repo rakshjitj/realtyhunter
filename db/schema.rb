@@ -276,6 +276,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
 
   create_table "users", force: :cascade do |t|
     t.boolean  "archived",            default: false
+    t.string   "auth_token"
     t.string   "name"
     t.string   "email"
     t.string   "phone_number"

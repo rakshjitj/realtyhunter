@@ -1,9 +1,6 @@
 one:
   name: "MyText"
-  street_address: "MyText"
-  city: "MyText"
-  state: "MyText"
-  zipcode: "MyText"
+  formatted_street_address: "MyText"
   telephone: "555-555-5555"
   fax: "555-555-5555"
   company_id: "1"

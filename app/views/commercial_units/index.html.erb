@@ -24,25 +24,19 @@
       if ($('#neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
         $('#neighborhood_ids').val('');
       }
-      if ($('#building_feature_ids').val() == "{:id=>\"building_feature_ids\"}") {
-        $('#building_feature_ids').val('');
-      }
-      if ($('#unit_feature_ids').val() == "{:id=>\"unit_feature_ids\"}") {
-        $('#unit_feature_ids').val('');
-      }
 
       $.ajax({
         url: "<%= commercial_units_filter_path %>",
         data: {
           search_params: {
             address: $('#address').val(),
-            unit: $('#unit').val(),
             rent_min: $('#rent_min').val(),
             rent_max: $('#rent_max').val(),
             landlord: $('#landlord').val(),
             status: $('#status').val(),
+            status: $('#property_type').val(),
+            status: $('#listing_id').val(),
             neighborhood_ids: $('#neighborhood_ids').val(),
-            building_feature_ids: $('#building_feature_ids').val(),
           } 
         },
         dataType: "script"
@@ -66,13 +60,13 @@
 
     $('input').keydown(preventEnter);
     $('#address').keyup(throttledSearch);
-    $('#unit').keyup(throttledSearch);
     $('#rent_min').keyup(throttledSearch);
     $('#rent_max').keyup(throttledSearch);
     $('#landlord').keyup(throttledSearch);
     $('#status').change(throttledSearch);
     $('#neighborhood_ids').change(throttledSearch);
-    $('#building_feature_ids').change(throttledSearch);
+    $('#property_type').change(throttledSearch);
+    $('#listing_id').keyup(throttledSearch);
   });
 </script>
 
@@ -89,7 +83,6 @@
   </div>
 </div>
 
-
 <div class="row">
   <div class="col-md-12">
     <br />
@@ -101,6 +94,7 @@
           <th><%= sortable 'rent' %></th>
           <th><%= sortable 'sq_footage' %></th>
           <th><%= sortable 'available_by' %></th>
+          <th><%= sortable 'status' %></th>
           <th colspan="1"></th>
         </tr>
       </thead>

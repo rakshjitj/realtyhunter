@@ -26,6 +26,4 @@ en:
       user:
         create: "Create account"
         update: "Save changes"
-      landlord:
-        create: "Create landlord"
-        update: "Update"
+      
