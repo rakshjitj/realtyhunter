@@ -4,7 +4,7 @@ class UnitsController < ApplicationController
   # GET /units
   # GET /units.json
   def index
-    @units = Unit.all
+    @units = Unit.where(archived: false)
   end
 
   # GET /units/1
@@ -54,7 +54,8 @@ class UnitsController < ApplicationController
   # DELETE /units/1
   # DELETE /units/1.json
   def destroy
-    @unit.destroy
+    @unit.archive
+    @units = Unit.where(archived: false)
     respond_to do |format|
       format.html { redirect_to units_url, notice: 'Unit was successfully destroyed.' }
       format.json { head :no_content }
@@ -64,7 +65,7 @@ class UnitsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_unit
-      @unit = Unit.find(params[:id])
+      @unit = Unit.find_unarchived(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

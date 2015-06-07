@@ -20,6 +20,15 @@ class Company < ActiveRecord::Base
 	validates :name, presence: true, length: {maximum: 50},
 		uniqueness: { case_sensitive: false }
 
+  def archive
+    self.archived = true
+    self.save
+  end
+
+  def self.find_unarchived(id)
+    find_by!(id: id, archived: false)
+  end
+
 	# should we limit this to 1 per company?
 	def admins
 		@admins = self.users.select{|u| u if u.is_company_admin? }

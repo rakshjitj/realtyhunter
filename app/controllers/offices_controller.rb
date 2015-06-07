@@ -7,8 +7,7 @@ class OfficesController < ApplicationController
   # GET /offices
   # GET /offices.json
   def index
-    #@company = Company.find(params[:company_id])
-    @offices = Office.where(company: @company)
+    @offices = Office.where(company: @company, archived: false)
   end
 
   # GET /offices/1
@@ -18,7 +17,6 @@ class OfficesController < ApplicationController
 
   # GET /offices/new
   def new
-    #@company = Company.find(params[:company_id])
     @office = @company.offices.build
   end
 
@@ -40,7 +38,6 @@ class OfficesController < ApplicationController
   # POST /offices
   # POST /offices.json
   def create
-    #@company = Company.find(params[:company_id])
     @office = @company.offices.build(format_params_before_save)
 
     respond_to do |format|
@@ -74,7 +71,8 @@ class OfficesController < ApplicationController
   # DELETE /offices/1.json
   def destroy
     @company = @office.company
-    @office.destroy
+    @office.archive
+    @offices = Office.where(company: @company, archived: false)
     flash[:success] = 'Office was successfully destroyed.'
     respond_to do |format|
       format.html { redirect_to company_offices_url(@office)}
@@ -85,12 +83,11 @@ class OfficesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_office
-      #@company = Company.find(params[:company_id])
-      @office = Office.find(params[:id])
+      @office = Office.find_unarchived(params[:id])
     end
 
     def set_company
-      @company = Company.find(params[:company_id])
+      @company = Company.find_unarchived(params[:company_id])
     end
 
     def format_params_before_save

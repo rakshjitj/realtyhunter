@@ -72,7 +72,7 @@ class LandlordsController < ApplicationController
   # DELETE /landlords/1
   # DELETE /landlords/1.json
   def destroy
-    @landlord.destroy
+    @landlord.archive
     set_landlords
     respond_to do |format|
       format.html { redirect_to landlords_url, notice: 'Landlord was successfully destroyed.' }
@@ -84,7 +84,7 @@ class LandlordsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_landlord
-      @landlord = Landlord.find(params[:id])
+      @landlord = Landlord.find_unarchived(params[:id])
     end
 
     def set_landlords

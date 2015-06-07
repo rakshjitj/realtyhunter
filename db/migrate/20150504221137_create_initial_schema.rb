@@ -1,6 +1,7 @@
   class CreateInitialSchema < ActiveRecord::Migration
   def change
     create_table :companies do |t|
+      t.boolean :archived, default: false
       t.string :name
       t.string :logo_id, :string
       t.timestamps null: false
@@ -16,6 +17,7 @@
     end
 
     create_table :offices do |t|
+      t.boolean :archived, default: false
       t.string :formatted_street_address
       t.string :street_number
       t.string :route
@@ -49,6 +51,7 @@
     end
 
     create_table :users do |t|
+      t.boolean :archived, default: false
       t.string :name
       t.string :email
       t.string :phone_number
@@ -84,6 +87,7 @@
     end
 
     create_table :landlords do |t|
+      t.boolean :archived, default: false
       t.string :formatted_street_address
       t.string :street_number
       t.string :route
@@ -116,6 +120,7 @@
 
     # TODO: pull address info into it's own table?
     create_table :buildings do |t|
+      t.boolean :archived, default: false
       t.string :formatted_street_address
       t.string :street_number
       t.string :route
@@ -138,6 +143,7 @@
     end
 
     create_table :units do |t|
+      t.boolean :archived, default: false
       t.integer :listing_id
       t.string :building_unit
       t.integer :rent # always stored as monthly gross rate

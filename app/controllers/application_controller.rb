@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
   #check_authorization
   skip_authorize_resource :only => :logged_in_user
   before_action :logged_in_user
+  #before_action :set_locale
+  before_action ->{ @remote_ip = request.headers['REMOTE_ADDR'] }
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, :alert => exception.message
@@ -15,6 +17,11 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   before_filter :expire_hsts
   
+  # protected
+  #   def set_locale
+  #     I18n.locale = request.headers['Accept-Language']
+  #   end
+
   private
 
     # Confirms a logged-in user.

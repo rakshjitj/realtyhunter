@@ -79,12 +79,12 @@ class ResidentialUnit < ActiveRecord::Base
   def self.search(params, building_id=nil)
     # actable_type to restrict to residential only
     if !params && !building_id
-      return ResidentialUnit.all
+      return ResidentialUnit.where(archived: false)
     elsif !params && building_id
-      return ResidentialUnit.where(building_id: building_id)
+      return ResidentialUnit.where(building_id: building_id, archived: false)
     end
 
-    @running_list = Unit.all
+    @running_list = Unit.where(archived: false)
     
     # clear out any invalid search params
     #params.delete_if{|k,v| !(v || v > 0 || !v.empty?) }

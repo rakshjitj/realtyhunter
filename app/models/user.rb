@@ -70,6 +70,15 @@ class User < ActiveRecord::Base
     update_columns(approved: false, approved_at: nil)
   end
 
+  def archive
+    self.archived = true
+    self.save
+  end
+
+  def self.find_unarchived(id)
+    find_by!(id: id, archived: false)
+  end
+
   def fname
     self.name.split(' ')[0]
   end
@@ -112,7 +121,7 @@ class User < ActiveRecord::Base
   end
 
   def self.search(query_string)
-    @running_list = User.all
+    @running_list = User.where(archived: false)
 
     if !query_string
       return @running_list

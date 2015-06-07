@@ -34,12 +34,12 @@ class CommercialUnit < ActiveRecord::Base
   def self.search(params, building_id=nil)
     # actable_type to restrict to residential only
     if !params && !building_id
-      return CommercialUnit.all
+      return CommercialUnit.where(archived: false)
     elsif !params && building_id
-      return CommercialUnit.where(building_id: building_id)
+      return CommercialUnit.where(building_id: building_id, archived: false)
     end
 
-    @running_list = Unit.all
+    @running_list = Unit.where(archived: false)
     
     # clear out any invalid search params
     #params.delete_if{|k,v| !(v || v > 0 || !v.empty?) }
@@ -56,14 +56,9 @@ class CommercialUnit < ActiveRecord::Base
       end
     end
 
-    # search by unit
-    if params[:unit]
-      @running_list = @running_list.where("building_unit = ?", params[:unit])
-    end
-
     # search by status
     if params[:status]
-      included = %w[active pending off].include?(params[:status])
+      included = %w[active off].include?(params[:status])
       if included
        @running_list = @running_list.where("status = ?", Unit.statuses[params[:status]])
       end
@@ -78,13 +73,33 @@ class CommercialUnit < ActiveRecord::Base
       @running_list = @running_list.where("rent <= ?", params[:rent_max])
     end
 
+    # search neighborhoods
+    if params[:neighborhood_ids]
+      neighborhood_ids = params[:neighborhood_ids][0, 256]
+      neighborhoods = neighborhood_ids.split(",")
+      @running_list = @running_list.joins(building: :neighborhood)
+       .where('neighborhood_id IN (?)', neighborhoods)
+    end
+
     # search landlord code
     if params[:landlord]
       @running_list = @running_list.joins(building: :landlord)
       .where("code ILIKE ?", "%#{params[:landlord]}%")
     end
 
+    # the following fields are on CommercialUnit not Unit, so cast the 
+    # objects first
     @running_list = Unit.get_commercial(@running_list)
+
+    # search features
+    # if params[:property_type]
+    #   @running_list = @running_list.joins(:commercial_property_type)
+    #   .where("commercial_property_type_id ILIKE ?", "%#{params[:landlord]}%")
+      
+    #     @running_list = @running_list.joins(:residential_amenities)
+    #     .where('residential_amenity_id IN (?)', features)
+    # end
+
     @running_list
   end
 

@@ -7,7 +7,7 @@ class AccountActivationsController < ApplicationController
     # TODO: what if they are activated but not approved?
     if user && !user.activated? && user.authenticated?(:activation, params[:id])
       user.activate
-      log_in user
+      #log_in user # TODO: fix signup tests if you change this
       flash[:success] = "Account activated!"
       redirect_to user
     else

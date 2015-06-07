@@ -86,7 +86,11 @@ class UsersController < ApplicationController
       flash[:info] = "Please check your email to activate your account."
       redirect_to root_url
     else
-      #puts "**** #{@user.errors.inspect}"
+      puts "**** #{@user.errors.inspect}"
+      @companies = Company.all
+      @offices = []
+      @employtee_titles = EmployeeTitle.where.not("name like ?", "%admin%")
+      @agent_title = EmployeeTitle.agent
       render 'new'
     end
   end
@@ -141,8 +145,8 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.destroy
-     # TODO: we probably don't want to actually destroy here
+    #@user.destroy
+    @user.archive
     set_user
     set_users
     # if this is us, log us out
@@ -215,7 +219,7 @@ class UsersController < ApplicationController
     #def correct_user
       #puts "***ID**** #{params.inspect}"
       #redirect_back_or users_path unless @user == current_user
-      @user = User.find(params[:id])
+      @user = User.find_unarchived(params[:id])
       @agent_title = EmployeeTitle.agent
       #unless (@current_user.is_management? || @user == current_user)
       #  flash[:danger] = "You are not authorized to go there."

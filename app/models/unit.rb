@@ -13,6 +13,15 @@ class Unit < ActiveRecord::Base
 	validates :rent, presence: true, numericality: { only_integer: true }
 	validates :listing_id, presence: true, uniqueness: true
 	
+  def archive
+    self.archived = true
+    self.save
+  end
+
+  def self.find_unarchived(id)
+    find_by!(id: id, archived: false)
+  end
+
 	def self.get_residential(units)
     running_list = units.where("actable_type = 'ResidentialUnit'")
     running_list = running_list.uniq

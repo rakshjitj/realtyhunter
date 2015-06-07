@@ -214,7 +214,7 @@ class ResidentialUnitsController < ApplicationController
   # DELETE /residential_units/1
   # DELETE /residential_units/1.json
   def destroy
-    @residential_unit.destroy
+    @residential_unit.archive
     set_residential_units
     respond_to do |format|
       format.html { redirect_to residential_units_url, notice: 'Residential unit was successfully destroyed.' }
@@ -244,7 +244,7 @@ class ResidentialUnitsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_residential_unit
-      @residential_unit = ResidentialUnit.find(params[:id])
+      @residential_unit = ResidentialUnit.find_unarchived(params[:id])
     end
 
     def set_residential_units

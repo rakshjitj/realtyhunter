@@ -121,4 +121,14 @@ Rails.application.routes.draw do
 
   get 'search/commercial_units', to: 'commercial_units#filter', as: :commercial_units_filter
 
+  # designed to match nestio's API endpoints, so we can feed our data seamlessly to 
+  # our public-facing website
+  namespace :api, :defaults => {:format => :json}, :path => "/", :constraints => {:subdomain => "api"}  do
+    namespace :v1 destroy
+      resources :agents
+      #resources :neighborhoods
+      #resources :listings
+    end
+  end
+
 end

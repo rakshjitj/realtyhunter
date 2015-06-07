@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   end
 
   create_table "buildings", force: :cascade do |t|
+    t.boolean  "archived",                          default: false
     t.string   "formatted_street_address"
     t.string   "street_number"
     t.string   "route"
@@ -52,8 +53,8 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "landlord_id"
     t.integer  "neighborhood_id"
     t.integer  "user_id"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
   end
 
   create_table "buildings_rental_terms", id: false, force: :cascade do |t|
@@ -90,11 +91,12 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   end
 
   create_table "companies", force: :cascade do |t|
+    t.boolean  "archived",                 default: false
     t.string   "name"
     t.string   "logo_id"
     t.string   "string"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.integer  "offices_id"
     t.integer  "users_id"
     t.integer  "buildings_id"
@@ -126,6 +128,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   add_index "employee_titles", ["users_id"], name: "index_employee_titles_on_users_id", using: :btree
 
   create_table "landlords", force: :cascade do |t|
+    t.boolean  "archived",                          default: false
     t.string   "formatted_street_address"
     t.string   "street_number"
     t.string   "route"
@@ -152,8 +155,8 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "op_fee_percentage"
     t.integer  "company_id"
     t.integer  "buildings_id"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
   end
 
   add_index "landlords", ["buildings_id"], name: "index_landlords_on_buildings_id", using: :btree
@@ -171,6 +174,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   add_index "neighborhoods", ["buildings_id"], name: "index_neighborhoods_on_buildings_id", using: :btree
 
   create_table "offices", force: :cascade do |t|
+    t.boolean  "archived",                          default: false
     t.string   "formatted_street_address"
     t.string   "street_number"
     t.string   "route"
@@ -188,8 +192,8 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "fax"
     t.integer  "company_id"
     t.integer  "users_id"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
   end
 
   add_index "offices", ["users_id"], name: "index_offices_on_users_id", using: :btree
@@ -253,6 +257,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
   create_table "units", force: :cascade do |t|
+    t.boolean  "archived",           default: false
     t.integer  "listing_id"
     t.string   "building_unit"
     t.integer  "rent"
@@ -263,13 +268,14 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "weeks_free_offered", default: 0
     t.integer  "building_id"
     t.integer  "user_id"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "actable_id"
     t.string   "actable_type"
   end
 
   create_table "users", force: :cascade do |t|
+    t.boolean  "archived",            default: false
     t.string   "name"
     t.string   "email"
     t.string   "phone_number"

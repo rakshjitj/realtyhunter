@@ -34,7 +34,7 @@ class BuildingsController < ApplicationController
   def new
     @building = Building.new
     landlord_id = params[:landlord_id]
-    if landlord_id && Landlord.find(landlord_id)
+    if landlord_id && Landlord.where(landlord_id)
       @building.landlord_id = landlord_id
     end
   end
@@ -87,7 +87,7 @@ class BuildingsController < ApplicationController
   # DELETE /buildings/1
   # DELETE /buildings/1.json
   def destroy
-    @building.destroy
+    @building.archive
     set_buildings
     respond_to do |format|
       format.html { redirect_to buildings_url, notice: 'Building was successfully deleted.' }
@@ -116,7 +116,7 @@ class BuildingsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_building
-      @building = Building.find(params[:id])
+      @building = Building.find_unarchived(params[:id])
     end
 
     def set_buildings

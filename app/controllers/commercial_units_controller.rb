@@ -148,7 +148,7 @@ class CommercialUnitsController < ApplicationController
   # DELETE /commercial_units/1
   # DELETE /commercial_units/1.json
   def destroy
-    @commercial_unit.destroy
+    @commercial_unit.archive
     set_commercial_units
     respond_to do |format|
       format.html { redirect_to commercial_units_url, notice: 'Commercial unit was successfully destroyed.' }
@@ -177,7 +177,7 @@ class CommercialUnitsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_commercial_unit
-      @commercial_unit = CommercialUnit.find(params[:id])
+      @commercial_unit = CommercialUnit.find_unarchived(params[:id])
     end
 
     def set_commercial_units

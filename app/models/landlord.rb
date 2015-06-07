@@ -32,6 +32,15 @@ class Landlord < ActiveRecord::Base
 		format: { with: VALID_EMAIL_REGEX }, 
     uniqueness: { case_sensitive: false }
 
+  def archive
+    self.archived = true
+    self.save
+  end
+
+  def self.find_unarchived(id)
+    find_by!(id: id, archived: false)
+  end
+
 	def active_units_count
 		buildings.reduce(0){|sum, bldg| sum + bldg.active_units.count }
 	end
@@ -54,7 +63,7 @@ class Landlord < ActiveRecord::Base
 	end
 
 	def self.search(query_str, agent_query, active_only)
-		@running_list = Landlord.all
+		@running_list = Landlord.where(archived: false)
     if !query_str
       return @running_list
     end

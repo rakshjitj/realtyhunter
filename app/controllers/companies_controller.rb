@@ -6,7 +6,7 @@ class CompaniesController < ApplicationController
   # GET /companies
   # GET /companies.json
   def index
-    @companies = Company.all.paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")
+    set_companies
   end
 
   # GET /companies/1
@@ -91,7 +91,8 @@ class CompaniesController < ApplicationController
   # DELETE /companies/1
   # DELETE /companies/1.json
   def destroy
-    @company.destroy
+    @company.archive
+    set_companies
     respond_to do |format|
       flash[:success] = 'Company was successfully destroyed.'
       format.html { redirect_to companies_url }
@@ -103,6 +104,10 @@ class CompaniesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_company
       @company = Company.find(params[:id])
+    end
+
+    def set_companies
+      @companies = Company.where(archived: false).paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

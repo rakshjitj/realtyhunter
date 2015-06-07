@@ -32,12 +32,21 @@ class Building < ActiveRecord::Base
 	validates :landlord, presence: true
 	validates :neighborhood, presence: true
 
+  def archive
+    self.archived = true
+    self.save
+  end
+
+  def self.find_unarchived(id)
+    find_by!(id: id, archived: false)
+  end
+
 	def street_address
 		self.street_number + ' ' + self.route
 	end
 
 	def active_units
-		self.units.where(status: "active")
+		self.units.where(status: "active", archived: false)
 	end
 
 	def total_units_count
@@ -45,7 +54,7 @@ class Building < ActiveRecord::Base
 	end
 
 	def active_units_count
-		self.units.where(status: "active").count
+		self.units.where(status: "active", archived: false).count
 	end
 
 	def last_unit_updated
@@ -57,7 +66,7 @@ class Building < ActiveRecord::Base
 	end
 
 	def self.search(query_str, active_only)
-		@running_list = Building.all
+		@running_list = Building.where(archived: false)
     if !query_str
       return @running_list
     end

@@ -9,24 +9,31 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:session][:email].downcase)
     #puts "\n^^^^ found user #{user.inspect}"
     if user && user.authenticate(params[:session][:password])
+      #puts "111111"
       if user.activated? && user.approved?
+        #puts "222222"
         log_in user
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
         redirect_back_or user
       else
+        #puts "444444"
         if !user.activated?
+          #puts "55555"
           message  = "Account not activated. "
           message += "Check your email for the activation link."
         elsif !user.approved
+          #puts "66666"
           message  = "Account not approved. "
           message += "Contact your company's admin if you don't receive an approval in the next 24hrs."
         else
-          message = "Some shit went wrong"
+          #puts "77777"
+          message = "Something went wrong"
         end
         flash[:warning] = message
         redirect_to root_url
       end
     else
+      #puts "3333333"
       flash.now[:danger] = 'Invalid email/password combination'
       render 'new'
     end

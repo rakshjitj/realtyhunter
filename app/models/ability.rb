@@ -19,10 +19,12 @@ class Ability
     else
       # can only see info for his/her particular company
       # can only manage his/her profile
-      can :read, Office, :company_id => user.company.id
-      can :read, User, :company_id => user.company_id
-      can :manage, User, :id => user.id
       can :read, :all
+      if user.company_id
+        can :read, Office, :company_id => user.company.id
+        can :read, User, :company_id => user.company_id
+      end
+      can :manage, User, :id => user.id
     end
 
     # Define abilities for the passed in user here. For example:
