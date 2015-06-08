@@ -17,6 +17,15 @@ class ResidentialUnit < ActiveRecord::Base
 	validates :baths, presence: true, :numericality => { :less_than_or_equal_to => 11 }
   validates :building_unit, presence: true, length: {maximum: 50}
 
+  def archive
+    self.archived = true
+    self.save
+  end
+
+  def self.find_unarchived(id)
+    find_by!(id: id, archived: false)
+  end
+
   # used as a sorting condition
   def street_address_and_unit
     self.building.street_number + ' ' + self.building.route + ' #' + self.building_unit

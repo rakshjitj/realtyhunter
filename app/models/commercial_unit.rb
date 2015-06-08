@@ -13,6 +13,15 @@ class CommercialUnit < ActiveRecord::Base
 	validates :floor, presence: true, :numericality => { :less_than_or_equal_to => 999 }
 	validates :building_size, presence: true, :numericality => { :less_than_or_equal_to => 99999999 }
 
+  def archive
+    self.archived = true
+    self.save
+  end
+
+  def self.find_unarchived(id)
+    find_by!(id: id, archived: false)
+  end
+
 	# used as a sorting condition
   def landlord_by_code
     self.building.landlord.code
