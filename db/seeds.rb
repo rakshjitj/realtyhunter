@@ -167,8 +167,7 @@
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    #employee_title: @employee_titles[4],
-    employee_title: @employee_titles[@employee_titles.length-1],
+    employee_title: @employee_titles[4],
     mobile_phone_number: '666-666-9999'
  })
 @manager3 = User.create({ name: 'Shawn Mullahy', 
@@ -182,8 +181,7 @@
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    #employee_title: @employee_titles[4],
-    employee_title: @employee_titles[@employee_titles.length-1],
+    employee_title: @employee_titles[4],
     mobile_phone_number: '666-666-9999'
  })
 
