@@ -50,7 +50,7 @@ class CommercialUnitsController < ApplicationController
   # GET /commercial_units/1/edit
   def edit
     @panel_title = "Edit listing"
-    #set_property_types
+    set_property_types
   end
 
   def update_subtype
