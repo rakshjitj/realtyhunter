@@ -42,8 +42,16 @@ module API
 			end
 
 			def authenticate_token
+				authed = false
+				# check for token in the URL?
+				if !authed && params[:token]
+					@user = User.find_by(auth_token: params[:token])
+					return @user ? true : false
+				end
+
 				authenticate_or_request_with_http_token('Agents') do |token, options|
 					@user = User.find_by(auth_token: token)
+					authed = true
 				end
 			end
 		

@@ -77,6 +77,7 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
+    @user.auth_token = User.set_auth_token
     log_out if logged_in?
     if @user.save
       # add in each role type

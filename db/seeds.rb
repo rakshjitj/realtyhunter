@@ -127,6 +127,7 @@
     employee_title: @employee_titles[@employee_titles.length-1],
     mobile_phone_number: '666-666-6666'
   })
+
 @company_admin1 = User.create({ name: 'Raquel Bujans', 
     email: 'rbujans@myspacenyc.com', 
     bio: "blah blah blah", 
@@ -139,8 +140,7 @@
     company: @company, 
     office: @offices[0],
     employee_title: @employee_titles[@employee_titles.length-1],
-    mobile_phone_number: '666-666-7777',
-    auth_token: '123123'
+    mobile_phone_number: '666-666-7777'
  })
 @manager1 = User.create({ name: 'Nir Mizrachi', 
     email: 'nir@myspacenyc.com',     
