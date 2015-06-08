@@ -194,6 +194,7 @@ User.define_roles()
 @company_admin1.update_roles
 @manager1.update_roles
 @manager2.update_roles
+@manager3.update_roles
 
 50.times do |n|
   name  = FFaker::Name.name
