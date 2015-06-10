@@ -287,6 +287,7 @@ class ResidentialUnitsController < ApplicationController
       params[:residential_unit].permit(:building_unit, :rent, :available_by, 
         :access_info, :status, :open_house, :weeks_free_offered, :pet_policy_id, 
         :building_id, :user_id, :beds, :baths, :notes, :lease_duration,
-        :include_photos, :inaccuracy_description, :residential_amenity_ids => [])
+        :include_photos, :inaccuracy_description, :op_fee_percentage,
+        :tp_fee_percentage, :residential_amenity_ids => [])
     end
 end

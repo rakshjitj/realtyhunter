@@ -17,6 +17,12 @@ class ResidentialUnit < ActiveRecord::Base
 	validates :baths, presence: true, :numericality => { :less_than_or_equal_to => 11 }
   validates :building_unit, presence: true, length: {maximum: 50}
 
+  validates :op_fee_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
+  validates_inclusion_of :op_fee_percentage, :in => 0..100, allow_blank: true
+
+  validates :tp_fee_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
+  validates_inclusion_of :tp_fee_percentage, :in => 0..100, allow_blank: true
+
   def archive
     self.archived = true
     self.save
@@ -50,6 +56,13 @@ class ResidentialUnit < ActiveRecord::Base
 		end
 	end
 
+  # mainly for use in our API. Returns list of any
+  # agent contacts for this listing. Currently we have
+  # 1 primary agent for each listing, but could change in the future.
+  def contacts
+    contacts = [self.primary_agent];
+  end
+
   def net_rent
     months = 12
 
@@ -79,6 +92,43 @@ class ResidentialUnit < ActiveRecord::Base
     net_rent = total_rent - (rent_per_week * weeks_free_offered)
     net_rent_per_month = net_rent / months
     net_rent_per_month
+  end
+
+  def lease_duration_to_s
+    months = 12
+
+    case(lease_duration)
+    when "12 Months"
+      months = 12
+    when "13 Months"
+      months = 13
+    when "14 Months"
+      months = 14
+    when "15 Months"
+      months = 15
+    when "16 Months"
+      months = 16
+    when "17 Months"
+      months = 17
+    when "18 Months"
+      months = 18
+    when "2 Years"
+      months = 24
+    else
+      months = 12
+    end
+
+    months
+  end
+
+  # mainly used in API
+  # prints layout in Nestio's format
+  def beds_to_s
+    if beds == 0
+      "Studio"
+    else
+      beds.to_s + ' Bedroom'
+    end
   end
 
   # takes in a hash of search options

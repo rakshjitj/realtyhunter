@@ -152,7 +152,6 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "listing_agent_percentage"
     t.string   "management_info"
     t.integer  "required_security_id"
-    t.integer  "op_fee_percentage"
     t.integer  "company_id"
     t.integer  "buildings_id"
     t.datetime "created_at",                                        null: false
@@ -241,7 +240,9 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer "beds"
     t.float   "baths"
     t.string  "notes"
-    t.integer "lease_duration", default: 0
+    t.integer "lease_duration",    default: 0
+    t.integer "op_fee_percentage"
+    t.integer "tp_fee_percentage"
     t.integer "pet_policy_id"
   end
 

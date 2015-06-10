@@ -63,6 +63,7 @@
                   <%= @residential_unit.building.neighborhood.name %>
                 </div>
 	            </div>
+
 	            <div class="row">
                 <div class="col-xs-5 text-right">
                   <strong>Access</strong>
@@ -71,14 +72,25 @@
                   <%= @residential_unit.access_info %>
                 </div>
 	            </div>
-	            <div class="row">
+	            
+              <div class="row">
                 <div class="col-xs-5 text-right">
                   <strong>LL Pays</strong>
                 </div>
                 <div class="col-xs-7">
-                  <%= @residential_unit.building.landlord.op_fee_percentage %>%
+                  <%= @residential_unit.op_fee_percentage %>%
                 </div>
 	            </div>
+              
+              <div class="row">
+                <div class="col-xs-5 text-right">
+                  <strong>Tenant Pays</strong>
+                </div>
+                <div class="col-xs-7">
+                  <%= @residential_unit.tp_fee_percentage %>%
+                </div>
+              </div>
+
 	            <div class="row">
                 <div class="col-xs-5 text-right">
                     <strong>Availability</strong>

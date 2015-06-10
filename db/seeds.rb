@@ -1,7 +1,7 @@
 @company = Company.create_with_environment({name: "MyspaceNYC"})
 @company2 = Company.create_with_environment({name: "Nooklyn"})
 
-@offices = Office.create([
+@offices = Office.create!([
   { company: @company, 
     name: "Crown Heights", 
     telephone: "718.399.3444",
@@ -91,14 +91,14 @@
 
 # seed user data -----------------------------------------
 
-@agent_types = AgentType.create([
+@agent_types = AgentType.create!([
   {name: "residential"},
   {name: "commercial"},
   {name: "sales"},
   {name: "roomsharing"},
   ])
 
-@employee_titles = EmployeeTitle.create([
+@employee_titles = EmployeeTitle.create!([
   {name: "unlicensed agent"},
   {name: "agent"},
   {name: "associate broker"},
@@ -113,7 +113,7 @@
 @password = "713lorimer"
 
 # super admin
-@super_admin = User.create(
+@super_admin = User.create!(
   { name: 'Super Admin', 
     email: 'admin@realtymonster.com', 
     password: @password, 
@@ -128,7 +128,7 @@
     mobile_phone_number: '666-666-6666'
   })
 
-@company_admin1 = User.create({ name: 'Raquel Bujans', 
+@company_admin1 = User.create!({ name: 'Raquel Bujans', 
     email: 'rbujans@myspacenyc.com', 
     bio: "blah blah blah", 
     password: @password, 
@@ -142,7 +142,7 @@
     employee_title: @employee_titles[@employee_titles.length-1],
     mobile_phone_number: '666-666-7777'
  })
-@manager1 = User.create({ name: 'Nir Mizrachi', 
+@manager1 = User.create!({ name: 'Nir Mizrachi', 
     email: 'nir@myspacenyc.com',     
     bio: "blah blah blah", 
     password: @password, 
@@ -156,7 +156,7 @@
     employee_title: @employee_titles[4],
     mobile_phone_number: '666-666-8888'
   })
-@manager2 = User.create({ name: 'Cheryl Hoyles', 
+@manager2 = User.create!({ name: 'Cheryl Hoyles', 
     email: 'info@myspacenyc.com',    
     bio: "blah blah blah", 
     password: @password, 
@@ -170,7 +170,7 @@
     employee_title: @employee_titles[4],
     mobile_phone_number: '666-666-9999'
  })
-@manager3 = User.create({ name: 'Shawn Mullahy', 
+@manager3 = User.create!({ name: 'Shawn Mullahy', 
     email: 'smullahy@myspacenyc.com',
     bio: "blah blah blah", 
     password: @password, 
@@ -232,6 +232,7 @@ end
   })
 
 20.times do |n|
+  # if name has already been taken, ignore error
   neigh = Neighborhood.create({
     name: FFaker::Address::neighborhood,
     borough: (n < 10) ? "Brooklyn" : "Queens",
@@ -240,7 +241,7 @@ end
   })
 end
 
-@landlord = Landlord.create({
+@landlord = Landlord.create!({
   code: "Unassigned", 
   name: "Unassigned", 
   office_phone: "777-777-7777",
@@ -249,7 +250,6 @@ end
   notes: "Catch-all landlord used to find unassigned buildings",
   listing_agent_percentage: "15",
   required_security: @company.required_securities[1],
-  op_fee_percentage: 95,
   company: @company,
   })
 
@@ -268,11 +268,10 @@ end
     listing_agent_percentage: "15",
     management_info: FFaker::HipsterIpsum.phrase,
     required_security: @company.required_securities[0],
-    op_fee_percentage: 95,
     company: @company)
 end
 
-@bldg = Building.create({
+@bldg = Building.create!({
   formatted_street_address: '1062 Bergen St, Brooklyn, NY 11216',
   street_number: '1062',
   route: 'Bergen St',
@@ -292,7 +291,7 @@ end
 
 55.times do |n|
 
-  ResidentialUnit.create({
+  ResidentialUnit.create!({
     listing_id: Unit.generate_unique_id,
     building_unit: Faker::Number.number(2),
     rent: Faker::Number.number(4),
@@ -307,7 +306,8 @@ end
     building: @bldg,
     pet_policy: @company.pet_policies[2],
     listing_agent: @manager1,
-    primary_agent: @manager1
+    primary_agent: @manager1,
+    op_fee_percentage: 95,
     })
 end
 

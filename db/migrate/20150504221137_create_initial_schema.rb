@@ -113,7 +113,6 @@
       t.integer :listing_agent_percentage
       t.string :management_info
       t.belongs_to :required_security
-      t.integer :op_fee_percentage
       t.belongs_to :company
       t.references :buildings, index: true
       t.timestamps null: false
@@ -163,6 +162,8 @@
       t.float   :baths
       t.string  :notes
       t.integer :lease_duration, default: 0
+      t.integer :op_fee_percentage
+      t.integer :tp_fee_percentage
       t.belongs_to :pet_policy
     end
 

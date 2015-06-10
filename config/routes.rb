@@ -125,9 +125,9 @@ Rails.application.routes.draw do
   # our public-facing website
   namespace :api, :defaults => {:format => :json} do #, :path => "/", :constraints => {:subdomain => "api"}  do
     namespace :v1 do
-      resources :agents
-      resources :neighborhoods
-      resources :listings
+      resources :agents, only: [:index, :show]
+      resources :neighborhoods, only: [:index, :show]
+      resources :listings, only: [:index, :show]
     end
   end
 

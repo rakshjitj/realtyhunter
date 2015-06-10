@@ -87,11 +87,6 @@ $( document ).ready(function() {
           </div>
 
           <div class="field">
-            <%= f.label :op_fee_percentage, 'Owner Pays Fee %' %><br>
-            <%= f.number_field :op_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>
-          </div>
-
-          <div class="field">
             <%= f.label :management_info, "Additional Management Info" %><br>
             <%= f.text_area :management_info, class: 'form-control', rows: 4 %>
           </div>

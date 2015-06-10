@@ -1,3 +1,5 @@
+json.prettify! if %w(1 yes true).include?(params["pretty"])
+
 json.array!(@buildings) do |building|
   json.extract! building, :id
 

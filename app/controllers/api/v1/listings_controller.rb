@@ -1,7 +1,7 @@
 module API
 	module V1
 
-		class AgentsController < ApplicationController
+		class ListingsController < ApplicationController
 			skip_authorize_resource
 			skip_before_action :logged_in_user
 			protect_from_forgery with: :null_session
@@ -15,18 +15,23 @@ module API
 			# 200 - success, 400 - invalid params, 403 - invalid API key
 
 			# example request
-			# https://nestiolistings.com/api/v1/public/agents/123/?key={API KEY}
+			# https://nestiolistings.com/api/v1/public/listings/?layout=10&min_rent=1500&max_rent=2000&key={API KEY}
 
 			def index
-				@agents = User.where(archived: false, company: @user.company)
-				#render json: agents, status: 200
+				listings = Unit.joins(:building)
+					.where(archived: false)
+					.where('buildings.company_id = ?', @user.company.id)
+					.where("actable_type = 'ResidentialUnit'")
+
+				#@users.paginate(:page => params[:page], :per_page => 50).order("created_at ASC")
+				@listings = Unit.get_residential(listings).paginate(:page => params[:page], :per_page => 50)
 			end
 
 			def show
-				@agent = User.find(params[:id])
-				#render json: agent, status: 200
+				@listing = ResidentialUnit.find(params[:id])
 			end
 		
+			# TODO: pull out into common methods
 			def render_unauthorized
 				self.headers['WWW-Authenticate'] = 'Token realm-"Agents"'
 

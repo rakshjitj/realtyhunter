@@ -102,10 +102,6 @@ $( document ).ready(function() {
 							<% end %>
 						</p>
 						<p>
-							<strong>LL Pays Fee %:</strong>
-							<%= @residential_unit.building.landlord.op_fee_percentage %>
-						</p>
-						<p>
 							<strong>Required Security:</strong>
 							<%= @residential_unit.building.landlord.required_security.name %>
 						</p>
@@ -142,6 +138,16 @@ $( document ).ready(function() {
 							<%= @residential_unit.notes %>
 						</p>
 						
+						<p>
+              <strong>LL Pays Fee %:</strong>
+              <%= @residential_unit.op_fee_percentage %>
+            </p>
+
+            <p>
+              <strong>Tenant Pays Fee %:</strong>
+              <%= @residential_unit.tp_fee_percentage %>
+            </p>
+
 						<% if @residential_unit.listing_agent %>
 						<p>
 							<strong>Listing agent:</strong>
