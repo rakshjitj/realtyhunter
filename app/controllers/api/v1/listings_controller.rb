@@ -76,14 +76,12 @@ module API
 				sort_dir = %w[asc desc].include?(listing_params[:sort_dir]) ? listing_params[:sort_dir] : ""
 
 				# pagination
-				per_page = 50
-				if listing_params[:per_page]
-					if listing_params[:per_page] < 0 || listing_params[:per_page] > 50
-						listing_params[:per_page] = 50
+				per_page = listing_params[:per_page].to_i
+				if per_page
+					if per_page < 0 || per_page > 50
+						per_page = 50
 					end
 				end
-
-
 				
 				# calls our API::V1::NestioInterface module located under /lib
 				@listings = search(@user.company_id, {
@@ -107,7 +105,6 @@ module API
 					agents: listing_params[:agents],
 					neighborhoods: listing_params[:neighborhoods],
 					});
-				#@listings = []
 			end
 
 			# Never trust parameters from the scary internet, only allow the white list through.

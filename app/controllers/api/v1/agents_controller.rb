@@ -18,8 +18,16 @@ module API
 			# https://nestiolistings.com/api/v1/public/agents/123/?key={API KEY}
 
 			def index
-				@agents = User.where(archived: false, company: @user.company)
-				#render json: agents, status: 200
+				# pagination
+				per_page = agent_params[:per_page].to_i
+				if per_page
+					if per_page < 0 || per_page > 50
+						per_page = 50
+					end
+				end
+
+				@agents = User.where(archived: false, company: @user.company).paginate(
+				 	:page => agent_params[:page], :per_page => per_page)
 			end
 
 			def show
@@ -52,6 +60,10 @@ module API
 					@user = User.find_by(auth_token: token)
 					authed = true
 				end
+			end
+
+			def agent_params
+				params.permit(:token, :pretty, :format, :per_page, :page)
 			end
 		
 		end
