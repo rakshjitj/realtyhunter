@@ -1,5 +1,7 @@
 class Landlord < ActiveRecord::Base
 	has_many :buildings, dependent: :destroy
+
+	scope :unarchived, ->{where(archived: false)}
 	
 	belongs_to :company
 	validates :company, presence: true
@@ -60,10 +62,8 @@ class Landlord < ActiveRecord::Base
 	end
 
 	def self.search(query_str, agent_query, active_only)
-		@running_list = Landlord.where(archived: false)
-    if !query_str
-      return @running_list
-    end
+		@running_list = Landlord.unarchived
+    return @running_list if !query_str
     
     terms = query_str.split(" ")
     terms.each do |term|

@@ -1,5 +1,5 @@
-@company = Company.create_with_environment({name: "MyspaceNYC"})
-@company2 = Company.create_with_environment({name: "Nooklyn"})
+@company = Company.create({name: "MyspaceNYC"})
+@company2 = Company.create({name: "Nooklyn"})
 
 @offices = Office.create!([
   { company: @company, 

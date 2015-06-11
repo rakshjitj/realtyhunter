@@ -1,7 +1,8 @@
 class Company < ActiveRecord::Base
 	attachment :logo
-	validates :name, presence: true, length: {maximum: 100}, 
-						uniqueness: { case_sensitive: false }
+	after_save :create_environment
+	
+	scope :unarchived, ->{where(archived: false)}
 
 	has_many :offices, :dependent => :destroy
 	has_many :users, dependent: :destroy
@@ -16,6 +17,9 @@ class Company < ActiveRecord::Base
 	has_many :commercial_property_types
 	
 	attr_accessor :agent_types, :employee_titles
+
+	validates :name, presence: true, length: {maximum: 100}, 
+		uniqueness: { case_sensitive: false }
 
 	validates :name, presence: true, length: {maximum: 50},
 		uniqueness: { case_sensitive: false }
@@ -52,93 +56,88 @@ class Company < ActiveRecord::Base
     }
 	end
 
-	def self.create_with_environment(params)
-		# Create the default environment options for the company.
-		# Admins can always change them once the company has been created.
-		
-		@company = Company.create(params)
-
+	# Create the default environment options for the company.
+	# Admins can always change them once the company has been created.
+	def create_environment		
 		BuildingAmenity.create!([
-			{name: "Gym/atheletic facility", company: @company},
-			{name: "Sauna", company: @company},
-			{name: "Doorman", company: @company},
-			{name: "Laundry in bldg", company: @company},
-			{name: "Bike room", company: @company},
-			{name: "Brownstone", company: @company},
-			{name: "Storage", company: @company},
-			{name: "Roof deck", company: @company},
-			{name: "Garage parking", company: @company},
-			{name: "Elevator", company: @company}
+			{name: "Gym/atheletic facility", company: self},
+			{name: "Sauna", company: self},
+			{name: "Doorman", company: self},
+			{name: "Laundry in bldg", company: self},
+			{name: "Bike room", company: self},
+			{name: "Brownstone", company: self},
+			{name: "Storage", company: self},
+			{name: "Roof deck", company: self},
+			{name: "Garage parking", company: self},
+			{name: "Elevator", company: self}
 		])
 
 		RentalTerm.create!([
-			{name: "Heat included", company: @company},
-			{name: "Hot water included", company: @company},
-			{name: "Heat/hot water included", company: @company},
-			{name: "Gas included", company: @company},
-			{name: "Electric included", company: @company},
-			{name: "Cable included", company: @company},
-			{name: "Internet included", company: @company},
-			{name: "All utils included", company: @company},
-			{name: "No utils included", company: @company},
-			{name: "Water not included", company: @company},
-			{name: "Trash not included", company: @company},
+			{name: "Heat included", company: self},
+			{name: "Hot water included", company: self},
+			{name: "Heat/hot water included", company: self},
+			{name: "Gas included", company: self},
+			{name: "Electric included", company: self},
+			{name: "Cable included", company: self},
+			{name: "Internet included", company: self},
+			{name: "All utils included", company: self},
+			{name: "No utils included", company: self},
+			{name: "Water not included", company: self},
+			{name: "Trash not included", company: self},
 		])
 
 		RequiredSecurity.create!([
-			{name: "First & Last month", company: @company},
-			{name: "First, Last & Security", company: @company},
-			{name: "First & 2 Securities", company: @company},
-			{name: "First, Security & Broker's Fee", company: @company},
+			{name: "First & Last month", company: self},
+			{name: "First, Last & Security", company: self},
+			{name: "First & 2 Securities", company: self},
+			{name: "First, Security & Broker's Fee", company: self},
 		])
 
 		PetPolicy.create!([
-			{name: "Cats only", company: @company},
-			{name: "Dogs only", company: @company},
-			{name: "Pets ok", company: @company},
-			{name: "Small pets ok (<30 lbs)", company: @company},
-			{name: "Pets upon approval", company: @company},
-			{name: "Monthly pet fee", company: @company},
-			{name: "Pet deposit required", company: @company},
-			{name: "No pets", company: @company},
+			{name: "Cats only", company: self},
+			{name: "Dogs only", company: self},
+			{name: "Pets ok", company: self},
+			{name: "Small pets ok (<30 lbs)", company: self},
+			{name: "Pets upon approval", company: self},
+			{name: "Monthly pet fee", company: self},
+			{name: "Pet deposit required", company: self},
+			{name: "No pets", company: self},
 		])
 
 		ResidentialAmenity.create!([
-			{name: "Washer/dryer in unit", company: @company},
-			{name: "Washer/dryer hookups", company: @company},
-			{name: "Central A/C", company: @company},
-			{name: "Central heat", company: @company},
-			{name: "Airconditioning", company: @company},
-			{name: "Balcony/Terrace", company: @company},
-			{name: "Hardwood floors", company: @company},
-			{name: "Private yard", company: @company},
-			{name: "Shared yard", company: @company},
-			{name: "Bay windows", company: @company},
-			{name: "Dishwasher", company: @company},
-			{name: "Microwave", company: @company},
-			{name: "Doorman", company: @company},
-			{name: "Duplex", company: @company},
-			{name: "Triplex", company: @company},
-			{name: "Railroad", company: @company},
-			{name: "Renovated", company: @company},
-			{name: "Roof access", company: @company},
-			{name: "Skylight", company: @company},
-			{name: "Walk-in closet", company: @company},
-			{name: "Waterfront", company: @company},
+			{name: "Washer/dryer in unit", company: self},
+			{name: "Washer/dryer hookups", company: self},
+			{name: "Central A/C", company: self},
+			{name: "Central heat", company: self},
+			{name: "Airconditioning", company: self},
+			{name: "Balcony/Terrace", company: self},
+			{name: "Hardwood floors", company: self},
+			{name: "Private yard", company: self},
+			{name: "Shared yard", company: self},
+			{name: "Bay windows", company: self},
+			{name: "Dishwasher", company: self},
+			{name: "Microwave", company: self},
+			{name: "Doorman", company: self},
+			{name: "Duplex", company: self},
+			{name: "Triplex", company: self},
+			{name: "Railroad", company: self},
+			{name: "Renovated", company: self},
+			{name: "Roof access", company: self},
+			{name: "Skylight", company: self},
+			{name: "Walk-in closet", company: self},
+			{name: "Waterfront", company: self},
 		])
 
 		CommercialPropertyType.create!([
-			{property_type: "Retail", property_sub_type: "Retail - Retail Pad", company: @company},
-			{property_type: "Retail", property_sub_type: "Retail - Free Standing Bldg", company: @company},
-			{property_type: "Retail", property_sub_type: "Retail - Street Retail", company: @company},
-			{property_type: "Retail", property_sub_type: "Retail - Vehicle Related", company: @company},
-			{property_type: "Retail", property_sub_type: "Retail - Retail (Other)", company: @company},
-			{property_type: "Office", property_sub_type: "Office - Office (Other)", company: @company},
-			{property_type: "Industrial", property_sub_type: "Industrial - Industrial (Other)", company: @company},
-			{property_type: "Land", property_sub_type: "Land - Land (Other)", company: @company},
-			{property_type: "Special Purpose", property_sub_type: "Special Purpose - Special Purpose (Other)", company: @company},
+			{property_type: "Retail", property_sub_type: "Retail - Retail Pad", company: self},
+			{property_type: "Retail", property_sub_type: "Retail - Free Standing Bldg", company: self},
+			{property_type: "Retail", property_sub_type: "Retail - Street Retail", company: self},
+			{property_type: "Retail", property_sub_type: "Retail - Vehicle Related", company: self},
+			{property_type: "Retail", property_sub_type: "Retail - Retail (Other)", company: self},
+			{property_type: "Office", property_sub_type: "Office - Office (Other)", company: self},
+			{property_type: "Industrial", property_sub_type: "Industrial - Industrial (Other)", company: self},
+			{property_type: "Land", property_sub_type: "Land - Land (Other)", company: self},
+			{property_type: "Special Purpose", property_sub_type: "Special Purpose - Special Purpose (Other)", company: self},
 		])
-
-		@company
 	end
 end

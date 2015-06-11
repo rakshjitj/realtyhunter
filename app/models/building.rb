@@ -6,6 +6,8 @@ class Building < ActiveRecord::Base
 	has_and_belongs_to_many :building_amenities
 	has_and_belongs_to_many :rental_terms
 
+	scope :unarchived, ->{where(archived: false)}
+	
 	# TODO: remove this line
 	# this is some BS we need to make cancancan happy, because it 
 	# does not like our strong parameters
@@ -42,11 +44,11 @@ class Building < ActiveRecord::Base
   end
 
 	def street_address
-		self.street_number + ' ' + self.route
+		street_number + ' ' + route
 	end
 
 	def active_units
-		self.units.where(status: "active", archived: false)
+		self.units.unarchived.active
 	end
 
 	def total_units_count
@@ -54,7 +56,7 @@ class Building < ActiveRecord::Base
 	end
 
 	def active_units_count
-		self.units.where(status: "active", archived: false).count
+		self.units.unarchived.active.count
 	end
 
 	def last_unit_updated
@@ -66,10 +68,8 @@ class Building < ActiveRecord::Base
 	end
 
 	def self.search(query_str, active_only)
-		@running_list = Building.where(archived: false)
-    if !query_str
-      return @running_list
-    end
+		@running_list = Building.unarchived
+    return @running_list if !query_str
     
     @terms = query_str.split(" ")
     @terms.each do |term|
@@ -85,20 +85,12 @@ class Building < ActiveRecord::Base
 
 	def amenities_to_s
 		amenities = self.building_amenities.map{|a| a.name}
-		if amenities
-			amenities.join(", ")
-		else
-			"None"
-		end
+		amenities ? amenities.join(", ") : "None"
 	end
 
 	def rental_terms_to_s
 		terms = self.rental_terms.map{|a| a.name}
-		if terms
-			terms.join(", ")
-		else
-			"None"
-		end
+		terms ? terms.join(", ") : "None"
 	end
 
   def find_or_create_neighborhood(neighborhood, borough, city, state)

@@ -5,22 +5,16 @@ class ResidentialUnitTest < ActiveSupport::TestCase
   	# fixtures not working, MTI messes things up
     #puts "11111 #{Neighborhood.all.count}"
 
-    @n = Neighborhood.all[0]
-    @n2 = Neighborhood.all[1]
-    # @n.save
-    # @n2.save
+    @n = neighborhoods(:one)
+    @n2 = neighborhoods(:two)
 
     @building = buildings(:one)
     @building.neighborhood_id = @n.id
-    @building.save
 
     @building2 = buildings(:two)
     @building2.neighborhood = @n2
-    @building.save
 
-    @pet_policy = pet_policies(:one)
-    #Neighborhood.all.each { |b| puts "\n--N-- #{b.id}" }
-    #Building.all.each { |b| puts "\n--B-- #{b.inspect}" }
+    @pet_policy = pet_policies(:three)
 
     @unit = ResidentialUnit.new({
     	beds: 1,
@@ -60,6 +54,11 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     assert_not @unit.valid?
   end
 
+  test "lease_duration should be present" do
+    @unit.lease_duration = "     "
+    assert_not @unit.valid?
+  end
+
   test "rent should be present" do
     @unit.rent = "     "
     assert_not @unit.valid?
@@ -90,13 +89,6 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     assert_not @unit.valid?
   end
 
-  test "building_unit should be unique" do
-    duplicate_bldg = @unit.dup
-    duplicate_bldg.building_unit = @unit.building_unit.upcase
-    @unit.save
-    assert_not duplicate_bldg.valid?
-  end
-
   test "duplicate should copy all info" do
     @unit.save
     unit_dup = @unit.duplicate('999999', true)
@@ -123,7 +115,8 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit2.save
     @unit3.save
     params = {}
-    params[:rent_min] = @unit2.rent-2
+    # all search params come in as strings from the url
+    params[:rent_min] = "#{@unit2.rent-2}"
     @results = ResidentialUnit.search(params)
     assert_equal 2, @results.length
     assert @results[0].rent, @unit2.rent
@@ -134,7 +127,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit2.save
     @unit3.save
     params = {}
-    params[:rent_max] = @unit.rent+2
+    params[:rent_max] = "#{@unit.rent+2}"
     @results = ResidentialUnit.search(params)
     assert_equal 1, @results.length
     assert @results[0].rent, @unit.rent
@@ -145,8 +138,8 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit2.save
     @unit3.save
     params = {}
-    params[:rent_min] = @unit2.rent-2
-    params[:rent_max] = @unit2.rent+2
+    params[:rent_min] = "#{@unit2.rent-2}"
+    params[:rent_max] = "#{@unit2.rent+2}"
     @results = ResidentialUnit.search(params)
     assert_equal 1, @results.length
     assert @results[0].rent, @unit2.rent
@@ -157,7 +150,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit2.save
     @unit3.save
     params = {}
-    params[:bed_min] = @unit2.beds-2
+    params[:bed_min] = "#{@unit2.beds-2}"
     @results = ResidentialUnit.search(params)
     assert_equal 2, @results.length
     assert @results[0].beds, @unit2.beds
@@ -168,7 +161,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit2.save
     @unit3.save
     params = {}
-    params[:bed_max] = @unit.beds+2
+    params[:bed_max] = "#{@unit.beds+2}"
     @results = ResidentialUnit.search(params)
     assert_equal 1, @results.length
     assert @results[0].beds, @unit.beds
@@ -179,8 +172,8 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit2.save
     @unit3.save
     params = {}
-    params[:bed_min] = @unit2.beds-2
-    params[:bed_max] = @unit2.beds+2
+    params[:bed_min] = "#{@unit2.beds-2}"
+    params[:bed_max] = "#{@unit2.beds+2}"
     @results = ResidentialUnit.search(params)
     assert_equal 1, @results.length
     assert @results[0].beds, @unit2.beds
@@ -191,7 +184,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit2.save
     @unit3.save
     params = {}
-    params[:bath_min] = @unit2.baths-2
+    params[:bath_min] = "#{@unit2.baths-2}"
     @results = ResidentialUnit.search(params)
     assert_equal 2, @results.length
     assert @results[0].baths, @unit2.baths
@@ -202,7 +195,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit2.save
     @unit3.save
     params = {}
-    params[:bath_max] = @unit.baths+2
+    params[:bath_max] = "#{@unit.baths+2}"
     @results = ResidentialUnit.search(params)
     assert_equal 1, @results.length
     assert @results[0].baths, @unit.baths
@@ -213,8 +206,8 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit2.save
     @unit3.save
     params = {}
-    params[:bath_min] = @unit2.baths-2
-    params[:bath_max] = @unit2.baths+2
+    params[:bath_min] = "#{@unit2.baths-2}"
+    params[:bath_max] = "#{@unit2.baths+2}"
     @results = ResidentialUnit.search(params)
     assert_equal 1, @results.length
     assert @results[0].baths, @unit2.baths
@@ -225,54 +218,39 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit2.save
     @unit3.save
     params = {}
-    params[:unit] = @unit.building_unit
+    params[:unit] = "#{@unit.building_unit}"
     @results = ResidentialUnit.search(params)
     assert_equal 1, @results.length
     assert @results[0].building_unit, @unit.building_unit
   end
 
-  # NOT WORKING
-  # TODO: can't seem to set neighborhood obj on buildings in my test
-  # test "search by neighborhood restricts returned results" do
-  #   @unit.save
-  #   @unit2.save
-  #   @unit3.save
+  test "search by neighborhood restricts returned results" do
+    params = {}
+    params[:neighborhoods] = "#{@unit.building.neighborhood.id}, #{@unit2.building.neighborhood.id}"
+    @results = ResidentialUnit.search(params)
+    assert_equal ResidentialUnit.all.length, @results.length
+  end
 
-  #   params = {}
-  #   params[:neighborhoods] = [@unit.building.neighborhood.id, @unit2.building.neighborhood.id]
-  #   @results = ResidentialUnit.search(params)
-  #   #assert_equal ResidentialUnit.all.length, @results.length
-  # end
+  test "search by features restricts returned results" do
+    params = {}
+    params[:features] = "gym, elevator"
+    @results = ResidentialUnit.search(params)
+    assert_equal ResidentialUnit.all.length, @results.length
+  end
 
-  # NOT WORKING
-  # test "search by features restricts returned results" do
-  #   @unit.save
-  #   @unit2.save
-  #   @unit3.save
+  test "take off market makes unit unavailable" do
+    assert "active", @unit.status
+    @unit.take_off_market(Date.new)
+    assert "off", @unit.status
+    assert Date.new, @unit.available_by
+  end
 
-  #   params = {}
-  #   params[:features] = ['gym', 'elevator']
-  #   @results = ResidentialUnit.search(params)
-  #   #assert_equal ResidentialUnit.all.length, @results.length
-  # end
+  test "calc_lease_end_date returns the correct date" do
+    @unit.lease_duration = "year"
+    one_yr = Date.new + 12.months
+    assert one_yr, @unit.calc_lease_end_date
+  end
 
-  # NOT WORKING
-  # test "search by features restricts returned results" do
-  #   @unit.save
-  #   @unit2.save
-  #   @unit3.save
-  #   @amenities = BuildingAmenity.create([
-  #     {name: "Gym/atheletic facility", company: @building.company},
-  #     {name: "Elevator", company: @building.company}
-  #     ])
-
-  #   @building.building_amenities << @amenities
-    
-  #   params = {}
-  #   params[:features] = ['gym elevator']
-  #   @results = ResidentialUnit.search(params)
-  #   puts "\n\n #{@results.inspect}"
-  #   #assert_equal ResidentialUnit.all.length, @results.length
-  # end
+  # TODO: set_location_data
 
 end

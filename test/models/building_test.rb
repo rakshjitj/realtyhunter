@@ -7,9 +7,9 @@ class BuildingTest < ActiveSupport::TestCase
     @neighborhood = neighborhoods(:one)
 
     @bldg = buildings(:one)
-    @bldg.company = @company
-    @bldg.landlord = @landlord
-    @bldg.neighborhood = @neighborhood
+    @company.buildings << @bldg
+    @neighborhood.buildings << @bldg
+    @landlord.buildings << @bldg
   end
 
   test "should be valid" do
@@ -63,6 +63,21 @@ class BuildingTest < ActiveSupport::TestCase
 
   test "place_id should be present" do
     @bldg.place_id = "     "
+    assert_not @bldg.valid?
+  end
+
+  test "company should be present" do
+    @bldg.company = nil
+    assert_not @bldg.valid?
+  end
+
+  test "landlord should be present" do
+    @bldg.landlord = nil
+    assert_not @bldg.valid?
+  end
+
+  test "neighborhood should be present" do
+    @bldg.neighborhood = nil
     assert_not @bldg.valid?
   end
 
@@ -122,6 +137,17 @@ class BuildingTest < ActiveSupport::TestCase
     assert @bldg.street_address, @bldg.street_number + ' ' + @bldg.route
   end
 
+  test "archive sets the model to archived" do
+    @bldg.archive
+    assert_equal true, @bldg.reload.archived
+  end
+
+  test "find_unarchived does not return archived results" do
+    assert_not_nil Building.find_unarchived(@bldg.id)
+    @bldg.archive
+    assert_raises(ActiveRecord::RecordNotFound) { Building.find_unarchived(@bldg.id) }
+  end
+
   test "search can find any address" do
     @bldgs = Building.search("MyString1", false)
     assert @bldgs.count, 1
@@ -139,4 +165,5 @@ class BuildingTest < ActiveSupport::TestCase
     assert @bldg.neighborhood.name, @n.name
   end
 
+  # TODO: finish writin tests...
 end

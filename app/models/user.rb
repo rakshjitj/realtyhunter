@@ -9,17 +9,19 @@ class User < ActiveRecord::Base
   has_many   :units # primary agent
   attachment :avatar #, extension: ["jpg", "jpeg", "png", "gif"]
 
+  scope :unarchived, ->{where(archived: false)}
+
 	attr_accessor :remember_token, :activation_token, :reset_token, :approval_token, :agent_types
   before_create :create_activation_digest
   before_create :set_auth_token # for API
+
+  validates :name, presence: true, length: {maximum: 50}
 
   before_save :downcase_email
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
 	validates :email, presence: true, length: {maximum: 100}, 
 						format: { with: VALID_EMAIL_REGEX }, 
             uniqueness: { case_sensitive: false }
-
-  validates :name, presence: true, length: {maximum: 50}
 
   VALID_TELEPHONE_REGEX = /(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/
   validates :mobile_phone_number, presence: true, length: {maximum: 25}, 
@@ -123,11 +125,9 @@ class User < ActiveRecord::Base
   end
 
   def self.search(query_string)
-    @running_list = User.where(archived: false)
+    @running_list = User.unarchived
 
-    if !query_string
-      return @running_list
-    end
+    return @running_list if !query_string
     
     @terms = query_string.split(" ")
     @terms.each do |term|
@@ -248,6 +248,7 @@ class User < ActiveRecord::Base
     @coworkers
   end
 
+  # TODO: cleaner way of initializing the global system?
   # this is just so we can define the busines logic in a centralized place.
   # this is a non-functional user
   def self.define_roles
@@ -332,7 +333,6 @@ class User < ActiveRecord::Base
   # - at the same company
   # - either their direct manager or a company admin
   def can_kick(other_user)
-
     return (self.company == other_user.company && other_user.manager) &&
     (self.is_company_admin? ||
     (self == other_user.manager))

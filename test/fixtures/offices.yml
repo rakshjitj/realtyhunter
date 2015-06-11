@@ -1,6 +1,15 @@
 one:
   name: "MyText"
   formatted_street_address: "MyText"
+  street_number: 722
+  route: Franklin Ave
+  administrative_area_level_2_short: New York
+  administrative_area_level_1_short: NY
+  postal_code: 11238
+  country_short: US
+  lat: 123
+  lng: 123
+  place_id: 1
   telephone: "555-555-5555"
   fax: "555-555-5555"
   company_id: "1"

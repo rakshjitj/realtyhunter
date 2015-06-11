@@ -1,5 +1,8 @@
 class CommercialUnit < ActiveRecord::Base
 	acts_as :unit
+
+  scope :unarchived, ->{where(archived: false)}
+  
   belongs_to :commercial_property_type
   attr_accessor :property_type, :inaccuracy_description
 
@@ -24,31 +27,31 @@ class CommercialUnit < ActiveRecord::Base
 
 	# used as a sorting condition
   def landlord_by_code
-    self.building.landlord.code
+    building.landlord.code
   end
 
   def summary
-  	summary = self.status.capitalize() + ' - ' + self.commercial_property_type.property_type
-  	if self.commercial_property_type.property_sub_type
-  		summary += ' (' + self.commercial_property_type.property_sub_type + ')'
+  	summary = status.capitalize() + ' - ' + commercial_property_type.property_type
+  	if commercial_property_type.property_sub_type
+  		summary += ' (' + commercial_property_type.property_sub_type + ')'
   	end
 
   	summary
   end
 
   def price_per_sq_ft
-    self.rent.to_f / self.sq_footage
+    rent.to_f / sq_footage
   end
 
   def self.search(params, building_id=nil)
     # actable_type to restrict to residential only
     if !params && !building_id
-      return CommercialUnit.where(archived: false)
+      return CommercialUnit.unarchived
     elsif !params && building_id
-      return CommercialUnit.where(building_id: building_id, archived: false)
+      return CommercialUnit.unarchived.where(building_id: building_id)
     end
 
-    @running_list = Unit.where(archived: false)
+    @running_list = Unit.unarchived
     
     # clear out any invalid search params
     #params.delete_if{|k,v| !(v || v > 0 || !v.empty?) }

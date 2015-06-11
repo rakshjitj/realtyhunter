@@ -3,30 +3,15 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
 
   def setup
-    @company = Company.new(name: "MyCompany")
-    @office = Office.new(name: "MyOffice", company: @company)
-    @user = User.new(
-      name: "Example User", 
-      email: "user@example.com", 
-      bio: "blah blah blah", 
-      password:"12345qwe",
-      office: @office,
-      company: @company)
-    @user2 = User.new(
-      name: "Another User", 
-      email: "another@example.com", 
-      bio: "blah blah blah", 
-      password:"12345qwe",
-      office: @office,
-      company: @company)
+    @company = companies(:one)
+    @office = offices(:one)
+    @office.company = @company
 
-    @manager  = User.new(
-      name: "Manager User", 
-      email: "manager@example.com", 
-      bio: "blah blah blah", 
-      password:"12345qwe",
-      office: @office,
-      company: @company)
+    @user = users(:michael)
+    @user2 = users(:archer)
+    @manager = users(:lana)
+    @company.users = [@user, @user2, @manager]
+    @office.users = [@user, @user2, @manager]
   end
 
   # Returns true if a test user is logged in.
@@ -51,11 +36,6 @@ class UserTest < ActiveSupport::TestCase
   test "name should not be too long" do
     @user.name = "a" * 51
     assert_not @user.valid?
-  end
-
-  test "can get fname from name" do
-    @user.name = "first last"
-    assert @user.fname, "first"
   end
 
   test "email should not be too long" do
@@ -95,6 +75,22 @@ class UserTest < ActiveSupport::TestCase
     assert_equal mixed_case_email.downcase, @user.reload.email
   end
 
+  test "mobile_phone_number validation should accept valid phone numbers" do
+    valid_phones = %w[(555)555-5566 555.555.5555 5555555555 555-555-5555]
+    valid_phones.each do |valid_phone|
+      @user.mobile_phone_number = valid_phone
+      assert @user.valid?, "#{valid_phone.inspect} should be valid"
+    end
+  end
+
+  test "mobile_phone_number validation should reject invalid phone numbers" do
+    valid_phones = %w[555-555-55-55 (555)555-555]
+    valid_phones.each do |valid_phone|
+      @user.mobile_phone_number = valid_phone
+      assert_not @user.valid?, "#{valid_phone.inspect} should be invalid"
+    end
+  end
+
   test "password should have a minimum length" do
     @user.password = @user.password_confirmation = "a" * 5
     assert_not @user.valid?
@@ -102,6 +98,22 @@ class UserTest < ActiveSupport::TestCase
 
   test "authenticated? should return false for a user with nil digest" do
     assert_not @user.authenticated?(:remember, '')
+  end
+
+  test "archive sets the model to archived" do
+    @user.archive
+    assert_equal true, @user.reload.archived
+  end
+
+  test "find_unarchived does not return archived results" do
+    assert_not_nil User.find_unarchived(@user.id)
+    @user.archive
+    assert_raises(ActiveRecord::RecordNotFound) { User.find_unarchived(@user.id) }
+  end
+
+  test "can get fname from name" do
+    @user.name = "first last"
+    assert @user.fname, "first"
   end
 
   test "search correct when valid user found" do
@@ -143,9 +155,25 @@ class UserTest < ActiveSupport::TestCase
     assert @user.agent_specialties[1], "Commercial"
   end
 
+  test "can get agent specialty id" do
+    @user.employee_title = EmployeeTitle.agent
+    @user.agent_types = ['Residential', 'Commercial']
+    @user.update_roles
+    assert @user.has_role? :residential
+    assert @user.agent_specialties_as_indicies[0], 1
+    assert @user.agent_specialties_as_indicies[1], 2
+  end
+
+  # TODO test add_sanitized_role
+
   test "make manager works" do
     @manager.make_manager
     assert @manager.has_role? :manager
+  end
+
+  test "make company admin works" do
+    @manager.make_company_admin
+    assert @manager.has_role? :company_admin
   end
 
   test "is_manager? works" do
@@ -228,7 +256,7 @@ class UserTest < ActiveSupport::TestCase
     assert @manager.add_role :company_admin
     @manager.make_manager
     @manager.add_subordinate(@user)
-    @manager.kick(@user)
+    @user.kick
     assert_nil @user.manager
   end
 
@@ -255,6 +283,14 @@ class UserTest < ActiveSupport::TestCase
   test "can manage a team if i am their manager" do
     @manager.make_manager
     assert @manager.can_manage_team(@manager)
+  end
+
+  test "every user gets a unique auth token upon creation" do
+    assert_not_nil @user.auth_token
+    
+    duplicate_user = @user.dup
+    duplicate_user.save
+    assert_not duplicate_user.valid?
   end
 
 end

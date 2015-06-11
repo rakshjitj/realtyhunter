@@ -1,15 +1,17 @@
 class Neighborhood < ActiveRecord::Base
 	has_many :buildings
 
+	scope :unarchived, ->{where(archived: false)}
+
 	validates :name, presence: true, length: {maximum: 100}, 
 		uniqueness: { case_sensitive: false }
 
-	def self.forCity(city)
-		Neighborhood.where(city: city, archived: false).all
+	def self.for_city(city)
+		Neighborhood.unarchived.where(city: city).all
 	end
 
-	def self.forBorough(borough)
-		Neighborhood.where(borough: borough, archived: false).all
+	def self.for_borough(borough)
+		Neighborhood.unarchived.where(borough: borough).all
 	end
 	
 end

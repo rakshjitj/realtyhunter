@@ -3,43 +3,61 @@ require 'test_helper'
 class OfficeTest < ActiveSupport::TestCase
 
   def setup
-    @office = Office.new(
-    	name: "Prospect Heights", 
-    	street_address: "722 Franklin Ave", 
-    	city: "Brooklyn", 
-    	state: "NY", 
-    	zipcode: "11238",
-    	telephone: "(813)495-2570",
-    	fax: "(813)495-2570"
-   )
+    @office = offices(:one)
   end
 
   test "should be valid" do
     assert @office.valid?
   end
 
-  test "street_address should be present" do
-    @office.street_address = "     "
+  test "formatted_street_address should be present" do
+    @office.formatted_street_address = "     "
     assert_not @office.valid?
   end
 
-  test "city should be present" do
-    @office.city = "     "
+  test "street_number should be present" do
+    @office.street_number = "     "
     assert_not @office.valid?
   end
 
-  test "state should be present" do
-    @office.state = "  "
+  test "route should be present" do
+    @office.route = "     "
     assert_not @office.valid?
   end
 
-  test "zipcode should be present" do
-    @office.zipcode = "     "
+
+  test "administrative_area_level_2_short should be present" do
+    @office.administrative_area_level_2_short = "     "
     assert_not @office.valid?
   end
 
-  test "telphone should be present" do
-    @office.telephone = "     "
+  test "administrative_area_level_1_short should be present" do
+    @office.administrative_area_level_1_short = "     "
+    assert_not @office.valid?
+  end
+
+  test "postal_code should be present" do
+    @office.postal_code = "     "
+    assert_not @office.valid?
+  end
+
+  test "country_short should be present" do
+    @office.country_short = "     "
+    assert_not @office.valid?
+  end
+
+  test "lat should be present" do
+    @office.lat = "     "
+    assert_not @office.valid?
+  end
+
+  test "lng should be present" do
+    @office.lng = "     "
+    assert_not @office.valid?
+  end
+
+  test "place_id should be present" do
+    @office.place_id = "     "
     assert_not @office.valid?
   end
 
@@ -48,43 +66,67 @@ class OfficeTest < ActiveSupport::TestCase
     assert_not @office.valid?
   end
 
-  test "street_address should not be too long" do
-    @office.street_address = "a" * 101
+  test "formatted_street_address should not be too long" do
+    @office.formatted_street_address = "a" * 201
     assert_not @office.valid?
   end
 
-  test "city should not be too long" do
-    @office.city = "a" * 101
+  test "street_number should not be too long" do
+    @office.street_number = "a" * 21
     assert_not @office.valid?
   end
 
-  test "state should not be too long" do
-    @office.state = "a" * 3
+  test "route should not be too long" do
+    @office.route = "a" * 101
     assert_not @office.valid?
   end
 
-  test "state should not be too short" do
-    @office.state = "a"
+  test "administrative_area_level_2_short should not be too long" do
+    @office.administrative_area_level_2_short = "a" * 101
     assert_not @office.valid?
   end
 
-  test "zipcode should not be too long" do
-    @office.zipcode = "a" * 11
+  test "administrative_area_level_1_short should not be too long" do
+    @office.administrative_area_level_1_short = "a" * 101
     assert_not @office.valid?
   end
 
-  test "zipcode should not be too short" do
-    @office.zipcode = "a" * 4
+  test "postal_code should not be too long" do
+    @office.postal_code = "a" * 16
     assert_not @office.valid?
   end
 
-  test "telephone should not be too long" do
-    @office.telephone = "a" * 11
+  test "lat should not be too long" do
+    @office.lat = "a" * 101
     assert_not @office.valid?
+  end
+
+  test "lng should not be too long" do
+    @office.lng = "a" * 101
+    assert_not @office.valid?
+  end
+
+  test "place_id should not be too long" do
+    @office.place_id = "a" * 101
+    assert_not @office.valid?
+  end
+
+  test "name should be unique" do
+    duplicate_user = @office.dup
+    duplicate_user.name = @office.name.upcase
+    @office.save
+    assert_not duplicate_user.valid?
+  end
+
+  test "formatted_street_address should be unique" do
+    duplicate_bldg = @office.dup
+    duplicate_bldg.formatted_street_address = @office.formatted_street_address
+    @office.save
+    assert_not duplicate_bldg.valid?
   end
 
   test "telephone validation should accept valid phone numbers" do
-    valid_phones = %w[(555)555-5555 555.555.5555 5555555555 555-555-5555]
+    valid_phones = %w[(555)555-5566 555.555.5555 5555555555 555-555-5555]
     valid_phones.each do |valid_phone|
       @office.telephone = valid_phone
       assert @office.valid?, "#{valid_phone.inspect} should be valid"
@@ -99,18 +141,32 @@ class OfficeTest < ActiveSupport::TestCase
     end
   end
 
-  test "street addresses should be unique" do
-    duplicate_user = @office.dup
-    duplicate_user.street_address = @office.street_address.upcase
-    @office.save
-    assert_not duplicate_user.valid?
+  test "archive sets the model to archived" do
+    @office.archive
+    assert_equal true, @office.reload.archived
   end
 
-  test "name should be unique" do
-    duplicate_user = @office.dup
-    duplicate_user.name = @office.name.upcase
-    @office.save
-    assert_not duplicate_user.valid?
+  test "find_unarchived does not return archived results" do
+    assert_not_nil Office.find_unarchived(@office.id)
+    @office.archive
+    assert_raises(ActiveRecord::RecordNotFound) { Office.find_unarchived(@office.id) }
+  end
+
+  test "managers gets all managers for this office" do
+    michael = users(:michael)
+    archer = users(:archer)
+    @office.users = [michael, archer]
+    michael.make_manager
+    assert true, michael.is_manager?
+    assert_equal 1, @office.managers.count
+  end
+
+  test "agents gets all agents for this office" do
+    michael = users(:michael)
+    archer = users(:archer)
+    @office.users = [michael, archer]
+    michael.make_manager
+    assert_equal 1, @office.agents.count
   end
 
 end

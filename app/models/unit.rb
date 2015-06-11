@@ -2,6 +2,9 @@ class Unit < ActiveRecord::Base
 	actable
 	belongs_to :building
 
+  scope :unarchived, ->{where(archived: false)}
+  scope :active, ->{where(status: "active")}
+  
   # TODO: test. I don't think this is working right
 	belongs_to :primary_agent, :foreign_key => 'user_id', :class_name => 'User'
 	belongs_to :listing_agent, :foreign_key => 'user_id', :class_name => 'User'

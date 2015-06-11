@@ -1,22 +1,24 @@
 class ResidentialUnit < ActiveRecord::Base
 	acts_as :unit
-	has_and_belongs_to_many :residential_amenities
+  has_and_belongs_to_many :residential_amenities
   belongs_to :pet_policy
   validates :pet_policy, presence: true
 
-  #autocomplete :building, :formatted_street_address
+  scope :unarchived, ->{where(archived: false)}
 
   attr_accessor :include_photos, :inaccuracy_description
+
+  validates :building_unit, presence: true, length: {maximum: 50}
 
 	enum lease_duration: [ :year, :thirteen_months, :fourteen_months, :fifteen_months, 
 		:sixteen_months, :seventeen_months, :eighteen_months, :two_years ]
 	validates :lease_duration, presence: true, inclusion: { 
     in: %w(year thirteen_months fourteen_months fifteen_months sixteen_months seventeen_months eighteen_months two_years) }
-
+  
+  validates :rent, presence: true, :numericality => { :greater_than => 0 }
 	validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }
 	validates :baths, presence: true, :numericality => { :less_than_or_equal_to => 11 }
-  validates :building_unit, presence: true, length: {maximum: 50}
-
+  
   validates :op_fee_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
   validates_inclusion_of :op_fee_percentage, :in => 0..100, allow_blank: true
 
@@ -34,12 +36,12 @@ class ResidentialUnit < ActiveRecord::Base
 
   # used as a sorting condition
   def street_address_and_unit
-    self.building.street_number + ' ' + self.building.route + ' #' + self.building_unit
+    building.street_number + ' ' + building.route + ' #' + building_unit
   end
 
   # used as a sorting condition
   def landlord_by_code
-    self.building.landlord.code
+    building.landlord.code
   end
 
   # used as a sorting condition
@@ -48,19 +50,15 @@ class ResidentialUnit < ActiveRecord::Base
   end
 
 	def amenities_to_s
-		amenities = self.residential_amenities.map{|a| a.name}
-		if amenities
-			amenities.join(", ")
-		else
-			"None"
-		end
+		amenities = residential_amenities.map{|a| a.name}
+		amenities ? amenities.join(", ") : "None"
 	end
 
   # mainly for use in our API. Returns list of any
   # agent contacts for this listing. Currently we have
   # 1 primary agent for each listing, but could change in the future.
   def contacts
-    contacts = [self.primary_agent];
+    contacts = [primary_agent];
   end
 
   def net_rent
@@ -124,11 +122,7 @@ class ResidentialUnit < ActiveRecord::Base
   # mainly used in API
   # prints layout in Nestio's format
   def beds_to_s
-    if beds == 0
-      "Studio"
-    else
-      beds.to_s + ' Bedroom'
-    end
+    beds == 0 ? "Studio" : (beds.to_s + ' Bedroom')
   end
 
   # takes in a hash of search options
@@ -138,15 +132,15 @@ class ResidentialUnit < ActiveRecord::Base
   def self.search(params, building_id=nil)
     # actable_type to restrict to residential only
     if !params && !building_id
-      return ResidentialUnit.where(archived: false)
+      return ResidentialUnit.unarchived
     elsif !params && building_id
-      return ResidentialUnit.where(building_id: building_id, archived: false)
+      return ResidentialUnit.unarchived.where(building_id: building_id)
     end
 
-    @running_list = Unit.where(archived: false)
+    @running_list = Unit.unarchived
     
+    # all search params come in as strings from the url
     # clear out any invalid search params
-    #params.delete_if{|k,v| !(v || v > 0 || !v.empty?) }
     params.delete_if{|k,v| (!v || v == 0 || v.empty?) }
 
     # search by address (building)
