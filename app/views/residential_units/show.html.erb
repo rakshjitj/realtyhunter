@@ -60,23 +60,12 @@ $( document ).ready(function() {
 				    	<strong>Building:</strong>
   						<%= link_to @residential_unit.building.formatted_street_address, @residential_unit.building %>
 						</p>
+
 						<p>
-							<strong>Access info:</strong>
-							<%= @residential_unit.access_info %>
-						</p>
-						<p>
-							<strong>Beds/Baths:</strong>
-							<%= @residential_unit.beds %> / <%= @residential_unit.baths %>
-						</p>
-						<p>
-							<strong>Lease duration:</strong>
-							<%= @residential_unit.lease_duration.titleize %>
+				    	<strong>Unit:</strong>
+  						<%= @residential_unit.building_unit %>
 						</p>
 
-						<%= render 'available_by' %>
-
-						<!-- TODO: integrate with dept of buildings to get
-							DOM, total floors, total units, year built, lot, block, community district, school district -->
 						<p>
 							<strong>Rent:</strong> <%= rent_formatted(@residential_unit.rent) %>
 						</p>
@@ -88,33 +77,25 @@ $( document ).ready(function() {
 						</p>
 
 						<p>
-							<strong>Pet Policy:</strong>
-							<%= @residential_unit.pet_policy.name %>
+							<strong>Beds/Baths:</strong>
+							<%= @residential_unit.beds %> / <%= @residential_unit.baths %>
+						</p>
+						
+						<%= render 'available_by' %>
+
+						<p>
+							<strong>Access info:</strong>
+							<%= @residential_unit.access_info %>
 						</p>
 
-						<!-- Landlord info -->
 						<p>
-							<strong>Landlord:</strong>
-							<% if current_user.is_management? %>
-								<%= link_to @residential_unit.landlord_by_code, @residential_unit.building.landlord %>
-							<% else %>
-								<%= @residential_unit.landlord_by_code %>
-							<% end %>
+							<strong>Open House:</strong>
+							<%= @residential_unit.open_house %>
 						</p>
+
 						<p>
 							<strong>Required Security:</strong>
 							<%= @residential_unit.building.landlord.required_security.name %>
-						</p>
-						<p>
-							<strong>Landlord Notes:</strong>
-							<%= @residential_unit.building.landlord.notes %>
-						</p>
-						
-						<!-- Building info -->
-
-						<p>
-							<strong>Building notes:</strong>
-							<%= @residential_unit.building.notes %>
 						</p>
 
 						<p>
@@ -122,22 +103,11 @@ $( document ).ready(function() {
 							<%= @residential_unit.building.rental_terms_to_s %>
 						</p>
 
-
 						<p>
-							<strong>Building Amenities:</strong>
-							<%= @residential_unit.building.amenities_to_s %>
+							<strong>Lease duration:</strong>
+							<%= @residential_unit.lease_duration.titleize %>
 						</p>
 
-						<!-- Unit info -->
-						<p>
-						  <strong>Unit Amenities:</strong>
-						  <%= @residential_unit.amenities_to_s %>
-						</p>
-						<p>
-							<strong>Unit notes:</strong>
-							<%= @residential_unit.notes %>
-						</p>
-						
 						<p>
               <strong>LL Pays Fee %:</strong>
               <%= @residential_unit.op_fee_percentage %>
@@ -148,6 +118,50 @@ $( document ).ready(function() {
               <%= @residential_unit.tp_fee_percentage %>
             </p>
 
+            <p>
+							<strong>Building Amenities:</strong>
+							<%= @residential_unit.building.amenities_to_s %>
+						</p>
+
+						<!-- Unit info -->
+						<p>
+						  <strong>Unit Amenities:</strong>
+						  <%= @residential_unit.amenities_to_s %>
+						</p>
+
+						<!-- TODO: integrate with dept of buildings to get
+							DOM, total floors, total units, year built, lot, block, community district, school district -->
+						<!-- Landlord info -->
+						<p>
+							<strong>Landlord:</strong>
+							<% if current_user.is_management? %>
+								<%= link_to @residential_unit.landlord_by_code, @residential_unit.building.landlord %>
+							<% else %>
+								<%= @residential_unit.landlord_by_code %>
+							<% end %>
+						</p>
+
+						<p>
+							<strong>Landlord Notes:</strong>
+							<%= @residential_unit.building.landlord.notes %>
+						</p>
+						
+						<p>
+							<strong>Pet Policy:</strong>
+							<%= @residential_unit.pet_policy.name %>
+						</p>
+
+						<!-- Building info -->
+						<p>
+							<strong>Building notes:</strong>
+							<%= @residential_unit.building.notes %>
+						</p>
+
+						<p>
+							<strong>Unit notes:</strong>
+							<%= @residential_unit.notes %>
+						</p>
+						
 						<% if @residential_unit.listing_agent %>
 						<p>
 							<strong>Listing agent:</strong>
@@ -161,11 +175,6 @@ $( document ).ready(function() {
 							<%= link_to @residential_unit.primary_agent.name, @residential_unit.primary_agent %>
 						</p>
 						<% end %>
-
-						<p>
-							<strong>Open House:</strong>
-							<%= @residential_unit.open_house %>
-						</p>
 
 						<p>
 							<strong>Listing ID:</strong>

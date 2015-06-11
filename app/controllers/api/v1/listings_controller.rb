@@ -1,12 +1,8 @@
 module API
 	module V1
 
-		class ListingsController < ApplicationController
+		class ListingsController < ApiController
 			include API::V1::NestioInterface
-			skip_authorize_resource
-			skip_before_action :logged_in_user
-			protect_from_forgery with: :null_session
-			before_action :authenticate
 
 			# designed to match: http://developers.nestio.com/api/v1/
 
@@ -26,33 +22,7 @@ module API
 				@listing = ResidentialUnit.find(params[:id])
 			end
 		
-			# TODO: pull out into common methods
-			def render_unauthorized
-				self.headers['WWW-Authenticate'] = 'Token realm-"Agents"'
-
-				respond_to do |format|
-					format.json { render json: 'Bad credentials', status: 401 }
-				end
-			end
-
 		protected
-			def authenticate
-				authenticate_token || render_unauthorized
-			end
-
-			def authenticate_token
-				authed = false
-				# check for token in the URL?
-				if !authed && params[:token]
-					@user = User.find_by(auth_token: params[:token])
-					return @user ? true : false
-				end
-
-				authenticate_or_request_with_http_token('Agents') do |token, options|
-					@user = User.find_by(auth_token: token)
-					authed = true
-				end
-			end
 
 			def _is_valid_bool_value(val)
 				val = %w[true false 0 1].include?(val) ? val : ""

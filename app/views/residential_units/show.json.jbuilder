@@ -1,1 +1,0 @@
-json.extract! @residential_unit, :id
