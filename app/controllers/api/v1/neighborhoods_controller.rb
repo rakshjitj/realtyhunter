@@ -19,6 +19,7 @@ module API
 
 			def index
 				# pagination
+				per_page = 50
 				if neighborhood_params[:per_page] && !neighborhood_params[:per_page].empty?
 					per_page = neighborhood_params[:per_page].to_i
 					if per_page < 0 || per_page > 50

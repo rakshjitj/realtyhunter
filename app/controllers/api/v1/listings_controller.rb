@@ -55,6 +55,7 @@ module API
 				# sort_dir
 				sort_dir = %w[asc desc].include?(listing_params[:sort_dir]) ? listing_params[:sort_dir] : ""
 				# pagination
+				per_page = 50
 				if listing_params[:per_page] && !listing_params[:per_page].empty?
 					per_page = listing_params[:per_page].to_i
 					if per_page < 0 || per_page > 50
@@ -92,7 +93,7 @@ module API
 	      	:listing_type, :layout, :bathrooms, :min_rent, :max_rent,
 	      	:cats_allowed, :dogs_allowed, :elevator, :doorman, :date_available_after, 
 	      	:date_available_before, :laundry_in_building, :laundry_in_unit, 
-	      	:has_photos, :featured, :sort, :sort_dir, :per_page,
+	      	:has_photos, :featured, :sort, :sort_dir, :per_page, :page,
 	      	:neighborhoods, :geometry, :agents)
     	end
 		

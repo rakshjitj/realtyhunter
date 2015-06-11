@@ -65,7 +65,6 @@ module API
 					# TODO
 
 				elsif search_params[:listing_type] == "30" # commercial
-					listings = listings.where("actable_type = 'CommercialUnit'")
 				 	listings = Unit.get_commercial(listings).paginate(
 				 		:page => search_params[:page], :per_page => search_params[:per_page])
 				end
@@ -160,10 +159,8 @@ module API
 				# Filter our search by all fields relevent to the ResidentialUnit model:
 				# beds, baths
 				def _restrict_on_residential_model(company_id, search_params, listings)
-					listings = listings.where("actable_type = 'ResidentialUnit'")
-
-				 	listings = Unit.get_residential(listings)#.paginate(
-				 		#:page => search_params[:page], :per_page => search_params[:per_page])
+					#listings = listings.where("actable_type = 'ResidentialUnit'")
+				 	listings = Unit.get_residential(listings)
 
 					# enforce params that only make sense for residential
 					# bedrooms
@@ -208,13 +205,18 @@ module API
 					when 'status_updated'
 						# TODO: we don't explicitly support this. map to be the same as updated_at
 						sort_column = 'updated_at'
+					else
+						sort_column = 'updated_at'
 					end
 
+					# TODO: why does this reduce the # of results?
 					if (search_params[:sort_dir].downcase != 'desc')
 						listings = listings.sort_by{|l| l.send(sort_column)}
 					else
 						listings = listings.sort_by{|l| l.send(sort_column)}.reverse
 					end
+
+					listings
 				end
 
 				def _restrict_layout(layout, listings)

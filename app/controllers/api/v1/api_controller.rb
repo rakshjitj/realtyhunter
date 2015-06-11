@@ -34,9 +34,9 @@ module API
 				end
 			end
 
-			def api_params
-				params.permit(:token, :pretty, :format)
-			end
+			# def api_params
+			# 	params.permit(:token, :pretty, :format)
+			# end
 		
 		end
 	end
