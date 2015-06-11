@@ -8,6 +8,16 @@ module API
 			protect_from_forgery with: :null_session
 			before_action :authenticate
 
+			# designed to match: http://developers.nestio.com/api/v1/
+
+			# params: token (required)
+
+			# response codes
+			# 200 - success, 400 - invalid params, 403 - invalid API key
+
+			# example request
+			# https://nestiolistings.com/api/v1/public/listings/?layout=10&min_rent=1500&max_rent=2000&key={API KEY}
+
 			def index
 				restrict_results
 			end
@@ -59,32 +69,31 @@ module API
 				# 10 - 1 B, 15 - 1.5 B, 20 - 2 B, 25 - 2.5 B, 30 - 3 B, 35 - 3.5+ B
 				bathrooms = %w[10 15 20 25 30 35].include?(listing_params[:bathrooms]) ? listing_params[:bathrooms] : ""
 				# cats allowed
-				cats_allowed = %w[true false 0 1].include?(listing_params[:cats_allowed]) ? listing_params[:cats_allowed]: ""
+				cats_allowed = _is_valid_bool_value(listing_params[:cats_allowed])
 				# dogs allowed
-				dogs_allowed = %w[true false 0 1].include?(listing_params[:dogs_allowed]) ? listing_params[:dogs_allowed]: ""
+				dogs_allowed = _is_valid_bool_value(listing_params[:dogs_allowed])
 				# elevator
-				elevator = %w[true false 0 1].include?(listing_params[:elevator]) ? listing_params[:elevator]: ""
+				elevator = _is_valid_bool_value(listing_params[:elevator])
 				# doorman
-				doorman = %w[true false 0 1].include?(listing_params[:doorman]) ? listing_params[:doorman]: ""
-				
+				doorman = _is_valid_bool_value(listing_params[:doorman])
+				# laundry in building				
 				laundry_in_building = _is_valid_bool_value(listing_params[:laundry_in_building])
+				# laundry in unit
 				laundry_in_unit = _is_valid_bool_value(listing_params[:laundry_in_unit])
-
 				# sort order defaults to order by last udpated
 				sort = %w[layout rent date_available updated status_updated].include?(listing_params[:sort]) ? listing_params[:sort] : "updated"
 				# sort_dir
 				sort_dir = %w[asc desc].include?(listing_params[:sort_dir]) ? listing_params[:sort_dir] : ""
-
 				# pagination
-				per_page = listing_params[:per_page].to_i
-				if per_page
+				if listing_params[:per_page] && !listing_params[:per_page].empty?
+					per_page = listing_params[:per_page].to_i
 					if per_page < 0 || per_page > 50
 						per_page = 50
 					end
 				end
 				
 				# calls our API::V1::NestioInterface module located under /lib
-				@listings = search(@user.company_id, {
+				@listings = listing_search(@user.company_id, {
 					listing_type: listing_type,
 					layout: layout,
 					bathrooms: bathrooms,

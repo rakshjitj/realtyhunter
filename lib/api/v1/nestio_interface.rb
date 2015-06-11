@@ -24,10 +24,31 @@ module API
 			  !!(s =~ /^(true|t|yes|y|1)$/i)
 			end
 
+			def neighborhood_search(search_params)
+				neighborhoods = Neighborhood.where(archived: false)
+
+				if search_params[:city] && !search_params[:city].empty?
+					# put a cap on text length
+					city = search_params[:city][0..250]
+					neighborhoods = neighborhoods.where('city = ?', city)
+				end
+
+				if search_params[:state] && !search_params[:state].empty?
+					# put a cap on text length - 2 letter state abbreviation
+					state = search_params[:state][0..2]
+					neighborhoods = neighborhoods.where('state = ?', state)
+				end
+
+				# TODO - Unused param from Nestio:
+				# company_building_limit optional - Passing true to this option will limit the neighborhoods returned to those that the company owns buildings in.
+
+				neighborhoods
+			end
+
 			# General search function, called by our external API.
 			# Can handle any and all search params supported by Nestio's API:
 			# http://developers.nestio.com/api/v1/
-			def search(company_id, search_params)
+			def listing_search(company_id, search_params)
 
 				listings = Unit.joins(:building)
 					.where(archived: false)

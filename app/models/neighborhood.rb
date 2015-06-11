@@ -5,11 +5,11 @@ class Neighborhood < ActiveRecord::Base
 		uniqueness: { case_sensitive: false }
 
 	def self.forCity(city)
-		Neighborhood.where(city: city).all
+		Neighborhood.where(city: city, archived: false).all
 	end
 
 	def self.forBorough(borough)
-		Neighborhood.where(borough: borough).all
+		Neighborhood.where(borough: borough, archived: false).all
 	end
 	
 end

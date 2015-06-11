@@ -161,12 +161,13 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   add_index "landlords", ["buildings_id"], name: "index_landlords_on_buildings_id", using: :btree
 
   create_table "neighborhoods", force: :cascade do |t|
+    t.boolean  "archived",     default: false
     t.string   "name"
     t.string   "borough"
     t.string   "city"
     t.string   "state"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.integer  "buildings_id"
   end
 

@@ -79,6 +79,7 @@
     add_index :users, :email, unique: true
 
     create_table :neighborhoods do |t|
+      t.boolean :archived, default: false
       t.string :name
       t.string :borough
       t.string :city

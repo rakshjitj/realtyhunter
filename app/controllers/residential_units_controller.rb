@@ -27,7 +27,9 @@ class ResidentialUnitsController < ApplicationController
   # GET 
   # handles ajax call. uses latest data in modal
   def neighborhoods_modal
-    @neighborhoods = Neighborhood.where(city: current_user.office.administrative_area_level_2_short).all
+    @neighborhoods = Neighborhood.where(
+      archived: false,
+      city: current_user.office.administrative_area_level_2_short).all
     
     # if boroughs are defined for this area, organize the neighborhoods by boroughs
     boroughs = @neighborhoods.collect(&:borough).uniq

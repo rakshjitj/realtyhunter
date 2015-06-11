@@ -1,7 +1,8 @@
 module API
 	module V1
 
-		class AgentsController < ApplicationController
+		class NeighborhoodsController < ApplicationController
+			include API::V1::NestioInterface
 			skip_authorize_resource
 			skip_before_action :logged_in_user
 			protect_from_forgery with: :null_session
@@ -15,23 +16,28 @@ module API
 			# 200 - success, 400 - invalid params, 403 - invalid API key
 
 			# example request
-			# https://nestiolistings.com/api/v1/public/agents/123/?key={API KEY}
+			# https://nestiolistings.com/api/v1/public/neighborhoods/?key={API KEY}
+
+			# allowed params:
+			# state (2 letter abbreviation), city, company_building_limit
 
 			def index
 				# pagination
-				if agent_params[:per_page] && !agent_params[:per_page].empty?
-					per_page = agent_params[:per_page].to_i
+				if neighborhood_params[:per_page] && !neighborhood_params[:per_page].empty?
+					per_page = neighborhood_params[:per_page].to_i
 					if per_page < 0 || per_page > 50
 						per_page = 50
 					end
 				end
 
-				@agents = User.where(archived: false, company: @user.company).paginate(
-				 	:page => agent_params[:page], :per_page => per_page)
+				# calls our API::V1::NestioInterface module located under /lib
+				@neighborhoods = neighborhood_search(neighborhood_params)
+				@neighborhoods = @neighborhoods.paginate(
+				 	:page => neighborhood_params[:page], :per_page => per_page)
 			end
 
 			def show
-				@agent = User.find(params[:id])
+				@neighborhood = Neighborhood.where(id: params[:id], archived: false).first
 			end
 		
 			def render_unauthorized
@@ -61,8 +67,9 @@ module API
 				end
 			end
 
-			def agent_params
-				params.permit(:token, :pretty, :format, :per_page, :page)
+			def neighborhood_params
+				params.permit(:token, :pretty, :format, :per_page, :page, 
+					:state, :city, :company_building_limit)
 			end
 		
 		end

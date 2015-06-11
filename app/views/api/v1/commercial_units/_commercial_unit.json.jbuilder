@@ -1,5 +1,3 @@
-json.prettify! if %w(1 yes true).include?(params["pretty"])
-
 json.extract! listing, :sq_footage, :floor, :building_size,
 	:build_to_suit, :minimum_divisble, :maximum_contiguous,
 	:lease_type, :is_sublease, :property_description, :location_description, :construction_status,

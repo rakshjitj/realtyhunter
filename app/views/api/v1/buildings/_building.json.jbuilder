@@ -1,5 +1,3 @@
-json.prettify! if %w(1 yes true).include?(params["pretty"])
-
 json.city building.administrative_area_level_2_short
 json.state building.administrative_area_level_1_short
 json.zipcode building.postal_code
