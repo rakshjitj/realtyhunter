@@ -33,7 +33,7 @@ module API
 					.where(archived: false)
 					.where('buildings.company_id = ?', @user.company_id)
 
-				listings = _restrict_on_unit_model(search_params, listings)
+				listings = _restrict_on_unit_model(company_id, search_params, listings)
 
 				# restrict by listing type. handle specific search parameters
 
@@ -53,29 +53,74 @@ module API
 			end
 
 			private
+
+				def _search_by_bldg_amenity(feature, company_id, listings, search_params)
+					if search_params[feature.to_sym] && !search_params[feature.to_sym].empty?
+						feature_required = to_boolean(search_params[feature.to_sym])
+						if (feature_required)
+							# some fields need to be tranlated into our terminology
+							if feature == 'laundry_in_building'
+								feature = "laundry in bldg"
+							end
+							# make sure feature is all lowercase
+							feature_record = BuildingAmenity.where(company_id: company_id, name: feature.downcase).first
+							if feature_record
+								listings = listings.joins(building: :building_amenities)
+  	  	    			.where('building_amenity_id = ?', feature_record.id)
+  	  	    	end
+    	    	end
+					end
+					listings
+				end
+
+				def _search_by_residential_amenity(feature, company_id, listings, search_params)
+					if search_params[feature.to_sym] && !search_params[feature.to_sym].empty?
+						feature_required = to_boolean(search_params[feature.to_sym])
+						if (feature_required)
+							# some fields need to be tranlated into our terminology
+							if feature == 'laundry_in_unit'
+								feature = "washer/dryer in unit"
+							end
+							# make sure feature is all lowercase
+							feature_record = ResidentialAmenity.where(company_id: company_id, name: feature.downcase).first
+							if feature_record
+								listings = listings.joins(:residential_amenities)
+  	  	    			.where('residential_amenity_id = ?', feature_record.id)
+  	  	    	end
+    	    	end
+					end
+					listings
+				end
+
 				# Filter our search by all fields relevent to the base Unit model:
 				# rent, available_by			
-				def _restrict_on_unit_model(search_params, listings)
+				def _restrict_on_unit_model(company_id, search_params, listings)
+					# min rent
 					if search_params[:min_rent] && !search_params[:min_rent].empty?
-
 						listings = listings.where('rent > ?', search_params[:min_rent])
 					end
-
+					# max rent
 					if search_params[:max_rent] && !search_params[:max_rent].empty?
 						listings = listings.where('rent < ?', search_params[:max_rent])
 					end
-				
+					# elevator
+					listings = _search_by_bldg_amenity('elevator', company_id, listings, search_params)
+					# doorman
+					listings = _search_by_bldg_amenity('doorman', company_id, listings, search_params)
 					# TODO: more defensive parameter checking
-					# YYYY-MM-DD
+					# date_available_before - YYYY-MM-DD
 					if search_params[:date_available_before] && !search_params[:date_available_before].empty?
 						listings = listings.where('available_by < ?', search_params[:date_available_before])
 					end
-				
-					# YYYY-MM-DD
+					# date_available_after - YYYY-MM-DD
 					if search_params[:date_available_after] && !search_params[:date_available_after].empty?
 						listings = listings.where('available_by > ?', search_params[:date_available_after])
 					end
-			
+					# laundry_in_building
+					listings = _search_by_bldg_amenity('laundry_in_building', company_id, listings, search_params)
+					
+					# TODO: has_photos, featured, geometry
+
 					listings
 				end
 
@@ -84,8 +129,8 @@ module API
 				def _restrict_on_residential_model(company_id, search_params, listings)
 					listings = listings.where("actable_type = 'ResidentialUnit'")
 
-				 	listings = Unit.get_residential(listings).paginate(
-				 		:page => search_params[:page], :per_page => search_params[:per_page])
+				 	listings = Unit.get_residential(listings)#.paginate(
+				 		#:page => search_params[:page], :per_page => search_params[:per_page])
 
 					# enforce params that only make sense for residential
 					# bedrooms
@@ -107,7 +152,36 @@ module API
 						listings = listings.where(pet_policy_id: pet_policies.map(&:id));
 					end
 
-					listings
+					# laundry_in_unit
+					listings = _search_by_residential_amenity('laundry_in_unit', company_id, listings, search_params)
+					listings = _sort_residential_by(search_params, listings)
+					listings.paginate(
+				 		:page => search_params[:page], :per_page => search_params[:per_page])
+
+				end
+
+				def _sort_residential_by(search_params, listings)
+					sort_column = search_params[:sort]
+					return if sort_column.empty?
+
+					sort_column = sort_column.downcase
+					case(sort_column)
+					when 'layout'
+						sort_column = 'beds'
+					when 'date_available'
+						sort_column = 'available_by'
+					when 'updated'
+						sort_column = 'updated_at'
+					when 'status_updated'
+						# TODO: we don't explicitly support this. map to be the same as updated_at
+						sort_column = 'updated_at'
+					end
+
+					if (search_params[:sort_dir].downcase != 'desc')
+						listings = listings.sort_by{|l| l.send(sort_column)}
+					else
+						listings = listings.sort_by{|l| l.send(sort_column)}.reverse
+					end
 				end
 
 				def _restrict_layout(layout, listings)

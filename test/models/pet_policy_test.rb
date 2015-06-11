@@ -7,6 +7,11 @@ class UserTest < ActiveSupport::TestCase
     @pp = PetPolicy.all.each{|p| p.company_id = @company.id; p.save(); }
   end
 
+  test 'names are downcased' do
+    dogs_only_policy = pet_policies(:dogs_only)
+    assert_equal "dogs only", dogs_only_policy.name
+  end
+
   test 'policies_that_allow_cats only returns cat-friendly policies' do
   	policies = PetPolicy.policies_that_allow_cats(@company.id, true).map(&:id)
   	dogs_only_policy = pet_policies(:dogs_only)

@@ -44,6 +44,10 @@ module API
 				end
 			end
 
+			def _is_valid_bool_value(val)
+				val = %w[true false 0 1].include?(val) ? val : ""
+			end
+
 			def restrict_results
 				# 10 = residential, 20 = sales, 30 = commercial
 				# default to residential
@@ -53,10 +57,16 @@ module API
 				# 10 - 1 B, 15 - 1.5 B, 20 - 2 B, 25 - 2.5 B, 30 - 3 B, 35 - 3.5+ B
 				bathrooms = %w[10 15 20 25 30 35].include?(listing_params[:bathrooms]) ? listing_params[:bathrooms] : ""
 				# cats allowed
-				
 				cats_allowed = %w[true false 0 1].include?(listing_params[:cats_allowed]) ? listing_params[:cats_allowed]: ""
 				# dogs allowed
 				dogs_allowed = %w[true false 0 1].include?(listing_params[:dogs_allowed]) ? listing_params[:dogs_allowed]: ""
+				# elevator
+				elevator = %w[true false 0 1].include?(listing_params[:elevator]) ? listing_params[:elevator]: ""
+				# doorman
+				doorman = %w[true false 0 1].include?(listing_params[:doorman]) ? listing_params[:doorman]: ""
+				
+				laundry_in_building = _is_valid_bool_value(listing_params[:laundry_in_building])
+				laundry_in_unit = _is_valid_bool_value(listing_params[:laundry_in_unit])
 
 				# sort order defaults to order by last udpated
 				sort = %w[layout rent date_available updated status_updated].include?(listing_params[:sort]) ? listing_params[:sort] : "updated"
@@ -80,8 +90,12 @@ module API
 					max_rent: listing_params[:max_rent],
 					cats_allowed: cats_allowed,
 					dogs_allowed: dogs_allowed,
+					elevator: elevator,
+					doorman: doorman,
 					date_available_before: listing_params[:date_available_before],
 					date_available_after: listing_params[:date_available_after],
+					laundry_in_building: laundry_in_building,
+					laundry_in_unit: laundry_in_unit,
 					sort: sort,
 					sort_dir: sort_dir,
 					per_page: per_page,
