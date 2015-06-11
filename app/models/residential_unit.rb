@@ -251,7 +251,7 @@ class ResidentialUnit < ActiveRecord::Base
       residential_unit_dup.save
       residential_unit_dup
     else
-      raise "no unit number specified"
+      raise "No unit number specified"
     end
   end
 

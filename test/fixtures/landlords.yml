@@ -22,7 +22,6 @@ one:
   notes: MyText
   listing_agent_percentage: 15
   management_info: MyString
-  op_fee_percentage: 15
   required_security_id: 1
   company_id: 1
 
@@ -48,6 +47,5 @@ two:
   notes: MyText6
   listing_agent_percentage: 15
   management_info: MyString6
-  op_fee_percentage: 15
   required_security_id: 1
   company_id: 1

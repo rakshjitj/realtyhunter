@@ -58,19 +58,20 @@ class Company < ActiveRecord::Base
 		
 		@company = Company.create(params)
 
-		BuildingAmenity.create([
+		BuildingAmenity.create!([
 			{name: "Gym/atheletic facility", company: @company},
 			{name: "Sauna", company: @company},
 			{name: "Doorman", company: @company},
 			{name: "Laundry in bldg", company: @company},
 			{name: "Bike room", company: @company},
 			{name: "Brownstone", company: @company},
+			{name: "Storage", company: @company},
 			{name: "Roof deck", company: @company},
 			{name: "Garage parking", company: @company},
 			{name: "Elevator", company: @company}
 		])
 
-		RentalTerm.create([
+		RentalTerm.create!([
 			{name: "Heat included", company: @company},
 			{name: "Hot water included", company: @company},
 			{name: "Heat/hot water included", company: @company},
@@ -84,30 +85,32 @@ class Company < ActiveRecord::Base
 			{name: "Trash not included", company: @company},
 		])
 
-		RequiredSecurity.create([
-			{name: "First month", company: @company},
-			{name: "First and last month", company: @company},
-			{name: "First, last and 2 months", company: @company},
-			{name: "First, last and 3 months", company: @company},
-			{name: "Broker's fee", company: @company},
-			{name: "Broker's fee and first month", company: @company},
+		RequiredSecurity.create!([
+			{name: "First & Last month", company: @company},
+			{name: "First, Last & Security", company: @company},
+			{name: "First & 2 Securities", company: @company},
+			{name: "First, Security & Broker's Fee", company: @company},
 		])
 
-		PetPolicy.create([
-			{name: "Cats ok", company: @company},
-			{name: "Dogs ok", company: @company},
+		PetPolicy.create!([
+			{name: "Cats only", company: @company},
+			{name: "Dogs only", company: @company},
 			{name: "Pets ok", company: @company},
 			{name: "Small pets ok (<30 lbs)", company: @company},
+			{name: "Pets upon approval", company: @company},
+			{name: "Monthly pet fee", company: @company},
+			{name: "Pet deposit required", company: @company},
 			{name: "No pets", company: @company},
 		])
 
-		ResidentialAmenity.create([
+		ResidentialAmenity.create!([
 			{name: "Washer/dryer in unit", company: @company},
 			{name: "Washer/dryer hookups", company: @company},
 			{name: "Central A/C", company: @company},
 			{name: "Central heat", company: @company},
 			{name: "Airconditioning", company: @company},
 			{name: "Balcony/Terrace", company: @company},
+			{name: "Hardwood floors", company: @company},
 			{name: "Private yard", company: @company},
 			{name: "Shared yard", company: @company},
 			{name: "Bay windows", company: @company},
@@ -124,7 +127,7 @@ class Company < ActiveRecord::Base
 			{name: "Waterfront", company: @company},
 		])
 
-		CommercialPropertyType.create([
+		CommercialPropertyType.create!([
 			{property_type: "Retail", property_sub_type: "Retail - Retail Pad", company: @company},
 			{property_type: "Retail", property_sub_type: "Retail - Free Standing Bldg", company: @company},
 			{property_type: "Retail", property_sub_type: "Retail - Street Retail", company: @company},

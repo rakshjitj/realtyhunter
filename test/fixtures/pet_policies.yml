@@ -1,5 +1,27 @@
-one:
-  name: cats ok
+cats_only:
+  name: Cats only
+  company_id: 1
 
-two:
-  name: dogs ok
+dogs_only:
+  name: Dogs only
+  company_id: 1
+
+three:
+  name: Small pets ok
+  company_id: 1
+
+four:
+  name: Pets upon approval
+  company_id: 1
+
+five:
+  name: Monthly pet fee
+  company_id: 1
+
+six:
+  name: Pet deposit required
+  company_id: 1
+
+no_pets:
+  name: No pets
+  company_id: 1
