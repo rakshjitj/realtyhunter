@@ -1,8 +1,8 @@
 class Unit < ActiveRecord::Base
 	actable
 	belongs_to :building
-	#has_many :building_amenities, through: :building
 
+  # TODO: test. I don't think this is working right
 	belongs_to :primary_agent, :foreign_key => 'user_id', :class_name => 'User'
 	belongs_to :listing_agent, :foreign_key => 'user_id', :class_name => 'User'
 

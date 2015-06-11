@@ -121,6 +121,18 @@ module API
 					
 					# TODO: has_photos, featured, geometry
 
+					# agents
+					if search_params[:agents] && !search_params[:agents].empty?
+						agent_ids = search_params[:agents].split(',')
+						listings = listings.where(user_id: agent_ids)
+					end
+
+					# neighborhoods
+					if search_params[:neighborhoods] && !search_params[:neighborhoods].empty?
+						neighborhood_ids = search_params[:neighborhoods].split(',')
+						listings = listings.joins(:building).where('neighborhood_id IN (?)', neighborhood_ids)
+					end			
+
 					listings
 				end
 
@@ -155,9 +167,9 @@ module API
 					# laundry_in_unit
 					listings = _search_by_residential_amenity('laundry_in_unit', company_id, listings, search_params)
 					listings = _sort_residential_by(search_params, listings)
+
 					listings.paginate(
 				 		:page => search_params[:page], :per_page => search_params[:per_page])
-
 				end
 
 				def _sort_residential_by(search_params, listings)

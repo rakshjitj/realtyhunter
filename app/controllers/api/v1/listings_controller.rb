@@ -48,6 +48,8 @@ module API
 				val = %w[true false 0 1].include?(val) ? val : ""
 			end
 
+			# set some reasonable defaults for the search params,
+			# do some data validation on parameters
 			def restrict_results
 				# 10 = residential, 20 = sales, 30 = commercial
 				# default to residential
@@ -80,6 +82,8 @@ module API
 						listing_params[:per_page] = 50
 					end
 				end
+
+
 				
 				# calls our API::V1::NestioInterface module located under /lib
 				@listings = search(@user.company_id, {
@@ -99,7 +103,9 @@ module API
 					sort: sort,
 					sort_dir: sort_dir,
 					per_page: per_page,
-					page: listing_params[:page]
+					page: listing_params[:page],
+					agents: listing_params[:agents],
+					neighborhoods: listing_params[:neighborhoods],
 					});
 				#@listings = []
 			end
@@ -111,8 +117,8 @@ module API
 	      	:cats_allowed, :dogs_allowed, :elevator, :doorman, :date_available_after, 
 	      	:date_available_before, :laundry_in_building, :laundry_in_unit, 
 	      	:has_photos, :featured, :sort, :sort_dir, :per_page,
-	      	:neighborhoods => [], :geometry => [], :agents => [])
-    end
+	      	:neighborhoods, :geometry, :agents)
+    	end
 		
 		end
 	end
