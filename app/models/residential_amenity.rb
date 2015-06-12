@@ -3,6 +3,8 @@ class ResidentialAmenity < ActiveRecord::Base
 	has_and_belongs_to_many :residential_units
 	before_save :downcase_name
 
+	validates :company, presence: true
+	
 	private
 
 		def downcase_name

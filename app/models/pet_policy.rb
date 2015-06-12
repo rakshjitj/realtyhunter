@@ -3,6 +3,8 @@ class PetPolicy < ActiveRecord::Base
 	has_many :landlords
 	before_save :downcase_name
 
+	validates :company, presence: true
+	
 	def self.policies_that_allow_cats(company_id, takes_cats)
 		dogs_only = PetPolicy.where(name: "dogs only", company_id: company_id).first;
 		no_pets = PetPolicy.where(name: "no pets", company_id: company_id).first;

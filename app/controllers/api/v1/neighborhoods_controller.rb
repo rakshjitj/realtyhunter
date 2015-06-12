@@ -34,7 +34,7 @@ module API
 			end
 
 			def show
-				@neighborhood = Neighborhood.where(id: params[:id], archived: false).first
+				@neighborhood = Neighborhood.unarchived.where(id: params[:id]).first
 			end
 		
 		protected

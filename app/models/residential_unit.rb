@@ -137,7 +137,7 @@ class ResidentialUnit < ActiveRecord::Base
       return ResidentialUnit.unarchived.where(building_id: building_id)
     end
 
-    @running_list = Unit.unarchived
+    @running_list = Unit.includes(:building, :landlord).unarchived
     
     # all search params come in as strings from the url
     # clear out any invalid search params

@@ -4,6 +4,8 @@ class Unit < ActiveRecord::Base
 
   scope :unarchived, ->{where(archived: false)}
   scope :active, ->{where(status: "active")}
+  scope :residential, ->{where("actable_type = 'ResidentialUnit'")}
+  scope :commercial, ->{where("actable_type = 'CommercialUnit'")}
   
   # TODO: test. I don't think this is working right
 	belongs_to :primary_agent, :foreign_key => 'user_id', :class_name => 'User'
@@ -16,6 +18,8 @@ class Unit < ActiveRecord::Base
 	validates :rent, presence: true, numericality: { only_integer: true }
 	validates :listing_id, presence: true, uniqueness: true
 	
+  validates :building, presence: true
+
   def archive
     self.archived = true
     self.save
@@ -25,8 +29,18 @@ class Unit < ActiveRecord::Base
     find_by!(id: id, archived: false)
   end
 
+  # def self.active_residential
+  #   units = Unit.unarchived.residential.includes(:building)
+  #   residential_units = ResidentialUnit.where(id: units.ids)
+  # end
+
+  # def self.active_commercial
+  #   units = Unit.unarchived.commercial.includes(:building)
+  #   commercial_units = CommercialUnit.where(id: units.ids)
+  # end
+
 	def self.get_residential(units)
-    running_list = units.where("actable_type = 'ResidentialUnit'")
+    running_list = units.residential
     running_list = running_list.uniq
     ids = running_list.map(&:id)
 

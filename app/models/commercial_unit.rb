@@ -51,7 +51,7 @@ class CommercialUnit < ActiveRecord::Base
       return CommercialUnit.unarchived.where(building_id: building_id)
     end
 
-    @running_list = Unit.unarchived
+    @running_list = Unit.includes(:building, :landlord).unarchived
     
     # clear out any invalid search params
     #params.delete_if{|k,v| !(v || v > 0 || !v.empty?) }

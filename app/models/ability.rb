@@ -3,55 +3,62 @@ class Ability
 
   def initialize(user)
     user ||= User.new # guest user (not logged in)
+    
+    #if user.has_role? :api_only
+      # TODO
+    # global super admin can control everything
     if user.has_role? :super_admin
       # can do anything
       can :manage, :all
-      # can only see info for his/her particular company
-      # can do anything, but only for his/her particular company
-    elsif user.has_role? :company_admin
-      can :manage, Company, :id => user.company.id
-      can :manage, Office, :company_id => user.company.id
-      can :manage, User, :company_id => user.company_id
-      can :manage, Building
-      can :manage, ResidentialUnit
-      can :manage, CommercialUnit
-      can :manage, Landlord
-    else
+
+    # can do anything, but for his/her particular company only
+    elsif user.has_role?(:company_admin) || user.has_role?(:manager)
+      if user.has_role?(:company_admin)
+        can :manage, User, :company_id => user.company_id
+        can :manage, Company, :id => user.company.id
+        can :manage, Office, :company_id => user.company.id
+        can :manage, Landlord do |landlord|
+          landlord.company_id == user.company_id
+        end
+      end
+
+      if user.has_role?(:manager)
+        can :read, Landlord do |landlord|
+          landlord.company_id == user.company_id
+        end
+      end
+
+      can :manage, Building, :company_id => user.company.id
+      can :manage, ResidentialUnit do |residential_unit|
+          residential_unit.building.company_id == user.company_id
+        end
+      can :manage, CommercialUnit do |commercial_unit|
+        commercial_unit.building.company_id == user.company_id
+      end
+
+
+      
+    else # regular users (agents, non-management)
       # can only see info for his/her particular company
       # can only manage his/her profile
-      can :read, :all
+      #can :read, :all
       if user.company_id
-        can :read, Office, :company_id => user.company.id
         can :read, User, :company_id => user.company_id
+        can :read, Company, :id => user.company.id
+        can :read, Office, :company_id => user.company.id
+        can :read, Building, :company_id => user.company_id
+        can :read, ResidentialUnit do |residential_unit|
+          residential_unit.building.company_id == user.company_id
+        end
+        can :read, CommercialUnit do |commercial_unit|
+          commercial_unit.building.company_id == user.company_id
+        end
+        
       end
+      can :read, User
       can :manage, User, :id => user.id
     end
 
-    # Define abilities for the passed in user here. For example:
-    #
-    #   user ||= User.new # guest user (not logged in)
-    #   if user.admin?
-    #     can :manage, :all
-    #   else
-    #     can :read, :all
-    #   end
-    #
-    # The first argument to `can` is the action you are giving the user
-    # permission to do.
-    # If you pass :manage it will apply to every action. Other common actions
-    # here are :read, :create, :update and :destroy.
-    #
-    # The second argument is the resource the user can perform the action on.
-    # If you pass :all it will apply to every resource. Otherwise pass a Ruby
-    # class of the resource.
-    #
-    # The third argument is an optional hash of conditions to further filter the
-    # objects.
-    # For example, here the user can only update published articles.
-    #
-    #   can :update, Article, :published => true
-    #
-    # See the wiki for details:
-    # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
+    
   end
 end

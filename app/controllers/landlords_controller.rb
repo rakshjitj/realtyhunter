@@ -88,7 +88,7 @@ class LandlordsController < ApplicationController
     end
 
     def set_landlords
-      @landlords = Landlord.search(params[:filter], params[:agent_filter], params[:active_only])
+      @landlords = Landlord.includes(:buildings).search(params[:filter], params[:agent_filter], params[:active_only])
       @landlords = custom_sort
       @landlords = @landlords.paginate(:page => params[:page], :per_page => 50)
     end

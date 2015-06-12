@@ -41,7 +41,8 @@ class CompaniesController < ApplicationController
   end
 
   def employees
-    @users = @company.users.paginate(:page => params[:page], :per_page => 50)
+    @users = @company.users.includes(:office, :employee_title)
+      .paginate(:page => params[:page], :per_page => 50)
     render 'users/index'
   end
 
@@ -107,7 +108,7 @@ class CompaniesController < ApplicationController
     end
 
     def set_companies
-      @companies = Company.where(archived: false).paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")
+      @companies = Company.unarchived.paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

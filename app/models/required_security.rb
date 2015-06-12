@@ -3,6 +3,8 @@ class RequiredSecurity < ActiveRecord::Base
 	has_many :landlords
 	before_save :downcase_name
 
+	validates :company, presence: true
+	
 	private
 
 		def downcase_name
