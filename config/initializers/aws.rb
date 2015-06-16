@@ -1,5 +1,8 @@
-AWS.config(access_key_id:     ENV['AWS_ACCESS_KEY_ID'],
-           secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'] )
+Aws.config.update({
+	region: 'us-east-1',
+	credentials: Aws::Credentials.new(ENV['AWS_ACCESS_KEY_ID'], ENV['AWS_SECRET_ACCESS_KEY'])
+})
 
-S3_AVATAR_BUCKET = AWS::S3.new.buckets[ENV['S3_AVATAR_BUCKET']]
-S3_AVATAR_THUMBNAIL_BUCKET = AWS::S3.new.buckets[ENV['S3_AVATAR_THUMBNAIL_BUCKET']]
+s3 = Aws::S3::Resource.new
+S3_AVATAR_BUCKET = s3.bucket(ENV['S3_AVATAR_BUCKET'])
+#S3_AVATAR_THUMBNAIL_BUCKET = s3.bucket(ENV['S3_AVATAR_THUMBNAIL_BUCKET'])

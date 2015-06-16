@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   has_many   :subordinates, :class_name => "User", :foreign_key => "manager_id"
   has_many   :buildings # listing agent
   has_many   :units # primary agent
-  attachment :avatar #, extension: ["jpg", "jpeg", "png", "gif"]
+  attachment :avatar, type: :image
 
   scope :unarchived, ->{where(archived: false)}
 

@@ -22,8 +22,8 @@
   <div class="col-md-6">
     <!-- User image form -->
     
-    <!-- , :url => user_upload_image_path(@user)  -->
-    <%= form_for(@user) do |f| %>
+    <!-- ,   -->
+    <%= form_for(@user, :url => upload_image_user_path(@user)) do |f| %>
 
       <div class="row">
         <div class="col-md-12">
@@ -45,17 +45,16 @@
       <div class="field">
         <br />
         <%= f.label :avatar, "Upload new profile image:" %><br>
-        <%= f.attachment_field :avatar, direct: true, class: 'form-control'  %>
+        <%= f.attachment_field :avatar, direct: true, presigned: true, class: 'form-control'  %>
         <br />
-        <%= f.label :remote_avatar_url, "Or specify URL:" %>
+        <%= f.label :remote_avatar_url, "Or copy image from URL:" %>
         <%= f.text_field :remote_avatar_url, class: 'form-control' %>
       </div>
       <div class="actions">
-        <%= f.submit "Save", class: "btn btn-primary" %>
+        <%= f.submit "Update", class: "btn btn-primary" %>
       </div>
     <% end %>
   </div>
-
 
   <div class="col-md-6">
     <!-- All other fields form -->

@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
   skip_before_action :logged_in_user, only: [:new, :create, :update_offices]
-  before_action :set_user, except: [:index, :teams, :new, :batch_new, :create, :batch_create, :batch_add_user, :update_offices]
+  before_action :set_user, except: [:index, :teams, :new, :batch_new, :create, 
+    :batch_create, :batch_add_user, :update_offices]
   before_action :set_company, except: [:update_offices]
 
   # GET /users
@@ -133,8 +134,11 @@ class UsersController < ApplicationController
 
   # PATCH /users/1
   def upload_image
-    # TODO: lock down params
-    #@user = User.find(params[:id])
+    # restrict so only photo-related parameters go through
+    photo_params = {}
+    photo_params[:avatar] = user_params[:avatar]
+    photo_params[:remove_avatar] = user_params[:remove_avatar]
+    photo_params[:remote_avatar_url] = user_params[:remote_avatar_url]
     if @user.update(user_params)
       flash[:success] = "Profile image updated!"
       redirect_to @user
