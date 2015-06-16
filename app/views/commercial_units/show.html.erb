@@ -1,5 +1,5 @@
 <script>
-$( document ).ready(function() {
+	function initialize() {
     $(".panel").geocomplete({
     	map: "#map_canvas",
     	location: "<%= @commercial_unit.building.formatted_street_address %>" ,
@@ -9,8 +9,8 @@ $( document ).ready(function() {
     }).bind("geocode:error", function(event, result){
         //console.log("[ERROR]: " + result);
     });
-
-});
+	};
+	$(document).ready(initialize);
 </script>
 
 <% provide(:title, 'Commercial Unit') %>

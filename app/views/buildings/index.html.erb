@@ -1,8 +1,7 @@
 <script>
    //unobstrusive: attach method call here
    //call when typing or enter or focus leaving
-  $( document ).ready(function() {
-
+  function initialize() {
     function doSearch(event) {
       $.ajax({
         url: "<%= buildings_filter_path %>",
@@ -35,8 +34,9 @@
     $('#filter').keyup(throttledSearch);
     // toggle between active and inactive units
     $('#checkbox_active').click(doSearch);
-
-  });
+  };
+  // TODO: get rid of document.ready
+  $(document).ready(initialize);
 </script>
 
 <% provide(:title, 'Buildings') %>

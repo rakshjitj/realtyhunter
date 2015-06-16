@@ -1,11 +1,13 @@
 <script>
-  $( document ).ready(function() {
-      if ('<%= @user.employee_title.name %>' === '<%= @agent_title.name %>') {
-        $('.agent-type').show();
-      } else {
-        $('.agent-type').hide();
-      }
-  });
+  function initialize() {
+    if ('<%= @user.employee_title.name %>' === '<%= @agent_title.name %>') {
+      $('.agent-type').show();
+    } else {
+      $('.agent-type').hide();
+    }
+  };
+  // TODO: get rid of document.ready
+  $(document).ready(initialize);
 
   function title_onchange_handler(input) {
     if (input.toLowerCase() === '<%= @agent_title.name %>') {

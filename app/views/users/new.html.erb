@@ -1,5 +1,5 @@
 <script>
-	$(document).ready(function() {
+  function initialize() {
     $('#companies_select').change(function() {
       $.ajax({
         url: "<%= update_offices_users_path %>",
@@ -9,7 +9,9 @@
         dataType: "script"
       });
     });
-  });
+  };
+  // TODO: get rid of document.ready
+	$(document).ready(initialize);
 </script>
 
 <% provide(:title, 'New User Signup') %>
@@ -19,8 +21,8 @@
 		<h1>Welcome to the RealtyMonster!</h1>
 		<br />	
 		<%= render 'new_user_form', :locals => {
-            agent_title: @agent_title, 
-            company: @company }  %>
+      agent_title: @agent_title, 
+      company: @company }  %>
 	</div>
 </div>
 

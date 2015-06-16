@@ -1,8 +1,10 @@
 
 <script>
-  $( document ).ready(function() {
-      $('.agent-type').hide();
-  });
+  function initialize() {
+    $('.agent-type').hide();
+  }
+  // TODO: get rid of document.ready
+  $(document).ready(initialize);
 
   function title_onchange_handler(input) {
     if (input.toLowerCase() === '<%= @agent_title.name %>') {

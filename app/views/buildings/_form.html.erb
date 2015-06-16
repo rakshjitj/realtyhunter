@@ -1,5 +1,5 @@
 <script>
-$( document ).ready(function() {
+  function initialize() {
     $(".autocomplete-input").geocomplete({
       map: "#map_canvas",
       location: "<%= @building.formatted_street_address ? @building.formatted_street_address : 'New York, NY, USA' %>" ,
@@ -11,8 +11,8 @@ $( document ).ready(function() {
     }).bind("geocode:error", function(event, result){
       //console.log("<%= @building.formatted_street_address %>", "[ERROR]: " + result);
     });
-
-});
+  };
+  $(document).ready(initialize);
 </script>
 
 <%= form_for(@building) do |f| %>

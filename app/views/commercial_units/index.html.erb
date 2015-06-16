@@ -1,8 +1,7 @@
 <script>
    //unobstrusive: attach method call here
    //call when typing or enter or focus leaving
-  $( document ).ready(function() {
-
+  function initialize() {
     var timer2;
     function clearSpinner() {
       // remove the spinner after download completes.
@@ -67,7 +66,9 @@
     $('#neighborhood_ids').change(throttledSearch);
     $('#property_type').change(throttledSearch);
     $('#listing_id').keyup(throttledSearch);
-  });
+  };
+  // TODO: get rid of document.ready
+  $(document).ready(initialize);
 </script>
 
 <br />

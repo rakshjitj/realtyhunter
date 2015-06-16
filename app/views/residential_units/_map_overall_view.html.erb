@@ -1,55 +1,53 @@
-    <div id="big_map"></div>
-    <script>
-      function initialize() {
-        var mapOptions = {
-          center: { lat: 40.6739591, lng: -73.9570342},
-          zoom: 12
-        };
-        var map = new google.maps.Map(document.getElementById('big_map'), mapOptions);
+<div id="big_map"></div>
+<script>
+  function initialize() {
+    var mapOptions = {
+      center: { lat: 40.6739591, lng: -73.9570342},
+      zoom: 12
+    };
+    var map = new google.maps.Map(document.getElementById('big_map'), mapOptions);
 
-        function buildContentString(key, info) {
-          var contentString = '<strong>' + key + '</strong><hr />';
-          for (var i=0; i<info['units'].length; i++) {
-            contentString += '#<a href="/residential_units/' + info['units'][i].id + '">' + info['units'][i].building_unit + '</a>: ' + info['units'][i].beds + ' beds / ' 
-              + info['units'][i].baths + ' baths $' + info['units'][i].rent + '<br />';
-            if (i == 5) {
-              contentString += '<a href="/residential_units?building_id=' + info['building_id'] + '">View more...</a>';
-              break;
-            }
-          }
-          return contentString;
-        };
-
-        var rInfo = <%= raw @map_infos.to_json %>;
-        //console.log(rInfo);
-        //var markers = [];
-        //var contentStrings = [];
-
-        Object.keys(rInfo).forEach(function(key, index) {
-          // draw marker
-          info = rInfo[key];
-          var myLatlng = new google.maps.LatLng(info.lat, info.lng);
-          var marker = new google.maps.Marker({
-            map:map,
-            animation: google.maps.Animation.DROP,
-            position: myLatlng,
-            //title: 'Hello World!'
-          });
-          //markers.push(marker);
-          //contentStrings.push(buildContentString(key, info));
-
-          // populate infoWindow
-          var infowindow = new google.maps.InfoWindow({
-           content: buildContentString(key, info)
-          });
-          google.maps.event.addListener(marker, 'click', function() {
-            infowindow.open(map, marker);
-          });
-          
-        });
+    function buildContentString(key, info) {
+      var contentString = '<strong>' + key + '</strong><hr />';
+      for (var i=0; i<info['units'].length; i++) {
+        contentString += '#<a href="/residential_units/' + info['units'][i].id + '">' + info['units'][i].building_unit + '</a>: ' + info['units'][i].beds + ' beds / ' 
+          + info['units'][i].baths + ' baths $' + info['units'][i].rent + '<br />';
+        if (i == 5) {
+          contentString += '<a href="/residential_units?building_id=' + info['building_id'] + '">View more...</a>';
+          break;
+        }
       }
+      return contentString;
+    };
 
-      $(document).ready(function() {
-        initialize();
+    var rInfo = <%= raw @map_infos.to_json %>;
+    //console.log(rInfo);
+    //var markers = [];
+    //var contentStrings = [];
+
+    Object.keys(rInfo).forEach(function(key, index) {
+      // draw marker
+      info = rInfo[key];
+      var myLatlng = new google.maps.LatLng(info.lat, info.lng);
+      var marker = new google.maps.Marker({
+        map:map,
+        animation: google.maps.Animation.DROP,
+        position: myLatlng,
+        //title: 'Hello World!'
       });
-    </script>
+      //markers.push(marker);
+      //contentStrings.push(buildContentString(key, info));
+
+      // populate infoWindow
+      var infowindow = new google.maps.InfoWindow({
+       content: buildContentString(key, info)
+      });
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map, marker);
+      });
+      
+    });
+  }
+
+  $(document).ready(initialize);
+</script>

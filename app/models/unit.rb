@@ -1,16 +1,15 @@
 class Unit < ActiveRecord::Base
 	actable
 	belongs_to :building
+  # TODO: test. I don't think this is working right?
+  belongs_to :primary_agent, :foreign_key => 'user_id', :class_name => 'User'
+  belongs_to :listing_agent, :foreign_key => 'user_id', :class_name => 'User'
   #before_validation :generate_unique_id
 
   scope :unarchived, ->{where(archived: false)}
   scope :active, ->{where(status: "active")}
   scope :residential, ->{where("actable_type = 'ResidentialUnit'")}
   scope :commercial, ->{where("actable_type = 'CommercialUnit'")}
-  
-  # TODO: test. I don't think this is working right
-	belongs_to :primary_agent, :foreign_key => 'user_id', :class_name => 'User'
-	belongs_to :listing_agent, :foreign_key => 'user_id', :class_name => 'User'
 
 	enum status: [ :active, :pending, :off ]
 	validates :status, presence: true, inclusion: { in: %w(active pending off) }

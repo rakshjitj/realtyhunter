@@ -1,16 +1,16 @@
 <script>
-$( document ).ready(function() {
-    $(".autocomplete-input").geocomplete({
-      map: "#map_canvas",
-      location: "<%= @office.formatted_street_address ? @office.formatted_street_address : 'New York, NY, USA' %>" ,
-      details: ".details"
-    }).bind("geocode:result", function(event, result){
-      if (this.value == "New York, NY, USA") {
-        this.value = '';
-      }
-    });
-
-});
+  function initialize() {
+      $(".autocomplete-input").geocomplete({
+        map: "#map_canvas",
+        location: "<%= @office.formatted_street_address ? @office.formatted_street_address : 'New York, NY, USA' %>" ,
+        details: ".details"
+      }).bind("geocode:result", function(event, result){
+        if (this.value == "New York, NY, USA") {
+          this.value = '';
+        }
+      });
+  };
+  $(document).ready(initialize);
 </script>
 
 <div class="row">
