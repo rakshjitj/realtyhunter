@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   
   protect_from_forgery with: :exception
   include SessionsHelper
-  before_filter :expire_hsts
+  before_action :expire_hsts
   
   # protected
   #   def set_locale

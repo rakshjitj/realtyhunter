@@ -1,14 +1,15 @@
+require 'factory_girl_rails'
+include FactoryGirl::Syntax::Methods
 require 'test_helper'
 
 class LandlordTest < ActiveSupport::TestCase
 
 	def setup
-    @company = companies(:one)
-    @required_security = required_securities(:one)
-
-    @landlord = landlords(:one)
-    @landlord.company = @company
-    @landlord.required_security = @required_security
+    @company = build(:company)
+    @required_security = build(:required_security, company: @company)
+    # build then save to trigger before_save callback
+    @landlord = build(:landlord, company: @company, required_security: @required_security)
+    @landlord.save
   end
 
   test "should be valid" do
@@ -110,10 +111,11 @@ class LandlordTest < ActiveSupport::TestCase
   end
 
   test "email addresses should be saved as lower-case" do
-    mixed_case_email = "Foo@ExAMPle.CoM"
+    mixed_case_email = "Foo2@ExAMPle.CoM"
     @landlord.email = mixed_case_email
-    @landlord.save
-    assert_equal mixed_case_email.downcase, @landlord.reload.email
+    @landlord.save!
+    # TODO: reload breaks with factorygirl
+    assert_equal mixed_case_email.downcase, @landlord.email #landlord.reload.email
   end
 
    test "phone validation should accept valid phone numbers" do

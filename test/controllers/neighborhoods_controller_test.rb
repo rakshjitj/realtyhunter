@@ -1,8 +1,10 @@
+require 'factory_girl_rails'
+include FactoryGirl::Syntax::Methods
 require 'test_helper'
 
 class NeighborhoodsControllerTest < ActionController::TestCase
   setup do
-    @neighborhood = neighborhoods(:one)
+    @neighborhood = create(:neighborhood)
   end
 
   test "should get index" do

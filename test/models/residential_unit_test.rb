@@ -1,48 +1,30 @@
+require 'factory_girl_rails'
+include FactoryGirl::Syntax::Methods
 require 'test_helper'
 
 class ResidentialUnitTest < ActiveSupport::TestCase
   def setup
-  	# fixtures not working, MTI messes things up
-    #puts "11111 #{Neighborhood.all.count}"
-
-    @n = neighborhoods(:one)
-    @n2 = neighborhoods(:two)
-
-    @building = buildings(:one)
-    @building.neighborhood_id = @n.id
-
-    @building2 = buildings(:two)
-    @building2.neighborhood = @n2
-
-    @pet_policy = pet_policies(:three)
-
-    @unit = ResidentialUnit.new({
-    	beds: 1,
-    	baths: 1,
-      listing_id: 1111,
-      building_unit: "1111",
-      rent: 10,
-      building: @building,
-      pet_policy: @pet_policy
-    	})
-    @unit2 = ResidentialUnit.new({
-      beds: 5,
-      baths: 5,
-      listing_id: 2222,
-      building_unit: "2222",
-      rent: 20,
-      building: @building2,
-      pet_policy: @pet_policy
-      })
-    @unit3 = ResidentialUnit.new({
-      beds: 8,
-      baths: 8,
-      listing_id: 3333,
-      building_unit: "3333",
-      rent: 30,
-      building: @building2,
-      pet_policy: @pet_policy
-      })
+    @company = build_stubbed(:company)
+    # want each to have diff addresses, so generate diff buildings
+    @building = build(:building, company: @company)
+    @building2 = build(:building, company: @company)
+    @building3 = build(:building, company: @company)
+    
+    @unit = build(:residential_unit, 
+        building: @building, 
+        rent: 10,
+        beds: 1,
+        baths: 1)
+    @unit2 = build(:residential_unit, 
+        building: @building2, 
+        rent: 20,
+        beds: 5,
+        baths: 5)
+    @unit3 = build(:residential_unit, 
+        building: @building3, 
+        rent: 30,
+        beds: 8,
+        baths: 8)
   end
 
   test "should be valid" do
@@ -103,9 +85,11 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit.save
     @unit2.save
     @unit3.save
+    Unit.all 
     params = {}
     params[:address] = @building.formatted_street_address
     @results = ResidentialUnit.search(params)
+    @results2 = @results.map(&:building_unit)
     assert_equal 1, @results.length
     assert @results[0].building.formatted_street_address, @building.formatted_street_address
   end

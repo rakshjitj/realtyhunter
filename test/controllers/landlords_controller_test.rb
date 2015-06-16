@@ -1,8 +1,10 @@
+require 'factory_girl_rails'
+include FactoryGirl::Syntax::Methods
 require 'test_helper'
 
 class LandlordsControllerTest < ActionController::TestCase
   setup do
-    @landlord = landlords(:one)
+    @landlord = create(:landlord)
   end
 
   test "should get index" do

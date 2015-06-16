@@ -30,7 +30,6 @@ gem 'will_paginate'
 gem 'bootstrap-sass', '~> 3.3.4'
 gem 'bootstrap-will_paginate'
 gem 'autoprefixer-rails'
-gem 'rails_12factor', group: :production
 gem 'better_errors'
 # for handling image uploads
 gem 'aws-sdk', '< 2'
@@ -55,6 +54,7 @@ gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary-edge', '~> 0.12.2.1'
 
 group :production do
+	gem 'rails_12factor'
 	gem 'puma'
 	#gem 'wkhtmltopdf-heroku'
 end
@@ -70,4 +70,10 @@ end
 
 group :development do
   gem 'rb-readline'
+  gem "bullet"
+end
+
+group :test do
+  gem "factory_girl_rails", "~> 4.0"
+  gem 'database_cleaner'
 end

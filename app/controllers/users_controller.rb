@@ -60,6 +60,7 @@ class UsersController < ApplicationController
     @agent_title = EmployeeTitle.agent
     @users = []
     @users << User.new
+    
   end
 
   def batch_add_user
@@ -120,7 +121,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     #@user = User.find(params[:id])
-    if @user.update_attributes(user_params)
+    if @user.update(user_params)
       @user.update_roles
       flash[:success] = "Profile updated!"
       redirect_to @user
@@ -134,7 +135,7 @@ class UsersController < ApplicationController
   def upload_image
     # TODO: lock down params
     #@user = User.find(params[:id])
-    if @user.update_attributes(user_params)
+    if @user.update(user_params)
       flash[:success] = "Profile image updated!"
       redirect_to @user
     else

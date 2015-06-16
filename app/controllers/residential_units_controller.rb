@@ -88,7 +88,7 @@ class ResidentialUnitsController < ApplicationController
   # POST /residential_units.json
   def create
     @residential_unit = ResidentialUnit.new(residential_unit_params)
-    @residential_unit.listing_id = Unit.generate_unique_id
+    #@residential_unit.listing_id = Unit.generate_unique_id
     if !@residential_unit.available_by?
       @residential_unit.available_by = Date.today
     end

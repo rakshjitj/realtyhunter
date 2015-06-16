@@ -1,8 +1,10 @@
+require 'factory_girl_rails'
+include FactoryGirl::Syntax::Methods
 require 'test_helper'
 
 class CommercialUnitsControllerTest < ActionController::TestCase
   setup do
-    @commercial_unit = commercial_units(:one)
+    @commercial_unit = create(:commercial_unit)
   end
 
   test "should get index" do

@@ -1,17 +1,14 @@
+require 'factory_girl_rails'
+include FactoryGirl::Syntax::Methods
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
 
   def setup
-    @company = companies(:one)
-    @office = offices(:one)
-    @office.company = @company
-
-    @user = users(:michael)
-    @user2 = users(:archer)
-    @manager = users(:lana)
-    @company.users = [@user, @user2, @manager]
-    @office.users = [@user, @user2, @manager]
+    @company = build(:company)
+    @user = build(:user, company: @company)
+    @user2 = build(:user, company: @company)
+    @manager = build(:user, company: @company)
   end
 
   # Returns true if a test user is logged in.
@@ -106,6 +103,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "find_unarchived does not return archived results" do
+    @user.save
     assert_not_nil User.find_unarchived(@user.id)
     @user.archive
     assert_raises(ActiveRecord::RecordNotFound) { User.find_unarchived(@user.id) }
@@ -118,14 +116,14 @@ class UserTest < ActiveSupport::TestCase
 
   test "search correct when valid user found" do
     @user.name = "raquel bujans"
-    @results = User.search("bujans")
-    assert @results.length, 1
+    results = User.search("bujans")
+    assert results.length, 1
   end
 
   test "search correct when no valid user found" do
     @user.name = "raquel bujans"
-    @results = User.search("blah")
-    assert @results.length, 0
+    results = User.search("blah")
+    assert results.length, 0
   end
 
   # test the roles out
@@ -164,7 +162,7 @@ class UserTest < ActiveSupport::TestCase
     assert @user.agent_specialties_as_indicies[1], 2
   end
 
-  # TODO test add_sanitized_role
+  # # TODO test add_sanitized_role
 
   test "make manager works" do
     @manager.make_manager
@@ -286,6 +284,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "every user gets a unique auth token upon creation" do
+    @user.save
     assert_not_nil @user.auth_token
     
     duplicate_user = @user.dup

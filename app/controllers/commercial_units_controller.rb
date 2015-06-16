@@ -66,7 +66,7 @@ class CommercialUnitsController < ApplicationController
   # POST /commercial_units.json
   def create
     @commercial_unit = CommercialUnit.new(commercial_unit_params)
-    @commercial_unit.listing_id = Unit.generate_unique_id
+    #@commercial_unit.listing_id = Unit.generate_unique_id
     if !@commercial_unit.available_by?
       @commercial_unit.available_by = Date.today
     end

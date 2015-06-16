@@ -1,9 +1,12 @@
+require 'factory_girl_rails'
+include FactoryGirl::Syntax::Methods
 require 'test_helper'
 
 class CompanyTest < ActiveSupport::TestCase
 
   def setup
-    @company = companies(:one)
+    #@company = companies(:one)
+    @company = build(:company)
   end
 
   test "should be valid" do
@@ -28,26 +31,25 @@ class CompanyTest < ActiveSupport::TestCase
   end
 
   test "find_unarchived does not return archived results" do
+    @company.save
     assert_not_nil Company.find_unarchived(@company.id)
     @company.archive
     assert_raises(ActiveRecord::RecordNotFound) { Company.find_unarchived(@company.id) }
   end
 
   test "admins returns only admin users" do
-    @user = users(:michael)
-    @user2 = users(:lana)
-    @user.make_company_admin
+    user = create(:user)
+    user2 = create(:user)
+    user.make_company_admin
     assert 1, @company.admins.count
   end
 
   test "managers returns only manager users" do
-    @user = users(:michael)
-    @user2 = users(:lana)
-    @user.make_manager
+    user = create(:user)
+    user2 = create(:user)
+    user.make_manager
     assert 1, @company.managers.count
   end
 
   # TODO: update_agent_types, update_employee_titles
-
-
 end

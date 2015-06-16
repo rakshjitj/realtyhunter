@@ -1,47 +1,43 @@
+require 'factory_girl_rails'
+include FactoryGirl::Syntax::Methods
 require 'test_helper'
 
-class UserTest < ActiveSupport::TestCase
+class PetPolicyTest < ActiveSupport::TestCase
 
   def setup
-    @company = companies(:one)
-    @pp = PetPolicy.all.each{|p| p.company_id = @company.id; p.save(); }
+    # trigger the after_save callbacks so pet policies get created
+    @company = create(:company)
+    # pet policies should have been defined by now...
+    @pp_dogs = PetPolicy.find_by(name: 'dogs only');
+    @pp_cats = PetPolicy.find_by(name: 'cats only');
   end
 
   test 'names are downcased' do
-    dogs_only_policy = pet_policies(:dogs_only)
-    assert_equal "dogs only", dogs_only_policy.name
+    assert_equal "dogs only", @pp_dogs.name
   end
 
   test 'policies_that_allow_cats only returns cat-friendly policies' do
   	policies = PetPolicy.policies_that_allow_cats(@company.id, true).map(&:id)
-  	dogs_only_policy = pet_policies(:dogs_only)
-  	cats_only_policy = pet_policies(:cats_only)
-  	assert_not_includes policies, dogs_only_policy.id
-  	assert_includes policies, cats_only_policy.id
+  	assert_not_includes policies, @pp_dogs.id
+  	assert_includes policies, @pp_cats.id
   end
   
   test 'policies_that_allow_cats(false) returns cat-unfriendly policies' do
     policies = PetPolicy.policies_that_allow_cats(@company.id, false).map(&:id)
-    dogs_only_policy = pet_policies(:dogs_only)
-    cats_only_policy = pet_policies(:cats_only)
-    assert_includes policies, dogs_only_policy.id
-    assert_not_includes policies, cats_only_policy.id
+    assert_includes policies, @pp_dogs.id
+    assert_not_includes policies, @pp_cats.id
   end
 
   test 'policies_that_allow_dogs only returns dog-friendly policies' do
   	policies = PetPolicy.policies_that_allow_dogs(@company.id, true).map(&:id)
-  	dogs_only_policy = pet_policies(:dogs_only)
-  	cats_only_policy = pet_policies(:cats_only)
-  	assert_includes policies, dogs_only_policy.id
-  	assert_not_includes policies, cats_only_policy.id
+  	assert_includes policies, @pp_dogs.id
+  	assert_not_includes policies, @pp_cats.id
   end
 
   test 'policies_that_allow_dogs(false) only returns dog-unfriendly policies' do
     policies = PetPolicy.policies_that_allow_dogs(@company.id, false).map(&:id)
-    dogs_only_policy = pet_policies(:dogs_only)
-    cats_only_policy = pet_policies(:cats_only)
-    assert_not_includes policies, dogs_only_policy.id
-    assert_includes policies, cats_only_policy.id
+    assert_not_includes policies, @pp_dogs.id
+    assert_includes policies, @pp_cats.id
   end
 
 end

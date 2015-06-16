@@ -87,7 +87,7 @@ class OfficesController < ApplicationController
     end
 
     def set_offices
-      @offices = Office.unarchived.where(company: @company)
+      @offices = Office.unarchived.includes(:company).where(company: @company)
     end
 
     def set_company

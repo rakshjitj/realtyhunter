@@ -21,7 +21,7 @@
     
     <p>Users will be notified of their accounts immediately after creation.</p>
 
-    <%= form_for(@users, :url => batch_create_users_path(@users), html: { class: "directUpload" }) do |f| %>
+    <%= form_for(@users, :url => batch_create_users_path(@users), remote: true, html: { class: "directUpload" }) do |f| %>
       <!--%= render :partial => 'shared/error_messages', 
       :locals => {:model => @building} %-->
 

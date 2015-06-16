@@ -1,8 +1,10 @@
+require 'factory_girl_rails'
+include FactoryGirl::Syntax::Methods
 require 'test_helper'
 
 class UnitsControllerTest < ActionController::TestCase
   setup do
-    @unit = units(:one)
+    @unit = create(:unit)
   end
 
   test "should get index" do

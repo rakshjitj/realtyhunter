@@ -1,8 +1,11 @@
+require 'factory_girl_rails'
+include FactoryGirl::Syntax::Methods
 require 'test_helper'
 
 class BuildingsControllerTest < ActionController::TestCase
   setup do
-    @building = buildings(:one)
+    #@building = buildings(:one)
+    @building = create(:building)
   end
 
   test "should get index" do
@@ -18,7 +21,7 @@ class BuildingsControllerTest < ActionController::TestCase
 
   test "should create building" do
     assert_difference('Building.count') do
-      post :create, building: { address: @building.address, private_notes: @building.private_notes }
+      post :create, building: { address: @building.formatted_street_address, private_notes: @building.notes }
     end
 
     assert_redirected_to building_path(assigns(:building))
@@ -35,7 +38,7 @@ class BuildingsControllerTest < ActionController::TestCase
   end
 
   test "should update building" do
-    patch :update, id: @building, building: { address: @building.address, private_notes: @building.private_notes }
+    patch :update, id: @building, building: { address: @building..formatted_street_address, private_notes: @building.notes }
     assert_redirected_to building_path(assigns(:building))
   end
 

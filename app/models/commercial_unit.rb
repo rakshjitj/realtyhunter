@@ -1,9 +1,9 @@
 class CommercialUnit < ActiveRecord::Base
 	acts_as :unit
-
+  belongs_to :commercial_property_type
+  before_validation :generate_unique_id
   scope :unarchived, ->{where(archived: false)}
   
-  belongs_to :commercial_property_type
   attr_accessor :property_type, :inaccuracy_description
 
   enum construction_status: [ :existing, :under_construction ]
@@ -51,7 +51,7 @@ class CommercialUnit < ActiveRecord::Base
       return CommercialUnit.unarchived.where(building_id: building_id)
     end
 
-    @running_list = Unit.includes(:building, :landlord).unarchived
+    @running_list = Unit.includes(:building).unarchived
     
     # clear out any invalid search params
     #params.delete_if{|k,v| !(v || v > 0 || !v.empty?) }
@@ -118,7 +118,7 @@ class CommercialUnit < ActiveRecord::Base
   def duplicate(new_unit_num, include_photos)
     if new_unit_num
       commercial_unit_dup = self.dup
-      commercial_unit_dup.listing_id = Unit.generate_unique_id
+      #commercial_unit_dup.listing_id = Unit.generate_unique_id
       commercial_unit_dup.building_unit = new_unit_num
       # TODO: photos
       commercial_unit_dup.save
@@ -136,4 +136,12 @@ class CommercialUnit < ActiveRecord::Base
     end
   end
 
+  private
+    def generate_unique_id
+      self.listing_id = SecureRandom.random_number(9999999)
+      while ResidentialUnit.find_by(listing_id: listing_id) do
+        self.listing_id = rand(9999999)
+      end
+      self.listing_id
+    end
 end

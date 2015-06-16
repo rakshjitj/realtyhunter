@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   # Remembers a user in the database for use in persistent sessions.
   def remember
     self.remember_token = User.new_token
-    update_attribute(:remember_digest, User.digest(remember_token))
+    update_columns(remember_digest: User.digest(remember_token))
   end
 
   # Returns true if the given token matches the digest.
@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
 
   # Forgets a user.
   def forget
-    update_attribute(:remember_digest, nil)
+    update_columns(:remember_digest, nil)
   end
 
   # Activates an account.
@@ -128,7 +128,7 @@ class User < ActiveRecord::Base
   end
 
   def self.search(query_string)
-    @running_list = User.unarchived
+    @running_list = User.unarchived.includes(:employee_title, :office, :company, :manager)
 
     return @running_list if !query_string
     

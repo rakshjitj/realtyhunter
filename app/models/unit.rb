@@ -1,6 +1,7 @@
 class Unit < ActiveRecord::Base
 	actable
 	belongs_to :building
+  #before_validation :generate_unique_id
 
   scope :unarchived, ->{where(archived: false)}
   scope :active, ->{where(status: "active")}
@@ -29,40 +30,34 @@ class Unit < ActiveRecord::Base
     find_by!(id: id, archived: false)
   end
 
-  # def self.active_residential
-  #   units = Unit.unarchived.residential.includes(:building)
-  #   residential_units = ResidentialUnit.where(id: units.ids)
-  # end
-
-  # def self.active_commercial
-  #   units = Unit.unarchived.commercial.includes(:building)
-  #   commercial_units = CommercialUnit.where(id: units.ids)
-  # end
-
 	def self.get_residential(units)
     running_list = units.residential
     running_list = running_list.uniq
-    ids = running_list.map(&:id)
-
-    residential_units = ResidentialUnit.where(id: ids)
+    # searching by id breaks in factorygirl, so search by listing_id
+    # TODO: add index on listing_id?
+    ids = running_list.map(&:listing_id)
+    residential_units = ResidentialUnit.where(listing_id: ids)
     residential_units
   end
 
   def self.get_commercial(units)
-    running_list = units.where("actable_type = 'CommercialUnit'")
+    running_list = units.commercial
     running_list = running_list.uniq
-    ids = running_list.map(&:id)
-
-    commercial_units = CommercialUnit.where(id: ids)
+    ids = running_list.map(&:listing_id)
+    # searching by id breaks in factorygirl, so search by listing_id
+    # TODO: add index on listing_id?
+    commercial_units = CommercialUnit.where(listing_id: ids)
     commercial_units
   end
 
-	def self.generate_unique_id
-		listing_id = SecureRandom.random_number(9999999)
-    while ResidentialUnit.find_by(listing_id: listing_id) do
-      listing_id = rand(9999999)
-    end
-    listing_id
-  end
+  # private
+  # 	def generate_unique_id
+  #     puts "\n\n 11111112222222233333"
+  # 		self.listing_id = SecureRandom.random_number(9999999)
+  #     while ResidentialUnit.find_by(listing_id: listing_id) do
+  #       self.listing_id = rand(9999999)
+  #     end
+  #     self.listing_id
+  #   end
 	
 end

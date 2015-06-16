@@ -1,10 +1,12 @@
+require 'factory_girl_rails'
+include FactoryGirl::Syntax::Methods
 require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
 
   setup do
-    @user = users(:michael)
-    @other_user = users(:archer)
+    @user = create(:user)
+    @other_user = create(:user)
   end
 
   test "should redirect index when not logged in" do

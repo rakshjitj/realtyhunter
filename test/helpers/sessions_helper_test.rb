@@ -1,9 +1,11 @@
+require 'factory_girl_rails'
+include FactoryGirl::Syntax::Methods
 require 'test_helper'
 
 class SessionsHelperTest < ActionView::TestCase
 
   def setup
-    @user = users(:michael)
+    @user = create(:user)
     remember(@user)
   end
 

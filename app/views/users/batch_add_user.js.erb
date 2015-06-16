@@ -1,1 +1,7 @@
-$('#directUpload').append("<%= escape_javascript render(:partial => 'batch_add_user', :locals => {:builder => @builder }) %>"")
+//$('#directUpload').append("<%= escape_javascript render(:partial => 'batch_add_user', :locals => {:builder => @builder }) %>")
+<% if @uer.new_record? %>
+	$('input#user_name').effect('highlight', {color: 'red'});
+<% else %>
+	$('div#users').append("<%= escape_javascript(render @user) %>")
+	$('div#<%= dom_id(@user) %>').effect('highlight')
+<% end %>

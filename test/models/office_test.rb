@@ -1,9 +1,11 @@
+require 'factory_girl_rails'
+include FactoryGirl::Syntax::Methods
 require 'test_helper'
 
 class OfficeTest < ActiveSupport::TestCase
 
   def setup
-    @office = offices(:one)
+    @office = build(:office)
   end
 
   test "should be valid" do
@@ -147,14 +149,15 @@ class OfficeTest < ActiveSupport::TestCase
   end
 
   test "find_unarchived does not return archived results" do
+    @office.save
     assert_not_nil Office.find_unarchived(@office.id)
     @office.archive
     assert_raises(ActiveRecord::RecordNotFound) { Office.find_unarchived(@office.id) }
   end
 
   test "managers gets all managers for this office" do
-    michael = users(:michael)
-    archer = users(:archer)
+    michael = create(:user, company: @office.company)
+    archer = create(:user, company: @office.company)
     @office.users = [michael, archer]
     michael.make_manager
     assert true, michael.is_manager?
@@ -162,8 +165,8 @@ class OfficeTest < ActiveSupport::TestCase
   end
 
   test "agents gets all agents for this office" do
-    michael = users(:michael)
-    archer = users(:archer)
+    michael = create(:user, company: @office.company)
+    archer = create(:user, company: @office.company)
     @office.users = [michael, archer]
     michael.make_manager
     assert_equal 1, @office.agents.count

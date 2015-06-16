@@ -1,10 +1,12 @@
+require 'factory_girl_rails'
+include FactoryGirl::Syntax::Methods
 require 'test_helper'
 
 class CompaniesControllerTest < ActionController::TestCase
 
   setup do
-    @user = users(:michael)
-    @company = companies(:one)
+    @company = create(:company)
+    @user = create(:user)
   end
 
   test "should redirect index when not logged in" do

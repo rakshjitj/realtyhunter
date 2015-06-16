@@ -1,89 +1,47 @@
+require 'factory_girl_rails'
+include FactoryGirl::Syntax::Methods
 require 'test_helper'
 
-class BuildingTest < ActiveSupport::TestCase
+class AbilityTest < ActiveSupport::TestCase
   def setup
-  	@company = companies(:one)
-  	@company2 = companies(:two)
+  	@company = create(:company)
+  	@company2 = create(:company)
 
-  	@office = offices(:one)
-  	@office2 = offices(:two)
-		@office.company = @company
-		@office2.company = @company2
+  	@office = create(:office, company: @company)
+  	@office2 = create(:office)
 
-		@landlord = landlords(:one)
-		@landlord2 = landlords(:two)
-		@landlord.company = @company
-		@landlord2.company = @company2
+  	@landlord = build(:landlord, company: @company)
+  	@landlord2 = build(:landlord)
+  	@building = build(:building, landlord: @landlord, company: @company)
+  	@building2 = build(:building, landlord: @landlord2)
 
-  	@building = buildings(:one)
-  	@building2 = buildings(:two)
-  	@building.company = @company
-  	@building2.company = @company2
-  	@building.landlord = @landlord
-  	@building2.landlord = @landlord2
-
-  	@user = users(:michael)
-  	@user2 = users(:mallory)
-  	@manager = users(:archer)
+  	@user = build(:user, company: @company)
+  	@user2 = build(:user)
+  	@manager = build(:user, company: @company)
   	@manager.make_manager
-  	@company_admin = users(:lana)
+  	@company_admin = build(:user, company: @company)
   	@company_admin.make_company_admin
-  	
-  	@user.company = @company
 
-  	@manager.company = @company
-  	@company_admin.company = @company
-  	@user2.company = @company2
+  	@runit = build(:residential_unit, building: @building)
+  	@runit2 = build(:residential_unit, building: @building2)
 
-  	@runit = ResidentialUnit.new({
-    	beds: 1,
-    	baths: 1,
-      listing_id: 1111,
-      building_unit: "1111",
-      rent: 10,
-      building: @building,
-      pet_policy: @pet_policy
-    	})
-  	@runit2 = ResidentialUnit.new({
-    	beds: 1,
-    	baths: 1,
-      listing_id: 2222,
-      building_unit: "2222",
-      rent: 10,
-      building: @building2,
-      pet_policy: @pet_policy
-    	})
-
-  	@cunit = CommercialUnit.new({
-  		listing_id: 3333,
-  		building: @building,
-  		rent: 10,
-  		construction_status: "existing",
-  		lease_type: "full_service",
-  		sq_footage: 123,
-  		floor: 1,
-  		building_size: 1
-  		})
-
-  	@cunit2 = CommercialUnit.new({
-  		listing_id: 3333,
-  		building: @building2,
-  		rent: 10,
-  		construction_status: "existing",
-  		lease_type: "full_service",
-  		sq_footage: 123,
-  		floor: 1,
-  		building_size: 1
-  		})
+  	@cunit = build(:commercial_unit, building: @building)
+  	@cunit2 = build(:commercial_unit, building: @building2)
   end
 
+  # save?
   test "user can only edit their profile" do
+  	@manager.save
+  	@user.save
 	  ability = Ability.new(@user)
 	  assert ability.can?(:manage, @user)
 	  assert ability.cannot?(:manage, @manager)
 	end
 
+	# save?
 	test "user can only delete their profile" do
+		@manager.save
+  	@user.save
 	  ability = Ability.new(@user)
 	  assert ability.can?(:destroy, @user)
 	  assert ability.cannot?(:destroy, @manager)
@@ -141,7 +99,7 @@ class BuildingTest < ActiveSupport::TestCase
 
 	test "company admin can manage offices in their company" do
 		ability = Ability.new(@company_admin)
-	  assert ability.can?(:manage, @office)
+		assert ability.can?(:manage, @office)
 	end
 
 	test "company admin cannot manage offices in other companies" do
@@ -219,7 +177,6 @@ class BuildingTest < ActiveSupport::TestCase
 		ability = Ability.new(@company_admin)
 	  assert ability.cannot?(:manage, @runit2)
 	end
-
 
 	# ----------- Commercial Units -----------------------------
 	test "users can view commercial units from their company" do

@@ -2,11 +2,12 @@ class ResidentialUnit < ActiveRecord::Base
 	acts_as :unit
   has_and_belongs_to_many :residential_amenities
   belongs_to :pet_policy
-  validates :pet_policy, presence: true
-
+  before_validation :generate_unique_id
   scope :unarchived, ->{where(archived: false)}
 
   attr_accessor :include_photos, :inaccuracy_description
+
+  validates :pet_policy, presence: true
 
   validates :building_unit, presence: true, length: {maximum: 50}
 
@@ -130,15 +131,16 @@ class ResidentialUnit < ActiveRecord::Base
   # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 
   # neighborhoods, has_outdoor_space, features, pet_policy
   def self.search(params, building_id=nil)
+    @running_list = Unit.includes(:building).unarchived
+
     # actable_type to restrict to residential only
     if !params && !building_id
-      return ResidentialUnit.unarchived
+      return Unit.get_residential(@running_list)
+      #return ResidentialUnit.unarchived
     elsif !params && building_id
       return ResidentialUnit.unarchived.where(building_id: building_id)
     end
 
-    @running_list = Unit.includes(:building, :landlord).unarchived
-    
     # all search params come in as strings from the url
     # clear out any invalid search params
     params.delete_if{|k,v| (!v || v == 0 || v.empty?) }
@@ -146,12 +148,9 @@ class ResidentialUnit < ActiveRecord::Base
     # search by address (building)
     if params[:address]
       # cap query string length for security reasons
-    	address = params[:address][0, 256]
-      @terms = address.split(" ")
-      @terms.each do |term|
-       @running_list = @running_list.joins(:building)
-       .where('formatted_street_address ILIKE ?', "%#{term}%")
-      end
+    	address = params[:address][0, 500]
+      @running_list = @running_list.joins(:building)
+       .where('formatted_street_address ILIKE ?', "%#{address}%")
     end
 
     # search by unit
@@ -239,7 +238,7 @@ class ResidentialUnit < ActiveRecord::Base
   def duplicate(new_unit_num, include_photos)
     if new_unit_num
       residential_unit_dup = self.dup
-      residential_unit_dup.listing_id = Unit.generate_unique_id
+      #residential_unit_dup.listing_id = Unit.generate_unique_id
       residential_unit_dup.building_unit = new_unit_num
       # TODO: photos
       residential_unit_dup.save
@@ -320,4 +319,12 @@ class ResidentialUnit < ActiveRecord::Base
     @map_infos
   end
 
+  private
+    def generate_unique_id
+      self.listing_id = SecureRandom.random_number(9999999)
+      while ResidentialUnit.find_by(listing_id: listing_id) do
+        self.listing_id = rand(9999999)
+      end
+      self.listing_id
+    end
 end
