@@ -297,6 +297,6 @@ class ResidentialUnitsController < ApplicationController
         :access_info, :status, :open_house, :weeks_free_offered, :pet_policy_id, 
         :building_id, :user_id, :beds, :baths, :notes, :lease_duration,
         :include_photos, :inaccuracy_description, :op_fee_percentage,
-        :tp_fee_percentage, :file, :residential_amenity_ids => [])
+        :tp_fee_percentage, :residential_amenity_ids => [])
     end
 end
