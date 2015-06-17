@@ -27,7 +27,9 @@ function removeImage(id, bldg_id) {
 	});
 };
 
+
 $(document).ready(function(){
+	// start up google maps
 	initializeMap();
 	// disable auto discover
 	Dropzone.autoDiscover = false;

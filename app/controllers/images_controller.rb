@@ -25,9 +25,15 @@ class ImagesController < ApplicationController
     if @image.destroy
       render json: { message: "File deleted from server" }
     else
-      puts "\n\n********** " + @image.errors.full_messages.join(',')
       render json: { message: @image.errors.full_messages.join(',') }
     end
+  end
+
+  def sort
+    params[:order].each do |key,value|
+      Image.find(value[:id]).update_attribute(:priority, value[:position])
+    end
+    render :nothing => true
   end
 
   private
@@ -43,7 +49,7 @@ class ImagesController < ApplicationController
     end
 
     def image_params
-      params.permit(:file, :building)
+      params.permit(:file, :building, :priority, :order)
       #params[:image].permit(:file, :building)
     end
 end

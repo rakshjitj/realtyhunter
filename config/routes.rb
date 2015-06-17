@@ -55,7 +55,11 @@ Rails.application.routes.draw do
   end
 
   concern :images_uploadable do
-    resources :images, only: [:create, :destroy]
+    resources :images, only: [:create, :destroy] do
+      collection do
+        put 'sort'
+      end
+    end
   end
 
   resources :buildings, concerns: :images_uploadable do
