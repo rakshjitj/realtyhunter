@@ -6,8 +6,6 @@ $(document).ready(function(){
 	$("#media-dropzone").dropzone({
 		// restrict image size to a maximum 1MB
 		//maxFilesize: 4,
-		// changed the passed param to one accepted by
-		// our rails app
 		//paramName: "upload[image]",
 		// show remove links on each image upload
 		addRemoveLinks: true,
@@ -20,6 +18,7 @@ $(document).ready(function(){
 			// add the dz-success class (the green tick sign)
 			//console.log('/buildings/' + bldg_id + '/destroy_image/' + id);
 			$(file.previewElement).addClass("dz-success");
+			$.getScript('/buildings/' + response.bldgID + '/refresh_images')
 		},
 		//when the remove button is clicked
 		removedfile: function(file){
@@ -30,13 +29,16 @@ $(document).ready(function(){
 			// make a DELETE ajax request to delete the file
 			$.ajax({
 				type: 'DELETE',
-				url: "/buildings/" + bldg_id + "/images/" + id,
+				url: '/buildings/' + bldg_id + '/images/' + id,
 				success: function(data){
 					console.log(data.message);
+					$.getScript('/buildings/' + bldg_id + '/refresh_images')
 					file.previewElement.remove();
 				}
 			});
 		}
+	});
 
-	});	
+
+		
 });

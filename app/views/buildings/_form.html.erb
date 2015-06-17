@@ -39,7 +39,10 @@
 
         <!--%= form.attachment_field :image, direct: true, presigned: true, class: 'form-control' %-->
         Edit currently uploaded photos: (drag to reorder)
-
+        <div class="images">
+          <%= render 'images',  locals: { building: @building } %>
+        </div>
+        
       </div><!-- end tabpanel photos -->
       <!-- ******************** first tabpanel - basic info ********************-->
       <div role="tabpanel" class="tab-pane fade" id="basic-info">

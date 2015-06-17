@@ -64,10 +64,7 @@ Rails.application.routes.draw do
       get 'delete_modal'
       get 'inaccuracy_modal'
       patch 'send_inaccuracy'
-      # TODO: if i name this singularly, the template can not be found. Why?
-      #post 'images'
-      #delete 'destroy_image'
-
+      get 'refresh_images'
     end
   end
   

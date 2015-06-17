@@ -35,9 +35,7 @@
 		    <h3 class="panel-title">Basic Details</h3>
 		  </div>
 		  <div class="panel-body">
-		  	<% @building.images.each do |img| %>
-			  	<%= image_tag img.file.url(:square) %>
-			  <% end %>
+		  	<%= render 'images', locals: { building: @building } %>
 
 		  	<div id="map_canvas"></div>
 		  	<br />

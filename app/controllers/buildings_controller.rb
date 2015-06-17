@@ -1,7 +1,7 @@
 class BuildingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
-  before_action :set_building, except: [:index, :new, :create, :filter, :remove_image]
+  before_action :set_building, except: [:index, :new, :create, :filter, :refresh_images]
   #after_action :clear_xhr_flash, only: [:send_inaccuracy]
 
   # GET /buildings
@@ -76,36 +76,11 @@ class BuildingsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /upload_image/1
-  # PATCH/PUT /upload_image/1.json
-  # TODO: if i name this singularly, the template can not be found. Why?
-  def images
-    # dropzone expects a json response code
-    image_params = {}
-    # if posting regularly
-    #image_params[:file] = building_params[:building][:file]
-    # if posting through dropzone
-    image_params[:file] = building_params[:file]
-    @img = Image.new(image_params)
-    @img.building = @building
-    if @img.save(image_params)
-      render json: { message: "success", fileID: @img.id, bldgID: @building.id }, :status => 200
-    else 
-      #  you need to send an error header, otherwise Dropzone
-      #  will not interpret the response as an error:
-      render json: { error: @image.errors.full_messages.join(',')}, :status => 400
-    end
-  end
-
-  # DELETE /image/1
-  # DELETE /image/1.json
-  def destroy_image
-    @img = Image.find(params[:id])
-    @img.file = nil
-    if @img.destroy    
-      render json: { message: "File deleted from server" }
-    else
-      render json: { message: @img.errors.full_messages.join(',') }
+  # GET /refresh_images
+  # ajax call
+  def refresh_images
+    respond_to do |format|
+      format.js  
     end
   end
 

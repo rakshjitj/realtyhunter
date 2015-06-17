@@ -10,7 +10,7 @@ class Image < ActiveRecord::Base
   }
 
   # Validate filename
-  validates_attachment_file_name :file, :matches => [/png\Z/, /jpe?g\Z/, /gif\Z/]
+  validates_attachment_file_name :file, :matches => [/png\Z/, /jpe?g\Z/, /gif\Z/, /PNG\Z/, /JPE?G\Z/, /GIF\Z/]
 
 	# Validate the attached image content is image/jpg, image/png, etc
   validates_attachment :file,
