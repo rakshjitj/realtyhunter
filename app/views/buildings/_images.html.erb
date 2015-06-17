@@ -1,9 +1,21 @@
-<% @building.images.each do |image| %>
-  <div class="img-thumbnail">
-  	<%= image_tag image.file.url(:thumb), alt: image.file.url(:thumb) %>
-  	<%= link_to "Remove", "", 
-  		class: 'btn btn-sm btn-link center-block delete-img', 
-  		"data-id": image.id, "data-bldg-id": @building.id %>
-  </div>
+<script>
+	function ready(){
+	  // call sortable on our div with the sortable class
+	  $('.sortable').sortable({
+			forcePlaceholderSize: true,
+			placeholderClass: 'col col-xs-2 border border-maroon',
+			dragImage: null
+	  });
+	}
+ 
+	$(document).ready(ready);
+</script>
 
+<% @building.images.each do |image| %>
+	  <div class="img-thumbnail col-xs-2">
+	  	<%= image_tag image.file.url(:thumb), :class => 'img-responsive center-block', alt: image.file.url(:thumb) %>
+	  	<%= link_to "Remove", "", 
+	  		class: 'btn btn-xs btn-link center-block delete-img', 
+	  		"data-id": image.id, "data-bldg-id": @building.id %>
+	  </div>
 <% end %>

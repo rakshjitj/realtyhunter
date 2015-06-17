@@ -124,6 +124,7 @@
       t.attachment :file
       # t.string :avatar_id # refile
       # t.string :avatar_key # refile
+      t.integer :priority
       t.belongs_to :building
       #t.belongs_to :unit
     end

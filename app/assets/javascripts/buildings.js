@@ -1,4 +1,34 @@
+// google map
+function initializeMap() {
+  $(".panel").geocomplete({
+  	map: "#map_canvas",
+  	location: "<%= @building.formatted_street_address %>" ,
+  	details: ".details"
+  }).bind("geocode:result", function(event, result){
+      //console.log(result);
+  }).bind("geocode:error", function(event, result){
+      //console.log("[ERROR]: " + result);
+  });
+};
+
+function removeImage(id, bldg_id) {
+	console.log('/buildings/' + bldg_id + '/destroy_image/' + id);
+	// make a DELETE ajax request to delete the file
+	$.ajax({
+		type: 'DELETE',
+		url: '/buildings/' + bldg_id + '/images/' + id,
+		success: function(data){
+			console.log(data.message);
+			$.getScript('/buildings/' + bldg_id + '/refresh_images')
+		},
+		error: function(data) {
+			console.log('ERROR:', data);
+		}
+	});
+};
+
 $(document).ready(function(){
+	initializeMap();
 	// disable auto discover
 	Dropzone.autoDiscover = false;
  
@@ -41,19 +71,3 @@ $(document).ready(function(){
 	});
 
 }); // end document raedy
-
-function removeImage(id, bldg_id) {
-		console.log('/buildings/' + bldg_id + '/destroy_image/' + id);
-		// make a DELETE ajax request to delete the file
-		$.ajax({
-			type: 'DELETE',
-			url: '/buildings/' + bldg_id + '/images/' + id,
-			success: function(data){
-				console.log(data.message);
-				$.getScript('/buildings/' + bldg_id + '/refresh_images')
-			},
-			error: function(data) {
-				console.log('ERROR:', data);
-			}
-		});
-	};

@@ -1,16 +1,16 @@
 <script>
-	function initialize() {
-    $(".panel").geocomplete({
-    	map: "#map_canvas",
-    	location: "<%= @building.formatted_street_address %>" ,
-    	details: ".details"
-    }).bind("geocode:result", function(event, result){
-        //console.log(result);
-    }).bind("geocode:error", function(event, result){
-        //console.log("[ERROR]: " + result);
-    });
-	};
-	$(document).ready(initialize);
+	// function initialize() {
+ //    $(".panel").geocomplete({
+ //    	map: "#map_canvas",
+ //    	location: "<%= @building.formatted_street_address %>" ,
+ //    	details: ".details"
+ //    }).bind("geocode:result", function(event, result){
+ //        //console.log(result);
+ //    }).bind("geocode:error", function(event, result){
+ //        //console.log("[ERROR]: " + result);
+ //    });
+	// };
+	// $(document).ready(initialize);
 </script>
 
 <% provide(:title, @building.formatted_street_address) %>
@@ -35,7 +35,11 @@
 		    <h3 class="panel-title">Basic Details</h3>
 		  </div>
 		  <div class="panel-body">
-		  	<%= render 'images', locals: { building: @building } %>
+		  	<% if @building.images.any? %>
+			  	<%= render 'images', locals: { building: @building } %>
+			  <% else %>
+			  	<p>No images added yet.</p>
+			  <% end %>
 
 		  	<div id="map_canvas"></div>
 		  	<br />

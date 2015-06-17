@@ -135,6 +135,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "file_content_type"
     t.integer  "file_file_size"
     t.datetime "file_updated_at"
+    t.integer  "priority"
     t.integer  "building_id"
   end
 

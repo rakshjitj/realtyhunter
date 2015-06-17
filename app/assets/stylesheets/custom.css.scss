@@ -315,3 +315,16 @@ aside {
 .status-off {
   color: gray;
 };
+
+/*********** Sortable images **********************************/
+.sortable-placeholder {
+  border: 1px dashed #CCC;
+  background-color: #f9f9f9;
+  height: 100px;
+  width: 100px;
+  margin-bottom: 10px;
+}
+ 
+.sortable {
+  //display: list-item;
+}

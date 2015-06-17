@@ -40,8 +40,10 @@
         <!--%= form.attachment_field :image, direct: true, presigned: true, class: 'form-control' %-->
         <br />
         <p><strong>Edit current photos (drag to reorder):</strong></p>
-        <div class="images">
-          <%= render 'images',  locals: { building: @building } %>
+        <div class="row">
+          <div class="images sortable">
+            <%= render 'images',  locals: { building: @building } %>
+          </div>
         </div>
         
       </div><!-- end tabpanel photos -->
