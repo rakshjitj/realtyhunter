@@ -25,6 +25,7 @@ class ImagesController < ApplicationController
     if @image.destroy
       render json: { message: "File deleted from server" }
     else
+      puts "\n\n********** " + @image.errors.full_messages.join(',')
       render json: { message: @image.errors.full_messages.join(',') }
     end
   end

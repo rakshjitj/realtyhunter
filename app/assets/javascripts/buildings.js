@@ -19,6 +19,7 @@ $(document).ready(function(){
 			//console.log('/buildings/' + bldg_id + '/destroy_image/' + id);
 			$(file.previewElement).addClass("dz-success");
 			$.getScript('/buildings/' + response.bldgID + '/refresh_images')
+			file.previewElement.remove();
 		},
 		//when the remove button is clicked
 		removedfile: function(file){
@@ -30,7 +31,18 @@ $(document).ready(function(){
 		}
 	});
 
-	function removeImage(id, bldg_id) {
+	$('.delete-img').click(function(event) {
+		event.preventDefault();
+		var id = $(this).attr('data-id'); 
+		var bldg_id = $(this).attr('data-bldg-id');
+		console.log(id, bldg_id);
+		removeImage(id, bldg_id);
+		// TODO: WTF why is this breaking?
+	});
+
+}); // end document raedy
+
+function removeImage(id, bldg_id) {
 		console.log('/buildings/' + bldg_id + '/destroy_image/' + id);
 		// make a DELETE ajax request to delete the file
 		$.ajax({
@@ -39,17 +51,9 @@ $(document).ready(function(){
 			success: function(data){
 				console.log(data.message);
 				$.getScript('/buildings/' + bldg_id + '/refresh_images')
-				
+			},
+			error: function(data) {
+				console.log('ERROR:', data);
 			}
 		});
 	};
-
-	$('.delete-img').click(function(event) {
-		event.preventDefault();
-		var id = $(this).attr('data-id'); 
-		var bldg_id = $(this).attr('data-bldg-id');
-		console.log(id, bldg_id);
-		removeImage(id, bldg_id);
-	});
-
-});

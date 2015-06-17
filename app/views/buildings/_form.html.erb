@@ -27,8 +27,8 @@
     <div class="tab-content">
       <!-- ******************** second tabpanel - photos ******************** -->
       <div role="tabpanel" class="tab-pane fade in active" id="photos">
-        <!--form action="/file-upload" class="dropzone" id="my-awesome-dropzone"></form-->
-        <h4>Upload new photos:</h4>
+        <br />
+        
         <%= form_for(@building, :url => building_images_path(@building), 
           html: {multipart: true, class: "dropzone", id: "media-dropzone"}, method: :post) do |f| %>
           <div class="fallback">
@@ -38,7 +38,8 @@
         <% end %>
 
         <!--%= form.attachment_field :image, direct: true, presigned: true, class: 'form-control' %-->
-        Edit currently uploaded photos: (drag to reorder)
+        <br />
+        <p><strong>Edit current photos (drag to reorder):</strong></p>
         <div class="images">
           <%= render 'images',  locals: { building: @building } %>
         </div>
