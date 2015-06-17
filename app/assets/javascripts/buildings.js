@@ -1,16 +1,3 @@
-// google map
-function initializeMap() {
-  $(".panel").geocomplete({
-  	map: "#map_canvas",
-  	location: "<%= @building.formatted_street_address %>" ,
-  	details: ".details"
-  }).bind("geocode:result", function(event, result){
-      //console.log(result);
-  }).bind("geocode:error", function(event, result){
-      //console.log("[ERROR]: " + result);
-  });
-};
-
 function removeImage(id, bldg_id) {
 	console.log('/buildings/' + bldg_id + '/destroy_image/' + id);
 	// make a DELETE ajax request to delete the file
@@ -27,10 +14,7 @@ function removeImage(id, bldg_id) {
 	});
 };
 
-
 $(document).ready(function(){
-	// start up google maps
-	initializeMap();
 	// disable auto discover
 	Dropzone.autoDiscover = false;
  
@@ -72,4 +56,7 @@ $(document).ready(function(){
 		// TODO: WTF why is this breaking?
 	});
 
-}); // end document raedy
+	$('.carousel-indicators > li:first-child').addClass('active');
+	$('.carousel-inner > .item:first-child').addClass('active')
+	
+});// end document raedy

@@ -1,16 +1,16 @@
 <script>
-	// function initialize() {
- //    $(".panel").geocomplete({
- //    	map: "#map_canvas",
- //    	location: "<%= @building.formatted_street_address %>" ,
- //    	details: ".details"
- //    }).bind("geocode:result", function(event, result){
- //        //console.log(result);
- //    }).bind("geocode:error", function(event, result){
- //        //console.log("[ERROR]: " + result);
- //    });
-	// };
-	// $(document).ready(initialize);
+	function initialize() {
+    $(".panel").geocomplete({
+    	map: "#map_canvas",
+    	location: "<%= @building.formatted_street_address %>" ,
+    	details: ".details"
+    }).bind("geocode:result", function(event, result){
+        //console.log(result);
+    }).bind("geocode:error", function(event, result){
+        //console.log("[ERROR]: " + result);
+    });
+	};
+	$(document).ready(initialize);
 </script>
 
 <% provide(:title, @building.formatted_street_address) %>
@@ -36,7 +36,34 @@
 		  </div>
 		  <div class="panel-body">
 		  	<% if @building.images.any? %>
-			  	<%= render 'images', locals: { building: @building } %>
+					<div id="building-carousel" class="carousel slide" data-ride="carousel">
+					  <!-- Indicators -->
+					  <ol class="carousel-indicators">
+						  <% for i in 0..@building.images.length-1 %>
+						  	<li data-target="#building-carousel" data-slide-to="<%= i %>"></li>
+						  <% end %>
+					  </ol>
+
+					  <!-- Wrapper for slides -->
+					  <div class="carousel-inner" role="listbox">
+					  	<% @building.images.each do |image| %>	
+					  		<div class="item">
+						      <%= image_tag image.file.url(:medium), :class => 'img-responsive center-block', alt: image.file.url(:medium) %>
+						    </div>
+					  	<% end %>
+					  </div>
+
+					  <!-- Controls -->
+					  <a class="left carousel-control" href="#building-carousel" role="button" data-slide="prev">
+					    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+					    <span class="sr-only">Previous</span>
+					  </a>
+					  <a class="right carousel-control" href="#building-carousel" role="button" data-slide="next">
+					    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+					    <span class="sr-only">Next</span>
+					  </a>
+					</div>
+
 			  <% else %>
 			  	<p>No images added yet.</p>
 			  <% end %>
