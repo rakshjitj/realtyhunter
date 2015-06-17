@@ -54,8 +54,17 @@ Rails.application.routes.draw do
     end
   end
 
+  # TODO: consolidate this somehow
   concern :images_uploadable do
     resources :images, only: [:create, :destroy] do
+      collection do
+        put 'sort'
+      end
+    end
+  end
+
+  concern :unit_images_uploadable do
+    resources :unit_images, only: [:create, :destroy] do
       collection do
         put 'sort'
       end
@@ -72,7 +81,7 @@ Rails.application.routes.draw do
     end
   end
   
-  resources :residential_units do
+  resources :residential_units, concerns: :unit_images_uploadable do
     member do
       get 'delete_modal'
       get 'duplicate_modal'
@@ -84,6 +93,7 @@ Rails.application.routes.draw do
       get 'print_modal'
       get 'print_public'
       get 'print_private'
+      get 'refresh_images'
     end
     collection do
       get 'print_list'
@@ -100,10 +110,6 @@ Rails.application.routes.draw do
 
   resources :neighborhoods
 
-  get 'search/landlords', to: 'landlords#filter', as: :landlords_filter
-  get 'search/residential_units', to: 'residential_units#filter', as: :residential_units_filter
-  get 'search/buildings', to: 'buildings#filter', as: :buildings_filter
-
   resources :building_amenities
 
   resources :commercial_units do
@@ -118,6 +124,7 @@ Rails.application.routes.draw do
       get 'print_modal'
       get 'print_public'
     #  get 'print_private'
+      get 'refresh_images'
     end
     collection do
       get 'print_list'
@@ -127,6 +134,9 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'search/landlords', to: 'landlords#filter', as: :landlords_filter
+  get 'search/residential_units', to: 'residential_units#filter', as: :residential_units_filter
+  get 'search/buildings', to: 'buildings#filter', as: :buildings_filter
   get 'search/commercial_units', to: 'commercial_units#filter', as: :commercial_units_filter
 
   # designed to match nestio's API endpoints, so we can feed our data seamlessly to 

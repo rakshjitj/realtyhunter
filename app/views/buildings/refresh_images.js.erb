@@ -1,9 +1,8 @@
 $(".images").html("<%= escape_javascript(render('images')) %>")
-$('.delete-img').click(function(event) {
+$('.delete-bldg-img').click(function(event) {
 		event.preventDefault();
 		var id = $(this).attr('data-id'); 
 		var bldg_id = $(this).attr('data-bldg-id');
 		console.log(id, bldg_id);
 		removeImage(id, bldg_id);
-		// TODO: WTF why is this breaking?
 	});

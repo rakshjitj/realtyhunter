@@ -137,6 +137,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.datetime "file_updated_at"
     t.integer  "priority"
     t.integer  "building_id"
+    t.integer  "unit_id"
   end
 
   create_table "landlords", force: :cascade do |t|
@@ -282,11 +283,14 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "weeks_free_offered", default: 0
     t.integer  "building_id"
     t.integer  "user_id"
+    t.integer  "images_id"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
     t.integer  "actable_id"
     t.string   "actable_type"
   end
+
+  add_index "units", ["images_id"], name: "index_units_on_images_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.boolean  "archived",            default: false

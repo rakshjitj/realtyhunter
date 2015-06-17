@@ -1,16 +1,16 @@
-class ImagesController < ApplicationController
+class UnitImagesController < ApplicationController
   before_action :set_image, only: [:destroy]
-  before_action :set_building, except: [:destroy]
+  before_action :set_unit, except: [:destroy]
 
   # POST /images
   # POST /images.json
   def create
-    @image = @building.images.build(image_params)
+    @image = @unit.images.build(image_params)
     
     # dropzone expects a json response code
-    @image.building = @building
+    @image.unit = @unit
     if @image.save(image_params)
-      render json: { message: "success", fileID: @image.id, bldgID: @building.id }, :status => 200
+      render json: { message: "success", fileID: @image.id, unitID: @unit.id }, :status => 200
     else 
       #  you need to send an error header, otherwise Dropzone
       #  will not interpret the response as an error:
@@ -42,12 +42,17 @@ class ImagesController < ApplicationController
       @image = Image.find(params[:id])
     end
 
-    def set_building
-      @building = Building.find(params[:building_id])
+    def set_unit
+      if params[:unit_id]
+        @unit = Unit.find(params[:unit_id])
+      elsif params[:residential_unit_id]
+        @unit = Unit.find(params[:residential_unit_id])
+      elsif params[:commercial_unit_id]
+        @unit = Unit.find(params[:commercial_unit_id])
+      end
     end
 
     def image_params
-      params.permit(:file, :building, :priority, :order)
-      #params[:image].permit(:file, :building)
+      params.permit(:file, :priority, :order)
     end
 end

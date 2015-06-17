@@ -33,7 +33,9 @@
         // send the updated order via ajax
         $.ajax({
           type: "PUT",
-          url: '/buildings/' + <%= @building.id %> + '/images/sort',
+          // TODO: which is better
+          //'/residential_units/' + <%= @residential_unit.id %> + '/unit_images/sort',
+          url: "<%= sort_residential_unit_unit_images_path(@residential_unit) %>",
           data: { order: updated_order }
         });
     });
@@ -42,11 +44,11 @@
 	$(document).ready(ready);
 </script>
 
-<% @building.images.each do |image| %>
-	  <div class="img-thumbnail col-xs-2" data-id="<%= image.id %>" data-bldg-id="<%= @building.id %>">
+<% @residential_unit.images.each do |image| %>
+	  <div class="img-thumbnail col-xs-2" data-id="<%= image.id %>" data-unit-id="<%= @residential_unit.id %>">
 	  	<%= image_tag image.file.url(:thumb), :class => 'img-responsive center-block', alt: image.file.url(:thumb) %>
 	  	<%= link_to "Remove", "", 
-	  		class: 'btn btn-xs btn-link center-block delete-bldg-img', 
-	  		"data-id": image.id, "data-bldg-id": @building.id %>
+	  		class: 'btn btn-xs btn-link center-block delete-unit-img', 
+	  		"data-id": image.id, "data-unit-id": @residential_unit.id %>
 	  </div>
 <% end %>

@@ -1,7 +1,7 @@
 class ResidentialUnitsController < ApplicationController
   load_and_authorize_resource
   before_action :set_residential_unit, except: [:new, :create, :index, :filter, 
-    :print_list, :neighborhoods_modal, :features_modal]
+    :print_list, :neighborhoods_modal, :features_modal, :refresh_images]
 
   # GET /residential_units
   # GET /residential_units.json
@@ -241,6 +241,14 @@ class ResidentialUnitsController < ApplicationController
       format.js { flash[:notice] = "Report submitted! Thank you." }
     end
   end
+
+  # GET /refresh_images
+  # ajax call
+  def refresh_images
+    respond_to do |format|
+      format.js  
+    end
+  end
   
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -289,6 +297,6 @@ class ResidentialUnitsController < ApplicationController
         :access_info, :status, :open_house, :weeks_free_offered, :pet_policy_id, 
         :building_id, :user_id, :beds, :baths, :notes, :lease_duration,
         :include_photos, :inaccuracy_description, :op_fee_percentage,
-        :tp_fee_percentage, :residential_amenity_ids => [])
+        :tp_fee_percentage, :file, :residential_amenity_ids => [])
     end
 end

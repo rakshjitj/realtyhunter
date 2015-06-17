@@ -15,122 +15,115 @@
   $(document).ready(initialize);
 </script>
 
-  <div class="panel panel-default">
-    <div class="panel-body">
+<div class="panel panel-default">
+  <div class="panel-body">
 
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation"><a href="#basic-info" aria-controls="basic-info" role="tab" data-toggle="tab">Basic Info</a></li>
-      <li role="photos" class="active"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
-    </ul>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation"><a href="#basic-info" aria-controls="basic-info" role="tab" data-toggle="tab">Basic Info</a></li>
+    <li role="photos" class="active"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+  </ul>
 
-    <div class="tab-content">
-      <!-- ******************** second tabpanel - photos ******************** -->
-      <div role="tabpanel" class="tab-pane fade in active" id="photos">
-        <br />
-        
-        <%= form_for(@building, :url => building_images_path(@building), 
-          html: {multipart: true, class: "dropzone", id: "media-dropzone"}, method: :post) do |f| %>
-          <div class="fallback">
-            <%= f.file_field :file %><br>
-            <%= f.submit "Upload" %>
-          </div>
-        <% end %>
-
-        <!--%= form.attachment_field :image, direct: true, presigned: true, class: 'form-control' %-->
-        <br />
-        <p><strong>Edit current photos (drag to reorder):</strong></p>
-        <div class="row">
-          <div class="images sortable">
-            <%= render 'images',  locals: { building: @building } %>
-          </div>
+  <div class="tab-content">
+    <!-- ******************** second tabpanel - photos ******************** -->
+    <div role="tabpanel" class="tab-pane fade in active" id="photos">
+      <br />
+      
+      <%= form_for(@building, :url => building_images_path(@building), 
+        html: {multipart: true, class: "dropzone", id: "building-dropzone"}, method: :post) do |f| %>
+        <div class="fallback">
+          <%= f.file_field :file %><br>
+          <%= f.submit "Upload" %>
         </div>
-        
-      </div><!-- end tabpanel photos -->
-      <!-- ******************** first tabpanel - basic info ********************-->
-      <div role="tabpanel" class="tab-pane fade" id="basic-info">
-      <%= form_for(@building) do |f| %>
-        <%= render :partial => 'shared/error_messages', :locals => {:model => @building} %>
-
-
-      <div class="field">
-        <%= f.label :formatted_street_address, "Street Address" %><br>
-        <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input', placeholder: "123 Main St" %>
-        <br/>
-        <p>Visually confirm the building's location:</p>
-        <div id="map_canvas"></div>
-      </div>
-
-      <div class="field">
-        <%= f.label :landlord_id, "Landlord" %><br>
-        <%= f.select(:landlord_id, options_for_select(current_user.company.landlords.collect {|l| [l.code, l.id]},
-          [@building.landlord ? @building.landlord.id : '']),
-          {prompt: "Choose one..."},
-          :required => true, 
-          class: 'form-control',
-          :include_blank => true) %>
-      </div>
-
-      <div class="field">
-        <%= f.label :notes, "Building Notes" %><br>
-        <%= f.text_area :notes, class: 'form-control', rows: 5 %>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="field">
-            <%= f.label :building_amenity_ids, "Building-Level Amenities" %><br>
-            <%= f.select(:building_amenity_ids, options_for_select(current_user.company.building_amenities.collect {|a| [a.name, a.id]},
-              @building.building_amenity_ids), 
-              {},
-              {:multiple => true, :size => 10,
-                class: 'form-control'}) %>
-          </div>
-        </div>
-        <div class="col-md-6">                
-          <div class="field">
-            <%= f.label :rental_term_ids, "Rental Terms" %><br>
-            <%= f.select(:rental_term_ids, options_for_select(current_user.company.rental_terms.collect {|a| [a.name, a.id]},
-              @building.rental_term_ids), 
-              {},
-              {:multiple => true, :size => 10,
-                class: 'form-control'}) %>
-          </div>
-        </div>
-      </div>
-
-      <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
-      <div class="details field">
-        <%= f.hidden_field :street_number, name: "street_number" %>
-        <%= f.hidden_field :route, name: "route" %>
-        <%= f.hidden_field :intersection, name: "intersection" %>
-        <%= f.hidden_field :neighborhood, name:"neighborhood" %>
-        <%= f.hidden_field :sublocality, name:"sublocality" %>
-        <%= f.hidden_field :administrative_area_level_2_short, name:"administrative_area_level_2_short" %>
-        <%= f.hidden_field :administrative_area_level_1_short, name:"administrative_area_level_1_short" %>
-        <%= f.hidden_field :postal_code, name:"postal_code" %>
-        <%= f.hidden_field :country_short, name:"country_short" %>
-        <%= f.hidden_field :lat, name:"lat" %>
-        <%= f.hidden_field :lng, name:"lng" %>
-        <%= f.hidden_field :place_id, name:"place_id" %>
-      </div>
-
-      <div class="actions">
-        <%= f.submit "Update", class: "btn btn-primary" %>
-        <%= link_to 'Cancel', buildings_path %>
-      </div>
       <% end %>
 
-      </div><!-- end tabpanel home -->
+      <!--%= form.attachment_field :image, direct: true, presigned: true, class: 'form-control' %-->
+      <br />
+      <p><strong>Edit current photos (drag to reorder):</strong></p>
+      <div class="row">
+        <div class="images sortable">
+          <%= render 'images',  locals: { building: @building } %>
+        </div>
+      </div>
+      
+    </div><!-- end tabpanel photos -->
+    <!-- ******************** first tabpanel - basic info ********************-->
+    <div role="tabpanel" class="tab-pane fade" id="basic-info">
+    <%= form_for(@building) do |f| %>
+      <%= render :partial => 'shared/error_messages', :locals => {:model => @building} %>
 
 
-
-
-
-
-
+    <div class="field">
+      <%= f.label :formatted_street_address, "Street Address" %><br>
+      <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input', placeholder: "123 Main St" %>
+      <br/>
+      <p>Visually confirm the building's location:</p>
+      <div id="map_canvas"></div>
     </div>
 
+    <div class="field">
+      <%= f.label :landlord_id, "Landlord" %><br>
+      <%= f.select(:landlord_id, options_for_select(current_user.company.landlords.collect {|l| [l.code, l.id]},
+        [@building.landlord ? @building.landlord.id : '']),
+        {prompt: "Choose one..."},
+        :required => true, 
+        class: 'form-control',
+        :include_blank => true) %>
+    </div>
 
-    </div><!-- panel-body-->
-  </div><!-- panel -->
+    <div class="field">
+      <%= f.label :notes, "Building Notes" %><br>
+      <%= f.text_area :notes, class: 'form-control', rows: 5 %>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="field">
+          <%= f.label :building_amenity_ids, "Building-Level Amenities" %><br>
+          <%= f.select(:building_amenity_ids, options_for_select(current_user.company.building_amenities.collect {|a| [a.name, a.id]},
+            @building.building_amenity_ids), 
+            {},
+            {:multiple => true, :size => 10,
+              class: 'form-control'}) %>
+        </div>
+      </div>
+      <div class="col-md-6">                
+        <div class="field">
+          <%= f.label :rental_term_ids, "Rental Terms" %><br>
+          <%= f.select(:rental_term_ids, options_for_select(current_user.company.rental_terms.collect {|a| [a.name, a.id]},
+            @building.rental_term_ids), 
+            {},
+            {:multiple => true, :size => 10,
+              class: 'form-control'}) %>
+        </div>
+      </div>
+    </div>
+
+    <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
+    <div class="details field">
+      <%= f.hidden_field :street_number, name: "street_number" %>
+      <%= f.hidden_field :route, name: "route" %>
+      <%= f.hidden_field :intersection, name: "intersection" %>
+      <%= f.hidden_field :neighborhood, name:"neighborhood" %>
+      <%= f.hidden_field :sublocality, name:"sublocality" %>
+      <%= f.hidden_field :administrative_area_level_2_short, name:"administrative_area_level_2_short" %>
+      <%= f.hidden_field :administrative_area_level_1_short, name:"administrative_area_level_1_short" %>
+      <%= f.hidden_field :postal_code, name:"postal_code" %>
+      <%= f.hidden_field :country_short, name:"country_short" %>
+      <%= f.hidden_field :lat, name:"lat" %>
+      <%= f.hidden_field :lng, name:"lng" %>
+      <%= f.hidden_field :place_id, name:"place_id" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Update", class: "btn btn-primary" %>
+      <%= link_to 'Cancel', buildings_path %>
+    </div>
+    <% end %>
+
+  </div><!-- end tabpanel home -->
+
+  </div><!-- tab content -->
+
+  </div><!-- panel-body-->
+</div><!-- panel -->

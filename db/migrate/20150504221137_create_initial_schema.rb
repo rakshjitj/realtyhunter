@@ -126,7 +126,7 @@
       # t.string :avatar_key # refile
       t.integer :priority
       t.belongs_to :building
-      #t.belongs_to :unit
+      t.belongs_to :unit
     end
 
     # TODO: pull address info into it's own table?
@@ -166,6 +166,7 @@
       t.integer :weeks_free_offered, default: 0
       t.belongs_to :building
       t.belongs_to :user # primary agent
+      t.references :images, index: true
       t.timestamps null: false
     end
 

@@ -1,112 +1,148 @@
-<%= form_for(@residential_unit) do |f| %>
-  <%= render :partial => 'shared/error_messages', 
-    :locals => {:model => @residential_unit} %>
- 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><%= @panel_title %></h3>
-    </div>
-    <div class="panel-body">
-      <div class="field">
-        <!-- TODO: turn this into an autocomplete field -->
-        <%= f.label :building_id %><br>
-        <%= f.select(:building_id, 
-          options_for_select(current_user.company.buildings.collect {|b| [b.street_address, b.id]},
-            [@residential_unit.building ? @residential_unit.building.id : '']), 
-          {prompt: "Choose one..."},
-          class: 'form-control',
-          :include_blank => true) %>
-      </div>
-      <div class="field">
-        <%= f.label :building_unit, "Unit" %><br>
-        <%= f.text_field :building_unit, class: 'form-control', :required => true %>
-      </div>
-      <div class="field">
-        <%= f.label :rent %><br>
-        <%= f.number_field :rent, class: 'form-control', :required => true %>
-      </div>
-      <div class="field">
-        <%= f.label :access_info %><br>
-        <%= f.text_area :access_info, class: 'form-control',
-        rows: 4 %>
-      </div>
-      <div class="field">
-        <%= f.label :beds %><br>
-        <%= f.number_field :beds, class: 'form-control',
-        in: 0.0..10.0, :required => true %>
-      </div>
-      <div class="field">
-        <%= f.label :baths %><br>
-        <%= f.number_field :baths, class: 'form-control', step: 0.5, in: 0.0..10.0 , 
-          :required => true %>
-      </div>
-      <div class="field">
-        <%= f.label :available_by %><br>
-        <%= f.date_field :available_by, class: 'form-control' %>
-      </div>
-      <div class="field">
-        <%= f.label :pet_policy_id %><br>
-        <%= f.select(:pet_policy_id, options_for_select(current_user.company.pet_policies.all.collect { |r| [r.name, r.id] }, 
-          [@residential_unit.pet_policy ? @residential_unit.pet_policy.id : '']),
-           {prompt: "Choose one..."},
-          :required => true, 
-          class: 'form-control',
-          :include_blank => true) %>
-      </div>
-      <div class="field">
-        <%= f.label :lease_duration %><br>
-        <%= f.select :lease_duration, 
-          options_for_select(ResidentialUnit.lease_durations.collect { |s| [s[0].humanize, s[0]] }, 
-            [@residential_unit.lease_duration]), 
-          {prompt: "Choose one..."},
-          :required => true,
-          class: "form-control" %>
-      </div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><%= @panel_title %></h3>
+  </div>
+  <div class="panel-body">
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation"><a href="#basic-info" aria-controls="basic-info" role="tab" data-toggle="tab">Basic Info</a></li>
+      <li role="photos" class="active"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <!-- ******************** second tabpanel - photos ******************** -->
+      <div role="tabpanel" class="tab-pane fade in active" id="photos">
+        <br />
+        
+        <%= form_for(@residential_unit, :url => residential_unit_unit_images_path(@residential_unit), 
+          html: {multipart: true, class: "dropzone", id: "unit-dropzone"}, method: :post) do |f| %>
+          <div class="fallback">
+            <%= f.file_field :file %><br>
+            <%= f.submit "Upload" %>
+          </div>
+        <% end %>
+
+        <!--%= form.attachment_field :image, direct: true, presigned: true, class: 'form-control' %-->
+        <br />
+        <p><strong>Edit current photos (drag to reorder):</strong></p>
+        <div class="row">
+          <div class="images sortable">
+            <%= render 'images',  locals: { residential_unit: @residential_unit } %>
+          </div>
+        </div>
+        
+      </div><!-- end tabpanel photos -->
+      <!-- ******************** first tabpanel - basic info ********************-->
+      <div role="tabpanel" class="tab-pane fade" id="basic-info">
+        <%= form_for(@residential_unit) do |f| %>
+        <%= render :partial => 'shared/error_messages', 
+          :locals => {:model => @residential_unit} %>
+       
+        <div class="field">
+          <!-- TODO: turn this into an autocomplete field -->
+          <%= f.label :building_id %><br>
+          <%= f.select(:building_id, 
+            options_for_select(current_user.company.buildings.collect {|b| [b.street_address, b.id]},
+              [@residential_unit.building ? @residential_unit.building.id : '']), 
+            {prompt: "Choose one..."},
+            class: 'form-control',
+            :include_blank => true) %>
+        </div>
+        <div class="field">
+          <%= f.label :building_unit, "Unit" %><br>
+          <%= f.text_field :building_unit, class: 'form-control', :required => true %>
+        </div>
+        <div class="field">
+          <%= f.label :rent %><br>
+          <%= f.number_field :rent, class: 'form-control', :required => true %>
+        </div>
+        <div class="field">
+          <%= f.label :access_info %><br>
+          <%= f.text_area :access_info, class: 'form-control',
+          rows: 4 %>
+        </div>
+        <div class="field">
+          <%= f.label :beds %><br>
+          <%= f.number_field :beds, class: 'form-control',
+          in: 0.0..10.0, :required => true %>
+        </div>
+        <div class="field">
+          <%= f.label :baths %><br>
+          <%= f.number_field :baths, class: 'form-control', step: 0.5, in: 0.0..10.0 , 
+            :required => true %>
+        </div>
+        <div class="field">
+          <%= f.label :available_by %><br>
+          <%= f.date_field :available_by, class: 'form-control' %>
+        </div>
+        <div class="field">
+          <%= f.label :pet_policy_id %><br>
+          <%= f.select(:pet_policy_id, options_for_select(current_user.company.pet_policies.all.collect { |r| [r.name, r.id] }, 
+            [@residential_unit.pet_policy ? @residential_unit.pet_policy.id : '']),
+             {prompt: "Choose one..."},
+            :required => true, 
+            class: 'form-control',
+            :include_blank => true) %>
+        </div>
+        <div class="field">
+          <%= f.label :lease_duration %><br>
+          <%= f.select :lease_duration, 
+            options_for_select(ResidentialUnit.lease_durations.collect { |s| [s[0].humanize, s[0]] }, 
+              [@residential_unit.lease_duration]), 
+            {prompt: "Choose one..."},
+            :required => true,
+            class: "form-control" %>
+        </div>
+         <div class="field">
+          <%= f.label :residential_amenity_ids, "Unit Amenities" %><br>
+          <%= f.select(:residential_amenity_ids, options_for_select(current_user.company.residential_amenities.collect {|a| [a.name, a.id]},
+            @residential_unit.residential_amenity_ids), 
+            {},
+            {:multiple => true, :size => 10,
+              class: 'form-control'}) %>
+        </div>
+        <div class="field">
+          <%= f.label :notes %><br>
+          <%= f.text_area :notes, class: 'form-control', rows: 6 %>
+        </div>
+        <div class="field">
+          <%= f.label :op_fee_percentage, 'Owner Pays Fee %' %><br>
+          <%= f.number_field :op_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>
+        </div>
+        <div class="field">
+          <%= f.label :tp_fee_percentage, 'Tenant Pays Fee %' %><br>
+          <%= f.number_field :tp_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>
+        </div>
+
+        <div class="field">
+          <%= f.label :user_id, "Primary Agent" %><br>
+          <%= f.select(:user_id, 
+            options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
+              [@residential_unit.primary_agent ? @residential_unit.primary_agent.id : '']), 
+            {prompt: "Choose one..."},
+            class: 'form-control',
+            :include_blank => true) %>
+        </div>
        <div class="field">
-        <%= f.label :residential_amenity_ids, "Unit Amenities" %><br>
-        <%= f.select(:residential_amenity_ids, options_for_select(current_user.company.residential_amenities.collect {|a| [a.name, a.id]},
-          @residential_unit.residential_amenity_ids), 
-          {},
-          {:multiple => true, :size => 10,
-            class: 'form-control'}) %>
-      </div>
-      <div class="field">
-        <%= f.label :notes %><br>
-        <%= f.text_area :notes, class: 'form-control', rows: 6 %>
-      </div>
-      <div class="field">
-        <%= f.label :op_fee_percentage, 'Owner Pays Fee %' %><br>
-        <%= f.number_field :op_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>
-      </div>
-      <div class="field">
-        <%= f.label :tp_fee_percentage, 'Tenant Pays Fee %' %><br>
-        <%= f.number_field :tp_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>
-      </div>
+          <%= f.label :user_id, "Listing Agent" %><br>
+          <%= f.select(:user_id, options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
+            [@residential_unit.listing_agent ? @residential_unit.listing_agent.id : '']), 
+            {prompt: "Choose one..."},
+            class: 'form-control',
+            :include_blank => true) %>
+        </div>
+        <div class="field">
+          <%= f.label :open_house, "Open House Info" %><br>
+          <%= f.text_area :open_house, class: 'form-control', rows: 3 %>
+        </div>
+        <div class="actions">
+          <%= f.submit %>
+        </div>
+        <% end %>
 
-      <div class="field">
-        <%= f.label :user_id, "Primary Agent" %><br>
-        <%= f.select(:user_id, 
-          options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
-            [@residential_unit.primary_agent ? @residential_unit.primary_agent.id : '']), 
-          {prompt: "Choose one..."},
-          class: 'form-control',
-          :include_blank => true) %>
-      </div>
-     <div class="field">
-        <%= f.label :user_id, "Listing Agent" %><br>
-        <%= f.select(:user_id, options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
-          [@residential_unit.listing_agent ? @residential_unit.listing_agent.id : '']), 
-          {prompt: "Choose one..."},
-          class: 'form-control',
-          :include_blank => true) %>
-      </div>
-      <div class="field">
-        <%= f.label :open_house, "Open House Info" %><br>
-        <%= f.text_area :open_house, class: 'form-control', rows: 3 %>
-      </div>
-  </div>
+      </div><!-- end tabpanel home -->
+    </div><!-- tab content -->
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+  </div><!-- panelbody -->
+</div><!-- panel -->

@@ -4,7 +4,8 @@ class Unit < ActiveRecord::Base
   # TODO: test. I don't think this is working right?
   belongs_to :primary_agent, :foreign_key => 'user_id', :class_name => 'User'
   belongs_to :listing_agent, :foreign_key => 'user_id', :class_name => 'User'
-  #before_validation :generate_unique_id
+  has_many :images, dependent: :destroy
+  # TODO before_validation :generate_unique_id
 
   scope :unarchived, ->{where(archived: false)}
   scope :active, ->{where(status: "active")}
@@ -14,7 +15,6 @@ class Unit < ActiveRecord::Base
 	enum status: [ :active, :pending, :off ]
 	validates :status, presence: true, inclusion: { in: %w(active pending off) }
 	
-	#validates :building_unit, presence: true, length: {maximum: 50}
 	validates :rent, presence: true, numericality: { only_integer: true }
 	validates :listing_id, presence: true, uniqueness: true
 	

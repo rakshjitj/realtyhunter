@@ -1,0 +1,8 @@
+$(".images").html("<%= escape_javascript(render('images')) %>")
+$('.delete-unit-img').click(function(event) {
+		event.preventDefault();
+		var id = $(this).attr('data-id'); 
+		var unit_id = $(this).attr('data-unit-id');
+		console.log(id, unit_id);
+		removeImage(id, unit_id);
+	});

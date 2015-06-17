@@ -1,6 +1,6 @@
 class Image < ActiveRecord::Base
 	belongs_to :building
-	#belongs_to :unit
+	belongs_to :unit
   default_scope { order("priority ASC") }
   
 	# This method associates the attribute ":file" with a file attachment
