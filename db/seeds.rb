@@ -292,7 +292,6 @@ end
 55.times do |n|
 
   ResidentialUnit.create!({
-    listing_id: Unit.generate_unique_id,
     building_unit: Faker::Number.number(2),
     rent: Faker::Number.number(4),
     beds: Faker::Number.number(1),
@@ -314,7 +313,6 @@ end
 55.times do |n|
   bldg_size = Faker::Number.number(4);
   CommercialUnit.create!({
-    listing_id: Unit.generate_unique_id,
     status: "active",
     building: @bldg,
     rent: Faker::Number.number(4),

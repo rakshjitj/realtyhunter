@@ -76,6 +76,30 @@ class BuildingsController < ApplicationController
     end
   end
 
+  # PATCH/PUT /upload_image/1
+  # PATCH/PUT /upload_image/1.json
+  def upload_image
+    # dropzone expects a json response code
+    # @image = Image.new(image_params)
+
+    # if @image.save
+    #   render json: { message: "success", fileID: @image.id }, :status => 200
+    # else
+    #   render json: { error: @image.errors.full_messages.join(',')}, :status => 400
+    # end
+    
+    image_params = {}
+    #image_params[:building] = {}
+    image_params[:avatar] = building_params[:building][:avatar]
+    puts "\n^^^^^^ #{image_params.inspect} **** #{building_params.inspect}"
+    if @building.update(image_params)
+      flash[:success] = "Building updated!"
+      redirect_to @building
+    else 
+      render 'edit'
+    end
+  end
+
   # GET 
   # handles ajax call. uses latest data in modal
   def delete_modal
@@ -178,9 +202,9 @@ class BuildingsController < ApplicationController
     def building_params
       params.permit(:sort_by, :direction, :filter, :active_only, :street_number, :route, :intersection, 
         :neighborhood, :sublocality, :administrative_area_level_2_short, :administrative_area_level_1_short, 
-        :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id,
+        :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id, 
         :building => [:formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description, 
-          :building_amenity_ids => [],
+          :avatar, :building_amenity_ids => [], images_files: [],
           :rental_term_ids => [] ])
     end
 end

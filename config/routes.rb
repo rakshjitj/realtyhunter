@@ -61,6 +61,7 @@ Rails.application.routes.draw do
       get 'delete_modal'
       get 'inaccuracy_modal'
       patch 'send_inaccuracy'
+      post 'upload_image'
     end
   end
   

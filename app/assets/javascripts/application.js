@@ -11,7 +11,6 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery.turbolinks
 //= require jquery_ujs
 //= require turbolinks
 //= require refile
@@ -19,3 +18,4 @@
 //= require bootstrap-sprockets
 //= require jquery.geocomplete.min
 //= require autocomplete-rails
+//= require dropzone

@@ -15,11 +15,45 @@
   $(document).ready(initialize);
 </script>
 
-<%= form_for(@building) do |f| %>
   <div class="panel panel-default">
     <div class="panel-body">
 
-      <%= render :partial => 'shared/error_messages', :locals => {:model => @building} %>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation"><a href="#basic-info" aria-controls="basic-info" role="tab" data-toggle="tab">Basic Info</a></li>
+      <li role="photos" class="active"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <!-- ******************** second tabpanel - photos ******************** -->
+      <div role="tabpanel" class="tab-pane fade in active" id="photos">
+        <!--form action="/file-upload" class="dropzone" id="my-awesome-dropzone"></form-->
+        <h4>Upload new photos:</h4>
+        <%= form_for(@building, :url => upload_image_building_path(@building), 
+          html: {class: "dropzone", id: "media-dropzone"}, method: :post) do |f| %>
+        <% end %>
+
+        <%= form_for(@building, :url => upload_image_building_path(@building), multipart: true, method: :post) do |f| %>
+          <div class="field">
+            <%= f.label :avatar %>
+            <%= f.file_field :avatar %>
+          </div>
+          <div class="actions">
+            <%= f.submit 'Make a friend' %>
+            <%= link_to 'Nevermind', building_path, class: 'button' %>
+          </div>
+        <% end %>
+
+
+        <!--%= form.attachment_field :image, direct: true, presigned: true, class: 'form-control' %-->
+        Edit currently uploaded photos: (drag to reorder)
+
+      </div><!-- end tabpanel photos -->
+      <!-- ******************** first tabpanel - basic info ********************-->
+      <div role="tabpanel" class="tab-pane fade" id="basic-info">
+      <%= form_for(@building) do |f| %>
+        <%= render :partial => 'shared/error_messages', :locals => {:model => @building} %>
+
 
       <div class="field">
         <%= f.label :formatted_street_address, "Street Address" %><br>
@@ -83,12 +117,22 @@
         <%= f.hidden_field :place_id, name:"place_id" %>
       </div>
 
+      <div class="actions">
+        <%= f.submit "Update", class: "btn btn-primary" %>
+        <%= link_to 'Cancel', buildings_path %>
+      </div>
+      <% end %>
+
+      </div><!-- end tabpanel home -->
+
+
+
+
+
+
+
+    </div>
+
+
     </div><!-- panel-body-->
   </div><!-- panel -->
-  
-<div class="actions">
-  <%= f.submit "Update", class: "btn btn-primary" %>
-  <%= link_to 'Cancel', buildings_path %>
-</div>
-
-<% end %>

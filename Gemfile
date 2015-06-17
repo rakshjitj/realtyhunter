@@ -18,7 +18,7 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
-gem 'jquery-turbolinks'
+#gem 'jquery-turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
@@ -35,10 +35,14 @@ gem 'better_errors'
 
 gem "refile", require: "refile/rails"
 gem "refile-mini_magick"
-# for handling image uploads
+# for handling single image uploads
 gem 'refile-s3'
-#gem 'aws-sdk', '< 2'
-gem 'aws-sdk'
+# for handling multiple image uploads
+gem "paperclip"
+gem 'aws-sdk-v1' #paperclip
+gem 'aws-sdk' #refile
+# ajax drag/dropping multiple files
+gem 'dropzonejs-rails'
 # sending emails
 gem 'mandrill-api'
 # roles authorization
@@ -56,6 +60,7 @@ gem 'rails4-autocomplete'
 #gem 'pdfkit'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary-edge', '~> 0.12.2.1'
+
 
 group :production do
 	gem 'rails_12factor'

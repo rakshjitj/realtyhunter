@@ -119,6 +119,12 @@
       t.timestamps null: false
     end
 
+    # create_table :images do |t|
+    #   t.string :file_id
+    #   t.string :file_key
+    #   t.belongs_to :building
+    # end
+
     # TODO: pull address info into it's own table?
     create_table :buildings do |t|
       t.boolean :archived, default: false

@@ -51,4 +51,13 @@ Rails.application.configure do
     Bullet.add_footer = true
     #Bullet.slack = { webhook_url: 'http://some.slack.url', foo: 'bar' }
   end
+
+  config.paperclip_defaults = {
+    :storage => :s3,
+    :s3_credentials => {
+      :bucket => ENV['S3_AVATAR_BUCKET'],
+      :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
+      :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
+    }
+  }
 end
