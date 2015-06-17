@@ -1,8 +1,9 @@
 <% @building.images.each do |image| %>
-  <div class="img-thumbnail no-border">
+  <div class="img-thumbnail">
   	<%= image_tag image.file.url(:thumb), alt: image.file.url(:thumb) %>
-  	<%= link_to "Remove", building_image_path(@building, image), remote: true, method: :delete, 
-  		class: 'btn btn-sm btn-link center-block delete-img', data: { confirm: 'Are you sure you want to delete this image?' } %>
+  	<%= link_to "Remove", "", 
+  		class: 'btn btn-sm btn-link center-block delete-img', 
+  		"data-id": image.id, "data-bldg-id": @building.id %>
   </div>
 
 <% end %>

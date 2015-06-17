@@ -24,21 +24,32 @@ $(document).ready(function(){
 		removedfile: function(file){
 			// grap the id of the uploaded file we set earlier
 			var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
-			var bldg_id = $(file.previewTemplate).find('.dz-remove').attr('bldg_id'); 
- 			console.log('/buildings/' + bldg_id + '/destroy_image/' + id);
-			// make a DELETE ajax request to delete the file
-			$.ajax({
-				type: 'DELETE',
-				url: '/buildings/' + bldg_id + '/images/' + id,
-				success: function(data){
-					console.log(data.message);
-					$.getScript('/buildings/' + bldg_id + '/refresh_images')
-					file.previewElement.remove();
-				}
-			});
+			var bldg_id = $(file.previewTemplate).find('.dz-remove').attr('bldg_id');
+			removeImage(id, bldg_id);
+			file.previewElement.remove();
 		}
 	});
 
+	function removeImage(id, bldg_id) {
+		console.log('/buildings/' + bldg_id + '/destroy_image/' + id);
+		// make a DELETE ajax request to delete the file
+		$.ajax({
+			type: 'DELETE',
+			url: '/buildings/' + bldg_id + '/images/' + id,
+			success: function(data){
+				console.log(data.message);
+				$.getScript('/buildings/' + bldg_id + '/refresh_images')
+				
+			}
+		});
+	};
 
-		
+	$('.delete-img').click(function(event) {
+		event.preventDefault();
+		var id = $(this).attr('data-id'); 
+		var bldg_id = $(this).attr('data-bldg-id');
+		console.log(id, bldg_id);
+		removeImage(id, bldg_id);
+	});
+
 });
