@@ -29,21 +29,13 @@
       <div role="tabpanel" class="tab-pane fade in active" id="photos">
         <!--form action="/file-upload" class="dropzone" id="my-awesome-dropzone"></form-->
         <h4>Upload new photos:</h4>
-        <%= form_for(@building, :url => upload_image_building_path(@building), 
-          html: {class: "dropzone", id: "media-dropzone"}, method: :post) do |f| %>
-        <% end %>
-
-        <%= form_for(@building, :url => upload_image_building_path(@building), multipart: true, method: :post) do |f| %>
-          <div class="field">
-            <%= f.label :avatar %>
-            <%= f.file_field :avatar %>
-          </div>
-          <div class="actions">
-            <%= f.submit 'Make a friend' %>
-            <%= link_to 'Nevermind', building_path, class: 'button' %>
+        <%= form_for(@building, :url => building_images_path(@building), 
+          html: {multipart: true, class: "dropzone", id: "media-dropzone"}, method: :post) do |f| %>
+          <div class="fallback">
+            <%= f.file_field :file %><br>
+            <%= f.submit "Upload" %>
           </div>
         <% end %>
-
 
         <!--%= form.attachment_field :image, direct: true, presigned: true, class: 'form-control' %-->
         Edit currently uploaded photos: (drag to reorder)

@@ -119,11 +119,14 @@
       t.timestamps null: false
     end
 
-    # create_table :images do |t|
-    #   t.string :file_id
-    #   t.string :file_key
-    #   t.belongs_to :building
-    # end
+    # uses paperclip to upload to S3
+    create_table :images do |t|
+      t.attachment :file
+      # t.string :avatar_id # refile
+      # t.string :avatar_key # refile
+      t.belongs_to :building
+      #t.belongs_to :unit
+    end
 
     # TODO: pull address info into it's own table?
     create_table :buildings do |t|
@@ -146,6 +149,7 @@
       t.belongs_to :landlord
       t.belongs_to :neighborhood
       t.belongs_to :user
+      t.references :images, index: true
       t.timestamps null: false
     end
 

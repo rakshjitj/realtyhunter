@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150617040015) do
+ActiveRecord::Schema.define(version: 20150519180148) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,13 +53,12 @@ ActiveRecord::Schema.define(version: 20150617040015) do
     t.integer  "landlord_id"
     t.integer  "neighborhood_id"
     t.integer  "user_id"
+    t.integer  "images_id"
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
-    t.string   "avatar_file_name"
-    t.string   "avatar_content_type"
-    t.integer  "avatar_file_size"
-    t.datetime "avatar_updated_at"
   end
+
+  add_index "buildings", ["images_id"], name: "index_buildings_on_images_id", using: :btree
 
   create_table "buildings_rental_terms", id: false, force: :cascade do |t|
     t.integer "building_id"
@@ -130,6 +129,14 @@ ActiveRecord::Schema.define(version: 20150617040015) do
   end
 
   add_index "employee_titles", ["users_id"], name: "index_employee_titles_on_users_id", using: :btree
+
+  create_table "images", force: :cascade do |t|
+    t.string   "file_file_name"
+    t.string   "file_content_type"
+    t.integer  "file_file_size"
+    t.datetime "file_updated_at"
+    t.integer  "building_id"
+  end
 
   create_table "landlords", force: :cascade do |t|
     t.boolean  "archived",                          default: false

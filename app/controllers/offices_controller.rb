@@ -111,8 +111,5 @@ class OfficesController < ApplicationController
         :postal_code, :country_short, :lat, :lng, :place_id,
         :office => [:formatted_street_address, :name, :telephone, :street_address, :city, 
         :state, :zipcode, :fax ])
-
-      # params.require(:office).permit(:name, :telephone, :street_address, :city, 
-      #   :state, :zipcode, :fax)
     end
 end

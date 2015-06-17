@@ -1,13 +1,20 @@
 class Image < ActiveRecord::Base
 	belongs_to :building
-	# attachment :file, type: :image
+	#belongs_to :unit
 
-	# after_destroy :remove_file
+	# This method associates the attribute ":file" with a file attachment
+  has_attached_file :file, styles: {
+    thumb: '100x100>',
+    square: '200x200#',
+    medium: '300x300>'
+  }
 
-	# private
+  # Validate filename
+  validates_attachment_file_name :file, :matches => [/png\Z/, /jpe?g\Z/, /gif\Z/]
 
- #    def remove_file
- #      file.delete
- #    end
-    
+	# Validate the attached image content is image/jpg, image/png, etc
+  validates_attachment :file,
+		:presence => true,
+		:content_type => { :content_type => /\Aimage\/.*\Z/ },
+		:size => { :less_than => 4.megabyte }    
 end

@@ -1,7 +1,7 @@
 class BuildingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
-  before_action :set_building, except: [:index, :new, :create, :filter]
+  before_action :set_building, except: [:index, :new, :create, :filter, :remove_image]
   #after_action :clear_xhr_flash, only: [:send_inaccuracy]
 
   # GET /buildings
@@ -78,25 +78,34 @@ class BuildingsController < ApplicationController
 
   # PATCH/PUT /upload_image/1
   # PATCH/PUT /upload_image/1.json
-  def upload_image
+  # TODO: if i name this singularly, the template can not be found. Why?
+  def images
     # dropzone expects a json response code
-    # @image = Image.new(image_params)
-
-    # if @image.save
-    #   render json: { message: "success", fileID: @image.id }, :status => 200
-    # else
-    #   render json: { error: @image.errors.full_messages.join(',')}, :status => 400
-    # end
-    
     image_params = {}
-    #image_params[:building] = {}
-    image_params[:avatar] = building_params[:building][:avatar]
-    puts "\n^^^^^^ #{image_params.inspect} **** #{building_params.inspect}"
-    if @building.update(image_params)
-      flash[:success] = "Building updated!"
-      redirect_to @building
+    # if posting regularly
+    #image_params[:file] = building_params[:building][:file]
+    # if posting through dropzone
+    image_params[:file] = building_params[:file]
+    @img = Image.new(image_params)
+    @img.building = @building
+    if @img.save(image_params)
+      render json: { message: "success", fileID: @img.id, bldgID: @building.id }, :status => 200
     else 
-      render 'edit'
+      #  you need to send an error header, otherwise Dropzone
+      #  will not interpret the response as an error:
+      render json: { error: @image.errors.full_messages.join(',')}, :status => 400
+    end
+  end
+
+  # DELETE /image/1
+  # DELETE /image/1.json
+  def destroy_image
+    @img = Image.find(params[:id])
+    @img.file = nil
+    if @img.destroy    
+      render json: { message: "File deleted from server" }
+    else
+      render json: { message: @img.errors.full_messages.join(',') }
     end
   end
 
@@ -202,9 +211,9 @@ class BuildingsController < ApplicationController
     def building_params
       params.permit(:sort_by, :direction, :filter, :active_only, :street_number, :route, :intersection, 
         :neighborhood, :sublocality, :administrative_area_level_2_short, :administrative_area_level_1_short, 
-        :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id, 
+        :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id, :file,
         :building => [:formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description, 
-          :avatar, :building_amenity_ids => [], images_files: [],
+          :file, :building_amenity_ids => [], images_files: [],
           :rental_term_ids => [] ])
     end
 end

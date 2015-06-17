@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :images
   get 'static_pages/help'
   get 'static_pages/home'
 
@@ -33,8 +34,6 @@ Rails.application.routes.draw do
       post 'admin_kick'
     end
   end
-  #delete 'users/:id/destroy_image', to: 'users#destroy_image', as: :user_destroy_image
-  #patch 'users/:id/upload_image', to: 'users#upload_image', as: :user_upload_image
   
   resources :account_activations, only: [:edit]
   resources :account_approvals,   only: [:edit]
@@ -55,13 +54,20 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :buildings do
+  concern :images_uploadable do
+    resources :images, only: [:create, :destroy]
+  end
+
+  resources :buildings, concerns: :images_uploadable do
     get :autocomplete_building_formatted_street_address, :on => :collection
     member do
       get 'delete_modal'
       get 'inaccuracy_modal'
       patch 'send_inaccuracy'
-      post 'upload_image'
+      # TODO: if i name this singularly, the template can not be found. Why?
+      #post 'images'
+      #delete 'destroy_image'
+
     end
   end
   
