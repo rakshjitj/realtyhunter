@@ -72,7 +72,6 @@
       t.belongs_to :office
       t.references :employee_title, index: true
       t.references :manager, index: true
-      #t.references :buildings, index: true # listing agent
       t.references :units, index: true # primary agent
       t.timestamps null: false
     end

@@ -14,85 +14,192 @@
   };
   $(document).ready(initialize);
 </script>
+
+<%= form_for(@landlord) do |f| %>
 <div class="row">
   <div class="col-md-12">
     <div class="panel panel-default">
-      <div class="panel-body">
+      <div class="panel-body no-vertical-padding">
+        <%= render :partial => 'shared/error_messages', 
+          :locals => {:model => @landlord} %>
 
-        <%= form_for(@landlord) do |f| %>
-          <% if @landlord.errors.any? %>
-            <div id="error_explanation">
-              <h2><%= pluralize(@landlord.errors.count, "error") %> prohibited this landlord from being saved:</h2>
+        <div class="row">
+          <div class="col-md-12 form-section-header">
+            <hr class="thin-line" />
+            <h4>Contact Info</h4>
+            <hr class="thin-line" />
+          </div>
+        </div>
 
-              <ul>
-              <% @landlord.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-              <% end %>
-              </ul>
+        <br />
+        <div class="row">
+          <div class="col-md-3 right">
+            <%= f.label :code %>
+          </div>
+          <div class="col-md-9">
+            <div class="field">
+              <%= f.text_field :code, class: 'form-control' %>
             </div>
-          <% end %>
+          </div>
+        </div>
 
-          <div class="field">
-            <%= f.label :code %><br>
-            <%= f.text_field :code, class: 'form-control' %>
+        <br />
+        <div class="row">
+          <div class="col-md-3 right">
+            <%= f.label :name %>
           </div>
-          <div class="field">
-            <%= f.label :name %><br>
-            <%= f.text_field :name, class: 'form-control' %>
+          <div class="col-md-9">
+            <div class="field">
+              <%= f.text_field :name, class: 'form-control' %>
+            </div>
           </div>
-          <div class="field">
-            <%= f.label :office_phone %><br>
-            <%= f.text_field :office_phone, class: 'form-control' %>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-3 right">
+            <%= f.label :office_phone %>
           </div>
-          <div class="field">
-            <%= f.label :mobile %><br>
-            <%= f.text_field :mobile, class: 'form-control' %>
+          <div class="col-md-9">
+            <div class="field">
+              <%= f.text_field :office_phone, class: 'form-control' %>
+            </div>
           </div>
-          <div class="field">
-            <%= f.label :fax %><br>
-            <%= f.text_field :fax, class: 'form-control' %>
+        </div>
+        
+        <br />
+        <div class="row">
+          <div class="col-md-3 right">
+            <%= f.label :mobile %>
           </div>
-          <div class="field">
-            <%= f.label :email %><br>
-            <%= f.text_field :email, class: 'form-control' %>
+          <div class="col-md-9">
+            <div class="field">
+              <%= f.text_field :mobile, class: 'form-control' %>
+            </div>
           </div>
-          <div class="field">
-            <%= f.label :website %><br>
-            <%= f.text_field :website, class: 'form-control' %>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-3 right">
+            <%= f.label :fax %>
           </div>
-          <div class="field">
-            <%= f.label :formatted_street_address, "Street Address" %><br>
-            <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input', placeholder: "123 Main St" %>
-            <br/>
+          <div class="col-md-9">
+            <div class="field">
+              <%= f.text_field :fax, class: 'form-control' %>
+            </div>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-3 right">
+            <%= f.label :email %>
+          </div>
+          <div class="col-md-9">
+            <div class="field">
+              <%= f.text_field :email, class: 'form-control' %>
+            </div>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-3 right">
+            <%= f.label :website %>
+          </div>
+          <div class="col-md-9">
+            <div class="field">
+              <%= f.text_field :website, class: 'form-control' %>
+            </div>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-3 right">
+            <%= f.label :formatted_street_address, "Street Address" %>
+          </div>
+          <div class="col-md-9">
+            <div class="field">
+              <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input', placeholder: "123 Main St" %>
+            </div>
+          </div>
+        </div>
+          
+        <div class="row">
+          <div class="col-md-12">
             <p>Visually confirm the building's location:</p>
-            <div id="map_canvas"></div>
           </div>
-          <div class="field">
-            <%= f.label :notes, "Notes (will be shared on listings)" %><br>
-            <%= f.text_area :notes, class: 'form-control',
-            rows: 4 %>
-          </div>
-          <div class="field">
-            <%= f.label :listing_agent_percentage, 'Listing agent %' %><br>
-            <%= f.text_field :listing_agent_percentage, class: 'form-control' %>
-          </div>
-          <div class="field">
-            <%= f.label :required_security_id %><br>
-            <%= f.select(:required_security_id, options_for_select(@landlord.company.required_securities.all.collect { |r| [r.name, r.id] }, 
-              [@landlord.required_security ? @landlord.required_security.id : '']),
-               {prompt: "Choose one..."},
-              :required => true, 
-              class: 'form-control',
-              :include_blank => true) %>
-          </div>
+        </div>
 
-          <div class="field">
+        <div class="row">
+          <div class="col-md-12">
+            <div id="map_canvas"></div><br />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 form-section-header">
+            <hr class="thin-line" />
+            <h4>Additional Info</h4>
+            <hr class="thin-line" />
+          </div>
+        </div>
+            
+        <br />
+        <div class="row">
+          <div class="col-md-3 right">
+            <%= f.label :listing_agent_percentage, 'Listing agent %' %>
+          </div>
+          <div class="col-md-9">
+            <div class="field">
+              <%= f.text_field :listing_agent_percentage, class: 'form-control' %>
+            </div>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-3 right">
+            <%= f.label :required_security_id %>
+          </div>
+          <div class="col-md-9">
+            <div class="field">
+              <%= f.select(:required_security_id, options_for_select(@landlord.company.required_securities.all.collect { |r| [r.name.titleize, r.id] }, 
+                [@landlord.required_security ? @landlord.required_security.id : '']),
+                 {prompt: "Choose one..."},
+                :required => true, 
+                class: 'form-control',
+                :include_blank => true) %>
+            </div>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-12">
+            <%= f.label :notes, "Notes (will be shared on listings)" %><br />
+            <%= f.text_area :notes, class: 'form-control', rows: 4 %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-12">
             <%= f.label :management_info, "Additional Management Info" %><br>
             <%= f.text_area :management_info, class: 'form-control', rows: 4 %>
           </div>
-          <div class="actions">
-            <%= f.submit %>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-12">
+            <div class="actions">
+              <%= f.submit "Update Landlord", class: 'btn btn-warning' %>
+            </div>
           </div>
+        </div>
 
           <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
           <div class="details field">
@@ -109,9 +216,10 @@
             <%= f.hidden_field :place_id, name:"place_id" %>
           </div>
 
-        <% end %>
+        
       </div>
     </div>
 
   </div>
 </div>
+<% end %>

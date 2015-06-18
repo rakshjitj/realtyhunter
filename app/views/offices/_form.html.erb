@@ -14,7 +14,7 @@
 </script>
 
 <div class="row">
-  <div class="col-md-10">
+  <div class="col-md-12">
     <%= form_for ([@company, @office]) do |f| %>
       <%= render :partial => 'shared/error_messages', 
       :locals => {:model => @office} %>
@@ -57,7 +57,7 @@
       </div>
 
       <div class="actions">
-        <%= f.submit %>
+        <%= f.submit "Create Office", class: "btn btn-warning" %>
       </div>
     <% end %>
 

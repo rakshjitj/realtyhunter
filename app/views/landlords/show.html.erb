@@ -1,81 +1,130 @@
 <% provide(:title, @landlord.code) %>
-
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
+    
+    <div class="page-header">
+      <div class="row">
+        <div class="col-md-7">
+          <h1><small>Landlord</small> <%= @landlord.code %></h1>
+        </div>
+        <div class="col-md-5 right">
+          <br /><br />
+          <%= link_to 'Edit', edit_landlord_path(@landlord) %> |
+          <%= link_to 'View all', landlords_path %> |
+          <%= link_to 'Add building', new_building_path(landlord_id: @landlord.id) %><br  />  
+        </div>
+      </div>
+    </div>
+
     <div class="row">
-      <div class="col-md">
-        <h1 class="page-header">Landlord <%= @landlord.code %></h1>
-
-        <%= link_to 'Edit', edit_landlord_path(@landlord) %> |
-        <%= link_to 'View all', landlords_path %> |
-        <%= link_to 'Add building', new_building_path(landlord_id: @landlord.id) %><br  />
-        <br  />
-
+      <div class="col-md-12">
         <div class="panel panel-default">
           <div class="panel-body">
-            <p>
-              <strong>Code:</strong>
-              <%= @landlord.code %>
-            </p>
+            
+            <div class="row">
+              <div class="col-md-1">
+                <strong>Code:</strong>
+              </div>
+              <div class="col-md-4">
+                <%= @landlord.code %>
+              </div>
+              <div class="col-md-3">
+                <strong>Mobile:</strong>
+              </div>
+              <div class="col-md-4">
+                <%= @landlord.mobile %>
+              </div>
+            </div>
 
-            <p>
-              <strong>Name:</strong>
-              <%= @landlord.name %>
-            </p>
+            <div class="row">
+              <div class="col-md-1">
+                <strong>Name:</strong>
+              </div>
+              <div class="col-md-4">
+                <%= @landlord.name %>
+              </div>
+              <div class="col-md-3">
+                <strong>Office Phone:</strong>
+              </div>
+              <div class="col-md-4">
+                <%= @landlord.office_phone %>
+              </div>
+            </div>
 
-            <p>
-              <strong>Office Phone:</strong>
-              <%= @landlord.office_phone %>
-            </p>
+            <div class="row">
+              <div class="col-md-1">
+                <strong>Email:</strong>
+              </div>
+              <div class="col-md-4">
+                <%= mail_to @landlord.email %>
+              </div>
+              <div class="col-md-3">
+                <strong>Fax:</strong>
+              </div>
+              <div class="col-md-4">
+                <%= @landlord.fax %>
+              </div>
+            </div>
 
-            <p>
-              <strong>Mobile:</strong>
-              <%= @landlord.mobile %>
-            </p>
+            <div class="row">
+              <div class="col-md-1">
+                <strong>Web:</strong>
+              </div>
+              <div class="col-md-4">
+                <a href="<%= @landlord.website %>"><%= @landlord.website %></a>
+              </div>
+              <div class="col-md-3">
+                <strong>Office address:</strong>
+              </div>
+              <div class="col-md-4">
+                <%= @landlord.formatted_street_address %>
+              </div>
+            </div>
 
-            <p>
-              <strong>Fax:</strong>
-              <%= @landlord.fax %>
-            </p>
+            <div class="row">
+              <div class="col-md-12">
+                <br />
+                <strong>Listing agent %:</strong> <%= @landlord.listing_agent_percentage %>
+              </div>
+            </div>
 
-            <p>
-              <strong>Email:</strong>
-              <%= mail_to @landlord.email %>
-            </p>
+            <div class="row">
+              <div class="col-md-12">
+                <br />
+                <strong>Required securities:</strong> <%= @landlord.required_security.name.titleize %>
+              </div>
+            </div>
+          
+            <div class="row">
+              <div class="col-md-12">
+                <br />
+                <strong>Notes: (Shared on listings)</strong>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <%= @landlord.notes %>
+              </div>
+            </div>
 
-            <p>
-              <strong>Website:</strong>
-              <a href="<%= @landlord.website %>"><%= @landlord.website %></a>
-            </p>
+            <div class="row">
+              <div class="col-md-12">
+                <br />
+                <strong>Additional Management info:</strong>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <%= @landlord.management_info %>
+              </div>
+            </div>
 
-            <p>
-              <strong>Street address:</strong>
-              <%= @landlord.formatted_street_address %>
-            </p>
-
-            <p>
-              <strong>Notes: (Shared on listings)</strong>
-              <%= @landlord.notes %>
-            </p>
-
-            <p>
-              <strong>Listing agent %:</strong>
-              <%= @landlord.listing_agent_percentage %>
-            </p>
-
-            <p>
-              <strong>Required securities:</strong>
-              <%= @landlord.required_security.name %>
-            </p>
-
-            <p>
-              <strong>Additional Management info:</strong>
-              <%= @landlord.management_info %>
-            </p>
-
-            <p>
-              --View properties-- TODO
-            </p>
+            <div class="row">
+              <div class="col-md-12">
+                <br />
+                <p>--View properties-- TODO</p>
+              </div>
+            </div>
 
           </div>
         </div>

@@ -26,12 +26,14 @@ class OfficesController < ApplicationController
 
   def managers
     @users = @office.managers
+    @title = "Managers"
   end
 
   def agents
     @users = @office.agents
     @users.sort_by!{|u| u.name.downcase }
     @users = @users.paginate(:page => params[:page], :per_page => 50)
+    @title = "Agents"
     render 'users/index'    
   end
 

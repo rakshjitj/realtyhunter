@@ -6,18 +6,18 @@
 <% if can? :update, user %>
 	<%= link_to 'Edit', edit_user_path(user) %> | 
     	
-  <%= link_to user, :remote => true, method: :delete, data: { confirm: "Are you sure you want to delete #{user.name}?" } do %>
-  	 <button>Delete</button>
+  <%= link_to user, :remote => true, method: :delete, 
+  	data: { confirm: "Are you sure you want to delete #{user.name}?" } do %>
+  	 <button class="btn btn-md btn-link no-padding">Delete</button>
   	<% end %>
   <% @prev_link = true %>
 <% end %>
 
 <% if current_user.can_manage_team(user) %>
 	<% if @prev_link %> | <% end %>
-  <%= link_to 'Manage team', subordinates_user_path(user) %><br />
+  <%= link_to 'Manage team', subordinates_user_path(user) %>
   <% @prev_link = true %>
 <% end %>
-
 
 <% if current_user.can_approve(user) %>
 	<% if !user.approved? %>

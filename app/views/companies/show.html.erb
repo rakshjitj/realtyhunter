@@ -1,44 +1,51 @@
-<% provide(:title, @company.name) %>
-
 <div class="row">
   <div class="col-md-offset-3 col-md-5">
 
   <div class="row page-header">
-    <h1><%= @company.name %> Company Profile</h1>
+    <div class="col-md-6">
+      <h1><%= @company.name %></h1>  
+    </div>
+    <div class="col-md-6">
+      <br /><br />
+      <%= link_to 'All Companies', companies_path %> | 
+      <%= link_to 'Edit', edit_company_path(@company) %> |
+      <%= link_to 'Offices', company_offices_path(@company) %> |
+      <%= link_to 'Agents', employees_company_path(@company) %>
+    </div>
+    
   </div>
-  <div class="row">
-    <%= link_to 'All Companies', companies_path %> | 
-    <%= link_to 'Edit', edit_company_path(@company) %> |
-    <%= link_to 'Offices', company_offices_path(@company) %> |
-    <%= link_to 'Agents', employees_company_path(@company) %>
-    <br />
-    <br />
-  </div>
-  <div class="row">
-    <% if @company.logo_id? %>
-      <%= attachment_image_tag(@company, :logo, :fill, 300, 300) %>
-    <% else %>
-      <td>
-        <div class="company-logo">
-          <i class="fa fa-user fa-fw fa-border"></i>
-        </div>
-      </td>
-    <% end %>
-  </div>
-  <div class="row">
-    <br />
-    <% if @company.offices.empty? %>
-      <p>No offices added yet. Why don't you <%= link_to "create one?", new_company_office_path(@company) %></p>
-      <br />
-    <% else %>
 
-      <% @company.offices.each do |office| %>
-        <p><b><%= link_to office.name, company_office_path(office.company, office) %></b>
-         - <%= office.formatted_street_address %>,
-        <%= office.telephone %>
-        </p>
+  <div class="row">
+    <div class="col-md-6">
+      <% if @company.logo_id? %>
+        <%= attachment_image_tag(@company, :logo, :fill, 300, 300) %>
+      <% else %>
+        <td>
+          <div class="company-logo">
+            <i class="fa fa-user fa-fw fa-border"></i>
+          </div>
+        </td>
       <% end %>
-    <% end %>
+    </div>
+    <div class="col-md-6">
+      <% if @company.offices.empty? %>
+        <p>No offices added yet. Why don't you <%= link_to "create one?", new_company_office_path(@company) %></p>
+        <br />
+      <% else %>
+
+        <% @company.offices.each do |office| %>
+          <p><b><%= link_to office.name, company_office_path(office.company, office) %></b>
+           - <%= office.formatted_street_address %>,
+          <%= office.telephone %>
+          </p>
+        <% end %>
+      <% end %>
+    </div>
+    
+  </div>
+  <div class="row">
+    <br />
+    
   </div>
   <div class="row">
     <hr />

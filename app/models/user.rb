@@ -5,8 +5,7 @@ class User < ActiveRecord::Base
   belongs_to :manager, :class_name => "User"
   belongs_to :employee_title
   has_many   :subordinates, :class_name => "User", :foreign_key => "manager_id"
-  has_many   :buildings # listing agent
-  has_many   :units # primary agent
+  has_many   :units # primary agent, listing agent
   attachment :avatar, type: :image
 
   scope :unarchived, ->{where(archived: false)}
@@ -38,6 +37,10 @@ class User < ActiveRecord::Base
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
                                                   BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
+  end
+
+  def primary_residential_units
+    @residential_units = Unit.get_residential_units(units)
   end
 
   # Returns a random token.

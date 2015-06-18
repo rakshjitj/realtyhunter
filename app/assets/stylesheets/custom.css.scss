@@ -253,7 +253,7 @@ aside {
 
 .pagination {
   padding: 0;
-  margin: 5px !important;
+  margin: 0px !important;
 }
 
 .thin-line {
@@ -327,4 +327,8 @@ aside {
  
 .sortable {
   //display: list-item;
+}
+
+.no-padding {
+  padding: 0 !important;
 }

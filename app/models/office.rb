@@ -3,7 +3,8 @@ class Office < ActiveRecord::Base
 	has_many :users
 
 	scope :unarchived, ->{where(archived: false)}
-	
+	default_scope { order("name ASC") }
+
 	validates :company, presence: true
 	
 	validates :name, presence: true, length: {maximum: 100}, 
