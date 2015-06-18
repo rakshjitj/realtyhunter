@@ -40,6 +40,11 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
+  test "bio should not be too long" do
+    @user.bio = "a" * 501
+    assert_not @user.bio
+  end
+
   test "email validation should accept valid addresses" do
     valid_addresses = %w[user@example.com USER@foo.COM A_US-ER@foo.bar.org
                          first.last@foo.jp alice+bob@baz.cn]

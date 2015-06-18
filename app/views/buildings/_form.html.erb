@@ -25,9 +25,9 @@
   </ul>
 
   <div class="tab-content">
+    <!-- ******************** second tabpanel - photos ******************** -->
     <div role="tabpanel" class="tab-pane fade" id="photos">
       <% if @building.id %>
-        <!-- ******************** second tabpanel - photos ******************** -->
       
         <br />
         <%= form_for(@building, :url => building_images_path(@building), 
@@ -38,7 +38,6 @@
           </div>
         <% end %>
 
-        <!--%= form.attachment_field :image, direct: true, presigned: true, class: 'form-control' %-->
         <br />
         <p><strong>Edit current photos (drag to reorder):</strong></p>
         <div class="row">

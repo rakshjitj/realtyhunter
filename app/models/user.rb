@@ -31,6 +31,8 @@ class User < ActiveRecord::Base
   has_secure_password
 	validates :password, length: { minimum: 6 }, allow_blank: true
 
+  validates :bio, length: {maximum: 500}
+
   validates :company, presence: true
   validates :office, presence: true
 
@@ -43,6 +45,10 @@ class User < ActiveRecord::Base
 
   def primary_residential_units
     @residential_units = Unit.get_residential(self.units)
+  end
+
+  def primary_commercial_units
+    @commercial_units = Unit.get_commercial(self.units)
   end
 
   # Returns a random token.
