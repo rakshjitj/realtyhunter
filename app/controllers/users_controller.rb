@@ -149,6 +149,12 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy_image
+    if @user.image
+      @user.image = nil
+    end
+  end
+
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy

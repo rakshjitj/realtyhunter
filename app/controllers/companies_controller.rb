@@ -34,6 +34,7 @@ class CompaniesController < ApplicationController
   # GET /team/1
   # GET /teams/1.json
   def managers
+    @title = 'Managers'
     @users = @company.managers
     @users.sort_by!{|u| u.name.downcase }
     @users = @users.paginate(:page => params[:page], :per_page => 50)
@@ -41,6 +42,7 @@ class CompaniesController < ApplicationController
   end
 
   def employees
+    @title = 'Employees'
     @users = @company.users.includes(:office, :employee_title)
       .paginate(:page => params[:page], :per_page => 50)
     render 'users/index'

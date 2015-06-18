@@ -252,7 +252,7 @@ class User < ActiveRecord::Base
 
   def coworkers
     @coworkers = Array.new(self.company.users)
-    @coworkers.delete(self)
+    #@coworkers.delete(self)
     @coworkers
   end
 

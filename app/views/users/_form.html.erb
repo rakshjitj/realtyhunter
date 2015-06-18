@@ -30,7 +30,8 @@
             <div class="img-medium" data-id="<%= @user.id %>">
               <%= image_tag @user.image.file.url(:medium), :class => 'img-responsive', 
                 alt: @user.image.file.url(:medium) %>
-              <%= link_to "Remove", "", 
+              <!-- TODO -->
+              <%= link_to "Remove", remove_photo_user_path(@user), 
                 class: 'btn btn-xs btn-link center-block delete-user-img', "data-id": @user.id %>
             </div>
           <% else %>
