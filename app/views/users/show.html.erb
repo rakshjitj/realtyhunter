@@ -2,6 +2,6 @@
 
 <div class="user_detail">
 
-  <%= render 'users/show_detail', :user => @user %>
+  <%= render partial: 'users/show_detail', locals: { :user => @user } %>
 
 </div>

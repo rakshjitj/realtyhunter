@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
   end
 
   def primary_residential_units
-    @residential_units = Unit.get_residential_units(units)
+    @residential_units = Unit.get_residential(self.units)
   end
 
   # Returns a random token.
