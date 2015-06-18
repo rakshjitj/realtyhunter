@@ -31,7 +31,6 @@ $(document).ready(function(){
 			$(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
 			$(file.previewTemplate).find('.dz-remove').attr('bldg_id', response.bldgID);
 			// add the dz-success class (the green tick sign)
-			//console.log('/buildings/' + bldg_id + '/destroy_image/' + id);
 			$(file.previewElement).addClass("dz-success");
 			$.getScript('/buildings/' + response.bldgID + '/refresh_images')
 			file.previewElement.remove();
@@ -52,7 +51,6 @@ $(document).ready(function(){
 		var bldg_id = $(this).attr('data-bldg-id');
 		console.log(id, bldg_id);
 		removeImage(id, bldg_id);
-		// TODO: WTF why is this breaking?
 	});
 
 	$('.carousel-indicators > li:first-child').addClass('active');

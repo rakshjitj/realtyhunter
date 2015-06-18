@@ -153,6 +153,9 @@ class UsersController < ApplicationController
     if @user.image
       @user.image = nil
     end
+    respond_to do |format|
+        format.js  
+      end
   end
 
   # DELETE /users/1

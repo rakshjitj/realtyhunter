@@ -1,0 +1,16 @@
+<% if @user.image %>
+  <!-- display existing image -->
+  <div class="img-medium">
+    <%= image_tag @user.image.file.url(:medium), :class => 'img-responsive', 
+      alt: @user.image.file.url(:medium) %>
+    <!-- remove image -->
+    <%= link_to "Remove", destroy_image_user_path(@user), remote: true, method: :delete,
+      class: 'btn btn-xs btn-link center-block', 
+      data: { confirm: "Are you sure you want to remove the profile picture?" } %>
+  </div>
+<% else %>
+  <!-- display placeholder image if none uploaded currently -->
+  <div class="user-avatar">
+    <i class="fa fa-user fa-fw fa-border user-avatar"></i>
+  </div>
+<% end %>
