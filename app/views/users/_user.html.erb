@@ -1,16 +1,16 @@
 <tr class="<%= cycle('even', 'odd') -%>">
-	<% if user.avatar_id? %>
-		<td>
-			<%= link_to attachment_image_tag(user, :avatar, :fill, 100, 100), 
-			edit_user_path(user) %>
-		</td>
-	<% else %>
-		<td>
+	<!--% if user.avatar_id? %-->
+		<!-- <td>
+			<!--%= link_to attachment_image_tag(user, :avatar, :fill, 100, 100), 
+			edit_user_path(user) %-->
+		<!--/td-->
+	<!--% else %-->
+		<!--td>
 			<div class="user-avatar-thumbnail">
 				<i class="fa fa-user fa-fw fa-border"></i>
 			</div>
-		</td>
-	<% end %>	
+		</td>-->
+	<!--% end %-->
   
   <td><%= link_to user.name, user %></td>
   <td><%= user.email %></td>

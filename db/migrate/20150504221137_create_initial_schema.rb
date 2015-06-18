@@ -121,11 +121,10 @@
     # uses paperclip to upload to S3
     create_table :images do |t|
       t.attachment :file
-      # t.string :avatar_id # refile
-      # t.string :avatar_key # refile
       t.integer :priority
       t.belongs_to :building
       t.belongs_to :unit
+      t.belongs_to :user, index: true
     end
 
     # TODO: pull address info into it's own table?

@@ -22,18 +22,17 @@
   <div class="col-md-6">
     <!-- User image form -->
     
-    <!-- ,   -->
-    <%= form_for(@user, :url => upload_image_user_path(@user)) do |f| %>
-
       <div class="row">
         <div class="col-md-12">
-          <% if @user.avatar_id? %>
+          <% if @user.image %>
             <!-- display existing image -->
-            <%= attachment_image_tag(@user, :avatar, :fill, 300, 300) %>
             <!-- add in options to remove existing image -->
-            <br />
-            <%= f.check_box :remove_avatar %>
-            <%= f.label :remove_avatar, "Remove current image" %>
+            <div class="img-medium" data-id="<%= @user.id %>">
+              <%= image_tag @user.image.file.url(:medium), :class => 'img-responsive', 
+                alt: @user.image.file.url(:medium) %>
+              <%= link_to "Remove", "", 
+                class: 'btn btn-xs btn-link center-block delete-user-img', "data-id": @user.id %>
+            </div>
           <% else %>
             <div class="user-avatar">
               <i class="fa fa-user fa-fw fa-border user-avatar"></i>
@@ -42,18 +41,27 @@
         </div>
       </div>
 
+      <br />
+      <div class="row">
+        <div class="col-md-12">
+          <%= form_for(@user, :url => upload_image_user_path(@user), 
+            html: {multipart: true}, method: :post) do |f| %>
+          <!--%= form_for(@residential_unit, :url => user_user_images_path(@residential_unit), 
+            html: {multipart: true, id: "unit-dropzone"}, method: :post) do |f| %-->
+              <%= f.file_field :file %><br>
+              <%= f.submit "Upload Photo", class: "btn btn-warning" %>
+          <% end %>
+        </div>
+      </div>
+
       <div class="field">
-        <br />
-        <%= f.label :avatar, "Upload new profile image:" %><br>
-        <%= f.attachment_field :avatar, direct: true, presigned: true, class: 'form-control'  %>
-        <br />
-        <%= f.label :remote_avatar_url, "Or copy image from URL:" %>
-        <%= f.text_field :remote_avatar_url, class: 'form-control' %>
+        
+        <!--%= f.label :avatar, "Upload new profile image:" %><br-->
+        <!--%= f.attachment_field :avatar, direct: true, presigned: true, class: 'form-control'  %-->
+        <!--br /-->
+        <!--%= f.label :remote_avatar_url, "Or copy image from URL:" %-->
+        <!--%= f.text_field :remote_avatar_url, class: 'form-control' %-->
       </div>
-      <div class="actions">
-        <%= f.submit "Update", class: "btn btn-warning" %>
-      </div>
-    <% end %>
   </div>
 
   <div class="col-md-6">
@@ -79,7 +87,7 @@
             class: 'form-control' %>
       </div>
       <div class="field">
-        <%= f.label "Give us your bio" %><br>
+        <%= f.label "Short Bio" %><br>
         <%= f.text_area :bio, class: 'form-control', :size => "20x10" %>
       </div>
       

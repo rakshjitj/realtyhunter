@@ -132,14 +132,15 @@ class UsersController < ApplicationController
     end
   end
 
-  # PATCH /users/1
+  # POST /users/1
   def upload_image
-    # restrict so only photo-related parameters go through
-    photo_params = {}
-    photo_params[:avatar] = user_params[:avatar]
-    photo_params[:remove_avatar] = user_params[:remove_avatar]
-    photo_params[:remote_avatar_url] = user_params[:remote_avatar_url]
-    if @user.update(user_params)
+    image = Image.create(user_params)
+    if image
+      # delete old image
+      # TODO verify this removes old image from S3!
+      @user.image = nil
+      # add new image
+      @user.image = image
       flash[:success] = "Profile image updated!"
       redirect_to @user
     else
@@ -151,7 +152,6 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    #@user.destroy
     @user.archive
     set_user
     set_users
@@ -250,6 +250,6 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:email, :name, :mobile_phone_number, :bio, :password, 
         :password_confirmation, :avatar, :remove_avatar, :remote_avatar_url, :phone_number, 
-        :mobile_phone_number, :employee_title_id, :company_id, :office_id, agent_types: [])
+        :mobile_phone_number, :employee_title_id, :company_id, :office_id, :file, agent_types: [])
     end
 end

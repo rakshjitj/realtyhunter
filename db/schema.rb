@@ -138,7 +138,10 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "priority"
     t.integer  "building_id"
     t.integer  "unit_id"
+    t.integer  "user_id"
   end
+
+  add_index "images", ["user_id"], name: "index_images_on_user_id", using: :btree
 
   create_table "landlords", force: :cascade do |t|
     t.boolean  "archived",                          default: false
@@ -317,8 +320,6 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "units_id"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
-    t.string   "avatar_id"
-    t.string   "avatar_key"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

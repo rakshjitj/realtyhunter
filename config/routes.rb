@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     end
     member do 
       delete 'destroy_image'
-      patch 'upload_image'
+      post 'upload_image'
       get 'coworkers'
       get 'subordinates'
       post 'admin_approve'
@@ -54,7 +54,7 @@ Rails.application.routes.draw do
     end
   end
 
-  # TODO: consolidate this somehow
+  # TODO: consolidate this somehow?
   concern :images_uploadable do
     resources :images, only: [:create, :destroy] do
       collection do

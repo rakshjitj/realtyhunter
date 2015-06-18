@@ -33,14 +33,14 @@ gem 'bootstrap-will_paginate'
 gem 'autoprefixer-rails'
 gem 'better_errors'
 
-gem "refile", require: "refile/rails"
-gem "refile-mini_magick"
+#gem "refile", require: "refile/rails"
+#gem "refile-mini_magick"
 # for handling single image uploads
-gem 'refile-s3'
+#gem 'refile-s3'
 # for handling multiple image uploads
 gem "paperclip"
 gem 'aws-sdk-v1' #paperclip
-gem 'aws-sdk' #refile
+#gem 'aws-sdk' #refile
 # ajax drag/dropping multiple files
 gem 'dropzonejs-rails'
 # sending emails

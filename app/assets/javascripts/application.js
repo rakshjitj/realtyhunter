@@ -15,7 +15,6 @@
 //= require jquery_ujs
 //= require html.sortable.min
 //= require turbolinks
-//= require refile
 //= require_tree .
 //= require bootstrap-sprockets
 //= require jquery.geocomplete.min

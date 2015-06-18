@@ -1,8 +1,22 @@
+<% provide(:title, 'Editing Company') %>
+
+
 <div class="row">
 	<div class="col-md-6 col-md-offset-3">
-		<% provide(:title, 'Editing Company') %>
-		<h1>Editing Company</h1>
 
-			<%= render 'form' %>
+		<div class="page-header">
+		  <div class="row">
+		    <div class="col-md-7">
+		      <h1><small>Editing</small> <%= @company.name %></h1>
+		    </div>
+		    <div class="col-md-5 right">
+		      <br /><br />
+		      <%= link_to 'Show', @company %>
+		    </div>
+		  </div>
+		</div>
+		
+		<%= render 'form' %>
+
 	</div>
 </div>

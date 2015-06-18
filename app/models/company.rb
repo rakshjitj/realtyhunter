@@ -1,5 +1,5 @@
 class Company < ActiveRecord::Base
-	attachment :logo
+	#attachment :logo
 	after_save :create_environment
 	
 	scope :unarchived, ->{where(archived: false)}
