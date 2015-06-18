@@ -14,12 +14,17 @@
   };
 </script>
 
-
 <% provide(:title, 'Admin User Signup') %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="page-header">
+      <h1><%= current_user.company.name.titleize %> - Admin Batch Signup</h1>
+    </div>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-md-12">
-    <h1><%= current_user.company.name.titleize %> - Admin Batch Signup</h1>
     
     <p>Users will be notified of their accounts immediately after creation.</p>
 

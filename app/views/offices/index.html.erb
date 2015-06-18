@@ -1,7 +1,14 @@
-<h1><%= @company.name %> Offices</h1>
-
-<%= link_to 'New Office', new_company_office_path %>
-<br /><br />
+<div class="page-header">
+  <div class="row">
+    <div class="col-md-7">
+      <h1><%= @company.name %> Offices</h1>
+    </div>
+    <div class="col-md-5 right">
+      <br /><br />
+      <%= link_to 'New Office', new_company_office_path %>
+    </div>
+  </div>
+</div>
 
 <% if @offices %>
 

@@ -7,7 +7,8 @@ class User < ActiveRecord::Base
   has_many   :subordinates, :class_name => "User", :foreign_key => "manager_id"
   has_many   :units # primary agent, listing agent
   attachment :avatar, type: :image
-
+  default_scope { order("name ASC") }
+  
   scope :unarchived, ->{where(archived: false)}
 
 	attr_accessor :remember_token, :activation_token, :reset_token, :approval_token, :agent_types
