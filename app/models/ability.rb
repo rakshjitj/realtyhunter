@@ -18,7 +18,7 @@ class Ability
         can :manage, Company, :id => user.company.id
         can :manage, Office, :company_id => user.company.id
         can :manage, Landlord do |landlord|
-          landlord.company_id == user.company_id
+          !landlord.company_id || landlord.company_id == user.company_id
         end
       elsif user.has_role?(:manager)
         can :read, Landlord do |landlord|
@@ -28,10 +28,10 @@ class Ability
 
       can :manage, Building, :company_id => user.company.id
       can :manage, ResidentialUnit do |residential_unit|
-          residential_unit.building.company_id == user.company_id
+          !residential_unit.building_id || residential_unit.building.company_id == user.company_id
         end
       can :manage, CommercialUnit do |commercial_unit|
-        commercial_unit.building.company_id == user.company_id
+        !commercial_unit.building_id || commercial_unit.building.company_id == user.company_id
       end
       
     else # regular users (agents, non-management)
