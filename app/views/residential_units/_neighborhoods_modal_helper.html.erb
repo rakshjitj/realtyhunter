@@ -28,9 +28,9 @@
 			    		
 			    		<div class="btn-group neighborhood-buttons" data-toggle="buttons">
 				    		<% neighs.each do |neighborhood| %>
-				    			<label class="btn btn-xs btn-warning btn-as-checkbox" 
+				    			<label class="btn btn-xs btn-link btn-as-checkbox" 
 				    				id="<%= neighborhood.id %>" name="<%= neighborhood.name %>">
-									  <input type="checkbox" autocomplete="off"><%= neighborhood.name %>
+									  <input type="checkbox" autocomplete="off"><%= neighborhood.name.titleize %>
 									</label>
 				    		<% end %>
 							</div><!-- btn-group -->
@@ -43,8 +43,8 @@
 				<!-- No boroughs specified OR there is only 1 borough, skip the tabs. 
 					Just display the neighborhoods directly. -->
 				<% @neighborhoods.each do |neighborhood| %>
-    			<label class="btn btn-xs btn-warning btn-as-checkbox">
-					  <input type="checkbox" autocomplete="off"><%= neighborhood.name %>
+    			<label class="btn btn-xs btn-link btn-as-checkbox">
+					  <input type="checkbox" autocomplete="off"><%= neighborhood.name.titleize %>
 					</label>
     		<% end %>
 

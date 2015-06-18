@@ -4,9 +4,9 @@
 	<strong>Unit</strong>
 	<div class="btn-group unit-feature-buttons" data-toggle="buttons">
 		<% @unit_amenities.each do |amenity| %>
-			<label class="btn btn-xs btn-warning btn-as-checkbox" 
-				id="<%= amenity.id %>" name="<%= amenity.name %>">
-			  <input type="checkbox" autocomplete="off"><%= amenity.name %>
+			<label class="btn btn-xs btn-link btn-as-checkbox" 
+				id="<%= amenity.id %>" name="<%= amenity.name.titleize %>">
+			  <input type="checkbox" autocomplete="off"><%= amenity.name.titleize %>
 			</label>
 		<% end %>
 	</div><!-- btn-group -->
@@ -15,9 +15,9 @@
 	<strong>Building</strong>
 	<div class="btn-group building-feature-buttons" data-toggle="buttons">
 		<% @building_amenities.each do |amenity| %>
-			<label class="btn btn-xs btn-warning btn-as-checkbox" 
-				id="<%= amenity.id %>" name="<%= amenity.name %>">
-			  <input type="checkbox" autocomplete="off"><%= amenity.name %>
+			<label class="btn btn-xs btn-link btn-as-checkbox" 
+				id="<%= amenity.id %>" name="<%= amenity.name.titleize %>">
+			  <input type="checkbox" autocomplete="off"><%= amenity.name.titleize %>
 			</label>
 		<% end %>
 	</div><!-- btn-group -->

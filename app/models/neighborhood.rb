@@ -1,6 +1,6 @@
 class Neighborhood < ActiveRecord::Base
 	has_many :buildings
-
+	default_scope { order("name ASC") }
 	scope :unarchived, ->{where(archived: false)}
 
 	validates :name, presence: true, length: {maximum: 100}, 

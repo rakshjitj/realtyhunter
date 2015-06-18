@@ -4,14 +4,12 @@ $('#featuresModal #placeholder-body').html("<%= j(render :partial => "features_m
 var ids = $('#unit_feature_ids').val().split(", ");
 if (ids != "{:id=>\"unit_feature_ids\"}") {
 	$.each(ids, function(idx, val) {
-		console.log('1', val)
 		$('#'+ val).toggleClass('active');
 	});
 }
 var ids = $('#building_feature_ids').val().split(", ");
 if (ids != "{:id=>\"building_feature_ids\"}") {
 	$.each(ids, function(idx, val) {
-		console.log('2', val)
 		$('#'+ val).toggleClass('active');
 	});
 }
