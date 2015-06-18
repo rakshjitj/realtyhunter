@@ -23,7 +23,5 @@ en:
   hello: "Hello world"
   helpers:
     submit:
-      user:
-        create: "Create account"
-        update: "Save changes"
-      
+      create: "Create"
+      update: "Update"

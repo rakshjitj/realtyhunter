@@ -91,20 +91,22 @@
   $(document).ready(initialize);
 </script>
 
-<br />
 <% provide(:title, 'Residential Listings') %>
-<div class="row">
-  <div class="col-md-6">
-    <h1>Residential Listings</h1><%= link_to 'Add a unit', new_residential_unit_path %> 
-
-    <%= link_to print_list_residential_units_path, 
-      class:"btn btn-xs btn-primary link-as-button btn-print-list has-spinner" do %>
-      <span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Print
-    <% end %>
+<div class="page-header">
+  <div class="row">
+    <div class="col-md-6">
+      <h1>Residential Listings</h1>
+    </div>
+    <div class="col-md-6 right">
+      <br /><br />
+      <%= link_to 'Add a unit', new_residential_unit_path %> 
+      <%= link_to print_list_residential_units_path, 
+        class:"btn btn-xs btn-primary link-as-button btn-print-list has-spinner" do %>
+        <span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Print
+      <% end %>
+    </div>
   </div>
-
 </div>
-<!--hr class="thin-line" /-->
 
 <div class="row">
   <div class="col-md-8">

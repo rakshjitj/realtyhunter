@@ -14,48 +14,51 @@
 </script>
 
 <% provide(:title, 'Residential Unit') %>
+
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-  	<div class="row">
-  		<div class="col-md">
-  			<div class="page-header">
-		  		<h1>
-		  			<%= rent_formatted(@residential_unit.rent) %> - 
-		  			<%= @residential_unit.street_address_and_unit %>
-		  		</h1>
-		  		<p>
-	  				<%= @residential_unit.building.neighborhood.name %>, <%= @residential_unit.building.sublocality %>, <%= @residential_unit.building.administrative_area_level_2_short %> <%= @residential_unit.building.postal_code %>
-	  			</p>
-	  		</div>
+  	<br/>
+  	<br/>
+  	<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <div class="panel-title">
+		    	<div class="row">
+			  		<div class="col-md-7">
+				  		<h1>
+				  			<%= @residential_unit.street_address_and_unit %>
+				  		</h1>
+				  		<p>
+			  				<%= @residential_unit.building.neighborhood.name %>, <%= @residential_unit.building.sublocality %>, <%= @residential_unit.building.administrative_area_level_2_short %> <%= @residential_unit.building.postal_code %>
+			  			</p>
+			  		</div>
+			  		<div class="col-md-5 right">
+			  			<h1><%= rent_formatted(@residential_unit.rent) %></h1>
+			  			<p><%= render 'market_status' %> &nbsp;&nbsp;<%= @residential_unit.beds %> Beds / <%= @residential_unit.baths %> Baths</p>
+			  		</div>
+			  	</div><!-- row -->
+			  </div><!-- panel title -->
+			</div><!-- panel heading -->
+			<div class="panel-body">
+		  	<div class="row">
+			  	<div class="col-md-12">
+		  			<%= link_to 'Edit', edit_residential_unit_path(@residential_unit) %>
+			        | <%= link_to 'View all', residential_units_path %>
+			        | <%= link_to 'Duplicate', duplicate_modal_residential_unit_path(@residential_unit), 
+			    				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
+			    		| <%= link_to 'Report Inaccuracy', inaccuracy_modal_residential_unit_path(@residential_unit), 
+			      			data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
+			      	| <%= link_to 'Take off market', take_off_modal_residential_unit_path(@residential_unit), 
+			      			data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %>
+			      	| <%= link_to 'Print', print_modal_residential_unit_path(@residential_unit), 
+			      		data: {toggle: "modal", target: "#printModal"}, remote: true %>
+			  	</div>
+		    </div>
 
-	  			<p>
-
-	  			<%= render 'market_status' %>
-
-          <%= link_to 'Edit', edit_residential_unit_path(@residential_unit) %>
-          | <%= link_to 'View all', residential_units_path %>
-          | <%= link_to 'Duplicate', duplicate_modal_residential_unit_path(@residential_unit), 
-      				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
-      		| <%= link_to 'Report Inaccuracy', inaccuracy_modal_residential_unit_path(@residential_unit), 
-        			data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
-        	| <%= link_to 'Take off market', take_off_modal_residential_unit_path(@residential_unit), 
-        			data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %>
-        	| <%= link_to 'Print', print_modal_residential_unit_path(@residential_unit), 
-        		data: {toggle: "modal", target: "#printModal"}, remote: true %>
-          </p>
-	  	</div>
-    </div>
-    <div class="row">
-  		<div class="col-md-12">
-
-  			<div class="panel panel-default">
-				  <div class="panel-heading">
-				    <h3 class="panel-title">Unit Details</h3>
-				  </div>
-				  <div class="panel-body">
-
-				  	<!-- begin photos -->
-				  	<% if @residential_unit.images.any? %>
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-md-12">
+	    			<!-- begin photos -->
+				  	<% if @residential_unit.images.length > 0 %>
 							<div id="residential_unit-carousel" class="carousel slide" data-ride="carousel">
 							  <!-- Indicators -->
 							  <ol class="carousel-indicators">
@@ -103,154 +106,285 @@
 					  	<p>No images added yet.</p>
 					  <% end %>
 					  <!-- end photos -->
+	    		</div>
+	    	</div><!-- row -->
 
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-md-2">
+	    			<strong>Building:</strong>
+	    		</div>
+	    		<div class="col-md-4">
+	    			<%= link_to @residential_unit.building.street_address, @residential_unit.building %>
+	    		</div>
+	    		<div class="col-md-3">
+	    			<strong>Required Security:</strong>
+	    		</div>
+	    		<div class="col-md-3">
+	    			<%= @residential_unit.building.landlord.required_security.name.titleize %>
+	    		</div>
+	    	</div>
 
-				  	<div id="map_canvas"></div>
-				  	<br />
-				    <p>
-				    	<strong>Building:</strong>
-  						<%= link_to @residential_unit.building.formatted_street_address, @residential_unit.building %>
-						</p>
+		   	<div class="row">
+	    		<div class="col-md-2">
+	    			<strong>Unit:</strong>
+	    		</div>
+	    		<div class="col-md-4">
+	    			<%= @residential_unit.building_unit %>
+	    		</div>
+	    		<div class="col-md-3">
+	    			<strong>Rental Terms:</strong>
+	    		</div>
+	    		<div class="col-md-3">
+	    			<% if !@residential_unit.building.rental_terms_to_s.empty? %>
+		    			<%= @residential_unit.building.rental_terms_to_s %>
+		    		<% else %>
+		    			- 
+		    		<% end %>
+	    		</div>
+	    	</div>
 
-						<p>
-				    	<strong>Unit:</strong>
-  						<%= @residential_unit.building_unit %>
-						</p>
-
-						<p>
-							<strong>Rent:</strong> <%= rent_formatted(@residential_unit.rent) %>
-						</p>
-						<p>
-							<% if @residential_unit.weeks_free_offered > 0 %>
-								<strong>Net Rent:</strong> <%= rent_formatted(@residential_unit.rent) %> x <%= @residential_unit.weeks_free_offered %> weeks free = 
-								<%= rent_formatted(@residential_unit.net_rent) %>
-							<% end %>
-						</p>
-
-						<p>
-							<strong>Beds/Baths:</strong>
-							<%= @residential_unit.beds %> / <%= @residential_unit.baths %>
-						</p>
-						
-						<%= render 'available_by' %>
-
-						<p>
-							<strong>Access info:</strong>
-							<%= @residential_unit.access_info %>
-						</p>
-
-						<p>
-							<strong>Open House:</strong>
-							<%= @residential_unit.open_house %>
-						</p>
-
-						<p>
-							<strong>Required Security:</strong>
-							<%= @residential_unit.building.landlord.required_security.name %>
-						</p>
-
-						<p>
-							<strong>Rental Terms:</strong>
-							<%= @residential_unit.building.rental_terms_to_s %>
-						</p>
-
-						<p>
-							<strong>Lease duration:</strong>
-							<%= @residential_unit.lease_duration.titleize %>
-						</p>
-
-						<p>
-              <strong>LL Pays Fee %:</strong>
-              <%= @residential_unit.op_fee_percentage %>
-            </p>
-
-            <p>
-              <strong>Tenant Pays Fee %:</strong>
-              <%= @residential_unit.tp_fee_percentage %>
-            </p>
-
-            <p>
-							<strong>Building Amenities:</strong>
-							<%= @residential_unit.building.amenities_to_s %>
-						</p>
-
-						<!-- Unit info -->
-						<p>
-						  <strong>Unit Amenities:</strong>
-						  <%= @residential_unit.amenities_to_s %>
-						</p>
-
-						<!-- TODO: integrate with dept of buildings to get
-							DOM, total floors, total units, year built, lot, block, community district, school district -->
-						<!-- Landlord info -->
-						<p>
-							<strong>Landlord:</strong>
-							<% if current_user.is_management? %>
-								<%= link_to @residential_unit.landlord_by_code, @residential_unit.building.landlord %>
-							<% else %>
-								<%= @residential_unit.landlord_by_code %>
-							<% end %>
-						</p>
-
-						<p>
-							<strong>Landlord Notes:</strong>
-							<%= @residential_unit.building.landlord.notes %>
-						</p>
-						
-						<p>
-							<strong>Pet Policy:</strong>
-							<%= @residential_unit.pet_policy.name %>
-						</p>
-
-						<!-- Building info -->
-						<p>
-							<strong>Building notes:</strong>
-							<%= @residential_unit.building.notes %>
-						</p>
-
-						<p>
-							<strong>Unit notes:</strong>
-							<%= @residential_unit.notes %>
-						</p>
-						
-						<% if @residential_unit.listing_agent %>
-						<p>
-							<strong>Listing agent:</strong>
-							<%= link_to @residential_unit.listing_agent.name, @residential_unit.listing_agent %>
-						</p>
+	    	<div class="row">
+	    		<div class="col-md-2">
+	    			<strong>Rent:</strong>
+	    		</div>
+	    		<div class="col-md-4">
+	    			<% if @residential_unit.weeks_free_offered > 0 %>
+							<%= rent_formatted(@residential_unit.rent) %> x <%= @residential_unit.weeks_free_offered %> weeks free = 
+							<%= rent_formatted(@residential_unit.net_rent) %>
+						<% else %>
+							<%= rent_formatted(@residential_unit.rent) %>
 						<% end %>
+	    		</div>
+	    		<div class="col-md-3">
+	    			<strong>Lease duration:</strong>
+	    		</div>
+	    		<div class="col-md-3">
+	    			<%= @residential_unit.lease_duration.titleize %>
+	    		</div>
+	    	</div>
 
-						<% if @residential_unit.primary_agent %>
-						<p>
-							<strong>Primary agent:</strong>
-							<%= link_to @residential_unit.primary_agent.name, @residential_unit.primary_agent %>
-						</p>
+	    	<div class="row">
+	    		<div class="col-md-2">
+	    			<strong>Beds/Baths:</strong>
+	    		</div>
+	    		<div class="col-md-4">
+	    			<%= @residential_unit.beds %> / <%= @residential_unit.baths %>
+	    		</div>
+	    		<div class="col-md-3">
+	    			<strong>LL Pays Fee %:</strong>
+	    		</div>
+	    		<div class="col-md-3">
+	    			<% if @residential_unit.op_fee_percentage %>
+		    			<%= @residential_unit.op_fee_percentage %>
+		    		<% else %>
+		    			- 
+		    		<% end %>
+	    		</div>
+	    	</div>
+
+	    	<div class="row">
+	    		<div class="col-md-2">
+	    			<strong>Available by:</strong>
+	    		</div>
+	    		<div class="col-md-4">
+	    			<% if @residential_unit.available_by < Date.today %>
+							Now
+						<% else %>
+							<%= @residential_unit.available_by.strftime("%Y-%b-%d") %>
 						<% end %>
+	    		</div>
+	    		<div class="col-md-3">
+	    			<strong>Tenant Pays Fee %:</strong>
+	    		</div>
+	    		<div class="col-md-3">
+	    			<% if @residential_unit.tp_fee_percentage %>
+		    			<%= @residential_unit.tp_fee_percentage %>
+		    		<% else %>
+		    			- 
+		    		<% end %>
+	    		</div>
+	    	</div>
 
-						<p>
-							<strong>Listing ID:</strong>
-							<%= @residential_unit.listing_id %>
-						</p>
+	    	<!-- TODO: integrate with dept of buildings to get
+						DOM, total floors, total units, year built, lot, block, community district, school district -->
+					<!-- Landlord info -->
+	    	<div class="row">
+	    		<div class="col-md-2">
+	    			<strong>Landlord:</strong>
+	    		</div>
+	    		<div class="col-md-4">
+	    			<% if current_user.is_management? %>
+							<%= link_to @residential_unit.landlord_by_code, @residential_unit.building.landlord %>
+						<% else %>
+							<%= @residential_unit.landlord_by_code %>
+						<% end %>
+	    		</div>
+	    		<div class="col-md-3">
+	    			<strong>Listing agent:</strong>
+	    		</div>
+	    		<div class="col-md-3">
+	    			<%= link_to @residential_unit.listing_agent.name, @residential_unit.listing_agent %>
+	    		</div>
+	    	</div>
 
-						<script type='text/javascript'>
-var ws_wsid = 'e4004727da4a47a2bcb676b7abf930b6';
-var ws_address = '<%= @residential_unit.building.formatted_street_address %>';
-var ws_width = '600';
-var ws_height = '444';
-var ws_layout = 'horizontal';
-var ws_commute = 'true';
-var ws_transit_score = 'true';
-var ws_map_modules = 'all';
-</script><style type='text/css'>#ws-walkscore-tile{position:relative;text-align:left}#ws-walkscore-tile *{float:none;}#ws-foottext, #ws-footer a,#ws-footer a:link{font:11px/14px Verdana,Arial,Helvetica,sans-serif;margin-right:6px;white-space:nowrap;padding:0;color:#000;font-weight:bold;text-decoration:none}#ws-footer a:hover{color:#000;text-decoration:none}#ws-footer a:active{color:#b14900}</style><div id='ws-walkscore-tile'><div id='ws-footer' style='position:absolute;top:426px;left:8px;width:588px'><form id='ws-form'><span id='ws-foottext' style='float: left;'>Score <a id='ws-a' href='https://www.redfin.com/how-walk-score-works' target='_blank'>Your Home</a>: </span><input type='text' id='ws-street' style='position:absolute;top:0px;left:170px;width:386px' /><input type='image' id='ws-go' src='//cdn2.walk.sc/2/images/tile/go-btn.gif' height='15' width='26' border='0' alt='get my Walk Score' style='position:absolute;top:0px;right:0px' /></form></div></div><script type='text/javascript' src='http://www.walkscore.com/tile/show-walkscore-tile.php'></script>
+	    	<div class="row">
+	    		<div class="col-md-2">
+	    			<strong>Pet Policy:</strong>
+	    		</div>
+	    		<div class="col-md-4">
+	    			<%= @residential_unit.pet_policy.name %>
+	    		</div>
+	    		<div class="col-md-3">
+	    			<strong>Primary agent:</strong>
+	    		</div>
+	    		<div class="col-md-3">
+	    			<%= link_to @residential_unit.primary_agent.name, @residential_unit.primary_agent %>
+	    		</div>
+	    	</div>
 
-					</div>
-				</div><!-- end panel -->
+	    	<div class="row">
+	    		<div class="col-md-2">
+	    			<strong>Listing ID:</strong>
+	    		</div>
+	    		<div class="col-md-4">
+	    			<%= @residential_unit.listing_id %>
+	    		</div>
+	    		<div class="col-md-3">
+	    			
+	    		</div>
+	    		<div class="col-md-3">
+	    			
+	    		</div>
+	    	</div>
+
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-md-3">
+	    			<strong>Access info:</strong>
+	    		</div>
+	    		<div class="col-md-9">
+	    			<%= @residential_unit.access_info %>
+	    		</div>
+	    	</div>
+
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-md-3">
+	    			<strong>Open House:</strong>
+	    		</div>
+	    		<div class="col-md-9">
+	    			<%= @residential_unit.open_house %>
+	    		</div>
+	    	</div>
+
+	    	<!-- Building info -->
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-md-3">
+	    			<strong>Building Amenities:</strong>
+	    		</div>
+	    		<div class="col-md-9">
+	    			<%= @residential_unit.building.amenities_to_s %>
+	    		</div>
+	    	</div>
+
+	    	<!-- Unit info -->
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-md-3">
+	    			<strong>Unit Amenities:</strong>
+	    		</div>
+	    		<div class="col-md-9">
+	    			<%= @residential_unit.amenities_to_s %>
+	    		</div>
+	    	</div>
+
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-md-12">
+	    			<strong>Landlord Notes:</strong>
+	    		</div>
+	    	</div>
+	    	<div class="row">
+	    		<div class="col-md-12">
+	    			<%= @residential_unit.building.landlord.notes %>
+	    		</div>
+	    	</div>
+
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-md-12">
+	    			<strong>Building notes:</strong>
+	    		</div>
+	    	</div>
+	    	<div class="row">
+	    		<div class="col-md-12">
+	    			<%= @residential_unit.building.notes %>
+	    		</div>
+	    	</div>
+
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-md-12">
+	    			<strong>Unit notes:</strong>
+	    		</div>
+	    	</div>
+	    	<div class="row">
+	    		<div class="col-md-12">
+	    			<%= @residential_unit.notes %>
+	    		</div>
+	    	</div>
+
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-md-12">
+	    			<!-- Nav tabs -->
+				    <ul class="nav nav-tabs" role="tablist">
+				      <li role="google-map-tab" class="active"><a href="#google-map-tab" aria-controls="google-map-tab" 
+				      	role="tab" data-toggle="tab">Map</a></li>
+				      <li role="walkscore"><a href="#walkscore" aria-controls="walkscore" role="tab" data-toggle="tab">Walkscore</a></li>
+				    </ul>
+
+	    			<div class="tab-content">
+				      <!-- ******************** first tablpanel - google maps ******************** -->
+				      <div role="tabpanel" class="tab-pane fade in active" id="google-map-tab">
+				      	<div id="map_canvas"></div>
+				      </div><!-- end tabpanel - google maps -->
+				      <!-- ******************** first tabpanel - walkscore ********************-->
+				      <div role="tabpanel" class="tab-pane fade center" id="walkscore">
+				      	<script type='text/javascript'>
+									var ws_wsid = 'e4004727da4a47a2bcb676b7abf930b6';
+									var ws_address = '<%= @residential_unit.building.formatted_street_address %>';
+									var ws_width = '600';
+									var ws_height = '444';
+									var ws_layout = 'horizontal';
+									var ws_commute = 'true';
+									var ws_transit_score = 'true';
+									var ws_map_modules = 'all';
+									</script><style type='text/css'>#ws-walkscore-tile{position:relative;text-align:left}#ws-walkscore-tile *{float:none;}#ws-foottext, #ws-footer a,#ws-footer a:link{font:11px/14px Verdana,Arial,Helvetica,sans-serif;margin-right:6px;white-space:nowrap;padding:0;color:#000;font-weight:bold;text-decoration:none}#ws-footer a:hover{color:#000;text-decoration:none}#ws-footer a:active{color:#b14900}</style><div id='ws-walkscore-tile'><div id='ws-footer' style='position:absolute;top:426px;left:8px;width:588px'><form id='ws-form'><span id='ws-foottext' style='float: left;'>Score <a id='ws-a' href='https://www.redfin.com/how-walk-score-works' target='_blank'>Your Home</a>: </span><input type='text' id='ws-street' style='position:absolute;top:0px;left:170px;width:386px' /><input type='image' id='ws-go' src='//cdn2.walk.sc/2/images/tile/go-btn.gif' height='15' width='26' border='0' alt='get my Walk Score' style='position:absolute;top:0px;right:0px' /></form></div></div><script type='text/javascript' src='http://www.walkscore.com/tile/show-walkscore-tile.php'></script>
+
+    					</div><!-- end tabpanel - walkscore -->
+    				</div>
+
+	    			
+	    		</div>
+	    	</div><!-- row -->
+
+			</div><!-- panel body -->
+		</div><!-- panel heading -->
+	</div><!-- main centered column -->
 
 
-  		</div>
-  	</div>
-	</div>
-</div>
+  	
+				  	
+
+
+				  	
+				  	
+				    
+
+
 
 <!-- modals that are common to show/index pages -->
 <%= render 'layouts/modals' %>

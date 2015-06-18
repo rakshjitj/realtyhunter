@@ -31,7 +31,6 @@ $(document).ready(function(){
 			$(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
 			$(file.previewTemplate).find('.dz-remove').attr('unit_id', response.unitID);
 			// add the dz-success class (the green tick sign)
-			//console.log('/buildings/' + unit_id + '/destroy_image/' + id);
 			$(file.previewElement).addClass("dz-success");
 			$.getScript('/residential_units/' + response.unitID + '/refresh_images')
 			file.previewElement.remove();

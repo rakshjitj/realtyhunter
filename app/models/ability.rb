@@ -20,9 +20,7 @@ class Ability
         can :manage, Landlord do |landlord|
           landlord.company_id == user.company_id
         end
-      end
-
-      if user.has_role?(:manager)
+      elsif user.has_role?(:manager)
         can :read, Landlord do |landlord|
           landlord.company_id == user.company_id
         end
@@ -35,8 +33,6 @@ class Ability
       can :manage, CommercialUnit do |commercial_unit|
         commercial_unit.building.company_id == user.company_id
       end
-
-
       
     else # regular users (agents, non-management)
       # can only see info for his/her particular company

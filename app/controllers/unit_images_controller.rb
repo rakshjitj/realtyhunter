@@ -43,12 +43,10 @@ class UnitImagesController < ApplicationController
     end
 
     def set_unit
-      if params[:unit_id]
-        @unit = Unit.find(params[:unit_id])
-      elsif params[:residential_unit_id]
-        @unit = Unit.find(params[:residential_unit_id])
+      if params[:residential_unit_id]
+        @unit = ResidentialUnit.find(params[:residential_unit_id])
       elsif params[:commercial_unit_id]
-        @unit = Unit.find(params[:commercial_unit_id])
+        @unit = CommercialUnit.find(params[:commercial_unit_id])
       end
     end
 

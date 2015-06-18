@@ -18,7 +18,7 @@
     // search as user types
     var timer;
     function throttledSearch() {
-      clearInterval(timer);  //clear any interval on key up
+      clearInterval(timer); //clear any interval on key up
       timer = setTimeout(doSearch, 500);
     };
     
@@ -40,7 +40,18 @@
 </script>
 
 <% provide(:title, 'Buildings') %>
-<h1 class="page-header">Buildings</h1>
+<div class="page-header">
+  <div class="row">
+    <div class="col-md-6">
+      <h1>Buildings</h1>
+    </div>
+    <div class="col-md-6 right">
+      <br /><br />
+      <%= link_to 'Add a building', new_building_path %> |
+      <%= link_to 'Download CSV', buildings_path(format: :csv) %>
+    </div>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-md-6">
@@ -53,20 +64,10 @@
       <%= label_tag :checkbox_active, "Has active units" %>
     <% end %>
   </div>
-  <div class="col-md-6">
-    <div class="row">
-      <div class="col-md-offset-9 col-md-3 right">
-        <%= link_to 'Add a building', new_building_path %><br />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md pull-right">
-        <%= will_paginate @buildings %>
-      </div>
-    </div>
+  <div class="col-md-6 right">
+    <%= will_paginate @buildings %>
   </div>
 </div>
-
 
 <div class="row">
   <div class="col-md-12">
@@ -90,8 +91,7 @@
 </div>
 
 <div class="row">
-  <div class="col-md-6 col-md-offset-6 right">
-    <%= link_to 'Download CSV', buildings_path(format: :csv) %><br />
+  <div class="col-md-6">
     <%= will_paginate @buildings %>
   </div>
 </div>
