@@ -101,7 +101,7 @@
       <br /><br />
       <%= link_to 'Add a unit', new_residential_unit_path %> 
       <%= link_to print_list_residential_units_path, 
-        class:"btn btn-xs btn-primary link-as-button btn-print-list has-spinner" do %>
+        class:"btn btn-xs btn-warning link-as-button btn-print-list has-spinner" do %>
         <span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Print
       <% end %>
     </div>
@@ -154,14 +154,14 @@
       <hr />
       <%= link_to 'Neighborhoods', neighborhoods_modal_residential_units_path(@residential_unit), 
         data: {toggle: "modal", target: "#neighborhoodsModal"}, remote: true, 
-        class: "link-as-button btn btn-xs btn-primary" %>
+        class: "link-as-button btn btn-xs btn-warning" %>
       <div id="selected_neighborhoods"></div>
       <%= hidden_field_tag :neighborhood_ids, id:"neighborhood_ids" %>
 
       <hr />
       <%= link_to 'Features', features_modal_residential_units_path(@residential_unit), 
         data: {toggle: "modal", target: "#featuresModal"}, remote: true, 
-        class: "link-as-button btn btn-xs btn-primary" %>
+        class: "link-as-button btn btn-xs btn-warning" %>
       <div id="selected_features"></div>
       <%= hidden_field_tag :unit_feature_ids, id:"unit_feature_ids" %>
       <%= hidden_field_tag :building_feature_ids, id:"building_feature_ids" %>
@@ -211,7 +211,7 @@
       </div>
       <div class="modal-footer">
         <button class="delete-btn">Placeholder</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
       </div>
 
     </div>
@@ -233,7 +233,7 @@
         <div id="placeholder-body"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary btn-close" data-dismiss="modal">Done</button>
+        <button type="button" class="btn btn-warning btn-close" data-dismiss="modal">Done</button>
       </div>
 
     </div>
@@ -253,7 +253,7 @@
         <div id="placeholder-body"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary btn-close" data-dismiss="modal">Done</button>
+        <button type="button" class="btn btn-warning btn-close" data-dismiss="modal">Done</button>
       </div>
 
     </div>
