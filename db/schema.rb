@@ -139,6 +139,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "building_id"
     t.integer  "unit_id"
     t.integer  "user_id"
+    t.integer  "company_id"
   end
 
   add_index "images", ["user_id"], name: "index_images_on_user_id", using: :btree

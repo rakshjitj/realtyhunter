@@ -14,13 +14,15 @@
       <%= link_to 'Offices', company_offices_path(@company) %> |
       <%= link_to 'Agents', employees_company_path(@company) %>
     </div>
-    
   </div>
 
   <div class="row">
     <div class="col-md-6">
-      <% if @company.logo_id? %>
-        <%= attachment_image_tag(@company, :logo, :fill, 300, 300) %>
+      <% if @company.image %>
+        <div class="img-medium">
+          <%= image_tag @company.image.file.url(:medium), :class => 'img-responsive', 
+            alt: @company.image.file.url(:medium) %>
+        </div>
       <% else %>
         <td>
           <div class="company-logo">

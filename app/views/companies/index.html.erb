@@ -55,7 +55,7 @@
       <%= text_field_tag :name, params[:search], placeholder: "name", size: 50 %>
     <% end %>
   </div>
-  <div class="col-md-offset-6">
+  <div class="col-md-offset-6 right">
     <%= will_paginate @companies %>
   </div>
 </div>
@@ -68,6 +68,8 @@
         <tr>
           <th>Logo</th>
           <th>Name</th>
+          <th># Offices</th>
+          <th># Employees</th>
           <th colspan="1"></th>
         </tr>
       </thead>

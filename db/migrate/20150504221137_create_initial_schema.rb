@@ -125,6 +125,7 @@
       t.belongs_to :building
       t.belongs_to :unit
       t.belongs_to :user, index: true
+      t.belongs_to :company
     end
 
     # TODO: pull address info into it's own table?

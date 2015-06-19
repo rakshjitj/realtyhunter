@@ -9,43 +9,36 @@
         <%= f.text_field :name, class: 'form-control' %>
       </div>
 
-      <div class="field">
-        <%= f.label :logo, "Upload new logo:" %><br>
-        <%= f.attachment_field :logo, direct: true, class: 'form-control'  %>
-      </div>
-      <div class="field">
-        <%= f.label :remote_logo_url, "Or specify URL:" %>
-        <%= f.text_field :remote_logo_url, class: 'form-control' %>
-      </div>
+      <!-- TODO: LOGO -->
+      <!-- TODO: OFFICE -->
 
       <p><br />And now for some details about your first admin account:</p>
       <!-- Need to specify new company admin -->
       <%= f.fields_for :users do |builder| %>
       <div class="field">
-        <%= builder.label :name, "Company admin - Full name" %><br>
+        <%= builder.label :name, "Admin's full name" %><br>
         <%= builder.text_field :name, class: 'form-control', 
-            :required => true %>
+          :required => true %>
       </div>
       <div class="field">
-        <%= builder.label :email, "Email (will be your username)" %><br>
+        <%= builder.label :email, "Admin's email (will be username)" %><br>
         <%= builder.email_field :email, class: 'form-control', 
-            :required => true %>
+          :required => true %>
       </div>
             
-
       <div class="field">
-        <%= builder.label :password, "Password (must re-enter to save changes!)" %><br>
+        <%= builder.label :password, "Admin's password" %><br>
         <%= builder.password_field :password, class: 'form-control', 
-            :required => true %>
+          :required => true %>
       </div>
       <div class="field">
-        <%= builder.label :password_confirmation, "Confirmation" %><br>
+        <%= builder.label :password_confirmation, "Password confirmation" %><br>
         <%= builder.password_field :password_confirmation, class: 'form-control' %>
       </div>
       <% end %>
 
       <div class="actions">
-        <%= f.submit %>
+        <%= f.submit class: 'btn btn-warning' %>
       </div>
     <% end %>
 

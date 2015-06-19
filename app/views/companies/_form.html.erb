@@ -5,35 +5,44 @@
         :locals => {:model => @company} %>
 
       <div class="field">
-        <%= f.label :name, "Company name:" %><br>
+        <%= f.label :name, "Company name" %><br>
         <%= f.text_field :name, class: 'form-control' %>
       </div>
 
+      <!-- User image form -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="logo">
+            <%= render 'image', :locals => {:company => @company} %>
+          </div>
+        </div>
+      </div>
+
+      <br />
+      <div class="row">
+        <div class="col-md-12">
+          <%= f.label :file, "Upload new photo" %><br>
+          <%= f.file_field :file, class: 'form-control' %><br>
+        </div>
+      </div>
+
+      <!-- TODO: later on make all environment fields editable -->
       <!--div class="field"-->
-        <!--%= f.label :logo, "Upload new logo:" %><br-->
-        <!--%= f.attachment_field :logo, direct: true, class: 'form-control'  %-->
-      <!--/div>
-      <div class="field"-->
         <!--%= f.label :remote_logo_url, "Or specify URL:" %-->
         <!--%= f.text_field :remote_logo_url, class: 'form-control' %-->
       <!--/div-->
-      <div class="field">
-        <br />
-        <p class="red"><strong>EDITING THE BELOW MAY BREAK THE SYSTEM. BE CAREFUL! I ONLY LET YOU ADD, NOT REMOVE CURRENTLY.</strong></p>
- 
-        <%= f.label :agent_types, "Agent specializations: (separate by comma or newline)" %>
-        <%= f.text_area :agent_types, 
-          class: 'form-control', rows: 5 %>
-      </div>
-
-      <div class="field">
-        <%= f.label :employee_titles, "Departments: (separate by comma or newline)" %>
-        <%= f.text_area :employee_titles, 
-          class: 'form-control', rows: 8 %>
-      </div>
+      <!--div class="field">
+        <br /-->
+        <!--%= f.label :agent_types, "Agent specializations: (separate by comma or newline)" %-->
+        <!--%= f.text_area :agent_types, class: 'form-control', rows: 5 %-->
+      <!--/div>
+      <div class="field"-->
+        <!--%= f.label :employee_titles, "Departments: (separate by comma or newline)" %-->
+        <!--%= f.text_area :employee_titles, class: 'form-control', rows: 8 %-->
+      <!--/div-->
 
       <div class="actions">
-        <%= f.submit %>
+        <%= f.submit class:'btn btn-warning' %>
       </div>
     <% end %>
   </div>

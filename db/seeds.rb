@@ -1,6 +1,10 @@
 @company = Company.create({name: "MyspaceNYC"})
 @company2 = Company.create({name: "Nooklyn"})
 
+53.times do |n|
+  Company.create({name: FFaker::Company::name})
+end
+
 @offices = Office.create!([
   { company: @company, 
     name: "Crown Heights", 

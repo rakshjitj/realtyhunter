@@ -1,16 +1,15 @@
 class User < ActiveRecord::Base
   rolify
+  default_scope { order("name ASC") }
+  scope :unarchived, ->{where(archived: false)}
+    
   belongs_to :office
   belongs_to :company
   belongs_to :manager, :class_name => "User"
   belongs_to :employee_title
   has_many   :subordinates, :class_name => "User", :foreign_key => "manager_id"
   has_many   :units # primary agent, listing agent
-  #attachment :avatar, type: :image
   has_one :image, dependent: :destroy
-  default_scope { order("name ASC") }
-  
-  scope :unarchived, ->{where(archived: false)}
 
 	attr_accessor :remember_token, :activation_token, :reset_token, :approval_token, :agent_types, :batch
   before_create :create_activation_digest

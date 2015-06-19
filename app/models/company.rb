@@ -1,9 +1,9 @@
 class Company < ActiveRecord::Base
-	#attachment :logo
-	after_save :create_environment
 	default_scope { order("name ASC") }
 	scope :unarchived, ->{where(archived: false)}
-
+	
+	has_one :image, dependent: :destroy
+	after_save :create_environment
 	has_many :offices, :dependent => :destroy
 	has_many :users, dependent: :destroy
 	accepts_nested_attributes_for :users
@@ -16,7 +16,8 @@ class Company < ActiveRecord::Base
 	has_many :residential_amenities, dependent: :destroy
 	has_many :commercial_property_types
 	
-	attr_accessor :agent_types, :employee_titles
+	#attr_accessor :agent_types, :employee_titles
+	#attr_access :building_amenities
 
 	validates :name, presence: true, length: {maximum: 100}, 
 		uniqueness: { case_sensitive: false }

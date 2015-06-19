@@ -81,7 +81,7 @@ class UsersController < ApplicationController
       # send users an email prompting them to change pass & login
       @user.create_reset_digest
       @user.send_added_by_admin_email(current_user.company)
-      flash[:info] = "Users have been notified!"
+      flash[:success] = "Users have been notified!"
       redirect_to admin_new_users_path
     else
       render 'admin_new'
@@ -152,8 +152,8 @@ class UsersController < ApplicationController
       @user.image = nil
     end
     respond_to do |format|
-        format.js  
-      end
+      format.js  
+    end
   end
 
   # DELETE /users/1

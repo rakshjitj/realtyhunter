@@ -44,6 +44,7 @@ Rails.application.routes.draw do
     member do
       get 'managers'
       get 'employees'
+      delete 'destroy_image'
     end
 
     resources :offices do
