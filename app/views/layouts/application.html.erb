@@ -32,20 +32,21 @@
         <ul class="nav navbar-nav navbar-right">
           <li><%= link_to "Home", root_path %></li>
 
-          <li><%= link_to "Buildings", buildings_path %></li>
-          <% if current_user.handles_residential? %>
-            <li><%= link_to "Residential", residential_units_path %></li>
-          <% end %>
-
-          <% if current_user.handles_commercial? %>
-            <li><%= link_to "Commercial", commercial_units_path %></li>
-          <% end %>
-
-          <% if current_user.is_management? %>
-            <li><%= link_to "Landlords", landlords_path %></li>
-          <% end %>
-          
           <% if logged_in? %>
+            <li><%= link_to "Buildings", buildings_path %></li>
+          
+            <% if current_user.handles_residential? %>
+              <li><%= link_to "Residential", residential_units_path %></li>
+            <% end %>
+
+            <% if current_user.handles_commercial? %>
+              <li><%= link_to "Commercial", commercial_units_path %></li>
+            <% end %>
+
+            <% if current_user.is_management? %>
+              <li><%= link_to "Landlords", landlords_path %></li>
+            <% end %>
+            
             <!-- COMPANY ADMIN -->
             <!--% if current_user.is_management? %-->
               <li class="dropdown">

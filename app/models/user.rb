@@ -157,6 +157,9 @@ class User < ActiveRecord::Base
   def update_roles
     # clear out old roles
     self.roles = [];
+    # everyone should always be able to see residential stuff, at a minimum
+    # regardless of title
+    self.add_role :residential
     # add a role representing your position in the company.
     # default to an agent if none otherwise specified
     if !self.employee_title
