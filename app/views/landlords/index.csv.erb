@@ -1,8 +1,8 @@
-<%- headers = ['Name', 'Code', 'Mobile', 'Phone', 'Fax', 'Email', 'Website', 'Street Address', 'City', 'State', 'Zipcode',
-	'Notes', 'Management Info', 'Listing Agent Percentage', 'Required Security', 'Created At', 'Updated at'] -%>
+<%- headers = ['Name', 'Code', 'Office Phone', 'Mobile', 'Fax', 'Email', 'Website', 
+	'Street Address', 'Notes', 'Listing Agent Percentage', 'Management Info', 
+	'Required Security', 'Created At', 'Updated at'] -%>
 <%= CSV.generate_line headers %>
 <%- @landlords.each do |landlord| -%>
-  <%= CSV.generate_line([landlord.name, landlord.code, landlord.mobile, landlord.phone, landlord.fax, landlord.email, landlord.website, landlord.street_address, landlord.city, landlord.state, landlord.zipcode, landlord.notes, 
-  	landlord.management_info, landlord.listing_agent_percentage, 
-  	landlord.required_security.name, landlord.created_at.strftime("%Y-%b-%d"), landlord.updated_at.strftime("%Y-%b-%d")]) %>
+  <%= CSV.generate_line([landlord.name, landlord.code, landlord.office_phone, landlord.mobile, landlord.fax, landlord.email, landlord.website, landlord.formatted_street_address, landlord.notes, landlord.listing_agent_percentage, landlord.management_info, 
+  	landlord.required_security.name.titleize, landlord.created_at.strftime("%Y-%b-%d"), landlord.updated_at.strftime("%Y-%b-%d")]) %>
 <%- end -%>
