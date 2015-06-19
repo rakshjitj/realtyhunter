@@ -71,7 +71,7 @@ class User < ActiveRecord::Base
 
   # Forgets a user.
   def forget
-    update_columns(:remember_digest, nil)
+    update_columns(remember_digest: nil)
   end
 
   # Activates an account.
@@ -367,6 +367,12 @@ class User < ActiveRecord::Base
     self.company == other_user.company
   end
 
+  # for use in our API
+  def set_auth_token
+    return if auth_token.present?
+    self.auth_token = generate_auth_token
+  end
+
   private
     # Converts email to all lower-case.
     def downcase_email
@@ -382,11 +388,6 @@ class User < ActiveRecord::Base
     end
 
     # for use in our API
-    def set_auth_token
-      return if auth_token.present?
-      self.auth_token = generate_auth_token
-    end
-
     def generate_auth_token
       loop do
         token = SecureRandom.hex

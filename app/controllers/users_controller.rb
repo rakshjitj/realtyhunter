@@ -224,6 +224,16 @@ class UsersController < ApplicationController
     end
   end
 
+  # PATCH
+  def new_auth_token
+    @user.auth_token = nil
+    @user.set_auth_token
+    @user
+    respond_to do |format|
+      format.js
+    end
+  end
+
   private
     def set_company
       @agent_title = EmployeeTitle.agent
