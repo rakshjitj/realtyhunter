@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   
   scope :unarchived, ->{where(archived: false)}
 
-	attr_accessor :remember_token, :activation_token, :reset_token, :approval_token, :agent_types
+	attr_accessor :remember_token, :activation_token, :reset_token, :approval_token, :agent_types, :batch
   before_create :create_activation_digest
   before_create :set_auth_token # for API
 
@@ -140,7 +140,9 @@ class User < ActiveRecord::Base
 
   def self.search(query_params)
     @running_list = User.unarchived.includes(:employee_title, :office, :company, :manager, :image)
-    return @running_list unless query_params[:name_email]
+    if !query_params || !query_params[:name_email]
+      return @running_list 
+    end
     
     query_string = query_params[:name_email]
     query_string = query_string[0..500] # truncate for security reasons

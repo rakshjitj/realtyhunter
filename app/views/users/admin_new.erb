@@ -1,0 +1,106 @@
+<script>
+  function initialize() {
+    $('.agent-type').hide();
+  };
+  // TODO: get rid of document.ready
+  $(document).ready(initialize);
+
+  function title_onchange_handler(input) {
+    if (input.toLowerCase() === '<%= @agent_title.name %>') {
+      $('.agent-type').show();
+    } else {
+      $('.agent-type').hide();
+    }
+  };  
+</script>
+
+<% provide(:title, 'Admin User Signup') %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="page-header">
+      <div class="row">
+        <div class="col-md-6">
+          <h1><%= current_user.company.name.titleize %> - Admin User Signup</h1>
+        </div>
+        <div class="col-md-6 right">
+          <br />
+          <br />
+          <%= link_to 'All Employees', employees_company_path(current_user.company) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    
+    <p>Users will be notified of their accounts immediately after creation.</p><br />
+
+    <%= form_for(@user, :url => admin_create_users_path) do |f| %>
+      <%= render :partial => 'shared/error_messages', :locals => {:model => @user} %>
+      
+      <div class="row">
+        <div class="col-md-3">
+          <div class="field">
+            <%= f.label :name, "Name" %><br>
+            <%= f.text_field :name, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="field">
+            <%= f.label :email, "Email (username)" %><br>
+            <%= f.email_field :email, class: 'form-control' %>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <div class="field">
+            <%= f.label :office_id, "Office" %><br>
+            <%= f.select(:office_id, options_for_select(current_user.company.offices.collect {|t| [t.name.titleize, t.id]}), 
+              {prompt: "Choose one..."},
+              :required => true, 
+              class: 'form-control',
+              :include_blank => true) %>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <div class="field">
+            <%= f.label :employee_title_id, "Role within the company" %><br>
+            <%= f.select(:employee_title_id, options_for_select(EmployeeTitle.all.collect {|t| [t.name.titleize, t.id]}), 
+              {prompt: "Choose one..."},
+              :onchange => "title_onchange_handler($(this).find('option:selected').text())",
+              :required => true, 
+              class: 'form-control',
+              :include_blank => true) %>
+          </div>
+        </div>
+
+        <div class="col-md-2 agent-type">
+          <div class="field " >
+            <%= f.label :agent_types, "Specialty Areas" %><br>
+            <%= f.select(:agent_types, options_for_select(AgentType.all.collect {|t| [t.name.titleize]}, ['Residential']),
+                {},
+                {
+                :multiple => true,
+                class: 'form-control' } ) %>
+          </div>
+        </div>
+      </div><!-- row -->
+      <div class="row">
+        <div class="col-md-3">
+          <div class="field">
+            <%= f.label :mobile_phone_number %><br>
+            <%= f.text_field :mobile_phone_number, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="actions">
+        <%= f.submit class: "btn btn-warning" %>
+      </div>
+    <% end %>
+
+  </div>
+</div>

@@ -15,10 +15,10 @@ Rails.application.routes.draw do
   resources :users do
     collection do
       get 'update_offices'
-      get 'batch_new'
-      post 'batch_create'
-      get 'batch_add_user'
       get 'filter'
+      # these are for when someone in the company adds a new employee:
+      get 'admin_new'
+      post 'admin_create'
     end
     member do 
       delete 'destroy_image'

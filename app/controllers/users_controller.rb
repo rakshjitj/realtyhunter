@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
   skip_before_action :logged_in_user, only: [:new, :create, :update_offices]
-  before_action :set_user, except: [:index, :filter, :teams, :new, :create, :batch_new, 
-    :batch_create, :batch_add_user, :update_offices]
+  before_action :set_user, except: [:index, :filter, :teams, :new, :create, :admin_new, 
+    :admin_create, :update_offices]
   before_action :set_company, except: [:update_offices]
 
   # GET /users
@@ -63,38 +63,30 @@ class UsersController < ApplicationController
   end
 
   # GET /users/batch_new
-  def batch_new
+  def admin_new
     @agent_title = EmployeeTitle.agent
-    @users = []
-    @users << User.new
+    @user = User.new
   end
 
-  def batch_add_user
-    @builder = User.new
-    respond_to do |format|
-      format.js
+  # POST /users/batch_create
+  # POST /users/batch_create
+  def admin_create
+    @user = User.new(user_params)
+    @user.company = current_user.company
+    @user.assign_random_password
+    if @user.save
+      @user.approve
+      # add in each role type
+      @user.update_roles
+      # send users an email prompting them to change pass & login
+      @user.create_reset_digest
+      @user.send_added_by_admin_email(current_user.company)
+      flash[:info] = "Users have been notified!"
+      redirect_to admin_new_users_path
+    else
+      render 'admin_new'
     end
   end
-
-   # POST /users/batch_create
-  # POST /users/batch_create
-  #def batch_create
-    #@user = User.new(user_params)
-    # @user.company = @company
-    # @user.assign_random_password
-    # if @user.save
-    #   @user.approve
-    #   # add in each role type
-    #   @user.update_roles
-    #   # send users an email prompting them to change pass & login
-    #   @user.create_reset_digest
-    #   @user.send_added_by_admin_email(current_user.company)
-    #   flash[:info] = "Users have been notified"
-    #   redirect_to root_url
-    # else
-    #   render 'batch_new'
-    # end
-  #end
 
   # GET /users/1/edit
   def edit
