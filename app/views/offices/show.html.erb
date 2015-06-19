@@ -26,7 +26,9 @@
         <div class="col-md-5 right">
           <br /><br />
           <br />
-          <%= link_to 'Edit', edit_company_office_path(@office.company, @office) %> | 
+          <% if current_user.is_company_admin? %>
+            <%= link_to 'Edit', edit_company_office_path(@office.company, @office) %> | 
+          <% end %>
           <%= link_to 'All Offices', company_offices_path %> | 
           <%= link_to 'View Company', company_path(@office.company) %>
         </div>
@@ -61,13 +63,19 @@
       </div>
     </div>
     <div class="row">
-      <% for i in 0..@office.managers.length-1 %>
-        <% if i % 4 == 0 && i > 0 %>
+      <% if @office.managers.any? %>
+        <% for i in 0..@office.managers.length-1 %>
+          <% if i % 4 == 0 && i > 0 %>
+            </div>
+            <div class="row">
+          <% end %>
+          <div class="col-md-3">
+            <%= link_to @office.managers[i].name, @office.managers[i] %>
           </div>
-          <div class="row">
         <% end %>
-        <div class="col-md-3">
-          <%= link_to @office.managers[i].name, @office.managers[i] %>
+      <% else %>
+        <div class="col-md-12">
+          No managers added yet.
         </div>
       <% end %>
     </div>
@@ -79,15 +87,23 @@
       </div>
     </div>
     <div class="row">
-      <% for i in 0..@office.agents.length-1 %>
-        <% if i % 4 == 0 && i > 0 %>
+      
+      <% if @office.agents.any? %>
+        <% for i in 0..@office.agents.length-1 %>
+          <% if i % 4 == 0 && i > 0 %>
+            </div>
+            <div class="row">
+          <% end %>
+          <div class="col-md-3">
+            <%= link_to @office.agents[i].name, @office.agents[i] %>
           </div>
-          <div class="row">
         <% end %>
-        <div class="col-md-3">
-          <%= link_to @office.agents[i].name, @office.agents[i] %>
+        <% else %>
+        <div class="col-md-12">
+          No agents added yet.
         </div>
       <% end %>
+    
     </div>
 
   </div>

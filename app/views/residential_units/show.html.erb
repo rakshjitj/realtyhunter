@@ -41,16 +41,18 @@
 			<div class="panel-body">
 		  	<div class="row">
 			  	<div class="col-md-12">
-		  			<%= link_to 'Edit', edit_residential_unit_path(@residential_unit) %>
-			        | <%= link_to 'View all', residential_units_path %>
+			  		<%= link_to 'View all', residential_units_path %>
+			  		| <%= link_to 'Report Inaccuracy', inaccuracy_modal_residential_unit_path(@residential_unit), 
+			  				data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
+			  		| <%= link_to 'Print', print_modal_residential_unit_path(@residential_unit), 
+			      		data: {toggle: "modal", target: "#printModal"}, remote: true %>
+			  		<% if current_user.is_management? %>
+		  				| <%= link_to 'Edit', edit_residential_unit_path(@residential_unit) %>
 			        | <%= link_to 'Duplicate', duplicate_modal_residential_unit_path(@residential_unit), 
 			    				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
-			    		| <%= link_to 'Report Inaccuracy', inaccuracy_modal_residential_unit_path(@residential_unit), 
-			      			data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
 			      	| <%= link_to 'Take off market', take_off_modal_residential_unit_path(@residential_unit), 
 			      			data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %>
-			      	| <%= link_to 'Print', print_modal_residential_unit_path(@residential_unit), 
-			      		data: {toggle: "modal", target: "#printModal"}, remote: true %>
+			      <% end %>
 			  	</div>
 		    </div>
 

@@ -129,7 +129,7 @@
   })
 
 @company_admin1 = User.create!({ name: 'Raquel Bujans', 
-    email: 'rbujans@myspacenyc.com', 
+    email: 'rbujans@myspacenyc.com',
     bio: "blah blah blah", 
     password: @password, 
     password_confirmation: @password, 
@@ -143,7 +143,7 @@
     mobile_phone_number: '666-666-7777'
  })
 @manager1 = User.create!({ name: 'Nir Mizrachi', 
-    email: 'nir@myspacenyc.com',     
+    email: 'nir@myspacenyc.com',
     bio: "blah blah blah", 
     password: @password, 
     password_confirmation: @password, 
@@ -157,7 +157,7 @@
     mobile_phone_number: '666-666-8888'
   })
 @manager2 = User.create!({ name: 'Cheryl Hoyles', 
-    email: 'info@myspacenyc.com',    
+    email: 'info@myspacenyc.com',
     bio: "blah blah blah", 
     password: @password, 
     password_confirmation: @password, 

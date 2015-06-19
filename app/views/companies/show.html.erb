@@ -5,10 +5,12 @@
     <div class="col-md-6">
       <h1><%= @company.name %></h1>  
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 right">
       <br /><br />
       <%= link_to 'All Companies', companies_path %> | 
-      <%= link_to 'Edit', edit_company_path(@company) %> |
+      <% if current_user.is_company_admin? %>
+        <%= link_to 'Edit', edit_company_path(@company) %> |
+      <% end %>
       <%= link_to 'Offices', company_offices_path(@company) %> |
       <%= link_to 'Agents', employees_company_path(@company) %>
     </div>

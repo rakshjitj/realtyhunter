@@ -18,8 +18,10 @@
     <% end %>
   </td>
 
-  <td>
-    <%= link_to 'Edit', edit_commercial_unit_path(commercial_unit) %> | 
-    <%= link_to 'Delete', commercial_unit, method: :delete, data: { confirm: 'Are you sure?' } %>
-  </td>
+  <% if current_user.is_management? %>
+    <td>
+      <%= link_to 'Edit', edit_commercial_unit_path(commercial_unit) %> | 
+      <%= link_to 'Delete', commercial_unit, method: :delete, data: { confirm: 'Are you sure?' } %>
+    </td>
+  <% end %>
 </tr>

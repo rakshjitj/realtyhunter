@@ -15,20 +15,32 @@
 
 <% provide(:title, @building.formatted_street_address) %>
 
+
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-		<h1 class="page-header">
-			<%= @building.street_address %>
-		</h1>
-		<p><%= @building.active_units.count %> available units on the market.
-			<%= @building.units.count %> total units. | 
-			<%= link_to 'Edit', edit_building_path(@building) %> | 
-			<%= link_to 'View all', buildings_path %> |
-			<%= link_to 'Add a Unit', new_residential_unit_path(building_id: @building.id) %> | 
-			<%= link_to 'Report Inaccuracy', inaccuracy_modal_building_path(@building), 
-      	data: {toggle: "modal", target: "#bldgInaccuracyModal"}, remote: true %>
-			<br />
-		</p>
+  	<div class="page-header">
+  		<div class="row">
+  			<div class="col-md-12">
+  				<h1><%= @building.street_address %></h1>
+  			</div>
+  		</div>
+  		<div class="row">
+  			<div class="col-md-7">
+  				<p><%= @building.active_units.count %> available units on the market.
+						<%= @building.units.count %> total units.
+					</p>
+  			</div>
+  			<div class="col-md-5 right">
+  				<%= link_to 'View all', buildings_path %> |
+						<% if current_user.is_management? %>
+							<%= link_to 'Edit', edit_building_path(@building) %> | 
+							<%= link_to 'Add a Unit', new_residential_unit_path(building_id: @building.id) %> | 
+						<% end %>
+						<%= link_to 'Report Inaccuracy', inaccuracy_modal_building_path(@building), 
+			      	data: {toggle: "modal", target: "#bldgInaccuracyModal"}, remote: true %>
+  			</div>
+  		</div>
+		</div>
 
 		<div class="panel panel-default">
 		  <div class="panel-heading">
@@ -89,7 +101,11 @@
 
 				<p>
 				  <strong>Landlord Code:</strong>
-				  <%= link_to @building.landlord.code, landlord_path(@building.landlord) %>
+				  <% if current_user.is_management? %>
+					  <%= link_to @building.landlord.code, landlord_path(@building.landlord) %>
+					<% else %>
+						<%= @building.landlord.code %>
+					<% end %>
 				</p>
 
 				<p>
@@ -111,15 +127,11 @@
 				  <%= @building.updated_at.strftime("%b %e, %Y") %>
 				</p>
 				<p>
-				  <strong>Last Unit Updated:</strong>--
-				  <!--%= @building.updated_at.strftime("%b %e, %Y") %-->
+				  <strong>Last Unit Updated:</strong>
+				  <%= @building.last_unit_updated %>
 				</p>
 		  </div>
 		</div>
-
-		<%= link_to 'Edit', edit_building_path(@building) %> |
-		<%= link_to 'View All', buildings_path %> |
-		<%= link_to 'Add a Unit', new_residential_unit_path %>
 
 		<hr />
 		<!-- list this building's units -->

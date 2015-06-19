@@ -71,16 +71,23 @@
   $(document).ready(initialize);
 </script>
 
-<br />
 <% provide(:title, 'Commercial Listings') %>
-<div class="row">
-  <div class="col-md-6">
-    <h1>Commercial Listings</h1><%= link_to 'Add a listing', new_commercial_unit_path %> 
-
-    <%= link_to print_list_commercial_units_path, 
-      class:"btn btn-xs btn-primary link-as-button btn-print-list has-spinner" do %>
-      <span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Print
-    <% end %>
+<div class="page-header">
+  <div class="row">
+    <div class="col-md-6">
+      <h1>Commercial Listings</h1>
+    </div>
+    <div class="col-md-6 right">
+      <br />
+      <br />
+      <% if current_user.is_management? %>
+        <h1>Commercial Listings</h1><%= link_to 'Add a listing', new_commercial_unit_path %> 
+      <% end %>
+      <%= link_to print_list_commercial_units_path, 
+        class:"btn btn-xs btn-primary link-as-button btn-print-list has-spinner" do %>
+        <span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Print
+      <% end %>
+    </div>
   </div>
 </div>
 
@@ -96,7 +103,9 @@
           <th><%= sortable 'sq_footage' %></th>
           <th><%= sortable 'available_by' %></th>
           <th><%= sortable 'status' %></th>
-          <th colspan="1"></th>
+          <% if current_user.is_management? %>
+            <th colspan="1"></th>
+          <% end %>
         </tr>
       </thead>
 

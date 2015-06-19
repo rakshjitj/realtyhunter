@@ -4,9 +4,11 @@
     <%= image_tag @user.image.file.url(:medium), :class => 'img-responsive', 
       alt: @user.image.file.url(:medium) %>
     <!-- remove image -->
-    <%= link_to "Remove", destroy_image_user_path(@user), remote: true, method: :delete,
-      class: 'btn btn-xs btn-link center-block', 
-      data: { confirm: "Are you sure you want to remove the profile picture?" } %>
+    <% if @user.is_management? %>
+      <%= link_to "Remove", destroy_image_user_path(@user), remote: true, method: :delete,
+        class: 'btn btn-xs btn-link center-block', 
+        data: { confirm: "Are you sure you want to remove the profile picture?" } %>
+    <% end %>
   </div>
 <% else %>
   <!-- display placeholder image if none uploaded currently -->

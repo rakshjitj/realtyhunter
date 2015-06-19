@@ -152,17 +152,8 @@ class User < ActiveRecord::Base
     @running_list.uniq
   end
 
-  #def avatar_thumbnail_url
-  #  return S3_AVATAR_THUMBNAIL_BUCKET.objects[self.avatar_key].url_for(:read).to_s
-  #end
-
-  #def avatar_url
-  #  return S3_AVATAR_BUCKET.url + self.avatar_key
-  #end
-
   # copies in new roles from 
   # user.agent_types & user.employee_title
-  
   def update_roles
     # clear out old roles
     self.roles = [];
@@ -193,6 +184,14 @@ class User < ActiveRecord::Base
     else 
       self.add_sanitized_role(self.employee_title.name, false)
     end
+  end
+
+  def handles_residential?
+    self.has_role? :residential
+  end
+
+  def handles_commercial?
+    self.has_role? :commercial
   end
 
   def is_manager?

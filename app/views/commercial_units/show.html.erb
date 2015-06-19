@@ -42,14 +42,17 @@
 				  </div>
 				  <div class="panel-body">
 				  	<p>
-		          <%= link_to 'Edit', edit_commercial_unit_path(@commercial_unit) %>
-		          | <%= link_to 'View all', commercial_units_path %>
-		          | <%= link_to 'Duplicate', duplicate_modal_commercial_unit_path(@commercial_unit), 
-		      				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
+				  	  <%= link_to 'View all', commercial_units_path %>
+		          
 		      		| <%= link_to 'Report Inaccuracy', inaccuracy_modal_commercial_unit_path(@commercial_unit), 
 		        			data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
 		        	| <%= link_to 'Print', print_modal_commercial_unit_path(@commercial_unit), 
 		        		data: {toggle: "modal", target: "#printModal"}, remote: true %>
+		        	<% if current_user.is_management? %>
+					  		| <%= link_to 'Edit', edit_commercial_unit_path(@commercial_unit) %>
+					  		| <%= link_to 'Duplicate', duplicate_modal_commercial_unit_path(@commercial_unit), 
+			      				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
+					  	<% end %>
 		        </p>
 		        
 				  	<div id="map_canvas"></div>

@@ -99,7 +99,9 @@
     </div>
     <div class="col-md-6 right">
       <br /><br />
-      <%= link_to 'Add a unit', new_residential_unit_path %> |
+      <% if current_user.is_management? %>
+        <%= link_to 'Add a unit', new_residential_unit_path %> |
+      <% end %>
       <%= link_to print_list_residential_units_path, 
         class:" btn-print-list has-spinner" do %>
         <span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Print
@@ -203,7 +205,9 @@
           <th><%= sortable 'rent' %></th>
           <th><%= sortable 'updated_at' %></th>
           <th><%= sortable 'status' %></th>
-          <th colspan="1"></th>
+          <% if current_user.is_management? %>
+            <th colspan="1"></th>
+          <% end %>
         </tr>
       </thead>
 

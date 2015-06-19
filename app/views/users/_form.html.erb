@@ -20,8 +20,7 @@
 
 <div class="row">
   <div class="col-md-6">
-    <!-- User image form -->
-    
+      <!-- User image form -->
       <div class="row">
         <div class="col-md-12">
           <div class="avatar">
@@ -30,16 +29,21 @@
         </div>
       </div>
 
-      <br />
-      <div class="row">
-        <div class="col-md-12">
-          <%= form_for(@user, :url => upload_image_user_path(@user), 
-            html: {multipart: true}, method: :post) do |f| %>
-            <%= f.file_field :file %><br>
-            <%= f.submit "Upload Photo", class: "btn btn-warning" %>
-          <% end %>
+      <% if @user.is_management? %>
+        <br />
+        <div class="row">
+          <div class="col-md-12">
+            <%= form_for(@user, :url => upload_image_user_path(@user), 
+              html: {multipart: true}, method: :post) do |f| %>
+              <%= f.file_field :file %><br>
+              <%= f.submit "Upload Photo", class: "btn btn-warning" %>
+            <% end %>
+          </div>
         </div>
-      </div>
+      <% else %>
+        <br />
+        <p>Photo is only editable by company management.</p>
+      <% end %>
   </div>
 
   <div class="col-md-6">
@@ -64,11 +68,15 @@
         <%= f.telephone_field :mobile_phone_number, 
             class: 'form-control' %>
       </div>
-      <div class="field">
-        <%= f.label :bio, "Short Bio (Max 500 chars)" %><br>
-        <%= f.text_area :bio, class: 'form-control', :size => "20x10" %>
-      </div>
-      
+      <% if @user.is_management? %>
+        <div class="field">
+          <%= f.label :bio, "Short Bio (Max 500 chars)" %><br>
+          <%= f.text_area :bio, class: 'form-control', :size => "20x10" %>
+        </div>
+      <% else %>
+        <p>Bio is only editable by company management.</p>
+      <% end %>
+
       <div class="field">
         <%= f.label :office_id, "Office" %><br>
         <%= f.select(:office_id, options_for_select(@user.company.offices.collect {|t| [t.name.titleize, t.id]}, [@user.office.id]), 

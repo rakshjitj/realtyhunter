@@ -46,8 +46,11 @@
       <h1>Buildings</h1>
     </div>
     <div class="col-md-6 right">
-      <br /><br />
-      <%= link_to 'Add a building', new_building_path %> |
+      <br />
+      <br />
+      <% if current_user.is_management? %>
+        <%= link_to 'Add a building', new_building_path %> |
+      <% end %>
       <%= link_to 'Download CSV', buildings_path(format: :csv) %>
     </div>
   </div>

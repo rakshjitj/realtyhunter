@@ -5,7 +5,9 @@
     </div>
     <div class="col-md-5 right">
       <br /><br />
-      <%= link_to 'New Office', new_company_office_path %>
+      <% if current_user.is_company_admin? %>
+        <%= link_to 'New Office', new_company_office_path %>
+      <% end %>
     </div>
   </div>
 </div>
