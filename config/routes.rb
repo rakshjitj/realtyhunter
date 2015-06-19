@@ -38,6 +38,9 @@ Rails.application.routes.draw do
   resources :password_resets,     only: [:new, :create, :edit, :update]
  
   resources :companies do
+    collection do 
+      get 'filter'
+    end
     member do
       get 'managers'
       get 'employees'

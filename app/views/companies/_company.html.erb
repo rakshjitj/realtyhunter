@@ -1,0 +1,16 @@
+<tr>
+  <td>
+    <% if company.logo_id? %>
+      <%= attachment_image_tag(company, :logo, :fill, 300, 300) %>
+    <% else %>
+      no photo
+    <% end %>
+  </td>
+  <td><%= link_to company.name, company %></td>
+  <td>
+    <% if can? :update, company %>
+      <%= link_to 'Edit', edit_company_path(company) %> | 
+      <%= link_to 'Delete', company, method: :delete, data: { confirm: 'Are you sure?' } %>
+    <% end %>
+  </td>
+</tr>

@@ -240,7 +240,7 @@ class UsersController < ApplicationController
 
     def set_users
       @users = User.search(params[:search_params])
-      @users = @users.paginate(:page => params[:page], :per_page => 50).order("created_at ASC")
+      @users = @users.paginate(:page => params[:page], :per_page => 50)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

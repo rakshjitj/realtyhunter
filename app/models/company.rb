@@ -1,7 +1,7 @@
 class Company < ActiveRecord::Base
 	#attachment :logo
 	after_save :create_environment
-	
+	default_scope { order("name ASC") }
 	scope :unarchived, ->{where(archived: false)}
 
 	has_many :offices, :dependent => :destroy
@@ -55,6 +55,22 @@ class Company < ActiveRecord::Base
       EmployeeTitle.find_or_create_by(name: @sanitized_name)
     }
 	end
+
+	def self.search(query_params)
+    @running_list = Company.unarchived
+    if !query_params || !query_params[:name]
+      return @running_list 
+    end
+    
+    query_string = query_params[:name]
+    query_string = query_string[0..500] # truncate for security reasons
+    @terms = query_string.split(" ")
+    @terms.each do |term|
+      @running_list = @running_list.where('name ILIKE ?', "%#{term}%").all
+    end
+
+    @running_list.uniq
+  end
 
 	# Create the default environment options for the company.
 	# Admins can always change them once the company has been created.

@@ -1,11 +1,15 @@
 class CompaniesController < ApplicationController
   load_and_authorize_resource
   skip_before_action :logged_in_user, only: [:new, :create]
-  before_action :set_company, except: [:new, :create, :index]
+  before_action :set_company, except: [:new, :filter, :create, :index]
 
   # GET /companies
   # GET /companies.json
   def index
+    set_companies
+  end
+
+  def filter
     set_companies
   end
 
@@ -110,7 +114,8 @@ class CompaniesController < ApplicationController
     end
 
     def set_companies
-      @companies = Company.unarchived.paginate(:page => params[:page], :per_page => 50).order("updated_at ASC")
+      @companies = Company.search(params[:search_params])
+      @companies = @companies.unarchived.paginate(:page => params[:page], :per_page => 50)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
