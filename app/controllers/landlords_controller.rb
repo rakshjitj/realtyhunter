@@ -1,7 +1,8 @@
 class LandlordsController < ApplicationController
   load_and_authorize_resource
+  skip_load_resource :only => :create
   before_action :set_landlord, except: [:index, :new, :create, :filter]
-
+  
   # GET /landlords
   # GET /landlords.json
   def index
@@ -40,8 +41,8 @@ class LandlordsController < ApplicationController
   # POST /landlords
   # POST /landlords.json
   def create
-    @landlord = Landlord.new(landlord_params)
-    format_params_before_save
+    @landlord = Landlord.new(format_params_before_save)
+    @landlord.company = current_user.company
     if @landlord.save
       redirect_to @landlord
     else
@@ -88,19 +89,19 @@ class LandlordsController < ApplicationController
     end
 
     def set_landlords
-      @landlords = Landlord.includes(:buildings).search(params[:filter], params[:agent_filter], params[:active_only])
+      @landlords = Landlord.includes(:buildings).search(params)
       @landlords = custom_sort
       @landlords = @landlords.paginate(:page => params[:page], :per_page => 50)
     end
 
     def custom_sort
-      sort_column = params[:sort_by] || "code"
+      sort_column = params[:sort_by] || "name"
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
       # if sorting by an actual db column, use order
       if Landlord.column_names.include?(params[:sort_by])
         @landlords = @landlords.order(sort_column + ' ' + sort_order)
-      # otherwise call sort_by with our custom method
       else
+        # otherwise call sort_by with our custom method
         if sort_order == "asc"
           @landlords = @landlords.sort_by{|b| b.send(sort_column)}
         else
@@ -117,13 +118,12 @@ class LandlordsController < ApplicationController
       param_obj[:landlord].each{ |k,v| param_obj[k] = v };
       param_obj.delete("landlord")
 
-      @landlord.company = current_user.company
-      
       param_obj
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def landlord_params
+
       params.permit(:sort_by, :filter, :agent_filter, :active_only, :street_number, :route, 
         :neighborhood, :sublocality, :administrative_area_level_2_short, 
         :administrative_area_level_1_short, :postal_code, :country_short, :lat, :lng, :place_id, 

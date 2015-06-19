@@ -7,8 +7,7 @@
         url: "<%= filter_landlords_path %>",
         data: {
           filter: $('#filter').val(),
-          agent_filter: $('#agent_filter').val(),
-          active_only: $('#checkbox_active').checked
+          active_only: $('#checkbox_active').prop('checked')
         },
         dataType: "script"
       }).fail(function() {
@@ -32,14 +31,10 @@
     };
 
     $('#filter').keydown(preventEnter);
-    $('#agent_filter').keydown(preventEnter);
 
     $('#filter').keyup(throttledSearch);
-    $('#agent_filter').keyup(throttledSearch);
-    // toggle between active and inactive units
     $('#checkbox_active').click(doSearch);
   };
-  // TODO: get rid of document.ready  
   $(document).ready(initialize);
 </script>
 
@@ -63,9 +58,6 @@
       <%= label_tag(:filter, "Filter:") %>
       <%= text_field_tag :filter, params[:code_name], 
         placeholder: "code/name", size: 20 %>
-      &nbsp;&nbsp;
-      <%= label_tag(:agent_filter, "Primary Agent:") %>
-      <%= text_field_tag :agent_filter, params[:agent], placeholder: "Agent Name", size: 20 %>
       &nbsp;&nbsp;
       <%= check_box_tag(:checkbox_active, class: "checkbox inline") %>
       <%= label_tag :checkbox_active, "Has active units" %>

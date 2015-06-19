@@ -1,8 +1,7 @@
 class Landlord < ActiveRecord::Base
-	has_many :buildings, dependent: :destroy
-
 	scope :unarchived, ->{where(archived: false)}
-	
+
+	has_many :buildings, dependent: :destroy
 	belongs_to :company
 	validates :company, presence: true
 
@@ -20,7 +19,7 @@ class Landlord < ActiveRecord::Base
 	VALID_TELEPHONE_REGEX = /(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/
 	validates :mobile, presence: true, length: {maximum: 25}, 
 		format: { with: VALID_TELEPHONE_REGEX }
-	validates :office_phone, presence: true, length: {maximum: 25}, 
+	validates :office_phone, allow_blank: true, length: {maximum: 25}, 
 		format: { with: VALID_TELEPHONE_REGEX }
 	validates :fax, length: {maximum: 25}, 
 		format: { with: VALID_TELEPHONE_REGEX }, allow_blank: true
@@ -61,32 +60,38 @@ class Landlord < ActiveRecord::Base
 		end
 	end
 
-	def self.search(query_str, agent_query, active_only)
+	def self.search(params)
 		@running_list = Landlord.unarchived
-    return @running_list if !query_str
-    
-    terms = query_str.split(" ")
-    terms.each do |term|
-      @running_list = @running_list.where('name ILIKE ? or code ILIKE ?', "%#{term}%", "%#{term}%").all
-    end
+		if !params
+	    return @running_list 
+  	end
 
-    # TODO:
-    if agent_query
-    	#terms = agent_query.split(" ")
-	    #terms.each do |term|
-	    #  running_list = @running_list.joins(:users).where('users.name ILIKE ?', "%#{term}%")
-	    #end
-    end
+  	if params[:query_str]
+	    terms = params[:query_str].split(" ")
+	    terms.each do |term|
+	      @running_list = @running_list.where('name ILIKE ? or code ILIKE ?', "%#{term}%", "%#{term}%").all
+	    end
+	  end
 
-    if active_only == "true"
-    	# TODO
-    	#@running_list = @running_list
-	    #	.joins(:buildings)
-	    #	.where(buildings: { units: {status:"active"}})
+    if params[:active_only] == "true"
+    	# 'active' is always the first status, so search with 0
+    	@running_list = @running_list.joins(buildings: :units).where("status = 0")
     end
 
     @running_list.uniq
 	end
+
+	def residential_units
+    bldg_ids = self.building_ids
+    units = Unit.where(building_id: bldg_ids)
+    @residential_units = Unit.get_residential(units)
+  end
+
+  def commercial_units
+  	bldg_ids = self.building_ids
+    units = Unit.where(building_id: bldg_ids)
+    @commercial_units = Unit.get_commercial(units)
+  end
 
 	private
     # Converts email to all lower-case.

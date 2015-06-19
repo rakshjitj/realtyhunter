@@ -56,7 +56,6 @@ class Ability
         end
         can :read, CommercialUnit do |commercial_unit|
           commercial_unit.building.company_id == user.company_id && user.handles_commercial?
-
         end
 
         can :read, User, :company_id => user.company_id

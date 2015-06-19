@@ -232,7 +232,7 @@ class ResidentialUnit < ActiveRecord::Base
         .where('residential_amenity_id IN (?)', features)
     end
     
-    @running_list
+    @running_list.uniq
 	end
 
   def duplicate(new_unit_num, include_photos)
