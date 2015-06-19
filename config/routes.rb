@@ -12,17 +12,13 @@ Rails.application.routes.draw do
   
   root :to => 'static_pages#home'
   
-  # TODO: clean up this path
-  #get 'update_offices', to: 'users#update_offices', as: 'update_offices'
-  #get 'users/batch_new', to: 'users#batch_new', as: :users_batch_new
-  #post 'users/batch_create', to: 'users#batch_create', as: :users_batch_create
-  #get 'users/batch_add_user', to: 'users#batch_add_user', as: :users_batch_add_user
   resources :users do
     collection do
       get 'update_offices'
       get 'batch_new'
       post 'batch_create'
       get 'batch_add_user'
+      get 'filter'
     end
     member do 
       delete 'destroy_image'
@@ -80,6 +76,9 @@ Rails.application.routes.draw do
       patch 'send_inaccuracy'
       get 'refresh_images'
     end
+    collection do
+      get 'filter'
+    end
   end
   
   resources :residential_units, concerns: :unit_images_uploadable do
@@ -97,6 +96,7 @@ Rails.application.routes.draw do
       get 'refresh_images'
     end
     collection do
+      get 'filter'
       get 'print_list'
       get 'neighborhoods_modal'
       get 'features_modal'
@@ -104,6 +104,9 @@ Rails.application.routes.draw do
   end
 
   resources :landlords do
+    collection do
+      get 'filter'
+    end
     member do
       get 'delete_modal'
     end
@@ -128,6 +131,7 @@ Rails.application.routes.draw do
       get 'refresh_images'
     end
     collection do
+      get 'filter'
       get 'print_list'
       get 'update_subtype'
       # get 'neighborhoods_modal'
@@ -135,10 +139,10 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'search/landlords', to: 'landlords#filter', as: :landlords_filter
-  get 'search/residential_units', to: 'residential_units#filter', as: :residential_units_filter
-  get 'search/buildings', to: 'buildings#filter', as: :buildings_filter
-  get 'search/commercial_units', to: 'commercial_units#filter', as: :commercial_units_filter
+  #get 'search/landlords', to: 'landlords#filter', as: :landlords_filter
+  #get 'search/residential_units', to: 'residential_units#filter', as: :residential_units_filter
+  #get 'search/buildings', to: 'buildings#filter', as: :buildings_filter
+  #get 'search/commercial_units', to: 'commercial_units#filter', as: :commercial_units_filter
 
   # designed to match nestio's API endpoints, so we can feed our data seamlessly to 
   # our public-facing website

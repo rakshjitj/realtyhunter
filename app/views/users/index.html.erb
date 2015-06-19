@@ -1,26 +1,59 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="page-header">
+<script>
+  //call when typing or enter or focus leaving
+  function initialize() {
+
+    function doSearch(event) {
+      $.ajax({
+        url: "<%= filter_users_path %>",
+        data: {
+          search_params: {
+            name_email: $('#name_email').val()
+          } 
+        },
+        dataType: "script"
+      });
+    };
+
+    // search as user types
+    var timer;
+    function throttledSearch() {
+      clearInterval(timer);  //clear any interval on key up
+      timer = setTimeout(doSearch, 500);
+    };
+    
+    // change enter key to tab
+    function preventEnter(event) {
+      if (event.keyCode == 13) {
+        return false;
+      }
+    };
+
+    $('input').keydown(preventEnter); 
+    $('#name_email').keyup(throttledSearch);
+  };
+
+  $(document).ready(initialize);
+</script>
+
+<div class="page-header">
+  <div class="row">
+    <div class="col-md-12">
       <h1><%= @title %></h1>
     </div>
   </div>
 </div>
 
-
 <div class="row">
-  <div class="col-md-2">
+  <div class="col-md-6">
     <%= form_tag users_path, :method => 'get' do %>
-      Search:
-      <%= text_field_tag :search, params[:search], placeholder: "name/email", size: 50 %>
-      <%= submit_tag "Go", :name => nil %>
-      <%= link_to "Clear", users_path, class: 'btn btn-xs btn-default' %>
+      <%= label_tag(:name_email, "Filter:") %>
+      <%= text_field_tag :name_email, params[:search], placeholder: "name/email", size: 50 %>
     <% end %>
   </div>
-  <div class="col-md-offset-10">
+  <div class="col-md-6 right">
     <%= will_paginate @users %>
   </div>
 </div>
-
 
 <div class="row">
   <div class="col-md-12">

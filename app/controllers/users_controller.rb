@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
   skip_before_action :logged_in_user, only: [:new, :create, :update_offices]
-  before_action :set_user, except: [:index, :teams, :new, :batch_new, :create, 
+  before_action :set_user, except: [:index, :filter, :teams, :new, :create, :batch_new, 
     :batch_create, :batch_add_user, :update_offices]
   before_action :set_company, except: [:update_offices]
 
@@ -11,6 +11,12 @@ class UsersController < ApplicationController
     @agent_title = EmployeeTitle.agent
     set_users
     @title = 'All users'
+  end
+
+  # GET /filter_buildings
+  # AJAX call
+  def filter
+    set_users
   end
 
   # GET /coworkers/1
@@ -61,15 +67,34 @@ class UsersController < ApplicationController
     @agent_title = EmployeeTitle.agent
     @users = []
     @users << User.new
-    
   end
 
   def batch_add_user
     @builder = User.new
     respond_to do |format|
-      format.js #batch_add_user.js.erb
+      format.js
     end
   end
+
+   # POST /users/batch_create
+  # POST /users/batch_create
+  #def batch_create
+    #@user = User.new(user_params)
+    # @user.company = @company
+    # @user.assign_random_password
+    # if @user.save
+    #   @user.approve
+    #   # add in each role type
+    #   @user.update_roles
+    #   # send users an email prompting them to change pass & login
+    #   @user.create_reset_digest
+    #   @user.send_added_by_admin_email(current_user.company)
+    #   flash[:info] = "Users have been notified"
+    #   redirect_to root_url
+    # else
+    #   render 'batch_new'
+    # end
+  #end
 
   # GET /users/1/edit
   def edit
@@ -97,25 +122,7 @@ class UsersController < ApplicationController
     end
   end
 
-  # POST /users/batch_create
-  # POST /users/batch_create
-  def batch_create
-    #@user = User.new(user_params)
-    # @user.company = @company
-    # @user.assign_random_password
-    # if @user.save
-    #   @user.approve
-    #   # add in each role type
-    #   @user.update_roles
-    #   # send users an email prompting them to change pass & login
-    #   @user.create_reset_digest
-    #   @user.send_added_by_admin_email(current_user.company)
-    #   flash[:info] = "Users have been notified"
-    #   redirect_to root_url
-    # else
-    #   render 'batch_new'
-    # end
-  end
+ 
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
@@ -240,8 +247,7 @@ class UsersController < ApplicationController
     end
 
     def set_users
-      #@users = User.where(activated: true).paginate(page: params[:page])
-      @users = User.search(params[:search])
+      @users = User.search(params[:search_params])
       @users = @users.paginate(:page => params[:page], :per_page => 50).order("created_at ASC")
     end
 

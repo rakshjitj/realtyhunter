@@ -138,14 +138,14 @@ class User < ActiveRecord::Base
     reset_sent_at < 2.hours.ago
   end
 
-  def self.search(query_string)
-    @running_list = User.unarchived.includes(:employee_title, :office, :company, :manager)
-
-    return @running_list if !query_string
+  def self.search(query_params)
+    @running_list = User.unarchived.includes(:employee_title, :office, :company, :manager, :image)
+    return @running_list unless query_params[:name_email]
     
+    query_string = query_params[:name_email]
+    query_string = query_string[0..500] # truncate for security reasons
     @terms = query_string.split(" ")
     @terms.each do |term|
-      #term = "%#{term}%"
       @running_list = @running_list.where('name ILIKE ? or email ILIKE ?', "%#{term}%", "%#{term}%").all
     end
 

@@ -4,7 +4,7 @@
   function initialize() {
     function doSearch(event) {
       $.ajax({
-        url: "<%= buildings_filter_path %>",
+        url: "<%= filter_buildings_path %>",
         data: {
           filter: $('#filter').val(),
           active_only: $('#checkbox_active').checked

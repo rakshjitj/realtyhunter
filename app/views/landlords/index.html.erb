@@ -4,7 +4,7 @@
   function initialize() {
     function doSearch(event) {
       $.ajax({
-        url: "<%= landlords_filter_path %>",
+        url: "<%= filter_landlords_path %>",
         data: {
           filter: $('#filter').val(),
           agent_filter: $('#agent_filter').val(),

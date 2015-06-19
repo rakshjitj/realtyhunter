@@ -1,6 +1,6 @@
 <script>
-   //unobstrusive: attach method call here
-   //call when typing or enter or focus leaving
+  //unobstrusive: attach method call here
+  //call when typing or enter or focus leaving
   function initialize() {
     var timer2;
     function clearSpinner() {
@@ -31,7 +31,7 @@
       }
 
       $.ajax({
-        url: "<%= residential_units_filter_path %>",
+        url: "<%= filter_residential_units_path %>",
         data: {
           search_params: {
             address: $('#address').val(),

@@ -11,7 +11,7 @@
     } else {
       $('.agent-type').hide();
     }
-  };
+  };  
 </script>
 
 <% provide(:title, 'Admin User Signup') %>
@@ -26,7 +26,7 @@
 <div class="row">
   <div class="col-md-12">
     
-    <p>Users will be notified of their accounts immediately after creation.</p>
+    <p>Users will be notified of their accounts immediately after creation.</p><br />
 
     <%= form_for(@users, :url => batch_create_users_path(@users), remote: true, html: { class: "directUpload" }) do |f| %>
       <!--%= render :partial => 'shared/error_messages', 
@@ -36,7 +36,6 @@
         <%= render :partial => 'batch_add_user', :locals => {:builder => builder } %>
       <% end %> <!-- fields_for -->
   
-      <p class="red"><strong>THIS LINK NOT FUNCTIONAL YET!!</strong></p>
       <%= link_to 'Add another row', batch_add_user_users_path, remote: true %>
 
       <br /><br />
