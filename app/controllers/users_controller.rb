@@ -161,22 +161,17 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
     @user.archive
-    set_user
     set_users
     # if this is us, log us out
     if (current_user == @user)
       log_out if logged_in?
     else
       respond_to do |format|
+        format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+        format.json { head :no_content }
         format.js  
       end
     end
-    
-    #respond_to do |format|
-    #  format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-    #  format.json { head :no_content }
-    #  format.js
-    #end
   end
 
   # happens when an admin approves a user account through
@@ -240,17 +235,8 @@ class UsersController < ApplicationController
 
     # Confirms the correct user.
     def set_user
-    #def correct_user
-      #puts "***ID**** #{params.inspect}"
-      #redirect_back_or users_path unless @user == current_user
       @user = User.find_unarchived(params[:id])
       @agent_title = EmployeeTitle.agent
-      #unless (@current_user.is_management? || @user == current_user)
-      #  flash[:danger] = "You are not authorized to go there."
-      #  redirect_back_or users_url
-      #  #redirect_to(users_url)
-      #end
-      ##redirect_to(root_url) unless @user == current_user
     end
 
     def set_users
@@ -258,11 +244,6 @@ class UsersController < ApplicationController
       @users = User.search(params[:search])
       @users = @users.paginate(:page => params[:page], :per_page => 50).order("created_at ASC")
     end
-
-    # Use callbacks to share common setup or constraints between actions.
-    #def set_user
-    #  @user = User.find(params[:id])
-    #end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
