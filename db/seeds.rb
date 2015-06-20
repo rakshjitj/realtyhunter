@@ -132,7 +132,37 @@ end
     mobile_phone_number: '666-666-6666'
   })
 
-@company_admin1 = User.create!({ name: 'Raquel Bujans', 
+@managers = User.create!([
+  { name: 'Manager One', 
+    email: 'manager1@myspacenyc.com',
+    bio: "blah blah blah", 
+    password: @password, 
+    password_confirmation: @password, 
+    activated: true, 
+    activated_at: Time.zone.now,
+    approved: true, 
+    approved_at: Time.zone.now,
+    company: @company, 
+    office: @offices[0],
+    employee_title: @employee_titles[@employee_titles.length-1],
+    mobile_phone_number: '666-666-7777'
+ },
+ { name: 'Manager Two', 
+    email: 'manager2@myspacenyc.com',
+    bio: "blah blah blah", 
+    password: @password, 
+    password_confirmation: @password, 
+    activated: true, 
+    activated_at: Time.zone.now,
+    approved: true, 
+    approved_at: Time.zone.now,
+    company: @company, 
+    office: @offices[0],
+    employee_title: @employee_titles[@employee_titles.length-1],
+    mobile_phone_number: '666-666-7777'
+ }])
+@admins = User.create!([
+  { name: 'Raquel Bujans', 
     email: 'rbujans@myspacenyc.com',
     bio: "blah blah blah", 
     password: @password, 
@@ -145,22 +175,8 @@ end
     office: @offices[0],
     employee_title: @employee_titles[@employee_titles.length-1],
     mobile_phone_number: '666-666-7777'
- })
-@manager1 = User.create!({ name: 'Nir Mizrachi', 
-    email: 'nir@myspacenyc.com',
-    bio: "blah blah blah", 
-    password: @password, 
-    password_confirmation: @password, 
-    activated: true, 
-    activated_at: Time.zone.now,
-    approved: true, 
-    approved_at: Time.zone.now,
-    company: @company, 
-    office: @offices[0],
-    employee_title: @employee_titles[4],
-    mobile_phone_number: '666-666-8888'
-  })
-@manager2 = User.create!({ name: 'Cheryl Hoyles', 
+  },
+  { name: 'Cheryl Hoyles', 
     email: 'info@myspacenyc.com',
     bio: "blah blah blah", 
     password: @password, 
@@ -171,10 +187,24 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[4],
+    employee_title: @employee_titles[@employee_titles.length-1],
     mobile_phone_number: '666-666-9999'
- })
-@manager3 = User.create!({ name: 'Shawn Mullahy', 
+ },
+  { name: 'Nir Mizrachi', 
+    email: 'nir@myspacenyc.com',
+    bio: "blah blah blah", 
+    password: @password, 
+    password_confirmation: @password, 
+    activated: true, 
+    activated_at: Time.zone.now,
+    approved: true, 
+    approved_at: Time.zone.now,
+    company: @company, 
+    office: @offices[0],
+    employee_title: @employee_titles[@employee_titles.length-1],
+    mobile_phone_number: '666-666-8888'
+  },
+  { name: 'Shawn Mullahy', 
     email: 'smullahy@myspacenyc.com',
     bio: "blah blah blah", 
     password: @password, 
@@ -185,23 +215,95 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[4],
+    employee_title: @employee_titles[@employee_titles.length-1],
     mobile_phone_number: '666-666-9999'
- })
+  },
+  { name: 'Belle Taylor', 
+    email: 'belle@myspacenyc.com',
+    bio: "blah blah blah", 
+    password: @password, 
+    password_confirmation: @password, 
+    activated: true, 
+    activated_at: Time.zone.now,
+    approved: true, 
+    approved_at: Time.zone.now,
+    company: @company, 
+    office: @offices[0],
+    employee_title: @employee_titles[@employee_titles.length-1],
+    mobile_phone_number: '666-666-9999'
+  },
+  { name: 'Ozzie Sadok', 
+    email: 'osadok@myspacenyc.com',
+    bio: "blah blah blah", 
+    password: @password, 
+    password_confirmation: @password, 
+    activated: true, 
+    activated_at: Time.zone.now,
+    approved: true, 
+    approved_at: Time.zone.now,
+    company: @company, 
+    office: @offices[0],
+    employee_title: @employee_titles[@employee_titles.length-1],
+    mobile_phone_number: '666-666-9999'
+  },
+  { name: 'Benny Lewis', 
+    email: 'blewis@myspacenyc.com',
+    bio: "blah blah blah", 
+    password: @password, 
+    password_confirmation: @password, 
+    activated: true, 
+    activated_at: Time.zone.now,
+    approved: true, 
+    approved_at: Time.zone.now,
+    company: @company, 
+    office: @offices[0],
+    employee_title: @employee_titles[@employee_titles.length-1],
+    mobile_phone_number: '666-666-9999'
+  },
+  { name: 'Michelle Monko', 
+    email: 'mmonko@myspacenyc.com',
+    bio: "blah blah blah", 
+    password: @password, 
+    password_confirmation: @password, 
+    activated: true, 
+    activated_at: Time.zone.now,
+    approved: true, 
+    approved_at: Time.zone.now,
+    company: @company, 
+    office: @offices[0],
+    employee_title: @employee_titles[@employee_titles.length-1],
+    mobile_phone_number: '666-666-9999'
+  },
+  { name: 'Dani Leahy', 
+    email: 'dleahy@myspacenyc.com',
+    bio: "blah blah blah", 
+    password: @password, 
+    password_confirmation: @password, 
+    activated: true, 
+    activated_at: Time.zone.now,
+    approved: true, 
+    approved_at: Time.zone.now,
+    company: @company, 
+    office: @offices[0],
+    employee_title: @employee_titles[@employee_titles.length-1],
+    mobile_phone_number: '666-666-9999'
+ }])
 
 User.define_roles()
 @super_admin.update_roles
 @super_admin.add_role :super_admin
 
-@company_admin1.update_roles
-@manager1.update_roles
-@manager2.update_roles
-@manager3.update_roles
+@admins.each {|a| d.update_roles }
+@managers.each {|a| d.update_roles }
+#@company_admin1.update_roles
+#@manager1.update_roles
+#@manager2.update_roles
+#@manager3.update_roles
 
 50.times do |n|
   name  = FFaker::Name.name
   email = "example-#{n+1}@railstutorial.org"
-  password = "password"
+  password = @password
   userN = User.create!(name: name,
    email: email,
    phone_number: FFaker::PhoneNumber.short_phone_number,
@@ -217,13 +319,10 @@ User.define_roles()
    employee_title: @employee_titles[1]
    )
   userN.update_roles
-  #if n < 20
-  #  @company_admin1.add_subordinate(userN)
-  #elsif 20 < n && n < 35
   if n < 25
-    @manager1.add_subordinate(userN)
+    @managers[0].add_subordinate(userN)
   else
-    @manager2.add_subordinate(userN)
+    @managers[1].add_subordinate(userN)
   end
 end
 
