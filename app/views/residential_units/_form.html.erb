@@ -15,12 +15,14 @@
       <div role="tabpanel" class="tab-pane fade" id="photos">
         <br />
         
-        <%= form_for(@residential_unit, :url => residential_unit_unit_images_path(@residential_unit), 
-          html: {multipart: true, class: "dropzone", id: "unit-dropzone"}, method: :post) do |f| %>
-          <div class="fallback">
-            <%= f.file_field :file %><br>
-            <%= f.submit "Upload" %>
-          </div>
+        <% if @residential_unit.id %>
+          <%= form_for(@residential_unit, :url => residential_unit_unit_images_path(@residential_unit), 
+            html: {multipart: true, class: "dropzone", id: "unit-dropzone"}, method: :post) do |f| %>
+            <div class="fallback">
+              <%= f.file_field :file %><br>
+              <%= f.submit "Upload" %>
+            </div>
+          <% end %>
         <% end %>
 
         <br />
