@@ -144,7 +144,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[@employee_titles.length-1],
+    employee_title: @employee_titles[4],
     mobile_phone_number: '666-666-7777'
  },
  { name: 'Manager Two', 
@@ -158,9 +158,10 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[@employee_titles.length-1],
+    employee_title: @employee_titles[4],
     mobile_phone_number: '666-666-7777'
  }])
+
 @admins = User.create!([
   { name: 'Raquel Bujans', 
     email: 'rbujans@myspacenyc.com',
@@ -293,8 +294,8 @@ User.define_roles()
 @super_admin.update_roles
 @super_admin.add_role :super_admin
 
-@admins.each {|a| d.update_roles }
-@managers.each {|a| d.update_roles }
+@admins.each {|a| a.update_roles }
+@managers.each {|m| m.update_roles }
 #@company_admin1.update_roles
 #@manager1.update_roles
 #@manager2.update_roles
