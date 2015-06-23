@@ -15,7 +15,7 @@ class Building < ActiveRecord::Base
 	attr_accessor :building, :inaccuracy_description
 
 	validates :formatted_street_address, presence: true, length: {maximum: 200}, 
-						uniqueness: { case_sensitive: false }
+		uniqueness: { case_sensitive: false }
 						
 	validates :street_number, presence: true, length: {maximum: 20}
 	validates :route, presence: true, length: {maximum: 100}
@@ -86,12 +86,12 @@ class Building < ActiveRecord::Base
 
 	def amenities_to_s
 		amenities = self.building_amenities.map{|a| a.name}
-		amenities ? amenities.join(", ") : "None"
+		amenities ? amenities.join(', ') : "None"
 	end
 
 	def rental_terms_to_s
 		terms = self.rental_terms.map{|a| a.name}
-		terms ? terms.join(", ") : "None"
+		terms ? terms.join(', ') : "None"
 	end
 
   def find_or_create_neighborhood(neighborhood, borough, city, state)

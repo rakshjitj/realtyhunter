@@ -226,7 +226,9 @@
 	    			<strong>Listing agent:</strong>
 	    		</div>
 	    		<div class="col-md-3">
-	    			<%= link_to @residential_unit.listing_agent.name, @residential_unit.listing_agent %>
+	    			<% if @residential_unit.listing_agent %>
+		    			<%= link_to @residential_unit.listing_agent.name, @residential_unit.listing_agent %>
+		    		<% end %>
 	    		</div>
 	    	</div>
 
@@ -241,7 +243,9 @@
 	    			<strong>Primary agent:</strong>
 	    		</div>
 	    		<div class="col-md-3">
-	    			<%= link_to @residential_unit.primary_agent.name, @residential_unit.primary_agent %>
+	    			<% if @residential_unit.primary_agent %>
+	    				<%= link_to @residential_unit.primary_agent.name, @residential_unit.primary_agent %>
+	    			<% end %>
 	    		</div>
 	    	</div>
 
