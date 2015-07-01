@@ -1,19 +1,20 @@
 class Building < ActiveRecord::Base
+	scope :unarchived, ->{where(archived: false)}
+	before_save :process_custom_security
 	belongs_to :company
 	belongs_to :landlord
 	belongs_to :neighborhood
 	belongs_to :pet_policy
+	belongs_to :required_security
 	has_many :units, dependent: :destroy
 	has_many :images, dependent: :destroy
 	has_and_belongs_to_many :building_amenities
 	has_and_belongs_to_many :rental_terms
 
-	scope :unarchived, ->{where(archived: false)}
-	
 	# TODO: remove this line
 	# this is some BS we need to make cancancan happy, because it 
 	# does not like our strong parameters
-	attr_accessor :building, :inaccuracy_description
+	attr_accessor :building, :inaccuracy_description, :custom_required_security
 
 	validates :formatted_street_address, presence: true, length: {maximum: 200}, 
 		uniqueness: { case_sensitive: false }
@@ -32,6 +33,7 @@ class Building < ActiveRecord::Base
 	validates :lng, presence: true, length: {maximum: 100}
 	validates :place_id, presence: true, length: {maximum: 100}
 
+	#validates :required_security, presence: true
 	validates :pet_policy, presence: true
 	validates :company, presence: true
 	validates :landlord, presence: true
@@ -121,5 +123,17 @@ class Building < ActiveRecord::Base
     units = Unit.where(building_id: id)
     @commercial_units = Unit.get_commercial(units)
   end
+
+  private
+
+  	def process_custom_security
+  		if custom_required_security
+  			req = RequiredSecurity.where(name: custom_required_security).first
+  			if !req
+  				req = RequiredSecurity.create!(name: custom_required_security, company: company)
+  			end
+  			self.required_security = req
+  		end
+  	end
   
 end

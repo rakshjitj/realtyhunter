@@ -113,6 +113,10 @@
 				  <%= @building.amenities_to_s %>
 				</p>
 
+        <p>
+        	<strong>Required securities:</strong> <%= @building.required_security.name.titleize %>
+        </p>
+
 				<p>
     			<strong>Pet Policy:</strong>
     			<%= @building.pet_policy.name.titleize %>

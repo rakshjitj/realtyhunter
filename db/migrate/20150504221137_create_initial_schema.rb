@@ -112,7 +112,6 @@
       t.text :notes
       t.integer :listing_agent_percentage
       t.string :management_info
-      t.belongs_to :required_security
       t.belongs_to :company
       t.references :buildings, index: true
       t.timestamps null: false
@@ -150,6 +149,7 @@
       t.belongs_to :neighborhood
       t.belongs_to :user
       t.belongs_to :pet_policy
+      t.belongs_to :required_security
       t.references :images, index: true
       t.timestamps null: false
     end
@@ -224,7 +224,7 @@
     create_table :required_securities do |t|
       t.string :name
       t.belongs_to :company
-      t.references :landlords, index: true
+      t.references :building, index: true
       t.timestamps null: false
     end
 

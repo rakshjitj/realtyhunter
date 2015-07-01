@@ -132,6 +132,20 @@
             :include_blank => true) %>
         </div>
       </div>
+
+      <div class="col-md-6">
+        <div class="field">
+          <%= f.label :required_security_id %>
+          <%= f.select(:required_security_id, options_for_select(@building.company.required_securities.all.collect { |r| [r.name.titleize, r.id] }, 
+            [@building.required_security ? @building.required_security.id : '']),
+             {prompt: "Choose one..."},
+            class: 'form-control',
+            :include_blank => true) %>
+          <%= f.text_field :custom_required_security, class: 'form-control', 
+            placeholder: "Or enter new custom required security" %>
+        </div>
+      </div>
+
     </div>
 
     <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->

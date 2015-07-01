@@ -1,12 +1,13 @@
 <%- headers = ['Street Address', 'Neighborhood', 'Borough', 
 	'City', 'State', 'Zipcode', 'Active Units', 
 	'Total Units', 'Last Updated At', 'Notes', 
-	'Landlord', 'Amenities', 'Rental Terms'] -%>
+	'Landlord', 'Amenities', 'Rental Terms', 'Required Security'] -%>
 <%= CSV.generate_line headers %>
 <%- @buildings.each do |building| -%>
   <%= [building.street_address, building.neighborhood.name, building.sublocality, 
   	building.administrative_area_level_2_short,
   		building.administrative_area_level_1_short, building.postal_code, building.active_units.count, 
   		building.units.count, building.updated_at.strftime("%Y-%b-%d"), building.notes, 
-  		building.landlord.code, building.amenities_to_s, building.rental_terms_to_s].to_csv.html_safe %>
+  		building.landlord.code, building.amenities_to_s, building.rental_terms_to_s, 
+  		building.required_security.name.titleize, ].to_csv.html_safe %>
 <%- end -%>

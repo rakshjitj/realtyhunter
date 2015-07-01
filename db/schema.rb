@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "neighborhood_id"
     t.integer  "user_id"
     t.integer  "pet_policy_id"
+    t.integer  "required_security_id"
     t.integer  "images_id"
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
@@ -169,7 +170,6 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.text     "notes"
     t.integer  "listing_agent_percentage"
     t.string   "management_info"
-    t.integer  "required_security_id"
     t.integer  "company_id"
     t.integer  "buildings_id"
     t.datetime "created_at",                                        null: false
@@ -236,12 +236,12 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   create_table "required_securities", force: :cascade do |t|
     t.string   "name"
     t.integer  "company_id"
-    t.integer  "landlords_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.integer  "building_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
-  add_index "required_securities", ["landlords_id"], name: "index_required_securities_on_landlords_id", using: :btree
+  add_index "required_securities", ["building_id"], name: "index_required_securities_on_building_id", using: :btree
 
   create_table "residential_amenities", force: :cascade do |t|
     t.string   "name"

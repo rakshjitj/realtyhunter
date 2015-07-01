@@ -5,9 +5,6 @@ class Landlord < ActiveRecord::Base
 	belongs_to :company
 	validates :company, presence: true
 
-	belongs_to :required_security
-	validates :required_security, presence: true
-
 	validates :code, presence: true, length: {maximum: 100}, 
 		uniqueness: { case_sensitive: false }
 

@@ -161,23 +161,6 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 right">
-            <%= f.label :required_security_id %>
-          </div>
-          <div class="col-md-9">
-            <div class="field">
-              <%= f.select(:required_security_id, options_for_select(@landlord.company.required_securities.all.collect { |r| [r.name.titleize, r.id] }, 
-                [@landlord.required_security ? @landlord.required_security.id : '']),
-                 {prompt: "Choose one..."},
-                :required => true, 
-                class: 'form-control',
-                :include_blank => true) %>
-            </div>
-          </div>
-        </div>
-
-        <br />
-        <div class="row">
           <div class="col-md-12">
             <%= f.label :notes, "Notes (will be shared on listings)" %><br />
             <%= f.text_area :notes, class: 'form-control', rows: 4 %>

@@ -129,7 +129,6 @@ class LandlordsController < ApplicationController
         :administrative_area_level_1_short, :postal_code, :country_short, :lat, :lng, :place_id, 
         :landlord => [:code, :name, :mobile, :office_phone, :fax, 
           :email, :website, :formatted_street_address, :notes, 
-          :listing_agent_percentage, :required_security_id, 
-          :management_info])
+          :listing_agent_percentage, :management_info])
     end
 end

@@ -1,8 +1,8 @@
 <%- headers = ['Name', 'Code', 'Office Phone', 'Mobile', 'Fax', 'Email', 'Website', 
 	'Street Address', 'Notes', 'Listing Agent Percentage', 'Management Info', 
-	'Required Security', 'Created At', 'Updated at'] -%>
+	'Created At', 'Updated at'] -%>
 <%= CSV.generate_line headers %>
 <%- @landlords.each do |landlord| -%>
   <%= [landlord.name, landlord.code, landlord.office_phone, landlord.mobile, landlord.fax, landlord.email, landlord.website, landlord.formatted_street_address, landlord.notes, landlord.listing_agent_percentage, landlord.management_info, 
-  	landlord.required_security.name.titleize, landlord.created_at.strftime("%Y-%b-%d"), landlord.updated_at.strftime("%Y-%b-%d")].to_csv.html_safe %>
+  	landlord.created_at.strftime("%Y-%b-%d"), landlord.updated_at.strftime("%Y-%b-%d")].to_csv.html_safe %>
 <%- end -%>
