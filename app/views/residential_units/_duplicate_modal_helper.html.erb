@@ -5,8 +5,9 @@
 			clicking "duplicate" you'll be able to make edits to the new unit.</p>
 
 		<div class="field">
-	    <%= f.label :building_unit, "New unit number" %><br>
-	    <%= f.text_field :building_unit, class: 'form-control', width: '50%' %>
+	    <%= f.label :building_unit, "New unit number:" %><br>
+	    <%= f.text_field :building_unit, class: 'form-control', 
+	    	:required => true, width: '50%' %>
 	  </div>
 	  <!-- <div class="field">
 	  	<%= f.check_box(:include_photos, class: "checkbox inline") %>

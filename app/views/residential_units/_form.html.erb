@@ -130,12 +130,7 @@
             <%= f.label :lease_duration %>
           </div>
           <div class="col-md-9">
-            <%= f.select :lease_duration, 
-            options_for_select(ResidentialUnit.lease_durations.collect { |s| [s[0].humanize.titleize, s[0]] }, 
-              [@residential_unit.lease_duration]), 
-            {prompt: "Choose one..."},
-            :required => true,
-            class: "form-control" %>
+            <%= f.text_field :lease_duration, class: 'form-control', :required => true %>
           </div>
         </div>
 

@@ -174,7 +174,7 @@
       t.integer :beds
       t.float   :baths
       t.string  :notes
-      t.integer :lease_duration, default: 0
+      t.string  :lease_duration
       t.integer :op_fee_percentage
       t.integer :tp_fee_percentage
     end

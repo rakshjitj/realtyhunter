@@ -9,11 +9,12 @@
 		
 		<div class="field">
 			<%= f.label :available_by, "Update new lease end date:" %>
-	    <%= f.date_field :available_by, value: @residential_unit.calc_lease_end_date, class: 'form-control' %>
+	    <%= f.date_field :available_by, value: @residential_unit.calc_lease_end_date, 
+	    	class: 'form-control', :required => true %>
 	  </div>
 	</div>
 	<div class="modal-footer">
-		<%= f.submit 'Take off market', class: 'btn btn-danger submit-link' %>
+		<%= f.submit 'Take off market', class: 'btn btn-warning submit-link' %>
 	  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 	</div>
 

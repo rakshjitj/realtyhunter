@@ -8,10 +8,10 @@ class ResidentialUnit < ActiveRecord::Base
 
   validates :building_unit, presence: true, length: {maximum: 50}
 
-	enum lease_duration: [ :year, :thirteen_months, :fourteen_months, :fifteen_months, 
-		:sixteen_months, :seventeen_months, :eighteen_months, :two_years ]
-	validates :lease_duration, presence: true, inclusion: { 
-    in: %w(year thirteen_months fourteen_months fifteen_months sixteen_months seventeen_months eighteen_months two_years) }
+	# enum lease_duration: [ :year, :thirteen_months, :fourteen_months, :fifteen_months, 
+	# 	:sixteen_months, :seventeen_months, :eighteen_months, :two_years ]
+	validates :lease_duration, presence: true, length: {maximum: 50} #inclusion: { 
+  #  in: %w(year thirteen_months fourteen_months fifteen_months sixteen_months seventeen_months eighteen_months two_years) }
   
   validates :rent, presence: true, :numericality => { :greater_than => 0 }
 	validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }
@@ -59,62 +59,36 @@ class ResidentialUnit < ActiveRecord::Base
     contacts = [primary_agent];
   end
 
+  # TODO
   def net_rent
-    months = 12
+    # months = 12
 
-    case(lease_duration)
-    when "year"
-      months = 12
-    when "thirteen_months"
-      months = 13
-    when "fourteen_months"
-      months = 14
-    when "fifteen_months"
-      months = 15
-    when "sixteen_months"
-      months = 16
-    when "seventeen_months"
-      months = 17
-    when "eighteen_months"
-      months = 18
-    when "two_years"
-      months = 24
-    else
-      months = 12
-    end
+    # case(lease_duration)
+    # when "year"
+    #   months = 12
+    # when "thirteen_months"
+    #   months = 13
+    # when "fourteen_months"
+    #   months = 14
+    # when "fifteen_months"
+    #   months = 15
+    # when "sixteen_months"
+    #   months = 16
+    # when "seventeen_months"
+    #   months = 17
+    # when "eighteen_months"
+    #   months = 18
+    # when "two_years"
+    #   months = 24
+    # else
+    #   months = 12
+    # end
     
-    total_rent = rent * months
-    rent_per_week = total_rent / (months * 4)
-    net_rent = total_rent - (rent_per_week * weeks_free_offered)
-    net_rent_per_month = net_rent / months
-    net_rent_per_month
-  end
-
-  def lease_duration_to_s
-    months = 12
-
-    case(lease_duration)
-    when "12 Months"
-      months = 12
-    when "13 Months"
-      months = 13
-    when "14 Months"
-      months = 14
-    when "15 Months"
-      months = 15
-    when "16 Months"
-      months = 16
-    when "17 Months"
-      months = 17
-    when "18 Months"
-      months = 18
-    when "2 Years"
-      months = 24
-    else
-      months = 12
-    end
-
-    months
+    # total_rent = rent * months
+    # rent_per_week = total_rent / (months * 4)
+    # net_rent = total_rent - (rent_per_week * weeks_free_offered)
+    # net_rent_per_month = net_rent / months
+    # net_rent_per_month
   end
 
   # mainly used in API
@@ -273,27 +247,27 @@ class ResidentialUnit < ActiveRecord::Base
 
   def calc_lease_end_date
     end_date = Date.today
-
-    case(lease_duration)
-    when "year"
-      end_date = Date.today >> 12
-    when "thirteen_months"
-      end_date = Date.today >> 13
-    when "fourteen_months"
-      end_date = Date.today >> 14
-    when "fifteen_months"
-      end_date = Date.today >> 15
-    when "sixteen_months"
-      end_date = Date.today >> 16
-    when "seventeen_months"
-      end_date = Date.today >> 17
-    when "eighteen_months"
-      end_date = Date.today >> 18
-    when "two_years"
-      end_date = Date.today >> 24
-    else
-      end_date = Date.today >> 12
-    end
+    end_date = Date.today >> 12
+    # case(lease_duration)
+    # when "year"
+    #   end_date = Date.today >> 12
+    # when "thirteen_months"
+    #   end_date = Date.today >> 13
+    # when "fourteen_months"
+    #   end_date = Date.today >> 14
+    # when "fifteen_months"
+    #   end_date = Date.today >> 15
+    # when "sixteen_months"
+    #   end_date = Date.today >> 16
+    # when "seventeen_months"
+    #   end_date = Date.today >> 17
+    # when "eighteen_months"
+    #   end_date = Date.today >> 18
+    # when "two_years"
+    #   end_date = Date.today >> 24
+    # else
+    #   end_date = Date.today >> 12
+    # end
     
     end_date
   end

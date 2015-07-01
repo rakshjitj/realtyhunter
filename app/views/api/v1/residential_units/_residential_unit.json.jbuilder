@@ -1,10 +1,10 @@
 json.prettify! if %w(1 yes true).include?(params["pretty"])
 
 # TODO: check format
-json.max_lease_term listing.lease_duration_to_s
+json.max_lease_term listing.lease_duration
 
 json.status listing.status
-json.min_lease_term listing.lease_duration_to_s
+json.min_lease_term listing.lease_duration
 
 if listing.tp_fee_percentage
 	json.renter_fee "Fee"
