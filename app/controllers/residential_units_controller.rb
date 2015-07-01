@@ -6,7 +6,6 @@ class ResidentialUnitsController < ApplicationController
   # GET /residential_units
   # GET /residential_units.json
   def index
-    
     set_residential_units
     respond_to do |format|
       format.html
