@@ -89,7 +89,7 @@ class LandlordsController < ApplicationController
     end
 
     def set_landlords
-      @landlords = Landlord.includes(:required_security).search(params)
+      @landlords = Landlord.search(params)
       @landlords = custom_sort
       @landlords = @landlords.paginate(:page => params[:page], :per_page => 50)
     end
