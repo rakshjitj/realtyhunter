@@ -48,10 +48,10 @@
        
         <br />
         <div class="row">
-          <div class="col-md-3 right">
+          <div class="col-xs-12 col-md-3 form-label-responsive">
             <%= f.label :building_id %>
           </div>
-          <div class="col-md-9">
+          <div class="col-xs-12 col-md-9">
             <!-- TODO: turn this into an autocomplete field -->
             <%= f.select(:building_id, 
               options_for_select(current_user.company.buildings.collect {|b| [b.street_address, b.id]},
@@ -64,7 +64,7 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 right">
+          <div class="col-md-3 form-label-responsive">
             <%= f.label :building_unit, "Unit" %>
           </div>
           <div class="col-md-9">
@@ -74,7 +74,7 @@
         
         <br />
         <div class="row">
-          <div class="col-md-3 right">
+          <div class="col-md-3 form-label-responsive">
             <%= f.label :rent %>
           </div>
           <div class="col-md-9">
@@ -84,7 +84,7 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 right">
+          <div class="col-md-3 form-label-responsive">
             <%= f.label :access_info %>
           </div>
           <div class="col-md-9">
@@ -94,7 +94,7 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 right">
+          <div class="col-md-3 form-label-responsive">
             <%= f.label :beds %>
           </div>
           <div class="col-md-9">
@@ -105,7 +105,7 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 right">
+          <div class="col-md-3 form-label-responsive">
             <%= f.label :baths %>
           </div>
           <div class="col-md-9">
@@ -116,7 +116,7 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 right">
+          <div class="col-md-3 form-label-responsive">
             <%= f.label :available_by %>
           </div>
           <div class="col-md-9">
@@ -126,7 +126,7 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 right">
+          <div class="col-md-3 form-label-responsive">
             <%= f.label :lease_duration %>
           </div>
           <div class="col-md-9">
@@ -141,7 +141,7 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 right">
+          <div class="col-md-3 form-label-responsive">
             <%= f.label :residential_amenity_ids, "Unit Amenities" %>
           </div>
           <div class="col-md-9">
@@ -156,7 +156,7 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 right">
+          <div class="col-md-3 form-label-responsive">
             <%= f.label :notes %>
           </div>
           <div class="col-md-9">
@@ -166,8 +166,8 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 right">
-            <%= f.label :op_fee_percentage, 'Owner Pays Fee %' %>
+          <div class="col-md-3 form-label-responsive">
+            <%= f.label :op_fee_percentage, 'Owner Fee %' %>
           </div>
           <div class="col-md-9">
             <%= f.number_field :op_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>
@@ -176,8 +176,8 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 right">
-            <%= f.label :tp_fee_percentage, 'Tenant Pays Fee %' %>
+          <div class="col-md-3 form-label-responsive">
+            <%= f.label :tp_fee_percentage, 'Tenant Fee %' %>
           </div>
           <div class="col-md-9">
             <%= f.number_field :tp_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>
@@ -186,7 +186,7 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 right">
+          <div class="col-md-3 form-label-responsive">
             <%= f.label :user_id, "Primary Agent" %>
           </div>
           <div class="col-md-9">
@@ -201,7 +201,7 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 right">
+          <div class="col-md-3 form-label-responsive">
             <%= f.label :user_id, "Listing Agent" %>
           </div>
           <div class="col-md-9">
@@ -215,7 +215,7 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 right">
+          <div class="col-md-3 form-label-responsive">
             <%= f.label :open_house, "Open House Info" %>
           </div>
           <div class="col-md-9">
