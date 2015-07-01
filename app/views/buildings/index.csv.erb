@@ -7,6 +7,6 @@
   <%= [building.street_address, building.neighborhood.name, building.sublocality, 
   	building.administrative_area_level_2_short,
   		building.administrative_area_level_1_short, building.postal_code, building.active_units.count, 
-  		building.units.count, building.updated_at.strftime("%Y-%b-%d"), building.notes.html_safe, 
-  		building.landlord.code, building.amenities_to_s.html_safe, building.rental_terms_to_s.html_safe].to_csv %>
+  		building.units.count, building.updated_at.strftime("%Y-%b-%d"), building.notes, 
+  		building.landlord.code, building.amenities_to_s, building.rental_terms_to_s].to_csv.html_safe %>
 <%- end -%>
