@@ -36,11 +36,11 @@ class Company < ActiveRecord::Base
 
 	# should we limit this to 1 per company?
 	def admins
-		@admins = self.users.includes(:employee_title, :office, :company, :manager).select{|u| u if u.is_company_admin? }
+		@admins = self.users.unarchived.includes(:employee_title, :office, :company, :manager).select{|u| u if u.is_company_admin? }
 	end
 
 	def managers
-		@managers = self.users.includes(:employee_title, :office, :company, :manager).select{|u| u if u.is_manager? }
+		@managers = self.users.unarchived.includes(:employee_title, :office, :company, :manager).select{|u| u if u.is_manager? }
 	end
 
 	def update_agent_types

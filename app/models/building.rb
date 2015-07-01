@@ -110,4 +110,14 @@ class Building < ActiveRecord::Base
     BuildingMailer.inaccuracy_reported(self, reporter).deliver_now
   end
 
+  def residential_units
+    units = Unit.where(building_id: id)
+    @residential_units = Unit.get_residential(units)
+  end
+
+  def commercial_units
+    units = Unit.where(building_id: id)
+    @commercial_units = Unit.get_commercial(units)
+  end
+  
 end

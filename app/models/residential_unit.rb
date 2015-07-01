@@ -1,9 +1,9 @@
 class ResidentialUnit < ActiveRecord::Base
 	acts_as :unit
+  scope :unarchived, ->{where(archived: false)}
   has_and_belongs_to_many :residential_amenities
   belongs_to :pet_policy
   before_validation :generate_unique_id
-  scope :unarchived, ->{where(archived: false)}
 
   attr_accessor :include_photos, :inaccuracy_description
 
@@ -236,15 +236,23 @@ class ResidentialUnit < ActiveRecord::Base
 	end
 
   def duplicate(new_unit_num, include_photos)
-    if new_unit_num
+    if new_unit_num && new_unit_num != self.id
+      # copy object
       residential_unit_dup = self.dup
-      #residential_unit_dup.listing_id = Unit.generate_unique_id
       residential_unit_dup.building_unit = new_unit_num
-      # TODO: photos
       residential_unit_dup.save
+      # deep copy photos
+      self.images.each {|i| 
+        img_copy = Image.new
+        img_copy.file = i.file
+        img_copy.unit_id = residential_unit_dup.id
+        img_copy.save
+        residential_unit_dup.images << img_copy
+      }
+
       residential_unit_dup
     else
-      raise "No unit number specified"
+      raise "No unit number or invalid unit number specified"
     end
   end
 

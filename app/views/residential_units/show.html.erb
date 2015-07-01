@@ -60,7 +60,7 @@
 	    	<div class="row">
 	    		<div class="col-md-12">
 	    			<!-- begin photos -->
-				  	<% if @residential_unit.images.length > 0 %>
+				  	<% if @residential_unit.images.length > 0 || @residential_unit.building.images.length > 0 %>
 							<div id="residential_unit-carousel" class="carousel slide" data-ride="carousel">
 							  <!-- Indicators -->
 							  <ol class="carousel-indicators">

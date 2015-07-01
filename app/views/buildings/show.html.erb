@@ -133,10 +133,6 @@
 		  </div>
 		</div>
 
-		<hr />
-		<!-- list this building's units -->
-		<!--%= render 'residential_units/table', locals: { residential_units: @residential_units } %-->
-
 	</div>
 </div>
 
@@ -155,3 +151,38 @@
     </div>
   </div>
 </div>
+
+
+<!-- ******** LISTINGS ********** -->
+<br />
+<div class="row">
+  <div class="col-md-12">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <% if @building.residential_units.length > 0 %>
+        <li role="residential-listings" class="active"><a href="#residential-listings" 
+          aria-controls="residential-listings" role="tab" data-toggle="tab">Residential</a></li>
+      <% end %>
+      <% if @building.commercial_units.length > 0 %>
+        <li role="commercial-listings"><a href="#commercial-listings" aria-controls="commercial-listings" 
+          role="tab" data-toggle="tab">Commercial</a></li>
+      <% end %>
+    </ul>
+
+    <div class="tab-content">
+      <!-- ******************** first tabpanel - residential ********************-->
+      <% if @building.residential_units.length > 0 %>
+        <div role="tabpanel" class="tab-pane fade in active" id="residential-listings">
+          <%= render partial:'residential_units/table', locals: { residential_units: @building.residential_units} %>
+        </div>
+      <% end %>
+      <!-- ******************** second tabpanel - commercial ********************-->
+      <% if @building.commercial_units.length > 0 %>
+        <div role="tabpanel" class="tab-pane fade" id="commercial-listings">
+          <!--%= render partial:'commercial_units/table', locals: { residential_units: @building.commercial_units} %-->
+        </div>
+      <% end %>
+    </div>
+
+  </div><!-- col -->
+</div><!-- row -->

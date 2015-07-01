@@ -17,5 +17,6 @@ class Image < ActiveRecord::Base
   validates_attachment :file,
 		:presence => true,
 		:content_type => { :content_type => /\Aimage\/.*\Z/ },
-		:size => { :less_than => 4.megabyte }    
+		:size => { :less_than => 4.megabyte }
+
 end
