@@ -59,16 +59,15 @@ gem 'active_record-acts_as'
 gem 'rails4-autocomplete'
 #gem 'pdfkit'
 gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary-edge', '~> 0.12.2.1'
-
 
 group :production do
 	gem 'rails_12factor'
 	gem 'puma'
-	#gem 'wkhtmltopdf-heroku'
+	gem 'wkhtmltopdf-heroku', '~> 2.12.2.1'
 end
 
 group :development, :test do
+  gem 'wkhtmltopdf-binary-edge', '~> 0.12.2.1'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   # Access an IRB console on exception pages or by using <%= console %> in views
