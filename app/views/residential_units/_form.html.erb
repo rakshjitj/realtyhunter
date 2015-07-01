@@ -127,22 +127,6 @@
         <br />
         <div class="row">
           <div class="col-md-3 right">
-            <%= f.label :pet_policy_id %>
-          </div>
-          <div class="col-md-9">
-            <%= f.select(:pet_policy_id, 
-              options_for_select(current_user.company.pet_policies.all.collect { |r| [r.name.titleize, r.id] }, 
-              [@residential_unit.pet_policy ? @residential_unit.pet_policy.id : '']),
-               {prompt: "Choose one..."},
-              :required => true, 
-              class: 'form-control',
-              :include_blank => true) %>
-          </div>
-        </div>
-
-        <br />
-        <div class="row">
-          <div class="col-md-3 right">
             <%= f.label :lease_duration %>
           </div>
           <div class="col-md-9">

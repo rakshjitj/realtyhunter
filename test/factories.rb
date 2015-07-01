@@ -48,7 +48,13 @@ FactoryGirl.define do
   end
 
   factory :agent_type do
-    name { generate(:sequenced_name) }
+    name { 'generate(:sequenced_name)' }
+    factory :residential_agent do
+      name "residential"
+    end
+    factory :commercial_agent do
+      name "commercial"
+    end
   end
 
   factory :user do
@@ -112,7 +118,7 @@ FactoryGirl.define do
     landlord
     company
     neighborhood
-
+    pet_policy
     # after(:build) do |building, evaluator|
     #   #company evaluator.company
     #   create(:landlord, company: evaluator.company)#, evaluator.total_items, building: building)
@@ -130,7 +136,6 @@ FactoryGirl.define do
     lease_duration "year"
     beds 1
     baths 2.5
-    pet_policy
     building
     actable_type 'ResidentialUnit'
   end

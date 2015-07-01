@@ -26,7 +26,7 @@ json.unit_description listing.notes
 
 # TODO json.open_houses
 
-json.pets listing.pet_policy.name
+json.pets listing.building.pet_policy.name
 json.changed_at listing.updated_at
 
 

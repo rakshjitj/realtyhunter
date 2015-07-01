@@ -12,8 +12,8 @@ class AbilityTest < ActiveSupport::TestCase
 
   	@landlord = build(:landlord, company: @company)
   	@landlord2 = build(:landlord)
-  	@building = build(:building, landlord: @landlord, company: @company)
-  	@building2 = build(:building, landlord: @landlord2)
+  	@building = create(:building, landlord: @landlord, company: @company)
+  	@building2 = create(:building, landlord: @landlord2)
 
   	@user = build(:user, company: @company)
   	@user2 = build(:user)
@@ -21,6 +21,14 @@ class AbilityTest < ActiveSupport::TestCase
   	@manager.make_manager
   	@company_admin = build(:user, company: @company)
   	@company_admin.make_company_admin
+  	@user.add_role :residential
+  	@user2.add_role :residential
+  	@manager.add_role :residential
+  	@company_admin.add_role :residential
+  	@user.add_role :commercial
+  	@user2.add_role :commercial
+  	@manager.add_role :commercial
+  	@company_admin.add_role :commercial
 
   	@runit = build(:residential_unit, building: @building)
   	@runit2 = build(:residential_unit, building: @building2)
@@ -173,7 +181,7 @@ class AbilityTest < ActiveSupport::TestCase
 	  assert ability.can?(:manage, @runit)
 	end
 
-	test "company admins cannot manage residential units from their company" do
+	test "company admins cannot manage residential units from another company" do
 		ability = Ability.new(@company_admin)
 	  assert ability.cannot?(:manage, @runit2)
 	end
@@ -204,7 +212,7 @@ class AbilityTest < ActiveSupport::TestCase
 	  assert ability.can?(:manage, @cunit)
 	end
 
-	test "managers cannot manage commercial units from their company" do
+	test "managers cannot manage commercial units from other companies" do
 		ability = Ability.new(@manager)
 	  assert ability.cannot?(:manage, @cunit2)
 	end
@@ -214,7 +222,7 @@ class AbilityTest < ActiveSupport::TestCase
 	  assert ability.can?(:manage, @cunit)
 	end
 
-	test "company admins cannot manage commercial units from their company" do
+	test "company admins cannot manage commercial units from other companies" do
 		ability = Ability.new(@company_admin)
 	  assert ability.cannot?(:manage, @cunit2)
 	end

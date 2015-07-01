@@ -185,7 +185,7 @@ class User < ActiveRecord::Base
         end
 
       end
-    else 
+    else
       self.add_sanitized_role(self.employee_title.name, false)
     end
   end

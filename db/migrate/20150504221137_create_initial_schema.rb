@@ -149,6 +149,7 @@
       t.belongs_to :landlord
       t.belongs_to :neighborhood
       t.belongs_to :user
+      t.belongs_to :pet_policy
       t.references :images, index: true
       t.timestamps null: false
     end
@@ -176,7 +177,6 @@
       t.integer :lease_duration, default: 0
       t.integer :op_fee_percentage
       t.integer :tp_fee_percentage
-      t.belongs_to :pet_policy
     end
 
     create_table :commercial_units do |t|
@@ -231,7 +231,7 @@
     create_table :pet_policies do |t|
       t.string :name
       t.belongs_to :company
-      t.references :residential_units, index: true
+      t.references :building, index: true
       t.timestamps null: false
     end
 

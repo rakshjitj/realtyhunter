@@ -2,12 +2,9 @@ class ResidentialUnit < ActiveRecord::Base
 	acts_as :unit
   scope :unarchived, ->{where(archived: false)}
   has_and_belongs_to_many :residential_amenities
-  belongs_to :pet_policy
   before_validation :generate_unique_id
 
   attr_accessor :include_photos, :inaccuracy_description
-
-  validates :pet_policy, presence: true
 
   validates :building_unit, presence: true, length: {maximum: 50}
 
@@ -197,8 +194,9 @@ class ResidentialUnit < ActiveRecord::Base
     end
 
     # search pet policy
+    # TODO: test again
     if params[:pet_policy_id]
-      @running_list = @running_list
+      @running_list = @running_list.joins(building: :pet_policy)
         .where('pet_policy_id = ?', params[:pet_policy_id])
     end
 

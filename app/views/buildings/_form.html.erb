@@ -119,6 +119,19 @@
               class: 'form-control'}) %>
         </div>
       </div>
+
+      <div class="col-md-6">        
+        <div class="field">
+          <%= f.label :pet_policy_id %>
+          <%= f.select(:pet_policy_id, 
+            options_for_select(current_user.company.pet_policies.all.collect { |r| [r.name.titleize, r.id] }, 
+            [@building.pet_policy ? @building.pet_policy.id : '']),
+             {prompt: "Choose one..."},
+            :required => true, 
+            class: 'form-control',
+            :include_blank => true) %>
+        </div>
+      </div>
     </div>
 
     <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->

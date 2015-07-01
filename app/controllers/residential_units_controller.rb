@@ -164,7 +164,7 @@ class ResidentialUnitsController < ApplicationController
       orientation: 'Landscape',
       title: current_user.name + 'Residential Listings',
       default_header: false,
-      header: { right: '[page] of [topage]' },
+      header:  { right: '[page] of [topage]' },
       margin: { top: 0, bottom: 0, left: 0, right: 0}
   end
 

@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "landlord_id"
     t.integer  "neighborhood_id"
     t.integer  "user_id"
+    t.integer  "pet_policy_id"
     t.integer  "images_id"
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
@@ -218,12 +219,12 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   create_table "pet_policies", force: :cascade do |t|
     t.string   "name"
     t.integer  "company_id"
-    t.integer  "residential_units_id"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.integer  "building_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
-  add_index "pet_policies", ["residential_units_id"], name: "index_pet_policies_on_residential_units_id", using: :btree
+  add_index "pet_policies", ["building_id"], name: "index_pet_policies_on_building_id", using: :btree
 
   create_table "rental_terms", force: :cascade do |t|
     t.string   "name"
@@ -261,7 +262,6 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer "lease_duration",    default: 0
     t.integer "op_fee_percentage"
     t.integer "tp_fee_percentage"
-    t.integer "pet_policy_id"
   end
 
   create_table "roles", force: :cascade do |t|

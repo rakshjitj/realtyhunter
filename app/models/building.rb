@@ -2,6 +2,7 @@ class Building < ActiveRecord::Base
 	belongs_to :company
 	belongs_to :landlord
 	belongs_to :neighborhood
+	belongs_to :pet_policy
 	has_many :units, dependent: :destroy
 	has_many :images, dependent: :destroy
 	has_and_belongs_to_many :building_amenities
@@ -31,6 +32,7 @@ class Building < ActiveRecord::Base
 	validates :lng, presence: true, length: {maximum: 100}
 	validates :place_id, presence: true, length: {maximum: 100}
 
+	validates :pet_policy, presence: true
 	validates :company, presence: true
 	validates :landlord, presence: true
 	validates :neighborhood, presence: true

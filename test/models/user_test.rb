@@ -5,10 +5,12 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
 
   def setup
-    @company = build(:company)
-    @user = build(:user, company: @company)
-    @user2 = build(:user, company: @company)
-    @manager = build(:user, company: @company)
+    @res_agent_type = create(:residential_agent)
+    @com_agent_type = create(:commercial_agent)
+    @company = create(:company)
+    @user = create(:user, company: @company)
+    @user2 = create(:user, company: @company)
+    @manager = create(:user, company: @company)
   end
 
   # Returns true if a test user is logged in.
@@ -42,7 +44,7 @@ class UserTest < ActiveSupport::TestCase
 
   test "bio should not be too long" do
     @user.bio = "a" * 501
-    assert_not @user.bio
+    assert_not @user.valid?
   end
 
   test "email validation should accept valid addresses" do
@@ -121,13 +123,17 @@ class UserTest < ActiveSupport::TestCase
 
   test "search correct when valid user found" do
     @user.name = "raquel bujans"
-    results = User.search("bujans")
+    params = {}
+    params[:name_email] = "bujans"
+    results = User.search(params)
     assert results.length, 1
   end
 
   test "search correct when no valid user found" do
     @user.name = "raquel bujans"
-    results = User.search("blah")
+    params = {}
+    params[:name_email] = "blah"
+    results = User.search(params)
     assert results.length, 0
   end
 
@@ -137,6 +143,7 @@ class UserTest < ActiveSupport::TestCase
     @user.employee_title = EmployeeTitle.agent
     @user.update_roles
     assert @user.employee_title.name, EmployeeTitle.agent.name
+    # everyone has residential by default
     assert @user.has_role? :residential
   end
 
@@ -146,21 +153,22 @@ class UserTest < ActiveSupport::TestCase
     @user.update_roles
     assert @user.employee_title.name, EmployeeTitle.closing_manager.name
     assert @user.has_role? :closing_manager
-    assert_not @user.has_role? :residential
+    # everyone has residential by default
+    assert @user.has_role? :residential
   end
 
   test "can get agent specialties" do
     @user.employee_title = EmployeeTitle.agent
-    @user.agent_types = ['Residential', 'Commercial']
+    @user.agent_types = ['residential', 'commercial']
     @user.update_roles
     assert @user.has_role? :residential
-    assert @user.agent_specialties[0], "Residential"
-    assert @user.agent_specialties[1], "Commercial"
+    assert @user.agent_specialties[0], "residential"
+    assert @user.agent_specialties[1], "commercial"
   end
 
   test "can get agent specialty id" do
     @user.employee_title = EmployeeTitle.agent
-    @user.agent_types = ['Residential', 'Commercial']
+    @user.agent_types = ['residential', 'commercial']
     @user.update_roles
     assert @user.has_role? :residential
     assert @user.agent_specialties_as_indicies[0], 1

@@ -418,7 +418,8 @@ end
   notes: "Building has parking spots available, laundry in the basement.",
   company: @company, 
   landlord: @landlord,
-  neighborhood: @neighborhood
+  neighborhood: @neighborhood,
+  pet_policy: @company.pet_policies[2],
   })
 
 55.times do |n|
@@ -435,7 +436,6 @@ end
     weeks_free_offered: Faker::Number.number(1),
     notes: FFaker::HipsterIpsum.sentence,
     building: @bldg,
-    pet_policy: @company.pet_policies[2],
     listing_agent: @manager1,
     primary_agent: @manager1,
     op_fee_percentage: 95,
