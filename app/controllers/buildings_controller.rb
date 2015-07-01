@@ -47,7 +47,8 @@ class BuildingsController < ApplicationController
   # POST /buildings.json
   def create
     @formatted_street_address = building_params[:building][:formatted_street_address]
-    if @building.save(format_params_before_save(true))
+    bldg_params = format_params_before_save(true)
+    if @building.save(bldg_params)
       redirect_to @building
     else
       #puts "**** #{@user.errors.inspect}"

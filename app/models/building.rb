@@ -33,7 +33,9 @@ class Building < ActiveRecord::Base
 	validates :lng, presence: true, length: {maximum: 100}
 	validates :place_id, presence: true, length: {maximum: 100}
 
+	# TODO: update to enforce either one of this or custom req
 	#validates :required_security, presence: true
+
 	validates :pet_policy, presence: true
 	validates :company, presence: true
 	validates :landlord, presence: true
@@ -65,7 +67,7 @@ class Building < ActiveRecord::Base
 	end
 
 	def last_unit_updated
-		if self.units
+		if self.units.length > 0
 			self.units.order('updated_at DESC').first.updated_at.strftime("%Y-%b-%d")
 		else
 			'--'

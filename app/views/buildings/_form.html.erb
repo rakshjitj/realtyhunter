@@ -136,7 +136,7 @@
       <div class="col-md-6">
         <div class="field">
           <%= f.label :required_security_id %>
-          <%= f.select(:required_security_id, options_for_select(@building.company.required_securities.all.collect { |r| [r.name.titleize, r.id] }, 
+          <%= f.select(:required_security_id, options_for_select(current_user.company.required_securities.all.collect { |r| [r.name.titleize, r.id] }, 
             [@building.required_security ? @building.required_security.id : '']),
              {prompt: "Choose one..."},
             class: 'form-control',
