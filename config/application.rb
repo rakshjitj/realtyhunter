@@ -23,7 +23,9 @@ module RealtyMonster
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
     config.autoload_paths += %W(#{config.root}/lib) # add this line
-    config.assets.precompile += ['applicatoin.css', 'custom.css']
+    config.assets.precompile += ['application.css', 'custom.css']
+
+    config.font_assets.origin = '*'
   end
 end
 

@@ -59,6 +59,8 @@ gem 'active_record-acts_as'
 gem 'rails4-autocomplete'
 #gem 'pdfkit'
 gem 'wicked_pdf'
+# trying to get past font/cors issues...
+gem 'font_assets' 
 
 group :production do
 	gem 'rails_12factor'
