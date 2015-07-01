@@ -98,7 +98,7 @@
       <h1>Residential Listings</h1>
     </div>
     <div class="col-md-6 right">
-      <br /><br />
+      
       <% if current_user.is_management? %>
         <%= link_to 'Add a unit', new_residential_unit_path %> |
       <% end %>
@@ -111,86 +111,220 @@
 </div>
 
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-xs-12 col-md-9">
     <%= render 'map_overall_view' %>
   </div>
-  <div class="col-md-4">
+  <div class="col-xs-12 col-md-3 desktop-filters">
 
     <%= form_tag residential_units_path, :method => 'get' do %>
-      <%= label_tag(:address, "Address:") %>
-      <%= text_field_tag :address, params[:code_name], placeholder: "123 Main St", size: 35 %>
-      &nbsp;&nbsp;
-      <%= label_tag(:unit, "Unit:") %>
-      <%= text_field_tag :unit, params[:unit], size: 5 %>
-      &nbsp;&nbsp;
-      <%= label_tag(:unit, "Rent:") %>
-      <%= number_field_tag :rent_min, params[:rent_min], placeholder: "$", min: 0, max: 100000000 %>
-      to 
-      <%= number_field_tag :rent_max, params[:rent_max], placeholder: "$", min: 0, max: 100000000 %>
-      <br />
-      <%= label_tag(:unit, "Beds:") %>
-      <%= number_field_tag :bed_min, params[:bed_min], min: 0, max: 10 %>
-      to 
-      <%= number_field_tag :bed_max, params[:bed_max], min: 0, max: 10 %>
-      &nbsp;&nbsp;
-      <%= label_tag(:unit, "Baths:") %>
-      <%= number_field_tag :bath_min, params[:bath_min], min: 0, max: 10 %>
-      to 
-      <%= number_field_tag :bath_max, params[:bath_max], min: 0, max: 10 %>
-      <br />
-      <%= label_tag(:landlord, "Landlord:") %>
-      <%= text_field_tag :landlord, params[:landlord], placeholder: "code", size: 25 %>
-      &nbsp;&nbsp;
-
-      <br />
-      <%= label_tag :status, "Status" %><br>
-      <%= select_tag(:status, 
-        options_for_select(%w(active pending off), params[:status]),
-        include_blank: true) %>
-
-      <br />
-      <%= label_tag :pet_policy_id, "Pet policy" %><br>
-      <%= select_tag(:pet_policy_id, 
-        options_for_select(current_user.company.pet_policies.all.collect { |r| [r.name, r.id] }, params[:pet_policy_id]),
-        include_blank: true) %>
-      <hr />
-      <%= link_to 'Neighborhoods', neighborhoods_modal_residential_units_path(@residential_unit), 
-        data: {toggle: "modal", target: "#neighborhoodsModal"}, remote: true, 
-        class: "link-as-button btn btn-xs btn-warning" %>
-      <div id="selected_neighborhoods"></div>
-      <%= hidden_field_tag :neighborhood_ids, id:"neighborhood_ids" %>
-
-      <hr />
-      <%= link_to 'Features', features_modal_residential_units_path(@residential_unit), 
-        data: {toggle: "modal", target: "#featuresModal"}, remote: true, 
-        class: "link-as-button btn btn-xs btn-warning" %>
-      <div id="selected_features"></div>
-      <%= hidden_field_tag :unit_feature_ids, id:"unit_feature_ids" %>
-      <%= hidden_field_tag :building_feature_ids, id:"building_feature_ids" %>
-
+      <div class="row vertical-padding">
+        <div class="col-md-3">
+          <%= label_tag(:address, "Address") %>
+        </div>
+        <div class="col-md-9">
+          <%= text_field_tag :address, params[:code_name], placeholder: "123 Main St" %>
+        </div>
+      </div>
+      <div class="row vertical-padding">
+        <div class="col-md-3">
+          <%= label_tag(:unit, "Unit") %>
+        </div>
+        <div class="col-md-9">
+          <%= text_field_tag :unit, params[:unit], size: 5 %>
+        </div>
+      </div>
+      <div class="row vertical-padding">
+        <div class="col-md-3">
+          <%= label_tag(:unit, "Rent") %>
+        </div>
+        <div class="col-md-9">
+          <%= number_field_tag :rent_min, params[:rent_min], placeholder: "$", min: 0, max: 1000000 %>
+          to 
+          <%= number_field_tag :rent_max, params[:rent_max], placeholder: "$", min: 0, max: 1000000 %>
+        </div>
+      </div>
+      <div class="row vertical-padding">
+        <div class="col-md-3">
+          <%= label_tag(:unit, "Beds") %>
+        </div>
+        <div class="col-md-9">
+          <%= number_field_tag :bed_min, params[:bed_min], min: 0, max: 10 %>
+          to 
+          <%= number_field_tag :bed_max, params[:bed_max], min: 0, max: 10 %>
+        </div>
+      </div>
+      <div class="row vertical-padding">
+        <div class="col-md-3">
+          <%= label_tag(:unit, "Baths") %>
+        </div>
+        <div class="col-md-9">
+          <%= number_field_tag :bath_min, params[:bath_min], min: 0, max: 10 %>
+          to 
+          <%= number_field_tag :bath_max, params[:bath_max], min: 0, max: 10 %>
+        </div>
+      </div>
+      <div class="row vertical-padding">
+        <div class="col-md-3">
+          <%= label_tag(:landlord, "Landlord") %>
+        </div>
+        <div class="col-md-9">
+          <%= text_field_tag :landlord, params[:landlord], placeholder: "code" %>
+        </div>
+      </div>
+      <div class="row vertical-padding">
+        <div class="col-md-3">
+          <%= label_tag :status, "Status" %>
+        </div>
+        <div class="col-md-9">
+          <%= select_tag(:status, 
+            options_for_select(%w(Active Pending Off), params[:status]),
+            include_blank: true) %>
+        </div>
+      </div>
+      <div class="row vertical-padding">
+        <div class="col-md-3">
+          <%= label_tag :pet_policy_id, "Pet policy" %>
+        </div>
+        <div class="col-md-9">
+          <%= select_tag(:pet_policy_id, 
+            options_for_select(current_user.company.pet_policies.all.collect { |r| [r.name.titleize, r.id] }, 
+            params[:pet_policy_id]),
+            include_blank: true) %>
+        </div>
+      </div>
+      
+      <div class="row vertical-padding">
+        <div class="col-md-12">
+          <%= link_to 'Neighborhoods', neighborhoods_modal_residential_units_path(@residential_unit), 
+            data: {toggle: "modal", target: "#neighborhoodsModal"}, remote: true, 
+            class: "link-as-button btn btn-xs btn-warning" %>
+          <div id="selected_neighborhoods"></div>
+          <%= hidden_field_tag :neighborhood_ids, id:"neighborhood_ids" %>
+        </div>
+      </div>
+      <div class="row vertical-padding">
+        <div class="col-md-12">
+          <%= link_to 'Features', features_modal_residential_units_path(@residential_unit), 
+            data: {toggle: "modal", target: "#featuresModal"}, remote: true, 
+            class: "link-as-button btn btn-xs btn-warning" %>
+          <div id="selected_features"></div>
+          <%= hidden_field_tag :unit_feature_ids, id:"unit_feature_ids" %>
+          <%= hidden_field_tag :building_feature_ids, id:"building_feature_ids" %>
+        </div>
+      </div>
       <hr />
       <%= link_to 'Clear filters', residential_units_path %>
 
     <% end %>
   </div>
 </div>
-<!-- <div class="row">
-  <div class="col-md-12">
-    <div class="row">
-      <div class="col-md-offset-9 col-md-3 right">
-        <%= link_to 'Add a unit', new_residential_unit_path %><br />
-      </div>
-    </div>
-    <!--div class="row">
-      <div class="col-md pull-right">
-        <%= will_paginate @residential_units %>
-      </div>
-    </div>
-  </div>
-</div> -->
 
-<hr class="thin-line" />
-<!--%= render 'table', locals: { residential_units: @residential_units } %-->
+<div class="row">
+  <div class="col-xs-12 mobile-filters">
+
+    <%= form_tag residential_units_path, :method => 'get' do %>
+      <div class="row vertical-padding">
+        <div class="col-xs-2">
+          <%= label_tag(:address, "Address") %>
+        </div>
+        <div class="col-xs-5">
+          <%= text_field_tag :address, params[:code_name], placeholder: "123 Main St" %>
+        </div>
+        <div class="col-xs-5 right">
+          <%= label_tag(:unit, "Unit") %>&nbsp;&nbsp;&nbsp;
+        <!--/div>
+        <div class="col-xs-2"-->
+          <%= text_field_tag :unit, params[:unit], size: 5 %>
+        </div>
+      </div>
+      <div class="row vertical-padding">
+        <div class="col-xs-2">
+          <%= label_tag(:unit, "Rent") %>
+        </div>
+        <div class="col-xs-9">
+          <%= number_field_tag :rent_min, params[:rent_min], placeholder: "$", min: 0, max: 1000000 %>
+          to 
+          <%= number_field_tag :rent_max, params[:rent_max], placeholder: "$", min: 0, max: 1000000 %>
+        </div>
+      </div>
+      <div class="row vertical-padding">
+        <div class="col-xs-2 right">
+          <%= label_tag(:unit, "Beds") %>
+        </div>
+        <div class="col-xs-4">
+          <%= number_field_tag :bed_min, params[:bed_min], min: 0, max: 10 %>
+          to 
+          <%= number_field_tag :bed_max, params[:bed_max], min: 0, max: 10 %>
+        </div>
+      <!--/div>
+      <div class="row vertical-padding"-->
+        <div class="col-xs-6 right">
+          <%= label_tag(:unit, "Baths") %>&nbsp;&nbsp;&nbsp;
+        <!--/div>
+        <div class="col-xs-4"-->
+          <%= number_field_tag :bath_min, params[:bath_min], min: 0, max: 10 %>
+          to 
+          <%= number_field_tag :bath_max, params[:bath_max], min: 0, max: 10 %>
+        </div>
+      </div>
+      <div class="row vertical-padding">
+        <div class="col-xs-2">
+          <%= label_tag(:landlord, "Landlord") %>
+        </div>
+        <div class="col-xs-10">
+          <%= text_field_tag :landlord, params[:landlord], placeholder: "code" %>
+        </div>
+      </div>
+      <div class="row vertical-padding">
+        <div class="col-xs-2">
+          <%= label_tag :status, "Status" %>
+        </div>
+        <div class="col-xs-10">
+          <%= select_tag(:status, 
+            options_for_select(%w(Active Pending Off), params[:status]),
+            include_blank: true) %>
+        </div>
+      </div>
+      <div class="row vertical-padding">
+        <div class="col-xs-2">
+          <%= label_tag :pet_policy_id, "Pet policy" %>
+        </div>
+        <div class="col-xs-10">
+          <%= select_tag(:pet_policy_id, 
+            options_for_select(current_user.company.pet_policies.all.collect { |r| [r.name.titleize, r.id] }, 
+            params[:pet_policy_id]),
+            include_blank: true) %>
+        </div>
+      </div>
+      
+      <div class="row vertical-padding">
+        <div class="col-xs-12">
+          <%= link_to 'Neighborhoods', neighborhoods_modal_residential_units_path(@residential_unit), 
+            data: {toggle: "modal", target: "#neighborhoodsModal"}, remote: true, 
+            class: "link-as-button btn btn-xs btn-warning" %>
+          <div id="selected_neighborhoods"></div>
+          <%= hidden_field_tag :neighborhood_ids, id:"neighborhood_ids" %>
+        </div>
+      </div>
+      <div class="row vertical-padding">
+        <div class="col-xs-12">
+          <%= link_to 'Features', features_modal_residential_units_path(@residential_unit), 
+            data: {toggle: "modal", target: "#featuresModal"}, remote: true, 
+            class: "link-as-button btn btn-xs btn-warning" %>
+          <div id="selected_features"></div>
+          <%= hidden_field_tag :unit_feature_ids, id:"unit_feature_ids" %>
+          <%= hidden_field_tag :building_feature_ids, id:"building_feature_ids" %>
+        </div>
+      </div>
+      <hr />
+      <%= link_to 'Clear filters', residential_units_path %>
+
+    <% end %>
+  </div>
+</div><!-- end mobile filters-->
+
+
+<!--hr class="thin-line" /-->
 <div class="row">
   <div class="col-md-12">
     <br />    

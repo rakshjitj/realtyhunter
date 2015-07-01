@@ -318,6 +318,7 @@ aside {
 };
 
 /*********** Sortable images **********************************/
+
 .sortable-placeholder {
   border: 1px dashed #CCC;
   background-color: #f9f9f9;
@@ -332,4 +333,29 @@ aside {
 
 .no-padding {
   padding: 0 !important;
+}
+
+/*********** Residential Units **********************************/
+
+.vertical-padding {
+  padding: 3px 0 3px 0;
+}
+
+@media (max-width:768px) {
+  .desktop-filters {
+    display: none;
+  }
+
+  .mobile-filters {
+    //display: block;
+  }
+}
+@media (min-width:768px) {
+  .desktop-filters {
+    //display: block;
+  }
+
+  .mobile-filters {
+    display: none;
+  }
 }

@@ -157,9 +157,9 @@ class ResidentialUnit < ActiveRecord::Base
 
     # search by status
     if params[:status]
-      included = %w[active pending off].include?(params[:status])
+      included = %w[Active Pending Off].include?(params[:status])
       if included
-       @running_list = @running_list.where("status = ?", Unit.statuses[params[:status]])
+       @running_list = @running_list.where("status = ?", Unit.statuses[params[:status].downcase])
       end
     end
 

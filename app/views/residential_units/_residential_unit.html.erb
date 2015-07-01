@@ -28,12 +28,13 @@
   <% if current_user.is_management? %>
     <td>
       <%= link_to 'Edit', edit_residential_unit_path(residential_unit) %> 
-      | <%= link_to 'Delete', delete_modal_residential_unit_path(residential_unit), 
+      <br />| <%= link_to 'Delete', delete_modal_residential_unit_path(residential_unit), 
         data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
+      <br />
       | <%= link_to 'Duplicate', duplicate_modal_residential_unit_path(residential_unit), 
         data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
       <% if residential_unit.status == "active" %>
-        | <%= link_to 'Take off', take_off_modal_residential_unit_path(residential_unit), 
+        <br />| <%= link_to 'Take off', take_off_modal_residential_unit_path(residential_unit), 
           data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %>
       <% end %>
     </td>
