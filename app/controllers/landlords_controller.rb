@@ -127,7 +127,7 @@ class LandlordsController < ApplicationController
       params.permit(:sort_by, :filter, :agent_filter, :active_only, :street_number, :route, 
         :neighborhood, :sublocality, :administrative_area_level_2_short, 
         :administrative_area_level_1_short, :postal_code, :country_short, :lat, :lng, :place_id, 
-        :landlord => [:code, :name, :mobile, :office_phone, :fax, 
+        :landlord => [:code, :name, :contact_name, :mobile, :office_phone, :fax, 
           :email, :website, :formatted_street_address, :notes, 
           :listing_agent_percentage, :management_info])
     end

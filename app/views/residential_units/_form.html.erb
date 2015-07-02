@@ -90,6 +90,16 @@
         <br />
         <div class="row">
           <div class="col-md-3 form-label-responsive">
+            <%= f.label :weeks_free_offered, "Weeks of free rent offered" %>
+          </div>
+          <div class="col-md-9">
+            <%= f.number_field :weeks_free_offered, class: 'form-control', :required => true %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-3 form-label-responsive">
             <%= f.label :access_info %>
           </div>
           <div class="col-md-9">

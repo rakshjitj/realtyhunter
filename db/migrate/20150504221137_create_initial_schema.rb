@@ -104,6 +104,7 @@
 
       t.string :code
       t.string :name
+      t.string :contact_name
       t.string :office_phone
       t.string :mobile
       t.string :fax

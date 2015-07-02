@@ -52,11 +52,11 @@
             </div>
 
             <div class="row">
-              <div class="col-xs-4 col-md-1">
-                <strong>Email:</strong>
+              <div class="col-xs-4 col-md-3">
+                <strong>Contact Name:</strong>
               </div>
-              <div class="col-xs-8 col-md-5">
-                <%= mail_to @landlord.email %>
+              <div class="col-xs-8 col-md-3">
+                <%= @landlord.contact_name %>
               </div>
               <div class="col-xs-4 col-md-3">
                 <strong>Fax:</strong>
@@ -68,16 +68,25 @@
 
             <div class="row">
               <div class="col-xs-4 col-md-1">
-                <strong>Web:</strong>
+                <strong>Email:</strong>
               </div>
               <div class="col-xs-8 col-md-5">
-                <a href="<%= @landlord.website %>"><%= @landlord.website %></a>
+                <%= mail_to @landlord.email %>
               </div>
               <div class="col-xs-5 col-md-3">
                 <strong>Office address:</strong>
               </div>
               <div class="col-xs-7 col-md-3">
                 <%= @landlord.formatted_street_address %>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-xs-4 col-md-1">
+                <strong>Web:</strong>
+              </div>
+              <div class="col-xs-8 col-md-5">
+                <a href="<%= @landlord.website %>"><%= @landlord.website %></a>
               </div>
             </div>
 

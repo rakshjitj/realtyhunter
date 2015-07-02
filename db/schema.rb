@@ -162,6 +162,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "place_id"
     t.string   "code"
     t.string   "name"
+    t.string   "contact_name"
     t.string   "office_phone"
     t.string   "mobile"
     t.string   "fax"

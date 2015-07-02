@@ -28,78 +28,77 @@
 	        <div class="col-xs-7">
 	            <div class="row">
 	                <div class="col-xs-5 text-right">
-	                    <strong>Rent</strong>
+	                  <strong>Rent</strong>
 	                </div>
 	                <div class="col-xs-7">
-	                    <% if @residential_unit.weeks_free_offered > 0 %>
-	                            <%= rent_formatted(@residential_unit.rent) %> x <%= @residential_unit.weeks_free_offered %> weeks free = 
-	                            <%= rent_formatted(@residential_unit.net_rent) %> Net Rent
-	                        <% else %>
-	                            <%= rent_formatted(@residential_unit.rent) %>
-	                        <% end %>
-	                    </div>
+                    <% if @residential_unit.weeks_free_offered > 0 %>
+                      <%= rent_formatted(@residential_unit.rent) %> (Plus <%= @residential_unit.weeks_free_offered %> weeks free)
+                    <% else %>
+                      <%= rent_formatted(@residential_unit.rent) %>
+                    <% end %>
+                  </div>
 	            </div>
 	            <div class="row">
 	                <div class="col-xs-5 text-right">
-	                    <strong>Beds / Baths</strong>
+	                  <strong>Beds / Baths</strong>
 	                </div>
 	                <div class="col-xs-7">
-	                    <%= @residential_unit.bed_and_baths %>
-	                </div>
-	            </div>
-	            <div class="row">
-	                <div class="col-xs-5 text-right">
-	                    <strong>Neighborhood</strong>
-	                </div>
-	                <div class="col-xs-7">
-	                    <%= @residential_unit.building.neighborhood.name %>
+	                  <%= @residential_unit.bed_and_baths %>
 	                </div>
 	            </div>
 	            <div class="row">
 	                <div class="col-xs-5 text-right">
-	                    <strong>Availability</strong>
+	                  <strong>Neighborhood</strong>
 	                </div>
 	                <div class="col-xs-7">
-	                    <% if @residential_unit.available_by < Date.today %>
-	                            Now
-	                        <% else %>
-	                            <%= @residential_unit.available_by.strftime("%Y-%b-%d") %>
-	                        <% end %>
+	                  <%= @residential_unit.building.neighborhood.name %>
 	                </div>
 	            </div>
 	            <div class="row">
 	                <div class="col-xs-5 text-right">
-	                    <strong>Features</strong>
+	                  <strong>Availability</strong>
 	                </div>
 	                <div class="col-xs-7">
-	                    <%= @residential_unit.building.amenities_to_s %>
-	                    <%= @residential_unit.amenities_to_s %>
+                    <% if @residential_unit.available_by < Date.today %>
+                      Now
+                    <% else %>
+                      <%= @residential_unit.available_by.strftime("%Y-%b-%d") %>
+                    <% end %>
 	                </div>
 	            </div>
 	            <div class="row">
-	                <div class="col-xs-5 text-right">
-	                    <strong>Rental Terms</strong>
-	                </div>
-	                <div class="col-xs-7">
-	                    <%= @residential_unit.building.rental_terms_to_s %>
-	                </div>
+                <div class="col-xs-5 text-right">
+                  <strong>Features</strong>
+                </div>
+                <div class="col-xs-7">
+                  <%= @residential_unit.building.amenities_to_s %>
+                  <%= @residential_unit.amenities_to_s %>
+                </div>
+	            </div>
+	            <div class="row">
+                <div class="col-xs-5 text-right">
+                  <strong>Rental Terms</strong>
+                </div>
+                <div class="col-xs-7">
+                  <%= @residential_unit.building.rental_terms_to_s %>
+                </div>
 	            </div>
 
 	            <div class="row">
-	                <div class="col-xs-5 text-right">
-	                    <strong>Pet policy</strong>
-	                </div>
-	                <div class="col-xs-7">
-	                    <%= @residential_unit.building.pet_policy.name %>
-	                </div>
+                <div class="col-xs-5 text-right">
+                  <strong>Pet policy</strong>
+                </div>
+                <div class="col-xs-7">
+                  <%= @residential_unit.building.pet_policy.name %>
+                </div>
 	            </div>
 	            <div class="row">
-	                <div class="col-xs-5 text-right">
-	                    <strong>Listing ID</strong>
-	                </div>
-	                <div class="col-xs-7">
-	                    <%= @residential_unit.listing_id %>
-	                </div>
+                <div class="col-xs-5 text-right">
+                  <strong>Listing ID</strong>
+                </div>
+                <div class="col-xs-7">
+                  <%= @residential_unit.listing_id %>
+                </div>
 	            </div>
 	        </div><!-- body -->
 

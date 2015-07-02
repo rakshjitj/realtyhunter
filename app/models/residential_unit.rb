@@ -23,6 +23,8 @@ class ResidentialUnit < ActiveRecord::Base
   validates :tp_fee_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
   validates_inclusion_of :tp_fee_percentage, :in => 0..100, allow_blank: true
 
+  validates :weeks_free_offered, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
+
   def archive
     self.archived = true
     self.save
@@ -59,8 +61,9 @@ class ResidentialUnit < ActiveRecord::Base
     contacts = [primary_agent];
   end
 
-  # TODO
-  def net_rent
+  # For now, always calculate off a 12 month lease
+  # def net_rent
+
     # months = 12
 
     # case(lease_duration)
@@ -89,7 +92,7 @@ class ResidentialUnit < ActiveRecord::Base
     # net_rent = total_rent - (rent_per_week * weeks_free_offered)
     # net_rent_per_month = net_rent / months
     # net_rent_per_month
-  end
+  # end
 
   # mainly used in API
   # prints layout in Nestio's format

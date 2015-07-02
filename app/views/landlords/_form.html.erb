@@ -56,6 +56,18 @@
         <br />
         <div class="row">
           <div class="col-md-3 form-label-responsive">
+            <%= f.label :contact_name %>
+          </div>
+          <div class="col-md-9">
+            <div class="field">
+              <%= f.text_field :contact_name, class: 'form-control' %>
+            </div>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-3 form-label-responsive">
             <%= f.label :office_phone %>
           </div>
           <div class="col-md-9">
