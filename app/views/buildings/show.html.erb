@@ -78,7 +78,9 @@
 					</div>
 
 			  <% else %>
-			  	<p>No images added yet.</p>
+			  	<!-- placeholder image -->
+          <%= image_tag "listing_soon.png", alt: "Image coming soon",
+          	:class => 'img-responsive center-block' %>
 			  <% end %>
 			  <!-- end photos -->
 

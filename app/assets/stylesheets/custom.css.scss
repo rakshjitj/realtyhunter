@@ -50,6 +50,10 @@ p {
   line-height: 1.7em;
 }
 
+a:hover {
+  background-color: transparent !important;
+}
+
 /* header */
 
 #logo {
@@ -347,22 +351,3 @@ aside {
 .vertical-padding {
   padding: 3px 0 3px 0;
 }
-
-// @media (max-width:768px) {
-//   .desktop-filters {
-//     display: none;
-//   }
-
-//   .mobile-filters {
-//     //display: block;
-//   }
-// }
-// @media (min-width:768px) {
-//   .desktop-filters {
-//     //display: block;
-//   }
-
-//   .mobile-filters {
-//     display: none;
-//   }
-// }

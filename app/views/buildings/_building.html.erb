@@ -1,5 +1,13 @@
 <tr class="<%= cycle('even', 'odd') -%>">
   <td>
+    <% if building.images.length > 0 %>
+      <%= image_tag building.images[0].file.url(:thumb), :class => 'img-responsive center-block', 
+        alt: image.file.url(:medium) %>
+    <% else %>
+      <!-- placeholder image -->
+      <%= image_tag "listing_soon.png", alt: "Image coming soon", :size => "100x100" %>
+    <% end %>
+    
     <%= link_to "#{building.street_address}", building %>&nbsp;&nbsp;
     <%= building.sublocality %>, <%= building.administrative_area_level_1_short %>
     &nbsp;&nbsp;<%= building.postal_code %>
