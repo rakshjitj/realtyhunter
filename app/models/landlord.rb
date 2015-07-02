@@ -11,19 +11,20 @@ class Landlord < ActiveRecord::Base
 	validates :name, presence: true, length: {maximum: 100}, 
 		uniqueness: { case_sensitive: false }
 
-	validates :listing_agent_percentage, presence: true, length: {maximum: 3}, numericality: { only_integer: true }
+	validates :listing_agent_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
+	# presence: true, 
 
 	VALID_TELEPHONE_REGEX = /(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/
-	validates :mobile, presence: true, length: {maximum: 25}, 
+	validates :mobile, allow_blank: true, length: {maximum: 25}, 
 		format: { with: VALID_TELEPHONE_REGEX }
 	validates :office_phone, allow_blank: true, length: {maximum: 25}, 
 		format: { with: VALID_TELEPHONE_REGEX }
-	validates :fax, length: {maximum: 25}, 
-		format: { with: VALID_TELEPHONE_REGEX }, allow_blank: true
+	validates :fax, allow_blank: true, length: {maximum: 25}, 
+		format: { with: VALID_TELEPHONE_REGEX }
 
 	before_save :downcase_email
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
-	validates :email, presence: true, length: {maximum: 100}, 
+	validates :email, allow_blank: true, length: {maximum: 100}, 
 		format: { with: VALID_EMAIL_REGEX }, 
     uniqueness: { case_sensitive: false }
 
@@ -93,7 +94,9 @@ class Landlord < ActiveRecord::Base
 	private
     # Converts email to all lower-case.
     def downcase_email
-      self.email = email.downcase
+    	if email
+      	self.email = email.downcase
+     	end
     end
 	
 end
