@@ -114,7 +114,7 @@
   <div class="col-xs-12 col-md-9">
     <%= render 'map_overall_view' %>
   </div>
-  <div class="col-xs-12 col-md-3 desktop-filters">
+  <div class="col-xs-12 col-md-3 hidden-sm hidden-xs">
 
     <%= form_tag residential_units_path, :method => 'get' do %>
       <div class="row vertical-padding">
@@ -223,7 +223,7 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-12 mobile-filters">
+  <div class="col-xs-12 hidden-md hidden-lg">
 
     <%= form_tag residential_units_path, :method => 'get' do %>
       <div class="row vertical-padding">
@@ -251,7 +251,7 @@
         </div>
       </div>
       <div class="row vertical-padding">
-        <div class="col-xs-2 right">
+        <div class="col-xs-2">
           <%= label_tag(:unit, "Beds") %>
         </div>
         <div class="col-xs-4">

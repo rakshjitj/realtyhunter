@@ -20,14 +20,12 @@
   	<br/>
   	<br/>
   	<div class="panel panel-default">
-  		<div class="panel-heading mobile-filters">
+  		<div class="panel-heading hidden-md hidden-lg">
 		    <div class="panel-title">
 		    	<div class="row">
 			  		<div class="col-xs-12 col-md-7">
-				  		<h2>
-				  			<%= @residential_unit.street_address_and_unit %></h2>
-				  			<h2><%= rent_formatted(@residential_unit.rent) %>
-				  		</h2>
+				  		<h2><%= @residential_unit.street_address_and_unit %></h2>
+				  		<h2><%= rent_formatted(@residential_unit.rent) %></h2>
 				  		<small>
 			  				<%= @residential_unit.building.neighborhood.name %>, <%= @residential_unit.building.sublocality %>, <%= @residential_unit.building.administrative_area_level_2_short %> <%= @residential_unit.building.postal_code %>
 			  			</small>
@@ -38,7 +36,7 @@
 			  </div><!-- panel title -->
 			</div><!-- panel heading -->
 
-		  <div class="panel-heading desktop-filters">
+		  <div class="panel-heading hidden-xs hidden-sm ">
 		    <div class="panel-title">
 		    	<div class="row">
 			  		<div class="col-xs-12 col-md-7">

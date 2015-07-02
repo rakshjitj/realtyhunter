@@ -145,12 +145,29 @@
             <%= f.label :residential_amenity_ids, "Unit Amenities" %>
           </div>
           <div class="col-md-9">
-            <%= f.select(:residential_amenity_ids, 
-              options_for_select(current_user.company.residential_amenities.collect {|a| [a.name.titleize, a.id]},
-            @residential_unit.residential_amenity_ids), 
-            {},
-            {:multiple => true, :size => 10,
-              class: 'form-control'}) %>
+            <div class="row">
+              
+              <% i = 0 %>
+              <%= f.collection_check_boxes(:residential_amenity_ids, current_user.company.residential_amenities, :id, :name) do |b| %>
+                
+                <% if i % 3 == 0 && i > 0 %>
+                  </div>
+                  <div class="row">
+                <% end %>
+
+                <div class="col-xs-4">
+                  <%= b.label(class: "check_box") do %>
+                    <%= b.check_box(class: "check_box") %>
+                    <%= b.text.titleize %>
+                  <% end %>
+                </div>
+
+              <% i = i+1 %>
+              <% end %>
+            
+            </div><!-- row -->
+          </div>
+
           </div>
         </div>
 
