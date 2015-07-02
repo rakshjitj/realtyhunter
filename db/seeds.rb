@@ -150,7 +150,7 @@ end
   {name: "super admin"},
   ])
 
-@password = "713lorimer"
+@password = "lorimer713"
 
 # api only access
 @api_only = User.create!(
