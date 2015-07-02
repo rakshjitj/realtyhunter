@@ -206,6 +206,10 @@ class User < ActiveRecord::Base
     self.has_role? :company_admin
   end
 
+  def is_data_entry?
+    self.has_role? :data_entry
+  end
+
   def is_agent?
     AgentType.all.each do |at|
       return true if self.has_role? at.name

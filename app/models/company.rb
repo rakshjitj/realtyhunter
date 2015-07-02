@@ -36,41 +36,45 @@ class Company < ActiveRecord::Base
 
 	# should we limit this to 1 per company?
 	def admins
-		@admins = self.users.unarchived.includes(:employee_title, :office, :company, :manager).select{|u| u if u.is_company_admin? }
+		users.unarchived.includes(:employee_title, :office, :company, :manager).select{|u| u if u.is_company_admin? }
 	end
 
 	def managers
-		@managers = self.users.unarchived.includes(:employee_title, :office, :company, :manager).select{|u| u if u.is_manager? }
+		users.unarchived.includes(:employee_title, :office, :company, :manager).select{|u| u if u.is_manager? }
+	end
+
+	def data_enterers
+		users.unarchived.includes(:employee_title, :office, :company, :manager).select{|u| u if u.is_data_entry? }
 	end
 
 	def update_agent_types
-		self.agent_types.split(/\r?\n/).each {|a|
-      @sanitized_name = AgentType.sanitize_name(a)
-      AgentType.find_or_create_by(name: @sanitized_name)
+		agent_types.split(/\r?\n/).each {|a|
+      sanitized_name = AgentType.sanitize_name(a)
+      AgentType.find_or_create_by(name: sanitized_name)
     }
 	end
 
 	def update_employee_titles
-		self.employee_titles.split(/\r?\n/).each {|e|
-      @sanitized_name = EmployeeTitle.sanitize_name(e)
-      EmployeeTitle.find_or_create_by(name: @sanitized_name)
+		employee_titles.split(/\r?\n/).each {|e|
+      sanitized_name = EmployeeTitle.sanitize_name(e)
+      EmployeeTitle.find_or_create_by(name: sanitized_name)
     }
 	end
 
 	def self.search(query_params)
-    @running_list = Company.unarchived
+    running_list = Company.unarchived
     if !query_params || !query_params[:name]
-      return @running_list 
+      return running_list
     end
     
     query_string = query_params[:name]
     query_string = query_string[0..500] # truncate for security reasons
-    @terms = query_string.split(" ")
-    @terms.each do |term|
-      @running_list = @running_list.where('name ILIKE ?', "%#{term}%").all
+    terms = query_string.split(" ")
+    terms.each do |term|
+      running_list = running_list.where('name ILIKE ?', "%#{term}%").all
     end
 
-    @running_list.uniq
+    running_list.uniq
   end
 
 	# Create the default environment options for the company.

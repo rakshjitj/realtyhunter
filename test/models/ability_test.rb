@@ -269,4 +269,5 @@ class AbilityTest < ActiveSupport::TestCase
 	  assert ability.cannot?(:manage, @landlord2)
 	end
 
+	# TODO: data-entry, api tests
 end

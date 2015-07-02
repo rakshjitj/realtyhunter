@@ -301,7 +301,14 @@
 	    			<strong>Open House:</strong>
 	    		</div>
 	    		<div class="col-xs-12 col-md-9">
-	    			<%= @residential_unit.open_house %>
+	    			<% if !@residential_unit.open_house %>
+		    			N/A
+		    		<% else %>
+		    			<% if @residential_unit.oh_exclusive %>
+		    				<strong>EXCLUSIVE!</strong>
+		    			<% end %>
+		    			<%= @residential_unit.open_house %>
+		    		<% end %>
 	    		</div>
 	    	</div>
 

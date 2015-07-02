@@ -216,9 +216,12 @@
         <br />
         <div class="row">
           <div class="col-md-3 form-label-responsive">
-            <%= f.label :open_house, "Open House Info" %>
+            <strong>Open House</strong>
           </div>
           <div class="col-md-9">
+            <%= f.check_box(:oh_exclusive) %>
+            <%= f.label :oh_exclusive, "Is Exclusive" %><br />
+            <%= f.label :open_house, "Date & Time Details" %>
             <%= f.text_area :open_house, class: 'form-control', rows: 3 %>
           </div>
         </div>

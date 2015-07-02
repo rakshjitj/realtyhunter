@@ -107,6 +107,8 @@ end
   {name: "agent"},
   {name: "associate broker"},
   {name: "broker"},
+  {name: "api_only"},
+  {name: "data entry"},
   {name: "manager"},
   {name: "closing manager"},
   {name: "marketing"},
@@ -144,7 +146,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[4],
+    employee_title: @employee_titles[6],
     mobile_phone_number: '666-666-7777'
  },
  { name: 'Manager Two', 
@@ -158,7 +160,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[4],
+    employee_title: @employee_titles[6],
     mobile_phone_number: '666-666-7777'
  }])
 
@@ -188,7 +190,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[@employee_titles.length-1],
+    employee_title: @employee_titles[4],
     mobile_phone_number: '666-666-9999'
   },
   { name: 'Nir Mizrachi', 
@@ -324,10 +326,6 @@ User.define_roles()
 
 @admins.each {|a| a.update_roles }
 @managers.each {|m| m.update_roles }
-#@company_admin1.update_roles
-#@manager1.update_roles
-#@manager2.update_roles
-#@manager3.update_roles
 
 50.times do |n|
   name  = FFaker::Name.name

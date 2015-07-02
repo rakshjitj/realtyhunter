@@ -284,6 +284,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "access_info"
     t.integer  "status",             default: 0
     t.string   "open_house"
+    t.boolean  "oh_exclusive",       default: false
     t.integer  "weeks_free_offered", default: 0
     t.integer  "building_id"
     t.integer  "user_id"
