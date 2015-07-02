@@ -24,11 +24,10 @@ json.date_available listing.available_by.strftime('%Y-%m-%d')
 json.unit_amenities listing.residential_amenities.map{|a| a.name}
 json.unit_description listing.notes
 
-# TODO json.open_houses
+#json.open_houses listing.open_house
 
 json.pets listing.building.pet_policy.name
 json.changed_at listing.updated_at
-
 
 #json.photos
 json.square_footage json.nil
@@ -37,15 +36,16 @@ json.rent listing.rent
 
 json.contacts do 
 	json.array! listing.contacts do
+	if listing.primary_agent
   	json.agent_id listing.primary_agent.id
   	json.phone_number listing.primary_agent.phone_number
   	json.mobile_phone_number listing.primary_agent.mobile_phone_number
   	json.name listing.primary_agent.name
   	json.email listing.primary_agent.email
 	end
+	end
 end
 
 json.layout listing.beds_to_s
 
 json.id listing.listing_id
-

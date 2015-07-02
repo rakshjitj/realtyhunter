@@ -2,10 +2,10 @@ json.prettify! if %w(1 yes true).include?(params["pretty"])
 
 json.extract! user, :id, :phone_number, :mobile_phone_number, :email, :bio, :name
 
-if user.avatar_id?
+if user.image
 	json.headshot do
-  	json.original user.avatar_url
-		json.thumbnail user.avatar_thumbnail_url
+  	json.original user.image.file.url(:original)
+		json.thumbnail user.image.file.url(:thumb)
 	end
 else
 	json.headshot do
@@ -20,4 +20,6 @@ elsif user.has_role? :agent
   json.title "Licensed Real-Estate Agent"
 elsif user.has_role? :unlic_agent
 	json.title "Inactive Real-Estate Agent"
+else
+	json.title "Non-agent"
 end
