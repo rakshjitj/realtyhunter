@@ -255,22 +255,22 @@ end
   company: @company,
   })
 
-55.times do |n|
-  ll_name = FFaker::Name.name
+# 55.times do |n|
+#   ll_name = FFaker::Name.name
   
-  landlordN = Landlord.create!(
-    code: FFaker::HipsterIpsum.characters(10),
-    name: ll_name,
-    office_phone: "777-777-7777",
-    mobile: "777-777-7777",
-    fax: "777-777-7777",
-    email: FFaker::Internet.email(ll_name),
-    website: FFaker::Internet.http_url,
-    notes: FFaker::HipsterIpsum.sentence,
-    listing_agent_percentage: "15",
-    management_info: FFaker::HipsterIpsum.phrase,
-    company: @company)
-end
+#   landlordN = Landlord.create!(
+#     code: FFaker::HipsterIpsum.characters(10),
+#     name: ll_name,
+#     office_phone: "777-777-7777",
+#     mobile: "777-777-7777",
+#     fax: "777-777-7777",
+#     email: FFaker::Internet.email(ll_name),
+#     website: FFaker::Internet.http_url,
+#     notes: FFaker::HipsterIpsum.sentence,
+#     listing_agent_percentage: "15",
+#     management_info: FFaker::HipsterIpsum.phrase,
+#     company: @company)
+# end
 
 @bldg = Building.create!({
   formatted_street_address: '1062 Bergen St, Brooklyn, NY 11216',

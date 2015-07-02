@@ -1,8 +1,9 @@
 require 'csv'
 
 task :import_landlords => :environment do
-	#Landlord.delete_all
   company = Company.find_by(name: 'MyspaceNYC')
+
+  #fees = []
 
 	puts "Getting data for all landlords..."
 	count = 0
@@ -36,6 +37,7 @@ task :import_landlords => :environment do
 			next
 		end
 		#puts "CODE #{row[4]} NAME #{row[1]}"
+		#fees << row[6]
 
 		found = Landlord.find_by(name: row[1])
 		if !found
@@ -53,5 +55,6 @@ task :import_landlords => :environment do
 		end
 	}
 
+	#puts "#{fees.uniq}"
 	puts "Done!"
 end
