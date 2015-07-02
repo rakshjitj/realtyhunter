@@ -43,7 +43,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "bio should not be too long" do
-    @user.bio = "a" * 501
+    @user.bio = "a" * 2001
     assert_not @user.valid?
   end
 

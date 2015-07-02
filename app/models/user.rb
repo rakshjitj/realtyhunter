@@ -24,13 +24,13 @@ class User < ActiveRecord::Base
             uniqueness: { case_sensitive: false }
 
   VALID_TELEPHONE_REGEX = /(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/
-  validates :mobile_phone_number, presence: true, length: {maximum: 25}, 
+  validates :mobile_phone_number, length: {maximum: 25}, allow_blank: true, #presence: true, 
     format: { with: VALID_TELEPHONE_REGEX }
   
   has_secure_password
 	validates :password, length: { minimum: 6 }, allow_blank: true
 
-  validates :bio, length: {maximum: 500}
+  validates :bio, length: {maximum: 2000}
 
   validates :company, presence: true
   validates :office, presence: true

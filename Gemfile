@@ -61,6 +61,8 @@ gem 'rails4-autocomplete'
 gem 'wicked_pdf'
 # trying to get past font/cors issues...
 gem 'rack-cors', :require => 'rack/cors'
+# used for our rake tasks to import data
+gem 'mechanize'
 
 group :production do
 	gem 'rails_12factor'
