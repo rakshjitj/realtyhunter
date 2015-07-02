@@ -44,17 +44,18 @@
 </div>
 
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-xs-12 col-md-6 vertical-padding">
     <%= form_tag users_path, :method => 'get' do %>
       <%= label_tag(:name_email, "Filter:") %>
       <%= text_field_tag :name_email, params[:search], placeholder: "name/email", size: 50 %>
     <% end %>
   </div>
-  <div class="col-md-6 right">
+  <div class="hidden-xs hidden-sm col-md-6 form-label-responsive">
     <%= will_paginate @users %>
   </div>
 </div>
 
+<br />
 <div class="row">
   <div class="col-md-12">
     

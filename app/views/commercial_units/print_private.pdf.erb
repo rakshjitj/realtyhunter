@@ -40,7 +40,7 @@ $( document ).ready(function() {
 						  				<%= @commercial_unit.building.neighborhood.name %>, <%= @commercial_unit.building.sublocality %>, <%= @commercial_unit.building.administrative_area_level_2_short %> <%= @commercial_unit.building.postal_code %>
 						  			</p>
 					  		</div>
-					  		<div class="col-xs-6 right">
+					  		<div class="col-xs-6 form-label-responsive">
 					  			<h1><%= money_formatted(@commercial_unit.price_per_sq_ft) %>/SF/Month</h1>
 						  		<p><%= @commercial_unit.sq_footage %> SF | <%= @commercial_unit.commercial_property_type.property_type %></p>
 					  		</div>

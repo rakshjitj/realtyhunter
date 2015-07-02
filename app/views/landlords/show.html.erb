@@ -7,7 +7,7 @@
         <div class="col-md-7">
           <h1><small>Landlord</small> <%= @landlord.code %></h1>
         </div>
-        <div class="col-md-5 right">
+        <div class="col-md-5 form-label-responsive">
           <br /><br />
           <%= link_to 'Edit', edit_landlord_path(@landlord) %> |
           <%= link_to 'View all', landlords_path %> |
@@ -22,61 +22,61 @@
           <div class="panel-body">
             
             <div class="row">
-              <div class="col-md-1">
+              <div class="col-xs-4 col-md-1">
                 <strong>Code:</strong>
               </div>
-              <div class="col-md-5">
+              <div class="col-xs-8 col-md-5">
                 <%= @landlord.code %>
               </div>
-              <div class="col-md-3">
+              <div class="col-xs-4 col-md-3">
                 <strong>Mobile:</strong>
               </div>
-              <div class="col-md-3">
+              <div class="col-xs-8 col-md-3">
                 <%= @landlord.mobile %>
               </div>
             </div>
 
             <div class="row">
-              <div class="col-md-1">
+              <div class="col-xs-4 col-md-1">
                 <strong>Name:</strong>
               </div>
-              <div class="col-md-5">
+              <div class="col-xs-8 col-md-5">
                 <%= @landlord.name %>
               </div>
-              <div class="col-md-3">
+              <div class="col-xs-4 col-md-3">
                 <strong>Office Phone:</strong>
               </div>
-              <div class="col-md-3">
+              <div class="col-xs-8 col-md-3">
                 <%= @landlord.office_phone %>
               </div>
             </div>
 
             <div class="row">
-              <div class="col-md-1">
+              <div class="col-xs-4 col-md-1">
                 <strong>Email:</strong>
               </div>
-              <div class="col-md-5">
+              <div class="col-xs-8 col-md-5">
                 <%= mail_to @landlord.email %>
               </div>
-              <div class="col-md-3">
+              <div class="col-xs-4 col-md-3">
                 <strong>Fax:</strong>
               </div>
-              <div class="col-md-3">
+              <div class="col-xs-8 col-md-3">
                 <%= @landlord.fax %>
               </div>
             </div>
 
             <div class="row">
-              <div class="col-md-1">
+              <div class="col-xs-4 col-md-1">
                 <strong>Web:</strong>
               </div>
-              <div class="col-md-5">
+              <div class="col-xs-8 col-md-5">
                 <a href="<%= @landlord.website %>"><%= @landlord.website %></a>
               </div>
-              <div class="col-md-3">
+              <div class="col-xs-5 col-md-3">
                 <strong>Office address:</strong>
               </div>
-              <div class="col-md-3">
+              <div class="col-xs-7 col-md-3">
                 <%= @landlord.formatted_street_address %>
               </div>
             </div>

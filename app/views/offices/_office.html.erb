@@ -13,7 +13,7 @@
       <% prev_link = true %>
 	  <% end %>
 
-    <% if prev_link %> | <% end %>
+    <% if prev_link %><br /><% end %>
     <%= link_to 'Managers', managers_company_office_path(office.company, office) %> |
     <%= link_to 'Agents', agents_company_office_path(office.company, office) %>
   </td>

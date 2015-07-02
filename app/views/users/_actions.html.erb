@@ -20,11 +20,12 @@
 <% end %>
 
 <% if current_user.can_approve(user) %>
+	<br />
 	<% if !user.approved? %>
-		<% if @prev_link %> | <% end %>
+		
 		<%= link_to 'Authorize', admin_approve_user_path(user), :remote => true, method: :post, data: { confirm: "Are you sure you want to approve #{user.name}'s account?" } %>
 	<% else %>
-		<% if @prev_link %> | <% end %>
+		
 		<%= link_to 'Unauthorize', admin_unapprove_user_path(user), :remote => true, method: :post, data: { confirm: "Are you sure you want to unapprove #{user.name}'s account?" } %>
 	<% end %>
 	<% @prev_link = true %>

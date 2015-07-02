@@ -23,9 +23,7 @@
           <h1><%= @office.name.titleize %> Office</h1>
           <%= @office.company.name %>
         </div>
-        <div class="col-md-5 right">
-          <br /><br />
-          <br />
+        <div class="col-md-5 form-label-responsive">
           <% if current_user.is_company_admin? %>
             <%= link_to 'Edit', edit_company_office_path(@office.company, @office) %> | 
           <% end %>
@@ -39,10 +37,10 @@
       <div class="col-md-6">
         <%= @office.formatted_street_address %>
       </div>
-      <div class="col-md-3 right">
+      <div class="col-md-3 form-label-responsive">
         <strong>t</strong> | <%= @office.telephone %>
       </div>
-      <div class="col-md-3 right">
+      <div class="col-md-3 form-label-responsive">
         <% if @office.fax %>
           <strong>f</strong> | <%= @office.fax %>
         <% end %>
@@ -62,22 +60,47 @@
         <strong>Managers:</strong>
       </div>
     </div>
-    <div class="row">
-      <% if @office.managers.any? %>
-        <% for i in 0..@office.managers.length-1 %>
-          <% if i % 4 == 0 && i > 0 %>
+
+    <!-- desktop screens -->
+    <div class="hidden-xs hidden-sm">
+      <div class="row">
+        <% if @office.managers.any? %>
+          <% for i in 0..@office.managers.length-1 %>
+            <% if i % 4 == 0 && i > 0 %>
+              </div>
+              <div class="row">
+            <% end %>
+            <div class="col-md-3">
+              <%= link_to @office.managers[i].name, @office.managers[i] %>
             </div>
-            <div class="row">
           <% end %>
-          <div class="col-md-3">
-            <%= link_to @office.managers[i].name, @office.managers[i] %>
+        <% else %>
+          <div class="col-xs-12">
+            No managers added yet.
           </div>
         <% end %>
-      <% else %>
-        <div class="col-md-12">
-          No managers added yet.
-        </div>
-      <% end %>
+      </div>
+    </div>
+
+    <!-- tiny screens -->
+    <div class="hidden-md hidden-lg">
+      <div class="row">
+        <% if @office.managers.any? %>
+          <% for i in 0..@office.managers.length-1 %>
+            <% if i % 2 == 0 && i > 0 %>
+              </div>
+              <div class="row">
+            <% end %>
+            <div class="col-xs-6">
+              <%= link_to @office.managers[i].name, @office.managers[i] %>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="col-xs-12">
+            No managers added yet.
+          </div>
+        <% end %>
+      </div>
     </div>
 
     <br />
@@ -86,27 +109,51 @@
         <strong>Agents:</strong>
       </div>
     </div>
-    <div class="row">
-      
-      <% if @office.agents.any? %>
-        <% for i in 0..@office.agents.length-1 %>
-          <% if i % 4 == 0 && i > 0 %>
+
+    <!-- desktop screens -->
+    <div class="hidden-xs hidden-sm">
+      <div class="row">      
+        <% if @office.agents.any? %>
+          <% for i in 0..@office.agents.length-1 %>
+            <% if i % 4 == 0 && i > 0 %>
+              </div>
+              <div class="row">
+            <% end %>
+            <div class="col-md-3">
+              <%= link_to @office.agents[i].name, @office.agents[i] %>
             </div>
-            <div class="row">
           <% end %>
-          <div class="col-md-3">
-            <%= link_to @office.agents[i].name, @office.agents[i] %>
+          <% else %>
+          <div class="col-md-12">
+            No agents added yet.
           </div>
         <% end %>
-        <% else %>
-        <div class="col-md-12">
-          No agents added yet.
-        </div>
-      <% end %>
-    
+      </div>
     </div>
 
-  </div>
+    <!-- tiny screens -->
+    <div class="hidden-md hidden-lg">
+      <div class="row">      
+        <% if @office.agents.any? %>
+          <% for i in 0..@office.agents.length-1 %>
+            <% if i % 2 == 0 && i > 0 %>
+              </div>
+              <div class="row">
+            <% end %>
+            <div class="col-xs-6">
+              <%= link_to @office.agents[i].name, @office.agents[i] %>
+            </div>
+          <% end %>
+          <% else %>
+          <div class="col-xs-12">
+            No agents added yet.
+          </div>
+        <% end %>
+      </div>
+    </div>
 
+  <!-- tiny screens -->
+  <div class="hidden-md hidden-lg">
+  </div>
  </div>
 

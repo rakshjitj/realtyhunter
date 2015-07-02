@@ -15,8 +15,7 @@
         <div class="col-md-6">
           <h1><%= @user.name.titleize %></h1>
         </div>
-        <div class="col-md-6 right">
-          <br /><br />
+        <div class="col-md-6 form-label-responsive">
           <!--%= render 'actions', :user => @user %-->
 
           <% if can? :update, user %>
@@ -66,7 +65,7 @@
             </td>
           <% end %>
         </section>
-
+        <br />
       </div><!-- col-md-6 -->
 
       <div class="col-md-6">
@@ -110,7 +109,7 @@
           <br />
           <div class="row">
             <div class="col-md-12">
-              <strong class="right">Short Bio:</strong>
+              <strong class="form-label-responsive">Short Bio:</strong>
             </div>
           </div>
           <div class="row">
@@ -130,7 +129,7 @@
       <br />
       <div class="row">
         <div class="col-md-1">
-          <p><strong class="right">Team</strong></p>
+          <p><strong class="form-label-responsive">Team</strong></p>
         </div>
         <div class="col-md-11">
           <div class="row">

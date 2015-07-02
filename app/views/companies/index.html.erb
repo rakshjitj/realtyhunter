@@ -41,25 +41,25 @@
     <div class="col-md-6">
       <h1>Companies</h1>
     </div>
-    <div class="col-md-6 right">
-      <br /><br />
+    <div class="col-md-6 form-label-responsive">
       <%= link_to 'Add a Company', new_company_path %>
     </div>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-xs-12 col-md-6 vertical-padding">
     <%= form_tag companies_path, :method => 'get' do %>
       <%= label_tag(:name, "Filter:") %>
       <%= text_field_tag :name, params[:search], placeholder: "name", size: 50 %>
     <% end %>
   </div>
-  <div class="col-md-offset-6 right">
+  <div class="hidden-xs hidden-sm col-md-offset-6 form-label-responsive">
     <%= will_paginate @companies %>
   </div>
 </div>
 
+<br />
 <div class="row">
   <div class="col-md-12">
 
@@ -83,7 +83,7 @@
 </div>
 
 <div class="row">
-  <div class="col-md-offset-6 right">
+  <div class="col-md-offset-6 form-label-responsive">
     <%= will_paginate @companies %>
   </div>
 </div>

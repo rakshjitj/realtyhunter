@@ -42,7 +42,7 @@
         </div>
       <% else %>
         <br />
-        <p>Photo is only editable by company management.</p>
+        <p>(Photo & bio are only editable by company management.)</p><br />
       <% end %>
   </div>
 
@@ -73,8 +73,6 @@
           <%= f.label :bio, "Short Bio (Max 500 chars)" %><br>
           <%= f.text_area :bio, class: 'form-control', :size => "20x10" %>
         </div>
-      <% else %>
-        <p>Bio is only editable by company management.</p>
       <% end %>
 
       <div class="field">

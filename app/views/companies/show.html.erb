@@ -1,12 +1,11 @@
 <div class="row">
-  <div class="col-md-offset-3 col-md-5">
+  <div class="col-md-offset-3 col-md-6">
 
   <div class="row page-header">
     <div class="col-md-6">
       <h1><%= @company.name %></h1>  
     </div>
-    <div class="col-md-6 right">
-      <br /><br />
+    <div class="col-md-6 form-label-responsive">
       <%= link_to 'All Companies', companies_path %> | 
       <% if current_user.is_company_admin? %>
         <%= link_to 'Edit', edit_company_path(@company) %> |
@@ -17,24 +16,24 @@
   </div>
 
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-xs-12 col-md-6">
       <% if @company.image %>
         <div class="img-medium">
           <%= image_tag @company.image.file.url(:medium), :class => 'img-responsive', 
             alt: @company.image.file.url(:medium) %>
         </div>
       <% else %>
-        <td>
           <div class="company-logo">
             <i class="fa fa-user fa-fw fa-border"></i>
           </div>
-        </td>
       <% end %>
+      <br /><br />
     </div>
-    <div class="col-md-6">
+
+    <div class="col-xs-12 col-md-6">
       <% if @company.offices.empty? %>
         <p>No offices added yet. Why don't you <%= link_to "create one?", new_company_office_path(@company) %></p>
-        <br />
+        
       <% else %>
 
         <% @company.offices.each do |office| %>
@@ -48,12 +47,13 @@
     
   </div>
   <div class="row">
-    <br />
-    
-  </div>
-  <div class="row">
     <hr />
-    <p><strong>Departments:</strong> <%= @employee_titles.join(", ") %></p>
-    <p><strong>Agent Specializations</strong>: <%= @agent_types.join(", ") %></p>
+    <div class="col-md-12">
+      <p><strong>Departments:</strong> <%= @employee_titles.join(", ") %></p>
+    </div>
+    <div class="col-md-12">
+      <p><strong>Agent Specializations</strong>: <%= @agent_types.join(", ") %></p>
+    </div>
   </div>
+
 </div>
