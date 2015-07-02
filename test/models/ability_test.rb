@@ -30,11 +30,33 @@ class AbilityTest < ActiveSupport::TestCase
   	@manager.add_role :commercial
   	@company_admin.add_role :commercial
 
+  	@external_vendor = create(:user)
+  	@external_vendor.employee_title = EmployeeTitle.find_by(name: 'external vendor')
+  	@external_vendor.update_roles
+
   	@runit = build(:residential_unit, building: @building)
   	@runit2 = build(:residential_unit, building: @building2)
 
   	@cunit = build(:commercial_unit, building: @building)
   	@cunit2 = build(:commercial_unit, building: @building2)
+  end
+
+  test "external vendors can access their profile" do
+  	ability = Ability.new(@external_vendor)
+	  assert ability.can?(:manage, @external_vendor)
+	  assert ability.cannot?(:manage, @manager)
+  end
+
+  test "external vendors cannot access listings" do
+  	ability = Ability.new(@external_vendor)
+	  assert ability.cannot?(:read, @runit)
+	  assert ability.cannot?(:read, @cunit)
+	  assert ability.cannot?(:read, @building)
+	  assert ability.cannot?(:read, @landlord)
+	  assert ability.cannot?(:manage, @runit)
+	  assert ability.cannot?(:manage, @cunit)
+	  assert ability.cannot?(:manage, @building)
+	  assert ability.cannot?(:manage, @landlord)
   end
 
   # save?

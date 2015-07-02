@@ -4,8 +4,6 @@ class Ability
   def initialize(user)
     user ||= User.new # guest user (not logged in)
     
-    #if user.has_role? :api_only
-      # TODO
     # global super admin can control everything
     if user.has_role? :super_admin
       # can do anything
@@ -46,8 +44,9 @@ class Ability
         !commercial_unit.building_id || (commercial_unit.building.company_id == user.company_id && user.handles_commercial?)
       end
     
-    #elsif user.has_role?(:api_only)
-    # can :manage, User, :id => user.id
+    elsif user.has_role?(:external_vendor)
+      cannot :read, :all
+      can :manage, User, :id => user.id
 
     else # regular users (agents, non-management)
       # can only see info for his/her particular company

@@ -158,9 +158,10 @@ class User < ActiveRecord::Base
   def update_roles
     # clear out old roles
     self.roles = [];
-    # everyone should always be able to see residential stuff, at a minimum
-    # regardless of title
-    self.add_role :residential
+    # (almost) everyone should always be able to see residential stuff
+    if self.employee_title != EmployeeTitle.external_vendor
+      self.add_role :residential
+    end
     # add a role representing your position in the company.
     # default to an agent if none otherwise specified
     if !self.employee_title
@@ -206,8 +207,12 @@ class User < ActiveRecord::Base
     self.has_role? :company_admin
   end
 
-  def is_data_entry?
-    self.has_role? :data_entry
+  # def is_data_entry?
+  #   self.has_role? :data_entry
+  # end
+
+  def is_external_vendor?
+    self.has_role? :external_vendor
   end
 
   def is_agent?
@@ -267,35 +272,6 @@ class User < ActiveRecord::Base
     @coworkers = Array.new(self.company.users)
     #@coworkers.delete(self)
     @coworkers
-  end
-
-  # TODO: cleaner way of initializing the global system?
-  # this is just so we can define the busines logic in a centralized place.
-  # this is a non-functional user
-  def self.define_roles
-    @user = User.create({
-      email: 'topsecret@admin.com', 
-      name: "Roles Definition",
-      password:"test123" });
-    # Inactive Agent:
-    @user.add_role :inactive_agent
-    # Licensed Agent:
-    @user.add_role :residential
-    @user.add_role :commercial
-    @user.add_role :sales
-    @user.add_role :roomsharing
-    @user.add_role :associate_broker
-    @user.add_role :broker
-    # Executive Agent:
-    @user.add_role :manager
-    @user.add_role :closing_manager
-    @user.add_role :marketing
-    @user.add_role :operations
-    @user.add_role :company_admin
-    # Not for nestio:
-    @user.add_role :super_admin
-
-    @user.delete
   end
 
   def agent_specialties

@@ -97,7 +97,6 @@ FactoryGirl.define do
     listing_agent_percentage 15
     email { generate(:sequenced_email) }
     company
-    required_security #, company: company
     #association :required_security, :factory => :required_security, :username => 'admin'
   end
 
@@ -119,6 +118,7 @@ FactoryGirl.define do
     company
     neighborhood
     pet_policy
+    required_security
     # after(:build) do |building, evaluator|
     #   #company evaluator.company
     #   create(:landlord, company: evaluator.company)#, evaluator.total_items, building: building)

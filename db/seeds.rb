@@ -1,3 +1,36 @@
+# this is just so we can define the busines logic in a centralized place.
+# this is a non-functional user
+def define_roles
+  @user = User.create({
+    email: 'topsecret@admin.com', 
+    name: "Roles Definition",
+    password:"test123" });
+  # Inactive Agent:
+  @user.add_role :inactive_agent
+  # Licensed Agent:
+  @user.add_role :residential
+  @user.add_role :commercial
+  @user.add_role :sales
+  @user.add_role :roomsharing
+  @user.add_role :associate_broker
+  @user.add_role :broker
+  # Executive Agent:
+  @user.add_role :external_vendor
+  #@user.add_role :data_entry
+  @user.add_role :manager
+  @user.add_role :closing_manager
+  @user.add_role :marketing
+  @user.add_role :operations
+  @user.add_role :company_admin
+  # Not for nestio:
+  @user.add_role :super_admin
+
+  @user.delete
+end
+
+
+### Ok, let's get started! ######
+
 @company = Company.create({name: "MyspaceNYC"})
 @company2 = Company.create({name: "Nooklyn"})
 
@@ -107,16 +140,33 @@ end
   {name: "agent"},
   {name: "associate broker"},
   {name: "broker"},
-  {name: "api_only"},
-  {name: "data entry"},
+  {name: "external vendor"},
+  #{name: "data entry"},
   {name: "manager"},
   {name: "closing manager"},
   {name: "marketing"},
   {name: "operations"},
   {name: "company admin"},
+  {name: "super admin"},
   ])
 
 @password = "713lorimer"
+
+# api only access
+@api_only = User.create!(
+  { name: 'Blank Slate', 
+    email: 'admin@blankslate.com', 
+    password: @password, 
+    password_confirmation: @password, 
+    activated: true, 
+    activated_at: Time.zone.now,
+    approved: true, 
+    approved_at: Time.zone.now,
+    company: @company, 
+    office: @offices[0],
+    employee_title: EmployeeTitle.find_by(name: 'external vendor'),
+    mobile_phone_number: '666-666-6666'
+  })
 
 # super admin
 @super_admin = User.create!(
@@ -130,7 +180,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[@employee_titles.length-1],
+    employee_title: EmployeeTitle.find_by(name: 'super admin'),
     mobile_phone_number: '666-666-6666'
   })
 
@@ -146,7 +196,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[6],
+    employee_title: EmployeeTitle.find_by(name: 'manager'),
     mobile_phone_number: '666-666-7777'
  },
  { name: 'Manager Two', 
@@ -160,7 +210,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[6],
+    employee_title: EmployeeTitle.find_by(name: 'manager'),
     mobile_phone_number: '666-666-7777'
  }])
 
@@ -176,7 +226,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[@employee_titles.length-1],
+    employee_title: EmployeeTitle.find_by(name: 'company admin'),
     mobile_phone_number: '666-666-7777'
   },
   { name: 'Cheryl Hoyles', 
@@ -190,7 +240,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[4],
+    employee_title: EmployeeTitle.find_by(name: 'company admin'),
     mobile_phone_number: '666-666-9999'
   },
   { name: 'Nir Mizrachi', 
@@ -204,7 +254,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[@employee_titles.length-1],
+    employee_title: EmployeeTitle.find_by(name: 'company admin'),
     mobile_phone_number: '666-666-8888'
   },
   { name: 'Rose Sambrato', 
@@ -218,7 +268,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[@employee_titles.length-1],
+    employee_title: EmployeeTitle.find_by(name: 'company admin'),
     mobile_phone_number: '666-666-8888'
   },
   { name: 'Collin Mullahy', 
@@ -232,7 +282,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[@employee_titles.length-1],
+    employee_title: EmployeeTitle.find_by(name: 'company admin'),
     mobile_phone_number: '666-666-8888'
   },
   { name: 'Shawn Mullahy', 
@@ -246,7 +296,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[@employee_titles.length-1],
+    employee_title: EmployeeTitle.find_by(name: 'company admin'),
     mobile_phone_number: '666-666-9999'
   },
   { name: 'Belle Taylor', 
@@ -260,7 +310,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[@employee_titles.length-1],
+    employee_title: EmployeeTitle.find_by(name: 'company admin'),
     mobile_phone_number: '666-666-9999'
   },
   { name: 'Ozzie Sadok', 
@@ -274,7 +324,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[@employee_titles.length-1],
+    employee_title: EmployeeTitle.find_by(name: 'company admin'),
     mobile_phone_number: '666-666-9999'
   },
   { name: 'Benny Lewis', 
@@ -288,7 +338,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[@employee_titles.length-1],
+    employee_title: EmployeeTitle.find_by(name: 'company admin'),
     mobile_phone_number: '666-666-9999'
   },
   { name: 'Michelle Monko', 
@@ -302,7 +352,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[@employee_titles.length-1],
+    employee_title: EmployeeTitle.find_by(name: 'company admin'),
     mobile_phone_number: '666-666-9999'
   },
   { name: 'Dani Leahy', 
@@ -316,11 +366,12 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: @employee_titles[@employee_titles.length-1],
+    employee_title: EmployeeTitle.find_by(name: 'company admin'),
     mobile_phone_number: '666-666-9999'
  }])
 
-User.define_roles()
+define_roles
+@api_only.update_roles
 @super_admin.update_roles
 @super_admin.add_role :super_admin
 

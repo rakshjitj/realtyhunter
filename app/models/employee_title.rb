@@ -59,4 +59,13 @@ class EmployeeTitle < ActiveRecord::Base
 		@agent_title
 	end
 
+	def self.external_vendor
+		@agent_title = EmployeeTitle.where(name: "external vendor").first;
+		if !@agent_title
+			@agent_title = EmployeeTitle.create(name: "external vendor")
+		end
+
+		@agent_title
+	end
+
 end

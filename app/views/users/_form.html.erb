@@ -42,7 +42,7 @@
         </div>
       <% else %>
         <br />
-        <p>(Photo & bio are only editable by company management.)</p><br />
+        <p>(Photo, bio, and employee title are only editable by company management.)</p><br />
       <% end %>
   </div>
 
@@ -65,7 +65,7 @@
       </div>
       <div class="field">
         <%= f.label :mobile_phone_number, "Mobile" %><br>
-        <%= f.telephone_field :mobile_phone_number, 
+        <%= f.telephone_field :mobile_phone_number, placeholder: "(XXX)XXX-XXXX",
             class: 'form-control' %>
       </div>
       <% if @user.is_management? %>
@@ -85,6 +85,8 @@
       </div>
 
       <div class="row">
+
+        <% if @user.is_management? %>
         <div class="col-md-6">
           <div class="field">
             <%= f.label :employee_title_id, "Role within the company" %><br>
@@ -96,6 +98,7 @@
               :include_blank => true) %>
           </div>
         </div>
+        <% end %>
 
         <div class="col-md-6 agent-type">
           <div class="field " >
