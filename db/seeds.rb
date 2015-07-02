@@ -198,24 +198,9 @@ end
     employee_title: EmployeeTitle.find_by(name: 'company admin'),
     mobile_phone_number: '929-258-7847'
   })
-@company_admin2 = User.create!(
-  { name: 'Raquel Bujans', 
-    email: 'rbujans@myspacenyc.com', 
-    password: @password, 
-    password_confirmation: @password, 
-    activated: true, 
-    activated_at: Time.zone.now,
-    approved: true, 
-    approved_at: Time.zone.now,
-    company: @company, 
-    office: @offices[0],
-    employee_title: EmployeeTitle.find_by(name: 'company admin'),
-    mobile_phone_number: '347-614-1148'
-  })
 
 define_roles
 @company_admin1.update_roles
-@company_admin2.update_roles
 @api_only.update_roles
 @super_admin.update_roles
 @super_admin.add_role :super_admin
