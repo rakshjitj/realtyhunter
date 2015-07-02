@@ -14,7 +14,16 @@ class SessionsController < ApplicationController
         #puts "222222"
         log_in user
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
-        redirect_back_or user
+        if user.is_external_vendor?
+          redirect_to user
+          #redirect_back_or user
+        elsif user.handles_residential?
+          redirect_to residential_units_path
+        elsif user.handles_commercial?
+          redirect_to commercial_units_path
+        else
+          redirect_to user
+        end
       else
         #puts "444444"
         if !user.activated?

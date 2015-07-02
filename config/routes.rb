@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   
   root :to => 'static_pages#home'
   
-  resources :users do
+  resources :users, except: 'new' do
     collection do
       get 'update_offices'
       get 'filter'
