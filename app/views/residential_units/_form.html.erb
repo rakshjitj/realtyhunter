@@ -141,10 +141,12 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 form-label-responsive">
+          <div class="col-xs-12 col-md-3 form-label-responsive">
             <%= f.label :residential_amenity_ids, "Unit Amenities" %>
           </div>
-          <div class="col-md-9">
+
+          <!-- for bigger screens -->
+          <div class="col-xs-12 col-md-9 hidden-xs">
             <div class="row">
               
               <% i = 0 %>
@@ -156,19 +158,39 @@
                 <% end %>
 
                 <div class="col-xs-4">
-                  <%= b.label(class: "check_box") do %>
-                    <%= b.check_box(class: "check_box") %>
-                    <%= b.text.titleize %>
-                  <% end %>
+                  <%= b.check_box(class: "check_box") %>&nbsp;
+                  <%= b.text.titleize %>
                 </div>
 
               <% i = i+1 %>
               <% end %>
             
             </div><!-- row -->
-          </div>
+          </div><!-- col -->
 
-          </div>
+          <!-- for tiny screens -->
+          <div class="col-xs-12 col-md-9 hidden-sm hidden-md hidden-lg">
+            <div class="row">
+              
+              <% i = 0 %>
+              <%= f.collection_check_boxes(:residential_amenity_ids, current_user.company.residential_amenities, :id, :name) do |b| %>
+                
+                <% if i % 2 == 0 && i > 0 %>
+                  </div>
+                  <div class="row">
+                <% end %>
+
+                <div class="col-xs-6">
+                  <%= b.check_box(class: "check_box") %>&nbsp;
+                  <%= b.text.titleize %>
+                </div>
+
+              <% i = i+1 %>
+              <% end %>
+            
+            </div><!-- row -->
+          </div><!-- col -->
+
         </div>
 
         <br />

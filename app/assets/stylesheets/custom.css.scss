@@ -224,12 +224,12 @@ aside {
   border: 2px solid #fff;
 }
 
-@media (max-width:768px) {
+@media (max-width:1024px) {
   .form-label-responsive {
     text-align: left;
   }
 }
-@media (min-width:768px) {
+@media (min-width:1024px) {
   .form-label-responsive {
     text-align: right;
     padding-right: 10px;
