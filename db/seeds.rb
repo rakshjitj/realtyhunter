@@ -184,199 +184,41 @@ end
     mobile_phone_number: '666-666-6666'
   })
 
-# @managers = User.create!([
-#   { name: 'Manager One', 
-#     email: 'manager1@myspacenyc.com',
-#     bio: "blah blah blah", 
-#     password: @password, 
-#     password_confirmation: @password, 
-#     activated: true, 
-#     activated_at: Time.zone.now,
-#     approved: true, 
-#     approved_at: Time.zone.now,
-#     company: @company, 
-#     office: @offices[0],
-#     employee_title: EmployeeTitle.find_by(name: 'manager'),
-#     mobile_phone_number: '666-666-7777'
-#  },
-#  { name: 'Manager Two', 
-#     email: 'manager2@myspacenyc.com',
-#     bio: "blah blah blah", 
-#     password: @password, 
-#     password_confirmation: @password, 
-#     activated: true, 
-#     activated_at: Time.zone.now,
-#     approved: true, 
-#     approved_at: Time.zone.now,
-#     company: @company, 
-#     office: @offices[0],
-#     employee_title: EmployeeTitle.find_by(name: 'manager'),
-#     mobile_phone_number: '666-666-7777'
-#  }])
-
-# @admins = User.create!([
-#   { name: 'Raquel Bujans', 
-#     email: 'rbujans@myspacenyc.com',
-#     bio: "blah blah blah", 
-#     password: @password, 
-#     password_confirmation: @password, 
-#     activated: true, 
-#     activated_at: Time.zone.now,
-#     approved: true, 
-#     approved_at: Time.zone.now,
-#     company: @company, 
-#     office: @offices[0],
-#     employee_title: EmployeeTitle.find_by(name: 'company admin'),
-#     mobile_phone_number: '666-666-7777'
-#   },
-#   { name: 'Cheryl Hoyles', 
-#     email: 'info@myspacenyc.com',
-#     bio: "blah blah blah", 
-#     password: @password, 
-#     password_confirmation: @password, 
-#     activated: true, 
-#     activated_at: Time.zone.now,
-#     approved: true, 
-#     approved_at: Time.zone.now,
-#     company: @company, 
-#     office: @offices[0],
-#     employee_title: EmployeeTitle.find_by(name: 'company admin'),
-#     mobile_phone_number: '666-666-9999'
-#   },
-#   { name: 'Nir Mizrachi', 
-#     email: 'nir@myspacenyc.com',
-#     bio: "blah blah blah", 
-#     password: @password, 
-#     password_confirmation: @password, 
-#     activated: true, 
-#     activated_at: Time.zone.now,
-#     approved: true, 
-#     approved_at: Time.zone.now,
-#     company: @company, 
-#     office: @offices[0],
-#     employee_title: EmployeeTitle.find_by(name: 'company admin'),
-#     mobile_phone_number: '666-666-8888'
-#   },
-#   { name: 'Rose Sambrato', 
-#     email: 'r.sambrato@myspacenycbw.com',
-#     bio: "blah blah blah", 
-#     password: @password, 
-#     password_confirmation: @password, 
-#     activated: true, 
-#     activated_at: Time.zone.now,
-#     approved: true, 
-#     approved_at: Time.zone.now,
-#     company: @company, 
-#     office: @offices[0],
-#     employee_title: EmployeeTitle.find_by(name: 'company admin'),
-#     mobile_phone_number: '666-666-8888'
-#   },
-#   { name: 'Collin Mullahy', 
-#     email: 'cmullahy@myspacenyc.com',
-#     bio: "blah blah blah", 
-#     password: @password, 
-#     password_confirmation: @password, 
-#     activated: true, 
-#     activated_at: Time.zone.now,
-#     approved: true, 
-#     approved_at: Time.zone.now,
-#     company: @company, 
-#     office: @offices[0],
-#     employee_title: EmployeeTitle.find_by(name: 'company admin'),
-#     mobile_phone_number: '666-666-8888'
-#   },
-#   { name: 'Shawn Mullahy', 
-#     email: 'smullahy@myspacenyc.com',
-#     bio: "blah blah blah", 
-#     password: @password, 
-#     password_confirmation: @password, 
-#     activated: true, 
-#     activated_at: Time.zone.now,
-#     approved: true, 
-#     approved_at: Time.zone.now,
-#     company: @company, 
-#     office: @offices[0],
-#     employee_title: EmployeeTitle.find_by(name: 'company admin'),
-#     mobile_phone_number: '666-666-9999'
-#   },
-#   { name: 'Belle Taylor', 
-#     email: 'belle@myspacenyc.com',
-#     bio: "blah blah blah", 
-#     password: @password, 
-#     password_confirmation: @password, 
-#     activated: true, 
-#     activated_at: Time.zone.now,
-#     approved: true, 
-#     approved_at: Time.zone.now,
-#     company: @company, 
-#     office: @offices[0],
-#     employee_title: EmployeeTitle.find_by(name: 'company admin'),
-#     mobile_phone_number: '666-666-9999'
-#   },
-#   { name: 'Ozzie Sadok', 
-#     email: 'osadok@myspacenyc.com',
-#     bio: "blah blah blah", 
-#     password: @password, 
-#     password_confirmation: @password, 
-#     activated: true, 
-#     activated_at: Time.zone.now,
-#     approved: true, 
-#     approved_at: Time.zone.now,
-#     company: @company, 
-#     office: @offices[0],
-#     employee_title: EmployeeTitle.find_by(name: 'company admin'),
-#     mobile_phone_number: '666-666-9999'
-#   },
-#   { name: 'Benny Lewis', 
-#     email: 'blewis@myspacenyc.com',
-#     bio: "blah blah blah", 
-#     password: @password, 
-#     password_confirmation: @password, 
-#     activated: true, 
-#     activated_at: Time.zone.now,
-#     approved: true, 
-#     approved_at: Time.zone.now,
-#     company: @company, 
-#     office: @offices[0],
-#     employee_title: EmployeeTitle.find_by(name: 'company admin'),
-#     mobile_phone_number: '666-666-9999'
-#   },
-#   { name: 'Michelle Monko', 
-#     email: 'mmonko@myspacenyc.com',
-#     bio: "blah blah blah", 
-#     password: @password, 
-#     password_confirmation: @password, 
-#     activated: true, 
-#     activated_at: Time.zone.now,
-#     approved: true, 
-#     approved_at: Time.zone.now,
-#     company: @company, 
-#     office: @offices[0],
-#     employee_title: EmployeeTitle.find_by(name: 'company admin'),
-#     mobile_phone_number: '666-666-9999'
-#   },
-#   { name: 'Dani Leahy', 
-#     email: 'dleahy@myspacenyc.com',
-#     bio: "blah blah blah", 
-#     password: @password, 
-#     password_confirmation: @password, 
-#     activated: true, 
-#     activated_at: Time.zone.now,
-#     approved: true, 
-#     approved_at: Time.zone.now,
-#     company: @company, 
-#     office: @offices[0],
-#     employee_title: EmployeeTitle.find_by(name: 'company admin'),
-#     mobile_phone_number: '666-666-9999'
-#  }])
+@company_admin1 = User.create!(
+  { name: 'Nir Mizrachi', 
+    email: 'nir@myspacenyc.com', 
+    password: @password, 
+    password_confirmation: @password, 
+    activated: true, 
+    activated_at: Time.zone.now,
+    approved: true, 
+    approved_at: Time.zone.now,
+    company: @company, 
+    office: @offices[0],
+    employee_title: EmployeeTitle.find_by(name: 'company admin'),
+    mobile_phone_number: '929-258-7847'
+  })
+@company_admin2 = User.create!(
+  { name: 'Raquel Bujans', 
+    email: 'rbujans@myspacenyc.com', 
+    password: @password, 
+    password_confirmation: @password, 
+    activated: true, 
+    activated_at: Time.zone.now,
+    approved: true, 
+    approved_at: Time.zone.now,
+    company: @company, 
+    office: @offices[0],
+    employee_title: EmployeeTitle.find_by(name: 'company admin'),
+    mobile_phone_number: '347-614-1148'
+  })
 
 define_roles
+@company_admin1.update_roles
+@company_admin2.update_roles
 @api_only.update_roles
 @super_admin.update_roles
 @super_admin.add_role :super_admin
-
-# @admins.each {|a| a.update_roles }
-# @managers.each {|m| m.update_roles }
 
 50.times do |n|
   name  = FFaker::Name.name
@@ -397,11 +239,6 @@ define_roles
    employee_title: @employee_titles[1]
    )
   userN.update_roles
-  # if n < 25
-  #   @managers[0].add_subordinate(userN)
-  # else
-  #   @managers[1].add_subordinate(userN)
-  # end
 end
 
 # seed property data -----------------------------------------

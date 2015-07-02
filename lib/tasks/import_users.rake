@@ -1,6 +1,5 @@
 task :import_users => :environment do
 
-  User.delete_all
   # make into commandline args
   company = Company.find_by(name: 'MyspaceNYC')
   default_office = Office.find_by(name: 'Crown Heights')
