@@ -7,10 +7,10 @@ class Unit < ActiveRecord::Base
   has_many :images, dependent: :destroy
   # TODO before_validation :generate_unique_id
 
-  scope :unarchived, ->{where(archived: false)}
-  scope :active, ->{where(status: "active")}
-  scope :residential, ->{where("actable_type = 'ResidentialUnit'")}
-  scope :commercial, ->{where("actable_type = 'CommercialUnit'")}
+  scope :unarchived, ->{ includes(:images).where(archived: false) }
+  scope :active, ->{ includes(:images).where(status: "active") }
+  scope :residential, ->{ includes(:images).where("actable_type = 'ResidentialUnit'") }
+  scope :commercial, ->{ includes(:images).where("actable_type = 'CommercialUnit'") }
 
 	enum status: [ :active, :pending, :off ]
 	validates :status, presence: true, inclusion: { in: %w(active pending off) }

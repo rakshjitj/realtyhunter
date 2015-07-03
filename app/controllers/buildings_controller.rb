@@ -128,7 +128,7 @@ class BuildingsController < ApplicationController
     end
 
     def set_buildings
-      @buildings = Building.includes(:required_security).search(building_params[:filter], building_params[:active_only])
+      @buildings = Building.search(building_params[:filter], building_params[:active_only])
       @buildings = custom_sort
       @buildings = @buildings.paginate(:page => params[:page], :per_page => 50)
     end

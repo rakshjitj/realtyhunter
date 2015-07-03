@@ -16,7 +16,7 @@ def define_roles
   @user.add_role :broker
   # Executive Agent:
   @user.add_role :external_vendor
-  #@user.add_role :data_entry
+  @user.add_role :data_entry
   @user.add_role :manager
   @user.add_role :closing_manager
   @user.add_role :marketing
@@ -141,7 +141,7 @@ end
   {name: "associate broker"},
   {name: "broker"},
   {name: "external vendor"},
-  #{name: "data entry"},
+  {name: "data entry"},
   {name: "manager"},
   {name: "closing manager"},
   {name: "marketing"},

@@ -138,7 +138,7 @@ class User < ActiveRecord::Base
   end
 
   def self.search(query_params)
-    @running_list = User.unarchived.includes(:employee_title, :office, :company, :manager, :image, :manager)
+    @running_list = User.unarchived.includes(:employee_title, :office, :company, :manager, :image)
     if !query_params || !query_params[:name_email]
       return @running_list 
     end

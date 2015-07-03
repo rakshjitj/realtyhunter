@@ -105,14 +105,14 @@ class ResidentialUnit < ActiveRecord::Base
   # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 
   # neighborhoods, has_outdoor_space, features, pet_policy
   def self.search(params, building_id=nil)
-    @running_list = Unit.includes(:building).unarchived
+    @running_list = Unit.includes(:building, :images).unarchived
 
     # actable_type to restrict to residential only
     if !params && !building_id
       return Unit.get_residential(@running_list)
       #return ResidentialUnit.unarchived
     elsif !params && building_id
-      return ResidentialUnit.unarchived.where(building_id: building_id)
+      return ResidentialUnit.includes(:images).unarchived.where(building_id: building_id)
     end
 
     # all search params come in as strings from the url

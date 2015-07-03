@@ -75,7 +75,7 @@ class Building < ActiveRecord::Base
 	end
 
 	def self.search(query_str, active_only)
-		@running_list = Building.unarchived
+		@running_list = Building.includes(:images).unarchived
     return @running_list if !query_str
     
     @terms = query_str.split(" ")
@@ -117,12 +117,12 @@ class Building < ActiveRecord::Base
   end
 
   def residential_units
-    units = Unit.where(building_id: id)
+    units = Unit.includes(:building).where(building_id: id)
     units = Unit.get_residential(units)
   end
 
   def commercial_units
-    units = Unit.where(building_id: id)
+    units = Unit.includes(:building).where(building_id: id)
     Unit.get_commercial(units)
   end
 

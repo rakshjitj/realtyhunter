@@ -47,7 +47,7 @@ class CompaniesController < ApplicationController
 
   def employees
     @title = 'Employees'
-    @users = @company.users.includes(:office, :employee_title)
+    @users = @company.users.includes(:office, :employee_title, :image, :company, :manager)
       .paginate(:page => params[:page], :per_page => 50)
     render 'users/index'
   end
