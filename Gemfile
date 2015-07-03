@@ -64,6 +64,8 @@ gem 'rack-cors', :require => 'rack/cors'
 # used for our rake tasks to import data
 gem 'mechanize'
 
+gem 'local_time'
+
 group :production do
 	gem 'rails_12factor'
 	gem 'puma'

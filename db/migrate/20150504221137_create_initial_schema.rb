@@ -68,6 +68,7 @@
       t.datetime :approved_at
       t.string   :reset_digest
       t.datetime :reset_sent_at
+      t.datetime :last_login_at
       t.belongs_to :company
       t.belongs_to :office
       t.references :employee_title, index: true

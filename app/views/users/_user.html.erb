@@ -15,14 +15,7 @@
   <td><%= link_to user.name, user %></td>
   <td><%= user.email %></td>
   <td>
-  	<%= user.employee_title.name.titleize %>
-  	<% if user.is_company_admin? %>
-  		<span class="glyphicon glyphicon-star dark-orange" aria-hidden="true"></span>
-  	<% end %>
-
-  	<% if user.is_agent? %>
-  		| <%= user.agent_specialties.join(", ") %>
-  	<% end %>
+    <%= employee_title_and_specialty(user) %>
   </td>
   <td>
     <% if user.office %>
@@ -31,13 +24,18 @@
       None
     <% end %>
   </td>
-  <td><% if user.activated? %>
-  	<span class="glyphicon glyphicon-ok green text-center" aria-hidden="true"></span>
+  <td>
+    <%= last_login(user) %>
+  </td>
+  <td>
+    <% if user.activated? %>
+  	  <span class="glyphicon glyphicon-ok green text-center" aria-hidden="true"></span>
   	<% else %>
   		<span class="glyphicon glyphicon-remove red middle" aria-hidden="true"></span>
   	<% end %>
   </td>
-  <td><% if user.approved? %>
+  <td>
+    <% if user.approved? %>
   		<span class="glyphicon glyphicon-ok green middle" aria-hidden="true"></span>
   	<% else %>
   		<span class="glyphicon glyphicon-remove red middle" aria-hidden="true"></span>
@@ -46,8 +44,6 @@
   <td>
   	
   <%= render 'users/actions', :user => user %>
-  	
-		
 		
 	</td>
 </tr>

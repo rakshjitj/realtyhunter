@@ -20,3 +20,4 @@
 //= require jquery.geocomplete.min
 //= require autocomplete-rails
 //= require dropzone
+//= require local_time

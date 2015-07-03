@@ -316,6 +316,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.datetime "approved_at"
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
+    t.datetime "last_login_at"
     t.integer  "company_id"
     t.integer  "office_id"
     t.integer  "employee_title_id"
