@@ -27,7 +27,6 @@ class BuildingsController < ApplicationController
   # GET /buildings/1
   # GET /buildings/1.json
   def show
-    @residential_units = @building.units
   end
 
   # GET /buildings/new
@@ -124,6 +123,8 @@ class BuildingsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_building
       @building = Building.find_unarchived(params[:id])
+      @residential_units = @building.residential_units.paginate(:page => params[:page], :per_page => 50)
+      @commercial_units = @building.commercial_units.paginate(:page => params[:page], :per_page => 50)
     end
 
     def set_buildings

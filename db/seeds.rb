@@ -156,8 +156,8 @@ end
 @api_only = User.create!(
   { name: 'Blank Slate', 
     email: 'admin@blankslate.com', 
-    password: @password, 
-    password_confirmation: @password, 
+    password: 'blankslate', 
+    password_confirmation: 'blankslate', 
     activated: true, 
     activated_at: Time.zone.now,
     approved: true, 

@@ -118,12 +118,12 @@ class Building < ActiveRecord::Base
 
   def residential_units
     units = Unit.where(building_id: id)
-    @residential_units = Unit.get_residential(units)
+    units = Unit.get_residential(units)
   end
 
   def commercial_units
     units = Unit.where(building_id: id)
-    @commercial_units = Unit.get_commercial(units)
+    Unit.get_commercial(units)
   end
 
   private

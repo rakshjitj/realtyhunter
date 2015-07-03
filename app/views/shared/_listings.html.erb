@@ -1,0 +1,89 @@
+<script>
+   //unobstrusive: attach method call here
+   //call when typing or enter or focus leaving
+  function initialize() {
+    function doSearch(event) {
+      $.ajax({
+        url: "<%= filter_buildings_path %>",
+        data: {
+          active_only: $('#checkbox_active').prop('checked')
+        },
+        dataType: "script"
+      }).fail(function() {
+        //console.log("[FAILED] search update failed");
+      });
+    };
+
+    // search as user types
+    var timer;
+    function throttledSearch() {
+      clearInterval(timer);  //clear any interval on key up
+      timer = setTimeout(doSearch, 500);
+    };
+    
+    // change enter key to tab
+    function preventEnter(event) {
+      if (event.keyCode == 13) {
+        $('#checkbox_active').focus();
+        return false;
+      }
+    };
+
+    $('#checkbox_active').click(doSearch);
+  };
+  $(document).ready(initialize);
+</script>
+
+<!-- ******** LISTINGS ********** -->
+<div class="row">
+  <div class="col-md-12">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <% if residential_units && residential_units.length > 0 %>
+        <li role="residential-listings" class="active"><a href="#residential-listings" 
+          aria-controls="residential-listings" role="tab" data-toggle="tab">Residential</a></li>
+      <% end %>
+      <% if commercial_units && commercial_units.length > 0 %>
+        <li role="commercial-listings"><a href="#commercial-listings" aria-controls="commercial-listings" 
+          role="tab" data-toggle="tab">Commercial</a></li>
+      <% end %>
+    </ul>
+
+    <div class="tab-content">
+      <!-- ******************** first tabpanel - residential ********************-->
+      <% if residential_units && residential_units.length > 0 %>
+        <div role="tabpanel" class="tab-pane fade in active" id="residential-listings">
+        	<br />
+        	<div class="row">
+					  <div class="col-md-12">
+					  	<%= check_box_tag(:checkbox_active, class: "checkbox inline") %>
+					    <%= label_tag :checkbox_active, "Active units only" %>
+					  </div>
+					</div>
+
+          <%= render partial:'residential_units/table', locals: { residential_units: residential_units} %>
+
+          <div class="row">
+					  <div class="col-md-12">
+					  <%= will_paginate residential_units, inner_window: 1, class: 'pagination-sm' %>
+					  </div>
+					</div>
+
+        </div>
+      <% end %>
+      <!-- ******************** second tabpanel - commercial ********************-->
+      <% if commercial_units && commercial_units.length > 0 %>
+        <div role="tabpanel" class="tab-pane fade" id="commercial-listings">
+          <!--%= render partial:'commercial_units/table', locals: { residential_units: @building.commercial_units} %-->
+        </div>
+
+        <div class="row">
+				  <div class="col-md-12">
+				  	<!--%= will_paginate commercial_units, inner_window: 1, class: 'pagination-sm' %-->
+				  </div>
+				</div>
+      <% end %>
+    </div>
+
+  </div><!-- col -->
+</div><!-- row -->
