@@ -59,13 +59,13 @@ class Landlord < ActiveRecord::Base
 	end
 
 	def self.search(params)
-		@running_list = Landlord.unarchived
+		@running_list = Landlord.unarchived.includes(:buildings)
 		if !params
 	    return @running_list 
   	end
 
-  	if params[:query_str]
-	    terms = params[:query_str].split(" ")
+  	if params[:filter]
+	    terms = params[:filter].split(" ")
 	    terms.each do |term|
 	      @running_list = @running_list.where('name ILIKE ? or code ILIKE ?', "%#{term}%", "%#{term}%").all
 	    end

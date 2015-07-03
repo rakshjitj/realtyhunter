@@ -360,7 +360,7 @@
 
 <div class="row">
   <div class="col-md-12 form-label-responsive">
-    <%= will_paginate @residential_units %>
+    <%= will_paginate @residential_units, {inner_window: 1, class:"pagination-sm"} %>
   </div>
 </div>
 

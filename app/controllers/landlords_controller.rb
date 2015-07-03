@@ -91,7 +91,7 @@ class LandlordsController < ApplicationController
     def set_landlords
       @landlords = Landlord.search(params)
       @landlords = custom_sort
-      @landlords = @landlords.paginate(:page => params[:page], :per_page => 50)
+      @landlords = @landlords.paginate(page: params[:page], per_page: 50)
     end
 
     def custom_sort
