@@ -8,7 +8,8 @@
         <!-- placeholder image -->
         <%= image_tag "listing_soon.png", alt: "Image coming soon", :size => "100x100" %>
       <% end %>
-
+    </td>
+    <td>
       <%= link_to "#{residential_unit.building.street_address} ##{residential_unit.building_unit}", residential_unit %><br />
       <% if residential_unit.building.neighborhood %>
         <small><%= residential_unit.building.neighborhood.name %></small>
