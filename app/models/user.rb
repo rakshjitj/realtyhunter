@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :roles, :join_table => :users_roles
 
   def has_role?(role_name)
-    self.roles.any? {|r| r.name == role_name}
+    self.roles.any? {|r| r.name == role_name.to_s}
   end
 
   default_scope { order("users.name ASC") }
