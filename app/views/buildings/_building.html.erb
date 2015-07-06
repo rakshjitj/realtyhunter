@@ -3,8 +3,8 @@
 <tr class="<%= cycle('even', 'odd') -%>">
   <td>
     <% if building.images.length > 0 %>
-      <%= image_tag building.images[0].file.url(:thumb), :class => 'img-responsive center-block', 
-        alt: image.file.url(:medium) %>
+      <%= image_tag building.images[0].file.url(:thumb), :class => 'img-responsive', 
+        alt: building.images[0].file.url(:medium) %>
     <% else %>
       <!-- placeholder image -->
       <%= image_tag "listing_soon.png", alt: "Image coming soon", :size => "100x100" %>

@@ -81,34 +81,21 @@
 	    		<div class="col-md-12">
 	    			<!-- begin photos -->
 				  	<% if @residential_unit.images.length > 0 || @residential_unit.building.images.length > 0 %>
-							<div id="residential_unit-carousel" class="carousel slide" data-ride="carousel">
-							  <!-- Indicators -->
-							  <ol class="carousel-indicators">
-							  	<!-- first display building photos... -->
-							  	<% for i in 0..@residential_unit.building.images.length-1 %>
-								  	<li data-target="#residential_unit-carousel" data-slide-to="<%= i %>"></li>
-								  <% end %>
-								  <!-- now display unit photos -->
-								  <% for i in 0..@residential_unit.images.length-1 %>
-								  	<li data-target="#residential_unit-carousel" 
-								  		data-slide-to="<%= @residential_unit.building.images.length + i %>"></li>
-								  <% end %>
-							  </ol>
-
+							<div id="residential_unit-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
 							  <!-- Wrapper for slides -->
 							  <div class="carousel-inner" role="listbox">
 							  <!-- first display building photos... -->
 							  	<% @residential_unit.building.images.each do |image| %>
 							  		<div class="item">
 								      <%= image_tag image.file.url(:medium), :class => 'img-responsive center-block', 
-								      	alt: image.file.url(:medium) %>
+								      	alt: image.file.url(:medium), width:"100%" %>
 								    </div>
 							  	<% end %>
 							  	<!-- now display unit photos -->
 							  	<% @residential_unit.images.each do |image| %>
 							  		<div class="item">
 								      <%= image_tag image.file.url(:medium), :class => 'img-responsive center-block', 
-								      	alt: image.file.url(:medium) %>
+								      	alt: image.file.url(:medium), width:"100%" %>
 								    </div>
 							  	<% end %>
 							  </div>
@@ -123,6 +110,25 @@
 							    <span class="sr-only">Next</span>
 							  </a>
 							</div>
+
+							<!-- clickable navigation -->
+							<!-- first building photos... -->
+							<% i = 0 %>
+							<% for i in 0..@residential_unit.building.images.length-1 %>
+								<% image = @residential_unit.building.images[i] %>
+					  		<a href="#residential_unit-carousel" data-slide-to="<%= i %>">
+						      <%= image_tag image.file.url(:thumb), :class => 'photo-inline', 
+						      	alt: image.file.url(:thumb) %>
+						    </a>
+					  	<% end %>
+					  	<!-- now display unit photos -->
+					  	<% for j in 0..@residential_unit.images.length-1 %>
+								<% image = @residential_unit.images[j] %>
+					  		<a href="#residential_unit-carousel" data-slide-to="<%= (j+i) %>">
+						      <%= image_tag image.file.url(:thumb), :class => 'photo-inline', 
+						      	alt: image.file.url(:thumb) %>
+						    </a>
+					  	<% end %>
 
 					  <% else %>
 					  	<!-- placeholder image -->

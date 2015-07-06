@@ -2,7 +2,7 @@
   <tr class="<%= cycle('even', 'odd') -%>">
     <td>
       <% if residential_unit.images.length > 0 %>
-        <%= image_tag residential_unit.images[0].file.url(:thumb), :class => 'img-responsive center-block', 
+        <%= image_tag residential_unit.images[0].file.url(:thumb), :class => 'img-responsive', 
           alt: residential_unit.images[0].file.url(:medium) %>
       <% else %>
         <!-- placeholder image -->

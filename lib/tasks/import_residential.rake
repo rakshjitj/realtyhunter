@@ -220,7 +220,7 @@ task :import_residential => :environment do
 
 			description = "#{item['unit_description']}"
 			if item['occupancy_status']
-				description = description + "\nOccupancy Status: #{item['occupancy_status']}"
+				description = description + "\n\nOccupancy Status: #{item['occupancy_status']}\n"
 			end
 			if item['furnished_type']
 				description = description + "Furnished Type: #{item['furnished_type']}\n"

@@ -65,7 +65,9 @@
 
           <div class="row">
 					  <div class="col-md-12">
-					  <%= will_paginate residential_units, inner_window: 1, class: 'pagination-sm' %>
+              <div class="listing-pagination">
+                <%= render partial: 'shared/pagination', locals: {models: residential_units} %>
+              </div>
 					  </div>
 					</div>
 
@@ -74,12 +76,12 @@
       <!-- ******************** second tabpanel - commercial ********************-->
       <% if commercial_units && commercial_units.length > 0 %>
         <div role="tabpanel" class="tab-pane fade" id="commercial-listings">
-          <!--%= render partial:'commercial_units/table', locals: { residential_units: @building.commercial_units} %-->
+          <!--%= render partial:'commercial_units/table', locals: { commercial_units: @building.commercial_units} %-->
         </div>
 
         <div class="row">
 				  <div class="col-md-12">
-				  	<!--%= will_paginate commercial_units, inner_window: 1, class: 'pagination-sm' %-->
+				  	<!--%= render partial: 'shared/pagination', locals: {models: commercial_units} %-->
 				  </div>
 				</div>
       <% end %>
