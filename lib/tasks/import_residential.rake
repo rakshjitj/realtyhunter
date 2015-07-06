@@ -90,6 +90,7 @@ task :import_residential => :environment do
 		bldg['amenities'].each{ |a| 
 			amenity = BuildingAmenity.find_by(name: a.titleize)
 			if !amenity
+				puts "*** Adding REQUIRED SECURITY #{a.titleize}"
 				amenity = BuildingAmenity.create!(company: company, name: a.titleize)
 			end
 			amenities << amenity
@@ -126,7 +127,7 @@ task :import_residential => :environment do
 
 	titles = []
 	renter_fees = []
-	statii = []
+	#statii = []
 
   done = false
   for j in 1..total_pages
@@ -204,8 +205,10 @@ task :import_residential => :environment do
 				status = 'active'
 			when 'app pending'
 				status = 'pending'
+			when 'lease out'
+				status = 'off'
 			end
-			statii << item['status']
+			#statii << item['status']
 
 			lease_duration = '1 Year'
 			if item['min_lease_term']
@@ -225,6 +228,7 @@ task :import_residential => :environment do
 
 			# TODO
 			op_fee_percentage = nil
+			renter_fees << item['incentives']
 			#if item['incentives'].strip.downcase == 'owner pays 100%'
 
 			#end
@@ -232,7 +236,6 @@ task :import_residential => :environment do
 			tp_fee_percentage = nil
 			#access_info: 
 			#agents
-			#images
 
 			#ResidentialUnit.find_by()
 			unit = ResidentialUnit.create!({
@@ -254,6 +257,7 @@ task :import_residential => :environment do
 			if item['pets'] && !unit.building.pet_policy
       	pet_policy = PetPolicy.find_by(name: item['pets'], company: company)
 				if !pet_policy
+					puts "*** Adding PET POLICY #{item['pets']}"
 					pet_policy = PetPolicy.create!({
 						name: item['pets'],
 						company: company
@@ -274,6 +278,6 @@ task :import_residential => :environment do
 
   puts "AMENITIES: #{titles.uniq}"
   puts "RENTER FEES: #{renter_fees.uniq}"
-  puts "STATII #{statii.uniq}"
+  #puts "STATII #{statii.uniq}"
   puts "Done!\n"
 end

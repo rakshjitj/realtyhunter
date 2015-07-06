@@ -52,7 +52,6 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "company_id"
     t.integer  "landlord_id"
     t.integer  "neighborhood_id"
-    t.integer  "user_id"
     t.integer  "pet_policy_id"
     t.integer  "required_security_id"
     t.integer  "images_id"

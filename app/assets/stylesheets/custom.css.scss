@@ -338,3 +338,10 @@ aside {
 .vertical-padding {
   padding: 3px 0 3px 0;
 }
+
+.photo-inline {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+  padding: 4px 2px 4px 2px;
+}

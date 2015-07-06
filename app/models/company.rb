@@ -81,7 +81,7 @@ class Company < ActiveRecord::Base
 	# Admins can always change them once the company has been created.
 	def create_environment		
 		BuildingAmenity.create!([
-			{name: "Gym/Atheletic Facility", company: self},
+			{name: "Fitness Center", company: self},
 			{name: "Sauna", company: self},
 			{name: "Doorman", company: self},
 			{name: "Laundry in Bldg", company: self},

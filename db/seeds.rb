@@ -295,31 +295,31 @@ end
 #     })
 # end
 
-55.times do |n|
-  bldg_size = Faker::Number.number(4);
-  CommercialUnit.create!({
-    status: "active",
-    building: @bldg,
-    rent: Faker::Number.number(4),
-    available_by: Time.zone.now,
+# 55.times do |n|
+#   bldg_size = Faker::Number.number(4);
+#   CommercialUnit.create!({
+#     status: "active",
+#     building: @bldg,
+#     rent: Faker::Number.number(4),
+#     available_by: Time.zone.now,
 
-    sq_footage: Faker::Number.number(3),
-    floor: Faker::Number.number(1),
-    build_to_suit: false,
-    lease_type: "modified_gross",
-    is_sublease: false,
-    building_size: bldg_size,
-    total_lot_size: bldg_size,
-    minimum_divisble: bldg_size,
-    maximum_contiguous: bldg_size,
-    property_description: FFaker::HipsterIpsum.sentence,
-    location_description: FFaker::HipsterIpsum.sentence,
-    construction_status: "existing",
-    no_parking_spaces: Faker::Number.number(1),
-    pct_procurement_fee: Faker::Number.number(2),
-    lease_term_months: Faker::Number.number(2),
-    rate_is_negotiable: false,
-    commercial_property_type: @company.commercial_property_types[0],
-    })
+#     sq_footage: Faker::Number.number(3),
+#     floor: Faker::Number.number(1),
+#     build_to_suit: false,
+#     lease_type: "modified_gross",
+#     is_sublease: false,
+#     building_size: bldg_size,
+#     total_lot_size: bldg_size,
+#     minimum_divisble: bldg_size,
+#     maximum_contiguous: bldg_size,
+#     property_description: FFaker::HipsterIpsum.sentence,
+#     location_description: FFaker::HipsterIpsum.sentence,
+#     construction_status: "existing",
+#     no_parking_spaces: Faker::Number.number(1),
+#     pct_procurement_fee: Faker::Number.number(2),
+#     lease_term_months: Faker::Number.number(2),
+#     rate_is_negotiable: false,
+#     commercial_property_type: @company.commercial_property_types[0],
+#     })
 
-end
+# end

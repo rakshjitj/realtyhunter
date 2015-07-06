@@ -25,12 +25,12 @@
   			</div>
   		</div>
   		<div class="row">
-  			<div class="col-md-7">
+  			<div class="col-md-6">
   				<p><%= @building.active_units.count %> available units on the market.
 						<%= @building.units.count %> total units.
 					</p>
   			</div>
-  			<div class="col-md-5 form-label-responsive">
+  			<div class="col-md-6 form-label-responsive">
   				<%= link_to 'View all', buildings_path %> |
 						<% if current_user.is_management? %>
 							<%= link_to 'Edit', edit_building_path(@building) %> | 
@@ -49,19 +49,15 @@
 		  <div class="panel-body">
 		  	<!-- begin photos -->
 		  	<% if @building.images.any? %>
-					<div id="building-carousel" class="carousel slide" data-ride="carousel">
-					  <!-- Indicators -->
-					  <ol class="carousel-indicators">
-						  <% for i in 0..@building.images.length-1 %>
-						  	<li data-target="#building-carousel" data-slide-to="<%= i %>"></li>
-						  <% end %>
-					  </ol>
 
+
+					<div id="building-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
 					  <!-- Wrapper for slides -->
 					  <div class="carousel-inner" role="listbox">
 					  	<% @building.images.each do |image| %>	
 					  		<div class="item">
-						      <%= image_tag image.file.url(:medium), :class => 'img-responsive center-block', alt: image.file.url(:medium) %>
+						      <%= image_tag image.file.url(:medium), :class => 'img-responsive center-block', 
+						      	alt: image.file.url(:medium), width: "100%" %>
 						    </div>
 					  	<% end %>
 					  </div>
@@ -77,16 +73,24 @@
 					  </a>
 					</div>
 
+					<!-- clickable navigation -->
+					<% for i in 0..@building.images.length-1 %>
+						<% image = @building.images[i] %>
+			  		<a href="#building-carousel" data-slide-to="<%= i %>">
+				      <%= image_tag image.file.url(:thumb), :class => 'photo-inline', 
+				      	alt: image.file.url(:thumb) %>
+				    </a>
+			  	<% end %>
+
 			  <% else %>
 			  	<!-- placeholder image -->
           <%= image_tag "listing_soon.png", alt: "Image coming soon",
-          	:class => 'img-responsive center-block' %>
+          	:class => 'img-responsive center-block', width: "100%" %>
 			  <% end %>
 			  <!-- end photos -->
 
-		  	<div id="map_canvas"></div>
-		  	<br />
-		    <p>
+			  <br />
+		  	<p>
 				  <strong>Street Address:</strong>
 				  <%= @building.formatted_street_address %>
 				</p>
@@ -144,6 +148,10 @@
 				  <strong>Last Unit Updated:</strong>
 				  <%= @building.last_unit_updated %>
 				</p>
+
+				<br />
+				<div id="map_canvas"></div>
+		    
 		  </div>
 		</div>
 
