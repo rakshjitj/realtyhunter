@@ -20,8 +20,8 @@ task :import_residential => :environment do
 		neighborhood_name = nil
 
 		#puts "#{result['address_components']}"
-		#puts "BLDG: #{bldg}"
-		#puts "COMP: #{google_results}"
+		puts "BLDG: #{bldg}"
+		puts "COMP: #{google_results}"
 
 		result['address_components'].each{|c| 
 			#puts "#{c['types']}"
@@ -113,9 +113,9 @@ task :import_residential => :environment do
 	nestio_url = "https://nestiolistings.com/api/v1/public/listings?key=#{api_key}"
 
 	# clear old data
-	Neighborhood.delete_all
-	Building.delete_all
-	ResidentialUnit.delete_all
+	#Neighborhood.delete_all
+	#Building.delete_all
+	#ResidentialUnit.delete_all
 
 	# begin pulling down new data
 	total_pages = 99
