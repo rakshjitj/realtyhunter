@@ -2,11 +2,13 @@ class CompaniesController < ApplicationController
   load_and_authorize_resource
   skip_before_action :logged_in_user, only: [:new, :create]
   before_action :set_company, except: [:new, :filter, :create, :index]
-
+  etag { current_user.id }
+  
   # GET /companies
   # GET /companies.json
   def index
     set_companies
+    fresh_when(@companies)
   end
 
   def filter
@@ -18,6 +20,7 @@ class CompaniesController < ApplicationController
   def show
     @employee_titles = EmployeeTitle.all.map{|e| e.display_name}
     @agent_types = AgentType.all.map{|e| e.display_name}
+    fresh_when(@company)
   end
 
   # GET /companies/new

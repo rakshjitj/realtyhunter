@@ -70,6 +70,8 @@ group :production do
 	gem 'rails_12factor'
 	gem 'puma'
 	gem 'wkhtmltopdf-heroku', '~> 2.12.2.1'
+  gem 'connection_pool'
+  gem 'dalli'
 end
 
 group :development, :test do

@@ -1,11 +1,11 @@
 class Building < ActiveRecord::Base
 	scope :unarchived, ->{where(archived: false)}
 	before_save :process_custom_security
-	belongs_to :company
-	belongs_to :landlord
-	belongs_to :neighborhood
-	belongs_to :pet_policy
-	belongs_to :required_security
+	belongs_to :company, touch: true
+	belongs_to :landlord, touch: true
+	belongs_to :neighborhood, touch: true
+	belongs_to :pet_policy, touch: true
+	belongs_to :required_security, touch: true
 	has_many :units, dependent: :destroy
 	has_many :images, dependent: :destroy
 	has_and_belongs_to_many :building_amenities
@@ -19,7 +19,7 @@ class Building < ActiveRecord::Base
 	validates :formatted_street_address, presence: true, length: {maximum: 200}, 
 		uniqueness: { case_sensitive: false }
 						
-	validates :street_number, presence: true, length: {maximum: 20}
+	validates :street_number, allow_blank: true, length: {maximum: 20}
 	validates :route, presence: true, length: {maximum: 100}
 	# borough
 	#:sublocality can be blank
@@ -33,13 +33,12 @@ class Building < ActiveRecord::Base
 	validates :lng, presence: true, length: {maximum: 100}
 	validates :place_id, presence: true, length: {maximum: 100}
 
-	# TODO: update to enforce either one of this or custom req
-	#validates :required_security, presence: true
-
-	validates :pet_policy, presence: true
 	validates :company, presence: true
 	validates :landlord, presence: true
-	validates :neighborhood, presence: true
+
+	# TODO: fix
+	# some address lookups don't return a valid neighborhood
+	#validates :neighborhood, presence: true
 
   def archive
     self.archived = true
@@ -51,7 +50,11 @@ class Building < ActiveRecord::Base
   end
 
 	def street_address
-		street_number + ' ' + route
+		if street_number
+			street_number + ' ' + route
+		else
+			route
+		end
 	end
 
 	def active_units

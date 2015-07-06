@@ -1,9 +1,9 @@
 class Unit < ActiveRecord::Base
 	actable
-	belongs_to :building
+	belongs_to :building, touch: true
   # TODO: test. I don't think this is working right?
-  belongs_to :primary_agent, :foreign_key => 'user_id', :class_name => 'User'
-  belongs_to :listing_agent, :foreign_key => 'user_id', :class_name => 'User'
+  belongs_to :primary_agent, :foreign_key => 'user_id', :class_name => 'User', touch: true
+  belongs_to :listing_agent, :foreign_key => 'user_id', :class_name => 'User', touch: true
   has_many :images, dependent: :destroy
   # TODO before_validation :generate_unique_id
 

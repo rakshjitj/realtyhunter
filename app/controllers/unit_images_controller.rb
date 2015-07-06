@@ -1,7 +1,8 @@
 class UnitImagesController < ApplicationController
   before_action :set_image, only: [:destroy]
   before_action :set_unit, except: [:destroy]
-
+  etag { current_user.id }
+  
   # POST /images
   # POST /images.json
   def create

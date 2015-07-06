@@ -4,12 +4,14 @@ class UsersController < ApplicationController
   before_action :set_user, except: [:index, :filter, :teams, :new, :create, :admin_new, 
     :admin_create, :update_offices]
   before_action :set_company, except: [:update_offices]
-
+  etag { current_user.id }
+  
   # GET /users
   # GET /users.json
   def index
     @agent_title = EmployeeTitle.agent
     set_users
+    fresh_when(@users)
     @title = 'All users'
   end
 
@@ -41,7 +43,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     # TODO: only show if this is an active user
-    #redirect_to root_url and return unless @user.activated == true
+    fresh_when(@user)
   end
 
   # GET /update_offices
@@ -105,7 +107,7 @@ class UsersController < ApplicationController
       flash[:info] = "Please check your email to activate your account."
       redirect_to root_url
     else
-      puts "**** #{@user.errors.inspect}"
+      #puts "**** #{@user.errors.inspect}"
       @companies = Company.all
       @offices = []
       @employtee_titles = EmployeeTitle.where.not("name like ?", "%admin%")
@@ -119,7 +121,6 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    #@user = User.find(params[:id])
     if @user.update(user_params)
       @user.update_roles
       flash[:success] = "Profile updated!"

@@ -27,9 +27,12 @@
 				  		<h2><%= @residential_unit.street_address_and_unit %></h2>
 				  		<h2><%= rent_formatted(@residential_unit.rent) %></h2>
 				  		<small>
-			  				<%= @residential_unit.building.neighborhood.name %>, <%= @residential_unit.building.sublocality %>, <%= @residential_unit.building.administrative_area_level_2_short %> <%= @residential_unit.building.postal_code %>
+			  				<%= small_header(@residential_unit) %>
 			  			</small>
-			  			<p><%= render 'market_status' %> &nbsp;&nbsp;<%= @residential_unit.beds %> Beds / <%= @residential_unit.baths %> Baths</p>
+			  			<p>
+			  				<%# Template Dependency: residential_units/market_status %>
+			  				<%= render 'market_status' %> &nbsp;&nbsp;<%= @residential_unit.beds %> Beds / <%= @residential_unit.baths %> Baths
+			  			</p>
 			  		</div>
 			  		
 			  	</div><!-- row -->
@@ -44,7 +47,7 @@
 				  			<%= @residential_unit.street_address_and_unit %>
 				  		</h1>
 				  		<p>
-			  				<%= @residential_unit.building.neighborhood.name %>, <%= @residential_unit.building.sublocality %>, <%= @residential_unit.building.administrative_area_level_2_short %> <%= @residential_unit.building.postal_code %>
+			  				<%= small_header(@residential_unit) %>
 			  			</p>
 			  		</div>
 			  		<div class="col-xs-12 col-md-5 form-label-responsive">
@@ -255,7 +258,7 @@
 	    			<strong>Pet Policy:</strong>
 	    		</div>
 	    		<div class="col-xs-6 col-md-4">
-	    			<%= @residential_unit.building.pet_policy.name.titleize %>
+	    			<%= pet_policy(@residential_unit) %>
 	    		</div>
 	    		<div class="col-xs-6 col-md-3">
 	    			<strong>Primary agent:</strong>
@@ -300,14 +303,7 @@
 	    			<strong>Open House:</strong>
 	    		</div>
 	    		<div class="col-xs-12 col-md-9">
-	    			<% if !@residential_unit.open_house %>
-		    			N/A
-		    		<% else %>
-		    			<% if @residential_unit.oh_exclusive %>
-		    				<strong>EXCLUSIVE!</strong>
-		    			<% end %>
-		    			<%= @residential_unit.open_house %>
-		    		<% end %>
+	    			<%= open_house(@residential_unit) %>
 	    		</div>
 	    	</div>
 
@@ -410,6 +406,7 @@
 
 
 <!-- modals that are common to show/index pages -->
+<%# Template Dependency: layouts/modals %>
 <%= render 'layouts/modals' %>
 
 <!-- Print Modal: only on the show page -->

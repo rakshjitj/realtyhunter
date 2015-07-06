@@ -2,7 +2,7 @@ class Landlord < ActiveRecord::Base
 	scope :unarchived, ->{where(archived: false)}
 
 	has_many :buildings, dependent: :destroy
-	belongs_to :company
+	belongs_to :company, touch: true
 	validates :company, presence: true
 
 	validates :code, presence: true, length: {maximum: 100}, 

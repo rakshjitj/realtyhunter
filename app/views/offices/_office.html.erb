@@ -1,3 +1,4 @@
+<% cache office do %>
 <tr class="<%= cycle('even', 'odd') -%>">
 	
   <td><%= link_to office.name, company_office_path(office.company, office) %></td>
@@ -18,3 +19,4 @@
     <%= link_to 'Agents', agents_company_office_path(office.company, office) %>
   </td>
 </tr>
+<% end %><!-- end cache -->

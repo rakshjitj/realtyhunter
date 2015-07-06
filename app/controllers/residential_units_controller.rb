@@ -2,11 +2,13 @@ class ResidentialUnitsController < ApplicationController
   load_and_authorize_resource
   before_action :set_residential_unit, except: [:new, :create, :index, :filter, 
     :print_list, :neighborhoods_modal, :features_modal, :refresh_images]
-
+  etag { current_user.id }
+  
   # GET /residential_units
   # GET /residential_units.json
   def index
     set_residential_units
+    #fresh_when(@residential_units)
     respond_to do |format|
       format.html
       format.csv do
@@ -65,6 +67,7 @@ class ResidentialUnitsController < ApplicationController
   # GET /residential_units/1
   # GET /residential_units/1.json
   def show
+    fresh_when(@residential_unit)
   end
 
   # GET /residential_units/new

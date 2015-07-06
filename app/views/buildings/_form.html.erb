@@ -42,6 +42,7 @@
         <p><strong>Edit current photos (drag to reorder):</strong></p>
         <div class="row">
           <div class="images sortable">
+            <%# Template Dependency: buildings/images %>
             <%= render 'images',  locals: { building: @building } %>
           </div>
         </div>

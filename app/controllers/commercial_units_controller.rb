@@ -2,11 +2,13 @@ class CommercialUnitsController < ApplicationController
   load_and_authorize_resource
   before_action :set_commercial_unit, except: [:new, :create, :index, :filter, 
     :neighborhoods_modal, :features_modal, :update_subtype]
+  etag { current_user.id }
 
   # GET /commercial_units
   # GET /commercial_units.json
   def index
     set_commercial_units
+    fresh_when(@commercial_units)
     respond_to do |format|
       format.html
       format.csv do
@@ -24,6 +26,7 @@ class CommercialUnitsController < ApplicationController
   # GET /commercial_units/1
   # GET /commercial_units/1.json
   def show
+    fresh_when(@commercial_unit)
     respond_to do |format|
       format.html
       format.js

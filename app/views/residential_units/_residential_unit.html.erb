@@ -1,50 +1,54 @@
-<tr class="<%= cycle('even', 'odd') -%>">
-  <td>
-    <% if residential_unit.images.length > 0 %>
-      <%= image_tag residential_unit.images[0].file.url(:thumb), :class => 'img-responsive center-block', 
-        alt: image.file.url(:medium) %>
-    <% else %>
-      <!-- placeholder image -->
-      <%= image_tag "listing_soon.png", alt: "Image coming soon", :size => "100x100" %>
-    <% end %>
-
-    <%= link_to "#{residential_unit.building.street_address} ##{residential_unit.building_unit}", residential_unit %><br />
-    <small><%= residential_unit.building.neighborhood.name %></small>
-    </td>
-  <td>
-    <% if current_user.is_management? %>
-      <%= link_to residential_unit.building.landlord.code, residential_unit.building.landlord %>
-    <% else %>
-      <%= residential_unit.building.landlord.code %>
-    <% end %>
-  </td>
-
-  <td><%= residential_unit.access_info %></td>
-  <td><%= residential_unit.bed_and_baths %></td>
-  <td><%= residential_unit.available_by.strftime("%Y-%b-%d") %></td>
-  <td><%= rent_formatted(residential_unit.rent) %></td>
-  <td><%= residential_unit.updated_at.strftime("%Y-%b-%d") %></td>
-  <td>
-    <% if residential_unit.status == "active" %>
-      <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
-    <% elsif residential_unit.status == "pending" %>
-      <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
-    <% elsif residential_unit.status == "off" %>
-      <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-    <% end %>
-  </td>
-  <% if current_user.is_management? %>
+<% cache residential_unit do %>
+  <tr class="<%= cycle('even', 'odd') -%>">
     <td>
-      <%= link_to 'Edit', edit_residential_unit_path(residential_unit) %> 
-      <br /><%= link_to 'Delete', delete_modal_residential_unit_path(residential_unit), 
-        data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
-      <br />
-      <%= link_to 'Duplicate', duplicate_modal_residential_unit_path(residential_unit), 
-        data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
-      <% if residential_unit.status == "active" %>
-        <br /><%= link_to 'Take off', take_off_modal_residential_unit_path(residential_unit), 
-          data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %>
+      <% if residential_unit.images.length > 0 %>
+        <%= image_tag residential_unit.images[0].file.url(:thumb), :class => 'img-responsive center-block', 
+          alt: residential_unit.images[0].file.url(:medium) %>
+      <% else %>
+        <!-- placeholder image -->
+        <%= image_tag "listing_soon.png", alt: "Image coming soon", :size => "100x100" %>
+      <% end %>
+
+      <%= link_to "#{residential_unit.building.street_address} ##{residential_unit.building_unit}", residential_unit %><br />
+      <% if residential_unit.building.neighborhood %>
+        <small><%= residential_unit.building.neighborhood.name %></small>
       <% end %>
     </td>
-  <% end %>
-</tr>
+    <td>
+      <% if current_user.is_management? %>
+        <%= link_to residential_unit.building.landlord.code, residential_unit.building.landlord %>
+      <% else %>
+        <%= residential_unit.building.landlord.code %>
+      <% end %>
+    </td>
+
+    <td><%= residential_unit.access_info %></td>
+    <td><%= residential_unit.bed_and_baths %></td>
+    <td><%= residential_unit.available_by.strftime("%Y-%b-%d") %></td>
+    <td><%= rent_formatted(residential_unit.rent) %></td>
+    <td><%= residential_unit.updated_at.strftime("%Y-%b-%d") %></td>
+    <td>
+      <% if residential_unit.status == "active" %>
+        <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
+      <% elsif residential_unit.status == "pending" %>
+        <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
+      <% elsif residential_unit.status == "off" %>
+        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+      <% end %>
+    </td>
+    <% if current_user.is_management? %>
+      <td>
+        <%= link_to 'Edit', edit_residential_unit_path(residential_unit) %> 
+        <br /><%= link_to 'Delete', delete_modal_residential_unit_path(residential_unit), 
+          data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
+        <br />
+        <%= link_to 'Duplicate', duplicate_modal_residential_unit_path(residential_unit), 
+          data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
+        <% if residential_unit.status == "active" %>
+          <br /><%= link_to 'Take off', take_off_modal_residential_unit_path(residential_unit), 
+            data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %>
+        <% end %>
+      </td>
+    <% end %>
+  </tr>
+<% end %> <!-- end cache -->

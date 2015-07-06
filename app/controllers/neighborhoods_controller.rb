@@ -1,15 +1,18 @@
 class NeighborhoodsController < ApplicationController
   before_action :set_neighborhood, only: [:show, :edit, :update, :destroy]
-
+  etag { current_user.id }
+  
   # GET /neighborhoods
   # GET /neighborhoods.json
   def index
     @neighborhoods = Neighborhood.unarchived.paginate(:page => params[:page], :per_page => 50)
+    fresh_when(@neighborhoods)
   end
 
   # GET /neighborhoods/1
   # GET /neighborhoods/1.json
   def show
+    fresh_when(@neighborhood)
   end
 
   # GET /neighborhoods/new

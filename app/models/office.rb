@@ -1,5 +1,5 @@
 class Office < ActiveRecord::Base
-	belongs_to :company
+	belongs_to :company, touch: true
 	has_many :users
 
 	scope :unarchived, ->{where(archived: false)}

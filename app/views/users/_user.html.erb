@@ -1,3 +1,4 @@
+<% cache user do %>
 <tr class="<%= cycle('even', 'odd') -%>">
 	<% if user.image %>
 		<td>
@@ -43,7 +44,9 @@
   </td>
   <td>
   	
+  <%# Template Dependency: users/actions %>
   <%= render 'users/actions', :user => user %>
 		
 	</td>
 </tr>
+<% end %><!-- end cache -->

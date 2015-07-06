@@ -3,16 +3,19 @@ class OfficesController < ApplicationController
   skip_load_resource :only => :create
   before_action :set_company, except: [:destroy]
   before_action :set_office, except: [:new, :create, :index]
-
+  etag { current_user.id }
+  
   # GET /offices
   # GET /offices.json
   def index
     set_offices
+    fresh_when(@offices)
   end
 
   # GET /offices/1
   # GET /offices/1.json
   def show
+    fresh_when(@office)
   end
 
   # GET /offices/new
@@ -27,12 +30,14 @@ class OfficesController < ApplicationController
   def managers
     @users = @office.managers
     @title = "Managers"
+    fresh_when(@users)
   end
 
   def agents
     @users = @office.agents
     @users.sort_by!{|u| u.name.downcase }
     @users = @users.paginate(:page => params[:page], :per_page => 50)
+    fresh_when(@users)
     @title = "Agents"
     render 'users/index'    
   end

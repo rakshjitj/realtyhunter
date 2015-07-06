@@ -2,11 +2,13 @@ class LandlordsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
   before_action :set_landlord, except: [:index, :new, :create, :filter]
-  
+  etag { current_user.id }
+    
   # GET /landlords
   # GET /landlords.json
   def index
     set_landlords
+    fresh_when(@landlords)
 
     respond_to do |format|
       format.html
@@ -26,6 +28,7 @@ class LandlordsController < ApplicationController
   # GET /landlords/1
   # GET /landlords/1.json
   def show
+    fresh_when(@landlord)
   end
 
   # GET /landlords/new

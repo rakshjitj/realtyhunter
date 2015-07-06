@@ -36,7 +36,11 @@ class ResidentialUnit < ActiveRecord::Base
 
   # used as a sorting condition
   def street_address_and_unit
-    building.street_number + ' ' + building.route + ' #' + building_unit
+    if building.street_number
+      building.street_number + ' ' + building.route + ' #' + building_unit
+    else
+      building.route + ' #' + building_unit
+    end
   end
 
   # used as a sorting condition

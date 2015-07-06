@@ -1,3 +1,4 @@
+<% cache commercial_unit do %>
 <tr class="status-<%= commercial_unit.status %>">
   <td>
     <%= link_to commercial_unit.building.street_address, commercial_unit %><br />
@@ -25,3 +26,4 @@
     </td>
   <% end %>
 </tr>
+<% end %><!-- end cache -->

@@ -8,8 +8,6 @@ task :import_users => :environment do
 	api_key = "7abe027d49624988b64c22acb9f196c5"
 	nestio_url = "https://nestiolistings.com/api/v1/public/agents?key=#{api_key}"
 
-	puts  "Getting data for all agents..."
-
 	mechanize = Mechanize.new
 	mechanize.user_agent_alias = "Mac Safari"
 	mechanize.follow_meta_refresh = true
@@ -18,6 +16,8 @@ task :import_users => :environment do
   page = 1
   page_count_limit = 50
   
+  puts  "Pulling Nestio data for all agents..."
+
   done = false
   for j in 1..total_pages
   	if done
@@ -26,7 +26,7 @@ task :import_users => :environment do
   	end
 
   	puts "Page #{j} ----------------------------"
-  	page = mechanize.get("#{nestio_url}&page=#{j}" )
+  	page = mechanize.get("#{nestio_url}&page=#{j}")
   	json_data = JSON.parse page.body
   	
     total_pages = json_data['total_pages']
@@ -41,10 +41,6 @@ task :import_users => :environment do
         break
       end
 
-      #   $l->{headshot}->{original} || undef,
-      #   $l->{headshot}->{thumbnail} || undef,
-      #   $l->{title},
-      #TODO: images
       item = items[i]
 
       if item['title'] == 'Licensed Real Estate Agent'
@@ -81,6 +77,7 @@ task :import_users => :environment do
         if headshot_img
           image = Image.new
           image.file = URI.parse(item['headshot']['original'])
+          image.save
           user.image = image
         end
 

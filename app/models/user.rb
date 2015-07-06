@@ -3,9 +3,9 @@ class User < ActiveRecord::Base
   default_scope { order("name ASC") }
   scope :unarchived, ->{where(archived: false)}
     
-  belongs_to :office
-  belongs_to :company
-  belongs_to :manager, :class_name => "User"
+  belongs_to :office, touch: true
+  belongs_to :company, touch: true
+  belongs_to :manager, :class_name => "User", touch: true
   belongs_to :employee_title
   has_many   :subordinates, :class_name => "User", :foreign_key => "manager_id"
   has_many   :units # primary agent, listing agent

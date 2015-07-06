@@ -149,7 +149,7 @@
       t.belongs_to :company
       t.belongs_to :landlord
       t.belongs_to :neighborhood
-      t.belongs_to :user
+      #t.belongs_to :user
       t.belongs_to :pet_policy
       t.belongs_to :required_security
       t.references :images, index: true

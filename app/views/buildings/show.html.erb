@@ -91,10 +91,12 @@
 				  <%= @building.formatted_street_address %>
 				</p>
 				
-				<p>
-				  <strong>Neighborhood:</strong>
-				  <%= @building.neighborhood.name %>
-				</p>
+				<% if @building.neighborhood %>
+					<p>
+					  <strong>Neighborhood:</strong>
+					  <%= @building.neighborhood.name %>
+					</p>
+				<% end %>
 
 				<p>
 				  <strong>Building Notes:</strong>

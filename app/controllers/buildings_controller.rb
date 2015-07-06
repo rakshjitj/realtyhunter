@@ -2,12 +2,14 @@ class BuildingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
   before_action :set_building, except: [:index, :new, :create, :filter, :refresh_images]
+  etag { current_user.id }
   #after_action :clear_xhr_flash, only: [:send_inaccuracy]
 
   # GET /buildings
   # GET /buildings.json
   def index
     set_buildings
+    fresh_when(@buildings)
 
     respond_to do |format|
       format.html
@@ -27,6 +29,7 @@ class BuildingsController < ApplicationController
   # GET /buildings/1
   # GET /buildings/1.json
   def show
+    fresh_when(@building)
   end
 
   # GET /buildings/new

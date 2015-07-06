@@ -1,3 +1,5 @@
+<% cache building do %>
+
 <tr class="<%= cycle('even', 'odd') -%>">
   <td>
     <% if building.images.length > 0 %>
@@ -21,3 +23,4 @@
       data: {toggle: "modal", target: "#bldgDeleteModal"}, remote: true %>
   </td>
 </tr>
+<% end %><!-- end cache -->
