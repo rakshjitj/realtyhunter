@@ -227,22 +227,22 @@ define_roles
 end
 
 # seed property data -----------------------------------------
-@neighborhood = Neighborhood.create({
-  name: "Crown Heights",
-  borough: "Brooklyn",
-  city: "New York",
-  state: "NY"
-  })
+# @neighborhood = Neighborhood.create({
+#   name: "Crown Heights",
+#   borough: "Brooklyn",
+#   city: "New York",
+#   state: "NY"
+#   })
 
-20.times do |n|
-  # if name has already been taken, ignore error
-  neigh = Neighborhood.create({
-    name: FFaker::Address::neighborhood,
-    borough: (n < 10) ? "Brooklyn" : "Queens",
-    city: "New York",
-    state: "NY"
-  })
-end
+# 20.times do |n|
+#   # if name has already been taken, ignore error
+#   neigh = Neighborhood.create({
+#     name: FFaker::Address::neighborhood,
+#     borough: (n < 10) ? "Brooklyn" : "Queens",
+#     city: "New York",
+#     state: "NY"
+#   })
+# end
 
 @landlord = Landlord.create!({
   code: "Unassigned", 
@@ -255,45 +255,45 @@ end
   company: @company,
   })
 
-@bldg = Building.create!({
-  formatted_street_address: '1062 Bergen St, Brooklyn, NY 11216',
-  street_number: '1062',
-  route: 'Bergen St',
-  sublocality: 'Brooklyn',
-  administrative_area_level_2_short: 'New York',
-  administrative_area_level_1_short: 'NY',
-  postal_code: '11216',
-  country_short: 'USA',
-  lat: '40.6759645',
-  lng: '-73.9509791',
-  place_id: 1,
-  notes: "Building has parking spots available, laundry in the basement.",
-  company: @company, 
-  landlord: @landlord,
-  neighborhood: @neighborhood,
-  pet_policy: @company.pet_policies[2],
-  required_security: @company.required_securities[1],
-  })
+# @bldg = Building.create!({
+#   formatted_street_address: '1062 Bergen St, Brooklyn, NY 11216',
+#   street_number: '1062',
+#   route: 'Bergen St',
+#   sublocality: 'Brooklyn',
+#   administrative_area_level_2_short: 'New York',
+#   administrative_area_level_1_short: 'NY',
+#   postal_code: '11216',
+#   country_short: 'USA',
+#   lat: '40.6759645',
+#   lng: '-73.9509791',
+#   place_id: 1,
+#   notes: "Building has parking spots available, laundry in the basement.",
+#   company: @company, 
+#   landlord: @landlord,
+#   neighborhood: @neighborhood,
+#   pet_policy: @company.pet_policies[2],
+#   required_security: @company.required_securities[1],
+#   })
 
-55.times do |n|
+# 55.times do |n|
 
-  ResidentialUnit.create!({
-    building_unit: Faker::Number.number(2),
-    rent: Faker::Number.number(4),
-    beds: Faker::Number.number(1),
-    baths: Faker::Number.number(1),
-    available_by: Time.zone.now,
-    access_info: FFaker::HipsterIpsum.phrase,
-    status: "active",
-    lease_duration: "year",
-    weeks_free_offered: Faker::Number.number(1),
-    notes: FFaker::HipsterIpsum.sentence,
-    building: @bldg,
-    listing_agent: @manager1,
-    primary_agent: @manager1,
-    op_fee_percentage: 95,
-    })
-end
+#   ResidentialUnit.create!({
+#     building_unit: Faker::Number.number(2),
+#     rent: Faker::Number.number(4),
+#     beds: Faker::Number.number(1),
+#     baths: Faker::Number.number(1),
+#     available_by: Time.zone.now,
+#     access_info: FFaker::HipsterIpsum.phrase,
+#     status: "active",
+#     lease_duration: "year",
+#     weeks_free_offered: Faker::Number.number(1),
+#     notes: FFaker::HipsterIpsum.sentence,
+#     building: @bldg,
+#     listing_agent: @manager1,
+#     primary_agent: @manager1,
+#     op_fee_percentage: 95,
+#     })
+# end
 
 55.times do |n|
   bldg_size = Faker::Number.number(4);
