@@ -15,7 +15,7 @@ module UsersHelper
 			html = html + ' <span class="glyphicon glyphicon-star dark-orange" aria-hidden="true"></span>'
 		end
 		
-		if user.is_agent?
+		if user.is_agent? 
 			html = html + ' | ' + user.agent_specialties.join(", ")
 		end
 

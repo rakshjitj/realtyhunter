@@ -1,0 +1,2 @@
+$('.commercial_units_units_table_body').html("<%= escape_javascript (render :partial => @commercial_units) %>");
+$('.pagination').html("<%= escape_javascript (render :partial => 'shared/pagination', :locals => {:models => @commercial_units}) %>");

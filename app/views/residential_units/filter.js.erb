@@ -1,1 +1,2 @@
 $('.residential_units_table_body').html("<%= escape_javascript (render :partial => @residential_units) %>");
+$('.pagination').html("<%= escape_javascript (render :partial => 'shared/pagination', :locals => {:models => @residential_units}) %>");
