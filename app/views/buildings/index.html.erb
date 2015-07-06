@@ -7,7 +7,7 @@
         url: "<%= filter_buildings_path %>",
         data: {
           filter: $('#filter').val(),
-          active_only: $('#checkbox_active').checked
+          active_only: $('#checkbox_active').prop('checked')
         },
         dataType: "script"
       }).fail(function() {
@@ -77,9 +77,10 @@
     <table class="table table-striped table-hover table-condensed table-responsive">
       <thead>
         <tr>
-          <th><%= sortable "formatted_street_address" %></th>
-          <th><%= sortable "active_units_count" %></th>
-          <th><%= sortable "total_units_count" %></th>
+          <th></th>
+          <th><%= sortable "formatted_street_address", "Address" %></th>
+          <th><%= sortable "active_units_count", "Active Units" %></th>
+          <th><%= sortable "total_units_count", "Total Units" %></th>
           <th><%= sortable "last_unit_updated" %></th>
           <th colspan="1"></th>
         </tr>
@@ -94,7 +95,7 @@
 </div>
 
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-offset-6 col-md-6 form-label-responsive">
     <%= render partial: 'shared/pagination', locals: {models: @buildings} %>
   </div>
 </div>

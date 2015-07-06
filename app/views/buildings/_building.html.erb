@@ -9,10 +9,10 @@
       <!-- placeholder image -->
       <%= image_tag "listing_soon.png", alt: "Image coming soon", :size => "100x100" %>
     <% end %>
-    
-    <%= link_to "#{building.street_address}", building %>&nbsp;&nbsp;
-    <%= building.sublocality %>, <%= building.administrative_area_level_1_short %>
-    &nbsp;&nbsp;<%= building.postal_code %>
+  </td>
+  <td>
+    <%= link_to "#{building.street_address}", building %><br />
+    <%= short_location_title(building) %>
   </td>
   <td><%= building.active_units.count %></td>
   <td><%= building.units.count %></td>

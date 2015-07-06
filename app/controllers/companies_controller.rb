@@ -8,7 +8,7 @@ class CompaniesController < ApplicationController
   # GET /companies.json
   def index
     set_companies
-    fresh_when(@companies)
+    #fresh_when(@companies)
   end
 
   def filter

@@ -13,7 +13,8 @@
 	$(document).ready(initialize);
 </script>
 
-<% provide(:title, 'Commercial Unit') %>
+<% provide(:title, @commercial_unit.building.street_address) %>
+
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
   	

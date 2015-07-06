@@ -9,7 +9,7 @@ class OfficesController < ApplicationController
   # GET /offices.json
   def index
     set_offices
-    fresh_when(@offices)
+    #fresh_when(@offices)
   end
 
   # GET /offices/1
