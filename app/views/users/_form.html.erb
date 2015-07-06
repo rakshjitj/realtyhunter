@@ -90,7 +90,7 @@
         <div class="col-md-6">
           <div class="field">
             <%= f.label :employee_title_id, "Role within the company" %><br>
-            <%= f.select(:employee_title_id, options_for_select(EmployeeTitle.all.collect {|t| [t.name.titleize, t.id]}, [@user.employee_title.id]), 
+            <%= f.select(:employee_title_id, options_for_select(EmployeeTitle.all_cached.collect {|t| [t.name.titleize, t.id]}, [@user.employee_title.id]), 
               {prompt: "Choose one..."},
               :onchange => "title_onchange_handler($(this).find('option:selected').text())",
               :required => true, 
@@ -103,7 +103,7 @@
         <div class="col-md-6 agent-type">
           <div class="field " >
             <%= f.label :agent_types, "Areas you work in" %><br>
-            <%= f.select(:agent_types, options_for_select(AgentType.all.collect {|t| [t.name.titleize]}, @user.agent_specialties),
+            <%= f.select(:agent_types, options_for_select(AgentType.all_cached.collect {|t| [t.name.titleize]}, @user.agent_specialties),
                 {},
                 {
                 :multiple => true,

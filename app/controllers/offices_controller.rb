@@ -9,12 +9,13 @@ class OfficesController < ApplicationController
   # GET /offices.json
   def index
     set_offices
-    #fresh_when(@offices)
   end
 
   # GET /offices/1
   # GET /offices/1.json
   def show
+    @managers = @office.managers
+    @agents = @office.agents
     fresh_when(@office)
   end
 

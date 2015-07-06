@@ -64,14 +64,14 @@
     <!-- desktop screens -->
     <div class="hidden-xs hidden-sm">
       <div class="row">
-        <% if @office.managers.any? %>
-          <% for i in 0..@office.managers.length-1 %>
+        <% if @managers.any? %>
+          <% for i in 0..@managers.length-1 %>
             <% if i % 4 == 0 && i > 0 %>
               </div>
               <div class="row">
             <% end %>
             <div class="col-md-3">
-              <%= link_to @office.managers[i].name, @office.managers[i] %>
+              <%= link_to @managers[i][:name], user_path(@managers[i][:id]) %>
             </div>
           <% end %>
         <% else %>
@@ -85,14 +85,14 @@
     <!-- tiny screens -->
     <div class="hidden-md hidden-lg">
       <div class="row">
-        <% if @office.managers.any? %>
-          <% for i in 0..@office.managers.length-1 %>
+        <% if @managers.any? %>
+          <% for i in 0..@managers.length-1 %>
             <% if i % 2 == 0 && i > 0 %>
               </div>
               <div class="row">
             <% end %>
             <div class="col-xs-6">
-              <%= link_to @office.managers[i].name, @office.managers[i] %>
+              <%= link_to @managers[i][:name], user_path(@managers[i][:id]) %>
             </div>
           <% end %>
         <% else %>
@@ -112,15 +112,16 @@
 
     <!-- desktop screens -->
     <div class="hidden-xs hidden-sm">
-      <div class="row">      
-        <% if @office.agents.any? %>
-          <% for i in 0..@office.agents.length-1 %>
+      <div class="row">
+
+        <% if @agents.any? %>
+          <% for i in 0..@agents.length-1 %>
             <% if i % 4 == 0 && i > 0 %>
               </div>
               <div class="row">
             <% end %>
             <div class="col-md-3">
-              <%= link_to @office.agents[i].name, @office.agents[i] %>
+              <%= link_to @agents[i][:name], user_path(@agents[i][:id]) %>
             </div>
           <% end %>
           <% else %>
@@ -134,14 +135,14 @@
     <!-- tiny screens -->
     <div class="hidden-md hidden-lg">
       <div class="row">      
-        <% if @office.agents.any? %>
-          <% for i in 0..@office.agents.length-1 %>
+        <% if @agents.any? %>
+          <% for i in 0..@agents.length-1 %>
             <% if i % 2 == 0 && i > 0 %>
               </div>
               <div class="row">
             <% end %>
             <div class="col-xs-6">
-              <%= link_to @office.agents[i].name, @office.agents[i] %>
+              <%= link_to @agents[i][:name], user_path(@agents[i][:id]) %>
             </div>
           <% end %>
           <% else %>

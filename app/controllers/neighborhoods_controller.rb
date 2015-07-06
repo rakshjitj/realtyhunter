@@ -6,7 +6,6 @@ class NeighborhoodsController < ApplicationController
   # GET /neighborhoods.json
   def index
     @neighborhoods = Neighborhood.unarchived.paginate(:page => params[:page], :per_page => 50)
-    #fresh_when(@neighborhoods)
   end
 
   # GET /neighborhoods/1

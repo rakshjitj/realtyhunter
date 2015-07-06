@@ -8,7 +8,6 @@ class CompaniesController < ApplicationController
   # GET /companies.json
   def index
     set_companies
-    #fresh_when(@companies)
   end
 
   def filter
@@ -18,8 +17,8 @@ class CompaniesController < ApplicationController
   # GET /companies/1
   # GET /companies/1.json
   def show
-    @employee_titles = EmployeeTitle.all.map{|e| e.display_name}
-    @agent_types = AgentType.all.map{|e| e.display_name}
+    @employee_titles = EmployeeTitle.all_cached.map{|e| e.display_name}
+    @agent_types = AgentType.all_cached.map{|e| e.display_name}
     fresh_when(@company)
   end
 
@@ -32,9 +31,9 @@ class CompaniesController < ApplicationController
 
   # GET /companies/1/edit
   def edit
-    #@agent_types = AgentType.all.map{|e| e.display_name}
+    #@agent_types = AgentType.all_cached.map{|e| e.display_name}
     #@company.agent_types = @agent_types.join("\n")
-    #@employee_titles = EmployeeTitle.all.map{|e| e.display_name}
+    #@employee_titles = EmployeeTitle.all_cached.map{|e| e.display_name}
     #@company.employee_titles = @employee_titles.join("\n")
   end
 
@@ -50,7 +49,7 @@ class CompaniesController < ApplicationController
 
   def employees
     @title = 'Employees'
-    @users = @company.users.includes(:office, :employee_title, :image, :company, :manager)
+    @users = @company.users.includes(:office, :employee_title, :image, :company, :manager, :roles)
       .paginate(:page => params[:page], :per_page => 50)
     render 'users/index'
   end

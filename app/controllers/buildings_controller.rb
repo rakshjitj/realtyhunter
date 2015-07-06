@@ -9,7 +9,6 @@ class BuildingsController < ApplicationController
   # GET /buildings.json
   def index
     set_buildings
-    #fresh_when(@buildings)
 
     respond_to do |format|
       format.html

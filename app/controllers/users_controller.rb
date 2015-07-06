@@ -11,7 +11,6 @@ class UsersController < ApplicationController
   def index
     @agent_title = EmployeeTitle.agent
     set_users
-    #fresh_when(@users)
     @title = 'All users'
   end
 

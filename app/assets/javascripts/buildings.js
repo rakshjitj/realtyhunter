@@ -14,6 +14,7 @@ function removeImage(id, bldg_id) {
 };
 
 $(document).ready(function(){
+		
 	// disable auto discover
 	Dropzone.autoDiscover = false;
  

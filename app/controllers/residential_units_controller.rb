@@ -8,7 +8,6 @@ class ResidentialUnitsController < ApplicationController
   # GET /residential_units.json
   def index
     set_residential_units
-    #fresh_when(@residential_units)
     respond_to do |format|
       format.html
       format.csv do

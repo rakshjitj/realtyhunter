@@ -14,4 +14,9 @@ class AgentType < ActiveRecord::Base
   	name.titleize.gsub('_', ' ')
   end
 
+  def self.all_cached
+    Rails.cache.fetch('agent_types') {
+      AgentType.all
+    }
+  end
 end

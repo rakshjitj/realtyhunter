@@ -44,10 +44,12 @@ class Office < ActiveRecord::Base
   end
 
 	def managers
-		@managers = self.users.select{|u| u if u.is_manager?}
+		User.joins(:office).merge(Office.where(id: self.id)).joins(:employee_title)
+			.merge(EmployeeTitle.where(name: 'manager')).map{|u| {name: u.name, id: u.id} }
 	end
 
 	def agents
-		@agents = self.users.select{|u| u if !u.is_manager?}
+		User.joins(:office).merge(Office.where(id: self.id)).joins(:employee_title)
+			.merge(EmployeeTitle.where(name: 'agent')).map{|u| {name: u.name, id: u.id} }
 	end
 end

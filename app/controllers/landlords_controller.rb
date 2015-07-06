@@ -8,7 +8,6 @@ class LandlordsController < ApplicationController
   # GET /landlords.json
   def index
     set_landlords
-    #fresh_when(@landlords)
 
     respond_to do |format|
       format.html

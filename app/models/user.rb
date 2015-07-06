@@ -1,6 +1,12 @@
 class User < ActiveRecord::Base
   rolify
-  default_scope { order("name ASC") }
+  has_and_belongs_to_many :roles, :join_table => :users_roles
+
+  def has_role?(role_name)
+    self.roles.any? {|r| r.name == role_name}
+  end
+
+  default_scope { order("users.name ASC") }
   scope :unarchived, ->{where(archived: false)}
     
   belongs_to :office, touch: true
@@ -138,7 +144,10 @@ class User < ActiveRecord::Base
   end
 
   def self.search(query_params)
-    @running_list = User.unarchived.includes(:employee_title, :office, :company, :manager, :image)
+    # food for thought:
+    #User.joins(:employee_title).select('users.name', 'employee_titles.name as title').map{|u| [u.name, u.title]}
+    @running_list = User.unarchived.includes(
+      :employee_title, :office, :company, :manager, :image, :roles)
     if !query_params || !query_params[:name_email]
       return @running_list 
     end
@@ -216,7 +225,7 @@ class User < ActiveRecord::Base
   end
 
   def is_agent?
-    AgentType.all.each do |at|
+    AgentType.all_cached.each do |at|
       return true if self.has_role? at.name
     end
     return false
@@ -236,6 +245,7 @@ class User < ActiveRecord::Base
   #  subordinates.clear
   #  self.remove_role :manager
   #end
+
 
   def add_subordinate(subord)
     if self.has_role? :manager
@@ -276,7 +286,7 @@ class User < ActiveRecord::Base
 
   def agent_specialties
     @specialities = []
-    AgentType.all.each do |a|
+    AgentType.all_cached.each do |a|
       if self.has_role? a.name
         @specialities << a.name.titleize
       end
@@ -286,7 +296,7 @@ class User < ActiveRecord::Base
 
   def agent_specialties_as_indicies
     @specialities = []
-    AgentType.all.each do |a|
+    AgentType.all_cached.each do |a|
       if self.has_role? a.name
         @specialities << a.id
       end
@@ -322,7 +332,7 @@ class User < ActiveRecord::Base
   # - From the same company as the other user
   # - Higher in rank than the other user
   def can_approve(other_user)
-    return self.is_company_admin? && self.company == other_user.company &&
+    return self.is_company_admin? &&
     other_user.employee_title.id < self.employee_title.id
   end
 
@@ -330,7 +340,7 @@ class User < ActiveRecord::Base
   # - at the same company
   # - either their direct manager or a company admin
   def can_kick(other_user)
-    return (self.company == other_user.company && other_user.manager) &&
+    return other_user.manager &&
     (self.is_company_admin? ||
     (self == other_user.manager))
   end
@@ -346,8 +356,7 @@ class User < ActiveRecord::Base
   # - We must both work for the same company
   def can_manage_team(other_user)
     return other_user.is_manager? && 
-    (self.is_company_admin? || self == other_user) &&
-    self.company == other_user.company
+    (self.is_company_admin? || self == other_user)
   end
 
   # for use in our API
