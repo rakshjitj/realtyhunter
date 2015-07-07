@@ -88,14 +88,14 @@ class LandlordsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_landlord
       @landlord = Landlord.find_unarchived(params[:id])
-      @residential_units = @landlord.residential_units.paginate(:page => params[:page], :per_page => 50)
-      @commercial_units = @landlord.commercial_units.paginate(:page => params[:page], :per_page => 50)
+      @residential_units = @landlord.residential_units.page params[:page]
+      @commercial_units = @landlord.commercial_units.page params[:page]
     end
 
     def set_landlords
       @landlords = Landlord.search(params)
       @landlords = custom_sort
-      @landlords = @landlords.paginate(page: params[:page], per_page: 50)
+      @landlords = Kaminari.paginate_array(@landlords).page params[:page]
     end
 
     def custom_sort
