@@ -1,3 +1,4 @@
+// for printing pdfs
 var timer2;
 function clearSpinner() {
   // remove the spinner after download completes.
@@ -13,6 +14,7 @@ $('.btn-print-list').click( function(event) {
   timer2 = setTimeout(clearSpinner, 15000);
 });
 
+// for searching on the index page
 function doSearch(event) {
 	// sanitize invalid input before submitting
   if ($('#neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
@@ -47,7 +49,10 @@ function doSearch(event) {
         building_feature_ids: $('#building_feature_ids').val(),
       } 
     },
-    dataType: "script"
+    dataType: "script",
+    //success: function(data) {
+			//updateOverviewMap();
+		//},
   });
 };
 
@@ -72,20 +77,21 @@ function removeImage(id, unit_id) {
 		type: 'DELETE',
 		url: '/residential_units/' + unit_id + '/unit_images/' + id,
 		success: function(data){
-			console.log(data.message);
+			//console.log(data.message);
 			$.getScript('/residential_units/' + unit_id + '/refresh_images')
 		},
 		error: function(data) {
-			console.log('ERROR:', data);
+			//console.log('ERROR:', data);
 		}
 	});
 };
 
+// for giant google map
 function buildContentString(key, info) {
-	console.log(key, info);
+	//console.log(key, info);
   var contentString = '<strong>' + key + '</strong><hr />';
   for (var i=0; i<info['units'].length; i++) {
-    contentString += '#<a href="/residential_units/' + info['units'][i].id + '">' + info['units'][i].building_unit + '</a>: ' + info['units'][i].beds + ' beds / ' 
+    contentString += '<a href="/residential_units/' + info['units'][i].id + '">' + info['units'][i].building_unit + '</a>: ' + info['units'][i].beds + ' beds / ' 
       + info['units'][i].baths + ' baths $' + info['units'][i].rent + '<br />';
     if (i == 5) {
       contentString += '<a href="/residential_units?building_id=' + info['building_id'] + '">View more...</a>';
@@ -95,20 +101,49 @@ function buildContentString(key, info) {
   return contentString;
 };
 
+function updateOverviewMap(in_data) {
+	console.log('onetwothree');
+	// for displaying the map points on the index page
+	if ($('#big-map').length > 0) {
+		var mapOptions = {
+	    center: { lat: 40.6739591, lng: -73.9570342},
+	    zoom: 12
+	  };
+	  var map = new google.maps.Map(document.getElementById('big-map'), mapOptions);
+	  var dataPoints;
+	  // if updating from an ajax call, in_data will hava content.
+	  // we load data from a data attribute on page load, but that remains cached forever -
+	  // it will not update with subsequent ajax calls.
+	  if (in_data) {
+	  	dataPoints = JSON.parse(in_data);
+	  } else {
+	  	dataPoints = JSON.parse($('#big-map').attr('data-map-points'));
+	  }
+
+		var infoWindow;
+	  Object.keys(dataPoints).forEach(function(key, index) {
+	    // draw each marker + load with data
+	    info = dataPoints[key];
+	    var myLatlng = new google.maps.LatLng(info.lat, info.lng);
+	    var marker = new google.maps.Marker({
+	      map:map,
+	      animation: google.maps.Animation.DROP,
+	      position: myLatlng,
+	    });
+	    google.maps.event.addListener(marker, 'click', function() {
+	    	if (infoWindow) {
+	    		infoWindow.close();
+	    	}
+	    	infoWindow = new google.maps.InfoWindow({
+		    	content: buildContentString(key, info)
+		    });
+	      infoWindow.open(map, marker);
+	    });
+		});
+	}
+};
 
 $(document).ready(function(){
-	// google map
-	var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
-	$("#runit-panel").geocomplete({
-  	map: "#map_canvas",
-  	location: bldg_address,
-  	details: ".details"
-  }).bind("geocode:result", function(event, result){
-      //console.log(result);
-  }).bind("geocode:error", function(event, result){
-      //console.log("[ERROR]: " + result);
-  });
-
 	// index filtering
 	$('input').keydown(preventEnter);
   $('#address').keyup(throttledSearch);
@@ -127,44 +162,19 @@ $(document).ready(function(){
   $('#unit_feature_ids').change(throttledSearch);
   $('#building_feature_ids').change(throttledSearch);
 
-	// for displaying the map points on the index page
-	if ($('#big-map').length > 0) {
-		var mapOptions = {
-	    center: { lat: 40.6739591, lng: -73.9570342},
-	    zoom: 12
-	  };
-	  var map = new google.maps.Map(document.getElementById('big-map'), mapOptions);
+	updateOverviewMap();
 
-	  var dataPoints = JSON.parse($('#big-map').attr('data-map-points'));
-	  //console.log(dataPoints);
-	  var markers = [];
-	  var contentStrings = [];
-
-	  Object.keys(dataPoints).forEach(function(key, index) {
-	    // draw marker
-	    info = dataPoints[key];
-	    var myLatlng = new google.maps.LatLng(info.lat, info.lng);
-	    var marker = new google.maps.Marker({
-	      map:map,
-	      animation: google.maps.Animation.DROP,
-	      position: myLatlng,
-	      //title: 'Hello World!'
-	    });
-
-	    // populate infoWindow
-	    var contentStr= buildContentString(key, info);
-	    var infowindow = new google.maps.InfoWindow({
-	     content: contentStr
-	    });
-	    //console.log(myLatlng, contentStr);
-	    google.maps.event.addListener(marker, 'click', function() {
-	      infowindow.open(map, marker);
-	    });
-		});
-	}
-
-  // neighborhoods modal
-  $('#myTab a:first').tab('show')
+	// google map on show page
+	var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
+	$("#runit-panel").geocomplete({
+  	map: "#map_canvas",
+  	location: bldg_address,
+  	details: ".details"
+  }).bind("geocode:result", function(event, result){
+      //console.log(result);
+  }).bind("geocode:error", function(event, result){
+      //console.log("[ERROR]: " + result);
+  });
 
   // for drag n dropping photos
 
@@ -203,7 +213,7 @@ $(document).ready(function(){
 		event.preventDefault();
 		var id = $(this).attr('data-id'); 
 		var unit_id = $(this).attr('data-unit-id');
-		console.log(id, unit_id);
+		//console.log(id, unit_id);
 		removeImage(id, unit_id);
 		// TODO: WTF why is this breaking?
 	});

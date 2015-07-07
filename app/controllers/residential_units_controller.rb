@@ -32,8 +32,8 @@ class ResidentialUnitsController < ApplicationController
     
     # if boroughs are defined for this area, organize the neighborhoods by boroughs
     boroughs = @neighborhoods.collect(&:borough).uniq
+    @by_boroughs = {}
     if !boroughs.empty?
-      @by_boroughs = {}
       @neighborhoods.each do |neighborhood|
         if !@by_boroughs.has_key? neighborhood.borough
           @by_boroughs[neighborhood.borough] = []
@@ -271,9 +271,7 @@ class ResidentialUnitsController < ApplicationController
       
       @residential_units = custom_sort
       @residential_units = @residential_units.paginate(:page => params[:page], :per_page => 50)
-      puts "\n\n22222 #{@map_infos.inspect}"
       @map_infos = ResidentialUnit.set_location_data(@residential_units)
-      puts "\n\n1111111 #{@map_infos.inspect}"
     end
 
     def residential_units_no_pagination

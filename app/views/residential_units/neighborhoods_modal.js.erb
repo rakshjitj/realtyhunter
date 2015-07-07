@@ -1,5 +1,4 @@
 $('#neighborhoodsModal #placeholder-body').html("<%= j(render :partial => "neighborhoods_modal_helper", locals: { neighborhoods: @neighborhoods }) %>");
-
 // remember the last selected neighborhoods
 var ids = $('#neighborhood_ids').val().split(", ");
 if (ids != "{:id=>\"neighborhood_ids\"}") {
@@ -17,8 +16,7 @@ $('#neighborhoodsModal .btn-close').click( function(event) {
 		selectedIds.push(val.id);
 	});
 
-$('#selected_neighborhoods').html(selectedNeighborhoods.join(", "));
-$('#neighborhood_ids').val(selectedIds.join(", "));
-$('#neighborhood_ids').trigger('change');
-
+	$('#selected_neighborhoods').html(selectedNeighborhoods.join(", "));
+	$('#neighborhood_ids').val(selectedIds.join(", "));
+	$('#neighborhood_ids').trigger('change');
 });

@@ -15,7 +15,8 @@ task :import_residential => :environment do
 		country_short = nil
 		postal_code = nil
 		administrative_area_level_1_short = nil
-		administrative_area_level_2_short = nil
+		administrative_area_level_1_long = nil
+		#administrative_area_level_2_short = nil
 		sublocality = nil
 		neighborhood_name = nil
 
@@ -35,8 +36,9 @@ task :import_residential => :environment do
 				postal_code = c['short_name']
 			elsif c['types'].include? 'administrative_area_level_1'
 				administrative_area_level_1_short = c['short_name']
-			elsif c['types'].include? 'administrative_area_level_2'
-				administrative_area_level_2_short = c['short_name']
+				administrative_area_level_1_long = c['long_name']
+			#elsif c['types'].include? 'administrative_area_level_1'
+				#administrative_area_level_2_short = c['short_name']
 			elsif c['types'].include? 'sublocality'
 				sublocality = c['short_name']
 			elsif c['types'].include? 'neighborhood'
@@ -56,7 +58,7 @@ task :import_residential => :environment do
 			nabe = Neighborhood.create!({
 				name: neighborhood_name,
 				borough: sublocality,
-				city: administrative_area_level_2_short,
+				city: administrative_area_level_1_long,
 				state: administrative_area_level_1_short
 			})
 		end
@@ -74,7 +76,7 @@ task :import_residential => :environment do
 				country_short: country_short,
 				postal_code: postal_code,
 				administrative_area_level_1_short: administrative_area_level_1_short,
-				administrative_area_level_2_short: administrative_area_level_2_short,
+				administrative_area_level_2_short: administrative_area_level_1_long,
 				sublocality: sublocality,
 				formatted_street_address: result['formatted_address'],
 				place_id: result['place_id'],
@@ -88,9 +90,11 @@ task :import_residential => :environment do
 		
 		amenities = []
 		bldg['amenities'].each{ |a| 
-			amenity = BuildingAmenity.find_by(name: a.titleize)
+			amenity_name = a.downcase.strip
+			#puts "\n\n\n CHECKING #{amenity_name}"
+			amenity = BuildingAmenity.find_by(name: amenity_name, company: company)
 			if !amenity
-				puts "*** Adding REQUIRED SECURITY #{a.titleize}"
+				#puts "*** Adding REQUIRED SECURITY #{amenity_name}"
 				amenity = BuildingAmenity.create!(company: company, name: a.titleize)
 			end
 			amenities << amenity
@@ -114,9 +118,9 @@ task :import_residential => :environment do
 	nestio_url = "https://nestiolistings.com/api/v1/public/listings?key=#{api_key}"
 
 	# clear old data
-	#Neighborhood.delete_all
-	#Building.delete_all
-	#ResidentialUnit.delete_all
+	Neighborhood.delete_all
+	Building.delete_all
+	ResidentialUnit.delete_all
 
 	# begin pulling down new data
 	total_pages = 99
@@ -255,11 +259,12 @@ task :import_residential => :environment do
 			})
 
 			if item['pets'] && !unit.building.pet_policy
-      	pet_policy = PetPolicy.find_by(name: item['pets'], company: company)
+				policy_name = item['pets'].downcase.strip
+      	pet_policy = PetPolicy.find_by(name: policy_name, company: company)
 				if !pet_policy
-					puts "*** Adding PET POLICY #{item['pets']}"
+					#puts "*** Adding PET POLICY [policy_name]"
 					pet_policy = PetPolicy.create!({
-						name: item['pets'],
+						name: policy_name,
 						company: company
 					})
 				end
@@ -267,10 +272,10 @@ task :import_residential => :environment do
 			end
 
 			item['photos'].each{ |p| 
-				image = Image.new
-        image.file = URI.parse(p['original'])
-        image.save
-				unit.images << image
+				# image = Image.new
+    #     image.file = URI.parse(p['original'])
+    #     image.save
+				# unit.images << image
 	    }
 
     end

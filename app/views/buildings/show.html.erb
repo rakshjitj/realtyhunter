@@ -58,13 +58,15 @@
 					</div>
 
 					<!-- clickable navigation -->
-					<% for i in 0..@building.images.length-1 %>
-						<% image = @building.images[i] %>
-			  		<a href="#building-carousel" data-slide-to="<%= i %>">
-				      <%= image_tag image.file.url(:thumb), :class => 'photo-inline', 
-				      	alt: image.file.url(:thumb) %>
-				    </a>
-			  	<% end %>
+					<% if @building.images.length > 1 %>
+						<% for i in 0..@building.images.length-1 %>
+							<% image = @building.images[i] %>
+				  		<a href="#building-carousel" data-slide-to="<%= i %>">
+					      <%= image_tag image.file.url(:thumb), :class => 'photo-inline', 
+					      	alt: image.file.url(:thumb) %>
+					    </a>
+				  	<% end %>
+				  <% end %>
 
 			  <% else %>
 			  	<!-- placeholder image -->
