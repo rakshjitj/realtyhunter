@@ -272,10 +272,10 @@ task :import_residential => :environment do
 			end
 
 			item['photos'].each{ |p| 
-				# image = Image.new
-    #     image.file = URI.parse(p['original'])
-    #     image.save
-				# unit.images << image
+				image = Image.new
+        image.file = URI.parse(p['original'])
+        image.save
+				unit.images << image
 	    }
 
     end
