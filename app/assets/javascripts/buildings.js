@@ -16,9 +16,7 @@
   };
 
   function filterBuildings(event) {
-    console.log('filterBuildings');
   	var search_path = $('#search-filters').attr('data-search-path');
-    console.log(search_path, $('#filter').val());
     $.ajax({
       url: search_path,
       data: {

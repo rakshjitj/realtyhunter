@@ -283,8 +283,6 @@ class ResidentialUnitsController < ApplicationController
       
       @residential_units = custom_sort
       @map_infos = ResidentialUnit.set_location_data(@residential_units)
-      #@residential_units = @residential_units.paginate(:page => params[:page], :per_page => 50)
-      #@users = User.order(:name).page params[:page]
       @residential_units = Kaminari.paginate_array(@residential_units).page params[:page]
     end
 
