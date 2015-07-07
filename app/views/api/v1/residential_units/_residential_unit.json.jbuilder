@@ -26,7 +26,10 @@ json.unit_description listing.notes
 
 #json.open_houses listing.open_house
 
-json.pets listing.building.pet_policy.name
+if listing.building.pet_policy
+	json.pets listing.building.pet_policy.name
+end
+
 json.changed_at listing.updated_at
 
 #json.photos

@@ -66,7 +66,7 @@ class ResidentialUnitsController < ApplicationController
   # GET /residential_units/1
   # GET /residential_units/1.json
   def show
-    fresh_when(@residential_unit)
+    fresh_when([@residential_unit, @residential_unit.images])
   end
 
   # GET /residential_units/new
@@ -206,6 +206,9 @@ class ResidentialUnitsController < ApplicationController
     end
 
     if @residential_unit.update(residential_unit_params)
+      # invalidate cache
+      Rails.cache.delete("building_#{building.id}_runit_#{id}_neighborhood")
+
       flash[:success] = "Unit successfully updated!"
       redirect_to @residential_unit
     else
@@ -254,6 +257,9 @@ class ResidentialUnitsController < ApplicationController
   # GET /refresh_images
   # ajax call
   def refresh_images
+    # invalidate cache
+    Rails.cache.delete("building_#{building.id}_runit_#{id}_primary_img")
+
     respond_to do |format|
       format.js  
     end
@@ -270,8 +276,8 @@ class ResidentialUnitsController < ApplicationController
       @residential_units = ResidentialUnit.search(search_params, params[:building_id])
       
       @residential_units = custom_sort
-      @residential_units = @residential_units.paginate(:page => params[:page], :per_page => 50)
       @map_infos = ResidentialUnit.set_location_data(@residential_units)
+      @residential_units = @residential_units.paginate(:page => params[:page], :per_page => 50)
     end
 
     def residential_units_no_pagination

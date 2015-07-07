@@ -25,6 +25,30 @@ class ResidentialUnit < ActiveRecord::Base
 
   validates :weeks_free_offered, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
 
+  def cached_neighborhood
+    Rails.cache.fetch("building_#{building.id}_runit_#{id}_neighborhood") {
+      building.neighborhood
+    }
+  end
+
+  def cached_landlord
+    Rails.cache.fetch("building_#{building.id}_runit_#{id}_landlord") {
+      building.landlord
+    }
+  end
+
+  def cached_primary_img
+    Rails.cache.fetch("building_#{building.id}_runit_#{id}_primary_img") {
+      images[0]
+    }
+  end
+
+  def cached_street_address
+    Rails.cache.fetch("building_#{building.id}_runit_#{id}_street_address") {
+      building.street_address
+    }
+  end
+
   def archive
     self.archived = true
     self.save
@@ -121,7 +145,7 @@ class ResidentialUnit < ActiveRecord::Base
 
     # all search params come in as strings from the url
     # clear out any invalid search params
-    params.delete_if{|k,v| (!v || v == 0 || v.empty?) }
+    params.delete_if{ |k,v| (!v || v == 0 || v.empty?) }
 
     # search by address (building)
     if params[:address]

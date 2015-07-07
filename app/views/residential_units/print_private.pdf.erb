@@ -22,10 +22,19 @@
 	  		</div><!-- page-header -->
 
 		    <div class="row">
-	        <!-- <div class="col-xs-5">
-	            TODO: photo
-	        </div> -->
-	        <div class="col-xs-12">
+	        <div class="col-xs-5">
+            <% if @residential_unit.images.length > 0 %>
+              <!-- draw up to the first 1 images -->
+              <% for i in 0..2 %>
+                <% if @residential_unit.images.length > i %>
+      	          <%= image_tag @residential_unit.images[i].file.url(:medium), :class => 'photo-inline', 
+                    alt: @residential_unit.images[i].file.url(:medium), size:"100%" %><br />
+                <% end %>
+              <% end %>
+            <% else %>
+            <% end %>
+	        </div>
+	        <div class="col-xs-7">
 	        		<div class="row">
                 <div class="col-xs-5 text-right">
                   <strong>Address</strong>
@@ -74,25 +83,25 @@
 	            
               <div class="row">
                 <div class="col-xs-5 text-right">
-                  <strong>LL Pays</strong>
+                  <strong>LL Pays %</strong>
                 </div>
                 <div class="col-xs-7">
-                  <%= @residential_unit.op_fee_percentage %>%
+                  <%= @residential_unit.op_fee_percentage %>
                 </div>
 	            </div>
               
               <div class="row">
                 <div class="col-xs-5 text-right">
-                  <strong>Tenant Pays</strong>
+                  <strong>Tenant Pays %</strong>
                 </div>
                 <div class="col-xs-7">
-                  <%= @residential_unit.tp_fee_percentage %>%
+                  <%= @residential_unit.tp_fee_percentage %>
                 </div>
               </div>
 
 	            <div class="row">
                 <div class="col-xs-5 text-right">
-                    <strong>Availability</strong>
+                    <strong>Available By</strong>
                 </div>
                 <div class="col-xs-7">
                   <% if @residential_unit.available_by < Date.today %>
@@ -120,14 +129,17 @@
                 </div>
 	            </div>
 
-	            <div class="row">
-                <div class="col-xs-5 text-right">
-                  <strong>Pet policy</strong>
-                </div>
-                <div class="col-xs-7">
-                  <%= @residential_unit.building.pet_policy.name %>
-                </div>
-	            </div>
+              <% if @residential_unit.building.pet_policy %>
+  	            <div class="row">
+                  <div class="col-xs-5 text-right">
+                    <strong>Pet policy</strong>
+                  </div>
+                  <div class="col-xs-7">
+                    <%= pet_policy(@residential_unit) %>
+                  </div>
+  	            </div>
+              <% end %>
+
 	            <div class="row">
                 <div class="col-xs-5 text-right">
                   <strong>Listing ID</strong>

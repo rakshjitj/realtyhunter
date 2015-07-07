@@ -42,7 +42,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     # TODO: only show if this is an active user
-    fresh_when(@user)
+    fresh_when([@user, @user.image])
   end
 
   # GET /update_offices

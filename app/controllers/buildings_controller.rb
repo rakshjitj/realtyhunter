@@ -38,7 +38,7 @@ class BuildingsController < ApplicationController
   # GET /buildings/1
   # GET /buildings/1.json
   def show
-    fresh_when(@building)
+    fresh_when([@building, @building.images])
   end
 
   # GET /buildings/new
@@ -79,6 +79,9 @@ class BuildingsController < ApplicationController
   # PATCH/PUT /buildings/1.json
   def update
     if @building.update(format_params_before_save(false))
+      # clear cache
+      Rails.cache.delete_matched("building_#{id}*")
+
       flash[:success] = "Building updated!"
       redirect_to @building
     else
@@ -89,6 +92,8 @@ class BuildingsController < ApplicationController
   # GET /refresh_images
   # ajax call
   def refresh_images
+    Rails.cache.delete("building_#{building.id}*")
+    
     respond_to do |format|
       format.js  
     end
