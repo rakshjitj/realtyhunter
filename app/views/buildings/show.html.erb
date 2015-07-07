@@ -81,10 +81,10 @@
 				  <%= @building.formatted_street_address %>
 				</p>
 				
-				<% if @building.neighborhood %>
+				<% if @building.cached_neighborhood %>
 					<p>
 					  <strong>Neighborhood:</strong>
-					  <%= @building.neighborhood.name %>
+					  <%= @building.cached_neighborhood.name %>
 					</p>
 				<% end %>
 
@@ -96,9 +96,9 @@
 				<p>
 				  <strong>Landlord Code:</strong>
 				  <% if current_user.is_management? %>
-					  <%= link_to @building.landlord.code, landlord_path(@building.landlord) %>
+					  <%= link_to @building.cached_landlord.code, landlord_path(@building.cached_landlord) %>
 					<% else %>
-						<%= @building.landlord.code %>
+						<%= @building.cached_landlord.code %>
 					<% end %>
 				</p>
 

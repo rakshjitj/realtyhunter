@@ -1,8 +1,8 @@
 module ResidentialUnitsHelper
 	
 	def pet_policy(unit)
-		if unit.building.pet_policy
-			unit.building.pet_policy.name.titleize
+		if unit.cached_pet_policy
+			unit.cached_pet_policy.name.titleize
 		else
 			"-"
 		end
@@ -21,10 +21,10 @@ module ResidentialUnitsHelper
 	end
 
 	def small_header(unit)
-		if unit.building.neighborhood
-			"#{unit.building.sublocality}, #{unit.building.administrative_area_level_1_short} #{unit.building.postal_code}"
+		if unit.cached_neighborhood
+			"#{unit.cached_building.sublocality}, #{unit.cached_building.administrative_area_level_1_short} #{unit.cached_building.postal_code}"
 		else
-			"#{unit.building.neighborhood.name}, #{unit.building.sublocality}, #{unit.building.administrative_area_level_1_short} #{unit.building.postal_code}"
+			"#{unit.cached_neighborhood.name}, #{unit.cached_building.sublocality}, #{unit.cached_building.administrative_area_level_1_short} #{unit.cached_building.postal_code}"
 		end	
 		
 	end

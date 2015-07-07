@@ -40,6 +40,24 @@ class Building < ActiveRecord::Base
 	# some address lookups don't return a valid neighborhood
 	#validates :neighborhood, presence: true
 
+	def cached_neighborhood
+    Rails.cache.fetch("building_#{building.id}_neighborhood") {
+      neighborhood
+    }
+  end
+
+  def cached_landlord
+    Rails.cache.fetch("building_#{building.id}_landlord") {
+      landlord
+    }
+  end
+
+  def cached_primary_img
+    Rails.cache.fetch("building_#{building.id}_primary_img") {
+      images[0] ? images[0] : nil
+    }
+  end
+
   def archive
     self.archived = true
     self.save
@@ -78,7 +96,7 @@ class Building < ActiveRecord::Base
 	end
 
 	def self.search(query_str, active_only)
-		@running_list = Building.includes(:images).unarchived
+		@running_list = Building.unarchived
     return @running_list if !query_str
     
     @terms = query_str.split(" ")

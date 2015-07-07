@@ -66,6 +66,7 @@ gem 'mechanize'
 
 gem 'local_time'
 
+
 group :production do
 	gem 'rails_12factor'
 	gem 'puma'
@@ -87,6 +88,7 @@ end
 group :development do
   gem 'rb-readline'
   gem "bullet"
+  #gem 'sql-logging'
 end
 
 group :test do

@@ -5,8 +5,8 @@
     <% if building.images.length > 0 %>
 
       <%= link_to(
-        image_tag(building.images[0].file.url(:thumb), :class => 'img-responsive', 
-        alt: building.images[0].file.url(:medium)), building) %>
+        image_tag(building.cached_primary_img.file.url(:thumb), :class => 'img-responsive', 
+        alt: building.cached_primary_img.file.url(:medium)), building) %>
       
     <% else %>
       <!-- placeholder image -->

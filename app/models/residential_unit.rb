@@ -25,27 +25,39 @@ class ResidentialUnit < ActiveRecord::Base
 
   validates :weeks_free_offered, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
 
+  def cached_building
+    Rails.cache.fetch("building_#{building_id}_runit_#{id}_building") {
+      building
+    }
+  end
+
   def cached_neighborhood
-    Rails.cache.fetch("building_#{building.id}_runit_#{id}_neighborhood") {
-      building.neighborhood
+    Rails.cache.fetch("building_#{building_id}_runit_#{id}_neighborhood") {
+      cached_building.neighborhood
+    }
+  end
+
+  def cached_pet_policy
+    Rails.cache.fetch("building_#{building_id}_runit_#{id}_pet_policy") {
+      cached_building.pet_policy
     }
   end
 
   def cached_landlord
-    Rails.cache.fetch("building_#{building.id}_runit_#{id}_landlord") {
-      building.landlord
+    Rails.cache.fetch("building_#{building_id}_runit_#{id}_landlord") {
+      cached_building.landlord
     }
   end
 
   def cached_primary_img
-    Rails.cache.fetch("building_#{building.id}_runit_#{id}_primary_img") {
-      images[0]
+    Rails.cache.fetch("building_#{building_id}_runit_#{id}_primary_img") {
+      images[0] ? images[0] : nil
     }
   end
 
   def cached_street_address
-    Rails.cache.fetch("building_#{building.id}_runit_#{id}_street_address") {
-      building.street_address
+    Rails.cache.fetch("building_#{cached_building.id}_runit_#{id}_street_address") {
+      cached_building.street_address
     }
   end
 
@@ -60,16 +72,16 @@ class ResidentialUnit < ActiveRecord::Base
 
   # used as a sorting condition
   def street_address_and_unit
-    if building.street_number
-      building.street_number + ' ' + building.route + ' #' + building_unit
+    if cached_building.street_number
+      cached_building.street_number + ' ' + cached_building.route + ' #' + building_unit
     else
-      building.route + ' #' + building_unit
+      cached_building.route + ' #' + building_unit
     end
   end
 
   # used as a sorting condition
   def landlord_by_code
-    building.landlord.code
+    cached_landlord.code
   end
 
   # used as a sorting condition
@@ -133,15 +145,14 @@ class ResidentialUnit < ActiveRecord::Base
   # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 
   # neighborhoods, has_outdoor_space, features, pet_policy
   def self.search(params, building_id=nil)
-    @running_list = Unit.includes(:building, :images).unarchived
 
-    # actable_type to restrict to residential only
     if !params && !building_id
-      return Unit.get_residential(@running_list)
-      #return ResidentialUnit.unarchived
+      return ResidentialUnit.unarchived
     elsif !params && building_id
-      return ResidentialUnit.includes(:images).unarchived.where(building_id: building_id)
+      return ResidentialUnit.unarchived.where(building_id: building_id)
     end
+
+    @running_list = Unit.includes(:building).unarchived
 
     # all search params come in as strings from the url
     # clear out any invalid search params
@@ -307,11 +318,12 @@ class ResidentialUnit < ActiveRecord::Base
   def self.set_location_data(runits)
     map_infos = {}
     for i in 0..runits.length-1
-      street_address = runits[i].building.street_address
+      bldg = runits[i].cached_building
+      street_address = bldg.street_address
       bldg_info = {
-        building_id: runits[i].building.id,
-        lat: runits[i].building.lat, 
-        lng: runits[i].building.lng }
+        building_id: bldg.id,
+        lat: bldg.lat, 
+        lng: bldg.lng }
       unit_info = {
         id: runits[i].id,
         building_unit: runits[i].building_unit,

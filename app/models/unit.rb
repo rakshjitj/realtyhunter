@@ -7,10 +7,10 @@ class Unit < ActiveRecord::Base
   has_many :images, dependent: :destroy
   # TODO before_validation :generate_unique_id
 
-  scope :unarchived, ->{ includes(:images).where(archived: false) }
-  scope :active, ->{ includes(:images).where(status: "active") }
-  scope :residential, ->{ includes(:images).where("actable_type = 'ResidentialUnit'") }
-  scope :commercial, ->{ includes(:images).where("actable_type = 'CommercialUnit'") }
+  scope :unarchived, ->{ where(archived: false) }
+  scope :active, ->{ where(status: "active") }
+  scope :residential, ->{ where("actable_type = 'ResidentialUnit'") }
+  scope :commercial, ->{ where("actable_type = 'CommercialUnit'") }
 
 	enum status: [ :active, :pending, :off ]
 	validates :status, presence: true, inclusion: { in: %w(active pending off) }
@@ -30,33 +30,19 @@ class Unit < ActiveRecord::Base
   end
 
 	def self.get_residential(units)
-    running_list = units.residential
-    running_list = running_list.uniq
-    # searching by id breaks in factorygirl, so search by listing_id
-    # TODO: add index on listing_id?
-    ids = running_list.map(&:listing_id)
-    residential_units = ResidentialUnit.where(listing_id: ids)
-    residential_units
+    # running_list = units.residential.uniq
+    # # searching by id breaks in factorygirl, so search by listing_id
+    # ids = running_list.map(&:listing_id)
+    # ResidentialUnit.where(listing_id: ids)
+    ResidentialUnit.joins(unit: :building).merge(units.where("actable_type = 'ResidentialUnit'"))
   end
 
   def self.get_commercial(units)
-    running_list = units.commercial
-    running_list = running_list.uniq
+    running_list = units.commercial.uniq
     ids = running_list.map(&:listing_id)
     # searching by id breaks in factorygirl, so search by listing_id
     # TODO: add index on listing_id?
-    commercial_units = CommercialUnit.where(listing_id: ids)
-    commercial_units
+    CommercialUnit.where(listing_id: ids)
   end
 
-  # private
-  # 	def generate_unique_id
-  #     puts "\n\n 11111112222222233333"
-  # 		self.listing_id = SecureRandom.random_number(9999999)
-  #     while ResidentialUnit.find_by(listing_id: listing_id) do
-  #       self.listing_id = rand(9999999)
-  #     end
-  #     self.listing_id
-  #   end
-	
 end
