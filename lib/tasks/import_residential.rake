@@ -67,7 +67,7 @@ task :import_residential => :environment do
 		if !record
 			puts "... Adding building: #{result['formatted_address']}"
 			record = Building.create!({
-				lat: result['geometry']['location']['lng'],
+				lat: result['geometry']['location']['lat'],
 				lng: result['geometry']['location']['lng'],
 				route: route,
 				street_number: street_number,

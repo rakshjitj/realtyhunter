@@ -1,20 +1,4 @@
-<script>
-	function initialize() {
-    $(".panel").geocomplete({
-    	map: "#map_canvas",
-    	location: "<%= @building.formatted_street_address %>" ,
-    	details: ".details"
-    }).bind("geocode:result", function(event, result){
-        //console.log(result);
-    }).bind("geocode:error", function(event, result){
-        //console.log("[ERROR]: " + result);
-    });
-	};
-	$(document).ready(initialize);
-</script>
-
 <% provide(:title, @building.formatted_street_address) %>
-
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
@@ -42,7 +26,7 @@
   		</div>
 		</div>
 
-		<div class="panel panel-default">
+		<div id="bldg_panel" class="panel panel-default">
 		  <div class="panel-heading">
 		    <h3 class="panel-title">Basic Details</h3>
 		  </div>
@@ -138,11 +122,11 @@
 
 				<p>
 				  <strong>Created:</strong>
-				  <%= @building.created_at.strftime("%b %e, %Y") %>
+				  <%= @building.created_at.strftime("%Y-%b-%d") %>
 				</p>
 				<p>
 				  <strong>Last Updated:</strong>
-				  <%= @building.updated_at.strftime("%b %e, %Y") %>
+				  <%= @building.updated_at.strftime("%Y-%b-%d") %>
 				</p>
 				<p>
 				  <strong>Last Unit Updated:</strong>
@@ -150,7 +134,7 @@
 				</p>
 
 				<br />
-				<div id="map_canvas"></div>
+				<div id="map_canvas" data-address="<%= @building.formatted_street_address %>"></div>
 		    
 		  </div>
 		</div>
@@ -158,6 +142,10 @@
 	</div>
 </div>
 
+<div id="listings" data-search-path="<%= filter_listings_building_path %>">
+	<%= render partial:'shared/listings', locals: { residential_units: @residential_units, 
+		commercial_units: @commercial_units} %>
+</div>
 
 <!-- Inaccuracy Modal -->
 <div class="modal fade" id="bldgInaccuracyModal" tabindex="-1" role="dialog" 
@@ -173,6 +161,3 @@
     </div>
   </div>
 </div>
-
-<%= render partial:'shared/listings', locals: { residential_units: @residential_units, 
-	commercial_units: @commercial_units} %>

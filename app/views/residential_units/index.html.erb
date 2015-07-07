@@ -1,97 +1,5 @@
-<script>
-  //unobstrusive: attach method call here
-  //call when typing or enter or focus leaving
-  function initialize() {
-    var timer2;
-    function clearSpinner() {
-      // remove the spinner after download completes.
-      // this is a very hackish way of roughly estimating how long
-      // the download takes to complete
-      clearInterval(timer2);
-      $('.btn-print-list').toggleClass('active');
-    };
-
-    $('.btn-print-list').click( function(event) {
-      // show spinner
-      $(this).toggleClass('active');
-      timer2 = setTimeout(clearSpinner, 15000);
-    });
-
-    function doSearch(event) {
-
-      // sanitize invalid input before submitting
-      if ($('#neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
-        $('#neighborhood_ids').val('');
-      }
-      if ($('#building_feature_ids').val() == "{:id=>\"building_feature_ids\"}") {
-        $('#building_feature_ids').val('');
-      }
-      if ($('#unit_feature_ids').val() == "{:id=>\"unit_feature_ids\"}") {
-        $('#unit_feature_ids').val('');
-      }
-
-      $.ajax({
-        url: "<%= filter_residential_units_path %>",
-        data: {
-          search_params: {
-            address: $('#address').val(),
-            unit: $('#unit').val(),
-            rent_min: $('#rent_min').val(),
-            rent_max: $('#rent_max').val(),
-            bed_min: $('#bed_min').val(),
-            bed_max: $('#bed_max').val(),
-            bath_min: $('#bath_min').val(),
-            bath_max: $('#bath_max').val(),
-            landlord: $('#landlord').val(),
-            pet_policy_id: $('#pet_policy_id').val(),
-            status: $('#status').val(),
-            features: $('#features').val(),
-            neighborhood_ids: $('#neighborhood_ids').val(),
-            unit_feature_ids: $('#unit_feature_ids').val(),
-            building_feature_ids: $('#building_feature_ids').val(),
-          } 
-        },
-        dataType: "script"
-      });
-    };
-
-    // search as user types
-    var timer;
-    function throttledSearch() {
-      clearInterval(timer);  //clear any interval on key up
-      timer = setTimeout(doSearch, 500);
-    };
-    
-    // change enter key to tab
-    function preventEnter(event) {
-      if (event.keyCode == 13) {
-        //$('#checkbox_active').focus();
-        return false;
-      }
-    };
-
-    $('input').keydown(preventEnter);
-    $('#address').keyup(throttledSearch);
-    $('#unit').keyup(throttledSearch);
-    $('#rent_min').keyup(throttledSearch);
-    $('#rent_max').keyup(throttledSearch);
-    $('#bed_min').keyup(throttledSearch);
-    $('#bed_max').keyup(throttledSearch);
-    $('#bath_min').keyup(throttledSearch);
-    $('#bath_max').keyup(throttledSearch);
-    $('#landlord').keyup(throttledSearch);
-    $('#pet_policy_id').change(throttledSearch);
-    $('#status').change(throttledSearch);
-    $('#features').change(throttledSearch);
-    $('#neighborhood_ids').change(throttledSearch);
-    $('#unit_feature_ids').change(throttledSearch);
-    $('#building_feature_ids').change(throttledSearch);
-  };
-  // TODO: get rid of document.ready
-  $(document).ready(initialize);
-</script>
-
 <% provide(:title, 'Residential Listings') %>
+
 <div class="page-header">
   <div class="row">
     <div class="col-md-6">
@@ -115,7 +23,7 @@
     <%= render 'map_overall_view' %>
   </div>
   <div class="col-xs-12 col-md-3 hidden-sm hidden-xs">
-
+  <div id="res-search-filters" data-search-path="<%= filter_residential_units_path %>">
     <%= form_tag residential_units_path, :method => 'get' do %>
       <div class="row vertical-padding">
         <div class="col-md-3">
@@ -219,6 +127,7 @@
       </div>
 
     <% end %>
+  </div>
   </div>
 </div>
 

@@ -271,7 +271,9 @@ class ResidentialUnitsController < ApplicationController
       
       @residential_units = custom_sort
       @residential_units = @residential_units.paginate(:page => params[:page], :per_page => 50)
+      puts "\n\n22222 #{@map_infos.inspect}"
       @map_infos = ResidentialUnit.set_location_data(@residential_units)
+      puts "\n\n1111111 #{@map_infos.inspect}"
     end
 
     def residential_units_no_pagination
@@ -280,7 +282,6 @@ class ResidentialUnitsController < ApplicationController
       
       @residential_units = custom_sort
       @residential_units = @residential_units.paginate(:page => params[:page], :per_page => 50)
-      @map_infos = ResidentialUnit.set_location_data(@residential_units)
     end
 
     def custom_sort

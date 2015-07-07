@@ -79,6 +79,7 @@ Rails.application.routes.draw do
       get 'inaccuracy_modal'
       patch 'send_inaccuracy'
       get 'refresh_images'
+      get 'filter_listings'
     end
     collection do
       get 'filter'

@@ -2,11 +2,11 @@
   <tr class="<%= cycle('even', 'odd') -%>">
     <td>
       <% if residential_unit.images.length > 0 %>
-        <%= image_tag residential_unit.images[0].file.url(:thumb), :class => 'img-responsive', 
-          alt: residential_unit.images[0].file.url(:medium) %>
+        <%= link_to(image_tag(residential_unit.images[0].file.url(:thumb), :class => 'img-responsive', 
+          alt: residential_unit.images[0].file.url(:medium)), residential_unit) %>
       <% else %>
         <!-- placeholder image -->
-        <%= image_tag "listing_soon.png", alt: "Image coming soon", :size => "100x100" %>
+        <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), residential_unit) %>
       <% end %>
     </td>
     <td>

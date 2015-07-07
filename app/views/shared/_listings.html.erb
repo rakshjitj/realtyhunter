@@ -1,38 +1,4 @@
-<script>
-   //unobstrusive: attach method call here
-   //call when typing or enter or focus leaving
-  function initialize() {
-    function doSearch(event) {
-      $.ajax({
-        url: "<%= filter_buildings_path %>",
-        data: {
-          active_only: $('#checkbox_active').prop('checked')
-        },
-        dataType: "script"
-      }).fail(function() {
-        //console.log("[FAILED] search update failed");
-      });
-    };
-
-    // search as user types
-    var timer;
-    function throttledSearch() {
-      clearInterval(timer);  //clear any interval on key up
-      timer = setTimeout(doSearch, 500);
-    };
-    
-    // change enter key to tab
-    function preventEnter(event) {
-      if (event.keyCode == 13) {
-        $('#checkbox_active').focus();
-        return false;
-      }
-    };
-
-    $('#checkbox_active').click(doSearch);
-  };
-  $(document).ready(initialize);
-</script>
+<% if residential_units.length > 0 || commercial_units.length > 0 %>
 
 <!-- ******** LISTINGS ********** -->
 <div class="row">
@@ -56,8 +22,8 @@
         	<br />
         	<div class="row">
 					  <div class="col-md-12">
-					  	<%= check_box_tag(:checkbox_active, class: "checkbox inline") %>
-					    <%= label_tag :checkbox_active, "Active units only" %>
+					  	<%= check_box_tag(:listings_checkbox_active, class: "checkbox inline") %>
+					    <%= label_tag :listings_checkbox_active, "Active units only" %>
 					  </div>
 					</div>
 
@@ -89,3 +55,5 @@
 
   </div><!-- col -->
 </div><!-- row -->
+
+<% end %>

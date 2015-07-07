@@ -281,7 +281,7 @@ class ResidentialUnit < ActiveRecord::Base
 
   # collect the data we will need to access from our giant map view
   def self.set_location_data(runits)
-    @map_infos = {}
+    map_infos = {}
     for i in 0..runits.length-1
       street_address = runits[i].building.street_address
       bldg_info = {
@@ -295,15 +295,16 @@ class ResidentialUnit < ActiveRecord::Base
         baths: runits[i].baths,
         rent: runits[i].rent }
 
-      if @map_infos.has_key?(street_address)
-        @map_infos[street_address]['units'] << unit_info
+      if map_infos.has_key?(street_address)
+        map_infos[street_address]['units'] << unit_info
       else
         bldg_info['units'] = [unit_info]
-        @map_infos[street_address] = bldg_info
+        map_infos[street_address] = bldg_info
       end
+
     end
 
-    @map_infos
+    map_infos.to_json
   end
 
   private

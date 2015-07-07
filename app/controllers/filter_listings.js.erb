@@ -1,0 +1,2 @@
+$('.listings').html("<%= escape_javascript (render partial:'shared/listings', locals: { residential_units: @residential_units, 
+	commercial_units: @commercial_units}) %>");

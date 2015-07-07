@@ -129,6 +129,16 @@ class Building < ActiveRecord::Base
     Unit.get_commercial(units)
   end
 
+  def active_residential_units
+    units = Unit.includes(:building).where(building_id: id, units: {status:"active"})
+    units = Unit.get_residential(units)
+  end
+
+  def active_commercial_units
+    units = Unit.includes(:building).where(building_id: id, units: {status:"active"})
+    Unit.get_commercial(units)
+  end
+
   private
 
   	def process_custom_security

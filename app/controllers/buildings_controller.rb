@@ -3,8 +3,7 @@ class BuildingsController < ApplicationController
   skip_load_resource :only => :create
   before_action :set_building, except: [:index, :new, :create, :filter, :refresh_images]
   etag { current_user.id }
-  #after_action :clear_xhr_flash, only: [:send_inaccuracy]
-
+  
   # GET /buildings
   # GET /buildings.json
   def index
@@ -23,6 +22,17 @@ class BuildingsController < ApplicationController
   # AJAX call
   def filter
     set_buildings
+  end
+
+  def filter_listings
+    if params[:active_only]
+      
+      @residential_units = @building.active_residential_units.paginate(:page => params[:page], :per_page => 50)
+      @commercial_units = @building.active_commercial_units.paginate(:page => params[:page], :per_page => 50)
+    else
+      @residential_units = @building.residential_units.paginate(:page => params[:page], :per_page => 50)
+      @commercial_units = @building.commercial_units.paginate(:page => params[:page], :per_page => 50)
+    end
   end
 
   # GET /buildings/1

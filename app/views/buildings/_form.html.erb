@@ -1,20 +1,3 @@
-<script>
-  function initialize() {
-    $(".autocomplete-input").geocomplete({
-      map: "#map_canvas",
-      location: "<%= @building.formatted_street_address ? @building.formatted_street_address : 'New York, NY, USA' %>" ,
-      details: ".details"
-    }).bind("geocode:result", function(event, result){
-      if (this.value == "New York, NY, USA") {
-        this.value = '';
-      }
-    }).bind("geocode:error", function(event, result){
-      //console.log("<%= @building.formatted_street_address %>", "[ERROR]: " + result);
-    });
-  };
-  $(document).ready(initialize);
-</script>
-
 <div class="panel panel-default">
   <div class="panel-body">
 
@@ -83,11 +66,9 @@
         </div>
 
     <div class="field">
-      
-      
       <br/>
       <p>Visually confirm the building's location:</p>
-      <div id="map_canvas"></div>
+      <div id="map_canvas" data-address="<%= @building.formatted_street_address %>"></div>
     </div>
 
     <div class="row">

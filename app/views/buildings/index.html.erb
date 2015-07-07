@@ -1,45 +1,5 @@
-<script>
-   //unobstrusive: attach method call here
-   //call when typing or enter or focus leaving
-  function initialize() {
-    function doSearch(event) {
-      $.ajax({
-        url: "<%= filter_buildings_path %>",
-        data: {
-          filter: $('#filter').val(),
-          active_only: $('#checkbox_active').prop('checked')
-        },
-        dataType: "script"
-      }).fail(function() {
-        //console.log("[FAILED] search update failed");
-      });
-    };
-
-    // search as user types
-    var timer;
-    function throttledSearch() {
-      clearInterval(timer); //clear any interval on key up
-      timer = setTimeout(doSearch, 500);
-    };
-    
-    // change enter key to tab
-    function preventEnter(event) {
-      if (event.keyCode == 13) {
-        $('#checkbox_active').focus();
-        return false;
-      }
-    };
-
-    $('#filter').keydown(preventEnter);
-    $('#filter').keyup(throttledSearch);
-    // toggle between active and inactive units
-    $('#checkbox_active').click(doSearch);
-  };
-  // TODO: get rid of document.ready
-  $(document).ready(initialize);
-</script>
-
 <% provide(:title, 'Buildings') %>
+
 <div class="page-header">
   <div class="row">
     <div class="col-md-6">
@@ -54,20 +14,22 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-xs-12 col-md-3 vertical-padding">
-    <%= form_tag buildings_path, :method => 'get' do %>
-      <%= label_tag(:filter, "Filter:") %>
-      <%= text_field_tag :filter, params[:code_name], 
-        placeholder: "name/address", size: 25 %>
-  </div>
-  <div class="col-xs-12 col-md-3 vertical-padding">
-      <%= check_box_tag(:checkbox_active, class: "checkbox inline") %>
-      <%= label_tag :checkbox_active, "Has active units" %>
-    <% end %>
-  </div>
-  <div class="col-xs-12 col-md-6 form-label-responsive">
-    <%= render partial: 'shared/pagination', locals: {models: @buildings} %>
+<div id="search-filters" data-search-path="<%= filter_buildings_path %>">
+  <div class="row">
+    <div class="col-xs-12 col-md-3 vertical-padding">
+      <%= form_tag buildings_path, :method => 'get' do %>
+        <%= label_tag(:filter, "Filter:") %>
+        <%= text_field_tag :filter, params[:code_name], 
+          placeholder: "name/address", size: 25 %>
+    </div>
+    <div class="col-xs-12 col-md-3 vertical-padding">
+        <%= check_box_tag(:checkbox_active, class: "checkbox inline") %>
+        <%= label_tag :checkbox_active, "Has active units" %>
+      <% end %>
+    </div>
+    <div class="col-xs-12 col-md-6 form-label-responsive">
+      <%= render partial: 'shared/pagination', locals: {models: @buildings} %>
+    </div>
   </div>
 </div>
 
