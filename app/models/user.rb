@@ -279,9 +279,10 @@ class User < ActiveRecord::Base
   end
 
   def coworkers
-    @coworkers = Array.new(self.company.users)
+    #@coworkers = Array.new(self.company.users)
     #@coworkers.delete(self)
-    @coworkers
+    #@coworkers
+    company.users
   end
 
   def agent_specialties

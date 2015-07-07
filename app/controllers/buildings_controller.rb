@@ -26,12 +26,15 @@ class BuildingsController < ApplicationController
 
   def filter_listings
     if params[:active_only]
-      
-      @residential_units = @building.active_residential_units.paginate(:page => params[:page], :per_page => 50)
-      @commercial_units = @building.active_commercial_units.paginate(:page => params[:page], :per_page => 50)
+      @residential_units = Kaminari.paginate_array(@building.active_residential_units).page params[:page]
+      @commercial_units = Kaminari.paginate_array(@building.active_commercial_units).page params[:page]
+      #@residential_units = @building.active_residential_units.paginate(:page => params[:page], :per_page => 50)
+      #@commercial_units = @building.active_commercial_units.paginate(:page => params[:page], :per_page => 50)
     else
-      @residential_units = @building.residential_units.paginate(:page => params[:page], :per_page => 50)
-      @commercial_units = @building.commercial_units.paginate(:page => params[:page], :per_page => 50)
+      @residential_units = Kaminari.paginate_array(@building.residential_units).page params[:page]
+      @commercial_units = Kaminari.paginate_array(@building.commercial_units).page params[:page]
+      #@residential_units = @building.residential_units.paginate(:page => params[:page], :per_page => 50)
+      #@commercial_units = @building.commercial_units.paginate(:page => params[:page], :per_page => 50)
     end
   end
 
@@ -141,14 +144,17 @@ class BuildingsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_building
       @building = Building.find_unarchived(params[:id])
-      @residential_units = @building.residential_units.paginate(:page => params[:page], :per_page => 50)
-      @commercial_units = @building.commercial_units.paginate(:page => params[:page], :per_page => 50)
+      # @residential_units = @building.residential_units.paginate(:page => params[:page], :per_page => 50)
+      # @commercial_units = @building.commercial_units.paginate(:page => params[:page], :per_page => 50)
+      @residential_units = Kaminari.paginate_array(@building.residential_units).page params[:page]
+      @commercial_units = Kaminari.paginate_array(@building.commercial_units).page params[:page]
     end
 
     def set_buildings
       @buildings = Building.search(building_params[:filter], building_params[:active_only])
       @buildings = custom_sort
-      @buildings = @buildings.paginate(:page => params[:page], :per_page => 50)
+      #@buildings = @buildings.paginate(:page => params[:page], :per_page => 50)
+      @buildings = Kaminari.paginate_array(@buildings).page params[:page]
     end
 
     def custom_sort

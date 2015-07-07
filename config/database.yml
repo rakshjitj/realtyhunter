@@ -13,15 +13,15 @@ default: &default
   host: localhost
   port: 5434
 
-#development:
-  #adapter: postgresql
-  #url: $(heroku config:get DATABASE_URL) myspace-realty-monster
-  # url:  <%= ENV["DATABASE_URL"] %>
-  #url: "postgres://phfavwknjfqgte:ovRfPLBuL9h0_TE3lOWU_LODqL@ec2-23-21-76-246.compute-1.amazonaws.com:5432/dfp43tn5v7au5h"
-
 development:
-  <<: *default
-  database: myspace_realty_monster
+  # adapter: postgresql
+  # url: $(heroku config:get DATABASE_URL) myspace-realty-monster
+  # url:  <%= ENV["DATABASE_URL"] %>
+  url: "postgres://phfavwknjfqgte:ovRfPLBuL9h0_TE3lOWU_LODqL@ec2-23-21-76-246.compute-1.amazonaws.com:5432/dfp43tn5v7au5h"
+
+# development:
+#   <<: *default
+#   database: myspace_realty_monster
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

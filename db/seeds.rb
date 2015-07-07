@@ -152,7 +152,7 @@ end
 
 @password = "lorimer713"
 
-# api only access
+# give them agent access
 @api_only = User.create!(
   { name: 'Blank Slate', 
     email: 'admin@blankslate.com', 
@@ -164,7 +164,7 @@ end
     approved_at: Time.zone.now,
     company: @company, 
     office: @offices[0],
-    employee_title: EmployeeTitle.find_by(name: 'external vendor'),
+    employee_title: EmployeeTitle.find_by(name: 'agent'),
     mobile_phone_number: '666-666-6666'
   })
 

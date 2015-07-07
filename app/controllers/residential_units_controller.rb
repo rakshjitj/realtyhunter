@@ -283,15 +283,15 @@ class ResidentialUnitsController < ApplicationController
       
       @residential_units = custom_sort
       @map_infos = ResidentialUnit.set_location_data(@residential_units)
-      @residential_units = @residential_units.paginate(:page => params[:page], :per_page => 50)
+      #@residential_units = @residential_units.paginate(:page => params[:page], :per_page => 50)
+      #@users = User.order(:name).page params[:page]
+      @residential_units = Kaminari.paginate_array(@residential_units).page params[:page]
     end
 
     def residential_units_no_pagination
       search_params = params[:search_params]
-      @residential_units = ResidentialUnit.search(search_params, params[:building_id])
-      
+      @residential_units = ResidentialUnit.search(search_params, params[:building_id])      
       @residential_units = custom_sort
-      @residential_units = @residential_units.paginate(:page => params[:page], :per_page => 50)
     end
 
     def custom_sort

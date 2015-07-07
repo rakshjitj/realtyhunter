@@ -12,21 +12,23 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-xs-12 col-md-3 vertical-padding">
-    <%= form_tag landlords_path, :method => 'get' do %>
-      <%= label_tag(:filter, "Filter:") %>
-      <%= text_field_tag :filter, params[:code_name], 
-        placeholder: "code/name", size: 30 %>
-  </div>
-  <div class="col-xs-12 col-md-3 vertical-padding">
-      <%= check_box_tag(:checkbox_active, class: "checkbox inline") %>
-      <%= label_tag :checkbox_active, "Has active units" %>
-    <% end %>
-  </div>
+<div id="search-filters" data-search-path="<%= filter_landlords_path %>">
+  <div class="row">
+    <div class="col-xs-12 col-md-3 vertical-padding">
+      <%= form_tag landlords_path, :method => 'get' do %>
+        <%= label_tag(:filter, "Filter:") %>
+        <%= text_field_tag :filter, params[:code_name], 
+          placeholder: "code/name", size: 30 %>
+    </div>
+    <div class="col-xs-12 col-md-3 vertical-padding">
+        <%= check_box_tag(:checkbox_active, class: "checkbox inline") %>
+        <%= label_tag :checkbox_active, "Has active units" %>
+      <% end %>
+    </div>
 
-  <div class="hidden-xs hidden-sm col-xs-12 col-md-6 form-label-responsive">
-    <%= render partial: 'shared/pagination', locals: {models: @landlords} %>
+    <div class="hidden-xs hidden-sm col-xs-12 col-md-6 form-label-responsive">
+      <%= render partial: 'shared/pagination', locals: {models: @landlords} %>
+    </div>
   </div>
 </div>
 

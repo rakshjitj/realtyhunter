@@ -173,12 +173,13 @@ task :import_residential => :environment do
       amenities = []
       
 			item['unit_amenities'].each{ |a| 
-				amenity = ResidentialAmenity.find_by(name: a.titleize)
+				amenity_name = a.downcase.strip
+				amenity = ResidentialAmenity.find_by(name: amenity_name)
 				if !amenity
-					amenity = ResidentialAmenity.create!(company: company, name: a.titleize)
+					amenity = ResidentialAmenity.create!(company: company, name: amenity_name)
 				end
 				amenities << amenity
-				titles << a.titleize
+				titles << amenity_name
 			}
 
 			open_house = nil

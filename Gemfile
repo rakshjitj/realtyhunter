@@ -27,14 +27,14 @@ gem 'sdoc', '~> 0.4.0', group: :doc
  gem 'bcrypt', '~> 3.1.7'
 # Use Unicorn as the app server
 # gem 'unicorn'
-gem 'will_paginate'
 gem 'bootstrap-sass', '~> 3.3.4'
-gem 'bootstrap-will_paginate'
+#gem 'bootstrap-will_paginate'
+#gem 'will_paginate'
+gem 'kaminari'
+gem 'bootstrap-kaminari-views'
 gem 'autoprefixer-rails'
 gem 'better_errors'
 
-#gem "refile", require: "refile/rails"
-#gem "refile-mini_magick"
 # for handling single image uploads
 #gem 'refile-s3'
 # for handling multiple image uploads
@@ -63,9 +63,8 @@ gem 'wicked_pdf'
 gem 'rack-cors', :require => 'rack/cors'
 # used for our rake tasks to import data
 gem 'mechanize'
-
+# make sure we handle time zones correctly
 gem 'local_time'
-
 
 group :production do
 	gem 'rails_12factor'

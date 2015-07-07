@@ -23,8 +23,8 @@ class UsersController < ApplicationController
   # GET /coworkers/1
   # GET /coworkers/1.json
   def coworkers
-    @users = @user.coworkers
-    @users = @users.paginate(:page => params[:page], :per_page => 50).order("created_at ASC")
+    @users = @user.coworkers.order("created_at ASC")
+    @users = @users.page params[:page]
     @title = @user.company.name + ' Employees'
     render 'index'
   end
@@ -33,8 +33,8 @@ class UsersController < ApplicationController
   # GET /subordinates/1.json
   def subordinates
     @manager = User.find(params[:id])
-    @users = @manager.subordinates
-    @users = @users.paginate(:page => params[:page], :per_page => 50).order("created_at ASC")
+    @users = @manager.subordinates.order("created_at ASC")
+    @users = @users.page params[:page]
     @title = @manager.fname.titleize + "'s Team"
     render 'index'
   end
@@ -239,8 +239,9 @@ class UsersController < ApplicationController
     end
 
     def set_users
+      #@residential_units = Kaminari.paginate_array(@residential_units).page params[:page]
       @users = User.search(params[:search_params])
-      @users = @users.paginate(:page => params[:page], :per_page => 50)
+      @users = Kaminari.paginate_array(@users).page params[:page]
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
