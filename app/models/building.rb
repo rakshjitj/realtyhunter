@@ -41,20 +41,44 @@ class Building < ActiveRecord::Base
 	#validates :neighborhood, presence: true
 
 	def cached_neighborhood
-    Rails.cache.fetch("building_#{building.id}_neighborhood") {
+    Rails.cache.fetch("building_#{id}_neighborhood") {
       neighborhood
     }
   end
 
   def cached_landlord
-    Rails.cache.fetch("building_#{building.id}_landlord") {
+    Rails.cache.fetch("building_#{id}_landlord") {
       landlord
     }
   end
 
   def cached_primary_img
-    Rails.cache.fetch("building_#{building.id}_primary_img") {
+    Rails.cache.fetch("building_#{id}_primary_img") {
       images[0] ? images[0] : nil
+    }
+  end
+
+  def cached_units
+    Rails.cache.fetch("building_#{id}_units") {
+      units.unarchived.order('updated_at DESC')
+    }
+  end
+
+  def cached_active_units
+    Rails.cache.fetch("building_#{id}_active_units") {
+      units.unarchived.active.order('updated_at DESC')
+    }
+  end
+
+  def cached_units_count
+    Rails.cache.fetch("building_#{id}_units_count") {
+      cached_units.count
+    }
+  end
+
+  def cached_active_units_count
+    Rails.cache.fetch("building_#{id}_active_units_count") {
+      cached_active_units.count
     }
   end
 
@@ -76,27 +100,27 @@ class Building < ActiveRecord::Base
 	end
 
 	def active_units
-		self.units.unarchived.active
+		self.cached_active_units
 	end
 
 	def total_units_count
-		self.units.count
+		self.cached_units_count
 	end
 
 	def active_units_count
-		self.units.unarchived.active.count
+		self.cached_active_units_count
 	end
 
 	def last_unit_updated
-		if self.units.length > 0
-			self.units.order('updated_at DESC').first.updated_at.strftime("%Y-%b-%d")
+		if self.cached_units.length > 0
+			self.cached_units.first.updated_at.strftime("%Y-%b-%d")
 		else
 			'--'
 		end
 	end
 
 	def self.search(query_str, active_only)
-		@running_list = Building.unarchived
+		@running_list = Building.includes(:images).unarchived
     return @running_list if !query_str
     
     @terms = query_str.split(" ")

@@ -3,9 +3,11 @@ json.prettify! if %w(1 yes true).include?(params["pretty"])
 json.city @building.administrative_area_level_2_short
 json.state @building.administrative_area_level_1_short
 
-json.neighborhood do
-	json.name @building.neighborhood.name
-	json.area @building.neighborhood.borough
+if @building.cached_neighborhood
+	json.neighborhood do
+		json.name @building.cached_neighborhood.name
+		json.area @building.cached_neighborhood.borough
+	end
 end
 
 json.name nil

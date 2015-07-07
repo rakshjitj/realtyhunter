@@ -30,11 +30,11 @@ class Unit < ActiveRecord::Base
   end
 
 	def self.get_residential(units)
-    # running_list = units.residential.uniq
-    # # searching by id breaks in factorygirl, so search by listing_id
-    # ids = running_list.map(&:listing_id)
-    # ResidentialUnit.where(listing_id: ids)
-    ResidentialUnit.joins(unit: :building).merge(units.where("actable_type = 'ResidentialUnit'"))
+    running_list = units.residential.uniq
+    # searching by id breaks in factorygirl, so search by listing_id
+    ids = running_list.map(&:listing_id)
+    ResidentialUnit.where(listing_id: ids)
+    #ResidentialUnit.joins(:unit).merge(units.where("actable_type = 'ResidentialUnit'"))
   end
 
   def self.get_commercial(units)

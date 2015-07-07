@@ -99,6 +99,8 @@ class ResidentialUnitsController < ApplicationController
     end
 
     if @residential_unit.save
+      Rails.cache.delete_matched("building_#{id}_units*")
+
       redirect_to @residential_unit
     else
       render 'new'
@@ -120,6 +122,7 @@ class ResidentialUnitsController < ApplicationController
       residential_unit_params[:building_unit], residential_unit_params[:include_photos])
     if residential_unit_dup.valid?
       @residential_unit = residential_unit_dup
+      Rails.cache.delete_matched("building_#{id}_units*")
       render :js => "window.location.pathname = '#{residential_unit_path(@residential_unit)}'"
     else
       # TODO: not sure how to handle this best...
@@ -208,6 +211,7 @@ class ResidentialUnitsController < ApplicationController
     if @residential_unit.update(residential_unit_params)
       # invalidate cache
       Rails.cache.delete("building_#{building.id}_runit_#{id}_neighborhood")
+      Rails.cache.delete_matched("building_#{id}_units*")
 
       flash[:success] = "Unit successfully updated!"
       redirect_to @residential_unit
@@ -228,6 +232,8 @@ class ResidentialUnitsController < ApplicationController
   # DELETE /residential_units/1.json
   def destroy
     @residential_unit.archive
+    Rails.cache.delete_matched("building_#{building.id}_runit_#{id}*")
+    Rails.cache.delete_matched("building_#{id}_units*")
     set_residential_units
     respond_to do |format|
       format.html { redirect_to residential_units_url, notice: 'Residential unit was successfully destroyed.' }

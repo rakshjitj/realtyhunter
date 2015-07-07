@@ -24,7 +24,7 @@
 					    <%= residential_unit.street_address_and_unit %>
 					    </td>
 					  <td>
-					    <%= residential_unit.building.landlord.code %>
+					    <%= residential_unit.cached_landlord.code %>
 					  </td>
 
 					  <td style="width: 20%;"><%= residential_unit.access_info %></td>
@@ -32,7 +32,7 @@
 					  <td><%= residential_unit.available_by.strftime("%Y-%b-%d") %></td>
 					  <td><%= rent_formatted(residential_unit.rent) %></td>
 					  <td>
-					  	<%= residential_unit.building.neighborhood.name %>
+					  	<%= residential_unit.cached_neighborhood.name %>
 					  </td>
 					  <td>
 						  <%= residential_unit.building.amenities_to_s %>

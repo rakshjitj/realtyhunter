@@ -17,8 +17,8 @@
     <%= link_to "#{building.street_address}", building %><br />
     <%= short_location_title(building) %>
   </td>
-  <td><%= building.active_units.count %></td>
-  <td><%= building.units.count %></td>
+  <td><%= building.cached_active_units_count %></td>
+  <td><%= building.cached_units_count %></td>
   <td><%= building.updated_at.strftime("%Y-%b-%d") %></td>
   <td>
     <%= link_to 'Edit', edit_building_path(building) %> | 

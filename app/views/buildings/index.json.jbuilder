@@ -6,7 +6,11 @@ json.array!(@buildings) do |building|
 	json.city building.administrative_area_level_2_short
 	json.state building.administrative_area_level_1_short
 	json.zipcode building.postal_code
-	json.neighborhood building.neighborhood
+	
+	if building.cached_neighborhood
+		json.neighborhood building.cached_neighborhood
+	end
+	
 	json.street_address building.street_address
 	json.location do
 		json.lat building.lat

@@ -111,6 +111,7 @@ class BuildingsController < ApplicationController
   # DELETE /buildings/1.json
   def destroy
     @building.archive
+    Rails.cache.delete_matched("building_#{id}*")
     set_buildings
     respond_to do |format|
       format.html { redirect_to buildings_url, notice: 'Building was successfully deleted.' }
