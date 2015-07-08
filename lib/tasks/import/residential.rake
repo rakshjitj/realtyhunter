@@ -137,9 +137,9 @@ namespace :import do
 		nestio_url = "https://nestiolistings.com/api/v1/public/listings?key=#{api_key}"
 
 		# clear old data
-		# Neighborhood.delete_all
-		# Building.delete_all
-		# ResidentialUnit.delete_all
+		Neighborhood.delete_all
+		Building.delete_all
+		ResidentialUnit.delete_all
 
 		# begin pulling down new data
 		total_pages = 99
@@ -261,20 +261,24 @@ namespace :import do
 				if item['incentives'] && !item['incentives'].empty?
 					incentive = item['incentives'].downcase.strip
 					percent_sign_idx = item['incentives'].index('%')
-
-					if incentive.include? "owner pays " 
-						text_length = "owner pays ".length
-						number_length = percent_sign_idx - text_length
-						op_fee_percentage = number_or_nil(incentive[text_length, number_length])
-					elsif incentive.include? "ownerpays "
-						text_length = "owner pays ".length
-						number_length = percent_sign_idx - text_length
-						op_fee_percentage = number_or_nil(incentive[text_length, number_length])
-					elsif incentive.include? "tenant pays "
-						text_length = "tenant pays ".length
-						number_length = percent_sign_idx - text_length
-						tp_fee_percentage = number_or_nil(incentive[text_length, number_length])
+					if percent_sign_idx
+						puts "\n before:incentives [#{incentive}]"
+						if incentive.include? "owner pays " 
+							text_length = "owner pays ".length
+							number_length = percent_sign_idx - text_length
+							op_fee_percentage = number_or_nil(incentive[text_length, number_length])
+						elsif incentive.include? "ownerpays "
+							text_length = "owner pays ".length
+							number_length = percent_sign_idx - text_length
+							op_fee_percentage = number_or_nil(incentive[text_length, number_length])
+						elsif incentive.include? "tenant pays "
+							text_length = "tenant pays ".length
+							number_length = percent_sign_idx - text_length
+							tp_fee_percentage = number_or_nil(incentive[text_length, number_length])
+						end
 					end
+
+					
 				end
 				puts "\n incentive:[#{incentive}] TP:[#{tp_fee_percentage}] OP:[#{op_fee_percentage}]"
 				log.info "\n incentive:[#{incentive}] TP:[#{tp_fee_percentage}] OP:[#{op_fee_percentage}]"
@@ -312,12 +316,12 @@ namespace :import do
 					unit.building.pet_policy = pet_policy
 				end
 
-				item['photos'].each{ |p| 
-					image = Image.new
-	        image.file = URI.parse(p['original'])
-	        image.save
-					unit.images << image
-		    }
+				# item['photos'].each{ |p| 
+				# 	image = Image.new
+	   #      image.file = URI.parse(p['original'])
+	   #      image.save
+				# 	unit.images << image
+		  #   }
 
 	    end
 	  end
