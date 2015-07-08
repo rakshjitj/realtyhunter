@@ -4,6 +4,11 @@ task :import_residential => :environment do
 	mechanize.user_agent_alias = "Mac Safari"
 	mechanize.follow_meta_refresh = true
 
+	def number_or_nil(string)
+	  num = string.to_i
+	  num if num.to_s == string
+	end
+
 	def add_building(mechanize, bldg, company, landlord)
 		nestio_address = "#{bldg['street_address']}, #{bldg['city']}, #{bldg['state']} #{bldg['zipcode']}"
 		page = mechanize.get("https://maps.googleapis.com/maps/api/geocode/json?address=#{nestio_address}&key=#{ENV['GOOGLE_MAPS_KEY']}")
@@ -129,8 +134,8 @@ task :import_residential => :environment do
 
 	puts "Pulling Nestio data for all listings...";
 
-	titles = []
-	renter_fees = []
+	#titles = []
+	#renter_fees = []
 	#statii = []
 
   done = false
@@ -178,8 +183,8 @@ task :import_residential => :environment do
 				if !amenity
 					amenity = ResidentialAmenity.create!(company: company, name: amenity_name)
 				end
-				amenities << amenity
-				titles << amenity_name
+				#amenities << amenity
+				#titles << amenity_name
 			}
 
 			open_house = nil
@@ -233,12 +238,19 @@ task :import_residential => :environment do
 
 			# TODO
 			op_fee_percentage = nil
-			renter_fees << item['incentives']
-			#if item['incentives'].strip.downcase == 'owner pays 100%'
-
-			#end
-
 			tp_fee_percentage = nil
+			#renter_fees << item['incentives']
+			incentive = item['incentives'].downcase.strip
+			percent_sign_idx = item['incentives'].index('%')
+			#if item['incentives'].strip.downcase == 'owner pays 100%'
+			if incentive.include? "owner pays " 
+				op_fee_percentage = number_or_nil(incentive["owner pays ".length], percent_sign_idx)
+			elsif incentive.include? "ownerpays "
+				op_fee_percentage = number_or_nil(incentive["ownerpays ".length], percent_sign_idx)
+			elsif incentive.include? "tenant pays "
+				tp_fee_percentage = number_or_nil(incentive["ownerpays ".length], percent_sign_idx)
+			end
+
 			#access_info: 
 			#agents
 
@@ -255,8 +267,8 @@ task :import_residential => :environment do
 				notes: description,
 				lease_duration: lease_duration,
 				listing_id: item['id'],
-				#op_fee_percentage: 
-				#tp_fee_percentage: item['renter_fee'],
+				op_fee_percentage: op_fee_percentage
+				tp_fee_percentage: tp_fee_percentage,
 			})
 
 			if item['pets'] && !unit.building.pet_policy
@@ -282,8 +294,8 @@ task :import_residential => :environment do
     end
   end
 
-  puts "AMENITIES: #{titles.uniq}"
-  puts "RENTER FEES: #{renter_fees.uniq}"
+  #puts "AMENITIES: #{titles.uniq}"
+  #puts "RENTER FEES: #{renter_fees.uniq}"
   #puts "STATII #{statii.uniq}"
   puts "Done!\n"
 end
