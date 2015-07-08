@@ -105,12 +105,6 @@
         <% i = i+1 %>
         <% end %>
 
-        <div class="col-xs-12">
-          <!-- enter a new option -->
-          <%= f.text_field :custom_amenities, class: 'form-control vertical-margin-lg', 
-            placeholder: "Or enter new amenities, comma separated" %>
-        </div>
-
       </div><!-- row -->
     </div>
 
@@ -132,7 +126,16 @@
 
         <% i = i+1 %>
         <% end %>
+
       </div><!-- row -->
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <!-- enter a new option -->
+        <%= f.text_field :custom_amenities, class: 'form-control vertical-margin-lg', 
+          placeholder: "Or enter new amenities, comma separated" %>
+      </div>
     </div>
 
     <br />
@@ -159,7 +162,7 @@
 
         <% i = i+1 %>
         <% end %>
-      
+
       </div><!-- row -->
     </div>
 
@@ -181,8 +184,16 @@
 
         <% i = i+1 %>
         <% end %>
-      
+
       </div><!-- row -->
+    </div>
+
+    <div class="row">
+    <div class="col-xs-12">
+        <!-- enter a new option -->
+        <%= f.text_field :custom_rental_terms, class: 'form-control vertical-margin-lg', 
+          placeholder: "Or enter new terms, comma separated" %>
+      </div>
     </div>
 
     <br />

@@ -3,6 +3,7 @@ class Building < ActiveRecord::Base
 	
   before_save :process_custom_security
   before_save :process_custom_amenities
+  before_save :process_custom_rental_terms
   after_save :clear_cache
   after_update :clear_cache
   after_destroy :clear_cache
@@ -20,7 +21,8 @@ class Building < ActiveRecord::Base
 	# TODO: remove this line
 	# this is some BS we need to make cancancan happy, because it 
 	# does not like our strong parameters
-	attr_accessor :building, :inaccuracy_description, :custom_required_security, :custom_amenities
+	attr_accessor :building, :inaccuracy_description, 
+    :custom_required_security, :custom_amenities, :custom_rental_terms
 
 	validates :formatted_street_address, presence: true, length: {maximum: 200}, 
 		uniqueness: { case_sensitive: false }
@@ -146,13 +148,15 @@ class Building < ActiveRecord::Base
 	end
 
 	def amenities_to_s
-		amenities = self.building_amenities.map{|a| a.name}
-		amenities ? amenities.join(', ') : "None"
+		amenities = self.building_amenities.map{|a| a.name.titleize}
+		amenities = amenities ? amenities.join(', ') : "None"
+    amenities
 	end
 
 	def rental_terms_to_s
-		terms = self.rental_terms.map{|a| a.name}
-		terms ? terms.join(', ') : "None"
+		terms = self.rental_terms.map{|a| a.name.titleize}
+		terms = terms ? terms.join(', ') : "None"
+    terms
 	end
 
   def find_or_create_neighborhood(neighborhood, borough, city, state)
@@ -194,8 +198,8 @@ class Building < ActiveRecord::Base
   private
 
   	def process_custom_security
-  		if custom_required_security
-  			req = RequiredSecurity.find_by(name: custom_required_security)
+  		if custom_required_security && !custom_required_security.empty?
+  			req = RequiredSecurity.find_by(name: custom_required_security, company: company)
   			if !req
   				req = RequiredSecurity.create!(name: custom_required_security, company: company)
   			end
@@ -207,10 +211,27 @@ class Building < ActiveRecord::Base
       if custom_amenities
         amenities = custom_amenities.split(',')
         amenities.each{|a|
-          a = a.downcase.strip
-          found = BuildingAmenity.find_by(name: a)
-          if !found
-            self.building_amenities << BuildingAmenity.create!(name: a, company: company)
+          if !a.empty?
+            a = a.downcase.strip
+            found = BuildingAmenity.find_by(name: a, company: company)
+            if !found
+              self.building_amenities << BuildingAmenity.create!(name: a, company: company)
+            end
+          end
+        }
+      end
+    end
+
+    def process_custom_rental_terms
+      if custom_rental_terms
+        terms = custom_rental_terms.split(',')
+        terms.each{|t|
+          t = t.downcase.strip
+          if !t.empty?
+            found = RentalTerm.find_by(name: t, company: company)
+            if !found
+              self.rental_terms << RentalTerm.create!(name: t, company: company)
+            end
           end
         }
       end

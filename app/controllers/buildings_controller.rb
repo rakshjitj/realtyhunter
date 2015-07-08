@@ -138,18 +138,14 @@ class BuildingsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_building
       @building = Building.find_unarchived(params[:id])
-      puts "*** SET BLDG"
       set_units
     end
 
     def set_units
       if params[:active_only] == "true"
-        puts "\n\n ACTIVE ONLY"
         @residential_units = Kaminari.paginate_array(@building.active_residential_units).page params[:page]
-        puts "#******* #{@residential_units.count} -- #{@residential_units.map(&:status).inspect}"
         @commercial_units = Kaminari.paginate_array(@building.active_commercial_units).page params[:page]
       else
-        puts "\n\n ALL UNITS "
         @residential_units = Kaminari.paginate_array(@building.residential_units).page params[:page]
         @commercial_units = Kaminari.paginate_array(@building.commercial_units).page params[:page]
       end
@@ -217,6 +213,7 @@ class BuildingsController < ApplicationController
         :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id, :file,
         :building => [:formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description, 
           :pet_policy_id, :required_security_id, :custom_required_security, :file, :custom_amenities,
+          :custom_rental_terms,
           :building_amenity_ids => [], images_files: [], :rental_term_ids => [] ])
     end
 end
