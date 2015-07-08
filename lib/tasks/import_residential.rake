@@ -26,8 +26,8 @@ task :import_residential => :environment do
 		neighborhood_name = nil
 
 		#puts "#{result['address_components']}"
-		puts "BLDG: #{bldg}"
-		puts "COMP: #{google_results}"
+		#puts "BLDG: #{bldg}"
+		#puts "COMP: #{google_results}"
 
 		result['address_components'].each{|c| 
 			#puts "#{c['types']}"
@@ -209,7 +209,7 @@ task :import_residential => :environment do
 			end
 
 			status = 'off'
-			puts "#{item['status']}"
+			#puts "#{item['status']}"
 			case item['status'].downcase
 			when 'available'
 				status = 'active'
@@ -236,21 +236,27 @@ task :import_residential => :environment do
 				description = description + "Furnished Type: #{item['furnished_type']}\n"
 			end
 
-			# TODO
 			op_fee_percentage = nil
 			tp_fee_percentage = nil
-			#renter_fees << item['incentives']
+			# text here varies, but often looks something like "Owner pays 100%"
+			# if we can make sense of the text, try to.
 			incentive = item['incentives'].downcase.strip
 			percent_sign_idx = item['incentives'].index('%')
-			#if item['incentives'].strip.downcase == 'owner pays 100%'
-			if incentive.include? "owner pays " 
-				op_fee_percentage = number_or_nil(incentive["owner pays ".length], percent_sign_idx)
-			elsif incentive.include? "ownerpays "
-				op_fee_percentage = number_or_nil(incentive["ownerpays ".length], percent_sign_idx)
-			elsif incentive.include? "tenant pays "
-				tp_fee_percentage = number_or_nil(incentive["ownerpays ".length], percent_sign_idx)
-			end
 
+			if incentive.include? "owner pays " 
+				text_length = "owner pays ".length
+				number_length = percent_sign_idx - text_length
+				op_fee_percentage = number_or_nil(incentive[text_length, number_length])
+			elsif incentive.include? "ownerpays "
+				text_length = "owner pays ".length
+				number_length = percent_sign_idx - text_length
+				op_fee_percentage = number_or_nil(incentive[text_length, number_length])
+			elsif incentive.include? "tenant pays "
+				text_length = "tenant pays ".length
+				number_length = percent_sign_idx - text_length
+				tp_fee_percentage = number_or_nil(incentive[text_length, number_length])
+			end
+			puts "\n incentive:[#{incentive}] TP:[#{tp_fee_percentage}] OP:[#{op_fee_percentage}]"
 			#access_info: 
 			#agents
 
@@ -267,7 +273,7 @@ task :import_residential => :environment do
 				notes: description,
 				lease_duration: lease_duration,
 				listing_id: item['id'],
-				op_fee_percentage: op_fee_percentage
+				op_fee_percentage: op_fee_percentage,
 				tp_fee_percentage: tp_fee_percentage,
 			})
 
