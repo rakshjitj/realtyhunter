@@ -65,8 +65,7 @@ module API
 					# TODO
 
 				elsif search_params[:listing_type] == "30" # commercial
-				 	listings = Unit.get_commercial(listings).paginate(
-				 		:page => search_params[:page], :per_page => search_params[:per_page])
+				 	listings = Unit.get_commercial(listings).page(search_params[:page]).per(search_params[:per_page])
 				end
 			
 				listings
@@ -186,8 +185,8 @@ module API
 					listings = _search_by_residential_amenity('laundry_in_unit', company_id, listings, search_params)
 					listings = _sort_residential_by(search_params, listings)
 
-					listings.paginate(
-				 		:page => search_params[:page], :per_page => search_params[:per_page])
+					Kaminari.paginate_array(listings).page(search_params[:page]).per(search_params[:per_page])
+					
 				end
 
 				def _sort_residential_by(search_params, listings)

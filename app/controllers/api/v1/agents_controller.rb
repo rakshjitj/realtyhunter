@@ -22,8 +22,8 @@ module API
 					end
 				end
 
-				@agents = User.unarchived.where(company: @user.company).paginate(
-				 	:page => agent_params[:page], :per_page => per_page)
+				@agents = User.unarchived.where(company: @user.company)
+					.page(agent_params[:page]).per(per_page)
 			end
 
 			def show
