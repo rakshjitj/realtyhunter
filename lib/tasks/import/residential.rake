@@ -133,8 +133,7 @@ namespace :import do
 	  default_office = Office.find_by(name: 'Crown Heights')
 	  default_password = "lorimer713"
 
-		api_key = "7abe027d49624988b64c22acb9f196c5"
-		nestio_url = "https://nestiolistings.com/api/v1/public/listings?key=#{api_key}"
+		nestio_url = "https://nestiolistings.com/api/v1/public/listings?key=#{ENV['NESTIO_KEY']}"
 
 		# clear old data
 		Neighborhood.delete_all

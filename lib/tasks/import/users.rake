@@ -18,8 +18,7 @@ namespace :import do
     default_office = Office.find_by(name: 'Crown Heights')
     default_password = "lorimer713"
 
-    api_key = "7abe027d49624988b64c22acb9f196c5"
-  	nestio_url = "https://nestiolistings.com/api/v1/public/agents?key=#{api_key}"
+    nestio_url = "https://nestiolistings.com/api/v1/public/agents?key=#{ENV['NESTIO_KEY']}"
 
   	mechanize = Mechanize.new
   	mechanize.user_agent_alias = "Mac Safari"
@@ -62,10 +61,15 @@ namespace :import do
         elsif item['title'] == 'Executive'
           new_title = EmployeeTitle.manager
         elsif item['title'] == 'Offline'
-          # this is an inactive user, don't add them
-          next
+          new_title = EmployeeTitle.agent
         else # catch-all
           new_title = EmployeeTitle.agent
+        end
+
+        # a few gotchas...
+        if item['email'] == 'jcastillo@myspacenyc.com' || 
+          item['email'] == 'sbrewer@myspacen.com'
+          new_title = EmployeeTitle.manager
         end
 
         found = User.find_by(name: item['name'])
