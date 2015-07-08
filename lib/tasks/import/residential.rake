@@ -206,6 +206,7 @@ namespace :import do
 
 				open_house = nil
 				item['open_houses'].each {|h| 
+					open_house = "" if open_house == nil
 					open_house = open_house + "Date: #{h['date']} From: #{h['start_time']} To: #{h['end_time']}"
 				}
 				
