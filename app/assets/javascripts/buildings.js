@@ -2,30 +2,30 @@
 
   function filterListings(event) {
   	var search_path = $('#listings').attr('data-search-path');
-  	console.log(search_path);
-
     $.ajax({
       url: search_path,
       data: {
         active_only: $('#listings_checkbox_active').prop('checked')
       },
-      dataType: "script"
+      dataType: "script",
     }).fail(function() {
-      //console.log("[FAILED] search update failed");
+      //console.log("[FAILED] search listings update failed");
     });
   };
 
   function filterBuildings(event) {
   	var search_path = $('#search-filters').attr('data-search-path');
+    // for whatever reason, we need to set dataType to json here in order
+    // to trigger the call as js.
     $.ajax({
       url: search_path,
       data: {
         filter: $('#filter').val(),
         active_only: $('#checkbox_active').prop('checked')
       },
-      dataType: "script"
+      dataType: "json"
     }).fail(function() {
-      //console.log("[FAILED] search update failed");
+      //console.log("[FAILED] search bldgs update failed");
     });
   };
 
@@ -42,21 +42,6 @@
       $('#checkbox_active').focus();
       return false;
     }
-  };
-
-  function removeBldgImage(id, bldg_id) {
-  	// make a DELETE ajax request to delete the file
-  	$.ajax({
-  		type: 'DELETE',
-  		url: '/buildings/' + bldg_id + '/images/' + id,
-  		success: function(data){
-  			console.log(data.message);
-  			$.getScript('/buildings/' + bldg_id + '/refresh_images')
-  		},
-  		error: function(data) {
-  			console.log('ERROR:', data);
-  		}
-  	});
   };
 
   function set_positions() {
@@ -82,9 +67,9 @@
     	location: bldg_address,
     	details: ".details"
     }).bind("geocode:result", function(event, result){
-        //console.log(result);
+      //console.log(result);
     }).bind("geocode:error", function(event, result){
-        //console.log("[ERROR]: " + result);
+      //console.log("[ERROR]: " + result);
     });
 
   	$(".autocomplete-input").geocomplete({

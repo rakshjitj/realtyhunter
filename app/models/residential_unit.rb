@@ -3,6 +3,9 @@ class ResidentialUnit < ActiveRecord::Base
   scope :unarchived, ->{where(archived: false)}
   has_and_belongs_to_many :residential_amenities
   before_validation :generate_unique_id
+  after_save :clear_cache
+  after_update :clear_cache
+  after_destroy :clear_cache
 
   attr_accessor :include_photos, :inaccuracy_description
 
@@ -32,25 +35,25 @@ class ResidentialUnit < ActiveRecord::Base
   end
 
   def cached_neighborhood
-    Rails.cache.fetch("building_#{building_id}_runit_#{id}_neighborhood") {
+    Rails.cache.fetch("building_#{cached_building.id}_runit_#{id}_neighborhood") {
       cached_building.neighborhood
     }
   end
 
   def cached_pet_policy
-    Rails.cache.fetch("building_#{building_id}_runit_#{id}_pet_policy") {
+    Rails.cache.fetch("building_#{cached_building.id}_runit_#{id}_pet_policy") {
       cached_building.pet_policy
     }
   end
 
   def cached_landlord
-    Rails.cache.fetch("building_#{building_id}_runit_#{id}_landlord") {
+    Rails.cache.fetch("building_#{cached_building.id}_runit_#{id}_landlord") {
       cached_building.landlord
     }
   end
 
   def cached_primary_img
-    Rails.cache.fetch("building_#{building_id}_runit_#{id}_primary_img") {
+    Rails.cache.fetch("building_#{cached_building.id}_runit_#{id}_primary_img") {
       images[0] ? images[0] : nil
     }
   end
@@ -264,6 +267,7 @@ class ResidentialUnit < ActiveRecord::Base
         residential_unit_dup.images << img_copy
       }
 
+      Rails.cache.delete_matched("building_#{cached_building.id}_units*")
       residential_unit_dup
     else
       raise "No unit number or invalid unit number specified"
@@ -350,5 +354,10 @@ class ResidentialUnit < ActiveRecord::Base
         self.listing_id = rand(9999999)
       end
       self.listing_id
+    end
+
+    def clear_cache
+      Rails.cache.delete_matched("building_#{cached_building.id}_runit_#{id}*")
+      Rails.cache.delete_matched("building_#{cached_building.id}_units*")
     end
 end

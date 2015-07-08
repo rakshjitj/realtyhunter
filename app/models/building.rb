@@ -1,6 +1,11 @@
 class Building < ActiveRecord::Base
 	scope :unarchived, ->{where(archived: false)}
-	before_save :process_custom_security
+	
+  before_save :process_custom_security
+  after_save :clear_cache
+  after_update :clear_cache
+  after_destroy :clear_cache
+  
 	belongs_to :company, touch: true
 	belongs_to :landlord, touch: true
 	belongs_to :neighborhood, touch: true
@@ -59,27 +64,31 @@ class Building < ActiveRecord::Base
   end
 
   def cached_units
-    Rails.cache.fetch("building_#{id}_units") {
-      units.unarchived.order('updated_at DESC')
-    }
+    units.unarchived
+    # Rails.cache.fetch("building_#{id}_units") {
+    #   units.unarchived.order('updated_at DESC')
+    # }
   end
 
   def cached_active_units
-    Rails.cache.fetch("building_#{id}_active_units") {
-      units.unarchived.active.order('updated_at DESC')
-    }
+    units.unarchived.active
+    # Rails.cache.fetch("building_#{id}_active_units") {
+    #   units.unarchived.active.order('updated_at DESC')
+    # }
   end
 
   def cached_units_count
-    Rails.cache.fetch("building_#{id}_units_count") {
-      cached_units.count
-    }
+    units.unarchived.count
+    # Rails.cache.fetch("building_#{id}_units_count") {
+    #   cached_units.count
+    # }
   end
 
   def cached_active_units_count
-    Rails.cache.fetch("building_#{id}_active_units_count") {
-      cached_active_units.count
-    }
+    units.unarchived.active.count
+    # Rails.cache.fetch("building_#{id}_active_units_count") {
+    #   cached_active_units.count
+    # }
   end
 
   def archive
@@ -162,22 +171,22 @@ class Building < ActiveRecord::Base
   end
 
   def residential_units
-    units = Unit.includes(:building).where(building_id: id)
+    units = Unit.unarchived.includes(:building).where(building_id: id)
     units = Unit.get_residential(units)
   end
 
   def commercial_units
-    units = Unit.includes(:building).where(building_id: id)
+    units = Unit.unarchived.includes(:building).where(building_id: id)
     Unit.get_commercial(units)
   end
 
   def active_residential_units
-    units = Unit.includes(:building).where(building_id: id, units: {status:"active"})
-    units = Unit.get_residential(units)
+    units = Unit.unarchived.where(building_id: id, status:"active")
+    Unit.get_residential(units)
   end
 
   def active_commercial_units
-    units = Unit.includes(:building).where(building_id: id, units: {status:"active"})
+    units = Unit.unarchived.where(building_id: id, status:"active")
     Unit.get_commercial(units)
   end
 
@@ -192,5 +201,9 @@ class Building < ActiveRecord::Base
   			self.required_security = req
   		end
   	end
+
+    def clear_cache
+      Rails.cache.delete_matched("building_#{id}*")
+    end
   
 end

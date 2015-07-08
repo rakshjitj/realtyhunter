@@ -1,7 +1,7 @@
 class BuildingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
-  before_action :set_building, except: [:index, :new, :create, :filter, :refresh_images]
+  before_action :set_building, except: [:index, :new, :create, :filter, :filter_listings, :refresh_images]
   etag { current_user.id }
   
   # GET /buildings
@@ -22,19 +22,17 @@ class BuildingsController < ApplicationController
   # AJAX call
   def filter
     set_buildings
+    respond_to do |format|
+      format.js
+    end
   end
 
+  # AJAX call
   def filter_listings
-    if params[:active_only]
-      @residential_units = Kaminari.paginate_array(@building.active_residential_units).page params[:page]
-      @commercial_units = Kaminari.paginate_array(@building.active_commercial_units).page params[:page]
-      #@residential_units = @building.active_residential_units.paginate(:page => params[:page], :per_page => 50)
-      #@commercial_units = @building.active_commercial_units.paginate(:page => params[:page], :per_page => 50)
-    else
-      @residential_units = Kaminari.paginate_array(@building.residential_units).page params[:page]
-      @commercial_units = Kaminari.paginate_array(@building.commercial_units).page params[:page]
-      #@residential_units = @building.residential_units.paginate(:page => params[:page], :per_page => 50)
-      #@commercial_units = @building.commercial_units.paginate(:page => params[:page], :per_page => 50)
+    set_units
+    puts "*** FILTER LISTINGS #{@residential_units.size}"
+    respond_to do |format|
+      format.js
     end
   end
 
@@ -82,9 +80,6 @@ class BuildingsController < ApplicationController
   # PATCH/PUT /buildings/1.json
   def update
     if @building.update(format_params_before_save(false))
-      # clear cache
-      Rails.cache.delete_matched("building_#{id}*")
-
       flash[:success] = "Building updated!"
       redirect_to @building
     else
@@ -95,7 +90,7 @@ class BuildingsController < ApplicationController
   # GET /refresh_images
   # ajax call
   def refresh_images
-    Rails.cache.delete("building_#{building.id}*")
+    Rails.cache.delete("building_#{id}*")
     
     respond_to do |format|
       format.js  
@@ -114,7 +109,6 @@ class BuildingsController < ApplicationController
   # DELETE /buildings/1.json
   def destroy
     @building.archive
-    Rails.cache.delete_matched("building_#{id}*")
     set_buildings
     respond_to do |format|
       format.html { redirect_to buildings_url, notice: 'Building was successfully deleted.' }
@@ -144,16 +138,26 @@ class BuildingsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_building
       @building = Building.find_unarchived(params[:id])
-      # @residential_units = @building.residential_units.paginate(:page => params[:page], :per_page => 50)
-      # @commercial_units = @building.commercial_units.paginate(:page => params[:page], :per_page => 50)
-      @residential_units = Kaminari.paginate_array(@building.residential_units).page params[:page]
-      @commercial_units = Kaminari.paginate_array(@building.commercial_units).page params[:page]
+      puts "*** SET BLDG"
+      set_units
+    end
+
+    def set_units
+      if params[:active_only] == "true"
+        puts "\n\n ACTIVE ONLY"
+        @residential_units = Kaminari.paginate_array(@building.active_residential_units).page params[:page]
+        puts "#******* #{@residential_units.count} -- #{@residential_units.map(&:status).inspect}"
+        @commercial_units = Kaminari.paginate_array(@building.active_commercial_units).page params[:page]
+      else
+        puts "\n\n ALL UNITS "
+        @residential_units = Kaminari.paginate_array(@building.residential_units).page params[:page]
+        @commercial_units = Kaminari.paginate_array(@building.commercial_units).page params[:page]
+      end
     end
 
     def set_buildings
       @buildings = Building.search(building_params[:filter], building_params[:active_only])
       @buildings = custom_sort
-      #@buildings = @buildings.paginate(:page => params[:page], :per_page => 50)
       @buildings = Kaminari.paginate_array(@buildings).page params[:page]
     end
 

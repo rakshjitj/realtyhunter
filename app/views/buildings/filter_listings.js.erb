@@ -1,2 +1,2 @@
-$('.listings').html("<%= escape_javascript (render partial:'shared/listings', locals: { residential_units: @residential_units, 
-	commercial_units: @commercial_units}) %>");
+$('.residential_units_table_body').html("<%= escape_javascript (render :partial => @residential_units) %>");
+$('.commercial_units_table_body').html("<%= escape_javascript (render :partial => @commercial_units) %>");

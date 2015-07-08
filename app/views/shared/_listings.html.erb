@@ -1,15 +1,13 @@
-<% if residential_units.length > 0 || commercial_units.length > 0 %>
-
 <!-- ******** LISTINGS ********** -->
 <div class="row">
   <div class="col-md-12">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-      <% if residential_units && residential_units.length > 0 %>
+      <% if residential_units %>
         <li role="residential-listings" class="active"><a href="#residential-listings" 
           aria-controls="residential-listings" role="tab" data-toggle="tab">Residential</a></li>
       <% end %>
-      <% if commercial_units && commercial_units.length > 0 %>
+      <% if commercial_units %>
         <li role="commercial-listings"><a href="#commercial-listings" aria-controls="commercial-listings" 
           role="tab" data-toggle="tab">Commercial</a></li>
       <% end %>
@@ -17,13 +15,14 @@
 
     <div class="tab-content">
       <!-- ******************** first tabpanel - residential ********************-->
-      <% if residential_units && residential_units.length > 0 %>
         <div role="tabpanel" class="tab-pane fade in active" id="residential-listings">
         	<br />
         	<div class="row">
 					  <div class="col-md-12">
-					  	<%= check_box_tag(:listings_checkbox_active, class: "checkbox inline") %>
-					    <%= label_tag :listings_checkbox_active, "Active units only" %>
+              <%= form_tag "#", :method => 'get' do %>
+  					  	<%= check_box_tag(:listings_checkbox_active, class: "checkbox inline") %>
+  					    <%= label_tag :listings_checkbox_active, "Active units only" %>
+              <% end %>
 					  </div>
 					</div>
 
@@ -38,9 +37,7 @@
 					</div>
 
         </div>
-      <% end %>
       <!-- ******************** second tabpanel - commercial ********************-->
-      <% if commercial_units && commercial_units.length > 0 %>
         <div role="tabpanel" class="tab-pane fade" id="commercial-listings">
           <!--%= render partial:'commercial_units/table', locals: { commercial_units: @building.commercial_units} %-->
         </div>
@@ -50,10 +47,7 @@
 				  	<!--%= render partial: 'shared/pagination', locals: {models: commercial_units} %-->
 				  </div>
 				</div>
-      <% end %>
     </div>
 
   </div><!-- col -->
 </div><!-- row -->
-
-<% end %>
