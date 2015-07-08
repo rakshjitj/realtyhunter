@@ -2,6 +2,7 @@ class Building < ActiveRecord::Base
 	scope :unarchived, ->{where(archived: false)}
 	
   before_save :process_custom_security
+  before_save :process_custom_amenities
   after_save :clear_cache
   after_update :clear_cache
   after_destroy :clear_cache
@@ -19,7 +20,7 @@ class Building < ActiveRecord::Base
 	# TODO: remove this line
 	# this is some BS we need to make cancancan happy, because it 
 	# does not like our strong parameters
-	attr_accessor :building, :inaccuracy_description, :custom_required_security
+	attr_accessor :building, :inaccuracy_description, :custom_required_security, :custom_amenities
 
 	validates :formatted_street_address, presence: true, length: {maximum: 200}, 
 		uniqueness: { case_sensitive: false }
@@ -194,13 +195,26 @@ class Building < ActiveRecord::Base
 
   	def process_custom_security
   		if custom_required_security
-  			req = RequiredSecurity.where(name: custom_required_security).first
+  			req = RequiredSecurity.find_by(name: custom_required_security)
   			if !req
   				req = RequiredSecurity.create!(name: custom_required_security, company: company)
   			end
   			self.required_security = req
   		end
   	end
+
+    def process_custom_amenities
+      if custom_amenities
+        amenities = custom_amenities.split(',')
+        amenities.each{|a|
+          a = a.downcase.strip
+          found = BuildingAmenity.find_by(name: a)
+          if !found
+            self.building_amenities << BuildingAmenity.create!(name: a, company: company)
+          end
+        }
+      end
+    end
 
     def clear_cache
       Rails.cache.delete_matched("building_#{id}*")

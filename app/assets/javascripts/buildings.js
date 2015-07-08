@@ -52,7 +52,8 @@
     });
   };
 
-  $(document).ready(function(){
+  $(document).ready(function() {
+    
     // search filters
     $('#filter').keydown(preventEnter);
     $('#filter').keyup(throttledBldgSearch);

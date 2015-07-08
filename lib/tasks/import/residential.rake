@@ -305,6 +305,9 @@ namespace :import do
 
 				if item['pets'] && !unit.building.pet_policy
 					policy_name = item['pets'].downcase.strip
+					if policy_name == "no pets allowed"
+						policy_name = "no pets"
+					end
 	      	pet_policy = PetPolicy.find_by(name: policy_name, company: company)
 					if !pet_policy
 						#puts "*** Adding PET POLICY [policy_name]"

@@ -216,7 +216,7 @@ class BuildingsController < ApplicationController
         :neighborhood, :sublocality, :administrative_area_level_2_short, :administrative_area_level_1_short, 
         :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id, :file,
         :building => [:formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description, 
-          :pet_policy_id, :required_security_id, :custom_required_security, :file, :building_amenity_ids => [], images_files: [],
-          :rental_term_ids => [] ])
+          :pet_policy_id, :required_security_id, :custom_required_security, :file, :custom_amenities,
+          :building_amenity_ids => [], images_files: [], :rental_term_ids => [] ])
     end
 end

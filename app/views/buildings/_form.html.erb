@@ -49,9 +49,9 @@
             <%= f.select(:landlord_id, options_for_select(current_user.company.landlords.collect {|l| [l.code, l.id]},
               [@building.landlord ? @building.landlord.id : '']),
               {prompt: "Choose one..."},
-              :required => true, 
+              required: true, 
               class: 'form-control',
-              :include_blank => true) %>
+              include_blank: true) %>
           </div>
         </div>
 
@@ -104,6 +104,13 @@
 
         <% i = i+1 %>
         <% end %>
+
+        <div class="col-xs-12">
+          <!-- enter a new option -->
+          <%= f.text_field :custom_amenities, class: 'form-control vertical-margin-lg', 
+            placeholder: "Or enter new amenities, comma separated" %>
+        </div>
+
       </div><!-- row -->
     </div>
 
@@ -201,7 +208,7 @@
              {prompt: "Choose one..."},
             class: 'form-control',
             :include_blank => true) %>
-          <%= f.text_field :custom_required_security, class: 'form-control', 
+          <%= f.text_field :custom_required_security, class: 'form-control vertical-margin-lg', 
             placeholder: "Or enter new custom required security" %>
         </div>
       </div>
