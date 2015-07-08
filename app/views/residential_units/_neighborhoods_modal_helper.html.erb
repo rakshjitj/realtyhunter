@@ -24,14 +24,26 @@
 	  		<% @by_boroughs.each do |b,neighs| %>
 	  				
 			    	<div role="tabpanel" class="tab-pane" id="<%= b %>">
+			    		<br />
+			    		<div class="row">
 			    		
-			    		<div class="btn-group neighborhood-buttons" data-toggle="buttons">
-				    		<% neighs.each do |neighborhood| %>
-				    			<label class="btn btn-xs btn-link btn-as-checkbox" 
-				    				id="<%= neighborhood.id %>" name="<%= neighborhood.name %>">
-									  <input type="checkbox" autocomplete="off"><%= neighborhood.name.titleize %>
-									</label>
+			    			<% for i in 0..neighs.count-1 %>
+				    			<% neighborhood = neighs[i] %>
+				    			<% if i % 3 == 0 && i > 0 %>
+				    				</div>
+				    				<div class="row">
+				    			<% end %>
+
+				    			<div class="col-xs-4">
+				    				<div class="btn-group neighborhood-buttons" data-toggle="buttons">
+						    			<label class="btn btn-xs btn-link btn-as-checkbox" 
+						    				id="<%= neighborhood.id %>" name="<%= neighborhood.name %>">
+											  <input type="checkbox" autocomplete="off"><%= neighborhood.name.titleize %>
+											</label>
+										</div>
+									</div>
 				    		<% end %>
+
 							</div><!-- btn-group -->
 			    	</div><!-- tabpanel -->
 
