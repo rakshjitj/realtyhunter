@@ -316,12 +316,12 @@ namespace :import do
 					unit.building.pet_policy = pet_policy
 				end
 
-				# item['photos'].each{ |p| 
-				# 	image = Image.new
-	   #      image.file = URI.parse(p['original'])
-	   #      image.save
-				# 	unit.images << image
-		  #   }
+				item['photos'].each{ |p| 
+					image = Image.new
+	        image.file = URI.parse(p['original'])
+	        image.save
+					unit.images << image
+		    }
 
 	    end
 	  end
