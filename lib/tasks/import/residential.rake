@@ -117,7 +117,7 @@ namespace :import do
 			record
 		end
 
-		def mark_done(log)
+		def mark_done(log, start_time)
 			puts "Done!\n"
   		log.info "Done!\n"
   		end_time = Time.now
@@ -137,9 +137,9 @@ namespace :import do
 		nestio_url = "https://nestiolistings.com/api/v1/public/listings?key=#{api_key}"
 
 		# clear old data
-		Neighborhood.delete_all
-		Building.delete_all
-		ResidentialUnit.delete_all
+		# Neighborhood.delete_all
+		# Building.delete_all
+		# ResidentialUnit.delete_all
 
 		# begin pulling down new data
 		total_pages = 99
@@ -156,7 +156,7 @@ namespace :import do
 	  done = false
 	  for j in 1..total_pages
 	  	if done
-	  		mark_done(log)
+	  		mark_done(log, start_time)
 	  		break
 	  	end
 
@@ -325,7 +325,7 @@ namespace :import do
 	  #puts "RENTER FEES: #{renter_fees.uniq}"
 	  #puts "STATII #{statii.uniq}"
 	  if !done
-		  mark_done(log)
+		  mark_done(log, start_time)
 		end
 	end
 end

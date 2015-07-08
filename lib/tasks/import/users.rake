@@ -3,7 +3,7 @@ namespace :import do
   task :users => :environment do
     log = ActiveSupport::Logger.new('log/import_users.log')
     
-    def mark_done(log)
+    def mark_done(log, start_time)
       puts "Done!\n"
       log.info "Done!\n"
       end_time = Time.now
@@ -35,7 +35,7 @@ namespace :import do
     done = false
     for j in 1..total_pages
     	if done
-    		mark_done(log)
+    		mark_done(log, start_time)
     		break
     	end
 
@@ -63,7 +63,7 @@ namespace :import do
           new_title = EmployeeTitle.manager
         elsif item['title'] == 'Offline'
           # this is an inactive user, don't add them
-          return
+          next
         else # catch-all
           new_title = EmployeeTitle.agent
         end
@@ -101,14 +101,13 @@ namespace :import do
         else
           puts "[#{i}/#{page_count_limit}] #{item['name']} - already exists"
           log.info "[#{i}/#{page_count_limit}] #{item['name']} - already exists"
-          #puts "... #{item['name']} already exists. Skipping."
         end
       end
     	
     end
 
     if !done
-      mark_done
+      mark_done(log, start_time)
     end
   end
 end
