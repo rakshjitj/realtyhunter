@@ -29,8 +29,7 @@ module API
 
 				# calls our API::V1::NestioInterface module located under /lib
 				@neighborhoods = neighborhood_search(neighborhood_params)
-				@neighborhoods = @neighborhoods.paginate(
-				 	:page => neighborhood_params[:page], :per_page => per_page)
+				@neighborhoods = @neighborhoods.page neighborhood_params[:page]
 			end
 
 			def show

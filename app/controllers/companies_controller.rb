@@ -43,14 +43,14 @@ class CompaniesController < ApplicationController
     @title = 'Managers'
     @users = @company.managers
     @users.sort_by!{|u| u.name.downcase }
-    @users = @users.paginate(:page => params[:page], :per_page => 50)
+    @users = @users.page params[:page]
     render 'users/index'
   end
 
   def employees
     @title = 'Employees'
-    @users = @company.users.includes(:office, :employee_title, :image, :company, :manager, :roles)
-      .paginate(:page => params[:page], :per_page => 50)
+    @users = @company.users.includes(
+      :office, :employee_title, :image, :company, :manager, :roles).page params[:page]
     render 'users/index'
   end
 
@@ -131,7 +131,7 @@ class CompaniesController < ApplicationController
 
     def set_companies
       @companies = Company.search(params[:search_params])
-      @companies = @companies.unarchived.paginate(:page => params[:page], :per_page => 50)
+      @companies = @companies.unarchived.page params[:page]
     end
 
     def company_params

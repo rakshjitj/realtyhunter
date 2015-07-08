@@ -37,7 +37,7 @@ class OfficesController < ApplicationController
   def agents
     @users = @office.agents
     @users.sort_by!{|u| u.name.downcase }
-    @users = @users.paginate(:page => params[:page], :per_page => 50)
+    @users = @users.page params[:page]
     fresh_when(@users)
     @title = "Agents"
     render 'users/index'    

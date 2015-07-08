@@ -188,7 +188,7 @@ class CommercialUnitsController < ApplicationController
       #@commercial_units = CommercialUnit.all
       
       @commercial_units = custom_sort
-      @commercial_units = @commercial_units.paginate(:page => params[:page], :per_page => 50)
+      @commercial_units = @commercial_units.page params[:page]
       #@map_infos = CommercialUnit.set_location_data(@commercial_units)
     end
 
@@ -197,7 +197,7 @@ class CommercialUnitsController < ApplicationController
     #   @commercial_units = CommercialUnit.search(search_params, params[:building_id])
       
     #   @commercial_units = custom_sort
-    #   @commercial_units = @commercial_units.paginate(:page => params[:page], :per_page => 50)
+    #   @commercial_units = @commercial_units.page params[:page]
     #   @map_infos = CommercialUnit.set_location_data(@commercial_units)
     # end
 
