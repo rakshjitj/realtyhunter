@@ -71,8 +71,8 @@ group :production do
 	gem 'puma'
 	gem 'wkhtmltopdf-heroku', '~> 2.12.2.1'
   gem 'connection_pool'
-  #gem 'dalli'
-  gem 'dalli-delete-matched'
+  gem 'dalli'
+  #gem 'dalli-delete-matched'
 end
 
 group :development, :test do
