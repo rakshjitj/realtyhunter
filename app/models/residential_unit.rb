@@ -148,7 +148,7 @@ class ResidentialUnit < ActiveRecord::Base
   # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 
   # neighborhoods, has_outdoor_space, features, pet_policy
   def self.search(params, building_id=nil)
-
+    #puts "PARAMS #{params.inspect}"
     if !params && !building_id
       return ResidentialUnit.unarchived
     elsif !params && building_id
@@ -176,9 +176,10 @@ class ResidentialUnit < ActiveRecord::Base
 
     # search by status
     if params[:status]
-      included = %w[Active Pending Off].include?(params[:status])
+      status = params[:status].downcase
+      included = %w[active pending off].include?(status)
       if included
-       @running_list = @running_list.where("status = ?", Unit.statuses[params[:status].downcase])
+       @running_list = @running_list.where("status = ?", Unit.statuses[status])
       end
     end
 
@@ -241,13 +242,18 @@ class ResidentialUnit < ActiveRecord::Base
       @running_list = @running_list.where("baths <= ?", params[:bath_max])
     end
 
+    #puts "BEFORE UNIT FEATURES #{@running_list.inspect}"
     # search features
     if params[:unit_feature_ids]
+
       features = params[:unit_feature_ids][0, 256]
+      #puts "TERMS #{params[:unit_feature_ids]} #{features}"
       features = features.split(",")
-        @running_list = @running_list.joins(:residential_amenities)
+      #puts "AFTER SPLIT #{features.inspect}"
+      @running_list = @running_list.joins(:residential_amenities)
         .where('residential_amenity_id IN (?)', features)
     end
+    #puts "AFTER UNIT FEATURES #{@running_list.inspect}"
     
     @running_list.uniq
 	end

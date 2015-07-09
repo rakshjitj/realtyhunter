@@ -85,8 +85,7 @@
         </div>
         <div class="col-md-9">
           <%= select_tag(:status, 
-            options_for_select(%w(Active Pending Off), params[:status]),
-            include_blank: true) %>
+            options_for_select(%w(Active Pending Off Any), params[:status] ? params[:status].titleize : "Active")) %>
         </div>
       </div>
       <div class="row vertical-padding">

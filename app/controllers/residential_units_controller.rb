@@ -18,10 +18,12 @@ class ResidentialUnitsController < ApplicationController
     end
   end
 
-  # GET /filter_buildings
   # AJAX call
   def filter
     set_residential_units
+    respond_to do |format|
+      format.js  
+    end
   end
 
   # GET 
@@ -268,18 +270,25 @@ class ResidentialUnitsController < ApplicationController
     end
 
     def set_residential_units
-      search_params = params[:search_params]
-      @residential_units = ResidentialUnit.search(search_params, params[:building_id])
-      
-      @residential_units = custom_sort
+      do_search
       @map_infos = ResidentialUnit.set_location_data(@residential_units)
       @residential_units = Kaminari.paginate_array(@residential_units).page params[:page]
     end
 
     def residential_units_no_pagination
+      do_search
+    end
+
+    def do_search
       search_params = params[:search_params]
-      @residential_units = ResidentialUnit.search(search_params, params[:building_id])      
+      # default to searching for active units
+      if !search_params || !search_params[:status]
+        search_params = {} unless search_params
+        search_params[:status] = "active"
+      end
+      @residential_units = ResidentialUnit.search(search_params, params[:building_id])
       @residential_units = custom_sort
+      @residential_units
     end
 
     def custom_sort
