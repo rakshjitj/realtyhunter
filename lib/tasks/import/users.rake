@@ -91,6 +91,8 @@ namespace :import do
             password_confirmation: default_password, 
           })
 
+          user.agent_types = ['residential', 'commercial']
+
           headshot_img = item['headshot']['original']
           if headshot_img
             image = Image.new

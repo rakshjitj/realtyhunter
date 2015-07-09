@@ -4,7 +4,6 @@ class Building < ActiveRecord::Base
   before_save :process_custom_security
   before_save :process_custom_amenities
   before_save :process_custom_rental_terms
-  #after_save :clear_cache
   after_update :clear_cache
   after_destroy :clear_cache
   

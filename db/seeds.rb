@@ -167,6 +167,7 @@ end
     employee_title: EmployeeTitle.find_by(name: 'agent'),
     mobile_phone_number: '666-666-6666'
   })
+@api_only.agent_types = ['residential', 'commercial']
 
 # super admin
 @super_admin = User.create!(
@@ -183,6 +184,7 @@ end
     employee_title: EmployeeTitle.find_by(name: 'super admin'),
     mobile_phone_number: '666-666-6666'
   })
+@super_admin.agent_types = ['residential', 'commercial']
 
 @company_admin1 = User.create!(
   { name: 'Nir Mizrachi', 
@@ -198,6 +200,7 @@ end
     employee_title: EmployeeTitle.find_by(name: 'company admin'),
     mobile_phone_number: '929-258-7847'
   })
+@company_admin1.agent_types = ['residential', 'commercial']
 
 define_roles
 @company_admin1.update_roles
@@ -205,26 +208,26 @@ define_roles
 @super_admin.update_roles
 @super_admin.add_role :super_admin
 
-50.times do |n|
-  name  = FFaker::Name.name
-  email = "example-#{n+1}@railstutorial.org"
-  password = @password
-  userN = User.create!(name: name,
-   email: email,
-   phone_number: FFaker::PhoneNumber.short_phone_number,
-   mobile_phone_number: '333-333-3333',
-   password:              password,
-   password_confirmation: password,
-   activated: true,
-   activated_at: Time.zone.now,
-   approved: true, 
-   approved_at: Time.zone.now,
-   company: @company, 
-   office: @offices[0],
-   employee_title: @employee_titles[1]
-   )
-  userN.update_roles
-end
+# 50.times do |n|
+#   name  = FFaker::Name.name
+#   email = "example-#{n+1}@railstutorial.org"
+#   password = @password
+#   userN = User.create!(name: name,
+#    email: email,
+#    phone_number: FFaker::PhoneNumber.short_phone_number,
+#    mobile_phone_number: '333-333-3333',
+#    password:              password,
+#    password_confirmation: password,
+#    activated: true,
+#    activated_at: Time.zone.now,
+#    approved: true, 
+#    approved_at: Time.zone.now,
+#    company: @company, 
+#    office: @offices[0],
+#    employee_title: @employee_titles[1]
+#    )
+#   userN.update_roles
+# end
 
 # seed property data -----------------------------------------
 # @neighborhood = Neighborhood.create({

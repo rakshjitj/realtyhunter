@@ -3,7 +3,6 @@ class ResidentialUnit < ActiveRecord::Base
   scope :unarchived, ->{where(archived: false)}
   has_and_belongs_to_many :residential_amenities
   before_validation :generate_unique_id
-  #after_save :clear_cache
   after_update :clear_cache
   after_destroy :clear_cache
 
@@ -383,7 +382,6 @@ class ResidentialUnit < ActiveRecord::Base
     end
 
     def clear_cache
-      #puts "*** #{building_id}"
       Rails.cache.delete_matched("building_#{building_id}_runit_#{id}*")
       Rails.cache.delete_matched("building_#{building_id}_units*")
     end

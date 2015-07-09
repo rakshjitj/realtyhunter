@@ -35,11 +35,11 @@
               <li><%= link_to "Buildings", buildings_path %></li>
             <% end %>
 
-            <% if current_user.handles_residential? %>
+            <% if current_user.handles_residential? || current_user.is_management? %>
               <li><%= link_to "Residential", residential_units_path %></li>
             <% end %>
 
-            <% if current_user.handles_commercial? %>
+            <% if current_user.handles_commercial? || current_user.is_management? %>
               <li><%= link_to "Commercial", commercial_units_path %></li>
             <% end %>
 

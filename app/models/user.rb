@@ -178,15 +178,17 @@ class User < ActiveRecord::Base
   def update_roles
     # clear out old roles
     self.roles = [];
-    # (almost) everyone should always be able to see residential stuff
-    if self.employee_title != EmployeeTitle.external_vendor
-      self.add_role :residential
-    end
+
     # add a role representing your position in the company.
     # default to an agent if none otherwise specified
     if !self.employee_title
       self.employee_title = EmployeeTitle.agent
       self.save
+    end
+
+    # (almost) everyone should always be able to see residential stuff
+    if self.employee_title != EmployeeTitle.external_vendor
+      self.add_role :residential
     end
     
     # if you're an agent, add in specific roles for the type of
@@ -236,10 +238,11 @@ class User < ActiveRecord::Base
   end
 
   def is_agent?
-    AgentType.all_cached.each do |at|
-      return true if self.has_role? at.name
-    end
-    return false
+    employee_title == EmployeeTitle.agent
+    # AgentType.all_cached.each do |at|
+    #   return true if self.has_role? at.name
+    # end
+    # return false
   end
 
   def make_manager
@@ -251,12 +254,6 @@ class User < ActiveRecord::Base
     self.employee_title = EmployeeTitle.company_admin
     self.update_roles
   end
-
-  #def remove_manager
-  #  subordinates.clear
-  #  self.remove_role :manager
-  #end
-
 
   def add_subordinate(subord)
     if self.has_role? :manager

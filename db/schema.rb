@@ -184,9 +184,9 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "borough"
     t.string   "city"
     t.string   "state"
+    t.integer  "buildings_id"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
-    t.integer  "buildings_id"
   end
 
   add_index "neighborhoods", ["buildings_id"], name: "index_neighborhoods_on_buildings_id", using: :btree
