@@ -188,7 +188,7 @@ class CommercialUnitsController < ApplicationController
       #@commercial_units = CommercialUnit.all
       
       @commercial_units = custom_sort
-      @commercial_units = @commercial_units.page params[:page]
+      @commercial_units = Kaminari.paginate_array(@commercial_units).page params[:page]
       #@map_infos = CommercialUnit.set_location_data(@commercial_units)
     end
 

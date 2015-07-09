@@ -1,18 +1,3 @@
-<script>
-	function initialize() {
-    $(".panel").geocomplete({
-    	map: "#map_canvas",
-    	location: "<%= @commercial_unit.building.formatted_street_address %>" ,
-    	details: ".details"
-    }).bind("geocode:result", function(event, result){
-        //console.log(result);
-    }).bind("geocode:error", function(event, result){
-        //console.log("[ERROR]: " + result);
-    });
-	};
-	$(document).ready(initialize);
-</script>
-
 <% provide(:title, @commercial_unit.building.street_address) %>
 
 <div class="row">

@@ -230,22 +230,12 @@ define_roles
 # end
 
 # seed property data -----------------------------------------
-# @neighborhood = Neighborhood.create({
-#   name: "Crown Heights",
-#   borough: "Brooklyn",
-#   city: "New York",
-#   state: "NY"
-#   })
-
-# 20.times do |n|
-#   # if name has already been taken, ignore error
-#   neigh = Neighborhood.create({
-#     name: FFaker::Address::neighborhood,
-#     borough: (n < 10) ? "Brooklyn" : "Queens",
-#     city: "New York",
-#     state: "NY"
-#   })
-# end
+@neighborhood = Neighborhood.create({
+  name: "Crown Heights",
+  borough: "Brooklyn",
+  city: "New York",
+  state: "NY"
+  })
 
 @landlord = Landlord.create!({
   code: "Unassigned", 
@@ -258,25 +248,25 @@ define_roles
   company: @company,
   })
 
-# @bldg = Building.create!({
-#   formatted_street_address: '1062 Bergen St, Brooklyn, NY 11216',
-#   street_number: '1062',
-#   route: 'Bergen St',
-#   sublocality: 'Brooklyn',
-#   administrative_area_level_2_short: 'New York',
-#   administrative_area_level_1_short: 'NY',
-#   postal_code: '11216',
-#   country_short: 'USA',
-#   lat: '40.6759645',
-#   lng: '-73.9509791',
-#   place_id: 1,
-#   notes: "Building has parking spots available, laundry in the basement.",
-#   company: @company, 
-#   landlord: @landlord,
-#   neighborhood: @neighborhood,
-#   pet_policy: @company.pet_policies[2],
-#   required_security: @company.required_securities[1],
-#   })
+@bldg = Building.create!({
+  formatted_street_address: '722 Franklin Ave, Brooklyn, NY 11238',
+  street_number: '722',
+  route: 'Franklin Ave',
+  sublocality: 'Brooklyn',
+  administrative_area_level_2_short: 'New York',
+  administrative_area_level_1_short: 'NY',
+  postal_code: '11238',
+  country_short: 'USA',
+  lat: '40.6759645',
+  lng: '-73.9509791',
+  place_id: 1,
+  notes: "Building has parking spots available, laundry in the basement.",
+  company: @company, 
+  landlord: @landlord,
+  neighborhood: @neighborhood,
+  pet_policy: @company.pet_policies[2],
+  required_security: @company.required_securities[1],
+  })
 
 # 55.times do |n|
 
@@ -298,31 +288,31 @@ define_roles
 #     })
 # end
 
-# 55.times do |n|
-#   bldg_size = Faker::Number.number(4);
-#   CommercialUnit.create!({
-#     status: "active",
-#     building: @bldg,
-#     rent: Faker::Number.number(4),
-#     available_by: Time.zone.now,
+55.times do |n|
+  bldg_size = Faker::Number.number(4);
+  CommercialUnit.create!({
+    status: "active",
+    building: @bldg,
+    rent: Faker::Number.number(4),
+    available_by: Time.zone.now,
 
-#     sq_footage: Faker::Number.number(3),
-#     floor: Faker::Number.number(1),
-#     build_to_suit: false,
-#     lease_type: "modified_gross",
-#     is_sublease: false,
-#     building_size: bldg_size,
-#     total_lot_size: bldg_size,
-#     minimum_divisble: bldg_size,
-#     maximum_contiguous: bldg_size,
-#     property_description: FFaker::HipsterIpsum.sentence,
-#     location_description: FFaker::HipsterIpsum.sentence,
-#     construction_status: "existing",
-#     no_parking_spaces: Faker::Number.number(1),
-#     pct_procurement_fee: Faker::Number.number(2),
-#     lease_term_months: Faker::Number.number(2),
-#     rate_is_negotiable: false,
-#     commercial_property_type: @company.commercial_property_types[0],
-#     })
+    sq_footage: Faker::Number.number(3),
+    floor: Faker::Number.number(1),
+    build_to_suit: false,
+    lease_type: "modified_gross",
+    is_sublease: false,
+    building_size: bldg_size,
+    total_lot_size: bldg_size,
+    minimum_divisble: bldg_size,
+    maximum_contiguous: bldg_size,
+    property_description: FFaker::HipsterIpsum.sentence,
+    location_description: FFaker::HipsterIpsum.sentence,
+    construction_status: "existing",
+    no_parking_spaces: Faker::Number.number(1),
+    pct_procurement_fee: Faker::Number.number(2),
+    lease_term_months: Faker::Number.number(2),
+    rate_is_negotiable: false,
+    commercial_property_type: @company.commercial_property_types[0],
+    })
 
-# end
+end

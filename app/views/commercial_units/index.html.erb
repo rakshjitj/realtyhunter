@@ -1,90 +1,17 @@
-<script>
-   //unobstrusive: attach method call here
-   //call when typing or enter or focus leaving
-  function initialize() {
-    var timer2;
-    function clearSpinner() {
-      // remove the spinner after download completes.
-      // this is a very hackish way of roughly estimating how long
-      // the download takes to complete
-      clearInterval(timer2);
-      $('.btn-print-list').toggleClass('active');
-    };
-
-    $('.btn-print-list').click( function(event) {
-      // show spinner
-      $(this).toggleClass('active');
-      timer2 = setTimeout(clearSpinner, 15000);
-    });
-
-    function doSearch(event) {
-
-      // sanitize invalid input before submitting
-      if ($('#neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
-        $('#neighborhood_ids').val('');
-      }
-
-      $.ajax({
-        url: "<%= filter_commercial_units_path %>",
-        data: {
-          search_params: {
-            address: $('#address').val(),
-            rent_min: $('#rent_min').val(),
-            rent_max: $('#rent_max').val(),
-            landlord: $('#landlord').val(),
-            status: $('#status').val(),
-            status: $('#property_type').val(),
-            status: $('#listing_id').val(),
-            neighborhood_ids: $('#neighborhood_ids').val(),
-          } 
-        },
-        dataType: "script"
-      });
-    };
-
-    // search as user types
-    var timer;
-    function throttledSearch() {
-      clearInterval(timer);  //clear any interval on key up
-      timer = setTimeout(doSearch, 500);
-    };
-    
-    // change enter key to tab
-    function preventEnter(event) {
-      if (event.keyCode == 13) {
-        //$('#checkbox_active').focus();
-        return false;
-      }
-    };
-
-    $('input').keydown(preventEnter);
-    $('#address').keyup(throttledSearch);
-    $('#rent_min').keyup(throttledSearch);
-    $('#rent_max').keyup(throttledSearch);
-    $('#landlord').keyup(throttledSearch);
-    $('#status').change(throttledSearch);
-    $('#neighborhood_ids').change(throttledSearch);
-    $('#property_type').change(throttledSearch);
-    $('#listing_id').keyup(throttledSearch);
-  };
-  // TODO: get rid of document.ready
-  $(document).ready(initialize);
-</script>
-
 <% provide(:title, 'Commercial Listings') %>
+
 <div class="page-header">
   <div class="row">
     <div class="col-md-6">
       <h1>Commercial Listings</h1>
     </div>
     <div class="col-md-6 form-label-responsive">
-      <br />
-      <br />
       <% if current_user.is_management? %>
-        <h1>Commercial Listings</h1><%= link_to 'Add a listing', new_commercial_unit_path %> 
+        <%= link_to 'Add a listing', new_commercial_unit_path, 
+        class:"btn btn-xs btn-warning link-as-button" %>
       <% end %>
       <%= link_to print_list_commercial_units_path, 
-        class:"btn btn-xs btn-primary link-as-button btn-print-list has-spinner" do %>
+        class:"btn btn-xs btn-warning link-as-button btn-print-list has-spinner" do %>
         <span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Print
       <% end %>
     </div>

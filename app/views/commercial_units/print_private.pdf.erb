@@ -1,19 +1,5 @@
-<script>
-$( document ).ready(function() {
-    $(".panel").geocomplete({
-    	map: "#map_canvas",
-    	location: "<%= @commercial_unit.building.formatted_street_address %>" ,
-    	details: ".details"
-    }).bind("geocode:result", function(event, result){
-        //console.log(result);
-    }).bind("geocode:error", function(event, result){
-        //console.log("[ERROR]: " + result);
-    });
-
-});
-</script>
-
 <% provide(:title, 'Commercial Unit') %>
+
 <div class="row">
   <div class="col-xs-12">
   	
