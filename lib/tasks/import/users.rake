@@ -77,7 +77,7 @@ namespace :import do
           user = User.create!({
             phone_number: item['phone_number'] || nil,
             mobile_phone_number: item['mobile_phone_number'],
-            name: item['name'],
+            name: item['name'].strip,
             email: item['email'],
             bio: item['bio'] || nil,
             company: company,
@@ -91,13 +91,13 @@ namespace :import do
             password_confirmation: default_password, 
           })
 
-          headshot_img = item['headshot']['original']
-          if headshot_img
-            image = Image.new
-            image.file = URI.parse(item['headshot']['original'])
-            image.save
-            user.image = image
-          end
+          # headshot_img = item['headshot']['original']
+          # if headshot_img
+          #   image = Image.new
+          #   image.file = URI.parse(item['headshot']['original'])
+          #   image.save
+          #   user.image = image
+          # end
 
           user.update_roles
           puts "[#{i}/#{page_count_limit}] #{item['name']} - added"
