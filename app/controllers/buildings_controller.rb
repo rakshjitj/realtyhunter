@@ -30,7 +30,6 @@ class BuildingsController < ApplicationController
   # AJAX call
   def filter_listings
     set_units
-    puts "*** FILTER LISTINGS #{@residential_units.size}"
     respond_to do |format|
       format.js
     end
@@ -142,13 +141,9 @@ class BuildingsController < ApplicationController
     end
 
     def set_units
-      if params[:active_only] == "true"
-        @residential_units = Kaminari.paginate_array(@building.active_residential_units).page params[:page]
-        @commercial_units = Kaminari.paginate_array(@building.active_commercial_units).page params[:page]
-      else
-        @residential_units = Kaminari.paginate_array(@building.residential_units).page params[:page]
-        @commercial_units = Kaminari.paginate_array(@building.commercial_units).page params[:page]
-      end
+      active_only = params[:active_only] == "true"
+      @residential_units = Kaminari.paginate_array(@building.residential_units(active_only)).page params[:page]
+      @commercial_units = Kaminari.paginate_array(@building.commercial_units(active_only)).page params[:page]
     end
 
     def set_buildings

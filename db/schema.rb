@@ -287,7 +287,8 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.boolean  "oh_exclusive",       default: false
     t.integer  "weeks_free_offered", default: 0
     t.integer  "building_id"
-    t.integer  "user_id"
+    t.integer  "listing_agent_id"
+    t.integer  "primary_agent_id"
     t.integer  "images_id"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
@@ -320,7 +321,6 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer  "office_id"
     t.integer  "employee_title_id"
     t.integer  "manager_id"
-    t.integer  "units_id"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
   end
@@ -328,7 +328,6 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["employee_title_id"], name: "index_users_on_employee_title_id", using: :btree
   add_index "users", ["manager_id"], name: "index_users_on_manager_id", using: :btree
-  add_index "users", ["units_id"], name: "index_users_on_units_id", using: :btree
 
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"

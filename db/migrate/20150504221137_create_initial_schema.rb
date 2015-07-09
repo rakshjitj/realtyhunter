@@ -73,7 +73,6 @@
       t.belongs_to :office
       t.references :employee_title, index: true
       t.references :manager, index: true
-      t.references :units, index: true # primary agent
       t.timestamps null: false
     end
     add_index :users, :email, unique: true
@@ -84,8 +83,8 @@
       t.string :borough
       t.string :city
       t.string :state
-      t.timestamps null: false
       t.references :buildings, index: true
+      t.timestamps null: false
     end
 
     create_table :landlords do |t|
@@ -168,7 +167,8 @@
       t.boolean :oh_exclusive, default: false
       t.integer :weeks_free_offered, default: 0
       t.belongs_to :building
-      t.belongs_to :user # primary agent
+      t.references :listing_agent
+      t.references :primary_agent
       t.references :images, index: true
       t.timestamps null: false
     end
@@ -244,7 +244,7 @@
       t.timestamps null: false
     end
 
-    # common prefix "residential" gets factored out
+    # note: common prefix "residential" gets factored out
     create_table :residential_amenities_units, id: false do |t|
       t.belongs_to :residential_unit
       t.belongs_to :residential_amenity

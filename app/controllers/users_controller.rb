@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
   skip_before_action :logged_in_user, only: [:new, :create, :update_offices]
-  before_action :set_user, except: [:index, :filter, :teams, :new, :create, :admin_new, 
+  before_action :set_user, except: [:index, :filter, :filter_listings, :teams, :new, :create, :admin_new, 
     :admin_create, :update_offices]
   before_action :set_company, except: [:update_offices]
   etag { current_user.id }
@@ -14,10 +14,20 @@ class UsersController < ApplicationController
     @title = 'All users'
   end
 
-  # GET /filter_buildings
   # AJAX call
   def filter
     set_users
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  # AJAX call
+  def filter_listings
+    set_units
+    respond_to do |format|
+      format.js
+    end
   end
 
   # GET /coworkers/1
@@ -236,12 +246,18 @@ class UsersController < ApplicationController
     def set_user
       @user = User.find_unarchived(params[:id])
       @agent_title = EmployeeTitle.agent
+      set_units
     end
 
     def set_users
-      #@residential_units = Kaminari.paginate_array(@residential_units).page params[:page]
       @users = User.search(params[:search_params])
       @users = Kaminari.paginate_array(@users).page params[:page]
+    end
+
+    def set_units
+      active_only = params[:active_only] == "true"
+      @residential_units = Kaminari.paginate_array(@user.primary_residential_units(active_only)).page params[:page]
+      @commercial_units = Kaminari.paginate_array(@user.primary_commercial_units(active_only)).page params[:page]
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

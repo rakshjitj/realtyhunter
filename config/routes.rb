@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       post 'admin_unapprove'
       post 'admin_kick'
       patch 'new_auth_token'
+      get 'filter_listings'
     end
   end
   

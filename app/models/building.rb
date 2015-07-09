@@ -175,25 +175,33 @@ class Building < ActiveRecord::Base
     BuildingMailer.inaccuracy_reported(self, reporter).deliver_now
   end
 
-  def residential_units
-    units = Unit.unarchived.includes(:building).where(building_id: id)
+  def residential_units(active_only)
+    if active_only
+      units = Unit.unarchived.where(building_id: id, status:"active")
+    else
+      units = Unit.unarchived.includes(:building).where(building_id: id)
+    end
     units = Unit.get_residential(units)
   end
 
-  def commercial_units
-    units = Unit.unarchived.includes(:building).where(building_id: id)
+  def commercial_units(active_only)
+    if active_only
+      units = Unit.unarchived.where(building_id: id, status:"active")
+    else
+      units = Unit.unarchived.includes(:building).where(building_id: id)
+    end
     Unit.get_commercial(units)
   end
 
-  def active_residential_units
-    units = Unit.unarchived.where(building_id: id, status:"active")
-    Unit.get_residential(units)
-  end
+  # def active_residential_units
+  #   units = Unit.unarchived.where(building_id: id, status:"active")
+  #   Unit.get_residential(units)
+  # end
 
-  def active_commercial_units
-    units = Unit.unarchived.where(building_id: id, status:"active")
-    Unit.get_commercial(units)
-  end
+  # def active_commercial_units
+  #   units = Unit.unarchived.where(building_id: id, status:"active")
+  #   Unit.get_commercial(units)
+  # end
 
   private
 

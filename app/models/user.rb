@@ -14,7 +14,10 @@ class User < ActiveRecord::Base
   belongs_to :manager, :class_name => "User", touch: true
   belongs_to :employee_title
   has_many   :subordinates, :class_name => "User", :foreign_key => "manager_id"
-  has_many   :units # primary agent, listing agent
+  
+  has_many :primary_units, class_name: 'Unit', :foreign_key => 'primary_agent_id'
+  has_many :listed_units,  class_name: 'Unit', :foreign_key => 'listing_agent_id'
+
   has_one :image, dependent: :destroy
 
 	attr_accessor :remember_token, :activation_token, :reset_token, :approval_token, :agent_types, :batch
@@ -48,12 +51,20 @@ class User < ActiveRecord::Base
     BCrypt::Password.create(string, cost: cost)
   end
 
-  def primary_residential_units
-    @residential_units = Unit.get_residential(self.units)
+  def primary_residential_units(active_only)
+    if active_only
+      @residential_units = Unit.get_residential(self.primary_units.active)
+    else
+      @residential_units = Unit.get_residential(self.primary_units)
+    end
   end
 
-  def primary_commercial_units
-    @commercial_units = Unit.get_commercial(self.units)
+  def primary_commercial_units(active_only)
+    if active_only
+      @commercial_units = Unit.get_commercial(self.primary_units.active)
+    else
+      @commercial_units = Unit.get_commercial(self.primary_units)
+    end
   end
 
   # Returns a random token.

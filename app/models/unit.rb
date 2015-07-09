@@ -1,12 +1,12 @@
 class Unit < ActiveRecord::Base
 	actable
 	belongs_to :building, touch: true
-  # TODO: test. I don't think this is working right?
-  belongs_to :primary_agent, :foreign_key => 'user_id', :class_name => 'User', touch: true
-  belongs_to :listing_agent, :foreign_key => 'user_id', :class_name => 'User', touch: true
-  has_many :images, dependent: :destroy
-  # TODO before_validation :generate_unique_id
+  
+  belongs_to :primary_agent, :class_name => 'User', touch: true
+  belongs_to :listing_agent, :class_name => 'User', touch: true
 
+  has_many :images, dependent: :destroy
+  # before_validation :generate_unique_id
   scope :unarchived, ->{ where(archived: false) }
   scope :active, ->{ where(status: "active") }
   scope :residential, ->{ where("actable_type = 'ResidentialUnit'") }

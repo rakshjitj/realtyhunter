@@ -72,12 +72,12 @@ namespace :import do
 				})
 			end
 
-			req_sec = RequiredSecurity.where(company: company).first
+			#req_sec = RequiredSecurity.where(company: company).first
 
 			record = Building.find_by(formatted_street_address: result['formatted_address'])
 			if !record
-				puts "#{result['formatted_address']} - added"
-				log.info "#{result['formatted_address']} - added"
+				puts "- building added"
+				log.info "- building added"
 				record = Building.create!({
 					lat: result['geometry']['location']['lat'],
 					lng: result['geometry']['location']['lng'],
@@ -94,26 +94,19 @@ namespace :import do
 					neighborhood: nabe,
 					notes: bldg['building_description'] || nil,
 					company: company,
-					required_security: req_sec
+					#required_security: req_sec
 				})
 			end
 			
-			amenities = []
 			bldg['amenities'].each{ |a| 
 				amenity_name = a.downcase.strip
 				#puts "\n\n\n CHECKING #{amenity_name}"
-				amenity = BuildingAmenity.find_by(name: amenity_name, company: company)
-				if !amenity
-					#puts "*** Adding REQUIRED SECURITY #{amenity_name}"
-					amenity = BuildingAmenity.create!(company: company, name: a.titleize)
-				end
-				amenities << amenity
+				amenity = BuildingAmenity.find_or_create_by(name: amenity_name, company: company)
+				puts "\t building[id: #{record.id}] amenity: #{amenity_name}"
+				log.info "\t building[id: #{record.id}] amenity: #{amenity_name}"
 				record.building_amenities << amenity
 			}
 
-			
-			# TODO: required_security, rental_terms
-			#puts "AMENITIES: #{amenities.uniq}"
 			record
 		end
 
@@ -191,19 +184,7 @@ namespace :import do
 	      bldg_data = item['building']
 	      building = add_building(mechanize, bldg_data, company, default_landlord, log)
 
-	      amenities = []
-	      
-				item['unit_amenities'].each{ |a| 
-					amenity_name = a.downcase.strip
-					amenity = ResidentialAmenity.find_by(name: amenity_name)
-					if !amenity
-						amenity = ResidentialAmenity.create!(company: company, name: amenity_name)
-					end
-					#amenities << amenity
-					#titles << amenity_name
-				}
-
-				open_house = nil
+	      open_house = nil
 				item['open_houses'].each {|h| 
 					open_house = "" if open_house == nil
 					open_house = open_house + "Date: #{h['date']} From: #{h['start_time']} To: #{h['end_time']}"
@@ -261,7 +242,7 @@ namespace :import do
 					incentive = item['incentives'].downcase.strip
 					percent_sign_idx = item['incentives'].index('%')
 					if percent_sign_idx
-						puts "\n before:incentives [#{incentive}]"
+						#puts "\n before:incentives [#{incentive}]"
 						if incentive.include? "owner pays " 
 							text_length = "owner pays ".length
 							number_length = percent_sign_idx - text_length
@@ -276,14 +257,15 @@ namespace :import do
 							tp_fee_percentage = number_or_nil(incentive[text_length, number_length])
 						end
 					end
-
-					
 				end
-				puts "\n incentive:[#{incentive}] TP:[#{tp_fee_percentage}] OP:[#{op_fee_percentage}]"
-				log.info "\n incentive:[#{incentive}] TP:[#{tp_fee_percentage}] OP:[#{op_fee_percentage}]"
+				#puts "\n incentive:[#{incentive}] TP:[#{tp_fee_percentage}] OP:[#{op_fee_percentage}]"
+				#log.info "\n incentive:[#{incentive}] TP:[#{tp_fee_percentage}] OP:[#{op_fee_percentage}]"
 				
-				#access_info: 
-				#agents
+				user = nil
+				item["contacts"].each{|c|
+					puts "- primary agent #{c["name"].strip}"
+					user = User.find_by(name: c["name"].strip, company: company)
+				}
 
 				#ResidentialUnit.find_by()
 				unit = ResidentialUnit.create!({
@@ -300,30 +282,32 @@ namespace :import do
 					listing_id: item['id'],
 					op_fee_percentage: op_fee_percentage,
 					tp_fee_percentage: tp_fee_percentage,
+					primary_agent: user
 				})
+
+				item['unit_amenities'].each{ |a| 
+					amenity_name = a.downcase.strip
+					amenity = ResidentialAmenity.find_or_create_by(name: amenity_name, company: company)
+					unit.residential_amenities << amenity
+					puts "\t residential[id: #{unit.id}] amenity: #{amenity_name}"
+					log.info "\t residential[id: #{unit.id}] amenity: #{amenity_name}"
+				}
 
 				if item['pets'] && !unit.building.pet_policy
 					policy_name = item['pets'].downcase.strip
 					if policy_name == "no pets allowed"
 						policy_name = "no pets"
 					end
-	      	pet_policy = PetPolicy.find_by(name: policy_name, company: company)
-					if !pet_policy
-						#puts "*** Adding PET POLICY [policy_name]"
-						pet_policy = PetPolicy.create!({
-							name: policy_name,
-							company: company
-						})
-					end
+	      	pet_policy = PetPolicy.find_or_create_by(name: policy_name, company: company)
 					unit.building.pet_policy = pet_policy
 				end
 
-				item['photos'].each{ |p| 
-					image = Image.new
-	        image.file = URI.parse(p['original'])
-	        image.save
-					unit.images << image
-		    }
+				# item['photos'].each{ |p| 
+				# 	image = Image.new
+				#   image.file = URI.parse(p['original'])
+				#   image.save
+				# 	unit.images << image
+				# }
 
 	    end
 	  end
