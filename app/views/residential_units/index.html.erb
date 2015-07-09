@@ -10,8 +10,9 @@
       <% if current_user.is_management? %>
         <%= link_to 'Add a unit', new_residential_unit_path, class: 'btn btn-warning btn-xs link-as-button' %> |
       <% end %>
+
       <%= link_to print_list_residential_units_path, 
-        class:" btn-print-list has-spinner" do %>
+        class:"btn btn-xs btn-warning link-as-button btn-print-list has-spinner" do %>
         <span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Print
       <% end %>
     </div>

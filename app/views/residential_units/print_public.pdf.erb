@@ -32,6 +32,9 @@
 	              <% end %>
 	            <% end %>
             <% else %>
+            	<!-- placeholder image -->
+              <%= wicked_pdf_image_tag "listing_soon.png", alt: "Image coming soon",
+              	:class => 'img-responsive center-block' %>
             <% end %>
 	        </div>
 	        <div class="col-xs-7">
@@ -80,8 +83,7 @@
                   <strong>Features</strong>
                 </div>
                 <div class="col-xs-7">
-                  <%= @residential_unit.building.amenities_to_s %>
-                  <%= @residential_unit.amenities_to_s %>
+                  <%= @residential_unit.all_amenities_to_s %>
                 </div>
 	            </div>
 	            <div class="row">

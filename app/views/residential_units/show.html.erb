@@ -317,7 +317,7 @@
 	    			<strong>Building Amenities:</strong>
 	    		</div>
 	    		<div class="col-xs-12 col-md-9">
-	    			<%= @residential_unit.cached_building.amenities_to_s.titleize %>
+	    			<%= @residential_unit.cached_building.amenities_to_s %>
 	    		</div>
 	    	</div>
 
@@ -328,7 +328,7 @@
 	    			<strong>Unit Amenities:</strong>
 	    		</div>
 	    		<div class="col-xs-12 col-md-9">
-	    			<%= @residential_unit.amenities_to_s.titleize %>
+	    			<%= @residential_unit.amenities_to_s %>
 	    		</div>
 	    	</div>
 
@@ -430,7 +430,8 @@
         </div>
         <div class="row">
           <div class="col-xs-3 form-label-responsive">
-            <%= link_to print_private_residential_unit_path(@residential_unit), class:"btn btn-warning link-as-button print-private-btn has-spinner" do %>
+            <%= link_to print_private_residential_unit_path(@residential_unit, :format => :pdf), 
+            	class:"btn btn-warning link-as-button print-private-btn has-spinner" do %>
               <span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Private
             <% end %>
           </div>

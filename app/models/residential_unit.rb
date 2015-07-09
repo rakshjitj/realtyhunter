@@ -93,9 +93,16 @@ class ResidentialUnit < ActiveRecord::Base
   end
 
 	def amenities_to_s
-		amenities = residential_amenities.map{|a| a.name}
+		amenities = residential_amenities.map{|a| a.name.titleize}
 		amenities ? amenities.join(", ") : "None"
 	end
+
+  def all_amenities_to_s
+    bldg_amenities = building.building_amenities.map{|a| a.name.titleize}
+    amenities = residential_amenities.map{|a| a.name.titleize}
+    amenities.concat(bldg_amenities)
+    amenities ? amenities.join(", ") : "None"
+  end
 
   # mainly for use in our API. Returns list of any
   # agent contacts for this listing. Currently we have

@@ -167,7 +167,7 @@ class ResidentialUnitsController < ApplicationController
     residential_units_no_pagination
     render pdf: current_user.name + ' Residential Listings',
       template: "/residential_units/print_list.pdf.erb",
-      disposition: "attachment",
+      #disposition: "attachment",
       layout:   "/layouts/pdf_layout.html",
       orientation: 'Landscape',
       title: current_user.name + 'Residential Listings',
@@ -181,7 +181,7 @@ class ResidentialUnitsController < ApplicationController
     #  format.pdf do
         render pdf: current_user.name + ' - Residential - Private',
           template: "/residential_units/print_private.pdf.erb",
-          disposition: "attachment",
+          #disposition: "attachment",
           layout:   "/layouts/pdf_layout.html"
     #  end
     #end
@@ -194,7 +194,7 @@ class ResidentialUnitsController < ApplicationController
     #  format.pdf do
         render pdf: current_user.name + ' - Residential',
           template: "/residential_units/print_public.pdf.erb",
-          disposition: "attachment",
+          #disposition: "attachment",
           layout:   "/layouts/pdf_layout.html"
     #  end
     #end

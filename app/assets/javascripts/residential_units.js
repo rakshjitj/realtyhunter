@@ -1,20 +1,4 @@
 (function() {
-	// for printing pdfs
-	var timer2;
-	function clearSpinner() {
-	  // remove the spinner after download completes.
-	  // this is a very hackish way of roughly estimating how long
-	  // the download takes to complete
-	  clearInterval(timer2);
-	  $('.btn-print-list').toggleClass('active');
-	};
-
-	$('.btn-print-list').click( function(event) {
-	  // show spinner
-	  $(this).toggleClass('active');
-	  timer2 = setTimeout(clearSpinner, 15000);
-	});
-
 	// for searching on the index page
 	function doSearch(event) {
 		// sanitize invalid input before submitting
@@ -163,6 +147,12 @@
 	  $('#neighborhood_ids').change(throttledSearch);
 	  $('#unit_feature_ids').change(throttledSearch);
 	  $('#building_feature_ids').change(throttledSearch);
+
+	  // print pdf from the index page
+	  $('.btn-print-list').click( function(event) {
+		  // show spinner
+		  $(this).toggleClass('active');
+		});
 
 		updateOverviewMap();
 
