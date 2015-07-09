@@ -27,38 +27,55 @@ class ResidentialUnit < ActiveRecord::Base
 
   validates :weeks_free_offered, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
 
+  # we can't expire old keys with a regex or delete_matched on dalli
+  # instead use the strategy suggested here:
+  # https://quickleft.com/blog/faking-regex-based-cache-keys-in-rails/
+  def increment_memcache_iterator
+    Rails.cache.write("runit-#{id}-memcache-iterator", self.memcache_iterator + 1)
+  end
+
+  def memcache_iterator
+    # fetch the user's memcache key
+    # If there isn't one yet, assign it a random integer between 0 and 10
+    Rails.cache.fetch("runit-#{id}-memcache-iterator") { rand(10) }
+  end
+
+  def cache_key
+    "runit-#{id}-#{self.memcache_iterator}"
+  end
+
   def cached_building
-    Rails.cache.fetch("building_#{building_id}_runit_#{id}_building") {
+    Rails.cache.fetch("#{cache_key}-building") {
       building
     }
   end
 
   def cached_neighborhood
-    Rails.cache.fetch("building_#{cached_building.id}_runit_#{id}_neighborhood") {
+    Rails.cache.fetch("#{cache_key}-neighborhood") {
       cached_building.neighborhood
     }
   end
 
   def cached_pet_policy
-    Rails.cache.fetch("building_#{cached_building.id}_runit_#{id}_pet_policy") {
+    Rails.cache.fetch("#{cache_key}-pet_policy") {
       cached_building.pet_policy
     }
   end
 
   def cached_landlord
-    Rails.cache.fetch("building_#{cached_building.id}_runit_#{id}_landlord") {
+    Rails.cache.fetch("#{cache_key}-landlord") {
       cached_building.landlord
     }
   end
 
   def cached_primary_img
-    Rails.cache.fetch("building_#{cached_building.id}_runit_#{id}_primary_img") {
+    Rails.cache.fetch("#{cache_key}-primary_img") {
       images[0] ? images[0] : nil
     }
   end
 
   def cached_street_address
-    Rails.cache.fetch("building_#{cached_building.id}_runit_#{id}_street_address") {
+    Rails.cache.fetch("#{cache_key}-street_address") {
       cached_building.street_address
     }
   end
@@ -292,7 +309,7 @@ class ResidentialUnit < ActiveRecord::Base
         residential_unit_dup.images << img_copy
       }
 
-      Rails.cache.delete_matched("building_#{cached_building.id}_units*")
+      clear_building_cache
       residential_unit_dup
     else
       raise "No unit number or invalid unit number specified"
@@ -382,7 +399,7 @@ class ResidentialUnit < ActiveRecord::Base
     end
 
     def clear_cache
-      Rails.cache.delete_matched("building_#{building_id}_runit_#{id}*")
-      Rails.cache.delete_matched("building_#{building_id}_units*")
+      increment_memcache_iterator
+      building.increment_memcache_iterator
     end
 end

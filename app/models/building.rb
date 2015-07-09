@@ -43,52 +43,66 @@ class Building < ActiveRecord::Base
 	validates :company, presence: true
 	validates :landlord, presence: true
 
-	# TODO: fix
+	# TODO: make editable?
 	# some address lookups don't return a valid neighborhood
 	#validates :neighborhood, presence: true
 
+  def increment_memcache_iterator
+    Rails.cache.write("building-#{id}-memcache-iterator", self.memcache_iterator + 1)
+  end
+
+  def memcache_iterator
+    # fetch the user's memcache key
+    # If there isn't one yet, assign it a random integer between 0 and 10
+    Rails.cache.fetch("building-#{id}-memcache-iterator") { rand(10) }
+  end
+
+  def cache_key
+    "building-#{id}-#{self.memcache_iterator}"
+  end
+
 	def cached_neighborhood
-    Rails.cache.fetch("building_#{id}_neighborhood") {
+    Rails.cache.fetch("#{cache_key}_neighborhood") {
       neighborhood
     }
   end
 
   def cached_landlord
-    Rails.cache.fetch("building_#{id}_landlord") {
+    Rails.cache.fetch("#{cache_key}_landlord") {
       landlord
     }
   end
 
   def cached_primary_img
-    Rails.cache.fetch("building_#{id}_primary_img") {
+    Rails.cache.fetch("#{cache_key}_primary_img") {
       images[0] ? images[0] : nil
     }
   end
 
   def cached_units
     units.unarchived
-    # Rails.cache.fetch("building_#{id}_units") {
+    # Rails.cache.fetch("#{cache_key}_units") {
     #   units.unarchived.order('updated_at DESC')
     # }
   end
 
   def cached_active_units
     units.unarchived.active
-    # Rails.cache.fetch("building_#{id}_active_units") {
+    # Rails.cache.fetch("#{cache_key}_active_units") {
     #   units.unarchived.active.order('updated_at DESC')
     # }
   end
 
   def cached_units_count
     units.unarchived.count
-    # Rails.cache.fetch("building_#{id}_units_count") {
+    # Rails.cache.fetch("#{cache_key}_units_count") {
     #   cached_units.count
     # }
   end
 
   def cached_active_units_count
     units.unarchived.active.count
-    # Rails.cache.fetch("building_#{id}_active_units_count") {
+    # Rails.cache.fetch("#{cache_key}_active_units_count") {
     #   cached_active_units.count
     # }
   end
@@ -245,7 +259,7 @@ class Building < ActiveRecord::Base
     end
 
     def clear_cache
-      Rails.cache.delete_matched("building_#{id}*")
+      increment_memcache_iterator
     end
   
 end

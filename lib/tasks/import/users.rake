@@ -68,8 +68,9 @@ namespace :import do
 
         # a few gotchas...
         if item['email'] == 'jcastillo@myspacenyc.com' || 
-          item['email'] == 'sbrewer@myspacen.com'
-          new_title = EmployeeTitle.manager
+          item['email'] == 'sbrewer@myspacenyc.com' ||
+          item['email'] == 'info@myspacenyc.com'
+          new_title = EmployeeTitle.company_admin
         end
 
         found = User.find_by(name: item['name'])

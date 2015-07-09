@@ -66,13 +66,13 @@ gem 'mechanize'
 # make sure we handle time zones correctly
 gem 'local_time'
 
+gem 'dalli'
+
 group :production do
 	gem 'rails_12factor'
 	gem 'puma'
 	gem 'wkhtmltopdf-heroku', '~> 2.12.2.1'
   gem 'connection_pool'
-  gem 'dalli'
-  #gem 'dalli-delete-matched'
 end
 
 group :development, :test do

@@ -89,8 +89,7 @@ class BuildingsController < ApplicationController
   # GET /refresh_images
   # ajax call
   def refresh_images
-    Rails.cache.delete("building_#{id}*")
-    
+    @building.increment_memcache_iterator
     respond_to do |format|
       format.js  
     end

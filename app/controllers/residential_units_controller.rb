@@ -257,7 +257,7 @@ class ResidentialUnitsController < ApplicationController
   # ajax call
   def refresh_images
     # invalidate cache
-    Rails.cache.delete("building_#{building_id}_runit_#{id}_primary_img")
+    @residential_unit.increment_memcache_iterator
     respond_to do |format|
       format.js  
     end
