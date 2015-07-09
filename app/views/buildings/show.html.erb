@@ -108,7 +108,10 @@
 				</p>
 
         <p>
-        	<strong>Required securities:</strong> <%= @building.required_security.name.titleize %>
+        	<strong>Required securities:</strong>
+        	<%= if @building.required_security %>
+        		<%= @building.required_security.name.titleize %>
+        	<% end %>
         </p>
 
         <% if @building.pet_policy %>
