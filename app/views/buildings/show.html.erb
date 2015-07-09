@@ -109,7 +109,7 @@
 
         <p>
         	<strong>Required securities:</strong>
-        	<%= if @building.required_security %>
+        	<% if @building.required_security %>
         		<%= @building.required_security.name.titleize %>
         	<% end %>
         </p>
