@@ -91,13 +91,13 @@ namespace :import do
             password_confirmation: default_password, 
           })
 
-          # headshot_img = item['headshot']['original']
-          # if headshot_img
-          #   image = Image.new
-          #   image.file = URI.parse(item['headshot']['original'])
-          #   image.save
-          #   user.image = image
-          # end
+          headshot_img = item['headshot']['original']
+          if headshot_img
+            image = Image.new
+            image.file = URI.parse(item['headshot']['original'])
+            image.save
+            user.image = image
+          end
 
           user.update_roles
           puts "[#{i}/#{page_count_limit}] #{item['name']} - added"
