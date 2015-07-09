@@ -85,7 +85,17 @@
         </div>
         <div class="col-md-9">
           <%= select_tag(:status, 
-            options_for_select(%w(Active Pending Off Any), params[:status] ? params[:status].titleize : "Active")) %>
+            options_for_select(%w(Any Active Pending Off), 
+            params[:status] ? params[:status].titleize : "Active")) %>
+        </div>
+      </div>
+      <div class="row vertical-padding">
+        <div class="col-md-4">
+          <%= label_tag :brokers_fee, "Broker's Fee" %>
+        </div>
+        <div class="col-md-8">
+          <%= select_tag(:brokers_fee, 
+            options_for_select(%w(Any Yes No), params[:brokers_fee])) %>
         </div>
       </div>
       <div class="row vertical-padding">
@@ -192,8 +202,17 @@
         </div>
         <div class="col-xs-10">
           <%= select_tag(:status, 
-            options_for_select(%w(Active Pending Off), params[:status]),
-            include_blank: true) %>
+            options_for_select(%w(Any Active Pending Off), 
+            params[:status] ? params[:status].titleize : "Active")) %>
+        </div>
+      </div>
+      <div class="row vertical-padding">
+        <div class="col-xs-2">
+          <%= label_tag :brokers_fee, "Broker's Fee" %>
+        </div>
+        <div class="col-xs-10">
+          <%= select_tag(:brokers_fee, 
+            options_for_select(%w(Any Yes No), params[:brokers_fee])) %>
         </div>
       </div>
       <div class="row vertical-padding">

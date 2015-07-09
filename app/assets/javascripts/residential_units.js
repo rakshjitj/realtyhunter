@@ -45,6 +45,7 @@
 	        pet_policy_id: $('#pet_policy_id').val(),
 	        status: $('#status').val(),
 	        features: $('#features').val(),
+	        brokers_fee: $('#brokers_fee').val(),
 	        neighborhood_ids: $('#neighborhood_ids').val(),
 	        unit_feature_ids: $('#unit_feature_ids').val(),
 	        building_feature_ids: $('#building_feature_ids').val(),
@@ -158,6 +159,7 @@
 	  $('#pet_policy_id').change(throttledSearch);
 	  $('#status').change(throttledSearch);
 	  $('#features').change(throttledSearch);
+	  $('#brokers_fee').change(throttledSearch);
 	  $('#neighborhood_ids').change(throttledSearch);
 	  $('#unit_feature_ids').change(throttledSearch);
 	  $('#building_feature_ids').change(throttledSearch);
