@@ -10,10 +10,7 @@ class ResidentialUnit < ActiveRecord::Base
 
   validates :building_unit, presence: true, length: {maximum: 50}
 
-	# enum lease_duration: [ :year, :thirteen_months, :fourteen_months, :fifteen_months, 
-	# 	:sixteen_months, :seventeen_months, :eighteen_months, :two_years ]
-	validates :lease_duration, presence: true, length: {maximum: 50} #inclusion: { 
-  #  in: %w(year thirteen_months fourteen_months fifteen_months sixteen_months seventeen_months eighteen_months two_years) }
+	validates :lease_duration, presence: true, length: {maximum: 50}
   
   validates :rent, presence: true, :numericality => { :greater_than => 0 }
 	validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }
@@ -84,11 +81,11 @@ class ResidentialUnit < ActiveRecord::Base
     self.archived = true
     self.save
   end
-
+  
   def self.find_unarchived(id)
     find_by!(id: id, archived: false)
   end
-
+  
   # used as a sorting condition
   def street_address_and_unit
     if cached_building.street_number
@@ -218,14 +215,14 @@ class ResidentialUnit < ActiveRecord::Base
     # search neighborhoods
     if params[:neighborhood_ids]
       neighborhood_ids = params[:neighborhood_ids][0, 256]
-      neighborhoods = neighborhood_ids.split(",")
+      neighborhoods = neighborhood_ids.split(",").select{|i| !i.empty?}
       @running_list = @running_list.joins(building: :neighborhood)
        .where('neighborhood_id IN (?)', neighborhoods)
     end
 
     if params[:building_feature_ids]
       features = params[:building_feature_ids][0, 256]
-      features = features.split(",")
+      features = features.split(",").select{|i| !i.empty?}
         @running_list = @running_list.joins(building: :building_amenities)
         .where('building_amenity_id IN (?)', features)
     end
@@ -237,7 +234,6 @@ class ResidentialUnit < ActiveRecord::Base
     end
 
     # search pet policy
-    # TODO: test again
     if params[:pet_policy_id]
       @running_list = @running_list.joins(building: :pet_policy)
         .where('pet_policy_id = ?', params[:pet_policy_id])
@@ -278,18 +274,14 @@ class ResidentialUnit < ActiveRecord::Base
       end
     end
 
-    #puts "BEFORE UNIT FEATURES #{@running_list.inspect}"
     # search features
     if params[:unit_feature_ids]
-
+      # sanitize input
       features = params[:unit_feature_ids][0, 256]
-      #puts "TERMS #{params[:unit_feature_ids]} #{features}"
-      features = features.split(",")
-      #puts "AFTER SPLIT #{features.inspect}"
+      features = features.split(",").select{|i| !i.empty?}
       @running_list = @running_list.joins(:residential_amenities)
         .where('residential_amenity_id IN (?)', features)
     end
-    #puts "AFTER UNIT FEATURES #{@running_list.inspect}"
     
     @running_list.uniq
 	end

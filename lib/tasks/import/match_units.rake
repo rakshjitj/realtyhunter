@@ -11,11 +11,12 @@ namespace :import do
 		# columns look like this:
 		# id, number, street, city, state, zip, unit_number, rent, beds, baths, date available,
 		# notes, landlord_name, ...
+		company = Company.find_by(name: 'MyspaceNYC')
 		idx = 0
 		CSV.foreach('lib/tasks/import/zillow_listings.csv', col_sep: ';') { |row| 
 			street_number = row[1]
 			route = row[2]
-			bldg = Building.find_by(street_number: street_number, route: route)
+			bldg = Building.find_by(street_number: street_number, route: route, company: company)
 			ll_code = row[12]
 			if bldg && ll_code && !ll_code.empty?
 				ll = Landlord.find_by(code: ll_code)

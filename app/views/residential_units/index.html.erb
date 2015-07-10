@@ -100,10 +100,10 @@
         </div>
       </div>
       <div class="row vertical-padding">
-        <div class="col-md-3">
+        <div class="col-md-4">
           <%= label_tag :pet_policy_id, "Pet policy" %>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-8">
           <%= select_tag(:pet_policy_id, 
             options_for_select(current_user.company.pet_policies.all.collect { |r| [r.name.titleize, r.id] }, 
             params[:pet_policy_id]),
@@ -116,8 +116,10 @@
           <%= link_to 'Neighborhoods', neighborhoods_modal_residential_units_path(@residential_unit), 
             data: {toggle: "modal", target: "#neighborhoodsModal"}, remote: true, 
             class: "link-as-button btn btn-xs btn-warning" %>
-          <div id="selected_neighborhoods"></div>
-          <%= hidden_field_tag :neighborhood_ids, id:"neighborhood_ids" %>
+          <div id="selected_neighborhoods" class="vertical-padding">
+            <%= @selected_neighborhoods %>
+          </div>
+          <%= hidden_field_tag :neighborhood_ids, params[:neighborhood_ids] %>
         </div>
       </div>
       <div class="row vertical-padding">
@@ -125,9 +127,19 @@
           <%= link_to 'Features', features_modal_residential_units_path(@residential_unit), 
             data: {toggle: "modal", target: "#featuresModal"}, remote: true, 
             class: "link-as-button btn btn-xs btn-warning" %>
-          <div id="selected_features"></div>
-          <%= hidden_field_tag :unit_feature_ids, id:"unit_feature_ids" %>
-          <%= hidden_field_tag :building_feature_ids, id:"building_feature_ids" %>
+
+          <div id="selected_features" class="vertical-padding">
+            <!-- gets written over by features_modal.js.erb -->
+            <% Array.wrap(@unit_features).each do |f| %>
+              <%= link_to "", 
+                class: "btn btn-xs btn-default", remote: "true" do %>
+                <%= f.name %> <span class="glyphicon glyphicon-remove"></span>
+              <% end %>
+            <% end %>
+          </div>
+          
+          <%= hidden_field_tag :unit_feature_ids, params[:unit_feature_ids] %>
+          <%= hidden_field_tag :building_feature_ids, params[:building_feature_ids] %>
         </div>
       </div>
       <div class="row vertical-padding">

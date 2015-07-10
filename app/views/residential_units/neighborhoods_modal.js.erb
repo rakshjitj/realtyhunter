@@ -16,7 +16,11 @@ $('#neighborhoodsModal .btn-close').click( function(event) {
 		selectedIds.push(val.id);
 	});
 
-	$('#selected_neighborhoods').html(selectedNeighborhoods.join(", "));
+	if (selectedNeighborhoods.length > 0) {
+		$('#selected_neighborhoods').html("Selected areas: " + selectedNeighborhoods.join(", "));
+	} else {
+		$('#selected_neighborhoods').html("");
+	}
 	$('#neighborhood_ids').val(selectedIds.join(", "));
 	$('#neighborhood_ids').trigger('change');
 });

@@ -1,6 +1,10 @@
+ResidentialUnits = {};
+
+// TODO: break this up by controller action
+
 (function() {
 	// for searching on the index page
-	function doSearch(event) {
+	ResidentialUnits.doSearch = function (event) {
 		// sanitize invalid input before submitting
 	  if ($('#neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
 	    $('#neighborhood_ids').val('');
@@ -16,48 +20,69 @@
 	  $.ajax({
 	    url: search_path,
 	    data: {
-	      search_params: {
-	        address: $('#address').val(),
-	        unit: $('#unit').val(),
-	        rent_min: $('#rent_min').val(),
-	        rent_max: $('#rent_max').val(),
-	        bed_min: $('#bed_min').val(),
-	        bed_max: $('#bed_max').val(),
-	        bath_min: $('#bath_min').val(),
-	        bath_max: $('#bath_max').val(),
-	        landlord: $('#landlord').val(),
-	        pet_policy_id: $('#pet_policy_id').val(),
-	        status: $('#status').val(),
-	        features: $('#features').val(),
-	        brokers_fee: $('#brokers_fee').val(),
-	        neighborhood_ids: $('#neighborhood_ids').val(),
-	        unit_feature_ids: $('#unit_feature_ids').val(),
-	        building_feature_ids: $('#building_feature_ids').val(),
-	      } 
+        address: $('#address').val(),
+        unit: $('#unit').val(),
+        rent_min: $('#rent_min').val(),
+        rent_max: $('#rent_max').val(),
+        bed_min: $('#bed_min').val(),
+        bed_max: $('#bed_max').val(),
+        bath_min: $('#bath_min').val(),
+        bath_max: $('#bath_max').val(),
+        landlord: $('#landlord').val(),
+        pet_policy_id: $('#pet_policy_id').val(),
+        status: $('#status').val(),
+        features: $('#features').val(),
+        brokers_fee: $('#brokers_fee').val(),
+        neighborhood_ids: $('#neighborhood_ids').val(),
+        unit_feature_ids: $('#unit_feature_ids').val(),
+        building_feature_ids: $('#building_feature_ids').val(),
 	    },
-	    dataType: "script",
-	    //success: function(data) {
-				//updateOverviewMap();
-			//},
+	    dataType: 'script',
+	    success: function(data) {
+	    	//console.log('SUCCESS:', data.responseText);
+			},
+			error: function(data) {
+				//console.log('ERROR:', data.responseText);
+			}
 	  });
 	};
 
+	ResidentialUnits.removeUnitFeature = function (event) {
+  	event.preventDefault();
+	  var feature_id = $(this).attr('data-id');
+  	var idx = $('#unit_feature_ids').val().indexOf(feature_id);
+  	//console.log(feature_id, idx, feature_id.length, $('#unit_feature_ids').val());
+  	$('#unit_feature_ids').val( $('#unit_feature_ids').val().replace(feature_id, '') );
+  	//console.log('new val is', $('#unit_feature_ids').val() );
+  	$(this).remove();
+  	ResidentialUnits.throttledSearch();
+  };
+
+  ResidentialUnits.removeBuildingFeature = function (event) {
+  	event.preventDefault();
+	  var feature_id = $(this).attr('data-id');
+  	var idx = $('#building_feature_ids').val().indexOf(feature_id);
+  	$('#building_feature_ids').val( $('#building_feature_ids').val().replace(feature_id, '') );
+  	$(this).remove();
+  	ResidentialUnits.throttledSearch();
+  };
+
 	// search as user types
-	var timer;
-	function throttledSearch() {
-	  clearInterval(timer);  //clear any interval on key up
-	  timer = setTimeout(doSearch, 500);
+	ResidentialUnits.timer;
+	ResidentialUnits.throttledSearch = function () {
+	  clearInterval(ResidentialUnits.timer);  //clear any interval on key up
+	  ResidentialUnits.timer = setTimeout(ResidentialUnits.doSearch, 500);
 	};
 
 	// change enter key to tab
-	function preventEnter(event) {
+	ResidentialUnits.preventEnter = function (event) {
 	  if (event.keyCode == 13) {
 	    //$('#checkbox_active').focus();
 	    return false;
 	  }
 	};
 
-	function removeImage(id, unit_id) {
+	ResidentialUnits.removeImage = function (id, unit_id) {
 		// make a DELETE ajax request to delete the file
 		$.ajax({
 			type: 'DELETE',
@@ -73,7 +98,7 @@
 	};
 
 	// for giant google map
-	function buildContentString(key, info) {
+	ResidentialUnits.buildContentString = function (key, info) {
 		//console.log(key, info);
 	  var contentString = '<strong>' + key + '</strong><hr />';
 	  for (var i=0; i<info['units'].length; i++) {
@@ -87,7 +112,7 @@
 	  return contentString;
 	};
 
-	function updateOverviewMap(in_data) {
+	ResidentialUnits.updateOverviewMap = function (in_data) {
 		// for displaying the map points on the index page
 		if ($('#big-map').length > 0) {
 			var mapOptions = {
@@ -128,25 +153,29 @@
 		}
 	};
 
-	$(document).ready(function(){
+	ResidentialUnits.initialize = function() {
 		// index filtering
-		$('input').keydown(preventEnter);
-	  $('#address').keyup(throttledSearch);
-	  $('#unit').keyup(throttledSearch);
-	  $('#rent_min').keyup(throttledSearch);
-	  $('#rent_max').keyup(throttledSearch);
-	  $('#bed_min').keyup(throttledSearch);
-	  $('#bed_max').keyup(throttledSearch);
-	  $('#bath_min').keyup(throttledSearch);
-	  $('#bath_max').keyup(throttledSearch);
-	  $('#landlord').keyup(throttledSearch);
-	  $('#pet_policy_id').change(throttledSearch);
-	  $('#status').change(throttledSearch);
-	  $('#features').change(throttledSearch);
-	  $('#brokers_fee').change(throttledSearch);
-	  $('#neighborhood_ids').change(throttledSearch);
-	  $('#unit_feature_ids').change(throttledSearch);
-	  $('#building_feature_ids').change(throttledSearch);
+		$('input').keydown(ResidentialUnits.preventEnter);
+	  $('#address').keyup(ResidentialUnits.throttledSearch);
+	  $('#unit').keyup(ResidentialUnits.throttledSearch);
+	  $('#rent_min').keyup(ResidentialUnits.throttledSearch);
+	  $('#rent_max').keyup(ResidentialUnits.throttledSearch);
+	  $('#bed_min').keyup(ResidentialUnits.throttledSearch);
+	  $('#bed_max').keyup(ResidentialUnits.throttledSearch);
+	  $('#bath_min').keyup(ResidentialUnits.throttledSearch);
+	  $('#bath_max').keyup(ResidentialUnits.throttledSearch);
+	  $('#landlord').keyup(ResidentialUnits.throttledSearch);
+	  $('#pet_policy_id').change(ResidentialUnits.throttledSearch);
+	  $('#status').change(ResidentialUnits.throttledSearch);
+	  $('#features').change(ResidentialUnits.throttledSearch);
+	  $('#brokers_fee').change(ResidentialUnits.throttledSearch);
+	  $('#neighborhood_ids').change(ResidentialUnits.throttledSearch);
+	  $('#unit_feature_ids').change(ResidentialUnits.throttledSearch);
+	  $('#building_feature_ids').change(ResidentialUnits.throttledSearch);
+	  // remove individual features by clicking on 'x' button
+	  $('.remove-unit-feature').click(ResidentialUnits.removeUnitFeature);
+	  $('.remove-building-feature').click(ResidentialUnits.removeBuildingFeature);
+
 
 	  // print pdf from the index page
 	  $('.btn-print-list').click( function(event) {
@@ -154,7 +183,7 @@
 		  $(this).toggleClass('active');
 		});
 
-		updateOverviewMap();
+		ResidentialUnits.updateOverviewMap();
 
 		// google map on show page
 		var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
@@ -196,7 +225,7 @@
 				// grap the id of the uploaded file we set earlier
 				var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
 				var unit_id = $(file.previewTemplate).find('.dz-remove').attr('unit_id');
-				removeImage(id, unit_id);
+				ResidentialUnits.removeImage(id, unit_id);
 				file.previewElement.remove();
 			}
 		});
@@ -206,13 +235,16 @@
 			var id = $(this).attr('data-id'); 
 			var unit_id = $(this).attr('data-unit-id');
 			//console.log(id, unit_id);
-			removeImage(id, unit_id);
+			ResidentialUnits.removeImage(id, unit_id);
 			// TODO: WTF why is this breaking?
 		});
 
 		$('.carousel-indicators > li:first-child').addClass('active');
 		$('.carousel-inner > .item:first-child').addClass('active')
-		
-	});// end document ready
+	};
 
 })();
+
+$(document).ready(ResidentialUnits.initialize);
+
+

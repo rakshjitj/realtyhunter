@@ -1,7 +1,8 @@
 class ResidentialUnitsController < ApplicationController
   load_and_authorize_resource
   before_action :set_residential_unit, except: [:new, :create, :index, :filter, 
-    :print_list, :neighborhoods_modal, :features_modal, :refresh_images]
+    :print_list, :neighborhoods_modal, :features_modal, :refresh_images, 
+    :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood]
   etag { current_user.id }
   
   # GET /residential_units
@@ -280,13 +281,33 @@ class ResidentialUnitsController < ApplicationController
     end
 
     def do_search
-      search_params = params[:search_params]
       # default to searching for active units
-      if !search_params || !search_params[:status]
-        search_params = {} unless search_params
-        search_params[:status] = "active"
+      if !params[:status]
+        params[:status] = "active"
       end
-      @residential_units = ResidentialUnit.search(search_params, params[:building_id])
+      # parse neighborhood ids into strings for display in the view
+      @selected_neighborhoods = nil
+      if params[:neighborhood_ids]
+        neighborhood_ids = params[:neighborhood_ids].split(",").select{|i| !i.empty?}
+        @selected_neighborhoods = "Selected areas: " + Neighborhood.where(id: neighborhood_ids).map(&:name).join(", ")
+      end
+      # parse feature ids into strings for display in the view
+      @selected_features = ""
+      if params[:unit_feature_ids]
+        feature_ids = params[:unit_feature_ids].split(",").select{|i| !i.empty?}
+        @selected_features = @selected_features + 
+          ResidentialAmenity.where(id: feature_ids).map(&:name).join(", ")
+      end
+      if params[:building_feature_ids]
+        building_feature_ids = params[:building_feature_ids].split(",").select{|i| !i.empty?}
+        @selected_features = @selected_features + 
+          BuildingAmenity.where(id: building_feature_ids).map(&:name).join(", ")
+      end
+      if !@selected_features.empty?
+        @selected_features = "Selected feature: " + @selected_features
+      end
+
+      @residential_units = ResidentialUnit.search(params, params[:building_id])
       @residential_units = custom_sort
       @residential_units
     end

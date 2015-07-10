@@ -4,10 +4,11 @@
 	'Landlord', 'Amenities', 'Rental Terms', 'Required Security'] -%>
 <%= CSV.generate_line headers %>
 <%- @buildings.each do |building| -%>
+	<% security = building.required_security ? building.required_security.name.titleize : '' %>
   <%= [building.street_address, building.cached_neighborhood.name, building.sublocality, 
   	building.administrative_area_level_2_short,
   		building.administrative_area_level_1_short, building.postal_code, building.cached_active_units_count, 
   		building.cached_units_count, building.updated_at.strftime("%Y-%b-%d"), building.notes, 
   		building.cached_landlord.code, building.amenities_to_s, building.rental_terms_to_s, 
-  		building.required_security.name.titleize, ].to_csv.html_safe %>
+  		security, ].to_csv.html_safe %>
 <%- end -%>
