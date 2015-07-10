@@ -286,25 +286,22 @@ class ResidentialUnitsController < ApplicationController
         params[:status] = "active"
       end
       # parse neighborhood ids into strings for display in the view
-      @selected_neighborhoods = nil
+      @selected_neighborhoods = []
       if params[:neighborhood_ids]
         neighborhood_ids = params[:neighborhood_ids].split(",").select{|i| !i.empty?}
-        @selected_neighborhoods = "Selected areas: " + Neighborhood.where(id: neighborhood_ids).map(&:name).join(", ")
+        @selected_neighborhoods = Neighborhood.where(id: neighborhood_ids)
       end
       # parse feature ids into strings for display in the view
-      @selected_features = ""
+      @unit_features = []
       if params[:unit_feature_ids]
         feature_ids = params[:unit_feature_ids].split(",").select{|i| !i.empty?}
-        @selected_features = @selected_features + 
-          ResidentialAmenity.where(id: feature_ids).map(&:name).join(", ")
+        @unit_features = ResidentialAmenity.where(id: feature_ids)
       end
+
+      @bldg_features = []
       if params[:building_feature_ids]
         building_feature_ids = params[:building_feature_ids].split(",").select{|i| !i.empty?}
-        @selected_features = @selected_features + 
-          BuildingAmenity.where(id: building_feature_ids).map(&:name).join(", ")
-      end
-      if !@selected_features.empty?
-        @selected_features = "Selected feature: " + @selected_features
+        @bldg_features = BuildingAmenity.where(id: building_feature_ids)
       end
 
       @residential_units = ResidentialUnit.search(params, params[:building_id])

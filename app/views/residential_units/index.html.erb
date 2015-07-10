@@ -117,7 +117,13 @@
             data: {toggle: "modal", target: "#neighborhoodsModal"}, remote: true, 
             class: "link-as-button btn btn-xs btn-warning" %>
           <div id="selected_neighborhoods" class="vertical-padding">
-            <%= @selected_neighborhoods %>
+            <!-- gets written over by neighborhood_modal.js.erb -->
+            <% @selected_neighborhoods.each do |f| %>
+              <%= link_to "", 
+                class: "btn btn-xs btn-default remove-neighborhood", remote: "true", data: {id:f.id} do %>
+                <%= f.name %> <span class="glyphicon glyphicon-remove"></span>
+              <% end %>
+            <% end %>
           </div>
           <%= hidden_field_tag :neighborhood_ids, params[:neighborhood_ids] %>
         </div>
@@ -130,14 +136,21 @@
 
           <div id="selected_features" class="vertical-padding">
             <!-- gets written over by features_modal.js.erb -->
-            <% Array.wrap(@unit_features).each do |f| %>
+            <% @unit_features.each do |f| %>
               <%= link_to "", 
-                class: "btn btn-xs btn-default", remote: "true" do %>
+                class: "btn btn-xs btn-default remove-unit-feature", remote: "true", data: {id:f.id} do %>
+                <%= f.name %> <span class="glyphicon glyphicon-remove"></span>
+              <% end %>
+            <% end %>
+            <!-- gets written over by features_modal.js.erb -->
+            <% @bldg_features.each do |f| %>
+              <%= link_to "", 
+                class: "btn btn-xs btn-default remove-building-feature", remote: "true", data: {id:f.id} do %>
                 <%= f.name %> <span class="glyphicon glyphicon-remove"></span>
               <% end %>
             <% end %>
           </div>
-          
+
           <%= hidden_field_tag :unit_feature_ids, params[:unit_feature_ids] %>
           <%= hidden_field_tag :building_feature_ids, params[:building_feature_ids] %>
         </div>

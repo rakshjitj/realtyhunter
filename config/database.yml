@@ -14,10 +14,9 @@ default: &default
   port: 5434
 
 # development:
-  # # adapter: postgresql
+#   url: "postgres://phfavwknjfqgte:ovRfPLBuL9h0_TE3lOWU_LODqL@ec2-23-21-76-246.compute-1.amazonaws.com:5432/dfp43tn5v7au5h"
   # # url: $(heroku config:get DATABASE_URL) myspace-realty-monster
   # # url:  <%= ENV["DATABASE_URL"] %> # HEROKU_POSTGRESQL_COPPER_URL
-  # url: "postgres://phfavwknjfqgte:ovRfPLBuL9h0_TE3lOWU_LODqL@ec2-23-21-76-246.compute-1.amazonaws.com:5432/dfp43tn5v7au5h"
 
 development:
   <<: *default

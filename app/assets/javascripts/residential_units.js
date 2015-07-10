@@ -67,6 +67,15 @@ ResidentialUnits = {};
   	ResidentialUnits.throttledSearch();
   };
 
+  ResidentialUnits.removeNeighborhood = function (event) {
+  	event.preventDefault();
+	  var feature_id = $(this).attr('data-id');
+  	var idx = $('#neighborhood_ids').val().indexOf(feature_id);
+  	$('#neighborhood_ids').val( $('#neighborhood_ids').val().replace(feature_id, '') );
+  	$(this).remove();
+  	ResidentialUnits.throttledSearch();
+  };
+
 	// search as user types
 	ResidentialUnits.timer;
 	ResidentialUnits.throttledSearch = function () {
@@ -175,7 +184,7 @@ ResidentialUnits = {};
 	  // remove individual features by clicking on 'x' button
 	  $('.remove-unit-feature').click(ResidentialUnits.removeUnitFeature);
 	  $('.remove-building-feature').click(ResidentialUnits.removeBuildingFeature);
-
+	  $('.remove-neighborhood').click(ResidentialUnits.removeNeighborhood);
 
 	  // print pdf from the index page
 	  $('.btn-print-list').click( function(event) {
