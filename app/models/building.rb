@@ -1,7 +1,7 @@
 class Building < ActiveRecord::Base
 	scope :unarchived, ->{where(archived: false)}
 	
-  before_save :process_custom_security
+  before_save :process_rental_term
   before_save :process_custom_amenities
   before_save :process_custom_utilities
   after_update :clear_cache
@@ -11,7 +11,7 @@ class Building < ActiveRecord::Base
 	belongs_to :landlord, touch: true
 	belongs_to :neighborhood, touch: true
 	belongs_to :pet_policy, touch: true
-	belongs_to :required_security, touch: true
+	belongs_to :rental_term, touch: true
 	has_many :units, dependent: :destroy
 	has_many :images, dependent: :destroy
 	has_and_belongs_to_many :building_amenities
@@ -21,7 +21,7 @@ class Building < ActiveRecord::Base
 	# this is some BS we need to make cancancan happy, because it 
 	# does not like our strong parameters
 	attr_accessor :building, :inaccuracy_description, 
-    :custom_required_security, :custom_amenities, :custom_utilities
+    :custom_rental_term, :custom_amenities, :custom_utilities
 
 	validates :formatted_street_address, presence: true, length: {maximum: 200}, 
 		uniqueness: { case_sensitive: false }
@@ -218,13 +218,13 @@ class Building < ActiveRecord::Base
 
   private
 
-  	def process_custom_security
-  		if custom_required_security && !custom_required_security.empty?
-  			req = RequiredSecurity.find_by(name: custom_required_security, company: company)
+  	def process_rental_term
+  		if custom_rental_term && !custom_rental_term.empty?
+  			req = RentalTerm.find_by(name: custom_rental_term, company: company)
   			if !req
-  				req = RequiredSecurity.create!(name: custom_required_security, company: company)
+  				req = RentalTerm.create!(name: custom_rental_term, company: company)
   			end
-  			self.required_security = req
+  			self.rental_term = req
   		end
   	end
 

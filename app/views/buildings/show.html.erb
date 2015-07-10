@@ -2,35 +2,43 @@
 
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
-  	<div class="page-header">
-  		<div class="row">
-  			<div class="col-md-12">
-  				<h1><%= @building.street_address %></h1>
-  			</div>
-  		</div>
-  		<div class="row">
-  			<div class="col-md-6">
-  				<p><%= @building.cached_active_units_count %> available units on the market.
-						<%= @building.cached_units_count %> total units.
-					</p>
-  			</div>
-  			<div class="col-md-6 form-label-responsive">
-  				<%= link_to 'View all', buildings_path %> |
-						<% if current_user.is_management? %>
-							<%= link_to 'Edit', edit_building_path(@building) %> | 
-							<%= link_to 'Add a Unit', new_residential_unit_path(building_id: @building.id) %> | 
-						<% end %>
-						<%= link_to 'Report Inaccuracy', inaccuracy_modal_building_path(@building), 
-			      	data: {toggle: "modal", target: "#bldgInaccuracyModal"}, remote: true %>
-  			</div>
-  		</div>
-		</div>
-
+  	<br />
+  	<br />
 		<div id="bldg_panel" class="panel panel-default">
 		  <div class="panel-heading">
-		    <h3 class="panel-title">Basic Details</h3>
-		  </div>
+		  	<div class="panel-title">
+			  	<div class="row">
+		  			<div class="col-md-12">
+		  				<h1><%= @building.street_address %></h1>
+		  			</div>
+		  		</div>
+		  		<div class="row">
+		  			<div class="col-md-6">
+		  				<p><%= @building.cached_active_units_count %> available units on the market.
+								<%= @building.cached_units_count %> total units.
+							</p>
+		  			</div>
+		  			<!--div class="col-md-6 form-label-responsive"></div-->
+		  		</div>
+			  </div><!-- panel-title -->
+		  </div><!-- panel-heading -->
 		  <div class="panel-body">
+		  	<div class="row">
+		  		<div class="col-xs-12 col-md-6">
+		  			<%= link_to 'View all', buildings_path %> |
+						<% if current_user.is_management? %>
+							<%= link_to 'Edit', edit_building_path(@building) %> | 
+							<%= link_to 'Add a Unit', new_residential_unit_path(building_id: @building.id) %>
+						<% end %>
+		  		</div>
+		  		<div class="col-xs-12 col-md-6 form-label-responsive">
+		  			<%= link_to 'Report Inaccuracy', inaccuracy_modal_building_path(@building), 
+		  				class: "btn btn-sm btn-danger ",
+			      	data: {toggle: "modal", target: "#bldgInaccuracyModal"}, remote: true %>
+		  		</div>
+		  	</div>
+		  	
+		      <br />
 		  	<!-- begin photos -->
 		  	<% if @building.images.any? %>
 
@@ -71,7 +79,7 @@
 			  <% else %>
 			  	<!-- placeholder image -->
           <%= image_tag "listing_soon.png", alt: "Image coming soon",
-          	:class => 'img-responsive center-block', width: "100%" %>
+          	:class => 'img-responsive center-block', width: "80%" %>
 			  <% end %>
 			  <!-- end photos -->
 
@@ -108,9 +116,9 @@
 				</p>
 
         <p>
-        	<strong>Required securities:</strong>
-        	<% if @building.required_security %>
-        		<%= @building.required_security.name.titleize %>
+        	<strong>Rental Terms:</strong>
+        	<% if @building.rental_term %>
+        		<%= @building.rental_term.name.titleize %>
         	<% end %>
         </p>
 
@@ -121,7 +129,7 @@
 					</p>
 				<% end %>
 				<p>
-				  <strong>Rental Terms:</strong>
+				  <strong>Utilities:</strong>
 				  <%= @building.utilities_to_s %>
 				</p>
 

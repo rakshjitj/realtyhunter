@@ -71,6 +71,7 @@
       <div id="map_canvas" data-address="<%= @building.formatted_street_address %>"></div>
     </div>
 
+    <br />
     <div class="row">
       <div class="col-md-12">
         <div class="field">
@@ -192,7 +193,7 @@
     <div class="col-xs-12">
         <!-- enter a new option -->
         <%= f.text_field :custom_utilities, class: 'form-control vertical-margin-lg', 
-          placeholder: "Or enter new terms, comma separated" %>
+          placeholder: "Or enter new utilities, comma separated" %>
       </div>
     </div>
 
@@ -213,14 +214,14 @@
 
       <div class="col-md-6">
         <div class="field">
-          <%= f.label :required_security_id %>
-          <%= f.select(:required_security_id, options_for_select(current_user.company.required_securities.all.collect { |r| [r.name.titleize, r.id] }, 
-            [@building.required_security ? @building.required_security.id : '']),
+          <%= f.label :rental_term_id %>
+          <%= f.select(:rental_term_id, options_for_select(current_user.company.rental_terms.all.collect { |r| [r.name.titleize, r.id] }, 
+            [@building.rental_term ? @building.rental_term.id : '']),
              {prompt: "Choose one..."},
             class: 'form-control',
             :include_blank => true) %>
-          <%= f.text_field :custom_required_security, class: 'form-control vertical-margin-lg', 
-            placeholder: "Or enter new custom required security" %>
+          <%= f.text_field :custom_rental_term, class: 'form-control vertical-margin-lg', 
+            placeholder: "Or enter new custom rental term" %>
         </div>
       </div>
 

@@ -11,7 +11,7 @@ class Company < ActiveRecord::Base
 	has_many :landlords, dependent: :destroy
 	has_many :building_amenities, dependent: :destroy
 	has_many :utilities, dependent: :destroy
-	has_many :required_securities, dependent: :destroy
+	has_many :rental_terms, dependent: :destroy
 	has_many :pet_policies, dependent: :destroy
 	has_many :residential_amenities, dependent: :destroy
 	has_many :commercial_property_types
@@ -107,7 +107,7 @@ class Company < ActiveRecord::Base
 			{name: "Trash not included", company: self},
 		])
 
-		RequiredSecurity.create!([
+		RentalTerm.create!([
 			{name: "First & Last month", company: self},
 			{name: "First, Last & Security", company: self},
 			{name: "First & 2 Securities", company: self},

@@ -73,7 +73,7 @@ FactoryGirl.define do
     state "NY"
   end
 
-  factory :required_security do
+  factory :rental_term do
     name { generate(:sequenced_name) }
     company 
     #company { company_myspace }
@@ -97,7 +97,7 @@ FactoryGirl.define do
     listing_agent_percentage 15
     email { generate(:sequenced_email) }
     company
-    #association :required_security, :factory => :required_security, :username => 'admin'
+    #association :rental_term, :factory => :rental_term, :username => 'admin'
   end
 
   factory :building do
@@ -118,7 +118,7 @@ FactoryGirl.define do
     company
     neighborhood
     pet_policy
-    required_security
+    rental_term
     # after(:build) do |building, evaluator|
     #   #company evaluator.company
     #   create(:landlord, company: evaluator.company)#, evaluator.total_items, building: building)

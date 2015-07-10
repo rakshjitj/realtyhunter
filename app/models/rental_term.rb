@@ -1,4 +1,4 @@
-class RequiredSecurity < ActiveRecord::Base
+class RentalTerm < ActiveRecord::Base
 	belongs_to :company, touch: true
 	has_many :buildings
 	before_save :downcase_name

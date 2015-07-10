@@ -11,7 +11,7 @@
       t.references :landlords, index: true
       t.references :building_amenities, index: true
       t.references :utilities, index: true
-      t.references :required_securities, index: true
+      t.references :rental_terms, index: true
       t.references :pet_policies, index: true
       t.references :residential_amenities, index: true
     end
@@ -150,7 +150,7 @@
       t.belongs_to :neighborhood
       #t.belongs_to :user
       t.belongs_to :pet_policy
-      t.belongs_to :required_security
+      t.belongs_to :rental_term
       t.references :images, index: true
       t.timestamps null: false
     end
@@ -224,7 +224,7 @@
       t.belongs_to :utility
     end
 
-    create_table :required_securities do |t|
+    create_table :rental_terms do |t|
       t.string :name
       t.belongs_to :company
       t.references :building, index: true

@@ -47,7 +47,7 @@
 
 			<div class="panel-body">
 		  	<div class="row">
-			  	<div class="col-md-9">
+			  	<div class="col-md-9 vertical-padding">
 			  		<%= link_to 'View all', residential_units_path %>
 			  		| <%= link_to 'Print', print_modal_residential_unit_path(@residential_unit), 
 			      		data: {toggle: "modal", target: "#printModal"}, remote: true %>
@@ -59,7 +59,7 @@
 			      			data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %>
 			      <% end %>
 			  	</div>
-			  	<div class="col-md-3 form-label-responsive">
+			  	<div class="col-md-3 form-label-responsive vertical-padding">
 			  		<%= link_to 'Report Inaccuracy', inaccuracy_modal_residential_unit_path(@residential_unit), 
 			  				class: "btn btn-danger btn-sm",
 			  				data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
@@ -127,7 +127,7 @@
 					  <% else %>
 					  	<!-- placeholder image -->
               <%= image_tag "listing_soon.png", alt: "Image coming soon",
-              	:class => 'img-responsive center-block' %>
+              	:class => 'img-responsive center-block', width: "80%" %>
 					  <% end %>
 					  <!-- end photos -->
 	    		</div>
@@ -142,11 +142,11 @@
 	    			<%= link_to @residential_unit.cached_building.street_address, @residential_unit.cached_building %>
 	    		</div>
 	    		<div class="col-xs-6 col-md-3">
-	    			<strong>Required Security:</strong>
+	    			<strong>Rental Term:</strong>
 	    		</div>
 	    		<div class="col-xs-6 col-md-3">
-	    			<% if @residential_unit.cached_building.required_security %>
-		    			<%= @residential_unit.cached_building.required_security.name.titleize %>
+	    			<% if @residential_unit.cached_building.rental_term %>
+		    			<%= @residential_unit.cached_building.rental_term.name.titleize %>
 		    		<% else %>
 		    			-
 		    		<% end %>

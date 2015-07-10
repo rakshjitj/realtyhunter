@@ -6,9 +6,9 @@ class LandlordTest < ActiveSupport::TestCase
 
 	def setup
     @company = build(:company)
-    @required_security = build(:required_security, company: @company)
+    @rental_term = build(:rental_term, company: @company)
     # build then save to trigger before_save callback
-    @landlord = build(:landlord, company: @company, required_security: @required_security)
+    @landlord = build(:landlord, company: @company, rental_term: @rental_term)
     @landlord.save
   end
 
@@ -36,8 +36,8 @@ class LandlordTest < ActiveSupport::TestCase
     assert_not @landlord.valid?
   end
 
-  test "required_security should be present" do
-    @landlord.required_security = nil
+  test "rental_term should be present" do
+    @landlord.rental_term = nil
     assert_not @landlord.valid?
   end
 

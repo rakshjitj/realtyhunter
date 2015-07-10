@@ -265,7 +265,7 @@ define_roles
   landlord: @landlord,
   neighborhood: @neighborhood,
   pet_policy: @company.pet_policies[2],
-  required_security: @company.required_securities[1],
+  rental_term: @company.rental_terms[1],
   })
 
 # 55.times do |n|
