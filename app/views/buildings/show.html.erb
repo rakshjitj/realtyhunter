@@ -40,8 +40,8 @@
 					  <div class="carousel-inner" role="listbox">
 					  	<% @building.images.each do |image| %>	
 					  		<div class="item">
-						      <%= image_tag image.file.url(:medium), :class => 'img-responsive center-block', 
-						      	alt: image.file.url(:medium), width: "100%" %>
+						      <%= image_tag image.file.url(:original), :class => 'img-responsive center-block', 
+						      	alt: image.file.url(:original) %>
 						    </div>
 					  	<% end %>
 					  </div>

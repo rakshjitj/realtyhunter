@@ -74,15 +74,15 @@
 							  <!-- first display building photos... -->
 							  	<% @residential_unit.cached_building.images.each do |image| %>
 							  		<div class="item">
-								      <%= image_tag image.file.url(:medium), :class => 'img-responsive center-block', 
-								      	alt: image.file.url(:medium), width:"100%" %>
+								      <%= image_tag image.file.url(:original), :class => 'img-responsive center-block', 
+								      	alt: image.file.url(:original)  %>
 								    </div>
 							  	<% end %>
 							  	<!-- now display unit photos -->
 							  	<% @residential_unit.images.each do |image| %>
 							  		<div class="item">
-								      <%= image_tag image.file.url(:medium), :class => 'img-responsive center-block', 
-								      	alt: image.file.url(:medium), width:"100%" %>
+								      <%= image_tag image.file.url(:original), :class => 'img-responsive center-block', 
+								      	alt: image.file.url(:original) %>
 								    </div>
 							  	<% end %>
 							  </div>
