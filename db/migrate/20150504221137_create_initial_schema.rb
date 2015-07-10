@@ -165,7 +165,6 @@
       t.integer :status, default: 0
       t.string :open_house
       t.boolean :oh_exclusive, default: false
-      t.integer :weeks_free_offered, default: 0
       t.belongs_to :building
       t.references :listing_agent
       t.references :primary_agent

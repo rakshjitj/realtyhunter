@@ -12,10 +12,8 @@ class Unit < ActiveRecord::Base
   scope :residential, ->{ where("actable_type = 'ResidentialUnit'") }
   scope :commercial, ->{ where("actable_type = 'CommercialUnit'") }
 
-  # TODO: make this into a db table
-  # if we change the order of these statuses, things will get messed up!
 	enum status: [ :active, :pending, :off ]
-  scope :on_market, ->{where.not(status: 2)}
+  scope :on_market, ->{where.not(status: Unit.statuses["off"])}
 	validates :status, presence: true, inclusion: { in: %w(active pending off) }
 	
 	validates :rent, presence: true, numericality: { only_integer: true }

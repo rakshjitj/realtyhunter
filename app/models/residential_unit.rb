@@ -6,7 +6,7 @@ class ResidentialUnit < ActiveRecord::Base
   after_update :clear_cache
   after_destroy :clear_cache
 
-  attr_accessor :include_photos, :inaccuracy_description#, :has_fee
+  attr_accessor :include_photos, :inaccuracy_description, :pet_policy_shorthand
 
   validates :building_unit, presence: true, length: {maximum: 50}
 
@@ -22,7 +22,7 @@ class ResidentialUnit < ActiveRecord::Base
   validates :tp_fee_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
   validates_inclusion_of :tp_fee_percentage, :in => 0..100, allow_blank: true
 
-  validates :weeks_free_offered, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
+  #validates :weeks_free_offered, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
 
   # we can't expire old keys with a regex or delete_matched on dalli
   # instead use the strategy suggested here:
@@ -75,6 +75,7 @@ class ResidentialUnit < ActiveRecord::Base
     Rails.cache.fetch("#{cache_key}-street_address") {
       cached_building.street_address
     }
+    #building.street_address
   end
 
   def archive
@@ -166,8 +167,8 @@ class ResidentialUnit < ActiveRecord::Base
   # takes in a hash of search options
   # can be formatted_street_address, landlord
   # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 
-  # neighborhoods, has_outdoor_space, features, pet_policy
-  def self.search(params, user_is_management, building_id=nil)
+  # neighborhoods, has_outdoor_space, features, pet_policy, ...
+  def self.search(params, user, building_id=nil)
     #puts "PARAMS #{params.inspect}"
     if !params && !building_id
       return ResidentialUnit.unarchived
@@ -178,7 +179,7 @@ class ResidentialUnit < ActiveRecord::Base
     @running_list = Unit.includes(:building).unarchived
 
     # only admins are allowed to view off-market units
-    if user_is_management
+    if user.is_management?
       @running_list = @running_list.on_market
     end
 
@@ -196,6 +197,8 @@ class ResidentialUnit < ActiveRecord::Base
 
     # search by unit
     if params[:unit]
+      # cap query string length for security reasons
+      address = params[:unit][0, 50]
       @running_list = @running_list.where("building_unit = ?", params[:unit])
     end
 
@@ -239,9 +242,21 @@ class ResidentialUnit < ActiveRecord::Base
     end
 
     # search pet policy
-    if params[:pet_policy_id]
-      @running_list = @running_list.joins(building: :pet_policy)
-        .where('pet_policy_id = ?', params[:pet_policy_id])
+    if params[:pet_policy_shorthand]
+      pp = params[:pet_policy_shorthand].downcase
+      policies = nil
+      if pp == "none"
+        policies = PetPolicy.where(name: "no pets", company: user.company)
+      elsif pp == "cats only"
+        policies = PetPolicy.policies_that_allow_cats(user.company, true)
+      elsif pp == "dogs only"
+        policies = PetPolicy.policies_that_allow_dogs(user.company, true)
+      end
+
+      if policies
+        @running_list = @running_list.joins(building: :pet_policy)
+          .where('pet_policy_id IN (?)', policies.ids)
+      end
     end
 
     # the following fields are on ResidentialUnit not Unit, so cast the 
@@ -271,11 +286,6 @@ class ResidentialUnit < ActiveRecord::Base
       has_fee = params[:has_fee].downcase
       included = %w[yes no].include?(has_fee)
       if included
-        # if has_fee == 'yes'
-        #   @running_list = @running_list.where.not(tp_fee_percentage: nil)
-        # elsif has_fee == 'no'
-        #   @running_list = @running_list.where.not(op_fee_percentage: nil)
-        # end
         @running_list = @running_list.where(has_fee: has_fee == "yes")
       end
     end

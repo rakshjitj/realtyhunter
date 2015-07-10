@@ -177,11 +177,7 @@
 	    			<strong>Rent:</strong>
 	    		</div>
 	    		<div class="col-xs-6 col-md-4">
-	    			<% if @residential_unit.weeks_free_offered > 0 %>
-							<%= rent_formatted(@residential_unit.rent) %> (Plus <%= @residential_unit.weeks_free_offered %> weeks free)
-						<% else %>
-							<%= rent_formatted(@residential_unit.rent) %>
-						<% end %>
+	    			<%= rent_formatted(@residential_unit.rent) %>
 	    		</div>
 	    		<div class="col-xs-6 col-md-3">
 	    			<strong>Lease duration:</strong>

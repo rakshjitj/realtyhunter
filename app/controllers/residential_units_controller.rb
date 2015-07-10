@@ -306,7 +306,7 @@ class ResidentialUnitsController < ApplicationController
         @bldg_features = BuildingAmenity.where(id: building_feature_ids)
       end
 
-      @residential_units = ResidentialUnit.search(params, current_user.is_management?, params[:building_id])
+      @residential_units = ResidentialUnit.search(params, current_user, params[:building_id])
       @residential_units = custom_sort
 
       @residential_units
@@ -332,7 +332,7 @@ class ResidentialUnitsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def residential_unit_params
       stuff = params[:residential_unit].permit(:building_unit, :rent, :available_by, 
-        :access_info, :status, :has_fee, :open_house, :oh_exclusive, :weeks_free_offered, 
+        :access_info, :status, :has_fee, :open_house, :oh_exclusive,
         :building_id, :primary_agent_id, :listing_agent_id, :beds, :baths, :notes, :lease_duration,
         :include_photos, :inaccuracy_description, :op_fee_percentage,
         :tp_fee_percentage, :residential_amenity_ids => [])

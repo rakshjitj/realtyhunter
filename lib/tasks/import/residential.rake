@@ -126,6 +126,9 @@ namespace :import do
 
 		nestio_url = "https://nestiolistings.com/api/v1/public/listings?key=#{ENV['NESTIO_KEY']}"
 
+		# clear any old cache laying around, as delete_all will not trigger our 
+		# after_destroy callbacks
+		Rails.cache.clear
 		# clear old data
 		ResidentialUnit.delete_all
 

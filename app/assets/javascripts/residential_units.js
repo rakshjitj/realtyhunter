@@ -29,7 +29,7 @@ ResidentialUnits = {};
         bath_min: $('#bath_min').val(),
         bath_max: $('#bath_max').val(),
         landlord: $('#landlord').val(),
-        pet_policy_id: $('#pet_policy_id').val(),
+        pet_policy_shorthand: $('#pet_policy_shorthand').val(),
         status: $('#status').val(),
         features: $('#features').val(),
         has_fee: $('#has_fee').val(),
@@ -108,10 +108,9 @@ ResidentialUnits = {};
 
 	// for giant google map
 	ResidentialUnits.buildContentString = function (key, info) {
-		//console.log(key, info);
 	  var contentString = '<strong>' + key + '</strong><hr />';
 	  for (var i=0; i<info['units'].length; i++) {
-	    contentString += '<a href="/residential_units/' + info['units'][i].id + '">' + info['units'][i].building_unit + '</a>: ' + info['units'][i].beds + ' beds / ' 
+	    contentString += '<a href="/residential_units/' + info['units'][i].id + '">#' + info['units'][i].building_unit + '</a>: ' + info['units'][i].beds + ' beds / ' 
 	      + info['units'][i].baths + ' baths $' + info['units'][i].rent + '<br />';
 	    if (i == 5) {
 	      contentString += '<a href="/residential_units?building_id=' + info['building_id'] + '">View more...</a>';
@@ -142,7 +141,7 @@ ResidentialUnits = {};
 			var infoWindow;
 		  Object.keys(dataPoints).forEach(function(key, index) {
 		    // draw each marker + load with data
-		    info = dataPoints[key];
+		    var info = dataPoints[key];
 		    var myLatlng = new google.maps.LatLng(info.lat, info.lng);
 		    var marker = new google.maps.Marker({
 		      map:map,
@@ -153,8 +152,9 @@ ResidentialUnits = {};
 		    	if (infoWindow) {
 		    		infoWindow.close();
 		    	}
+		    	var content = ResidentialUnits.buildContentString(key, info);
 		    	infoWindow = new google.maps.InfoWindow({
-			    	content: buildContentString(key, info)
+			    	content: content
 			    });
 		      infoWindow.open(map, marker);
 		    });
@@ -189,7 +189,7 @@ ResidentialUnits = {};
 	  $('#bath_min').keyup(ResidentialUnits.throttledSearch);
 	  $('#bath_max').keyup(ResidentialUnits.throttledSearch);
 	  $('#landlord').keyup(ResidentialUnits.throttledSearch);
-	  $('#pet_policy_id').change(ResidentialUnits.throttledSearch);
+	  $('#pet_policy_shorthand').change(ResidentialUnits.throttledSearch);
 	  $('#status').change(ResidentialUnits.throttledSearch);
 	  $('#features').change(ResidentialUnits.throttledSearch);
 	  $('#has_fee').change(ResidentialUnits.throttledSearch);

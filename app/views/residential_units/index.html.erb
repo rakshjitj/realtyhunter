@@ -88,23 +88,22 @@
           </div>
         </div>
         <div class="row vertical-padding">
-          <div class="col-md-4">
+          <div class="col-md-5">
             <%= label_tag :has_fee, "Broker's Fee" %>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-7">
             <%= select_tag(:has_fee, 
               options_for_select(%w(Any Yes No), params[:has_fee])) %>
           </div>
         </div>
         <div class="row vertical-padding">
-          <div class="col-md-4">
-            <%= label_tag :pet_policy_id, "Pet policy" %>
+          <div class="col-md-5">
+            <%= label_tag :pet_policy_shorthand, "Pet policy" %>
           </div>
-          <div class="col-md-8">
-            <%= select_tag(:pet_policy_id, 
-              options_for_select(current_user.company.pet_policies.all.collect { |r| [r.name.titleize, r.id] }, 
-              params[:pet_policy_id]),
-              include_blank: true) %>
+          <div class="col-md-7">
+            <%= select_tag(:pet_policy_shorthand, 
+              options_for_select(["Any", "Cats Only", "Dogs Only", "None"], 
+              params[:pet_policy_shorthand] ? params[:pet_policy_shorthand].titleize : "Any")) %>
           </div>
         </div>
         
@@ -241,13 +240,12 @@
       </div>
       <div class="row vertical-padding">
         <div class="col-xs-2">
-          <%= label_tag :pet_policy_id, "Pet policy" %>
+          <%= label_tag :pet_policy_shorthand, "Pet policy" %>
         </div>
         <div class="col-xs-10">
-          <%= select_tag(:pet_policy_id, 
-            options_for_select(current_user.company.pet_policies.all.collect { |r| [r.name.titleize, r.id] }, 
-            params[:pet_policy_id]),
-            include_blank: true) %>
+          <%= select_tag(:pet_policy_shorthand, 
+            options_for_select(["Any", "Cats Only", "Dogs Only", "None"], 
+            params[:pet_policy_shorthand] ? params[:pet_policy_shorthand].titleize : "Any")) %>
         </div>
       </div>
       

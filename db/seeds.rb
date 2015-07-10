@@ -279,7 +279,6 @@ define_roles
 #     access_info: FFaker::HipsterIpsum.phrase,
 #     status: "active",
 #     lease_duration: "year",
-#     weeks_free_offered: Faker::Number.number(1),
 #     notes: FFaker::HipsterIpsum.sentence,
 #     building: @bldg,
 #     listing_agent: @manager1,
