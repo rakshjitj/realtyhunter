@@ -3,7 +3,7 @@ class Building < ActiveRecord::Base
 	
   before_save :process_custom_security
   before_save :process_custom_amenities
-  before_save :process_custom_rental_terms
+  before_save :process_custom_utilities
   after_update :clear_cache
   after_destroy :clear_cache
   
@@ -15,13 +15,13 @@ class Building < ActiveRecord::Base
 	has_many :units, dependent: :destroy
 	has_many :images, dependent: :destroy
 	has_and_belongs_to_many :building_amenities
-	has_and_belongs_to_many :rental_terms
+	has_and_belongs_to_many :utilities
 
 	# TODO: remove this line
 	# this is some BS we need to make cancancan happy, because it 
 	# does not like our strong parameters
 	attr_accessor :building, :inaccuracy_description, 
-    :custom_required_security, :custom_amenities, :custom_rental_terms
+    :custom_required_security, :custom_amenities, :custom_utilities
 
 	validates :formatted_street_address, presence: true, length: {maximum: 200}, 
 		uniqueness: { case_sensitive: false }
@@ -138,7 +138,7 @@ class Building < ActiveRecord::Base
 
 	def last_unit_updated
 		if self.cached_units.length > 0
-			self.cached_units.first.updated_at.strftime("%Y-%b-%d")
+			self.cached_units.first.updated_at
 		else
 			'--'
 		end
@@ -166,8 +166,8 @@ class Building < ActiveRecord::Base
     amenities
 	end
 
-	def rental_terms_to_s
-		terms = self.rental_terms.map{|a| a.name.titleize}
+	def utilities_to_s
+		terms = self.utilities.map{|a| a.name.titleize}
 		terms = terms ? terms.join(', ') : "None"
     terms
 	end
@@ -243,15 +243,15 @@ class Building < ActiveRecord::Base
       end
     end
 
-    def process_custom_rental_terms
-      if custom_rental_terms
-        terms = custom_rental_terms.split(',')
+    def process_custom_utilities
+      if custom_utilities
+        terms = custom_utilities.split(',')
         terms.each{|t|
           t = t.downcase.strip
           if !t.empty?
-            found = RentalTerm.find_by(name: t, company: company)
+            found = Utility.find_by(name: t, company: company)
             if !found
-              self.rental_terms << RentalTerm.create!(name: t, company: company)
+              self.utilities << Utility.create!(name: t, company: company)
             end
           end
         }

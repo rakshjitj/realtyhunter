@@ -1,10 +1,10 @@
 <div class="available_by">
 	<p>
-		<strong>Available by:</strong>
+		<strong>Available:</strong>
 		<% if @residential_unit.available_by < Date.today %>
 			Now
 		<% else %>
-			<%= @residential_unit.available_by.strftime("%Y-%b-%d") %>
+			<%= @residential_unit.available_by %>
 		<% end %>
 	</p>
 </div>

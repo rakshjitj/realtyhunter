@@ -19,7 +19,7 @@ json.building do
 end
 
 json.floor json.nil
-json.date_available listing.available_by.strftime('%Y-%m-%d')
+json.date_available listing.available_by
 
 json.unit_amenities listing.residential_amenities.map{|a| a.name}
 json.unit_description listing.notes

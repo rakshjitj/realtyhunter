@@ -68,13 +68,13 @@
 	            </div>
 	            <div class="row">
 	                <div class="col-xs-5 text-right">
-	                  <strong>Available By</strong>
+	                  <strong>Available</strong>
 	                </div>
 	                <div class="col-xs-7">
                     <% if @residential_unit.available_by < Date.today %>
                       Now
                     <% else %>
-                      <%= @residential_unit.available_by.strftime("%Y-%b-%d") %>
+                      <%= @residential_unit.available_by %>
                     <% end %>
 	                </div>
 	            </div>
@@ -88,10 +88,10 @@
 	            </div>
 	            <div class="row">
                 <div class="col-xs-5 text-right">
-                  <strong>Rental Terms</strong>
+                  <strong>Utilities</strong>
                 </div>
                 <div class="col-xs-7">
-                  <%= @residential_unit.building.rental_terms_to_s %>
+                  <%= @residential_unit.building.utilities_to_s %>
                 </div>
 	            </div>
 

@@ -207,7 +207,7 @@ class BuildingsController < ApplicationController
         :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id, :file,
         :building => [:formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description, 
           :pet_policy_id, :required_security_id, :custom_required_security, :file, :custom_amenities,
-          :custom_rental_terms,
-          :building_amenity_ids => [], images_files: [], :rental_term_ids => [] ])
+          :custom_utilities,
+          :building_amenity_ids => [], images_files: [], :utility_ids => [] ])
     end
 end

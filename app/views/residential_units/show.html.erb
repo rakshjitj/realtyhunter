@@ -1,7 +1,7 @@
 <% provide(:title, @residential_unit.street_address_and_unit) %>
 
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col-md-8 col-md-offset-2">
   	<br/>
   	<br/>
   	<div id="runit-panel" class="panel panel-default">
@@ -47,10 +47,8 @@
 
 			<div class="panel-body">
 		  	<div class="row">
-			  	<div class="col-md-12">
+			  	<div class="col-md-9">
 			  		<%= link_to 'View all', residential_units_path %>
-			  		| <%= link_to 'Report Inaccuracy', inaccuracy_modal_residential_unit_path(@residential_unit), 
-			  				data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
 			  		| <%= link_to 'Print', print_modal_residential_unit_path(@residential_unit), 
 			      		data: {toggle: "modal", target: "#printModal"}, remote: true %>
 			  		<% if current_user.is_management? %>
@@ -61,6 +59,11 @@
 			      			data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %>
 			      <% end %>
 			  	</div>
+			  	<div class="col-md-3 form-label-responsive">
+			  		<%= link_to 'Report Inaccuracy', inaccuracy_modal_residential_unit_path(@residential_unit), 
+			  				class: "btn btn-danger btn-sm",
+			  				data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
+			  		</div>
 		    </div>
 
 	    	<br />
@@ -158,11 +161,11 @@
 	    			<%= @residential_unit.building_unit %>
 	    		</div>
 	    		<div class="col-xs-6 col-md-3">
-	    			<strong>Rental Terms:</strong>
+	    			<strong>Utilities:</strong>
 	    		</div>
 	    		<div class="col-xs-6 col-md-3">
-	    			<% if !@residential_unit.cached_building.rental_terms_to_s.empty? %>
-		    			<%= @residential_unit.cached_building.rental_terms_to_s.titleize %>
+	    			<% if !@residential_unit.cached_building.utilities_to_s.empty? %>
+		    			<%= @residential_unit.cached_building.utilities_to_s.titleize %>
 		    		<% else %>
 		    			- 
 		    		<% end %>
@@ -209,13 +212,13 @@
 
 	    	<div class="row">
 	    		<div class="col-xs-6 col-md-2">
-	    			<strong>Available by:</strong>
+	    			<strong>Available:</strong>
 	    		</div>
 	    		<div class="col-xs-6 col-md-4">
 	    			<% if @residential_unit.available_by < Date.today %>
 							Now
 						<% else %>
-							<%= @residential_unit.available_by.strftime("%Y-%b-%d") %>
+							<%= @residential_unit.available_by %>
 						<% end %>
 	    		</div>
 	    		<div class="col-xs-6 col-md-3">

@@ -141,14 +141,14 @@
     <br />
     <div class="row">
       <div class="col-md-12">
-        <%= f.label :rental_term_ids, "Rental Terms" %><br>
+        <%= f.label :utility_ids, "Utilities" %><br>
       </div>
     </div>
     <!-- for bigger screens -->
     <div class="hidden-xs">
       <div class="row">
         <% i = 0 %>
-        <%= f.collection_check_boxes(:rental_term_ids, current_user.company.rental_terms, :id, :name) do |b| %>
+        <%= f.collection_check_boxes(:utility_ids, current_user.company.utilities, :id, :name) do |b| %>
           
           <% if i % 3 == 0 && i > 0 %>
             </div>
@@ -170,7 +170,7 @@
     <div class="hidden-sm hidden-md hidden-lg">
       <div class="row">
         <% i = 0 %>
-        <%= f.collection_check_boxes(:rental_term_ids, current_user.company.rental_terms, :id, :name) do |b| %>
+        <%= f.collection_check_boxes(:utility_ids, current_user.company.utilities, :id, :name) do |b| %>
           
           <% if i % 2 == 0 && i > 0 %>
             </div>
@@ -191,7 +191,7 @@
     <div class="row">
     <div class="col-xs-12">
         <!-- enter a new option -->
-        <%= f.text_field :custom_rental_terms, class: 'form-control vertical-margin-lg', 
+        <%= f.text_field :custom_utilities, class: 'form-control vertical-margin-lg', 
           placeholder: "Or enter new terms, comma separated" %>
       </div>
     </div>

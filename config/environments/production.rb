@@ -66,7 +66,6 @@
      socket_failure_delay: 0.2,
      compress: true
     }
-    #{ :namespace => 'realty-monster', :expires_in => 1.day, :compress => true }, 
     #{ :pool_size => 5 }
   config.action_controller.perform_caching = true
   

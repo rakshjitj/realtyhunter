@@ -288,21 +288,23 @@ class ResidentialUnit < ActiveRecord::Base
 
   def duplicate(new_unit_num, include_photos)
     if new_unit_num && new_unit_num != self.id
-      # copy object
-      residential_unit_dup = self.dup
-      residential_unit_dup.building_unit = new_unit_num
-      residential_unit_dup.save
-      # deep copy photos
-      self.images.each {|i| 
-        img_copy = Image.new
-        img_copy.file = i.file
-        img_copy.unit_id = residential_unit_dup.id
-        img_copy.save
-        residential_unit_dup.images << img_copy
-      }
+      #ResidentialUnit.transaction do
+        # copy object
+        residential_unit_dup = self.dup
+        residential_unit_dup.building_unit = new_unit_num
+        residential_unit_dup.save
+        # deep copy photos
+        # self.images.each {|i| 
+        #   img_copy = Image.new
+        #   img_copy.file = i.file
+        #   img_copy.unit_id = residential_unit_dup.id
+        #   img_copy.save
+        # }
 
-      clear_building_cache
-      residential_unit_dup
+        puts "UMMM YEAH"
+        building.increment_memcache_iterator
+        residential_unit_dup
+      #end
     else
       raise "No unit number or invalid unit number specified"
     end

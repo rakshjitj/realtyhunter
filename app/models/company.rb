@@ -10,7 +10,7 @@ class Company < ActiveRecord::Base
 	has_many :buildings, dependent: :destroy
 	has_many :landlords, dependent: :destroy
 	has_many :building_amenities, dependent: :destroy
-	has_many :rental_terms, dependent: :destroy
+	has_many :utilities, dependent: :destroy
 	has_many :required_securities, dependent: :destroy
 	has_many :pet_policies, dependent: :destroy
 	has_many :residential_amenities, dependent: :destroy
@@ -93,7 +93,7 @@ class Company < ActiveRecord::Base
 			{name: "Elevator", company: self}
 		])
 
-		RentalTerm.create!([
+		Utility.create!([
 			{name: "Heat included", company: self},
 			{name: "Hot water included", company: self},
 			{name: "Heat/hot water included", company: self},

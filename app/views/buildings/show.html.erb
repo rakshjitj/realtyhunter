@@ -1,7 +1,7 @@
 <% provide(:title, @building.formatted_street_address) %>
 
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col-md-8 col-md-offset-2">
   	<div class="page-header">
   		<div class="row">
   			<div class="col-md-12">
@@ -122,16 +122,16 @@
 				<% end %>
 				<p>
 				  <strong>Rental Terms:</strong>
-				  <%= @building.rental_terms_to_s %>
+				  <%= @building.utilities_to_s %>
 				</p>
 
 				<p>
 				  <strong>Created:</strong>
-				  <%= @building.created_at.strftime("%Y-%b-%d") %>
+				  <%= @building.created_at %>
 				</p>
 				<p>
 				  <strong>Last Updated:</strong>
-				  <%= @building.updated_at.strftime("%Y-%b-%d") %>
+				  <%= @building.updated_at %>
 				</p>
 				<p>
 				  <strong>Last Unit Updated:</strong>

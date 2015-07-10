@@ -5,7 +5,7 @@ json.extract! listing, :sq_footage, :floor, :building_size,
 
 json.extract! listing, :rent, :status
 
-json.date_available listing.available_by.strftime('%Y-%m-%d')
+json.date_available listing.available_by
 
 json.changed_at listing.updated_at
 

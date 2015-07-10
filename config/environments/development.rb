@@ -54,7 +54,6 @@ Rails.application.configure do
 
   config.paperclip_defaults = {
     storage: :s3,
-    #s3_credentials: "#{Rails.root.to_s}/config/aws.yml"
     :s3_credentials => {
       :bucket => ENV['S3_AVATAR_BUCKET'],
       :access_key_id => ENV['AWS_ACCESS_KEY_ID'],

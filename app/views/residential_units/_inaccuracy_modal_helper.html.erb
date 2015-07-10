@@ -3,7 +3,7 @@
 	<div class="modal-body">
 		<p>What's wrong at <%= @residential_unit.building.street_address %> 
 		#<%= @residential_unit.building_unit %>? The more detail you can provide, the better.</p>
-
+		<br />
 		<div class="field">
 	    <%= f.text_area :inaccuracy_description, rows: 5, class: 'form-control' %>
 	  </div>

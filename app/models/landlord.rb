@@ -49,7 +49,7 @@ class Landlord < ActiveRecord::Base
 		if !self.buildings.empty?
 			buildings = self.buildings.joins(:units).order('updated_at DESC')
 			if !buildings.empty?
-				buildings.first.updated_at.strftime("%Y-%b-%d")
+				buildings.first.updated_at
 			else 
 				'-No units-'
 			end

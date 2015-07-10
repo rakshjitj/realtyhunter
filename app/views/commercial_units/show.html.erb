@@ -1,7 +1,7 @@
 <% provide(:title, @commercial_unit.building.street_address) %>
 
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col-md-8 col-md-offset-2">
   	
 		<div class="row">
   		<div class="col-md-12">
@@ -102,7 +102,7 @@
 						    <strong>Date Available:</strong>
 						  </div>
 						  <div class="col-md-3">
-						    <%= @commercial_unit.available_by.strftime("%Y-%b-%d") %>
+						    <%= @commercial_unit.available_by %>
 						  </div>
 						</div>
 
