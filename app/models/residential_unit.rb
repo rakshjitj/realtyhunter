@@ -167,7 +167,7 @@ class ResidentialUnit < ActiveRecord::Base
   # can be formatted_street_address, landlord
   # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 
   # neighborhoods, has_outdoor_space, features, pet_policy
-  def self.search(params, building_id=nil)
+  def self.search(params, user_is_management, building_id=nil)
     #puts "PARAMS #{params.inspect}"
     if !params && !building_id
       return ResidentialUnit.unarchived
@@ -176,6 +176,11 @@ class ResidentialUnit < ActiveRecord::Base
     end
 
     @running_list = Unit.includes(:building).unarchived
+
+    # only admins are allowed to view off-market units
+    if user_is_management
+      @running_list = @running_list.on_market
+    end
 
     # all search params come in as strings from the url
     # clear out any invalid search params
@@ -283,7 +288,7 @@ class ResidentialUnit < ActiveRecord::Base
       @running_list = @running_list.joins(:residential_amenities)
         .where('residential_amenity_id IN (?)', features)
     end
-    
+
     @running_list.uniq
 	end
 

@@ -271,6 +271,7 @@ class ResidentialUnitsController < ApplicationController
 
     def set_residential_units
       do_search
+
       @map_infos = ResidentialUnit.set_location_data(@residential_units)
       @residential_units = Kaminari.paginate_array(@residential_units).page params[:page]
     end
@@ -280,6 +281,8 @@ class ResidentialUnitsController < ApplicationController
     end
 
     def do_search
+      # first, fix up parameters and set some view variables
+
       # default to searching for active units
       if !params[:status]
         params[:status] = "active"
@@ -303,8 +306,9 @@ class ResidentialUnitsController < ApplicationController
         @bldg_features = BuildingAmenity.where(id: building_feature_ids)
       end
 
-      @residential_units = ResidentialUnit.search(params, params[:building_id])
+      @residential_units = ResidentialUnit.search(params, current_user.is_management?, params[:building_id])
       @residential_units = custom_sort
+
       @residential_units
     end
 
