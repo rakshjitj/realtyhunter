@@ -58,11 +58,13 @@
   #config.cache_store = :mem_cache_store
   config.cache_store = :dalli_store, 
     (ENV["MEMCACHIER_SERVERS"] || "").split(","),
-    {:username => ENV["MEMCACHIER_USERNAME"],
-     :password => ENV["MEMCACHIER_PASSWORD"],
-     :failover => true,
-     :socket_timeout => 1.5,
-     :socket_failure_delay => 0.2
+    {namespace: 'myspace-realty-monster',
+     username: ENV["MEMCACHIER_USERNAME"],
+     password: ENV["MEMCACHIER_PASSWORD"],
+     failover: true,
+     socket_timeout: 1.5,
+     socket_failure_delay: 0.2,
+     compress: true
     }
     #{ :namespace => 'realty-monster', :expires_in => 1.day, :compress => true }, 
     #{ :pool_size => 5 }
