@@ -15,7 +15,7 @@
 
 	<header class="navbar navbar-fixed-top navbar-inverse">
   <div class="container-fluid">
-    <%= link_to "RealtyMonster", root_path, id: "logo" %>
+    <%= link_to "RealtyMonster", current_user ? user_home_path : root_path, id: "logo" %>
     <nav>
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -31,16 +31,16 @@
 
         <ul class="nav navbar-nav navbar-right">
           <% if logged_in? %>
-            <% if current_user.handles_residential? || current_user.handles_commercial? %>
-              <li><%= link_to "Buildings", buildings_path %></li>
-            <% end %>
-
             <% if current_user.handles_residential? || current_user.is_management? %>
               <li><%= link_to "Residential", residential_units_path %></li>
             <% end %>
 
             <% if current_user.handles_commercial? || current_user.is_management? %>
               <li><%= link_to "Commercial", commercial_units_path %></li>
+            <% end %>
+
+            <% if current_user.handles_residential? || current_user.handles_commercial? %>
+              <li><%= link_to "Buildings", buildings_path %></li>
             <% end %>
 
             <% if current_user.is_management? %>

@@ -36,4 +36,5 @@ class ApplicationController < ActionController::Base
 	  def expire_hsts
   	  response.headers["Strict-Transport-Security"] = 'max-age=0'
   	end
+
 end

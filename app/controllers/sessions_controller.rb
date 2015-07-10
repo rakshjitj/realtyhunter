@@ -14,16 +14,7 @@ class SessionsController < ApplicationController
         #puts "222222"
         log_in user
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
-        if user.is_external_vendor?
-          redirect_to user
-          #redirect_back_or user
-        elsif user.handles_residential?
-          redirect_to residential_units_path
-        elsif user.handles_commercial?
-          redirect_to commercial_units_path
-        else
-          redirect_to user
-        end
+        user_home
       else
         #puts "444444"
         if !user.activated?
@@ -51,6 +42,20 @@ class SessionsController < ApplicationController
   def destroy
     log_out if logged_in?
     redirect_to root_url
+  end
+
+  def user_home
+    redirect_to root_path unless current_user
+    
+    if current_user.is_external_vendor?
+      redirect_to current_user
+    elsif current_user.handles_residential?
+      redirect_to residential_units_path
+    elsif current_user.handles_commercial?
+      redirect_to commercial_units_path
+    else
+      redirect_to current_user
+    end
   end
 
 end

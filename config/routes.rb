@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   get 'login' => 'sessions#new'
   post 'login' => 'sessions#create'
   delete 'logout' => 'sessions#destroy'
-  
+  get 'user_home' => 'sessions#user_home'
+
   root :to => 'static_pages#home'
   
   resources :users, except: 'new' do
