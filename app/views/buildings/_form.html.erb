@@ -214,7 +214,7 @@
 
       <div class="col-md-6">
         <div class="field">
-          <%= f.label :rental_term_id %>
+          <%= f.label :rental_term_id, "Rental Terms" %>
           <%= f.select(:rental_term_id, options_for_select(current_user.company.rental_terms.all.collect { |r| [r.name.titleize, r.id] }, 
             [@building.rental_term ? @building.rental_term.id : '']),
              {prompt: "Choose one..."},
