@@ -6,7 +6,7 @@ class ResidentialUnit < ActiveRecord::Base
   after_update :clear_cache
   after_destroy :clear_cache
 
-  attr_accessor :include_photos, :inaccuracy_description, :brokers_fee
+  attr_accessor :include_photos, :inaccuracy_description#, :has_fee
 
   validates :building_unit, presence: true, length: {maximum: 50}
 
@@ -262,15 +262,16 @@ class ResidentialUnit < ActiveRecord::Base
     end
 
     # search by brokers fee
-    if params[:brokers_fee]
-      brokers_fee = params[:brokers_fee].downcase
-      included = %w[yes no].include?(brokers_fee)
+    if params[:has_fee]
+      has_fee = params[:has_fee].downcase
+      included = %w[yes no].include?(has_fee)
       if included
-        if brokers_fee == 'yes'
-          @running_list = @running_list.where.not(tp_fee_percentage: nil)
-        elsif brokers_fee == 'no'
-          @running_list = @running_list.where.not(op_fee_percentage: nil)
-        end
+        # if has_fee == 'yes'
+        #   @running_list = @running_list.where.not(tp_fee_percentage: nil)
+        # elsif has_fee == 'no'
+        #   @running_list = @running_list.where.not(op_fee_percentage: nil)
+        # end
+        @running_list = @running_list.where(has_fee: has_fee == "yes")
       end
     end
 

@@ -72,8 +72,6 @@ namespace :import do
 				})
 			end
 
-			#req_sec = RequiredSecurity.where(company: company).first
-
 			record = Building.find_by(formatted_street_address: result['formatted_address'])
 			if !record
 				puts "- building added"
@@ -129,8 +127,6 @@ namespace :import do
 		nestio_url = "https://nestiolistings.com/api/v1/public/listings?key=#{ENV['NESTIO_KEY']}"
 
 		# clear old data
-		Neighborhood.delete_all
-		Building.delete_all
 		ResidentialUnit.delete_all
 
 		# begin pulling down new data
@@ -228,12 +224,13 @@ namespace :import do
 
 				description = "#{item['unit_description']}"
 				if item['occupancy_status']
-					description = description + "\n\nOccupancy Status: #{item['occupancy_status']}\n"
+					description = description + "\n\nOccupancy Status: #{item['occupancy_status']}"
 				end
 				if item['furnished_type']
-					description = description + "Furnished Type: #{item['furnished_type']}\n"
+					description = description + "\n\nFurnished Type: #{item['furnished_type']}"
 				end
 
+				has_fee = false
 				op_fee_percentage = nil
 				tp_fee_percentage = nil
 				# text here varies, but often looks something like "Owner pays 100%"
@@ -244,14 +241,17 @@ namespace :import do
 					if percent_sign_idx
 						#puts "\n before:incentives [#{incentive}]"
 						if incentive.include? "owner pays " 
+							has_fee = false
 							text_length = "owner pays ".length
 							number_length = percent_sign_idx - text_length
 							op_fee_percentage = number_or_nil(incentive[text_length, number_length])
 						elsif incentive.include? "ownerpays "
+							has_fee = false
 							text_length = "owner pays ".length
 							number_length = percent_sign_idx - text_length
 							op_fee_percentage = number_or_nil(incentive[text_length, number_length])
 						elsif incentive.include? "tenant pays "
+							has_fee = true
 							text_length = "tenant pays ".length
 							number_length = percent_sign_idx - text_length
 							tp_fee_percentage = number_or_nil(incentive[text_length, number_length])
@@ -280,6 +280,7 @@ namespace :import do
 					notes: description,
 					lease_duration: lease_duration,
 					listing_id: item['id'],
+					has_fee: has_fee,
 					op_fee_percentage: op_fee_percentage,
 					tp_fee_percentage: tp_fee_percentage,
 					primary_agent: user

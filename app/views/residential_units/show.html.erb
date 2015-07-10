@@ -198,16 +198,31 @@
 	    		<div class="col-xs-6 col-md-4">
 	    			<%= @residential_unit.beds %> / <%= @residential_unit.baths %>
 	    		</div>
-	    		<div class="col-xs-6 col-md-3">
-	    			<strong>LL Fee %:</strong>
-	    		</div>
-	    		<div class="col-xs-6 col-md-3">
-	    			<% if @residential_unit.op_fee_percentage %>
-		    			<%= @residential_unit.op_fee_percentage %>
+	    		
+	    		<!-- Broker's Fee -->
+	    		<% if @residential_unit.has_fee %>
+	    			<div class="col-xs-6 col-md-3">
+		    			<strong>Broker Fee</strong>
+		    		</div>
+		    		<div class="col-xs-6 col-md-3">
+	    			<% if @residential_unit.tp_fee_percentage %>
+		    			Tenant Pays <%= @residential_unit.tp_fee_percentage %>%
 		    		<% else %>
-		    			- 
 		    		<% end %>
-	    		</div>
+	    			</div>
+	    		<!-- No Broker's Fee -->
+	    		<% else %>
+	    			<div class="col-xs-6 col-md-3">
+		    			<strong>No Broker Fee</strong>
+		    		</div>
+		    		<div class="col-xs-6 col-md-3">
+	    			<% if @residential_unit.op_fee_percentage %>
+		    			OP Pays <%= @residential_unit.op_fee_percentage %>%
+		    		<% else %>
+		    		<% end %>
+		    		</div>
+	    		<% end %>
+
 	    	</div>
 
 	    	<div class="row">
@@ -221,16 +236,7 @@
 							<%= @residential_unit.available_by %>
 						<% end %>
 	    		</div>
-	    		<div class="col-xs-6 col-md-3">
-	    			<strong>Tenant Fee %:</strong>
-	    		</div>
-	    		<div class="col-xs-6 col-md-3">
-	    			<% if @residential_unit.tp_fee_percentage %>
-		    			<%= @residential_unit.tp_fee_percentage %>
-		    		<% else %>
-		    			- 
-		    		<% end %>
-	    		</div>
+	    		
 	    	</div>
 
 	    	<!-- TODO: integrate with dept of buildings to get

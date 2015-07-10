@@ -148,7 +148,6 @@
       t.belongs_to :company
       t.belongs_to :landlord
       t.belongs_to :neighborhood
-      #t.belongs_to :user
       t.belongs_to :pet_policy
       t.belongs_to :rental_term
       t.references :images, index: true
@@ -178,6 +177,7 @@
       t.float   :baths
       t.string  :notes
       t.string  :lease_duration
+      t.boolean :has_fee # means has broker's fee
       t.integer :op_fee_percentage
       t.integer :tp_fee_percentage
     end

@@ -253,6 +253,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.float   "baths"
     t.string  "notes"
     t.string  "lease_duration"
+    t.boolean "has_fee"
     t.integer "op_fee_percentage"
     t.integer "tp_fee_percentage"
   end

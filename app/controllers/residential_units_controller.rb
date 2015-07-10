@@ -97,10 +97,6 @@ class ResidentialUnitsController < ApplicationController
       @residential_unit.available_by = Date.today
     end
 
-    if residential_unit_params[:oh_exclusive]
-      residential_unit_params[:oh_exclusive] = true
-    end
-
     if @residential_unit.save
       redirect_to @residential_unit
     else
@@ -211,10 +207,6 @@ class ResidentialUnitsController < ApplicationController
   # PATCH/PUT /residential_units/1
   # PATCH/PUT /residential_units/1.json
   def update
-    if residential_unit_params[:oh_exclusive]
-      residential_unit_params[:oh_exclusive] = true
-    end
-
     if @residential_unit.update(residential_unit_params)
       flash[:success] = "Unit successfully updated!"
       redirect_to @residential_unit
@@ -335,10 +327,24 @@ class ResidentialUnitsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def residential_unit_params
-      params[:residential_unit].permit(:building_unit, :rent, :available_by, 
-        :access_info, :status, :brokers_fee, :open_house, :oh_exclusive, :weeks_free_offered, 
-        :building_id, :user_id, :beds, :baths, :notes, :lease_duration,
+      stuff = params[:residential_unit].permit(:building_unit, :rent, :available_by, 
+        :access_info, :status, :has_fee, :open_house, :oh_exclusive, :weeks_free_offered, 
+        :building_id, :primary_agent_id, :listing_agent_id, :beds, :baths, :notes, :lease_duration,
         :include_photos, :inaccuracy_description, :op_fee_percentage,
         :tp_fee_percentage, :residential_amenity_ids => [])
+
+      if stuff[:oh_exclusive] == "1"
+        stuff[:oh_exclusive] = true
+      else
+        stuff[:oh_exclusive] = false
+      end
+
+      if stuff[:has_fee] == "1"
+        stuff[:has_fee] = true
+      else
+        stuff[:has_fee] = false
+      end
+
+      stuff
     end
 end

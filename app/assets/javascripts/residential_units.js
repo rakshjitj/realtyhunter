@@ -32,7 +32,7 @@ ResidentialUnits = {};
         pet_policy_id: $('#pet_policy_id').val(),
         status: $('#status').val(),
         features: $('#features').val(),
-        brokers_fee: $('#brokers_fee').val(),
+        has_fee: $('#has_fee').val(),
         neighborhood_ids: $('#neighborhood_ids').val(),
         unit_feature_ids: $('#unit_feature_ids').val(),
         building_feature_ids: $('#building_feature_ids').val(),
@@ -162,7 +162,22 @@ ResidentialUnits = {};
 		}
 	};
 
+	ResidentialUnits.toggleFeeOptions = function(event) {
+		var isChecked = $('.has-fee').prop('checked');
+		if (isChecked) {
+			$('.show-op').addClass('hide');
+			$('.show-tp').removeClass('hide');
+		} else {
+			$('.show-op').removeClass('hide');
+			$('.show-tp').addClass('hide');
+		}
+	};
+
 	ResidentialUnits.initialize = function() {
+
+		$('.has-fee').click(ResidentialUnits.toggleFeeOptions);
+		ResidentialUnits.toggleFeeOptions();
+
 		// index filtering
 		$('input').keydown(ResidentialUnits.preventEnter);
 	  $('#address').keyup(ResidentialUnits.throttledSearch);
@@ -177,7 +192,7 @@ ResidentialUnits = {};
 	  $('#pet_policy_id').change(ResidentialUnits.throttledSearch);
 	  $('#status').change(ResidentialUnits.throttledSearch);
 	  $('#features').change(ResidentialUnits.throttledSearch);
-	  $('#brokers_fee').change(ResidentialUnits.throttledSearch);
+	  $('#has_fee').change(ResidentialUnits.throttledSearch);
 	  $('#neighborhood_ids').change(ResidentialUnits.throttledSearch);
 	  $('#unit_feature_ids').change(ResidentialUnits.throttledSearch);
 	  $('#building_feature_ids').change(ResidentialUnits.throttledSearch);

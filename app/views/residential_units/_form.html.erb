@@ -207,6 +207,17 @@
         <br />
         <div class="row">
           <div class="col-md-2 form-label-responsive">
+            <strong>Broker Fee</strong>
+          </div>
+          <div class="col-md-4">
+            <%= f.check_box :has_fee, class:"has-fee", checked: @residential_unit.has_fee %>
+            <%= f.label :has_fee %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row show-op">
+          <div class="col-md-2 form-label-responsive">
             <%= f.label :op_fee_percentage, 'Owner Fee %' %>
           </div>
           <div class="col-md-4">
@@ -214,8 +225,7 @@
           </div>
         </div>
 
-        <br />
-        <div class="row">
+        <div class="row show-tp">
           <div class="col-md-2 form-label-responsive">
             <%= f.label :tp_fee_percentage, 'Tenant Fee %' %>
           </div>

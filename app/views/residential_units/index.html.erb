@@ -89,11 +89,11 @@
         </div>
         <div class="row vertical-padding">
           <div class="col-md-4">
-            <%= label_tag :brokers_fee, "Broker's Fee" %>
+            <%= label_tag :has_fee, "Broker's Fee" %>
           </div>
           <div class="col-md-8">
-            <%= select_tag(:brokers_fee, 
-              options_for_select(%w(Any Yes No), params[:brokers_fee])) %>
+            <%= select_tag(:has_fee, 
+              options_for_select(%w(Any Yes No), params[:has_fee])) %>
           </div>
         </div>
         <div class="row vertical-padding">
@@ -231,9 +231,9 @@
             params[:status] ? params[:status].titleize : "Active")) %>
         </div>
         <div class="col-xs-7 right">
-          <%= label_tag :brokers_fee, "Broker's Fee" %>&nbsp;&nbsp;&nbsp;
-          <%= select_tag(:brokers_fee, 
-            options_for_select(%w(Any Yes No), params[:brokers_fee])) %>
+          <%= label_tag :has_fee, "Broker's Fee" %>&nbsp;&nbsp;&nbsp;
+          <%= select_tag(:has_fee, 
+            options_for_select(%w(Any Yes No), params[:has_fee])) %>
         </div>
       </div>
       <div class="row vertical-padding">
