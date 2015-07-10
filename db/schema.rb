@@ -170,6 +170,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.text     "notes"
     t.integer  "listing_agent_percentage"
     t.string   "management_info"
+    t.string   "key_pick_up_location"
     t.integer  "company_id"
     t.integer  "buildings_id"
     t.datetime "created_at",                                        null: false

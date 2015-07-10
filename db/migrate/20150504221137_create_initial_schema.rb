@@ -113,6 +113,7 @@
       t.text :notes
       t.integer :listing_agent_percentage
       t.string :management_info
+      t.string :key_pick_up_location
       t.belongs_to :company
       t.references :buildings, index: true
       t.timestamps null: false
