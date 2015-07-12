@@ -33,11 +33,8 @@ gem 'bootstrap-sass', '~> 3.3.4'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
 gem 'autoprefixer-rails'
-gem 'better_errors'
 
 # for handling single image uploads
-#gem 'refile-s3'
-# for handling multiple image uploads
 gem "paperclip"
 gem 'aws-sdk-v1' #paperclip
 #gem 'aws-sdk' #refile
@@ -65,8 +62,13 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'mechanize'
 # make sure we handle time zones correctly
 gem 'local_time'
-
+# caching
 gem 'dalli'
+# background workers
+gem 'redis-rails'
+gem 'delayed_paperclip'
+#gem 'delayed_job_active_record'
+gem 'resque'
 
 group :production do
 	gem 'rails_12factor'
@@ -83,12 +85,14 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+
 end
 
 group :development do
   gem 'rb-readline'
   gem "bullet"
   #gem 'sql-logging'
+  gem 'better_errors'
 end
 
 group :test do

@@ -5,6 +5,7 @@ ResidentialUnits = {};
 (function() {
 	// for searching on the index page
 	ResidentialUnits.doSearch = function (event) {
+		//console.log('PERFORMING SEARCH');
 		// sanitize invalid input before submitting
 	  if ($('#neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
 	    $('#neighborhood_ids').val('');
@@ -78,8 +79,17 @@ ResidentialUnits = {};
 
 	// search as user types
 	ResidentialUnits.timer;
+
 	ResidentialUnits.throttledSearch = function () {
-	  clearInterval(ResidentialUnits.timer);  //clear any interval on key up
+		console.log('throttling?');
+		//clear any interval on key up
+		if (ResidentialUnits.timer) {
+			console.log('yes, clearing');
+		  clearTimeout(ResidentialUnits.timer);
+		}
+		// if (jqXHR && jqXHR.abort) { 
+		// 	jqXHR.abort(); 
+		// }
 	  ResidentialUnits.timer = setTimeout(ResidentialUnits.doSearch, 500);
 	};
 

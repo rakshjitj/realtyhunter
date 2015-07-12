@@ -6,14 +6,16 @@ class Building < ActiveRecord::Base
   before_save :process_custom_utilities
   after_update :clear_cache
   after_destroy :clear_cache
-  
+
 	belongs_to :company, touch: true
 	belongs_to :landlord, touch: true
 	belongs_to :neighborhood, touch: true
 	belongs_to :pet_policy, touch: true
 	belongs_to :rental_term, touch: true
 	has_many :units, dependent: :destroy
+
 	has_many :images, dependent: :destroy
+  
 	has_and_belongs_to_many :building_amenities
 	has_and_belongs_to_many :utilities
 

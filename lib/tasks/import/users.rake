@@ -96,8 +96,14 @@ namespace :import do
 
           headshot_img = item['headshot']['original']
           if headshot_img
+            #if Rails.env.development?
+              # avoid SSL certificate verication error
+              #prefix_len = 'https'.length
+              #headshot_img = 'http' + headshot_img[prefix_len, headshot_img.length - prefix_len]
+              #puts "\n\n **** #{headshot_img}"
+            #end
             image = Image.new
-            image.file = URI.parse(item['headshot']['original'])
+            image.file = URI.parse(headshot_img)
             image.save
             user.image = image
           end

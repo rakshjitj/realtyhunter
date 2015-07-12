@@ -5,6 +5,7 @@ require 'test_helper'
 class ResidentialUnitTest < ActiveSupport::TestCase
   def setup
     @company = build_stubbed(:company)
+    @user = create(:user, company: @company)
     # want each to have diff addresses, so generate diff buildings
     @building = build(:building, company: @company)
     @building2 = build(:building, company: @company)
@@ -79,6 +80,9 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     assert_not_equal unit_dup.listing_id, @unit.listing_id
     assert unit_dup.building_id, @unit.building_id
     assert unit_dup.building_unit, '999999'
+    # TODO: need test images in order to exercise this code fully
+    assert_equal @unit.images.length, unit_dup.images.length
+    #assert_equal @unit.images[0].unit_id, unit_dup.images[0].unit_id
   end
 
   test "search by address restricts returned results" do
@@ -88,7 +92,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     Unit.all 
     params = {}
     params[:address] = @building.formatted_street_address
-    @results = ResidentialUnit.search(params)
+    @results = ResidentialUnit.search(params, @user)
     @results2 = @results.map(&:building_unit)
     assert_equal 1, @results.length
     assert @results[0].building.formatted_street_address, @building.formatted_street_address
@@ -101,7 +105,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     params = {}
     # all search params come in as strings from the url
     params[:rent_min] = "#{@unit2.rent-2}"
-    @results = ResidentialUnit.search(params)
+    @results = ResidentialUnit.search(params, @user)
     assert_equal 2, @results.length
     assert @results[0].rent, @unit2.rent
   end
@@ -112,7 +116,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit3.save
     params = {}
     params[:rent_max] = "#{@unit.rent+2}"
-    @results = ResidentialUnit.search(params)
+    @results = ResidentialUnit.search(params, @user)
     assert_equal 1, @results.length
     assert @results[0].rent, @unit.rent
   end
@@ -124,7 +128,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     params = {}
     params[:rent_min] = "#{@unit2.rent-2}"
     params[:rent_max] = "#{@unit2.rent+2}"
-    @results = ResidentialUnit.search(params)
+    @results = ResidentialUnit.search(params, @user)
     assert_equal 1, @results.length
     assert @results[0].rent, @unit2.rent
   end
@@ -135,7 +139,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit3.save
     params = {}
     params[:bed_min] = "#{@unit2.beds-2}"
-    @results = ResidentialUnit.search(params)
+    @results = ResidentialUnit.search(params, @user)
     assert_equal 2, @results.length
     assert @results[0].beds, @unit2.beds
   end
@@ -146,7 +150,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit3.save
     params = {}
     params[:bed_max] = "#{@unit.beds+2}"
-    @results = ResidentialUnit.search(params)
+    @results = ResidentialUnit.search(params, @user)
     assert_equal 1, @results.length
     assert @results[0].beds, @unit.beds
   end
@@ -158,7 +162,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     params = {}
     params[:bed_min] = "#{@unit2.beds-2}"
     params[:bed_max] = "#{@unit2.beds+2}"
-    @results = ResidentialUnit.search(params)
+    @results = ResidentialUnit.search(params, @user)
     assert_equal 1, @results.length
     assert @results[0].beds, @unit2.beds
   end
@@ -169,7 +173,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit3.save
     params = {}
     params[:bath_min] = "#{@unit2.baths-2}"
-    @results = ResidentialUnit.search(params)
+    @results = ResidentialUnit.search(params, @user)
     assert_equal 2, @results.length
     assert @results[0].baths, @unit2.baths
   end
@@ -180,7 +184,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit3.save
     params = {}
     params[:bath_max] = "#{@unit.baths+2}"
-    @results = ResidentialUnit.search(params)
+    @results = ResidentialUnit.search(params, @user)
     assert_equal 1, @results.length
     assert @results[0].baths, @unit.baths
   end
@@ -192,7 +196,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     params = {}
     params[:bath_min] = "#{@unit2.baths-2}"
     params[:bath_max] = "#{@unit2.baths+2}"
-    @results = ResidentialUnit.search(params)
+    @results = ResidentialUnit.search(params, @user)
     assert_equal 1, @results.length
     assert @results[0].baths, @unit2.baths
   end
@@ -203,7 +207,7 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit3.save
     params = {}
     params[:unit] = "#{@unit.building_unit}"
-    @results = ResidentialUnit.search(params)
+    @results = ResidentialUnit.search(params, @user)
     assert_equal 1, @results.length
     assert @results[0].building_unit, @unit.building_unit
   end
@@ -211,14 +215,14 @@ class ResidentialUnitTest < ActiveSupport::TestCase
   test "search by neighborhood restricts returned results" do
     params = {}
     params[:neighborhoods] = "#{@unit.building.neighborhood.id}, #{@unit2.building.neighborhood.id}"
-    @results = ResidentialUnit.search(params)
+    @results = ResidentialUnit.search(params, @user)
     assert_equal ResidentialUnit.all.length, @results.length
   end
 
   test "search by features restricts returned results" do
     params = {}
     params[:features] = "gym, elevator"
-    @results = ResidentialUnit.search(params)
+    @results = ResidentialUnit.search(params, @user)
     assert_equal ResidentialUnit.all.length, @results.length
   end
 

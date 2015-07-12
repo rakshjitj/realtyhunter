@@ -117,13 +117,7 @@ class ResidentialUnitsController < ApplicationController
   def duplicate
     residential_unit_dup = @residential_unit.duplicate(
       residential_unit_params[:building_unit], residential_unit_params[:include_photos])
-    @residential_unit.images.each {|i| 
-      img_copy = Image.new
-      img_copy.file = i.file
-      img_copy.unit_id = residential_unit_dup.id
-      img_copy.save
-    }
-    puts "**** HELLO #{residential_unit_dup.valid?} #{residential_unit_dup.inspect}"
+    #puts "**** HELLO #{residential_unit_dup.valid?} #{residential_unit_dup.inspect}"
     if residential_unit_dup.valid?
       @residential_unit = residential_unit_dup
       render :js => "window.location.pathname = '#{residential_unit_path(@residential_unit)}'"

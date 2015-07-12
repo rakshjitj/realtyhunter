@@ -9,6 +9,8 @@ class Image < ActiveRecord::Base
     square: '200x200#',
     medium: '300x300>'
   }
+  process_in_background :file
+
 
   # Validate filename
   validates_attachment_file_name :file, :matches => [/png\Z/, /jpe?g\Z/, /gif\Z/, /PNG\Z/, /JPE?G\Z/, /GIF\Z/]

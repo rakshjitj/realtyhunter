@@ -122,6 +122,7 @@
     # uses paperclip to upload to S3
     create_table :images do |t|
       t.attachment :file
+      t.boolean :file_processing
       t.integer :priority
       t.belongs_to :building
       t.belongs_to :unit
@@ -156,15 +157,15 @@
     end
 
     create_table :units do |t|
-      t.boolean :archived, default: false
-      t.integer :listing_id
-      t.string :building_unit
-      t.integer :rent # always stored as monthly gross rate
+      t.boolean  :archived, default: false
+      t.integer  :listing_id
+      t.string   :building_unit
+      t.integer  :rent # always stored as monthly gross rate
       t.timestamp :available_by
-      t.string :access_info
-      t.integer :status, default: 0
-      t.string :open_house
-      t.boolean :oh_exclusive, default: false
+      t.string    :access_info
+      t.integer   :status, default: 0
+      t.string    :open_house
+      t.boolean   :oh_exclusive, default: false
       t.belongs_to :building
       t.references :listing_agent
       t.references :primary_agent

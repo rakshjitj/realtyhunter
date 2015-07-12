@@ -136,6 +136,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.string   "file_content_type"
     t.integer  "file_file_size"
     t.datetime "file_updated_at"
+    t.boolean  "file_processing"
     t.integer  "priority"
     t.integer  "building_id"
     t.integer  "unit_id"
@@ -271,22 +272,21 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
   create_table "units", force: :cascade do |t|
-    t.boolean  "archived",           default: false
+    t.boolean  "archived",         default: false
     t.integer  "listing_id"
     t.string   "building_unit"
     t.integer  "rent"
     t.datetime "available_by"
     t.string   "access_info"
-    t.integer  "status",             default: 0
+    t.integer  "status",           default: 0
     t.string   "open_house"
-    t.boolean  "oh_exclusive",       default: false
-    t.integer  "weeks_free_offered", default: 0
+    t.boolean  "oh_exclusive",     default: false
     t.integer  "building_id"
     t.integer  "listing_agent_id"
     t.integer  "primary_agent_id"
     t.integer  "images_id"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.integer  "actable_id"
     t.string   "actable_type"
   end

@@ -125,7 +125,6 @@ namespace :import do
 	  default_password = "lorimer713"
 
 		nestio_url = "https://nestiolistings.com/api/v1/public/listings?key=#{ENV['NESTIO_KEY']}"
-
 		# clear any old cache laying around, as delete_all will not trigger our 
 		# after_destroy callbacks
 		Rails.cache.clear
@@ -152,7 +151,6 @@ namespace :import do
 	  	end
 
 	  	# try not to exceed google's rate limit
-	  	sleep(10)
 	  	puts "Page #{j} ----------------------------"
 	  	log.info "Page #{j} ----------------------------"
 
@@ -307,18 +305,23 @@ namespace :import do
 				end
 
 				item['photos'].each{ |p| 
+					img_url = p['original']
+					if Rails.env.development?
+						# avoid SSL certificate verication error
+						prefix_len = 'https'.length
+						img_url = 'http' + img_url[prefix_len, img_url.length - prefix_len]
+						#puts "\n\n **** #{img_url}"
+					end
 					image = Image.new
-				  image.file = URI.parse(p['original'])
+				  image.file = URI.parse(img_url)
 				  image.save
 					unit.images << image
 				}
 
+				sleep(10)
 	    end
 	  end
 
-	  #puts "AMENITIES: #{titles.uniq}"
-	  #puts "RENTER FEES: #{renter_fees.uniq}"
-	  #puts "STATII #{statii.uniq}"
 	  if !done
 		  mark_done(log, start_time)
 		end
