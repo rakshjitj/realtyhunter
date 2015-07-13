@@ -33,7 +33,7 @@
       <% end %>
     </td>
     <td><%= rent_formatted(residential_unit.rent) %></td>
-    <td><%= residential_unit.updated_at %></td>
+    <td><%= time_ago_in_words(residential_unit.updated_at) %></td>
     <td>
       <% if residential_unit.status == "active" %>
         <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
