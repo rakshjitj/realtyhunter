@@ -123,7 +123,7 @@ Rails.application.routes.draw do
 
   resources :building_amenities
 
-  resources :commercial_units do
+  resources :commercial_units, concerns: :unit_images_uploadable do
     member do
       get 'delete_modal'
       get 'duplicate_modal'
@@ -136,20 +136,13 @@ Rails.application.routes.draw do
       get 'print_public'
     #  get 'print_private'
       get 'refresh_images'
+      get 'update_subtype'
     end
     collection do
       get 'filter'
       get 'print_list'
-      get 'update_subtype'
-      # get 'neighborhoods_modal'
-      # get 'features_modal'
     end
   end
-
-  #get 'search/landlords', to: 'landlords#filter', as: :landlords_filter
-  #get 'search/residential_units', to: 'residential_units#filter', as: :residential_units_filter
-  #get 'search/buildings', to: 'buildings#filter', as: :buildings_filter
-  #get 'search/commercial_units', to: 'commercial_units#filter', as: :commercial_units_filter
 
   # designed to match nestio's API endpoints, so we can feed our data seamlessly to 
   # our public-facing website

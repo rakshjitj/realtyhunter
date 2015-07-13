@@ -32,7 +32,7 @@ ResidentialUnits = {};
         landlord: $('#landlord').val(),
         pet_policy_shorthand: $('#pet_policy_shorthand').val(),
         available_starting: $('#available_starting').val(),
-        available_by: $('#available_by').val(),
+        available_before: $('#available_before').val(),
         status: $('#status').val(),
         features: $('#features').val(),
         has_fee: $('#has_fee').val(),
@@ -202,7 +202,7 @@ ResidentialUnits = {};
 	  $('#bath_max').keyup(ResidentialUnits.throttledSearch);
 	  $('#landlord').keyup(ResidentialUnits.throttledSearch);
 	  $('#available_starting').keyup(ResidentialUnits.throttledSearch);
-	  $('#available_by').keyup(ResidentialUnits.throttledSearch);
+	  $('#available_before').keyup(ResidentialUnits.throttledSearch);
 	  $('#pet_policy_shorthand').change(ResidentialUnits.throttledSearch);
 	  $('#status').change(ResidentialUnits.throttledSearch);
 	  $('#features').change(ResidentialUnits.throttledSearch);
@@ -224,7 +224,7 @@ ResidentialUnits = {};
 	  // change all date input fields to auto-open the calendar
     $('.datepicker').datetimepicker({
     	viewMode: 'days',
-      format: 'DD/MM/YYYY',
+      format: 'MM/DD/YYYY',
       allowInputToggle: true
     });
 
@@ -237,9 +237,9 @@ ResidentialUnits = {};
 	  	location: bldg_address,
 	  	details: ".details"
 	  }).bind("geocode:result", function(event, result){
-	      //console.log(result);
+	    //console.log(result);
 	  }).bind("geocode:error", function(event, result){
-	      //console.log("[ERROR]: " + result);
+	    //console.log("[ERROR]: " + result);
 	  });
 
 	  // for drag n dropping photos
@@ -248,7 +248,7 @@ ResidentialUnits = {};
 		Dropzone.autoDiscover = false;
 	 
 		// grap our upload form by its id
-		$("#unit-dropzone").dropzone({
+		$("#runit-dropzone").dropzone({
 			// restrict image size to a maximum 1MB
 			//maxFilesize: 4,
 			//paramName: "upload[image]",
@@ -285,11 +285,9 @@ ResidentialUnits = {};
 		});
 
 		$('.carousel-indicators > li:first-child').addClass('active');
-		$('.carousel-inner > .item:first-child').addClass('active')
+		$('.carousel-inner > .item:first-child').addClass('active');
 	};
 
 })();
 
 $(document).ready(ResidentialUnits.initialize);
-
-

@@ -7,7 +7,7 @@
     </div>
     <div class="col-md-6 form-label-responsive">
       <% if current_user.is_management? %>
-        <%= link_to 'Add a listing', new_commercial_unit_path, 
+        <%= link_to 'Add a unit', new_commercial_unit_path, 
         class:"btn btn-xs btn-warning link-as-button" %>
       <% end %>
       <%= link_to print_list_commercial_units_path, 

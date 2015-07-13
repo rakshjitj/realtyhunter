@@ -107,9 +107,9 @@
 
   config.paperclip_defaults = {
     :storage => :s3,
-    path: "/:class/:attachment/:id_partition/:style/:filename",
-    url: ':s3_alias_url',
-    s3_host_alias: 'd3829jye59v7xw.cloudfront.net',
+    #path: "/:class/:attachment/:id_partition/:style/:filename",
+    #url: ':s3_alias_url',
+    #s3_host_alias: 'd3829jye59v7xw.cloudfront.net',
     :s3_credentials => {
       :bucket => ENV['S3_AVATAR_BUCKET'],
       :access_key_id => ENV['AWS_ACCESS_KEY_ID'],

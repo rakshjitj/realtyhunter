@@ -53,6 +53,12 @@
   };
 
   $(document).ready(function() {
+    // change all date input fields to auto-open the calendar
+    $('.datepicker').datetimepicker({
+      viewMode: 'days',
+      format: 'MM/DD/YYYY',
+      allowInputToggle: true
+    });
     
     // search filters
     $('#filter').keydown(preventEnter);

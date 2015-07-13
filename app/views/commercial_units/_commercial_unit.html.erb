@@ -8,7 +8,7 @@
     <td><%= commercial_unit.summary %></td>
     <td><%= money_formatted(commercial_unit.rent) %>/Month</td>
     <td><%= commercial_unit.sq_footage %></td>
-    <td><%= commercial_unit.available_by %></td>
+    <td><%= commercial_unit.available_by.strftime("%b %d") %></td>
 
     <td>
       <% if commercial_unit.status == "active" %>

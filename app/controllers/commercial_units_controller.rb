@@ -1,7 +1,7 @@
 class CommercialUnitsController < ApplicationController
   load_and_authorize_resource
   before_action :set_commercial_unit, except: [:new, :create, :index, :filter, 
-    :neighborhoods_modal, :features_modal, :update_subtype]
+    :neighborhoods_modal, :features_modal, :update_subtype, :refresh_images ]
   etag { current_user.id }
 
   # GET /commercial_units
@@ -25,16 +25,16 @@ class CommercialUnitsController < ApplicationController
   # GET /commercial_units/1
   # GET /commercial_units/1.json
   def show
-    fresh_when(@commercial_unit)
-    respond_to do |format|
-      format.html
-      format.js
-      format.pdf do
-        render pdf: current_user.name + ' Commercial - Private',
-          template: "/commercial_units/print_private.pdf.erb",
-          layout:   "/layouts/pdf_layout.html"
-      end
-    end
+    fresh_when([@commercial_unit, @commercial_unit.images])
+    #respond_to do |format|
+      #format.html
+      #format.js
+    #   format.pdf do
+    #     render pdf: current_user.name + ' Commercial - Private',
+    #       template: "/commercial_units/print_private.pdf.erb",
+    #       layout:   "/layouts/pdf_layout.html"
+    #   end
+    # end
   end
 
   # GET /commercial_units/new
@@ -58,7 +58,6 @@ class CommercialUnitsController < ApplicationController
   def update_subtype
     ptype = params[:property_type]
     @property_sub_types = CommercialPropertyType.subtypes_for(ptype, current_user.company)
-
     respond_to do |format|
       format.js  
     end
@@ -68,7 +67,6 @@ class CommercialUnitsController < ApplicationController
   # POST /commercial_units.json
   def create
     @commercial_unit = CommercialUnit.new(commercial_unit_params)
-    #@commercial_unit.listing_id = Unit.generate_unique_id
     if !@commercial_unit.available_by?
       @commercial_unit.available_by = Date.today
     end
@@ -105,6 +103,28 @@ class CommercialUnitsController < ApplicationController
     end
   end
 
+  # GET 
+  # handles ajax call. uses latest data in modal
+  # Modal collects info and prep unit to be taken off the market
+  def take_off_modal
+    respond_to do |format|
+      format.js  
+    end
+  end
+
+  # PATCH ajax
+  # Takes a unit off the market
+  def take_off
+    new_end_date = commercial_unit_params[:available_by]
+    if new_end_date
+      @commercial_unit.take_off_market(new_end_date)
+    end
+    set_commercial_unit
+    respond_to do |format|
+      format.js  
+    end
+  end
+
   # GET
   # handles ajax call. uses latest data in modal
   # Modal collects info and prep unit to be taken off the market
@@ -119,7 +139,7 @@ class CommercialUnitsController < ApplicationController
     #  format.pdf do
         # render pdf: current_user.name + ' Commercial - Private',
         #   template: "/commercial_units/print_private.pdf.erb",
-        #   disposition: "attachment",
+        #   #disposition: "attachment",
         #   layout:   "/layouts/pdf_layout.html"
     #  end
     #end
@@ -128,8 +148,6 @@ class CommercialUnitsController < ApplicationController
   # PATCH/PUT /commercial_units/1
   # PATCH/PUT /commercial_units/1.json
   def update
-    params[:commercial_unit][:commercial_property_type_id] = params[:commercial_property_type_id]
-
     if @commercial_unit.update(commercial_unit_params)
       flash[:success] = "Unit successfully updated!"
       redirect_to @commercial_unit
@@ -176,6 +194,16 @@ class CommercialUnitsController < ApplicationController
     end
   end
 
+  # GET /refresh_images
+  # ajax call
+  def refresh_images
+    # invalidate cache
+    @commercial_unit.clear_cache
+    respond_to do |format|
+      format.js  
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_commercial_unit
@@ -183,23 +211,25 @@ class CommercialUnitsController < ApplicationController
     end
 
     def set_commercial_units
-      search_params = params[:search_params]
-      @commercial_units = CommercialUnit.search(search_params, params[:building_id])
-      #@commercial_units = CommercialUnit.all
-      
-      @commercial_units = custom_sort
+      do_search
+
+      @map_infos = CommercialUnit.set_location_data(@commercial_units)
       @commercial_units = Kaminari.paginate_array(@commercial_units).page params[:page]
-      #@map_infos = CommercialUnit.set_location_data(@commercial_units)
     end
 
-    # def commercial_units_no_pagination
-    #   search_params = params[:search_params]
-    #   @commercial_units = CommercialUnit.search(search_params, params[:building_id])
-      
-    #   @commercial_units = custom_sort
-    #   @commercial_units = @commercial_units.page params[:page]
-    #   @map_infos = CommercialUnit.set_location_data(@commercial_units)
-    # end
+    def commercial_units_no_pagination
+      do_search
+    end
+
+    def do_search
+      # default to searching for active units
+      if !params[:status]
+        params[:status] = "active"
+      end
+
+      @commercial_units = CommercialUnit.search(params, params[:building_id])
+      @commercial_units = custom_sort
+    end
 
     def set_property_types
       @property_types = current_user.company.commercial_property_types
@@ -230,12 +260,23 @@ class CommercialUnitsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def commercial_unit_params
-      params[:commercial_unit].permit(:building_unit, :rent, :status, :available_by, 
+      if params[:commercial_property_type_id]
+        params[:commercial_unit][:commercial_property_type_id] = params[:commercial_property_type_id]
+      end
+
+      data = params[:commercial_unit].permit(:building_unit, :rent, :status, :available_by, 
         :status, :building_id, :user_id, :include_photos,
         :sq_footage, :floor, :building_size, :build_to_suit, :minimum_divisble, :maximum_contiguous,
         :lease_type, :is_sublease, :property_description, :location_description,
         :construction_status, :no_parking_spaces, :pct_procurement_fee, :lease_term_months,
         :rate_is_negotiable, :total_lot_size, :property_type, :commercial_property_type_id,
-        :inaccuracy_description)
+        :commercial_unit_id, :inaccuracy_description)
+
+      # convert into a datetime obj
+      if data[:available_by]
+        data[:available_by] = Date::strptime(data[:available_by], "%m/%d/%Y")
+      end
+
+      data
     end
 end

@@ -7,7 +7,7 @@ class ResidentialUnit < ActiveRecord::Base
   after_destroy :clear_cache
 
   attr_accessor :include_photos, :inaccuracy_description, 
-    :pet_policy_shorthand, :available_starting, :available_by
+    :pet_policy_shorthand, :available_starting, :available_before
 
   validates :building_unit, presence: true, length: {maximum: 50}
 
@@ -36,9 +36,9 @@ class ResidentialUnit < ActiveRecord::Base
   end
 
   def cached_building
-    #Rails.cache.fetch("#{cache_key}-building") {
+    Rails.cache.fetch("#{cache_key}-building") {
       building
-    #}
+    }
   end
 
   def cached_neighborhood
@@ -253,15 +253,15 @@ class ResidentialUnit < ActiveRecord::Base
       end
     end
 
-    if params[:available_starting] || params[:available_by]
+    if params[:available_starting] || params[:available_before]
       sql = nil
       if params[:available_starting]
         sql = 'available_starting > ? '
       end
-      if params[:available_by]
+      if params[:available_before]
         sql = 'available_by < ? '
       end
-      @running_list = @running_list.where(sql, "%#{params[:available_by]}%", "%#{params[:available_starting]}%")
+      @running_list = @running_list.where(sql, "%#{params[:available_before]}%", "%#{params[:available_starting]}%")
     end
 
     # the following fields are on ResidentialUnit not Unit, so cast the 
@@ -414,6 +414,11 @@ class ResidentialUnit < ActiveRecord::Base
     map_infos.to_json
   end
 
+  def clear_cache
+    increment_memcache_iterator
+    building.increment_memcache_iterator
+  end
+  
   private
     def generate_unique_id
       self.listing_id = SecureRandom.random_number(9999999)
@@ -430,9 +435,4 @@ class ResidentialUnit < ActiveRecord::Base
       Rails.cache.write("runit-#{id}-memcache-iterator", self.memcache_iterator + 1)
     end
 
-
-    def clear_cache
-      increment_memcache_iterator
-      building.increment_memcache_iterator
-    end
 end

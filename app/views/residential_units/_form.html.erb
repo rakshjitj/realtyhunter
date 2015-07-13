@@ -18,7 +18,7 @@
 
           <br />
           <%= form_for(@residential_unit, :url => residential_unit_unit_images_path(@residential_unit), 
-            html: {multipart: true, class: "dropzone", id: "unit-dropzone"}, method: :post) do |f| %>
+            html: {multipart: true, class: "dropzone", id: "runit-dropzone"}, method: :post) do |f| %>
             <div class="fallback">
               <%= f.file_field :file %><br>
               <%= f.submit "Upload" %>
@@ -125,7 +125,13 @@
             <%= f.label :available_by, "Available Date" %>
           </div>
           <div class="col-md-4">
-            <%= f.date_field :available_by, class: 'form-control' %>
+            <div class='input-group date datepicker'>
+              <%= f.text_field :available_by, 
+                placeholder: "Available", class:"form-control", size:30 %>
+              <label class="input-group-addon btn" for="date">
+                <span class="fa fa-calendar open-datepicker"></span>
+              </label>
+            </div>
           </div>
         </div>
 

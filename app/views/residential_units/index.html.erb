@@ -132,7 +132,7 @@
           <div class="col-md-6 col-sm-left-padding">
             <div class='input-group date datepicker'>
               <%= text_field_tag :available_starting, params[:available_starting], 
-                placeholder: " starting", class:"form-control", size:30 %>
+                placeholder: "starting", class:"form-control", size:30 %>
               <label class="input-group-addon btn" for="date">
                 <span class="fa fa-calendar open-datepicker"></span>
               </label>
@@ -143,8 +143,8 @@
           </div>
           <div class="col-md-5 col-no-padding">
             <div class='input-group date datepicker'>
-              <%= text_field_tag :available_by, params[:available_by], 
-                placeholder: " by", class:"form-control" %>
+              <%= text_field_tag :available_before, params[:available_before], 
+                placeholder: "by", class:"form-control" %>
               <label class="input-group-addon btn" for="date">
                 <span class="fa fa-calendar open-datepicker"></span>
               </label>
@@ -302,7 +302,7 @@
         <div class="col-xs-6">
           <div class='input-group date datepicker'>
             <%= text_field_tag :available_starting, params[:available_starting], 
-              placeholder: " starting", class:"form-control" %>
+              placeholder: "starting", class:"form-control" %>
             <label class="input-group-addon btn" for="date">
               <span class="fa fa-calendar open-datepicker"></span>
             </label>
@@ -313,8 +313,8 @@
         </div>
         <div class="col-xs-5">
           <div class='input-group date datepicker'>
-            <%= text_field_tag :available_by, params[:available_by], 
-              placeholder: " by", class:"form-control" %>
+            <%= text_field_tag :available_before, params[:available_before], 
+              placeholder: "by", class:"form-control" %>
             <label class="input-group-addon btn" for="date">
               <span class="fa fa-calendar open-datepicker"></span>
             </label>

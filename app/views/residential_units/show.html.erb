@@ -61,9 +61,9 @@
 			  	</div>
 			  	<div class="col-md-3 form-label-responsive vertical-padding">
 			  		<%= link_to 'Report Inaccuracy', inaccuracy_modal_residential_unit_path(@residential_unit), 
-			  				class: "btn btn-danger btn-sm",
-			  				data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
-			  		</div>
+		  				class: "btn btn-danger btn-sm",
+		  				data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
+		  		</div>
 		    </div>
 
 	    	<br />
@@ -226,11 +226,15 @@
 	    			<strong>Available:</strong>
 	    		</div>
 	    		<div class="col-xs-6 col-md-4">
-	    			<% if @residential_unit.available_by < Date.today %>
+	    			<% if @residential_unit.available_by %>
+	    				<% if @residential_unit.available_by < Date.today %>
 							Now
 						<% else %>
 							<%= @residential_unit.available_by %>
 						<% end %>
+					<% else %>
+						- 
+					<% end %>
 	    		</div>
 	    		
 	    	</div>

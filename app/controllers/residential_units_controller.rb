@@ -92,7 +92,6 @@ class ResidentialUnitsController < ApplicationController
   # POST /residential_units.json
   def create
     @residential_unit = ResidentialUnit.new(residential_unit_params)
-    #@residential_unit.listing_id = Unit.generate_unique_id
     if !@residential_unit.available_by?
       @residential_unit.available_by = Date.today
     end
@@ -250,7 +249,7 @@ class ResidentialUnitsController < ApplicationController
   # ajax call
   def refresh_images
     # invalidate cache
-    @residential_unit.increment_memcache_iterator
+    @residential_unit.clear_cache
     respond_to do |format|
       format.js  
     end
@@ -324,24 +323,29 @@ class ResidentialUnitsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def residential_unit_params
-      stuff = params[:residential_unit].permit(:building_unit, :rent, :available_by, 
+      data = params[:residential_unit].permit(:building_unit, :rent, :available_by, 
         :access_info, :status, :has_fee, :open_house, :oh_exclusive,
         :building_id, :primary_agent_id, :listing_agent_id, :beds, :baths, :notes, :lease_duration,
-        :include_photos, :inaccuracy_description, :op_fee_percentage, :available_starting, :available_by,
+        :include_photos, :inaccuracy_description, :op_fee_percentage, :available_starting, :available_before,
         :tp_fee_percentage, :residential_amenity_ids => [])
 
-      if stuff[:oh_exclusive] == "1"
-        stuff[:oh_exclusive] = true
+      if data[:oh_exclusive] == "1"
+        data[:oh_exclusive] = true
       else
-        stuff[:oh_exclusive] = false
+        data[:oh_exclusive] = false
       end
 
-      if stuff[:has_fee] == "1"
-        stuff[:has_fee] = true
+      if data[:has_fee] == "1"
+        data[:has_fee] = true
       else
-        stuff[:has_fee] = false
+        data[:has_fee] = false
       end
 
-      stuff
+      # convert into a datetime obj
+      if data[:available_by]
+        data[:available_by] = Date::strptime(data[:available_by], "%m/%d/%Y")
+      end
+
+      data
     end
 end

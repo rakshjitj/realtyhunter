@@ -25,7 +25,13 @@
 
     <td><%= residential_unit.access_info %></td>
     <td><%= residential_unit.bed_and_baths %></td>
-    <td><%= residential_unit.available_by %></td>
+    <td>
+      <% if residential_unit.available_by %>
+        <%= residential_unit.available_by.strftime("%b %d") %>
+      <% else %>
+        -
+      <% end %>
+    </td>
     <td><%= rent_formatted(residential_unit.rent) %></td>
     <td><%= residential_unit.updated_at %></td>
     <td>

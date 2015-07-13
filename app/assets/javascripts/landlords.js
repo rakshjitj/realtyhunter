@@ -30,6 +30,13 @@
   };
 
   function initialize() {
+    // change all date input fields to auto-open the calendar
+    $('.datepicker').datetimepicker({
+      viewMode: 'days',
+      format: 'MM/DD/YYYY',
+      allowInputToggle: true
+    });
+    
     var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
 
     $(".autocomplete-input").geocomplete({

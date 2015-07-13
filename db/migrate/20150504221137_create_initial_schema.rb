@@ -191,7 +191,7 @@
       t.integer :minimum_divisble
       t.integer :maximum_contiguous
       t.integer :lease_type
-      t.boolean :is_sublease, default: false
+      t.boolean :is_sublease, default: false #
       t.string  :property_description
       t.string  :location_description
       t.integer :construction_status, default: 0

@@ -1,8 +1,10 @@
 class CommercialUnit < ActiveRecord::Base
 	acts_as :unit
   belongs_to :commercial_property_type
-  before_validation :generate_unique_id
   scope :unarchived, ->{where(archived: false)}
+  before_validation :generate_unique_id
+  after_update :clear_cache
+  after_destroy :clear_cache
   
   attr_accessor :property_type, :inaccuracy_description
 
@@ -15,6 +17,41 @@ class CommercialUnit < ActiveRecord::Base
 	validates :sq_footage, presence: true, :numericality => { :less_than_or_equal_to => 99999999 }
 	validates :floor, presence: true, :numericality => { :less_than_or_equal_to => 999 }
 	validates :building_size, presence: true, :numericality => { :less_than_or_equal_to => 99999999 }
+
+  def memcache_iterator
+    # fetch the user's memcache key
+    # If there isn't one yet, assign it a random integer between 0 and 10
+    Rails.cache.fetch("cunit-#{id}-memcache-iterator") { rand(10) }
+  end
+
+  def cache_key
+    "cunit-#{id}-#{self.memcache_iterator}"
+  end
+
+  def cached_building
+    Rails.cache.fetch("#{cache_key}-building") {
+      building
+    }
+  end
+  
+  def cached_neighborhood
+    Rails.cache.fetch("#{cache_key}-neighborhood") {
+      cached_building.neighborhood
+    }
+  end
+
+  def cached_primary_img
+    Rails.cache.fetch("#{cache_key}-primary_img") {
+      images[0] ? images[0] : nil
+    }
+  end
+
+  def cached_street_address
+    Rails.cache.fetch("#{cache_key}-street_address") {
+      cached_building.street_address
+    }
+    #building.street_address
+  end
 
   def archive
     self.archived = true
@@ -44,7 +81,7 @@ class CommercialUnit < ActiveRecord::Base
   end
 
   def self.search(params, building_id=nil)
-    # actable_type to restrict to residential only
+    # actable_type to restrict to commercial only
     if !params && !building_id
       return CommercialUnit.unarchived
     elsif !params && building_id
@@ -108,11 +145,7 @@ class CommercialUnit < ActiveRecord::Base
     #   @running_list = @running_list.joins(:commercial_property_type)
     #   .where("commercial_property_type_id ILIKE ?", "%#{params[:landlord]}%")
       
-    #     @running_list = @running_list.joins(:residential_amenities)
-    #     .where('residential_amenity_id IN (?)', features)
-    # end
-
-    @running_list
+    @running_list.uniq
   end
 
   def duplicate(new_unit_num, include_photos)
@@ -136,12 +169,54 @@ class CommercialUnit < ActiveRecord::Base
     end
   end
 
+  # collect the data we will need to access from our giant map view
+  def self.set_location_data(cunits)
+    map_infos = {}
+    for i in 0..cunits.length-1
+      bldg = cunits[i].cached_building
+      street_address = bldg.street_address
+      bldg_info = {
+        building_id: bldg.id,
+        lat: bldg.lat, 
+        lng: bldg.lng }
+      unit_info = {
+        id: cunits[i].id,
+        building_unit: cunits[i].building_unit,
+        rent: cunits[i].rent,
+        property_type: cunits[i].commercial_property_type.name,
+        sq_footage: cunits[i].sq_footage
+       }
+
+      if map_infos.has_key?(street_address)
+        map_infos[street_address]['units'] << unit_info
+      else
+        bldg_info['units'] = [unit_info]
+        map_infos[street_address] = bldg_info
+      end
+
+    end
+
+    map_infos.to_json
+  end
+
+  def clear_cache
+    increment_memcache_iterator
+    building.increment_memcache_iterator
+  end
+
   private
     def generate_unique_id
       self.listing_id = SecureRandom.random_number(9999999)
-      while ResidentialUnit.find_by(listing_id: listing_id) do
+      while CommercialUnit.find_by(listing_id: listing_id) do
         self.listing_id = rand(9999999)
       end
       self.listing_id
+    end
+
+    # we can't expire old keys with a regex or delete_matched on dalli
+    # instead use the strategy suggested here:
+    # https://quickleft.com/blog/faking-regex-based-cache-keys-in-rails/
+    def increment_memcache_iterator
+      Rails.cache.write("cunit-#{id}-memcache-iterator", self.memcache_iterator + 1)
     end
 end
