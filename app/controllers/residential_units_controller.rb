@@ -117,7 +117,6 @@ class ResidentialUnitsController < ApplicationController
   def duplicate
     residential_unit_dup = @residential_unit.duplicate(
       residential_unit_params[:building_unit], residential_unit_params[:include_photos])
-    #puts "**** HELLO #{residential_unit_dup.valid?} #{residential_unit_dup.inspect}"
     if residential_unit_dup.valid?
       @residential_unit = residential_unit_dup
       render :js => "window.location.pathname = '#{residential_unit_path(@residential_unit)}'"
@@ -328,7 +327,7 @@ class ResidentialUnitsController < ApplicationController
       stuff = params[:residential_unit].permit(:building_unit, :rent, :available_by, 
         :access_info, :status, :has_fee, :open_house, :oh_exclusive,
         :building_id, :primary_agent_id, :listing_agent_id, :beds, :baths, :notes, :lease_duration,
-        :include_photos, :inaccuracy_description, :op_fee_percentage,
+        :include_photos, :inaccuracy_description, :op_fee_percentage, :available_starting, :available_by,
         :tp_fee_percentage, :residential_amenity_ids => [])
 
       if stuff[:oh_exclusive] == "1"

@@ -31,6 +31,8 @@ ResidentialUnits = {};
         bath_max: $('#bath_max').val(),
         landlord: $('#landlord').val(),
         pet_policy_shorthand: $('#pet_policy_shorthand').val(),
+        available_starting: $('#available_starting').val(),
+        available_by: $('#available_by').val(),
         status: $('#status').val(),
         features: $('#features').val(),
         has_fee: $('#has_fee').val(),
@@ -199,6 +201,8 @@ ResidentialUnits = {};
 	  $('#bath_min').keyup(ResidentialUnits.throttledSearch);
 	  $('#bath_max').keyup(ResidentialUnits.throttledSearch);
 	  $('#landlord').keyup(ResidentialUnits.throttledSearch);
+	  $('#available_starting').keyup(ResidentialUnits.throttledSearch);
+	  $('#available_by').keyup(ResidentialUnits.throttledSearch);
 	  $('#pet_policy_shorthand').change(ResidentialUnits.throttledSearch);
 	  $('#status').change(ResidentialUnits.throttledSearch);
 	  $('#features').change(ResidentialUnits.throttledSearch);
@@ -216,6 +220,13 @@ ResidentialUnits = {};
 		  // show spinner
 		  $(this).toggleClass('active');
 		});
+
+	  // change all date input fields to auto-open the calendar
+    $('.datepicker').datetimepicker({
+    	viewMode: 'days',
+      format: 'DD/MM/YYYY',
+      allowInputToggle: true
+    });
 
 		ResidentialUnits.updateOverviewMap();
 

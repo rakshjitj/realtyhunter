@@ -1,3 +1,5 @@
+#require 'resque'
+
 class Image < ActiveRecord::Base
 	belongs_to :building, touch: true
 	belongs_to :unit, touch: true
@@ -11,7 +13,6 @@ class Image < ActiveRecord::Base
   }
   process_in_background :file
 
-
   # Validate filename
   validates_attachment_file_name :file, :matches => [/png\Z/, /jpe?g\Z/, /gif\Z/, /PNG\Z/, /JPE?G\Z/, /GIF\Z/]
 
@@ -20,5 +21,28 @@ class Image < ActiveRecord::Base
 		:presence => true,
 		:content_type => { :content_type => /\Aimage\/.*\Z/ },
 		:size => { :less_than => 4.megabyte }
+
+  # class CopyResidentialUnitImages
+  #   @queue = :copy_images
+
+  #   def self.perform(src_id, dst_id)
+  #     #puts "YEAAAAAA MAN #{src_id} #{dst_id}"
+  #     @src = ResidentialUnit.find(src_id)
+  #     @dst = ResidentialUnit.find(dst_id)
+
+  #     # deep copy photos
+  #     @src.images.each {|i| 
+  #       img_copy = Image.new
+  #       img_copy.file = i.file
+  #       img_copy.save
+  #       @dst.images << img_copy
+  #     }
+  #     @dst.save
+  #   end
+  # end
+
+  # def self.async_copy_residential_unit_images(src_id, dst_id)
+  #   #Resque.enqueue(CopyResidentialUnitImages, src_id, dst_id)
+  # end
 
 end

@@ -66,9 +66,12 @@ gem 'local_time'
 gem 'dalli'
 # background workers
 gem 'redis-rails'
+gem 'resque'
 gem 'delayed_paperclip'
 #gem 'delayed_job_active_record'
-gem 'resque'
+gem 'momentjs-rails', '>= 2.9.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
+
 
 group :production do
 	gem 'rails_12factor'

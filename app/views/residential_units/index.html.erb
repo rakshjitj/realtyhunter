@@ -27,61 +27,77 @@
           <div class="col-md-3">
             <%= label_tag(:address, "Address") %>
           </div>
-          <div class="col-md-9">
-            <%= text_field_tag :address, params[:address], placeholder: "123 Main St" %>
+          <div class="col-md-9 col-sm-left-padding">
+            <%= text_field_tag :address, params[:address], placeholder: "123 Main St", class:"form-control" %>
           </div>
         </div>
         <div class="row vertical-padding">
           <div class="col-md-3">
             <%= label_tag(:unit, "Unit") %>
           </div>
-          <div class="col-md-9">
-            <%= text_field_tag :unit, params[:unit], size: 5 %>
+          <div class="col-md-4 col-sm-left-padding">
+            <%= text_field_tag :unit, params[:unit], size: 5, class:"form-control" %>
           </div>
         </div>
         <div class="row vertical-padding">
           <div class="col-md-3">
             <%= label_tag(:unit, "Rent") %>
           </div>
-          <div class="col-md-9">
-            <%= number_field_tag :rent_min, params[:rent_min], placeholder: "$", min: 0, max: 1000000 %>
-            to 
-            <%= number_field_tag :rent_max, params[:rent_max], placeholder: "$", min: 0, max: 1000000 %>
+          <div class="col-md-4 col-sm-left-padding">
+            <%= number_field_tag :rent_min, params[:rent_min], placeholder: "$ min", 
+              min: 0, max: 1000000, class:"form-control" %>
+          </div>
+          <div class="col-md-1 col-no-padding">
+            &nbsp; to 
+          </div>
+          <div class="col-md-4 col-no-padding">
+            <%= number_field_tag :rent_max, params[:rent_max], placeholder: "$ max", 
+              min: 0, max: 1000000, class:"form-control" %>
           </div>
         </div>
         <div class="row vertical-padding">
           <div class="col-md-3">
             <%= label_tag(:unit, "Beds") %>
           </div>
-          <div class="col-md-9">
-            <%= number_field_tag :bed_min, params[:bed_min], min: 0, max: 10 %>
-            to 
-            <%= number_field_tag :bed_max, params[:bed_max], min: 0, max: 10 %>
+          <div class="col-md-4 col-sm-left-padding">
+            <%= number_field_tag :bed_min, params[:bed_min], min: 0, max: 10, 
+              placeholder: " min", class:"form-control" %>
+          </div>
+          <div class="col-md-1 col-no-padding">
+            &nbsp; to 
+          </div>
+          <div class="col-md-4 col-no-padding">
+            <%= number_field_tag :bed_max, params[:bed_max], min: 0, max: 10, 
+              placeholder: " max", class:"form-control" %>
           </div>
         </div>
         <div class="row vertical-padding">
           <div class="col-md-3">
             <%= label_tag(:unit, "Baths") %>
           </div>
-          <div class="col-md-9">
-            <%= number_field_tag :bath_min, params[:bath_min], min: 0, max: 10 %>
-            to 
-            <%= number_field_tag :bath_max, params[:bath_max], min: 0, max: 10 %>
+          <div class="col-md-4 col-sm-left-padding">
+            <%= number_field_tag :bath_min, params[:bath_min], min: 0, max: 10, class:"form-control" %>
+          </div>
+          <div class="col-md-1 col-no-padding">
+            &nbsp; to 
+          </div>
+          <div class="col-md-4 col-no-padding">
+            <%= number_field_tag :bath_max, params[:bath_max], min: 0, max: 10, class:"form-control" %>
           </div>
         </div>
         <div class="row vertical-padding">
           <div class="col-md-3">
-            <%= label_tag(:landlord, "Landlord") %>
+            <%= label_tag(:landlord, "Landlord ") %>
           </div>
-          <div class="col-md-9">
-            <%= text_field_tag :landlord, params[:landlord], placeholder: "code" %>
+          <div class="col-md-9 col-sm-left-padding">
+            <%= text_field_tag :landlord, params[:landlord], placeholder: "code", class:"form-control"  %>
           </div>
         </div>
         <div class="row vertical-padding">
-          <div class="col-md-3">
+          <div class="col-md-5">
             <%= label_tag :status, "Status" %>
           </div>
-          <div class="col-md-9">
+          <div class="col-md-7">
             <%= select_tag(:status, 
               options_for_select(%w(Any Active Pending Off), 
               params[:status] ? params[:status].titleize : "Active")) %>
@@ -106,7 +122,37 @@
               params[:pet_policy_shorthand] ? params[:pet_policy_shorthand].titleize : "Any")) %>
           </div>
         </div>
+
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <strong>Available</strong>
+          </div>
+        </div>
+        <div class="row vertical-padding">
+          <div class="col-md-6 col-sm-left-padding">
+            <div class='input-group date datepicker'>
+              <%= text_field_tag :available_starting, params[:available_starting], 
+                placeholder: " starting", class:"form-control", size:30 %>
+              <label class="input-group-addon btn" for="date">
+                <span class="fa fa-calendar open-datepicker"></span>
+              </label>
+            </div>
+          </div>
+          <div class="col-md-1 col-no-padding">
+            &nbsp;&nbsp;to 
+          </div>
+          <div class="col-md-5 col-no-padding">
+            <div class='input-group date datepicker'>
+              <%= text_field_tag :available_by, params[:available_by], 
+                placeholder: " by", class:"form-control" %>
+              <label class="input-group-addon btn" for="date">
+                <span class="fa fa-calendar open-datepicker"></span>
+              </label>
+            </div>
+          </div>
+        </div>
         
+        <br />
         <div class="row vertical-padding">
           <div class="col-md-12">
             <%= link_to 'Neighborhoods', neighborhoods_modal_residential_units_path(@residential_unit), 
@@ -173,7 +219,7 @@
           <%= label_tag(:address, "Address") %>
         </div>
         <div class="col-xs-5">
-          <%= text_field_tag :address, params[:code_name], placeholder: "123 Main St" %>
+          <%= text_field_tag :address, params[:code_name], placeholder: " 123 Main St" %>
         </div>
         <div class="col-xs-5 right">
           <%= label_tag(:unit, "Unit") %>&nbsp;&nbsp;&nbsp;
@@ -187,9 +233,9 @@
           <%= label_tag(:unit, "Rent") %>
         </div>
         <div class="col-xs-9">
-          <%= number_field_tag :rent_min, params[:rent_min], placeholder: "$", min: 0, max: 1000000 %>
+          <%= number_field_tag :rent_min, params[:rent_min], placeholder: " $", min: 0, max: 1000000 %>
           to 
-          <%= number_field_tag :rent_max, params[:rent_max], placeholder: "$", min: 0, max: 1000000 %>
+          <%= number_field_tag :rent_max, params[:rent_max], placeholder: " $", min: 0, max: 1000000 %>
         </div>
       </div>
       <div class="row vertical-padding">
@@ -217,7 +263,7 @@
           <%= label_tag(:landlord, "Landlord") %>
         </div>
         <div class="col-xs-10">
-          <%= text_field_tag :landlord, params[:landlord], placeholder: "code" %>
+          <%= text_field_tag :landlord, params[:landlord], placeholder: " code" %>
         </div>
       </div>
       <div class="row vertical-padding">
@@ -249,6 +295,27 @@
         </div>
       </div>
       
+      <div class="row vertical-padding">
+        <div class="col-md-6">
+          <div class='input-group date datepicker'>
+            <%= text_field_tag :available_starting, params[:available_starting], 
+              placeholder: " starting", class:"form-control" %>
+            <label class="input-group-addon btn" for="date">
+              <span class="fa fa-calendar open-datepicker"></span>
+            </label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class='input-group date datepicker'>
+            <%= text_field_tag :available_by, params[:available_by], 
+              placeholder: " by", class:"form-control" %>
+            <label class="input-group-addon btn" for="date">
+              <span class="fa fa-calendar open-datepicker"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
       <div class="row vertical-padding">
         <div class="col-xs-12">
           <%= link_to 'Neighborhoods', neighborhoods_modal_residential_units_path(@residential_unit), 

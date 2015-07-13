@@ -53,12 +53,15 @@ Rails.application.configure do
   end
 
   config.paperclip_defaults = {
-    storage: :s3,
-    :s3_credentials => {
-      :bucket => ENV['S3_AVATAR_BUCKET'],
-      :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
-      :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'],
-      :s3_protocol => :https
+    storage: :s3, 
+    path: "/:class/:attachment/:id_partition/:style/:filename",
+    url: ':s3_alias_url',
+    s3_host_alias: 'd3829jye59v7xw.cloudfront.net',
+    s3_credentials: {
+      bucket: ENV['S3_AVATAR_BUCKET'],
+      access_key_id: ENV['AWS_ACCESS_KEY_ID'],
+      secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
+      s3_protocol: :https
     }
   }
 

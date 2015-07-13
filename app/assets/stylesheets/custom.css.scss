@@ -58,6 +58,29 @@ a:hover {
   max-width: 1200px !important;
 }
 
+.datepicker {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.row-no-padding {
+  [class*="col-"] {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+
+.col-no-padding {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.col-sm-left-padding {
+  padding-left: 2 !important;
+  padding-right: 0 !important;
+}
+
+
 /* header */
 #logo {
   float: left;
@@ -96,7 +119,6 @@ $state-danger-text: red;
 }
 
 /* forms */
-
 input, textarea, select, .uneditable-input {
   border: 1px solid #bbb;
   //width: 100%;

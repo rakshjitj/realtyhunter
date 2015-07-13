@@ -21,3 +21,5 @@
 //= require autocomplete-rails
 //= require dropzone
 //= require local_time
+//= require moment
+//= require bootstrap-datetimepicker

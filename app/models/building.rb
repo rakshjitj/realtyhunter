@@ -19,9 +19,6 @@ class Building < ActiveRecord::Base
 	has_and_belongs_to_many :building_amenities
 	has_and_belongs_to_many :utilities
 
-	# TODO: remove this line
-	# this is some BS we need to make cancancan happy, because it 
-	# does not like our strong parameters
 	attr_accessor :building, :inaccuracy_description, 
     :custom_rental_term, :custom_amenities, :custom_utilities
 

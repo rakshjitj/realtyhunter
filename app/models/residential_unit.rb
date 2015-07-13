@@ -6,7 +6,8 @@ class ResidentialUnit < ActiveRecord::Base
   after_update :clear_cache
   after_destroy :clear_cache
 
-  attr_accessor :include_photos, :inaccuracy_description, :pet_policy_shorthand
+  attr_accessor :include_photos, :inaccuracy_description, 
+    :pet_policy_shorthand, :available_starting, :available_by
 
   validates :building_unit, presence: true, length: {maximum: 50}
 
@@ -24,13 +25,6 @@ class ResidentialUnit < ActiveRecord::Base
 
   #validates :weeks_free_offered, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
 
-  # we can't expire old keys with a regex or delete_matched on dalli
-  # instead use the strategy suggested here:
-  # https://quickleft.com/blog/faking-regex-based-cache-keys-in-rails/
-  def increment_memcache_iterator
-    Rails.cache.write("runit-#{id}-memcache-iterator", self.memcache_iterator + 1)
-  end
-
   def memcache_iterator
     # fetch the user's memcache key
     # If there isn't one yet, assign it a random integer between 0 and 10
@@ -42,9 +36,9 @@ class ResidentialUnit < ActiveRecord::Base
   end
 
   def cached_building
-    Rails.cache.fetch("#{cache_key}-building") {
+    #Rails.cache.fetch("#{cache_key}-building") {
       building
-    }
+    #}
   end
 
   def cached_neighborhood
@@ -259,6 +253,17 @@ class ResidentialUnit < ActiveRecord::Base
       end
     end
 
+    if params[:available_starting] || params[:available_by]
+      sql = nil
+      if params[:available_starting]
+        sql = 'available_starting > ? '
+      end
+      if params[:available_by]
+        sql = 'available_by < ? '
+      end
+      @running_list = @running_list.where(sql, "%#{params[:available_by]}%", "%#{params[:available_starting]}%")
+    end
+
     # the following fields are on ResidentialUnit not Unit, so cast the 
     # objects first
     @running_list = Unit.get_residential(@running_list)
@@ -302,20 +307,31 @@ class ResidentialUnit < ActiveRecord::Base
     @running_list.uniq
 	end
 
+  # TODO: run this in the background. See Image class for stub
+  def deep_copy(src_id, dst_id)
+    #puts "YEAAAAAA MAN #{src_id} #{dst_id}"
+    @src = ResidentialUnit.find(src_id)
+    @dst = ResidentialUnit.find(dst_id)
+
+    # deep copy photos
+    @src.images.each {|i| 
+      img_copy = Image.new
+      img_copy.file = i.file
+      img_copy.save
+      @dst.images << img_copy
+    }
+    @dst.save
+  end
+
   def duplicate(new_unit_num, include_photos)
     if new_unit_num && new_unit_num != self.id
         # copy object
         residential_unit_dup = self.dup
         residential_unit_dup.building_unit = new_unit_num
         residential_unit_dup.save
-        
-        # deep copy photos
-        self.images.each {|i| 
-          img_copy = Image.new
-          img_copy.file = i.file
-          img_copy.save
-          residential_unit_dup.images << img_copy
-        }
+
+        #Image.async_copy_residential_unit_images(self.id, residential_unit_dup.id)
+        self.deep_copy(self.id, residential_unit_dup.id)
         residential_unit_dup.save
 
         building.increment_memcache_iterator
@@ -406,6 +422,14 @@ class ResidentialUnit < ActiveRecord::Base
       end
       self.listing_id
     end
+
+    # we can't expire old keys with a regex or delete_matched on dalli
+    # instead use the strategy suggested here:
+    # https://quickleft.com/blog/faking-regex-based-cache-keys-in-rails/
+    def increment_memcache_iterator
+      Rails.cache.write("runit-#{id}-memcache-iterator", self.memcache_iterator + 1)
+    end
+
 
     def clear_cache
       increment_memcache_iterator

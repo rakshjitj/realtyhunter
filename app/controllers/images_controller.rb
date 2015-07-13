@@ -49,6 +49,5 @@ class ImagesController < ApplicationController
 
     def image_params
       params.permit(:file, :building, :priority, :order)
-      #params[:image].permit(:file, :building)
     end
 end
