@@ -167,7 +167,7 @@
 
 
 <div id="listings" data-search-path="<%= filter_listings_user_path %>">
-  <%= render partial:'shared/listings', locals: { residential_units: @residential_units, 
+  <%= render partial:'shared/listings', locals: { model: @user, residential_units: @residential_units, 
     commercial_units: @commercial_units} %>
 </div>
 

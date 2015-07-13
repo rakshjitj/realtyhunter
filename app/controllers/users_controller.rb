@@ -256,8 +256,8 @@ class UsersController < ApplicationController
 
     def set_units
       active_only = params[:active_only] == "true"
-      @residential_units = Kaminari.paginate_array(@user.primary_residential_units(active_only)).page params[:page]
-      @commercial_units = Kaminari.paginate_array(@user.primary_commercial_units(active_only)).page params[:page]
+      @residential_units = Kaminari.paginate_array(@user.residential_units(active_only)).page params[:page]
+      @commercial_units = Kaminari.paginate_array(@user.commercial_units(active_only)).page params[:page]
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

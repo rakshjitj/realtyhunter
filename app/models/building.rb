@@ -187,7 +187,7 @@ class Building < ActiveRecord::Base
     BuildingMailer.inaccuracy_reported(self, reporter).deliver_now
   end
 
-  def residential_units(active_only)
+  def residential_units(active_only=false)
     if active_only
       units = Unit.unarchived.where(building_id: id, status:"active")
     else
@@ -196,7 +196,7 @@ class Building < ActiveRecord::Base
     units = Unit.get_residential(units)
   end
 
-  def commercial_units(active_only)
+  def commercial_units(active_only=false)
     if active_only
       units = Unit.unarchived.where(building_id: id, status:"active")
     else
@@ -204,16 +204,6 @@ class Building < ActiveRecord::Base
     end
     Unit.get_commercial(units)
   end
-
-  # def active_residential_units
-  #   units = Unit.unarchived.where(building_id: id, status:"active")
-  #   Unit.get_residential(units)
-  # end
-
-  # def active_commercial_units
-  #   units = Unit.unarchived.where(building_id: id, status:"active")
-  #   Unit.get_commercial(units)
-  # end
 
   private
 

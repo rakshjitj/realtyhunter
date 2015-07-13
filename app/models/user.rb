@@ -51,7 +51,8 @@ class User < ActiveRecord::Base
     BCrypt::Password.create(string, cost: cost)
   end
 
-  def primary_residential_units(active_only)
+  # primary units only currently
+  def residential_units(active_only=false)
     if active_only
       @residential_units = Unit.get_residential(self.primary_units.active)
     else
@@ -59,7 +60,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def primary_commercial_units(active_only)
+  # primary units only currently
+  def commercial_units(active_only=false)
     if active_only
       @commercial_units = Unit.get_commercial(self.primary_units.active)
     else
