@@ -18,8 +18,9 @@ CommercialUnits = {};
       $('#neighborhood_ids').val('');
     }
 
+    var search_path = $('#com-search-filters').attr('data-search-path');
     $.ajax({
-      url: "<%= filter_commercial_units_path %>",
+      url: search_path, //"<%= filter_commercial_units_path %>",
       data: {
         //search_params: {
           address: $('#address').val(),

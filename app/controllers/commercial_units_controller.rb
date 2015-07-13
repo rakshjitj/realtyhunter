@@ -20,6 +20,9 @@ class CommercialUnitsController < ApplicationController
 
   def filter
     set_commercial_units
+    respond_to do |format|
+      format.js  
+    end
   end
 
   # GET /commercial_units/1
@@ -173,6 +176,7 @@ class CommercialUnitsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to commercial_units_url, notice: 'Commercial unit was successfully destroyed.' }
       format.json { head :no_content }
+      format.js
     end
   end
 

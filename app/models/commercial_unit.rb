@@ -53,6 +53,12 @@ class CommercialUnit < ActiveRecord::Base
     #building.street_address
   end
 
+  def cached_landlord
+    Rails.cache.fetch("#{cache_key}-landlord") {
+      cached_building.landlord
+    }
+  end
+
   def archive
     self.archived = true
     self.save
@@ -60,6 +66,19 @@ class CommercialUnit < ActiveRecord::Base
 
   def self.find_unarchived(id)
     find_by!(id: id, archived: false)
+  end
+
+  # used as a sorting condition
+  def street_address_and_unit
+    output = ""
+    if cached_building.street_number
+      output = cached_building.street_number + ' ' + cached_building.route
+    end
+    if building_unit && !building_unit.empty?
+      output = output + ' #' + building_unit
+    end
+
+    output
   end
 
 	# used as a sorting condition
@@ -183,7 +202,7 @@ class CommercialUnit < ActiveRecord::Base
         id: cunits[i].id,
         building_unit: cunits[i].building_unit,
         rent: cunits[i].rent,
-        property_type: cunits[i].commercial_property_type.name,
+        property_type: cunits[i].commercial_property_type.property_type,
         sq_footage: cunits[i].sq_footage
        }
 

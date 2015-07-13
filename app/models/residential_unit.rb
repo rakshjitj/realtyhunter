@@ -83,11 +83,15 @@ class ResidentialUnit < ActiveRecord::Base
   
   # used as a sorting condition
   def street_address_and_unit
+    output = ""
     if cached_building.street_number
-      cached_building.street_number + ' ' + cached_building.route + ' #' + building_unit
-    else
-      cached_building.route + ' #' + building_unit
+      output = cached_building.street_number + ' ' + cached_building.route
     end
+    if building_unit && !building_unit.empty?
+      output = output + ' #' + building_unit
+    end
+
+    output
   end
 
   # used as a sorting condition

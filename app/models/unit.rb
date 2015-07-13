@@ -45,5 +45,5 @@ class Unit < ActiveRecord::Base
     # TODO: add index on listing_id?
     CommercialUnit.where(listing_id: ids)
   end
-
+  
 end
