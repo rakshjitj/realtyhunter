@@ -226,7 +226,7 @@ class CommercialUnit < ActiveRecord::Base
   private
     def generate_unique_id
       self.listing_id = SecureRandom.random_number(9999999)
-      while CommercialUnit.find_by(listing_id: listing_id) do
+      while Unit.find_by(listing_id: listing_id) do
         self.listing_id = rand(9999999)
       end
       self.listing_id

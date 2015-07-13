@@ -19,7 +19,7 @@
   </td>
   <td><%= building.cached_active_units_count %></td>
   <td><%= building.cached_units_count %></td>
-  <td><%= building.updated_at %></td>
+  <td><%= time_ago_in_words(building.updated_at) %></td>
   <td>
     <%= link_to 'Edit', edit_building_path(building) %> | 
     <%= link_to 'Delete', delete_modal_building_path(building), 
