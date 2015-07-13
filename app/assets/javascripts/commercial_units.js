@@ -40,7 +40,7 @@ CommercialUnits = {};
   // search as user types
   CommercialUnits.timer;
   CommercialUnits.throttledSearch = function () {
-    clearTimeout(timer);  //clear any interval on key up
+    clearTimeout(CommercialUnits.timer);  //clear any interval on key up
     timer = setTimeout(CommercialUnits.doSearch, 500);
   };
   
