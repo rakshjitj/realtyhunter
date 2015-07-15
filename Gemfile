@@ -71,7 +71,7 @@ gem 'delayed_paperclip'
 #gem 'delayed_job_active_record'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
-
+gem 'rollbar', '~> 1.2.7'
 
 group :production do
 	gem 'rails_12factor'

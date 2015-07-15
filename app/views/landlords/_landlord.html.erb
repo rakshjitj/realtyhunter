@@ -5,7 +5,13 @@
   <td><%= landlord.mobile %></td>
   <td><%= landlord.active_units_count %></td>
   <td><%= landlord.total_units_count %></td>
-  <td><%= time_ago_in_words(landlord.last_unit_updated) %></td>
+  <td>
+    <% if landlord.last_unit_updated != '--No buildings--' %>
+      <%= landlord.last_unit_updated %>
+    <% else %>
+      <%= time_ago_in_words(landlord.last_unit_updated) %>
+    <% end %>
+  </td>
   <td>
     <%= link_to 'Edit', edit_landlord_path(landlord) %> |
     <%= link_to 'Delete', delete_modal_landlord_path(landlord), 

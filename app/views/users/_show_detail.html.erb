@@ -107,7 +107,7 @@
         <% end %>
 
         <!-- ******** BIO ********** -->
-        <% if !@user.bio.empty? %>
+        <% if @user.bio && !@user.bio.empty? %>
           <br />
           <div class="row">
             <div class="col-md-12">
