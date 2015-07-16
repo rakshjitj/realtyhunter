@@ -174,7 +174,7 @@ class ResidentialUnit < ActiveRecord::Base
       return ResidentialUnit.unarchived.where(building_id: building_id)
     end
 
-    @running_list = Unit.includes(:building).unarchived
+    @running_list = Unit.joins(:building).unarchived
 
     # only admins are allowed to view off-market units
     if user.is_management?
@@ -189,8 +189,8 @@ class ResidentialUnit < ActiveRecord::Base
     if params[:address]
       # cap query string length for security reasons
     	address = params[:address][0, 500]
-      @running_list = @running_list.joins(:building)
-       .where('formatted_street_address ILIKE ?', "%#{address}%")
+      @running_list = #@running_list.joins(:building)
+       @running_list.where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
     end
 
     # search by unit

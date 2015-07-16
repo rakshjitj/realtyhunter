@@ -31,6 +31,9 @@ class Unit < ActiveRecord::Base
   end
 
 	def self.get_residential(units)
+    puts "**** inspect #{units.inspect}"
+    #return ResidentialUnit.all
+    
     running_list = units.residential.uniq
     # searching by id breaks in factorygirl, so search by listing_id
     ids = running_list.map(&:listing_id)
