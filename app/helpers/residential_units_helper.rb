@@ -17,7 +17,7 @@ module ResidentialUnitsHelper
 			descrip = descrip + unit.open_house
 		end
 
-		descrip
+		descrip.html_safe
 	end
 
 	def small_header(unit)
@@ -27,6 +27,29 @@ module ResidentialUnitsHelper
 			"#{unit.cached_neighborhood.name}, #{unit.cached_building.sublocality}, #{unit.cached_building.administrative_area_level_1_short} #{unit.cached_building.postal_code}"
 		end	
 		
+	end
+
+	def occupancy_status(unit)
+		if unit.tenant_occupied
+			'<div class="danger"><strong>TENANT OCCUPIED</strong></div>'.html_safe
+		else
+			'<strong>Unit vacant</strong>'.html_safe
+		end
+	end
+
+	def lease_duration(unit)
+		str = '';
+
+		if unit.lease_start
+			str = str + unit.lease_start
+		end
+
+		if unit.lease_end
+			str = ' ' + str + ' to ' + unit.lease_end
+		end
+
+		str = str + ' Months'
+
 	end
 
 end

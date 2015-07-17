@@ -11,7 +11,8 @@ class ResidentialUnit < ActiveRecord::Base
 
   validates :building_unit, presence: true, length: {maximum: 50}
 
-	validates :lease_duration, presence: true, length: {maximum: 50}
+	validates :lease_start, presence: true, length: {maximum: 5}
+  validates :lease_end, presence: true, length: {maximum: 5}
   
   validates :rent, presence: true, :numericality => { :greater_than => 0 }
 	validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }

@@ -27,9 +27,9 @@
           <th></th>
           <th><%= sortable('street_address', 'Address') %></th>
           <th><%= sortable 'summary' %></th>
-          <th><%= sortable 'rent' %></th>
+          <th><%= sortable 'rent', "Price" %></th>
           <th><%= sortable 'sq_footage' %></th>
-          <th><%= sortable 'available_by' %></th>
+          <th><%= sortable 'available_by', "Available" %></th>
           <th><%= sortable 'status' %></th>
           <% if current_user.is_management? %>
             <th colspan="1"></th>

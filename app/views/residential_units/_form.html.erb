@@ -51,6 +51,24 @@
         <%= render :partial => 'shared/error_messages', 
           :locals => {:model => @residential_unit} %>
        
+          
+          <br />
+          <div class="row">
+          <div class="col-xs-12 col-md-2 form-label-responsive">
+            <%= f.label :lease_type %>
+          </div>
+          <div class="col-xs-12 col-md-4">
+            <div class="field">
+              <%= f.select :status, 
+                options_for_select(Unit.statuses.collect { |s| [s[0].humanize.titleize, s[0]] }, 
+                  [@residential_unit.status]), 
+                {prompt: "Choose one..."},
+                :required => true,
+                class: "form-control" %>
+            </div>
+          </div>
+        </div>
+
         <br />
         <div class="row">
           <div class="col-xs-12 col-md-2 form-label-responsive">
@@ -93,6 +111,8 @@
             <%= f.label :access_info %>
           </div>
           <div class="col-md-9">
+            <%= f.check_box :tenant_occupied, checked: @residential_unit.tenant_occupied %>
+            <%= f.label :tenant_occupied %><br />
             <%= f.text_area :access_info, class: 'form-control', rows: 4 %>
           </div>
         </div>
@@ -138,11 +158,21 @@
         <br />
         <div class="row">
           <div class="col-md-2 form-label-responsive">
-            <%= f.label :lease_duration %>
+            <strong>Lease Duration</strong>
           </div>
-          <div class="col-md-4">
-            <%= f.text_field :lease_duration, class: 'form-control', 
-            required: true, placeholder: "X to Y months" %>
+          <div class="col-md-2">
+            <%= f.text_field :lease_start, class: 'form-control', 
+            required: true, placeholder: "min" %>
+          </div>
+          <div class="col-md-1">
+            to
+          </div>
+          <div class="col-md-2">
+            <%= f.text_field :lease_end, class: 'form-control', 
+            required: true, placeholder: "max" %>
+          </div>
+          <div class="col-md-1">
+            Months
           </div>
         </div>
 

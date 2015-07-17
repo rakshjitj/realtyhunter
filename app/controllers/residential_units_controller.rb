@@ -323,9 +323,9 @@ class ResidentialUnitsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def residential_unit_params
-      data = params[:residential_unit].permit(:building_unit, :rent, :available_by, 
+      data = params[:residential_unit].permit(:building_unit, :rent, :available_by, :tenant_occupied,
         :access_info, :status, :has_fee, :open_house, :oh_exclusive,
-        :building_id, :primary_agent_id, :listing_agent_id, :beds, :baths, :notes, :lease_duration,
+        :building_id, :primary_agent_id, :listing_agent_id, :beds, :baths, :notes, :lease_start, :lease_end,
         :include_photos, :inaccuracy_description, :op_fee_percentage, :available_starting, :available_before,
         :tp_fee_percentage, :residential_amenity_ids => [])
 

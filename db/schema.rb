@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150712221736) do
+ActiveRecord::Schema.define(version: 20150519180148) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -121,22 +121,6 @@ ActiveRecord::Schema.define(version: 20150712221736) do
   add_index "companies", ["residential_amenities_id"], name: "index_companies_on_residential_amenities_id", using: :btree
   add_index "companies", ["users_id"], name: "index_companies_on_users_id", using: :btree
   add_index "companies", ["utilities_id"], name: "index_companies_on_utilities_id", using: :btree
-
-  create_table "delayed_jobs", force: :cascade do |t|
-    t.integer  "priority",   default: 0, null: false
-    t.integer  "attempts",   default: 0, null: false
-    t.text     "handler",                null: false
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by"
-    t.string   "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "employee_titles", force: :cascade do |t|
     t.string   "name"
@@ -270,10 +254,12 @@ ActiveRecord::Schema.define(version: 20150712221736) do
     t.integer "beds"
     t.float   "baths"
     t.string  "notes"
-    t.string  "lease_duration"
+    t.string  "lease_start"
+    t.string  "lease_end"
     t.boolean "has_fee"
     t.integer "op_fee_percentage"
     t.integer "tp_fee_percentage"
+    t.boolean "tenant_occupied",   default: false
   end
 
   create_table "roles", force: :cascade do |t|

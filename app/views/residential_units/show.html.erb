@@ -183,7 +183,7 @@
 	    			<strong>Lease duration:</strong>
 	    		</div>
 	    		<div class="col-xs-6 col-md-3">
-	    			<%= @residential_unit.lease_duration.titleize %>
+	    			<%= lease_duration(@residential_unit) %>
 	    		</div>
 	    	</div>
 
@@ -305,6 +305,7 @@
 	    			<strong>Access info:</strong>
 	    		</div>
 	    		<div class="col-xs-12 col-md-9">
+	    			<%= occupancy_status(@residential_unit) %>
 	    			<%= @residential_unit.access_info %>
 	    		</div>
 	    	</div>
