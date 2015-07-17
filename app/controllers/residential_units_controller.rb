@@ -263,7 +263,7 @@ class ResidentialUnitsController < ApplicationController
 
     def set_residential_units
       do_search
-
+      @count_all = ResidentialUnit.all.count
       @map_infos = ResidentialUnit.set_location_data(@residential_units)
       @residential_units = Kaminari.paginate_array(@residential_units).page params[:page]
     end

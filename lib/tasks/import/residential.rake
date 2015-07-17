@@ -268,24 +268,44 @@ namespace :import do
 					user = User.find_by(name: c["name"].strip, company: company)
 				}
 
-				#ResidentialUnit.find_by()
-				unit = ResidentialUnit.create!({
-					building_unit: item['unit_number'],
-					rent: item['rent'].to_i,
-					available_by: item['date_available'],
-					status: status,
-					open_house: open_house,
-					building: building,
-					beds: beds,
-					baths: item['bathrooms'],
-					notes: description,
-					lease_duration: lease_duration,
-					listing_id: item['id'],
-					has_fee: has_fee,
-					op_fee_percentage: op_fee_percentage,
-					tp_fee_percentage: tp_fee_percentage,
-					primary_agent: user
-				})
+				unit = ResidentialUnit.find_by(building_id: building.id, building_unit: building_unit)
+				if unit
+					unit = ResidentialUnit.update!({
+						building_unit: item['unit_number'],
+						rent: item['rent'].to_i,
+						available_by: item['date_available'],
+						status: status,
+						open_house: open_house,
+						building: building,
+						beds: beds,
+						baths: item['bathrooms'],
+						notes: description,
+						lease_duration: lease_duration,
+						listing_id: item['id'],
+						has_fee: has_fee,
+						op_fee_percentage: op_fee_percentage,
+						tp_fee_percentage: tp_fee_percentage,
+						primary_agent: user
+					})
+				else
+					unit = ResidentialUnit.create!({
+						building_unit: item['unit_number'],
+						rent: item['rent'].to_i,
+						available_by: item['date_available'],
+						status: status,
+						open_house: open_house,
+						building: building,
+						beds: beds,
+						baths: item['bathrooms'],
+						notes: description,
+						lease_duration: lease_duration,
+						listing_id: item['id'],
+						has_fee: has_fee,
+						op_fee_percentage: op_fee_percentage,
+						tp_fee_percentage: tp_fee_percentage,
+						primary_agent: user
+					})
+				end
 
 				item['unit_amenities'].each{ |a| 
 					amenity_name = a.downcase.strip
