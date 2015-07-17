@@ -178,7 +178,7 @@ class ResidentialUnit < ActiveRecord::Base
     @running_list = Unit.joins(:building).unarchived
 
     # only admins are allowed to view off-market units
-    if user.is_management?
+    if !user.is_management?
       @running_list = @running_list.on_market
     end
 
