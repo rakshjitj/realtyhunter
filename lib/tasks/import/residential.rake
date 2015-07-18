@@ -127,9 +127,9 @@ namespace :import do
 		nestio_url = "https://nestiolistings.com/api/v1/public/listings?key=#{ENV['NESTIO_KEY']}"
 		# clear any old cache laying around, as delete_all will not trigger our 
 		# after_destroy callbacks
-		Rails.cache.clear
+		#Rails.cache.clear
 		# clear old data
-		ResidentialUnit.delete_all
+		#ResidentialUnit.delete_all
 
 		# begin pulling down new data
 		total_pages = 99
@@ -138,10 +138,6 @@ namespace :import do
 
 		puts "Pulling Nestio data for all listings...";
 		log.info "Pulling Nestio data for all listings...";
-
-		#titles = []
-		#renter_fees = []
-		#statii = []
 
 	  done = false
 	  for j in 1..total_pages
@@ -215,12 +211,13 @@ namespace :import do
 				end
 				#statii << item['status']
 
-				lease_duration = '1 Year'
+				lease_start = 12
+				lease_end = 12
 				if item['min_lease_term']
-					lease_duration = item['min_lease_term']
+					lease_start = item['min_lease_term']
 				end
 				if !item['min_lease_term'] && item['max_lease_term']
-					lease_duration = item['max_lease_term']
+					lease_end = item['max_lease_term']
 				end
 
 				description = "#{item['unit_description']}"
@@ -268,9 +265,10 @@ namespace :import do
 					user = User.find_by(name: c["name"].strip, company: company)
 				}
 
-				unit = ResidentialUnit.find_by(building_id: building.id, building_unit: building_unit)
+				unit = ResidentialUnit.find_by(building_id: building.id, building_unit: item['unit_number'])
 				if unit
-					unit = ResidentialUnit.update!({
+					puts "- updating unit"
+					unit.update!({
 						building_unit: item['unit_number'],
 						rent: item['rent'].to_i,
 						available_by: item['date_available'],
@@ -280,7 +278,8 @@ namespace :import do
 						beds: beds,
 						baths: item['bathrooms'],
 						notes: description,
-						lease_duration: lease_duration,
+						lease_start: lease_start,
+						lease_end: lease_end,
 						listing_id: item['id'],
 						has_fee: has_fee,
 						op_fee_percentage: op_fee_percentage,
@@ -298,7 +297,8 @@ namespace :import do
 						beds: beds,
 						baths: item['bathrooms'],
 						notes: description,
-						lease_duration: lease_duration,
+						lease_start: lease_start,
+						lease_end: lease_end,
 						listing_id: item['id'],
 						has_fee: has_fee,
 						op_fee_percentage: op_fee_percentage,
