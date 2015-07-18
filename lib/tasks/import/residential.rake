@@ -82,7 +82,7 @@ namespace :import do
 					route: route,
 					street_number: street_number,
 					country_short: country_short,
-					postal_code: postal_code,
+					postal_code: bldg['zipcode'], # in case google doesn't return one
 					administrative_area_level_1_short: administrative_area_level_1_short,
 					administrative_area_level_2_short: administrative_area_level_1_long,
 					sublocality: sublocality,
@@ -309,10 +309,12 @@ namespace :import do
 
 				item['unit_amenities'].each{ |a| 
 					amenity_name = a.downcase.strip
-					amenity = ResidentialAmenity.find_or_create_by(name: amenity_name, company: company)
-					unit.residential_amenities << amenity
-					puts "\t residential[id: #{unit.id}] amenity: #{amenity_name}"
-					log.info "\t residential[id: #{unit.id}] amenity: #{amenity_name}"
+					amenity = ResidentialAmenity.find_by(name: amenity_name, company: company)
+					if amenity
+						unit.residential_amenities << amenity
+						puts "\t residential[id: #{unit.id}] amenity: #{amenity_name}"
+						log.info "\t residential[id: #{unit.id}] amenity: #{amenity_name}"
+					end
 				}
 
 				if item['pets'] && !unit.building.pet_policy
