@@ -44,7 +44,7 @@ namespace :import do
 
 			#puts "HELLO #{result.inspect}"
 			#puts "BLDG: #{bldg}"
-			#puts "COMP: #{google_results}"
+ 			puts "COMP: #{google_results}"
 			if !result 
 				puts "Could not get location info. Skipping..."
 				#return nil
@@ -150,10 +150,10 @@ namespace :import do
       date_available = row[10]
       notes = row[11]
       landlord_name = row[12]
-      # features_and_terms - not copying over?
+      features_and_terms = row[13]
       # hoods - not copying over
       # parking_spaces - not copying over
-      # landlord_fee - not copying over
+      landlord_fee = row[16]
       lease_ends_on = row[17]
       access = row[18]
 
@@ -161,12 +161,16 @@ namespace :import do
       	rent = 1
       end
 
-      if beds == nil
+      if beds == nil || beds > 11
       	beds = 0
       end
 
-      if baths == nil
+      if baths == nil || baths > 11
       	baths = 0
+      end
+
+      if !unit_number || unit_number.empty?
+      	unit_number = 'NOT FOUND'
       end
 
       puts "[#{count}] #{number} #{street} Rent: #{rent}"
@@ -186,16 +190,17 @@ namespace :import do
 					building: building,
 					beds: beds,
 					baths: baths,
-					notes: notes,
+					notes: notes + "\n\n" + features_and_terms + "\n\n" + landlord_fee,
 					lease_start: "12",
 					lease_end: "12"
 				})
 			end
 
-			if count % 50 == 0
+			# don't exceed google's rate limit
+			if count % 10 == 0 && count > 0
 				sleep(10)
 			end
-			
+
 			count = count + 1
 		}
 
