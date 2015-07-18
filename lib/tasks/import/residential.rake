@@ -220,9 +220,11 @@ namespace :import do
 					lease_end = item['max_lease_term']
 				end
 
+				tenant_occupied = false
 				description = "#{item['unit_description']}"
-				if item['occupancy_status']
-					description = description + "\n\nOccupancy Status: #{item['occupancy_status']}"
+				if item['occupancy_status'] != "Vacant"
+					#description = description + "\n\nOccupancy Status: #{item['occupancy_status']}"
+					tenant_occupied = true
 				end
 				if item['furnished_type']
 					description = description + "\n\nFurnished Type: #{item['furnished_type']}"
@@ -284,6 +286,7 @@ namespace :import do
 						has_fee: has_fee,
 						op_fee_percentage: op_fee_percentage,
 						tp_fee_percentage: tp_fee_percentage,
+						tenant_occupied: tenant_occupied,
 						primary_agent: user
 					})
 				else
@@ -303,6 +306,7 @@ namespace :import do
 						has_fee: has_fee,
 						op_fee_percentage: op_fee_percentage,
 						tp_fee_percentage: tp_fee_percentage,
+						tenant_occupied: tenant_occupied,
 						primary_agent: user
 					})
 					
@@ -340,7 +344,7 @@ namespace :import do
 						unit.images << image
 					}
 				end
-				
+
 				sleep(10)
 	    end
 	  end
