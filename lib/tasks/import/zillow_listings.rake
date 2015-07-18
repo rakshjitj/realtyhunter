@@ -155,12 +155,12 @@ namespace :import do
       beds = row[8].to_i
       baths = row[9].to_f
       date_available = row[10]
-      notes = row[11]
+      notes = row[11].strip
       landlord_name = row[12]
-      features_and_terms = row[13]
+      features_and_terms = row[13].strip
       # hoods - not copying over
       # parking_spaces - not copying over
-      landlord_fee = row[16]
+      landlord_fee = row[16].strip
       lease_ends_on = row[17]
       access = row[18]
 
