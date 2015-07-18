@@ -23,11 +23,11 @@ namespace :import do
       state = row[4]
       zipcode = row[5]
 
-      puts "ROW: #{row.inspect}"
+      puts "\n\nROW: #{row.inspect}"
 			nestio_address = "#{number} #{street}, #{city}, #{state} #{zipcode}"
 			puts "NESTIO ADDRESS #{nestio_address}"
 
-			puts "\n\nhttps://maps.googleapis.com/maps/api/geocode/json?address=#{nestio_address}&key=#{ENV['GOOGLE_MAPS_KEY']}"
+			puts "\nhttps://maps.googleapis.com/maps/api/geocode/json?address=#{nestio_address}&key=#{ENV['GOOGLE_MAPS_KEY']}"
 			page = mechanize.get("https://maps.googleapis.com/maps/api/geocode/json?address=#{nestio_address}&key=#{ENV['GOOGLE_MAPS_KEY']}")
 			google_results = JSON.parse page.body
 			result = google_results['results'][0]
@@ -82,6 +82,11 @@ namespace :import do
 				})
 			end
 
+			#if !postal_code
+				#puts "Nil postal_code returned by google. Not creating this building."
+				#return nil
+			#end
+
 			record = Building.find_by(formatted_street_address: result['formatted_address'])
 			if !record
 				puts "- building added"
@@ -92,7 +97,7 @@ namespace :import do
 					route: route,
 					street_number: street_number,
 					country_short: country_short,
-					postal_code: postal_code,
+					postal_code: zipcode, # use our zipcode, in case google doesn't return one
 					administrative_area_level_1_short: administrative_area_level_1_short,
 					administrative_area_level_2_short: administrative_area_level_1_long,
 					sublocality: sublocality,
@@ -140,7 +145,7 @@ namespace :import do
 			end
 
 			# skip what we've already added
-			if count < 2452
+			if count < 4640
 				count = count + 1
 				next
 			end
@@ -201,6 +206,8 @@ namespace :import do
 					lease_start: "12",
 					lease_end: "12"
 				})
+			else
+				puts " - no building, so skipping this listing."
 			end
 
 			# don't exceed google's rate limit
