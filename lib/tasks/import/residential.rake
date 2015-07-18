@@ -305,41 +305,42 @@ namespace :import do
 						tp_fee_percentage: tp_fee_percentage,
 						primary_agent: user
 					})
+					
+
+					item['unit_amenities'].each{ |a| 
+						amenity_name = a.downcase.strip
+						amenity = ResidentialAmenity.find_by(name: amenity_name, company: company)
+						if amenity
+							unit.residential_amenities << amenity
+							puts "\t residential[id: #{unit.id}] amenity: #{amenity_name}"
+							log.info "\t residential[id: #{unit.id}] amenity: #{amenity_name}"
+						end
+					}
+
+					if item['pets'] && !unit.building.pet_policy
+						policy_name = item['pets'].downcase.strip
+						if policy_name == "no pets allowed"
+							policy_name = "no pets"
+						end
+		      	pet_policy = PetPolicy.find_or_create_by(name: policy_name, company: company)
+						unit.building.pet_policy = pet_policy
+					end
+
+					item['photos'].each{ |p| 
+						img_url = p['original']
+						if Rails.env.development?
+							# avoid SSL certificate verication error
+							prefix_len = 'https'.length
+							img_url = 'http' + img_url[prefix_len, img_url.length - prefix_len]
+							#puts "\n\n **** #{img_url}"
+						end
+						image = Image.new
+					  image.file = URI.parse(img_url)
+					  image.save
+						unit.images << image
+					}
 				end
-
-				item['unit_amenities'].each{ |a| 
-					amenity_name = a.downcase.strip
-					amenity = ResidentialAmenity.find_by(name: amenity_name, company: company)
-					if amenity
-						unit.residential_amenities << amenity
-						puts "\t residential[id: #{unit.id}] amenity: #{amenity_name}"
-						log.info "\t residential[id: #{unit.id}] amenity: #{amenity_name}"
-					end
-				}
-
-				if item['pets'] && !unit.building.pet_policy
-					policy_name = item['pets'].downcase.strip
-					if policy_name == "no pets allowed"
-						policy_name = "no pets"
-					end
-	      	pet_policy = PetPolicy.find_or_create_by(name: policy_name, company: company)
-					unit.building.pet_policy = pet_policy
-				end
-
-				item['photos'].each{ |p| 
-					img_url = p['original']
-					if Rails.env.development?
-						# avoid SSL certificate verication error
-						prefix_len = 'https'.length
-						img_url = 'http' + img_url[prefix_len, img_url.length - prefix_len]
-						#puts "\n\n **** #{img_url}"
-					end
-					image = Image.new
-				  image.file = URI.parse(img_url)
-				  image.save
-					unit.images << image
-				}
-
+				
 				sleep(10)
 	    end
 	  end
