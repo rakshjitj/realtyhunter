@@ -140,7 +140,8 @@ namespace :import do
 			end
 
 			# skip what we've already added
-			if count < 2453
+			if count < 2452
+				count = count + 1
 				next
 			end
 
