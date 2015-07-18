@@ -123,18 +123,24 @@ namespace :import do
 
 		# clear any old cache laying around, as delete_all will not trigger our 
 		# after_destroy callbacks
-		Rails.cache.clear
+		#Rails.cache.clear
 		# clear old data
-		Building.delete_all
-		ResidentialUnit.delete_all
+		#Building.delete_all
+		#ResidentialUnit.delete_all
 
 		puts "Getting data for all zillow listings..."
 		log.info "Getting data for all zillow listings..."
 		count = 0
 		CSV.foreach('lib/tasks/import/zillow_listings.csv', col_sep: ';') { |row| 
 
+			# skip headers
 			if count == 0
 				count = count + 1
+				next
+			end
+
+			# skip what we've already added
+			if count < 2453
 				next
 			end
 
