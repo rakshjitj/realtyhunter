@@ -179,7 +179,7 @@ class ResidentialUnit < ActiveRecord::Base
 
     # only admins are allowed to view off-market units
     if !user.is_management?
-      @running_list = @running_list.on_market
+     @running_list = @running_list.on_market
     end
 
     # all search params come in as strings from the url
