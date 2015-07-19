@@ -72,6 +72,7 @@ gem 'delayed_paperclip'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
 gem 'rollbar', '~> 1.2.7'
+gem 'newrelic_rpm'
 
 group :production do
 	gem 'rails_12factor'
