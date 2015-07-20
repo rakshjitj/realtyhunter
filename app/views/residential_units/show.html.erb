@@ -229,11 +229,7 @@
 	    		</div>
 	    		<div class="col-xs-6 col-md-4">
 	    			<% if @residential_unit.available_by %>
-	    				<% if @residential_unit.available_by < Date.today %>
-							Now
-						<% else %>
 							<%= @residential_unit.available_by %>
-						<% end %>
 					<% else %>
 						- 
 					<% end %>

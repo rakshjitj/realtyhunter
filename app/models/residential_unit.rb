@@ -260,15 +260,12 @@ class ResidentialUnit < ActiveRecord::Base
     end
 
     if params[:available_starting] || params[:available_before]
-      sql = nil
-      if params[:available_starting]
-        sql = 'available_starting > ? '
+      if params[:available_starting] && !params[:available_starting].empty?
+        @running_list = @running_list.where('available_by > ?', params[:available_starting]);
       end
-      if params[:available_before]
-        sql = 'available_by < ? '
+      if params[:available_before] && !params[:available_before].empty?
+        @running_list = @running_list.where('available_by < ?', params[:available_before]);
       end
-      # TODO: fix
-      #@running_list = @running_list.where(sql, "%#{params[:available_before]}%", "%#{params[:available_starting]}%")
     end
 
     # the following fields are on ResidentialUnit not Unit, so cast the 

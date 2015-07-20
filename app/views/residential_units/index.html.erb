@@ -297,32 +297,7 @@
         </div>
       </div>
       
-      <div class="row vertical-padding">
-        <div class="col-xs-12">
-          <strong>Available</strong>
-        </div>
-        <div class="col-xs-6">
-          <div class='input-group date datepicker'>
-            <%= text_field_tag :available_starting, params[:available_starting], 
-              placeholder: "starting", class:"form-control" %>
-            <label class="input-group-addon btn" for="date">
-              <span class="fa fa-calendar open-datepicker"></span>
-            </label>
-          </div>
-        </div>
-        <div class="col-xs-1">
-          to
-        </div>
-        <div class="col-xs-5">
-          <div class='input-group date datepicker'>
-            <%= text_field_tag :available_before, params[:available_before], 
-              placeholder: "by", class:"form-control" %>
-            <label class="input-group-addon btn" for="date">
-              <span class="fa fa-calendar open-datepicker"></span>
-            </label>
-          </div>
-        </div>
-      </div>
+      <!-- add in available by filter -->      
 
       <div class="row vertical-padding">
         <div class="col-xs-12">

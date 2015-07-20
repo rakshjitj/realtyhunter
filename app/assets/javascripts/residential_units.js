@@ -236,8 +236,8 @@ ResidentialUnits = {};
 	  $('#residential #bath_min').change(ResidentialUnits.throttledSearch);
 	  $('#residential #bath_max').change(ResidentialUnits.throttledSearch);
 	  $('#residential #landlord').change(ResidentialUnits.throttledSearch);
-	  $('#residential #available_starting').change(ResidentialUnits.throttledSearch);
-	  $('#residential #available_before').change(ResidentialUnits.throttledSearch);
+	  $('#residential #available_starting').blur(ResidentialUnits.throttledSearch);
+	  $('#residential #available_before').blur(ResidentialUnits.throttledSearch);
 	  $('#residential #pet_policy_shorthand').change(ResidentialUnits.throttledSearch);
 	  $('#residential #status').change(ResidentialUnits.throttledSearch);
 	  $('#residential #features').change(ResidentialUnits.throttledSearch);
@@ -257,7 +257,9 @@ ResidentialUnits = {};
 		});
 
 		var available_by = $('#residential .datepicker').attr('data-available-by');
-		$('#residential .datepicker').data("DateTimePicker").date(available_by);
+		if (available_by) {
+			$('#residential .datepicker').data("DateTimePicker").date(available_by);
+		}
 
 		ResidentialUnits.updateOverviewMap();
 
