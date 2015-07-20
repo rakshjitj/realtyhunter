@@ -147,7 +147,7 @@
             <%= f.label :available_by, "Available Date" %>
           </div>
           <div class="col-md-4">
-            <div class='input-group date datepicker'>
+            <div class='input-group date datepicker' data-available-by="<%= @residential_unit.available_by.strftime("%m/%d/%Y") %>">
               <%= f.text_field :available_by, 
                 placeholder: "Available", class:"form-control", size:30 %>
               <label class="input-group-addon btn" for="date">

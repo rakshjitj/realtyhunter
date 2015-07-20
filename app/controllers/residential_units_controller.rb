@@ -343,7 +343,7 @@ class ResidentialUnitsController < ApplicationController
       end
 
       # convert into a datetime obj
-      if data[:available_by]
+      if data[:available_by] && !data[:available_by].empty?
         data[:available_by] = Date::strptime(data[:available_by], "%m/%d/%Y")
       end
 

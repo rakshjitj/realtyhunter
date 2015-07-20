@@ -256,12 +256,8 @@ ResidentialUnits = {};
 		  $(this).toggleClass('active');
 		});
 
-	  // // change all date input fields to auto-open the calendar
-   //  $('.datepicker').datetimepicker({
-   //  	viewMode: 'days',
-   //    format: 'MM/DD/YYYY',
-   //    allowInputToggle: true
-   //  });
+		var available_by = $('#residential .datepicker').attr('data-available-by');
+		$('#residential .datepicker').data("DateTimePicker").date(available_by);
 
 		ResidentialUnits.updateOverviewMap();
 
