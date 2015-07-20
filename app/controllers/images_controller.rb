@@ -7,7 +7,6 @@ class ImagesController < ApplicationController
   # POST /images.json
   def create
     @image = @building.images.build(image_params)
-    
     # dropzone expects a json response code
     @image.building = @building
     if @image.save(image_params)

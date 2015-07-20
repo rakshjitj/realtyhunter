@@ -7,38 +7,38 @@ ResidentialUnits = {};
 	ResidentialUnits.doSearch = function (event) {
 		//console.log('PERFORMING SEARCH');
 		// sanitize invalid input before submitting
-	  if ($('#neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
-	    $('#neighborhood_ids').val('');
+	  if ($('#residential #neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
+	    $('#residential #neighborhood_ids').val('');
 	  }
-	  if ($('#building_feature_ids').val() == "{:id=>\"building_feature_ids\"}") {
-	    $('#building_feature_ids').val('');
+	  if ($('#residential #building_feature_ids').val() == "{:id=>\"building_feature_ids\"}") {
+	    $('#residential #building_feature_ids').val('');
 	  }
-	  if ($('#unit_feature_ids').val() == "{:id=>\"unit_feature_ids\"}") {
-	    $('#unit_feature_ids').val('');
+	  if ($('#residential #unit_feature_ids').val() == "{:id=>\"unit_feature_ids\"}") {
+	    $('#residential #unit_feature_ids').val('');
 	  }
 
 	  var search_path = $('#res-search-filters').attr('data-search-path');
 	  $.ajax({
 	    url: search_path,
 	    data: {
-        address: $('#address').val(),
-        unit: $('#unit').val(),
-        rent_min: $('#rent_min').val(),
-        rent_max: $('#rent_max').val(),
-        bed_min: $('#bed_min').val(),
-        bed_max: $('#bed_max').val(),
-        bath_min: $('#bath_min').val(),
-        bath_max: $('#bath_max').val(),
-        landlord: $('#landlord').val(),
-        pet_policy_shorthand: $('#pet_policy_shorthand').val(),
-        available_starting: $('#available_starting').val(),
-        available_before: $('#available_before').val(),
-        status: $('#status').val(),
-        features: $('#features').val(),
-        has_fee: $('#has_fee').val(),
-        neighborhood_ids: $('#neighborhood_ids').val(),
-        unit_feature_ids: $('#unit_feature_ids').val(),
-        building_feature_ids: $('#building_feature_ids').val(),
+        address: $('#residential #address').val(),
+        unit: $('#residential #unit').val(),
+        rent_min: $('#residential #rent_min').val(),
+        rent_max: $('#residential #rent_max').val(),
+        bed_min: $('#residential #bed_min').val(),
+        bed_max: $('#residential #bed_max').val(),
+        bath_min: $('#residential #bath_min').val(),
+        bath_max: $('#residential #bath_max').val(),
+        landlord: $('#residential #landlord').val(),
+        pet_policy_shorthand: $('#residential #pet_policy_shorthand').val(),
+        available_starting: $('#residential #available_starting').val(),
+        available_before: $('#residential #available_before').val(),
+        status: $('#residential #status').val(),
+        features: $('#residential #features').val(),
+        has_fee: $('#residential #has_fee').val(),
+        neighborhood_ids: $('#residential #neighborhood_ids').val(),
+        unit_feature_ids: $('#residential #unit_feature_ids').val(),
+        building_feature_ids: $('#residential #building_feature_ids').val(),
 	    },
 	    dataType: 'script',
 	    success: function(data) {
@@ -53,9 +53,9 @@ ResidentialUnits = {};
 	ResidentialUnits.removeUnitFeature = function (event) {
   	event.preventDefault();
 	  var feature_id = $(this).attr('data-id');
-  	var idx = $('#unit_feature_ids').val().indexOf(feature_id);
+  	var idx = $('#residential #unit_feature_ids').val().indexOf(feature_id);
   	//console.log(feature_id, idx, feature_id.length, $('#unit_feature_ids').val());
-  	$('#unit_feature_ids').val( $('#unit_feature_ids').val().replace(feature_id, '') );
+  	$('#residential #unit_feature_ids').val( $('#residential #unit_feature_ids').val().replace(feature_id, '') );
   	//console.log('new val is', $('#unit_feature_ids').val() );
   	$(this).remove();
   	ResidentialUnits.throttledSearch();
@@ -64,8 +64,8 @@ ResidentialUnits = {};
   ResidentialUnits.removeBuildingFeature = function (event) {
   	event.preventDefault();
 	  var feature_id = $(this).attr('data-id');
-  	var idx = $('#building_feature_ids').val().indexOf(feature_id);
-  	$('#building_feature_ids').val( $('#building_feature_ids').val().replace(feature_id, '') );
+  	var idx = $('#residential #building_feature_ids').val().indexOf(feature_id);
+  	$('#residential #building_feature_ids').val( $('#residential #building_feature_ids').val().replace(feature_id, '') );
   	$(this).remove();
   	ResidentialUnits.throttledSearch();
   };
@@ -73,8 +73,8 @@ ResidentialUnits = {};
   ResidentialUnits.removeNeighborhood = function (event) {
   	event.preventDefault();
 	  var feature_id = $(this).attr('data-id');
-  	var idx = $('#neighborhood_ids').val().indexOf(feature_id);
-  	$('#neighborhood_ids').val( $('#neighborhood_ids').val().replace(feature_id, '') );
+  	var idx = $('#residential #neighborhood_ids').val().indexOf(feature_id);
+  	$('#residential #neighborhood_ids').val( $('#residential #neighborhood_ids').val().replace(feature_id, '') );
   	$(this).remove();
   	ResidentialUnits.throttledSearch();
   };
@@ -83,6 +83,14 @@ ResidentialUnits = {};
 	ResidentialUnits.timer;
 
 	ResidentialUnits.throttledSearch = function () {
+		// only accept letter/number keys as search input
+		// var charTyped = String.fromCharCode(e.which);
+  //   if (/[a-z\d]/i.test(charTyped)) {
+  //       console.log("Letter or number typed: " + charTyped);
+  //   } else {
+  //   	return;
+  //   }
+
 		console.log('throttling?');
 		//clear any interval on key up
 		if (ResidentialUnits.timer) {
@@ -175,58 +183,85 @@ ResidentialUnits = {};
 	};
 
 	ResidentialUnits.toggleFeeOptions = function(event) {
-		var isChecked = $('.has-fee').prop('checked');
+		var isChecked = $('#residential .has-fee').prop('checked');
 		if (isChecked) {
-			$('.show-op').addClass('hide');
-			$('.show-tp').removeClass('hide');
+			$('#residential .show-op').addClass('hide');
+			$('#residential .show-tp').removeClass('hide');
 		} else {
-			$('.show-op').removeClass('hide');
-			$('.show-tp').addClass('hide');
+			$('#residential .show-op').removeClass('hide');
+			$('#residential .show-tp').addClass('hide');
 		}
 	};
 
+	ResidentialUnits.setPositions = function() {
+	  // loop through and give each task a data-pos
+	  // attribute that holds its position in the DOM
+	  $('#residential .img-thumbnail').each(function(i) {
+	      $(this).attr("data-pos", i+1);
+	  });
+	};
+
+	ResidentialUnits.makeSortable = function() {
+		// call sortable on our div with the sortable class
+	  $('#residential .sortable').sortable({
+			forcePlaceholderSize: true,
+			placeholderClass: 'col col-xs-2 border border-maroon',
+			dragImage: null
+	  });
+	};
+
+	ResidentialUnits.updateRemoveImgLinks = function() {
+		$('#residential .delete-unit-img').click(function(event) {
+			event.preventDefault();
+			var id = $(this).attr('data-id'); 
+			var unit_id = $(this).attr('data-unit-id');
+			console.log(id, unit_id);
+			ResidentialUnits.removeImage(id, unit_id);
+		});
+	};
+	
 	ResidentialUnits.initialize = function() {
 
-		$('.has-fee').click(ResidentialUnits.toggleFeeOptions);
+		$('#residential .has-fee').click(ResidentialUnits.toggleFeeOptions);
 		ResidentialUnits.toggleFeeOptions();
 
 		// index filtering
-		$('input').keydown(ResidentialUnits.preventEnter);
-	  $('#address').keyup(ResidentialUnits.throttledSearch);
-	  $('#unit').keyup(ResidentialUnits.throttledSearch);
-	  $('#rent_min').keyup(ResidentialUnits.throttledSearch);
-	  $('#rent_max').keyup(ResidentialUnits.throttledSearch);
-	  $('#bed_min').keyup(ResidentialUnits.throttledSearch);
-	  $('#bed_max').keyup(ResidentialUnits.throttledSearch);
-	  $('#bath_min').keyup(ResidentialUnits.throttledSearch);
-	  $('#bath_max').keyup(ResidentialUnits.throttledSearch);
-	  $('#landlord').keyup(ResidentialUnits.throttledSearch);
-	  $('#available_starting').keyup(ResidentialUnits.throttledSearch);
-	  $('#available_before').keyup(ResidentialUnits.throttledSearch);
-	  $('#pet_policy_shorthand').change(ResidentialUnits.throttledSearch);
-	  $('#status').change(ResidentialUnits.throttledSearch);
-	  $('#features').change(ResidentialUnits.throttledSearch);
-	  $('#has_fee').change(ResidentialUnits.throttledSearch);
-	  $('#neighborhood_ids').change(ResidentialUnits.throttledSearch);
-	  $('#unit_feature_ids').change(ResidentialUnits.throttledSearch);
-	  $('#building_feature_ids').change(ResidentialUnits.throttledSearch);
+		$('#residential input').keydown(ResidentialUnits.preventEnter);
+	  $('#residential #address').change(ResidentialUnits.throttledSearch);
+	  $('#residential #unit').change(ResidentialUnits.throttledSearch);
+	  $('#residential #rent_min').change(ResidentialUnits.throttledSearch);
+	  $('#residential #rent_max').change(ResidentialUnits.throttledSearch);
+	  $('#residential #bed_min').change(ResidentialUnits.throttledSearch);
+	  $('#residential #bed_max').change(ResidentialUnits.throttledSearch);
+	  $('#residential #bath_min').change(ResidentialUnits.throttledSearch);
+	  $('#residential #bath_max').change(ResidentialUnits.throttledSearch);
+	  $('#residential #landlord').change(ResidentialUnits.throttledSearch);
+	  $('#residential #available_starting').change(ResidentialUnits.throttledSearch);
+	  $('#residential #available_before').change(ResidentialUnits.throttledSearch);
+	  $('#residential #pet_policy_shorthand').change(ResidentialUnits.throttledSearch);
+	  $('#residential #status').change(ResidentialUnits.throttledSearch);
+	  $('#residential #features').change(ResidentialUnits.throttledSearch);
+	  $('#residential #has_fee').change(ResidentialUnits.throttledSearch);
+	  $('#residential #neighborhood_ids').change(ResidentialUnits.throttledSearch);
+	  $('#residential #unit_feature_ids').change(ResidentialUnits.throttledSearch);
+	  $('#residential #building_feature_ids').change(ResidentialUnits.throttledSearch);
 	  // remove individual features by clicking on 'x' button
-	  $('.remove-unit-feature').click(ResidentialUnits.removeUnitFeature);
-	  $('.remove-building-feature').click(ResidentialUnits.removeBuildingFeature);
-	  $('.remove-neighborhood').click(ResidentialUnits.removeNeighborhood);
+	  $('#residential .remove-unit-feature').click(ResidentialUnits.removeUnitFeature);
+	  $('#residential .remove-building-feature').click(ResidentialUnits.removeBuildingFeature);
+	  $('#residential .remove-neighborhood').click(ResidentialUnits.removeNeighborhood);
 
 	  // print pdf from the index page
-	  $('.btn-print-list').click( function(event) {
+	  $('#residential .btn-print-list').click( function(event) {
 		  // show spinner
 		  $(this).toggleClass('active');
 		});
 
-	  // change all date input fields to auto-open the calendar
-    $('.datepicker').datetimepicker({
-    	viewMode: 'days',
-      format: 'MM/DD/YYYY',
-      allowInputToggle: true
-    });
+	  // // change all date input fields to auto-open the calendar
+   //  $('.datepicker').datetimepicker({
+   //  	viewMode: 'days',
+   //    format: 'MM/DD/YYYY',
+   //    allowInputToggle: true
+   //  });
 
 		ResidentialUnits.updateOverviewMap();
 
@@ -262,6 +297,7 @@ ResidentialUnits = {};
 				$(file.previewTemplate).find('.dz-remove').attr('unit_id', response.unitID);
 				// add the dz-success class (the green tick sign)
 				$(file.previewElement).addClass("dz-success");
+				console.log('/residential_units/' + response.unitID + '/refresh_images');
 				$.getScript('/residential_units/' + response.unitID + '/refresh_images')
 				file.previewElement.remove();
 			},
@@ -275,17 +311,41 @@ ResidentialUnits = {};
 			}
 		});
 
-		$('.delete-unit-img').click(function(event) {
-			event.preventDefault();
-			var id = $(this).attr('data-id'); 
-			var unit_id = $(this).attr('data-unit-id');
-			//console.log(id, unit_id);
-			ResidentialUnits.removeImage(id, unit_id);
-			// TODO: WTF why is this breaking?
-		});
+		// $('.delete-unit-img').click(function(event) {
+		// 	event.preventDefault();
+		// 	var id = $(this).attr('data-id'); 
+		// 	var unit_id = $(this).attr('data-unit-id');
+		// 	console.log(id, unit_id);
+		// 	ResidentialUnits.removeImage(id, unit_id);
+		// });
+		ResidentialUnits.updateRemoveImgLinks();
 
 		$('.carousel-indicators > li:first-child').addClass('active');
 		$('.carousel-inner > .item:first-child').addClass('active');
+
+    ResidentialUnits.setPositions();
+    ResidentialUnits.makeSortable();
+	  // after the order changes
+    $('#residential .sortable').sortable().bind('sortupdate', function(e, ui) {
+        // array to store new order
+        updated_order = []
+        // set the updated positions
+        ResidentialUnits.setPositions();
+ 				
+        // populate the updated_order array with the new task positions
+        $('.img-thumbnail').each(function(i){
+          updated_order.push({ id: $(this).data('id'), position: i+1 });
+        });
+ 				console.log(updated_order);
+        // send the updated order via ajax
+        var runit_id = $('#residential').attr('data-runit-id');
+        $.ajax({
+          type: "PUT",
+          url: '/residential_units/' + runit_id + '/unit_images/sort',
+          data: { order: updated_order }
+        });
+    });
+
 	};
 
 })();

@@ -14,8 +14,8 @@ CommercialUnits = {};
 
   CommercialUnits.doSearch = function(event) {
     // sanitize invalid input before submitting
-    if ($('#neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
-      $('#neighborhood_ids').val('');
+    if ($('#commercial #neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
+      $('#commercial #neighborhood_ids').val('');
     }
 
     var search_path = $('#com-search-filters').attr('data-search-path');
@@ -23,14 +23,14 @@ CommercialUnits = {};
       url: search_path, //"<%= filter_commercial_units_path %>",
       data: {
         //search_params: {
-          address: $('#address').val(),
-          rent_min: $('#rent_min').val(),
-          rent_max: $('#rent_max').val(),
-          landlord: $('#landlord').val(),
-          status: $('#status').val(),
-          status: $('#property_type').val(),
-          status: $('#listing_id').val(),
-          neighborhood_ids: $('#neighborhood_ids').val(),
+          address: $('#commercial #address').val(),
+          rent_min: $('#commercial #rent_min').val(),
+          rent_max: $('#commercial #rent_max').val(),
+          landlord: $('#commercial #landlord').val(),
+          status: $('#commercial #status').val(),
+          status: $('#commercial #property_type').val(),
+          status: $('#commercial #listing_id').val(),
+          neighborhood_ids: $('#commercial #neighborhood_ids').val(),
         //}
       },
       dataType: "script"
@@ -40,6 +40,14 @@ CommercialUnits = {};
   // search as user types
   CommercialUnits.timer;
   CommercialUnits.throttledSearch = function () {
+    // // only accept letter/number keys as search input
+    // var charTyped = String.fromCharCode(e.which);
+    // if (/[a-z\d]/i.test(charTyped)) {
+    //     console.log("Letter or number typed: " + charTyped);
+    // } else {
+    //   return;
+    // }
+    
     clearTimeout(CommercialUnits.timer);  //clear any interval on key up
     timer = setTimeout(CommercialUnits.doSearch, 500);
   };
@@ -50,6 +58,15 @@ CommercialUnits = {};
       //$('#checkbox_active').focus();
       return false;
     }
+  };
+
+  CommercialUnits.makeSortable = function() {
+    // call sortable on our div with the sortable class
+    $('#commercial .sortable').sortable({
+      forcePlaceholderSize: true,
+      placeholderClass: 'col col-xs-2 border border-maroon',
+      dragImage: null
+    });
   };
 
   CommercialUnits.removeImage = function (id, unit_id) {
@@ -67,14 +84,32 @@ CommercialUnits = {};
     });
   };
 
+  CommercialUnits.setPositions = function() {
+    // loop through and give each task a data-pos
+    // attribute that holds its position in the DOM
+    $('#commercial .img-thumbnail').each(function(i) {
+        $(this).attr("data-pos", i+1);
+    });
+  };
+
+  CommercialUnits.updateRemoveImgLinks = function() {
+    $('#commercial .delete-unit-img').click(function(event) {
+      event.preventDefault();
+      var id = $(this).attr('data-id');
+      var unit_id = $(this).attr('data-unit-id');
+      //console.log(id, unit_id);
+      CommercialUnits.removeImage(id, unit_id);
+    });
+  };
+
   //call when typing or enter or focus leaving
   CommercialUnits.initialize = function () {
     // change all date input fields to auto-open the calendar
-    $('.datepicker').datetimepicker({
-      viewMode: 'days',
-      format: 'MM/DD/YYYY',
-      allowInputToggle: true
-    });
+    // $('#commercial .datepicker').datetimepicker({
+    //   viewMode: 'days',
+    //   format: 'MM/DD/YYYY',
+    //   allowInputToggle: true
+    // });
 
     $('#commercial_unit_property_type').change(function(e) {
       var optionSelected = $("option:selected", this);
@@ -94,21 +129,21 @@ CommercialUnits = {};
       //console.log("[ERROR]: " + result);
     });
 
-    $('.btn-print-list').click( function(event) {
+    $('#commercial .btn-print-list').click( function(event) {
       // show spinner
       $(this).toggleClass('active');
       timer2 = setTimeout(clearSpinner, 15000);
     });
 
-    $('input').keydown(CommercialUnits.preventEnter);
-    $('#address').keyup(CommercialUnits.throttledSearch);
-    $('#rent_min').keyup(CommercialUnits.throttledSearch);
-    $('#rent_max').keyup(CommercialUnits.throttledSearch);
-    $('#landlord').keyup(CommercialUnits.throttledSearch);
-    $('#status').change(CommercialUnits.throttledSearch);
-    $('#neighborhood_ids').change(CommercialUnits.throttledSearch);
-    $('#property_type').change(CommercialUnits.throttledSearch);
-    $('#listing_id').keyup(CommercialUnits.throttledSearch);
+    $('#commercial input').keydown(CommercialUnits.preventEnter);
+    $('#commercial #address').change(CommercialUnits.throttledSearch);
+    $('#commercial #rent_min').change(CommercialUnits.throttledSearch);
+    $('#commercial #rent_max').change(CommercialUnits.throttledSearch);
+    $('#commercial #landlord').change(CommercialUnits.throttledSearch);
+    $('#commercial #status').change(CommercialUnits.throttledSearch);
+    $('#commercial #neighborhood_ids').change(CommercialUnits.throttledSearch);
+    $('#commercial #property_type').change(CommercialUnits.throttledSearch);
+    $('#commercial #listing_id').change(CommercialUnits.throttledSearch);
 
     // for drag n dropping photos
 
@@ -143,17 +178,34 @@ CommercialUnits = {};
       }
     });
 
-    $('.delete-unit-img').click(function(event) {
-      event.preventDefault();
-      var id = $(this).attr('data-id');
-      var unit_id = $(this).attr('data-unit-id');
-      //console.log(id, unit_id);
-      CommercialUnits.removeImage(id, unit_id);
-    });
+    CommercialUnits.updateRemoveImgLinks();
 
     $('.carousel-indicators > li:first-child').addClass('active');
     $('.carousel-inner > .item:first-child').addClass('active');
 
+    CommercialUnits.setPositions();
+    CommercialUnits.makeSortable();
+
+    // after the order changes
+    $('#commercial .sortable').sortable().bind('sortupdate', function(e, ui) {
+        // array to store new order
+        updated_order = []
+        // set the updated positions
+        CommercialUnits.setPositions();
+        
+        // populate the updated_order array with the new task positions
+        $('.img-thumbnail').each(function(i){
+          updated_order.push({ id: $(this).data('id'), position: i+1 });
+        });
+        console.log(updated_order);
+        // send the updated order via ajax
+        var cunit_id = $('#commercial').attr('data-cunit-id');
+        $.ajax({
+          type: "PUT",
+          url: '/commercial_units/' + cunit_id + '/unit_images/sort',
+          data: { order: updated_order }
+        });
+    });
   };
 
 })();

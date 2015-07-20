@@ -250,6 +250,7 @@ class ResidentialUnitsController < ApplicationController
   def refresh_images
     # invalidate cache
     @residential_unit.clear_cache
+    puts "\n\n\n **** HELLO------- REFRESHING IMAGE #{@residential_unit.images.count}"
     respond_to do |format|
       format.js  
     end

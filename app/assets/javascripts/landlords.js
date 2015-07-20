@@ -1,7 +1,9 @@
+Landlords = {};
+
 (function() {
 
-  function doSearch(event) {
-    var search_path = $('#search-filters').attr('data-search-path');
+  Landlords.doSearch = function(event) {
+    var search_path = $('#landlord-search-filters').attr('data-search-path');
     $.ajax({
       url: search_path,
       data: {
@@ -15,21 +17,29 @@
   };
 
   // search as user types
-  var timer;
-  function throttledSearch() {
-    clearInterval(timer);  //clear any interval on key up
-    timer = setTimeout(doSearch, 500);
+  Landlords.timer;
+  Landlords.throttledSearch = function() {
+    // only accept letter/number keys as search input
+    // var charTyped = String.fromCharCode(e.which);
+    // if (/[a-z\d]/i.test(charTyped)) {
+    //     console.log("Letter or number typed: " + charTyped);
+    // } else {
+    //   return;
+    // }
+    
+    clearTimeout(Landlords.timer);  //clear any interval on key up
+    Landlords.timer = setTimeout(Landlords.doSearch, 500);
   };
 
   // change enter key to tab
-  function preventEnter(event) {
+  Landlords.preventEnter = function(event) {
     if (event.keyCode == 13) {
       $('#checkbox_active').focus();
       return false;
     }
   };
 
-  function initialize() {
+  Landlords.initialize = function() {
     // change all date input fields to auto-open the calendar
     $('.datepicker').datetimepicker({
       viewMode: 'days',
@@ -51,11 +61,12 @@
       console.log(bldg_address, "[ERROR]: " + result);
     });
 
-    $('#filter').keydown(preventEnter);
+    $('#filter').keydown(Landlords.preventEnter);
 
-    $('#filter').keyup(throttledSearch);
-    $('#checkbox_active').click(doSearch);
+    $('#filter').change(Landlords.throttledSearch);
+    $('#checkbox_active').click(Landlords.doSearch);
   };
-  $(document).ready(initialize);
-  
 })();
+
+$(document).ready(Landlords.initialize);
+  

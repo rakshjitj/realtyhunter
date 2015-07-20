@@ -309,7 +309,6 @@ namespace :import do
 						tenant_occupied: tenant_occupied,
 						primary_agent: user
 					})
-					
 
 					item['unit_amenities'].each{ |a| 
 						amenity_name = a.downcase.strip

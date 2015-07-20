@@ -1,10 +1,10 @@
-#require 'resque'
-
 class Image < ActiveRecord::Base
 	belongs_to :building, touch: true
 	belongs_to :unit, touch: true
   default_scope { order("priority ASC") }
-  
+  after_update :clear_cache
+  after_destroy :clear_cache
+
 	# This method associates the attribute ":file" with a file attachment
   has_attached_file :file, styles: {
     thumb: '100x100>',
@@ -44,5 +44,16 @@ class Image < ActiveRecord::Base
   # def self.async_copy_residential_unit_images(src_id, dst_id)
   #   #Resque.enqueue(CopyResidentialUnitImages, src_id, dst_id)
   # end
+
+  def clear_cache
+    if building_id
+      building.increment_memcache_iterator
+    end
+
+    if unit_id
+      # cast to either residential or commercial unit
+      unit.specific.clear_cache
+    end
+  end
 
 end

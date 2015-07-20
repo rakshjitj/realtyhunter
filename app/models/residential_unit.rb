@@ -206,6 +206,7 @@ class ResidentialUnit < ActiveRecord::Base
       status = params[:status].downcase
       included = %w[active pending off].include?(status)
       if included
+        puts "\n\n\n GOT STATUS #{status} #{Unit.statuses[status]}\n\n\n"
        @running_list = @running_list.where("status = ?", Unit.statuses[status])
       end
     end

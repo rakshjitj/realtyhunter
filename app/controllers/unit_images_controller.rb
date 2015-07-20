@@ -9,8 +9,8 @@ class UnitImagesController < ApplicationController
     @image = @unit.images.build(image_params)
     
     # dropzone expects a json response code
-    @image.unit = @unit
     if @image.save(image_params)
+      @unit.images << @image
       render json: { message: "success", fileID: @image.id, unitID: @unit.id }, :status => 200
     else 
       #  you need to send an error header, otherwise Dropzone
@@ -34,6 +34,7 @@ class UnitImagesController < ApplicationController
     params[:order].each do |key,value|
       Image.find(value[:id]).update_attribute(:priority, value[:position])
     end
+    #@unit.clear_cache
     render :nothing => true
   end
 
@@ -45,6 +46,7 @@ class UnitImagesController < ApplicationController
 
     def set_unit
       if params[:residential_unit_id]
+        puts "WE GOT R-ID #{params[:residential_unit_id]}"
         @unit = ResidentialUnit.find(params[:residential_unit_id])
       elsif params[:commercial_unit_id]
         @unit = CommercialUnit.find(params[:commercial_unit_id])

@@ -1,6 +1,8 @@
+Buildings = {};
+
 (function() {
 
-  function filterListings(event) {
+  Buildings.filterListings = function(event) {
   	var search_path = $('#listings').attr('data-search-path');
     $.ajax({
       url: search_path,
@@ -13,59 +15,101 @@
     });
   };
 
-  function filterBuildings(event) {
+  Buildings.filterBuildings = function(event) {
   	var search_path = $('#search-filters').attr('data-search-path');
+    //console.log("[" + search_path + "] BUILDINGS searching for " + $('#filter').val(), $('#checkbox_active').prop('checked'));
     // for whatever reason, we need to set dataType to json here in order
     // to trigger the call as js.
     $.ajax({
       url: search_path,
       data: {
-        filter: $('#filter').val(),
-        active_only: $('#checkbox_active').prop('checked')
+        filter: $('#buildings #filter').val(),
+        active_only: $('#buildings #checkbox_active').prop('checked')
       },
-      dataType: "json"
-    }).fail(function() {
-      //console.log("[FAILED] search bldgs update failed");
+      dataType: "script"
+    }).fail(function(e) {
+      //console.log("[FAILED] search bldgs update failed", e);
     });
   };
 
   // search as user types
-  var timer;
-  function throttledBldgSearch() {
-    clearInterval(timer);  //clear any interval on key up
-    timer = setTimeout(filterBuildings, 500);
+  Buildings.timer;
+  Buildings.throttledBldgSearch = function() {
+    // only accept letter/number keys as search input
+    // var charTyped = String.fromCharCode(e.which);
+    // if (/[a-z\d]/i.test(charTyped)) {
+    //     console.log("Letter or number typed: " + charTyped);
+    // } else {
+    //   return;
+    // }
+    clearTimeout(Buildings.timer);  //clear any interval on key up
+    Buildings.timer = setTimeout(Buildings.filterBuildings, 500);
   };
 
   // change enter key to tab
-  function preventEnter(event) {
+  Buildings.preventEnter = function(event) {
     if (event.keyCode == 13) {
-      $('#checkbox_active').focus();
+      $('#buildings #checkbox_active').focus();
       return false;
     }
   };
 
-  function set_positions() {
+  Buildings.setPositions = function() {
     // loop through and give each task a data-pos
     // attribute that holds its position in the DOM
-    $('.img-thumbnail').each(function(i) {
+    $('#buildings .img-thumbnail').each(function(i) {
         $(this).attr("data-pos", i+1);
     });
   };
 
-  $(document).ready(function() {
-    // change all date input fields to auto-open the calendar
-    $('.datepicker').datetimepicker({
-      viewMode: 'days',
-      format: 'MM/DD/YYYY',
-      allowInputToggle: true
+  Buildings.removeBldgImage = function (id, building_id) {
+    // make a DELETE ajax request to delete the file
+    $.ajax({
+      type: 'DELETE',
+      url: '/buildings/' + building_id + '/images/' + id,
+      success: function(data){
+        //console.log(data.message);
+        $.getScript('/buildings/' + building_id + '/refresh_images')
+      },
+      error: function(data) {
+        //console.log('ERROR:', data);
+      }
     });
+  };
+
+  Buildings.makeSortable = function() {
+    // call sortable on our div with the sortable class
+    $('#buildings .sortable').sortable({
+      forcePlaceholderSize: true,
+      placeholderClass: 'col col-xs-2 border border-maroon',
+      dragImage: null
+    });
+  };
+
+  Buildings.updateRemoveImgLinks = function() {
+    $('#buildings .delete-bldg-img').click(function(event) {
+      event.preventDefault();
+      var id = $(this).attr('data-id');
+      var bldg_id = $(this).attr('data-bldg-id');
+      console.log(id, bldg_id);
+      Buildings.removeBldgImage(id, bldg_id);
+    });
+  };
+
+  Buildings.initialize = function() {
+    // // change all date input fields to auto-open the calendar
+    // $('.datepicker').datetimepicker({
+    //   viewMode: 'days',
+    //   format: 'MM/DD/YYYY',
+    //   allowInputToggle: true
+    // });
     
     // search filters
-    $('#filter').keydown(preventEnter);
-    $('#filter').keyup(throttledBldgSearch);
+    $('#buildings #filter').keydown(Buildings.preventEnter);
+    $('#buildings #filter').change(Buildings.throttledBldgSearch);
     // toggle between active and inactive units
-    $('#checkbox_active').click(filterBuildings);
-    $('#listings_checkbox_active').click(filterListings);
+    $('#buildings #checkbox_active').click(Buildings.filterBuildings);
+    $('#buildings #listings_checkbox_active').click(Buildings.filterListings);
 
     var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
     // google maps
@@ -119,52 +163,43 @@
   			// grap the id of the uploaded file we set earlier
   			var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
   			var bldg_id = $(file.previewTemplate).find('.dz-remove').attr('bldg_id');
-  			removeBldgImage(id, bldg_id);
+  			Buildings.removeBldgImage(id, bldg_id);
   			file.previewElement.remove();
   		}
   	});
 
-  	$('.delete-bldg-img').click(function(event) {
-  		event.preventDefault();
-  		var id = $(this).attr('data-id');
-  		var bldg_id = $(this).attr('data-bldg-id');
-  		console.log(id, bldg_id);
-  		removeBldgImage(id, bldg_id);
-  	});
+  	Buildings.updateRemoveImgLinks();
 
   	$('.carousel-indicators > li:first-child').addClass('active');
   	$('.carousel-inner > .item:first-child').addClass('active')
 
-  	// call set_positions function
-    set_positions();
-
-    // call sortable on our div with the sortable class
-    $('.sortable').sortable({
-  		forcePlaceholderSize: true,
-  		placeholderClass: 'col col-xs-2 border border-maroon',
-  		dragImage: null
-    });
+    Buildings.setPositions();
+    Buildings.makeSortable();
 
     // after the order changes
-    $('.sortable').sortable().bind('sortupdate', function(e, ui) {
+    $('#buildings .sortable').sortable().bind('sortupdate', function(e, ui) {
       // array to store new order
       updated_order = []
       // set the updated positions
-      set_positions();
+      Buildings.setPositions();
   			
       // populate the updated_order array with the new task positions
-      $('.img-thumbnail').each(function(i){
+      $('#buildings .img-thumbnail').each(function(i){
         updated_order.push({ id: $(this).data('id'), position: i+1 });
       });
-  			console.log(updated_order);
+  		console.log(updated_order);
+      
       // send the updated order via ajax
+      var bldg_id = $('#buildings').attr('data-bldg-id');
       $.ajax({
         type: "PUT",
-        url: '/buildings/' + "<%= @building.id %>" + '/images/sort',
+        url: '/buildings/' + bldg_id + '/images/sort',
         data: { order: updated_order }
       });
     });
   	
-  });// end document ready
+  };// end initialize
 
 })();
+
+$(document).ready(Buildings.initialize);

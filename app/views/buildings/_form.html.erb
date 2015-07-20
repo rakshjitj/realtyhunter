@@ -1,3 +1,5 @@
+<div id="buildings" data-bldg-id="<%= @building.id %>" >
+
 <div class="panel panel-default">
   <div class="panel-body">
 
@@ -13,6 +15,7 @@
       <% if @building.id %>
       
         <br />
+
         <%= form_for(@building, :url => building_images_path(@building), 
           html: {multipart: true, class: "dropzone", id: "building-dropzone"}, method: :post) do |f| %>
           <div class="fallback">
@@ -255,3 +258,6 @@
 
   </div><!-- panel-body-->
 </div><!-- panel -->
+
+
+</div>

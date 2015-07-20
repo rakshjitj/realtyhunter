@@ -23,3 +23,11 @@
 //= require local_time
 //= require moment
 //= require bootstrap-datetimepicker
+
+
+// change all date input fields to auto-open the calendar
+$('.datepicker').datetimepicker({
+  viewMode: 'days',
+  format: 'MM/DD/YYYY',
+  allowInputToggle: true
+});
