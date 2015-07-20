@@ -72,13 +72,13 @@ gem 'delayed_paperclip'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
 gem 'rollbar', '~> 1.2.7'
-gem 'newrelic_rpm'
 
 group :production do
 	gem 'rails_12factor'
 	gem 'puma'
 	gem 'wkhtmltopdf-heroku', '~> 2.12.2.1'
   gem 'connection_pool'
+  gem 'newrelic_rpm'
 end
 
 group :development, :test do

@@ -31,7 +31,7 @@ class Unit < ActiveRecord::Base
   end
 
 	def self.get_residential(units)
-    puts "**** inspect #{units.inspect}"
+    #puts "**** inspect #{units.inspect}"
     #return ResidentialUnit.all
     
     running_list = units.residential.uniq

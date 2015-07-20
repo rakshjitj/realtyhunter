@@ -233,10 +233,20 @@
         <br />
         <div class="row">
           <div class="col-md-2 form-label-responsive">
-            <%= f.label :notes %>
+            <%= f.label :notes, "Internal Notes" %>
           </div>
           <div class="col-md-9">
             <%= f.text_area :notes, class: 'form-control', rows: 6 %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-2 form-label-responsive">
+            <%= f.label :description, "Public Description" %>
+          </div>
+          <div class="col-md-9">
+            <%= f.text_area :description, class: 'form-control', rows: 6 %>
           </div>
         </div>
 

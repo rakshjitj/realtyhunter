@@ -170,9 +170,9 @@ class ResidentialUnit < ActiveRecord::Base
   def self.search(params, user, building_id=nil)
     #puts "PARAMS #{params.inspect}"
     if !params && !building_id
-      return ResidentialUnit.unarchived
+      return ResidentialUnit.joins(:building).unarchived
     elsif !params && building_id
-      return ResidentialUnit.unarchived.where(building_id: building_id)
+      return ResidentialUnit.joins(:building).unarchived.where(building_id: building_id)
     end
 
     @running_list = Unit.joins(:building).unarchived

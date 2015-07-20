@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150519180148) do
+ActiveRecord::Schema.define(version: 20150720143708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,7 +59,9 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.datetime "updated_at",                                        null: false
   end
 
+  add_index "buildings", ["formatted_street_address"], name: "index_buildings_on_formatted_street_address", using: :btree
   add_index "buildings", ["images_id"], name: "index_buildings_on_images_id", using: :btree
+  add_index "buildings", ["updated_at"], name: "index_buildings_on_updated_at", using: :btree
 
   create_table "buildings_utilities", id: false, force: :cascade do |t|
     t.integer "building_id"
@@ -115,6 +117,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   add_index "companies", ["building_amenities_id"], name: "index_companies_on_building_amenities_id", using: :btree
   add_index "companies", ["buildings_id"], name: "index_companies_on_buildings_id", using: :btree
   add_index "companies", ["landlords_id"], name: "index_companies_on_landlords_id", using: :btree
+  add_index "companies", ["name"], name: "index_companies_on_name", using: :btree
   add_index "companies", ["offices_id"], name: "index_companies_on_offices_id", using: :btree
   add_index "companies", ["pet_policies_id"], name: "index_companies_on_pet_policies_id", using: :btree
   add_index "companies", ["rental_terms_id"], name: "index_companies_on_rental_terms_id", using: :btree
@@ -179,6 +182,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   end
 
   add_index "landlords", ["buildings_id"], name: "index_landlords_on_buildings_id", using: :btree
+  add_index "landlords", ["code"], name: "index_landlords_on_code", using: :btree
 
   create_table "neighborhoods", force: :cascade do |t|
     t.boolean  "archived",     default: false
@@ -260,7 +264,11 @@ ActiveRecord::Schema.define(version: 20150519180148) do
     t.integer "op_fee_percentage"
     t.integer "tp_fee_percentage"
     t.boolean "tenant_occupied",   default: false
+    t.string  "description"
   end
+
+  add_index "residential_units", ["baths"], name: "index_residential_units_on_baths", using: :btree
+  add_index "residential_units", ["beds"], name: "index_residential_units_on_beds", using: :btree
 
   create_table "roles", force: :cascade do |t|
     t.string   "name"
@@ -294,6 +302,9 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   end
 
   add_index "units", ["images_id"], name: "index_units_on_images_id", using: :btree
+  add_index "units", ["rent"], name: "index_units_on_rent", using: :btree
+  add_index "units", ["status"], name: "index_units_on_status", using: :btree
+  add_index "units", ["updated_at"], name: "index_units_on_updated_at", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.boolean  "archived",            default: false
@@ -325,6 +336,7 @@ ActiveRecord::Schema.define(version: 20150519180148) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["employee_title_id"], name: "index_users_on_employee_title_id", using: :btree
   add_index "users", ["manager_id"], name: "index_users_on_manager_id", using: :btree
+  add_index "users", ["name"], name: "index_users_on_name", using: :btree
 
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"
