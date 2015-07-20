@@ -51,10 +51,11 @@
         <br />
         <%= link_to 'Duplicate', duplicate_modal_residential_unit_path(residential_unit), 
           data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
-        <% if residential_unit.status == "active" %>
-          <br /><%= link_to 'Take off', take_off_modal_residential_unit_path(residential_unit), 
-            data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %>
-        <% end %>
+        <!--% if residential_unit.status == "active" %-->
+          <!--br /-->
+          <!--%= link_to 'Take off', take_off_modal_residential_unit_path(residential_unit), 
+            data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %-->
+        <!--% end %-->
       </td>
     <% end %>
   </tr>
