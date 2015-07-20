@@ -204,10 +204,15 @@ class ResidentialUnit < ActiveRecord::Base
     # search by status
     if params[:status]
       status = params[:status].downcase
-      included = %w[active pending off].include?(status)
+      included = ['active + pending', 'active', 'pending', 'off'].include?(status)
       if included
-        puts "\n\n\n GOT STATUS #{status} #{Unit.statuses[status]}\n\n\n"
-       @running_list = @running_list.where("status = ?", Unit.statuses[status])
+        #puts "\n\n\n GOT STATUS #{status} #{Unit.statuses[status]}\n\n\n"
+        if status == 'active + pending'
+          @running_list = @running_list.where("status = ? or status = ?", 
+            Unit.statuses["active"], Unit.statuses["pending"])
+        else
+          @running_list = @running_list.where("status = ?", Unit.statuses[status])
+        end
       end
     end
 
