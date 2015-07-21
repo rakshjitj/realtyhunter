@@ -54,6 +54,11 @@ a:hover {
   background-color: transparent !important;
 }
 
+a:hover.btn-warning {
+  // @brand-warning:         #f0ad4e;
+  background-color: #eb9114 !important;
+}
+
 .container-fluid {
   max-width: 1200px !important;
 }
