@@ -177,12 +177,12 @@
       t.integer :beds
       t.float   :baths
       t.string  :notes
-      t.string :lease_start
-      t.string :lease_end
+      t.string  :lease_start
+      t.string  :lease_end
       t.boolean :has_fee # means has broker's fee
       t.integer :op_fee_percentage
       t.integer :tp_fee_percentage
-      t.boolean  :tenant_occupied, default: false
+      t.boolean :tenant_occupied, default: false
     end
 
     create_table :commercial_units do |t|

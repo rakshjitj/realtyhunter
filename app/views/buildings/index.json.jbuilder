@@ -7,8 +7,8 @@ json.array!(@buildings) do |building|
 	json.state building.administrative_area_level_1_short
 	json.zipcode building.postal_code
 	
-	if building.cached_neighborhood
-		json.neighborhood building.cached_neighborhood
+	if building.neighborhood
+		json.neighborhood building.neighborhood
 	end
 	
 	json.street_address building.street_address

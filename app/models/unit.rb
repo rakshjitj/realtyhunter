@@ -9,8 +9,8 @@ class Unit < ActiveRecord::Base
 
   scope :unarchived, ->{ where(archived: false) }
   scope :active, ->{ where(status: "active") }
-  scope :residential, ->{ where("actable_type = 'ResidentialUnit'") }
-  scope :commercial, ->{ where("actable_type = 'CommercialUnit'") }
+  #scope :residential, ->{ where("actable_type = 'ResidentialUnit'") }
+  #scope :commercial, ->{ where("actable_type = 'CommercialUnit'") }
 
 	enum status: [ :active, :pending, :off ]
   scope :on_market, ->{where.not(status: Unit.statuses["off"])}
@@ -30,23 +30,21 @@ class Unit < ActiveRecord::Base
     find_by!(id: id, archived: false)
   end
 
-	def self.get_residential(units)
-    #puts "**** inspect #{units.inspect}"
-    #return ResidentialUnit.all
-    
-    running_list = units.residential.uniq
-    # searching by id breaks in factorygirl, so search by listing_id
-    ids = running_list.map(&:listing_id)
-    ResidentialUnit.where(listing_id: ids)
-    #ResidentialUnit.joins(:unit).merge(units.where("actable_type = 'ResidentialUnit'"))
-  end
 
-  def self.get_commercial(units)
-    running_list = units.commercial.uniq
-    ids = running_list.map(&:listing_id)
-    # searching by id breaks in factorygirl, so search by listing_id
-    # TODO: add index on listing_id?
-    CommercialUnit.where(listing_id: ids)
-  end
+  # ResidentialUnit.joins(unit: {building: [:landlord, :neighborhood]}).where(id: 1).select(["residential_units.id", "residential_units.beds", "landlords.code AS landlord_code"]) #.explain
+	# def self.get_residential(units)
+ #    running_list = units.residential.uniq
+ #    # searching by id breaks in factorygirl, so search by listing_id
+ #    ids = running_list.map(&:listing_id)
+ #    ResidentialUnit.includes(unit: {building: [:landlord, :neighborhood]}).where(listing_id: ids)
+ #  end
+
+  # def self.get_commercial(units)
+  #   running_list = units.commercial.uniq
+  #   ids = running_list.map(&:listing_id)
+  #   # searching by id breaks in factorygirl, so search by listing_id
+  #   # TODO: add index on listing_id?
+  #   CommercialUnit.where(listing_id: ids)
+  # end
   
 end

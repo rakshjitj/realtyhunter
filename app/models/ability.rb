@@ -40,9 +40,15 @@ class Ability
       can :manage, ResidentialUnit do |residential_unit|
         !residential_unit.building_id || user.is_management? || (residential_unit.building.company_id == user.company_id && user.handles_residential?)
         end
+      can :manage, ResidentialListing do |residential_listing|
+        !residential_listing.unit.building_id || user.is_management? || (residential_listing.building.company_id == user.company_id && user.handles_residential?)
+        end
       can :manage, CommercialUnit do |commercial_unit|
         !commercial_unit.building_id || user.is_management? || (commercial_unit.building.company_id == user.company_id && user.handles_commercial?)
       end
+      # can :manage, CommercialListing do |commercial_listing|
+      #   !commercial_listing.building_id || user.is_management? || (commercial_listing.building.company_id == user.company_id && user.handles_commercial?)
+      # end
     
     elsif user.has_role?(:external_vendor)
       cannot :read, :all

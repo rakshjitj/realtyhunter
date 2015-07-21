@@ -69,7 +69,8 @@ class ResidentialUnitsController < ApplicationController
   # GET /residential_units/1
   # GET /residential_units/1.json
   def show
-    fresh_when([@residential_unit, @residential_unit.images])
+    #fresh_when([@residential_unit, @residential_unit.images])
+    @residential_unit
   end
 
   # GET /residential_units/new
@@ -266,7 +267,8 @@ class ResidentialUnitsController < ApplicationController
       do_search
       @count_all = ResidentialUnit.all.count
       @map_infos = ResidentialUnit.set_location_data(@residential_units)
-      @residential_units = Kaminari.paginate_array(@residential_units).page params[:page]
+      #@residential_units = Kaminari.paginate_array(@residential_units).page params[:page]
+      @residential_units = @residential_units.page params[:page]
     end
 
     def residential_units_no_pagination
@@ -300,7 +302,7 @@ class ResidentialUnitsController < ApplicationController
       end
 
       @residential_units = ResidentialUnit.search(params, current_user, params[:building_id])
-      @residential_units = custom_sort
+      #@residential_units = custom_sort
 
       @residential_units
     end

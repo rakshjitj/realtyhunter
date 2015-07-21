@@ -14,8 +14,8 @@
 		  		</div>
 		  		<div class="row">
 		  			<div class="col-md-6">
-		  				<p><%= @building.cached_active_units_count %> available units on the market.
-								<%= @building.cached_units_count %> total units.
+		  				<p><%= @building.active_units.count %> available units on the market.
+								<%= @building.units.count %> total units.
 							</p>
 		  			</div>
 		  			<!--div class="col-md-6 form-label-responsive"></div-->
@@ -89,10 +89,10 @@
 				  <%= @building.formatted_street_address %>
 				</p>
 				
-				<% if @building.cached_neighborhood %>
+				<% if @building.neighborhood %>
 					<p>
 					  <strong>Neighborhood:</strong>
-					  <%= @building.cached_neighborhood.name %>
+					  <%= @building.neighborhood.name %>
 					</p>
 				<% end %>
 
@@ -104,9 +104,9 @@
 				<p>
 				  <strong>Landlord Code:</strong>
 				  <% if current_user.is_management? %>
-					  <%= link_to @building.cached_landlord.code, landlord_path(@building.cached_landlord) %>
+					  <%= link_to @building.landlord.code, landlord_path(@building.landlord) %>
 					<% else %>
-						<%= @building.cached_landlord.code %>
+						<%= @building.landlord.code %>
 					<% end %>
 				</p>
 

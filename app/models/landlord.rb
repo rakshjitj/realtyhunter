@@ -81,14 +81,14 @@ class Landlord < ActiveRecord::Base
 
 	def residential_units
     bldg_ids = self.building_ids
-    units = Unit.where(building_id: bldg_ids)
-    @residential_units = Unit.get_residential(units)
+    @residential_units = ResidentialListing.for_buildings(bldg_ids)
   end
 
   def commercial_units
   	bldg_ids = self.building_ids
     units = Unit.where(building_id: bldg_ids)
-    @commercial_units = Unit.get_commercial(units)
+    #@commercial_units = Unit.get_commercial(units)
+    @commercial_units = CommercialUnit.none
   end
 
 	private

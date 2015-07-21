@@ -141,14 +141,16 @@ class BuildingsController < ApplicationController
 
     def set_units
       active_only = params[:active_only] == "true"
-      @residential_units = Kaminari.paginate_array(@building.residential_units(active_only)).page params[:page]
-      @commercial_units = Kaminari.paginate_array(@building.commercial_units(active_only)).page params[:page]
+      @residential_units = @building.residential_units(active_only).page params[:page]
+      @commercial_units = @building.commercial_units(active_only).page params[:page]
     end
 
     def set_buildings
-      @buildings = Building.search(building_params[:filter], building_params[:active_only])
-      @buildings = custom_sort
-      @buildings = Kaminari.paginate_array(@buildings).page params[:page]
+      @buildings = Building.search(params[:page] || 0, 
+        building_params[:filter], 
+        building_params[:active_only])
+      #@buildings = custom_sort
+      @buildings = @buildings.page params[:page]
     end
 
     def custom_sort

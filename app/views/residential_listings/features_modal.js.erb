@@ -1,0 +1,53 @@
+$('#featuresModal #placeholder-body').html("<%= j(render :partial => "features_modal_helper", locals: { unit_amenities: @unit_amenities, building_amenities: @building_amenities }) %>");
+
+// remember the last selected features
+var ids = $('#unit_feature_ids').val().split(", ");
+if (ids != "{:id=>\"unit_feature_ids\"}") {
+	$.each(ids, function(idx, val) {
+		$('#'+ val).toggleClass('active');
+	});
+}
+var ids = $('#building_feature_ids').val().split(", ");
+if (ids != "{:id=>\"building_feature_ids\"}") {
+	$.each(ids, function(idx, val) {
+		$('#'+ val).toggleClass('active');
+	});
+}
+
+// feed info back to search form
+$('#featuresModal .btn-close').click( function(event) {
+	var selectedFeatures = [];
+	var selectedUnitIds = [];
+	var selectedBuildingIds = [];
+	
+	var html = ""
+	$(".unit-feature-buttons .active").each(function(idx, val) {
+		selectedFeatures.push($(val).attr('name'));
+		selectedUnitIds.push(val.id);
+		// create buttons with 'x' to remove each item
+		html += "<a href=\"\" class=\"btn btn-xs btn-default remove-unit-feature\" data-id=\"" + val.id + "\">" + $(val).attr('name') 
+			+ " <span class=\"glyphicon glyphicon-remove\"></span></a> ";
+	});
+	$(".building-feature-buttons .active").each(function(idx, val) {
+		selectedFeatures.push($(val).attr('name'));
+		selectedBuildingIds.push(val.id);
+		// create buttons with 'x' to remove each item
+		html += "<a href=\"\" class=\"btn btn-xs btn-default remove-building-feature\" data-id=\"" + val.id + "\">" + $(val).attr('name') 
+			+ " <span class=\"glyphicon glyphicon-remove\"></span></a> ";
+	});
+
+	// display output on the index page
+	if (selectedFeatures.length > 0) {
+		//$('#selected_features').html("Selected features: " + selectedFeatures.join(", "));
+		$('#selected_features').html(html);
+		$('.remove-unit-feature').click(ResidentialListings.removeUnitFeature);
+		$('.remove-building-feature').click(ResidentialListings.removeBuildingFeature);
+	} else {
+		$('#selected_features').html();
+	}
+	
+	// trigger the new search
+	$('#unit_feature_ids').val(selectedUnitIds.join(","));
+	$('#building_feature_ids').val(selectedBuildingIds.join(","));
+	ResidentialListings.throttledSearch();
+});

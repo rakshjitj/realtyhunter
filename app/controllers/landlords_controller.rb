@@ -95,7 +95,7 @@ class LandlordsController < ApplicationController
     def set_landlords
       @landlords = Landlord.search(params)
       @landlords = custom_sort
-      @landlords = Kaminari.paginate_array(@landlords).page params[:page]
+      @landlords = @landlords.page params[:page]
     end
 
     def custom_sort

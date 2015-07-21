@@ -3,8 +3,8 @@ class CommercialUnit < ActiveRecord::Base
   belongs_to :commercial_property_type
   scope :unarchived, ->{where(archived: false)}
   before_validation :generate_unique_id
-  after_update :clear_cache
-  after_destroy :clear_cache
+  # after_update :clear_cache
+  # after_destroy :clear_cache
   
   attr_accessor :property_type, :inaccuracy_description
 
@@ -18,45 +18,45 @@ class CommercialUnit < ActiveRecord::Base
 	validates :floor, presence: true, :numericality => { :less_than_or_equal_to => 999 }
 	validates :building_size, presence: true, :numericality => { :less_than_or_equal_to => 99999999 }
 
-  def memcache_iterator
-    # fetch the user's memcache key
-    # If there isn't one yet, assign it a random integer between 0 and 10
-    Rails.cache.fetch("cunit-#{id}-memcache-iterator") { rand(10) }
-  end
+  # def memcache_iterator
+  #   # fetch the user's memcache key
+  #   # If there isn't one yet, assign it a random integer between 0 and 10
+  #   Rails.cache.fetch("cunit-#{id}-memcache-iterator") { rand(10) }
+  # end
 
-  def cache_key
-    "cunit-#{id}-#{self.memcache_iterator}"
-  end
+  # def cache_key
+  #   "cunit-#{id}-#{self.memcache_iterator}"
+  # end
 
   def cached_building
-    Rails.cache.fetch("#{cache_key}-building") {
+    #Rails.cache.fetch("#{cache_key}-building") {
       building
-    }
+    #}
   end
   
   def cached_neighborhood
-    Rails.cache.fetch("#{cache_key}-neighborhood") {
+    #Rails.cache.fetch("#{cache_key}-neighborhood") {
       cached_building.neighborhood
-    }
+    #}
   end
 
   def cached_primary_img
-    Rails.cache.fetch("#{cache_key}-primary_img") {
+    #Rails.cache.fetch("#{cache_key}-primary_img") {
       images[0] ? images[0] : nil
-    }
+    #}
   end
 
   def cached_street_address
-    Rails.cache.fetch("#{cache_key}-street_address") {
+    #Rails.cache.fetch("#{cache_key}-street_address") {
       cached_building.street_address
-    }
+    #}
     #building.street_address
   end
 
   def cached_landlord
-    Rails.cache.fetch("#{cache_key}-landlord") {
+    #Rails.cache.fetch("#{cache_key}-landlord") {
       cached_building.landlord
-    }
+    #}
   end
 
   def archive
@@ -218,10 +218,10 @@ class CommercialUnit < ActiveRecord::Base
     map_infos.to_json
   end
 
-  def clear_cache
-    increment_memcache_iterator
-    building.increment_memcache_iterator
-  end
+  # def clear_cache
+  #   increment_memcache_iterator
+  #   building.increment_memcache_iterator
+  # end
 
   private
     def generate_unique_id
@@ -235,7 +235,7 @@ class CommercialUnit < ActiveRecord::Base
     # we can't expire old keys with a regex or delete_matched on dalli
     # instead use the strategy suggested here:
     # https://quickleft.com/blog/faking-regex-based-cache-keys-in-rails/
-    def increment_memcache_iterator
-      Rails.cache.write("cunit-#{id}-memcache-iterator", self.memcache_iterator + 1)
-    end
+    # def increment_memcache_iterator
+    #   Rails.cache.write("cunit-#{id}-memcache-iterator", self.memcache_iterator + 1)
+    # end
 end

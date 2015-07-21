@@ -1,14 +1,16 @@
 module ResidentialUnitsHelper
 	
-	def pet_policy(unit)
-		if unit.cached_pet_policy
-			unit.cached_pet_policy.name.titleize
+	def pet_policy(residential_unit)
+		building = residential_unit.unit.building
+		if building.pet_policy
+			building.pet_policy_name.titleize
 		else
 			"-"
 		end
 	end
 
-	def open_house(unit)
+	def open_house(residential_unit)
+		unit = residential_unit.unit
 		descrip = "N/A"
 		if unit.open_house
 			if unit.oh_exclusive
@@ -20,12 +22,22 @@ module ResidentialUnitsHelper
 		descrip.html_safe
 	end
 
-	def small_header(unit)
-		if unit.cached_neighborhood
-			"#{unit.cached_neighborhood.name}, #{unit.cached_building.sublocality}, #{unit.cached_building.administrative_area_level_1_short} #{unit.cached_building.postal_code}"			
+	def small_header(residential_unit)
+		unit = residential_unit.unit
+		if unit
+			building = unit.building
+			if unit.building.neighborhood
+				"#{building.neighborhood.name}, #{building.sublocality}, #{building.administrative_area_level_1_short} #{building.postal_code}"			
+			else
+				"#{building.sublocality}, #{building.administrative_area_level_1_short} #{building.postal_code}"
+			end
 		else
-			"#{unit.cached_building.sublocality}, #{unit.cached_building.administrative_area_level_1_short} #{unit.cached_building.postal_code}"
-		end	
+			if unit.neighborhood_name
+				"#{unit.neighborhood_name}, #{unit.sublocality}, #{unit.administrative_area_level_1_short} #{unit.postal_code}"			
+			else
+				"#{unit.sublocality}, #{unit.administrative_area_level_1_short} #{unit.postal_code}"
+			end
+		end
 		
 	end
 

@@ -52,12 +52,12 @@
 		  	<div class="row">
 		  		<div class="col-md-12">
 		  			<!-- begin photos -->
-				  	<% if @commercial_unit.images.length > 0 || @commercial_unit.cached_building.images.length > 0 %>
+				  	<% if @commercial_unit.images.length > 0 || @commercial_unit.building.images.length > 0 %>
 							<div id="commercial_unit-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
 							  <!-- Wrapper for slides -->
 							  <div class="carousel-inner" role="listbox">
 							  <!-- first display building photos... -->
-							  	<% @commercial_unit.cached_building.images.each do |image| %>
+							  	<% @commercial_unit.building.images.each do |image| %>
 							  		<div class="item">
 								      <%= image_tag image.file.url(:original), :class => 'img-responsive center-block', 
 								      	alt: image.file.url(:original)  %>
@@ -73,7 +73,7 @@
 							  </div>
 
 							  <!-- Controls -->
-							  <% if @commercial_unit.cached_building.images.length + @commercial_unit.images.length > 1 %>
+							  <% if @commercial_unit.building.images.length + @commercial_unit.images.length > 1 %>
 								  <a class="left carousel-control" href="#commercial_unit-carousel" role="button" data-slide="prev">
 								    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
 								    <span class="sr-only">Previous</span>
@@ -87,10 +87,10 @@
 
 							<!-- clickable navigation -->
 							<!-- first building photos... -->
-							<% if @commercial_unit.cached_building.images.length + @commercial_unit.images.length > 1 %>
+							<% if @commercial_unit.building.images.length + @commercial_unit.images.length > 1 %>
 								<% i = 0 %>
-								<% for i in 0..@commercial_unit.cached_building.images.length-1 %>
-									<% image = @commercial_unit.cached_building.images[i] %>
+								<% for i in 0..@commercial_unit.building.images.length-1 %>
+									<% image = @commercial_unit.building.images[i] %>
 						  		<a href="#commercial_unit-carousel" data-slide-to="<%= i %>">
 							      <%= image_tag image.file.url(:thumb), :class => 'photo-inline', 
 							      	alt: image.file.url(:thumb) %>
@@ -310,13 +310,13 @@
 	    			<div class="tab-content">
 				      <!-- ******************** first tablpanel - google maps ******************** -->
 				      <div role="tabpanel" class="tab-pane fade in active" id="google-map-tab">
-				      	<div id="map_canvas" data-address="<%= @commercial_unit.cached_building.formatted_street_address %>"></div>
+				      	<div id="map_canvas" data-address="<%= @commercial_unit.building.formatted_street_address %>"></div>
 				      </div><!-- end tabpanel - google maps -->
 				      <!-- ******************** first tabpanel - walkscore ********************-->
 				      <div role="tabpanel" class="tab-pane fade center" id="walkscore">
 				      	<script type='text/javascript'>
 									var ws_wsid = 'e4004727da4a47a2bcb676b7abf930b6';
-									var ws_address = '<%= @commercial_unit.cached_building.formatted_street_address %>';
+									var ws_address = '<%= @commercial_unit.building.formatted_street_address %>';
 									var ws_width = '600';
 									var ws_height = '444';
 									var ws_layout = 'horizontal';

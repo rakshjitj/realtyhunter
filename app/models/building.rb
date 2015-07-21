@@ -4,8 +4,8 @@ class Building < ActiveRecord::Base
   before_save :process_rental_term
   before_save :process_custom_amenities
   before_save :process_custom_utilities
-  after_update :clear_cache
-  after_destroy :clear_cache
+  # after_update :clear_cache
+  # after_destroy :clear_cache
 
 	belongs_to :company, touch: true
 	belongs_to :landlord, touch: true
@@ -46,65 +46,65 @@ class Building < ActiveRecord::Base
 	# some address lookups don't return a valid neighborhood
 	#validates :neighborhood, presence: true
 
-  def increment_memcache_iterator
-    Rails.cache.write("building-#{id}-memcache-iterator", self.memcache_iterator + 1)
-  end
+  # def increment_memcache_iterator
+  #   Rails.cache.write("building-#{id}-memcache-iterator", self.memcache_iterator + 1)
+  # end
 
-  def memcache_iterator
-    # fetch the user's memcache key
-    # If there isn't one yet, assign it a random integer between 0 and 10
-    Rails.cache.fetch("building-#{id}-memcache-iterator") { rand(10) }
-  end
+  # def memcache_iterator
+  #   # fetch the user's memcache key
+  #   # If there isn't one yet, assign it a random integer between 0 and 10
+  #   Rails.cache.fetch("building-#{id}-memcache-iterator") { rand(10) }
+  # end
 
-  def cache_key
-    "building-#{id}-#{self.memcache_iterator}"
-  end
+  # def cache_key
+  #   "building-#{id}-#{self.memcache_iterator}"
+  # end
 
-	def cached_neighborhood
-    Rails.cache.fetch("#{cache_key}_neighborhood") {
-      neighborhood
-    }
-  end
+	# def cached_neighborhood
+ #    #Rails.cache.fetch("#{cache_key}_neighborhood") {
+ #      neighborhood
+ #    #}
+ #  end
 
-  def cached_landlord
-    Rails.cache.fetch("#{cache_key}_landlord") {
-      landlord
-    }
-  end
+ #  def cached_landlord
+ #    #Rails.cache.fetch("#{cache_key}_landlord") {
+ #      landlord
+ #    #}
+ #  end
 
-  def cached_primary_img
-    Rails.cache.fetch("#{cache_key}_primary_img") {
-      images[0] ? images[0] : nil
-    }
-  end
+ #  def cached_primary_img
+ #    #Rails.cache.fetch("#{cache_key}_primary_img") {
+ #      images[0] ? images[0] : nil
+ #    #}
+ #  end
 
-  def cached_units
-    units.unarchived
-    # Rails.cache.fetch("#{cache_key}_units") {
-    #   units.unarchived.order('updated_at DESC')
-    # }
-  end
+ #  def cached_units
+ #    units.unarchived
+ #    # Rails.cache.fetch("#{cache_key}_units") {
+ #    #   units.unarchived.order('updated_at DESC')
+ #    # }
+ #  end
 
-  def cached_active_units
-    units.unarchived.active
-    # Rails.cache.fetch("#{cache_key}_active_units") {
-    #   units.unarchived.active.order('updated_at DESC')
-    # }
-  end
+ #  def cached_active_units
+ #    units.unarchived.active
+ #    # Rails.cache.fetch("#{cache_key}_active_units") {
+ #    #   units.unarchived.active.order('updated_at DESC')
+ #    # }
+ #  end
 
-  def cached_units_count
-    units.unarchived.count
-    # Rails.cache.fetch("#{cache_key}_units_count") {
-    #   cached_units.count
-    # }
-  end
+ #  def cached_units_count
+ #    units.unarchived.count
+ #    # Rails.cache.fetch("#{cache_key}_units_count") {
+ #    #   cached_units.count
+ #    # }
+ #  end
 
-  def cached_active_units_count
-    units.unarchived.active.count
-    # Rails.cache.fetch("#{cache_key}_active_units_count") {
-    #   cached_active_units.count
-    # }
-  end
+ #  def cached_active_units_count
+ #    units.unarchived.active.count
+ #    # Rails.cache.fetch("#{cache_key}_active_units_count") {
+ #    #   cached_active_units.count
+ #    # }
+ #  end
 
   def archive
     self.archived = true
@@ -124,27 +124,45 @@ class Building < ActiveRecord::Base
 	end
 
 	def active_units
-		self.cached_active_units
+	# 	self.active_units
+    units.unarchived.active.order('updated_at DESC')
 	end
 
 	def total_units_count
-		self.cached_units_count
+		#self.units.count
+    units.unarchived.count
 	end
 
 	def active_units_count
-		self.cached_active_units_count
+		#self.active_units.count
+    units.unarchived.active.count
 	end
 
 	def last_unit_updated
-		if self.cached_units.length > 0
-			self.cached_units.first.updated_at
+		if self.units.length > 0
+			self.units.first.updated_at
 		else
 			'--'
 		end
 	end
 
-	def self.search(query_str, active_only)
-		@running_list = Building.includes(:images).unarchived
+	def self.search(page_num, query_str, active_only)
+    # kaminari lists 50 items per page by default
+    offset = page_num * 50
+
+    @running_list = Building.joins(:units, :landlord, :neighborhood).includes(:images)
+      .where('units.archived = false')
+      .select('buildings.formatted_street_address', 
+        'buildings.id', 'buildings.street_number', 'buildings.route', 
+        'buildings.updated_at', 'units.status',
+        'neighborhoods.name AS neighborhood_name', 
+        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        'units.available_by')
+      .offset(offset)
+      .limit(50)
+      .uniq
+
+		#@running_list = Building.includes(:images).unarchived
     return @running_list if !query_str
     
     @terms = query_str.split(" ")
@@ -153,10 +171,10 @@ class Building < ActiveRecord::Base
     end
 
     if active_only == "true"
-    	@running_list = @running_list.joins(:units).where(units: {status:"active"})
+    	@running_list = @running_list.where(units: {status:"active"})#.joins(:units)
     end
 
-    @running_list.uniq
+    @running_list#.uniq
 	end
 
 	def amenities_to_s
@@ -188,21 +206,23 @@ class Building < ActiveRecord::Base
   end
 
   def residential_units(active_only=false)
-    if active_only
-      units = Unit.unarchived.where(building_id: id, status:"active")
-    else
-      units = Unit.unarchived.includes(:building).where(building_id: id)
-    end
-    units = Unit.get_residential(units)
+    #if active_only
+      #units = Unit.unarchived.where(building_id: id, status:"active")
+    ResidentialListing.for_buildings([id], active_only)
+    #else
+      #units = Unit.unarchived.includes(:building).where(building_id: id)
+    #end
+    #units = Unit.get_residential(units)
   end
 
   def commercial_units(active_only=false)
-    if active_only
-      units = Unit.unarchived.where(building_id: id, status:"active")
-    else
-      units = Unit.unarchived.includes(:building).where(building_id: id)
-    end
-    Unit.get_commercial(units)
+    # if active_only
+    #   units = Unit.unarchived.where(building_id: id, status:"active")
+    # else
+    #   units = Unit.unarchived.includes(:building).where(building_id: id)
+    # end
+    # Unit.get_commercial(units)
+    CommercialUnit.none
   end
 
   private
@@ -247,8 +267,8 @@ class Building < ActiveRecord::Base
       end
     end
 
-    def clear_cache
-      increment_memcache_iterator
-    end
+    # def clear_cache
+    #   increment_memcache_iterator
+    # end
   
 end

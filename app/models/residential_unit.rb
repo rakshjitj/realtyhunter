@@ -26,50 +26,50 @@ class ResidentialUnit < ActiveRecord::Base
 
   #validates :weeks_free_offered, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
 
-  def memcache_iterator
-    # fetch the user's memcache key
-    # If there isn't one yet, assign it a random integer between 0 and 10
-    Rails.cache.fetch("runit-#{id}-memcache-iterator") { rand(10) }
-  end
+  # def memcache_iterator
+  #   # fetch the user's memcache key
+  #   # If there isn't one yet, assign it a random integer between 0 and 10
+  #   Rails.cache.fetch("runit-#{id}-memcache-iterator") { rand(10) }
+  # end
 
-  def cache_key
-    "runit-#{id}-#{self.memcache_iterator}"
-  end
+  # def cache_key
+  #   "runit-#{id}-#{self.memcache_iterator}"
+  # end
 
   def cached_building
-    Rails.cache.fetch("#{cache_key}-building") {
+    #Rails.cache.fetch("#{cache_key}-building") {
       building
-    }
+    #}
   end
 
   def cached_neighborhood
-    Rails.cache.fetch("#{cache_key}-neighborhood") {
+    #Rails.cache.fetch("#{cache_key}-neighborhood") {
       cached_building.neighborhood
-    }
+    #}
   end
 
   def cached_pet_policy
-    Rails.cache.fetch("#{cache_key}-pet_policy") {
+    #Rails.cache.fetch("#{cache_key}-pet_policy") {
       cached_building.pet_policy
-    }
+    #}
   end
 
   def cached_landlord
-    Rails.cache.fetch("#{cache_key}-landlord") {
+    #Rails.cache.fetch("#{cache_key}-landlord") {
       cached_building.landlord
-    }
+    #}
   end
 
   def cached_primary_img
-    Rails.cache.fetch("#{cache_key}-primary_img") {
+    #Rails.cache.fetch("#{cache_key}-primary_img") {
       images[0] ? images[0] : nil
-    }
+    #}
   end
 
   def cached_street_address
-    Rails.cache.fetch("#{cache_key}-street_address") {
+    #Rails.cache.fetch("#{cache_key}-street_address") {
       cached_building.street_address
-    }
+    #}
     #building.street_address
   end
 
@@ -175,7 +175,9 @@ class ResidentialUnit < ActiveRecord::Base
       return ResidentialUnit.joins(:building).unarchived.where(building_id: building_id)
     end
 
-    @running_list = Unit.joins(:building).unarchived
+    # includes(building: [:landlord, :neighborhood])
+    #@running_list = Unit.unarchived
+    @running_list = ResidentialListing.unarchived
 
     # only admins are allowed to view off-market units
     if !user.is_management?
@@ -275,7 +277,7 @@ class ResidentialUnit < ActiveRecord::Base
 
     # the following fields are on ResidentialUnit not Unit, so cast the 
     # objects first
-    @running_list = Unit.get_residential(@running_list)
+    #@running_list = Unit.get_residential(@running_list)
 
     # search beds
     if params[:bed_min] && params[:bed_max]
@@ -313,7 +315,7 @@ class ResidentialUnit < ActiveRecord::Base
         .where('residential_amenity_id IN (?)', features)
     end
 
-    @running_list.uniq
+      @running_list#.uniq
 	end
 
   # TODO: run this in the background. See Image class for stub

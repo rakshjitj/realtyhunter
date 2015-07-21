@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150720143708) do
+ActiveRecord::Schema.define(version: 20150721044131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,29 @@ ActiveRecord::Schema.define(version: 20150720143708) do
   create_table "buildings_utilities", id: false, force: :cascade do |t|
     t.integer "building_id"
     t.integer "utility_id"
+  end
+
+  create_table "commercial_listings", force: :cascade do |t|
+    t.integer  "sq_footage"
+    t.integer  "floor"
+    t.integer  "building_size"
+    t.boolean  "build_to_suit",               default: false
+    t.integer  "minimum_divisible"
+    t.integer  "maximum_contiguous"
+    t.integer  "lease_type"
+    t.boolean  "is_sublease",                 default: false
+    t.string   "property_description"
+    t.string   "location_description"
+    t.integer  "construction_status",         default: 0
+    t.integer  "no_parking_spaces"
+    t.integer  "pct_procurement_fee"
+    t.integer  "lease_term_months"
+    t.boolean  "rate_is_negotiable"
+    t.integer  "total_lot_size"
+    t.integer  "commercial_property_type_id"
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.integer  "unit_id"
   end
 
   create_table "commercial_property_types", force: :cascade do |t|
@@ -249,9 +272,30 @@ ActiveRecord::Schema.define(version: 20150720143708) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "residential_amenities_listings", id: false, force: :cascade do |t|
+    t.integer "residential_listing_id"
+    t.integer "residential_amenity_id"
+  end
+
   create_table "residential_amenities_units", id: false, force: :cascade do |t|
     t.integer "residential_unit_id"
     t.integer "residential_amenity_id"
+  end
+
+  create_table "residential_listings", force: :cascade do |t|
+    t.integer  "beds"
+    t.float    "baths"
+    t.string   "notes"
+    t.string   "description"
+    t.string   "lease_start"
+    t.string   "lease_end"
+    t.boolean  "has_fee"
+    t.integer  "op_fee_percentage"
+    t.integer  "tp_fee_percentage"
+    t.boolean  "tenant_occupied",   default: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.integer  "unit_id"
   end
 
   create_table "residential_units", force: :cascade do |t|
@@ -282,27 +326,31 @@ ActiveRecord::Schema.define(version: 20150720143708) do
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
   create_table "units", force: :cascade do |t|
-    t.boolean  "archived",         default: false
+    t.boolean  "archived",                default: false
     t.integer  "listing_id"
     t.string   "building_unit"
     t.integer  "rent"
     t.datetime "available_by"
     t.string   "access_info"
-    t.integer  "status",           default: 0
+    t.integer  "status",                  default: 0
     t.string   "open_house"
-    t.boolean  "oh_exclusive",     default: false
+    t.boolean  "oh_exclusive",            default: false
     t.integer  "building_id"
     t.integer  "listing_agent_id"
     t.integer  "primary_agent_id"
     t.integer  "images_id"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.integer  "actable_id"
     t.string   "actable_type"
+    t.integer  "residential_listings_id"
+    t.integer  "commercial_listings_id"
   end
 
+  add_index "units", ["commercial_listings_id"], name: "index_units_on_commercial_listings_id", using: :btree
   add_index "units", ["images_id"], name: "index_units_on_images_id", using: :btree
   add_index "units", ["rent"], name: "index_units_on_rent", using: :btree
+  add_index "units", ["residential_listings_id"], name: "index_units_on_residential_listings_id", using: :btree
   add_index "units", ["status"], name: "index_units_on_status", using: :btree
   add_index "units", ["updated_at"], name: "index_units_on_updated_at", using: :btree
 

@@ -13,8 +13,8 @@ default: &default
   host: localhost
   port: 5434
 
-# development:
-#   url: "postgres://ikwtqpfcsmvqkg:7dfJ_Ygg7VclI7BFygNjjAfRCy@ec2-54-235-145-226.compute-1.amazonaws.com:5432/d6p9h0rklvj5q"
+#development:
+#  url: "postgres://ikwtqpfcsmvqkg:7dfJ_Ygg7VclI7BFygNjjAfRCy@ec2-54-235-145-226.compute-1.amazonaws.com:5432/d6p9h0rklvj5q"
   # # url: $(heroku config:get DATABASE_URL) myspace-realty-monster
   # # url:  <%= ENV["DATABASE_URL"] %> # HEROKU_POSTGRESQL_JADE_URL
 

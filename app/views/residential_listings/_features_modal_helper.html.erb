@@ -1,0 +1,48 @@
+<div class="modal-body">
+
+	<strong>Unit</strong>
+		<br />
+		<div class="row">
+			<% for i in 0..@unit_amenities.length-1 %>
+				<% amenity = @unit_amenities[i] %>
+				<% if i % 3 == 0 && i > 0 %>
+					</div>
+					<div class="row">
+				<% end %>
+
+				<div class="col-xs-4">
+					<div class="btn-group unit-feature-buttons" data-toggle="buttons">
+						<label class="btn btn-xs btn-link btn-as-checkbox" 
+							id="<%= amenity.id %>" name="<%= amenity.name.titleize %>">
+						  <input type="checkbox" autocomplete="off"><%= amenity.name.titleize %>
+						</label>
+					</div><!-- btn-group -->
+				</div>
+
+			<% end %>
+		</div><!-- row -->
+
+	<br />
+	<strong>Building</strong>
+	<br />
+	<div class="row">
+		<% for j in 0..@building_amenities.length-1 %>
+			<% amenity = @building_amenities[j] %>
+			<% if j % 3 == 0 && j > 0 %>
+				</div>
+				<div class="row">
+			<% end %>
+
+			<div class="col-xs-4">
+				<div class="btn-group building-feature-buttons" data-toggle="buttons">
+					<label class="btn btn-xs btn-link btn-as-checkbox" 
+						id="<%= amenity.id %>" name="<%= amenity.name.titleize %>">
+					  <input type="checkbox" autocomplete="off"><%= amenity.name.titleize %>
+					</label>
+				</div><!-- btn-group -->
+			</div>
+
+		<% end %>
+	</div><!-- row -->
+
+</div><!-- modal-body -->

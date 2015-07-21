@@ -32,7 +32,7 @@
         <ul class="nav navbar-nav navbar-right">
           <% if logged_in? %>
             <% if current_user.handles_residential? || current_user.is_management? %>
-              <li><%= link_to "Residential", residential_units_path %></li>
+              <li><%= link_to "Residential", residential_listings_path %></li>
             <% end %>
 
             <% if current_user.handles_commercial? || current_user.is_management? %>

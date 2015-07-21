@@ -3,10 +3,10 @@ json.prettify! if %w(1 yes true).include?(params["pretty"])
 json.city building.administrative_area_level_2_short
 json.state building.administrative_area_level_1_short
 
-if building.cached_neighborhood
+if building.neighborhood
 	json.neighborhood do
-		json.name building.cached_neighborhood.name
-		json.area building.cached_neighborhood.borough
+		json.name building.neighborhood.name
+		json.area building.neighborhood.borough
 	end
 end
 

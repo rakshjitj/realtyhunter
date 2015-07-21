@@ -17,9 +17,9 @@
     </td>
     <td>
       <% if current_user.is_management? %>
-        <%= link_to residential_unit.cached_landlord.code, residential_unit.cached_landlord %>
+        <%= link_to residential_unit.building.landlord.code, residential_unit.building.landlord %>
       <% else %>
-        <%= residential_unit.cached_landlord.code %>
+        <%= residential_unit.building.landlord.code %>
       <% end %>
     </td>
 

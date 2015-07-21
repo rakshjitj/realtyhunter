@@ -1,9 +1,9 @@
 <% cache commercial_unit do %>
   <tr class="<%= cycle('even', 'odd') -%>">
     <td>
-      <% if commercial_unit.cached_primary_img %>
-        <%= link_to(image_tag(commercial_unit.cached_primary_img.file.url(:thumb), :class => 'img-responsive', 
-          alt: commercial_unit.cached_primary_img.file.url(:medium)), commercial_unit) %>
+      <% if commercial_unit.images[0] %>
+        <%= link_to(image_tag(commercial_unit.images[0].file.url(:thumb), :class => 'img-responsive', 
+          alt: commercial_unit.images[0].file.url(:medium)), commercial_unit) %>
       <% else %>
         <!-- placeholder image -->
         <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), commercial_unit) %>
@@ -11,15 +11,15 @@
     </td>
     <td>
       <%= link_to commercial_unit.street_address_and_unit, commercial_unit %><br />
-      <% if commercial_unit.cached_neighborhood %>
-        <small><%= commercial_unit.cached_neighborhood.name %></small>
+      <% if commercial_unit.neighborhood %>
+        <small><%= commercial_unit.neighborhood.name %></small>
       <% end %>
     </td>
     <td>
       <% if current_user.is_management? %>
-        <%= link_to commercial_unit.cached_landlord.code, commercial_unit.cached_landlord %>
+        <%= link_to commercial_unit.landlord.code, commercial_unit.landlord %>
       <% else %>
-        <%= commercial_unit.cached_landlord.code %>
+        <%= commercial_unit.landlord.code %>
       <% end %>
     </td>
 

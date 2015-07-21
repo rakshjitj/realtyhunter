@@ -9,9 +9,9 @@
     </div>
     <div class="col-md-6 form-label-responsive">
       <% if current_user.is_management? %>
-        <%= link_to 'Add a building', new_building_path %> |
+        <%= link_to 'Add a building', new_building_path, class: 'btn btn-warning btn-sm link-as-button' %>
       <% end %>
-      <%= link_to 'Download CSV', buildings_path(format: :csv) %>
+      <%= link_to 'Download CSV', buildings_path(format: :csv), class: 'btn btn-warning btn-sm link-as-button' %>
     </div>
   </div>
 </div>
