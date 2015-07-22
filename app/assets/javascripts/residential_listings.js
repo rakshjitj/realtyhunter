@@ -103,14 +103,14 @@ ResidentialListings = {};
 	  }
 	};
 
-	ResidentialListings.removeImage = function (id, unit_id) {
+	ResidentialListings.removeImage = function (id, runit_id) {
 		// make a DELETE ajax request to delete the file
 		$.ajax({
 			type: 'DELETE',
-			url: '/residential_listings/' + unit_id + '/unit_images/' + id,
+			url: '/residential_listings/' + runit_id + '/unit_images/' + id,
 			success: function(data){
 				//console.log(data.message);
-				$.getScript('/residential_listings/' + unit_id + '/refresh_images')
+				$.getScript('/residential_listings/' + runit_id + '/refresh_images')
 			},
 			error: function(data) {
 				//console.log('ERROR:', data);
@@ -206,9 +206,9 @@ ResidentialListings = {};
 		$('#residential .delete-unit-img').click(function(event) {
 			event.preventDefault();
 			var id = $(this).attr('data-id'); 
-			var unit_id = $(this).attr('data-unit-id');
-			console.log(id, unit_id);
-			ResidentialListings.removeImage(id, unit_id);
+			var runit_id = $(this).attr('data-runit-id');
+			//console.log(id, runit_id);
+			ResidentialListings.removeImage(id, runit_id);
 		});
 	};
 	
@@ -283,19 +283,20 @@ ResidentialListings = {};
 			success: function(file, response){
 				// find the remove button link of the uploaded file and give it an id
 				// based of the fileID response from the server
+				//console.log(response);
 				$(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
-				$(file.previewTemplate).find('.dz-remove').attr('unit_id', response.unitID);
+				$(file.previewTemplate).find('.dz-remove').attr('runit_id', response.runitID);
 				// add the dz-success class (the green tick sign)
 				$(file.previewElement).addClass("dz-success");
-				console.log('/residential_listings/' + response.unitID + '/refresh_images');
-				$.getScript('/residential_listings/' + response.unitID + '/refresh_images')
+				//console.log('/residential_listings/' + response.runitID + '/refresh_images');
+				$.getScript('/residential_listings/' + response.runitID + '/refresh_images')
 				file.previewElement.remove();
 			},
 			//when the remove button is clicked
 			removedfile: function(file){
 				// grap the id of the uploaded file we set earlier
 				var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
-				var unit_id = $(file.previewTemplate).find('.dz-remove').attr('unit_id');
+				var unit_id = $(file.previewTemplate).find('.dz-remove').attr('runit_id');
 				ResidentialListings.removeImage(id, unit_id);
 				file.previewElement.remove();
 			}
@@ -319,7 +320,7 @@ ResidentialListings = {};
         $('.img-thumbnail').each(function(i){
           updated_order.push({ id: $(this).data('id'), position: i+1 });
         });
- 				console.log(updated_order);
+ 				//console.log(updated_order);
         // send the updated order via ajax
         var runit_id = $('#residential').attr('data-runit-id');
         $.ajax({

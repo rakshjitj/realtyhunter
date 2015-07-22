@@ -40,7 +40,7 @@ class OfficesController < ApplicationController
     @users = @users.page params[:page]
     #fresh_when(@users)
     @title = "Agents"
-    render 'users/index'    
+    render 'users/index'
   end
 
   # POST /offices

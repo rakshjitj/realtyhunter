@@ -3,6 +3,7 @@ class ResidentialListing < ActiveRecord::Base
   has_and_belongs_to_many :residential_amenities
   before_validation :generate_unique_id
   belongs_to :unit, touch: true
+  
 
   attr_accessor :include_photos, :inaccuracy_description, 
     :pet_policy_shorthand, :available_starting, :available_before

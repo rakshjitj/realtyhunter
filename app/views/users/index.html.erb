@@ -49,17 +49,11 @@
       <%= text_field_tag :name_email, params[:search], placeholder: "Filter by name/email", class: 'form-control' %>
     <% end %>
   </div>
-
-  <div class="hidden-xs hidden-sm col-md-8 form-label-responsive">
-    <%= render partial: 'shared/pagination', locals: {models: @users} %>
-  </div>
-
 </div>
 
-<br />
 <div class="row">
   <div class="col-md-12">
-    
+      
     <table class="table table-striped table-hover table-condensed table-responsive">
       <thead>
         <tr>
@@ -75,7 +69,6 @@
         </tr>
       </thead>
       <tbody class="users_table_body">
-        <%# Template Dependency: users/user %>
         <%= render @users, :manager => nil %>
       </tbody>
     </table>
@@ -84,8 +77,9 @@
 </div>
 
 <div class="row">
-  <div class="col-md-offset-10">
+  <div class="col-md-offset-6 col-md-6 form-label-responsive">
     <%= render partial: 'shared/pagination', locals: {models: @users} %>
   </div>
 </div>
+
 

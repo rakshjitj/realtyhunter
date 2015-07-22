@@ -64,15 +64,20 @@ class Ability
         can :read, Company, :id => user.company.id
         can :view_staff, Company, :id => user.company.id
         can :read, Office, :company_id => user.company.id
-        can :view_staff, Office#, :id => user.company.id
+        can :view_staff, Office, :id => user.company.id
 
         can :read, Building, :company_id => user.company_id
+        can :filter, Building, :company_id => user.company_id
+
         can :read, ResidentialUnit do |residential_unit|
           residential_unit.building.company_id == user.company_id && user.handles_residential?
         end
+        
         can :read, ResidentialListing do |residential_listing|
           residential_listing.unit.building.company_id == user.company_id && user.handles_residential?
         end
+        can :filter, ResidentialListing, :company_id => user.company_id
+
         can :read, CommercialUnit do |commercial_unit|
           commercial_unit.building.company_id == user.company_id && user.handles_commercial?
         end

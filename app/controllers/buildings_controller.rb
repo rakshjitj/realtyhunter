@@ -89,7 +89,7 @@ class BuildingsController < ApplicationController
   # GET /refresh_images
   # ajax call
   def refresh_images
-    @building.increment_memcache_iterator
+    #@building.increment_memcache_iterator
     respond_to do |format|
       format.js  
     end

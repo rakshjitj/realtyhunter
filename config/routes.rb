@@ -87,7 +87,7 @@ Rails.application.routes.draw do
       get 'filter'
     end
   end
-  
+
   resources :residential_units, concerns: :unit_images_uploadable do
     member do
       get 'delete_modal'

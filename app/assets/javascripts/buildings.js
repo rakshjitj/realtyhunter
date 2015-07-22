@@ -21,16 +21,15 @@ Buildings = {};
     //console.log("[" + search_path + "] BUILDINGS searching for " + $('#filter').val(), $('#checkbox_active').prop('checked'));
     // for whatever reason, we need to set dataType to json here in order
     // to trigger the call as js.
-    console.log('hii', search_path);
     $.ajax({
       url: search_path,
       data: {
         filter: $('#buildings #filter').val(),
         active_only: $('#buildings #checkbox_active').prop('checked')
       },
-      dataType: "json"
+      dataType: "script"
     }).fail(function(e) {
-      //console.log("[FAILED] search bldgs update failed", e);
+      console.log("[FAILED] search bldgs update failed", e.message);
     });
   };
 

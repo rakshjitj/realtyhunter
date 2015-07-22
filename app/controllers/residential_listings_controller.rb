@@ -1,8 +1,8 @@
 class ResidentialListingsController < ApplicationController
   load_and_authorize_resource
   before_action :set_residential_listing, except: [:new, :create, :index, :filter, 
-    :print_list, :neighborhoods_modal, :features_modal, :refresh_images, 
-    :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood]
+    :print_list, :neighborhoods_modal, :features_modal, 
+    :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood] #:refresh_images, 
   etag { current_user.id }
   
   # GET /residential_units
@@ -258,7 +258,7 @@ class ResidentialListingsController < ApplicationController
   def refresh_images
     # invalidate cache
     #@residential_unit.clear_cache
-    #puts "\n\n\n **** HELLO------- REFRESHING IMAGE #{@residential_unit.images.count}"
+    #puts "\n\n\n **** HELLO------- REFRESHING IMAGE #{@residential_unit} -- #{params.inspect}"
     respond_to do |format|
       format.js  
     end
@@ -274,7 +274,6 @@ class ResidentialListingsController < ApplicationController
       do_search
       @count_all = ResidentialListing.all.count
       @map_infos = ResidentialListing.set_location_data(@residential_units)
-      #@residential_units = Kaminari.paginate_array(@residential_units).page params[:page]
       @residential_units = @residential_units.page params[:page]
     end
 
