@@ -39,6 +39,8 @@ where units.actable_type = 'CommercialUnit');"
   end
 
   def down
+    drop_table :residential_amenities_listings
+    remove_column :residential_listings, :description, :string
 		execute "truncate residential_listings;"
 		execute "truncate commercial_listings;"
   end

@@ -1,10 +1,21 @@
-class CreateNewListingTables < ActiveRecord::Migration
+class UndoCreateNewListingTables < ActiveRecord::Migration
+  # fix the bad migration on heroku
+  
   def change
+    drop_table 'residential_listings' if ActiveRecord::Base.connection.table_exists? 'residential_listings'
+    drop_table 'commercial_listings' if ActiveRecord::Base.connection.table_exists? 'commercial_listings'
+    drop_table 'residential_amenities_listings' if ActiveRecord::Base.connection.table_exists? 'residential_amenities_listings'
+
+    change_table :units do |t|
+      remove_column :units, :residential_listings_id
+      remove_column :units, :commercial_listings_id
+		end
+
     create_table :residential_listings do |t|
-			t.integer :beds
+      t.integer :beds
       t.float   :baths
       t.string  :notes
-      #t.string  :description
+      t.string  :description
       t.string :lease_start
       t.string :lease_end
       t.boolean :has_fee # means has broker's fee
@@ -16,7 +27,7 @@ class CreateNewListingTables < ActiveRecord::Migration
     end
 
     create_table :commercial_listings do |t|
-    	t.integer :sq_footage
+      t.integer :sq_footage
       t.integer :floor
       t.integer :building_size
       t.boolean :build_to_suit, default: false
@@ -38,14 +49,14 @@ class CreateNewListingTables < ActiveRecord::Migration
     end
 
     change_table :units do |t|
-		  t.references :residential_listing, index: true
-		  t.references :commercial_listing, index: true
-		end
+      t.references :residential_listing, index: true
+      t.references :commercial_listing, index: true
+    end
 
     create_table :residential_amenities_listings, id: false do |t|
       t.belongs_to :residential_listing
       t.belongs_to :residential_amenity
     end
-  end
 
+  end
 end
