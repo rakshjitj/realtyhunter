@@ -1,18 +1,25 @@
-<%= form_for(residential_unit, url: duplicate_residential_listing_path(@residential_unit), remote: true, method: :post) do |f| %>
+<%= form_for(residential_unit, url: duplicate_residential_listing_path(@residential_unit), 
+	remote: true, method: :post) do |f| %>
 
 	<div class="modal-body">
 		<p>An exact copy of this unit will be created in the same building. After 
 			clicking "duplicate" you'll be able to make edits to the new unit.</p>
 
+		<br />
 		<div class="field">
-	    <%= f.label :building_unit, "New unit number:" %><br>
-	    <%= f.text_field :building_unit, class: 'form-control', 
-	    	:required => true, width: '50%' %>
+			<%= f.fields_for @residential_unit.unit do |unit_form| %>
+		    <%= unit_form.label :building_unit, "New unit number:" %><br>
+		    <%= unit_form.text_field :building_unit, class: 'form-control', 
+		    	:required => true, width: '50%' %>
+		  <% end %>
 	  </div>
-	  <!-- <div class="field">
-	  	<%= f.check_box(:include_photos, class: "checkbox inline") %>
-      <%= f.label :include_photos %>
-	  </div> -->
+
+	  <br />
+	  <div class="field">
+	  	<label>
+        <%= f.check_box(:include_photos) %> Include photos
+      </label>
+	  </div>
 	</div>
 	<div class="modal-footer">
 		<%= f.submit 'Submit', class: 'btn btn-warning submit-link' %>

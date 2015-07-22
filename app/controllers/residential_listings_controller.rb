@@ -116,10 +116,12 @@ class ResidentialListingsController < ApplicationController
   # handles ajax call. uses latest data in modal
   def duplicate
     residential_unit_dup = @residential_unit.duplicate(
-      residential_listing_params[:building_unit], residential_listing_params[:include_photos])
+      residential_listing_params[:unit][:building_unit], 
+      residential_listing_params[:include_photos])
+
     if residential_unit_dup.valid?
       @residential_unit = residential_unit_dup
-      render :js => "window.location.pathname = '#{residential_unit_path(@residential_unit)}'"
+      render :js => "window.location.pathname = '#{residential_listing_path(@residential_unit)}'"
     else
       # TODO: not sure how to handle this best...
       flash[:warning] = "Duplication failed!"
@@ -356,6 +358,12 @@ class ResidentialListingsController < ApplicationController
       # convert into a datetime obj
       if data[:unit][:available_by] && !data[:unit][:available_by].empty?
         data[:unit][:available_by] = Date::strptime(data[:unit][:available_by], "%m/%d/%Y")
+      end
+
+      if data[:include_photos] == "1"
+        data[:include_photos] = true
+      else
+        data[:include_photos] = false
       end
 
       data

@@ -1,10 +1,9 @@
 class ResidentialListing < ActiveRecord::Base
   scope :unarchived, ->{where(archived: false)}
   has_and_belongs_to_many :residential_amenities
-  before_validation :generate_unique_id
+  #before_validation :generate_unique_id
   belongs_to :unit, touch: true
   
-
   attr_accessor :include_photos, :inaccuracy_description, 
     :pet_policy_shorthand, :available_starting, :available_before
 
@@ -246,36 +245,42 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   # TODO: run this in the background. See Image class for stub
-  def deep_copy(src_id, dst_id)
+  def deep_copy_imgs(dst_id)
     #puts "YEAAAAAA MAN #{src_id} #{dst_id}"
-    @src = ResidentialUnit.find(src_id)
-    @dst = ResidentialUnit.find(dst_id)
+    #@src = ResidentialListing.find(src_id)
+    @dst = ResidentialListing.find(dst_id)
 
     # deep copy photos
-    @src.images.each {|i| 
+    self.unit.images.each {|i| 
       img_copy = Image.new
       img_copy.file = i.file
+      img_copy.unit_id = @dst.unit.id
       img_copy.save
-      @dst.images << img_copy
+      @dst.unit.images << img_copy
     }
-    @dst.save
+    @dst.save!
   end
 
-  def duplicate(new_unit_num, include_photos)
+  def duplicate(new_unit_num, include_photos=false)
     if new_unit_num && new_unit_num != self.id
-        # copy object
+        # copy objects
+        unit_dup = self.unit.dup
+        unit_dup.building_unit = new_unit_num
+        unit_dup.save
         residential_unit_dup = self.dup
-        residential_unit_dup.building_unit = new_unit_num
+        residential_unit_dup.unit = unit_dup
         residential_unit_dup.save
 
         #Image.async_copy_residential_unit_images(self.id, residential_unit_dup.id)
-        self.deep_copy(self.id, residential_unit_dup.id)
-        residential_unit_dup.save
+        if include_photos
+          self.deep_copy_imgs(residential_unit_dup.id)
+        end
 
         #building.increment_memcache_iterator
+        #puts "NEW UNIT NUM #{residential_unit_dup.unit.building_unit}"
         residential_unit_dup
     else
-      raise "No unit number or invalid unit number specified"
+      raise "No unit number, invalid unit number, or unit number already taken specified"
     end
   end
 
@@ -379,19 +384,19 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   private
-    # TODO: code review - should only be set if none exists
-    def generate_unique_id
+    # # TODO: code review - should only be set if none exists
+    # def generate_unique_id
 
-      if !self.unit.listing_id
-        listing_id = SecureRandom.random_number(9999999)
-        while Unit.find_by(listing_id: listing_id) do
-          listing_id = SecureRandom.random_number(9999999)
-        end
+    #   #if !self.unit.listing_id
+    #     listing_id = SecureRandom.random_number(9999999)
+    #     while Unit.find_by(listing_id: listing_id) do
+    #       listing_id = SecureRandom.random_number(9999999)
+    #     end
 
-        self.unit.listing_id = listing_id
-        #self.listing_id
-      end
-      self.unit.listing_id
-    end
+    #     self.unit.listing_id = listing_id
+    #     #self.listing_id
+    #   end
+    #   #self.unit.listing_id
+    # end
 
 end
