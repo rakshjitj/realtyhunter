@@ -136,5 +136,8 @@
   </div>
 </div>
   
-<%= render partial:'shared/listings', locals: { model: @landlord, residential_units: @residential_units, 
+<%= render partial:'shared/listings', locals: { 
+  model: @landlord, 
+  residential_units: @residential_units, 
+  res_images: @res_images,
   commercial_units: @commercial_units} %>

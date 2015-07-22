@@ -88,7 +88,8 @@ class LandlordsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_landlord
       @landlord = Landlord.find_unarchived(params[:id])
-      @residential_units = @landlord.residential_units.page params[:page]
+      @residential_units, @res_images = @landlord.residential_units
+      @residential_units = @residential_units.page params[:page]
       @commercial_units = @landlord.commercial_units.page params[:page]
     end
 

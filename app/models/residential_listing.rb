@@ -1,7 +1,6 @@
 class ResidentialListing < ActiveRecord::Base
   scope :unarchived, ->{where(archived: false)}
   has_and_belongs_to_many :residential_amenities
-  #before_validation :generate_unique_id
   belongs_to :unit, touch: true
   
   attr_accessor :include_photos, :inaccuracy_description, 
@@ -364,39 +363,51 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self.for_buildings(bldg_ids, is_active=nil)
-    result = ResidentialListing.joins(unit: [:images, building: [:landlord, :neighborhood]])
+    listings = ResidentialListing.joins(unit: {building: [:landlord, :neighborhood]})
       .where('buildings.id in (?)', bldg_ids)
       .where('units.archived = false')
       .select('buildings.formatted_street_address', 
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
-        'units.building_unit', 'units.status','units.rent', 'residential_listings.beds', 
-        'residential_listings.id', 'residential_listings.baths','units.access_info',
+        'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id', 
+        'residential_listings.beds', 'residential_listings.id', 
+        'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at', 
         'neighborhoods.name AS neighborhood_name', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by')
       
-      if is_active
-        result.where('units.status = ?', Unit.status["active"])
-      end
+    if is_active
+      result.where('units.status = ?', Unit.status["active"])
+    end
+    
+    unit_ids = listings.map(&:unit_id)
+    images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
       
-      result.uniq
+    return listings, images
   end
 
-  private
-    # # TODO: code review - should only be set if none exists
-    # def generate_unique_id
-
-    #   #if !self.unit.listing_id
-    #     listing_id = SecureRandom.random_number(9999999)
-    #     while Unit.find_by(listing_id: listing_id) do
-    #       listing_id = SecureRandom.random_number(9999999)
-    #     end
-
-    #     self.unit.listing_id = listing_id
-    #     #self.listing_id
-    #   end
-    #   #self.unit.listing_id
-    # end
+  def self.for_units(unit_ids, is_active=nil)
+    listings = ResidentialListing.joins(unit: {building: [:landlord, :neighborhood]})
+      .where('units.id in (?)', unit_ids)
+      .where('units.archived = false')
+      .select('buildings.formatted_street_address', 
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+        'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id', 
+        'residential_listings.beds', 'residential_listings.id', 
+        'residential_listings.baths','units.access_info',
+        'residential_listings.has_fee', 'residential_listings.updated_at', 
+        'neighborhoods.name AS neighborhood_name', 
+        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        'units.available_by')
+      
+    if is_active
+      result.where('units.status = ?', Unit.status["active"])
+    end
+    
+    unit_ids = listings.map(&:unit_id)
+    images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
+      
+    return listings, images
+  end
 
 end

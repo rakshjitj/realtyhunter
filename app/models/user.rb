@@ -59,8 +59,8 @@ class User < ActiveRecord::Base
     else
       ids = self.primary_units.map(&:id)
     end
-
-    ResidentialListing.where(unit_id: ids)
+    
+    ResidentialListing.for_units(ids, active_only)
   end
 
   # primary units only currently

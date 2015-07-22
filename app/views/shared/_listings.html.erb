@@ -28,12 +28,13 @@
 					  </div>
 					</div>
 
-          <%= render partial:'residential_units/table', locals: { residential_units: residential_units} %>
+          <%= render partial:'residential_listings/table', 
+            locals: { residential_units: residential_units, res_images: res_images} %>
 
           <div class="row">
 					  <div class="col-md-12">
               <div class="listing-pagination">
-                <%= render partial: 'shared/pagination', locals: {models: residential_units} %>
+               <%= render partial: 'shared/pagination', locals: {models: residential_units} %>
               </div>
 					  </div>
 					</div>

@@ -309,10 +309,8 @@ class ResidentialListingsController < ApplicationController
         @bldg_features = BuildingAmenity.where(id: building_feature_ids)
       end
 
-      @residential_units, @images = ResidentialListing.search(params, current_user, params[:building_id])
+      @residential_units, @res_images = ResidentialListing.search(params, current_user, params[:building_id])
       @residential_units = custom_sort
-
-      #@residential_units
     end
 
     def custom_sort

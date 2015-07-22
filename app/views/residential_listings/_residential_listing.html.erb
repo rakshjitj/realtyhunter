@@ -1,9 +1,9 @@
 <!--% cache residential_listing do %-->
   <tr class="<%= cycle('even', 'odd') -%>">
     <td>
-      <% if @images[residential_listing.unit_id] %>
-        <%= link_to(image_tag(@images[residential_listing.unit_id].file.url(:thumb), :class => 'img-responsive', 
-          alt: @images[residential_listing.unit_id].file.url(:medium)), residential_listing) %>
+      <% if @res_images[residential_listing.unit_id] %>
+        <%= link_to(image_tag(@res_images[residential_listing.unit_id].file.url(:thumb), :class => 'img-responsive', 
+          alt: @res_images[residential_listing.unit_id].file.url(:medium)), residential_listing) %>
       <% else %>
         <!-- placeholder image -->
         <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), residential_listing) %>
