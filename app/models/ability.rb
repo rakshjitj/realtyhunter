@@ -39,16 +39,16 @@ class Ability
       can :manage, Building, :company_id => user.company.id
       can :manage, ResidentialUnit do |residential_unit|
         !residential_unit.building_id || user.is_management? || (residential_unit.building.company_id == user.company_id && user.handles_residential?)
-        end
+      end
       can :manage, ResidentialListing do |residential_listing|
-        !residential_listing.unit.building_id || user.is_management? || (residential_listing.building.company_id == user.company_id && user.handles_residential?)
-        end
+        !residential_listing.unit || user.is_management? || (residential_listing.building.company_id == user.company_id && user.handles_residential?)
+      end
       can :manage, CommercialUnit do |commercial_unit|
         !commercial_unit.building_id || user.is_management? || (commercial_unit.building.company_id == user.company_id && user.handles_commercial?)
       end
-      # can :manage, CommercialListing do |commercial_listing|
-      #   !commercial_listing.building_id || user.is_management? || (commercial_listing.building.company_id == user.company_id && user.handles_commercial?)
-      # end
+      can :manage, CommercialListing do |commercial_listing|
+        !commercial_listing.unit || user.is_management? || (residential_listing.building.company_id == user.company_id && user.handles_residential?)
+      end
     
     elsif user.has_role?(:external_vendor)
       cannot :read, :all
@@ -81,6 +81,11 @@ class Ability
         can :read, CommercialUnit do |commercial_unit|
           commercial_unit.building.company_id == user.company_id && user.handles_commercial?
         end
+
+        can :read, CommercialListing do |commercial_listing|
+          commercial_listing.unit.building.company_id == user.company_id && user.handles_commercial?
+        end
+        can :filter, CommercialListing, :company_id => user.company_id
 
         can :read, User, :company_id => user.company_id
 

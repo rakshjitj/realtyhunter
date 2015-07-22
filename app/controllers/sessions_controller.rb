@@ -52,7 +52,7 @@ class SessionsController < ApplicationController
     elsif current_user.handles_residential?
       redirect_to residential_listings_path
     elsif current_user.handles_commercial?
-      redirect_to commercial_units_path
+      redirect_to commercial_listings_path
     else
       redirect_to current_user
     end

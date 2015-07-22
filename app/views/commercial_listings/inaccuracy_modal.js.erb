@@ -1,0 +1,7 @@
+$('#unitInaccuracyModal #placeholder-body').html("<%= j(render :partial => "inaccuracy_modal_helper", locals: { commercial_unit: @commercial_unit }) %>");
+
+$('#unitInaccuracyModal .submit-link').click( function(event) {
+	$('#unitInaccuracyModal').modal('hide');
+});
+
+$('#unitInaccuracyModal').modal('show');

@@ -5,6 +5,7 @@ class Unit < ActiveRecord::Base
   belongs_to :listing_agent, :class_name => 'User', touch: true
   has_many :images, dependent: :destroy
   has_one :residential_listing, dependent: :destroy
+  has_one :commercial_listing, dependent: :destroy
   before_validation :generate_unique_id
 
   scope :unarchived, ->{ where(archived: false) }
