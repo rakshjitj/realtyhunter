@@ -8,14 +8,22 @@
 		<br />
 		
 		<div class="field">
-			<%= f.label :available_by, "Update new lease end date:" %>
-			<div class='input-group date datepicker'>
-        <%= f.text_field :available_by, params[:available_by], 
-          placeholder: "Available", class:"form-control", size:30 %>
-        <label class="input-group-addon btn" for="date">
-          <span class="fa fa-calendar open-datepicker"></span>
-        </label>
-      </div>
+			<%= f.fields_for @residential_unit.unit do |unit_form| %>
+				<%= unit_form.label :available_by, "Update new lease end date:" %>
+
+				<div class='input-group date datepicker' data-available-by="<%= @residential_unit.unit.available_by.strftime("%m/%d/%Y") %>">
+              
+          <%= unit_form.text_field :available_by, 
+            placeholder: "Available", class:"form-control", size:30 %>
+        
+          <label class="input-group-addon btn" for="date">
+            <span class="fa fa-calendar open-datepicker"></span>
+          </label>
+        </div>
+
+				
+				
+	    <% end %>
 	  </div>
 	</div>
 	<div class="modal-footer">
