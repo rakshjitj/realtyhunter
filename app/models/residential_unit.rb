@@ -1,3 +1,9 @@
+##########
+#
+# This class is deprecated! Everything has been switched over to ResidentialListing now.
+#
+##########
+
 class ResidentialUnit < ActiveRecord::Base
 	acts_as :unit
   scope :unarchived, ->{where(archived: false)}

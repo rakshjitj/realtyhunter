@@ -26,18 +26,10 @@ class ResidentialListing < ActiveRecord::Base
   end
   
   def self.find_unarchived(id)
-    #find_by!(id: id, archived: false)
     ResidentialListing.joins(unit: [building: [:landlord, :neighborhood]])
       .where(id: id)
       .where('units.archived = false')
       .first
-      # .select('buildings.*', 
-      #   'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
-      #   'units.*', 'residential_listings.*', 
-      #   'neighborhoods.name AS neighborhood_name', 
-      #   'pet_policy.name AS pet_policy_name', 
-      #   'landlords.code AS landlord_code','landlords.id AS landlord_id',
-      #   ).first
   end
 
   # used as a sorting condition
@@ -72,7 +64,7 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def all_amenities_to_s
-    bldg_amenities = building.building_amenities.map{|a| a.name.titleize}
+    bldg_amenities = unit.building.building_amenities.map{|a| a.name.titleize}
     amenities = residential_amenities.map{|a| a.name.titleize}
     amenities.concat(bldg_amenities)
     amenities ? amenities.join(", ") : "None"
@@ -114,7 +106,6 @@ class ResidentialListing < ActiveRecord::Base
 
     # only admins are allowed to view off-market units
     if !user.is_management?
-     #@running_list = @running_list.on_market
      @running_list = @running_list.where.not('status = ?', Unit.statuses['off'])
     end
 

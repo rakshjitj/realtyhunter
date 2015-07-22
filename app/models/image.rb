@@ -56,4 +56,27 @@ class Image < ActiveRecord::Base
   #   end
   # end
 
+  # TODO: test
+  def reorder_by_unit(unit_id)
+    images = Image.where(unit_id: unit_id)
+    pos = 0
+    images.each{ |x|
+      if image.priority != pos
+        image.update(priority: pos)
+      end
+      pos = pos + 1
+    }
+  end
+
+  def reorder_by_building(bldg_id)
+    images = Image.where(building_id: bldg_id)
+    pos = 0
+    images.each{ |x|
+      if image.priority != pos
+        image.update(priority: pos)
+      end
+      pos = pos + 1
+    }
+  end
+
 end

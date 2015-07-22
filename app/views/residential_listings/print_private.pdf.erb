@@ -23,14 +23,10 @@
 
 		    <div class="row">
 	        <div class="col-xs-5">
-            <% if @residential_unit.images.length > 0 %>
-              <!-- draw up to the first 1 images -->
-              <% for i in 0..2 %>
-                <% if @residential_unit.images.length > i %>
-      	          <%= image_tag @residential_unit.images[i].file.url(:medium), :class => 'photo-inline', 
-                    alt: @residential_unit.images[i].file.url(:medium), size:"100%" %><br />
-                <% end %>
-              <% end %>
+            <% if @residential_unit.unit.images.length > 0 %>
+  	          <%= image_tag @residential_unit.unit.images[0].file.url(:medium), :class => 'photo-inline', 
+                alt: @residential_unit.unit.images[0].file.url(:medium), size:"100%" %>
+              <br />
             <% else %>
               <!-- placeholder image -->
               <%= wicked_pdf_image_tag "listing_soon.png", alt: "Image coming soon",
@@ -51,7 +47,7 @@
                   <strong>Rent</strong>
                 </div>
                 <div class="col-xs-7">
-              		<%= rent_formatted(@residential_unit.rent) %>
+              		<%= rent_formatted(@residential_unit.unit.rent) %>
                 </div>
 	            </div>
 	            <div class="row">
@@ -67,7 +63,7 @@
                   <strong>Neighborhood</strong>
                 </div>
                 <div class="col-xs-7">
-                  <%= @residential_unit.building.neighborhood.name %>
+                  <%= @residential_unit.unit.building.neighborhood.name %>
                 </div>
 	            </div>
 
@@ -76,7 +72,7 @@
                   <strong>Access</strong>
                 </div>
                 <div class="col-xs-7">
-                  <%= @residential_unit.access_info %>
+                  <%= @residential_unit.unit.access_info %>
                 </div>
 	            </div>
 	            
@@ -103,10 +99,10 @@
                     <strong>Available</strong>
                 </div>
                 <div class="col-xs-7">
-                  <% if @residential_unit.available_by < Date.today %>
+                  <% if @residential_unit.unit.available_by < Date.today %>
                     Now
                   <% else %>
-                    <%= @residential_unit.available_by.strftime("%Y-%b-%d") %>
+                    <%= @residential_unit.unit.available_by %>
                   <% end %>
                 </div>
 	            </div>
@@ -123,11 +119,11 @@
                   <strong>Utilities</strong>
                 </div>
                 <div class="col-xs-7">
-                  <%= @residential_unit.building.utilities_to_s %>
+                  <%= @residential_unit.unit.building.utilities_to_s %>
                 </div>
 	            </div>
 
-              <% if @residential_unit.building.pet_policy %>
+              <% if @residential_unit.unit.building.pet_policy %>
   	            <div class="row">
                   <div class="col-xs-5 text-right">
                     <strong>Pet policy</strong>
@@ -143,7 +139,7 @@
                   <strong>Listing ID</strong>
                 </div>
                 <div class="col-xs-7">
-                  <%= @residential_unit.listing_id %>
+                  <%= @residential_unit.unit.listing_id %>
                 </div>
 	            </div>
 	        </div><!-- body -->

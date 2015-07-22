@@ -33,7 +33,7 @@ class UnitImagesController < ApplicationController
 
   def sort
     # TODO
-    puts "\n\n\n ***** SORT #{params.inspect}"
+    #puts "\n\n\n ***** SORT #{params.inspect}"
     params[:order].each do |key,value|
       Image.find(value[:id]).update_attribute(:priority, value[:position])
     end
@@ -60,4 +60,5 @@ class UnitImagesController < ApplicationController
     def image_params
       params.permit(:file, :priority, :order)
     end
+
 end

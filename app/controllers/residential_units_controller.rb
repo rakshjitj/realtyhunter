@@ -1,3 +1,9 @@
+##########
+#
+# This class is deprecated! Everything has been switched over to ResidentialListing now.
+#
+##########
+
 class ResidentialUnitsController < ApplicationController
   load_and_authorize_resource
   before_action :set_residential_unit, except: [:new, :create, :index, :filter, 

@@ -147,8 +147,6 @@ class Building < ActiveRecord::Base
 	end
 
 	def self.search(page_num, query_str, active_only)
-    # kaminari lists 50 items per page by default
-
     @running_list = Building.joins(:units, :landlord, :neighborhood).includes(:images)
       .where('units.archived = false')
       .select('buildings.formatted_street_address', 'buildings.notes',
@@ -162,7 +160,6 @@ class Building < ActiveRecord::Base
         'units.available_by')
       .uniq
 
-		#@running_list = Building.includes(:images).unarchived
     return @running_list if !query_str
     
     @terms = query_str.split(" ")

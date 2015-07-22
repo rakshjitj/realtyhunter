@@ -189,7 +189,7 @@ ResidentialListings = {};
 	  // loop through and give each task a data-pos
 	  // attribute that holds its position in the DOM
 	  $('#residential .img-thumbnail').each(function(i) {
-	      $(this).attr("data-pos", i+1);
+	    $(this).attr("data-pos", i+1);
 	  });
 	};
 
