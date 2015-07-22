@@ -151,8 +151,11 @@ class Building < ActiveRecord::Base
 
     @running_list = Building.joins(:units, :landlord, :neighborhood).includes(:images)
       .where('units.archived = false')
-      .select('buildings.formatted_street_address', 
+      .select('buildings.formatted_street_address', 'buildings.notes',
         'buildings.id', 'buildings.street_number', 'buildings.route', 
+        'buildings.sublocality', 
+        'buildings.administrative_area_level_2_short',
+        'buildings.administrative_area_level_1_short', 'buildings.postal_code',
         'buildings.updated_at', 'units.status',
         'neighborhoods.name AS neighborhood_name', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
@@ -168,7 +171,7 @@ class Building < ActiveRecord::Base
     end
 
     if active_only == "true"
-    	@running_list = @running_list.where(units: {status:"active"})#.joins(:units)
+    	@running_list = @running_list.where(units: {status:"active"})
     end
 
     @running_list#.uniq

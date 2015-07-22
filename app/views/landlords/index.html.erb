@@ -6,35 +6,30 @@
       <h1>Landlords</h1>
     </div>
     <div class="col-md-6 form-label-responsive">
-      <%= link_to 'Add a Landlord', new_landlord_path %> |
-      <%= link_to 'Download CSV', landlords_path(format: :csv) %>
+      <%= link_to 'Add a Landlord', new_landlord_path, class: 'btn btn-warning btn-sm link-as-button' %> 
+      <%= link_to 'Download CSV', landlords_path(format: :csv), class: 'btn btn-warning btn-sm link-as-button' %>
     </div>
   </div>
 </div>
 
 <div id="landlord-search-filters" data-search-path="<%= filter_landlords_path %>">
   <%= form_tag landlords_path, :method => 'get' do %>
-  <div class="row">
-    <div class="col-xs-12 col-md-6 vertical-padding">
-        <%= label_tag(:filter, "Filter:") %>
+    <div class="row">
+      <div class="col-xs-12 col-md-4 vertical-padding">
         <%= text_field_tag :filter, params[:filter], 
-          placeholder: "code/name", size: 30 %>&nbsp;&nbsp;&nbsp;
+          placeholder: "Filter by code/name", size: 30, class:'form-control' %>
+      </div>
+      <div class="col-xs-12 col-md-2 vertical-padding">
         <label>
           <%= check_box_tag(:checkbox_active, "", params[:active_only] == "true" ? true : false) %>
           Has active units
         </label>
-    </div>
-    <div class="col-xs-12 col-md-3 vertical-padding">
-      
+      </div>
     </div>
   <% end %><!-- form end -->
-
-    <div class="hidden-xs hidden-sm col-xs-12 col-md-6 form-label-responsive">
-      <%= render partial: 'shared/pagination', locals: {models: @landlords} %>
-    </div>
-  </div>
 </div>
 
+<br />
 <div class="row">
   <div class="col-md-12">
 
