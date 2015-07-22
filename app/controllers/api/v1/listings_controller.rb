@@ -85,7 +85,9 @@ module API
 					agents: listing_params[:agents],
 					neighborhoods: listing_params[:neighborhoods],
 					});
-				#@listings.page(listing_params[:page]).per(listing_params[:per_page])
+				#puts "\n\n\n **** #{@listings[0].inspect}"
+				@listings.page(listing_params[:page]).per(listing_params[:per_page])
+
 			end
 
 			# Never trust parameters from the scary internet, only allow the white list through.

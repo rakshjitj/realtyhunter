@@ -82,7 +82,7 @@ class ResidentialListing < ActiveRecord::Base
   # agent contacts for this listing. Currently we have
   # 1 primary agent for each listing, but could change in the future.
   def contacts
-    contacts = [primary_agent];
+    contacts = [unit.primary_agent];
   end
 
   # takes in a hash of search options

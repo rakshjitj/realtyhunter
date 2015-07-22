@@ -49,24 +49,19 @@ module API
 			# Can handle any and all search params supported by Nestio's API:
 			# http://developers.nestio.com/api/v1/
 			def listing_search(company_id, search_params)
-
-				# listings = Unit.joins(:building)
-				# 	.where(archived: false)
-				# 	.where('buildings.company_id = ?', @user.company_id)
-
-				# listings = _restrict_on_unit_model(company_id, search_params, listings)
+				listings = nil
 
 				# restrict by listing type. handle specific search parameters
-
 				if search_params[:listing_type] == "10" # residential
 					listings = _restrict_on_residential_model(company_id, search_params)#, listings)
-
+					listings = _restrict_on_unit_model(company_id, search_params, listings)
 				elsif search_params[:listing_type] == "20" # sales
 					# TODO
 
 				elsif search_params[:listing_type] == "30" # commercial
 					# TODO
 				 	#listings = Unit.get_commercial(listings).page(search_params[:page]).per(search_params[:per_page])
+				 	#listings = _restrict_on_unit_model(company_id, search_params, listings)
 				end
 			
 				listings
@@ -160,18 +155,21 @@ module API
 				# beds, baths
 				def _restrict_on_residential_model(company_id, search_params) #, listings)
 
+					# 'residential_listings.beds', 
+			  #       'residential_listings.id', 'residential_listings.baths','units.access_info',
+			  #       'residential_listings.has_fee', 'residential_listings.updated_at', 
 				 	listings = ResidentialListing.joins(unit: {building: [:landlord, :neighborhood]})
 				 		.where('buildings.company_id = ?', company_id)
 			      .where('units.archived = false')
-			      .select('buildings.formatted_street_address', 
-			        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
-			        'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
-			        'units.building_unit', 'units.status','units.rent', 'residential_listings.beds', 
-			        'residential_listings.id', 'residential_listings.baths','units.access_info',
-			        'residential_listings.has_fee', 'residential_listings.updated_at', 
-			        'neighborhoods.name AS neighborhood_name', 
-			        'landlords.code AS landlord_code','landlords.id AS landlord_id',
-			        'units.available_by')
+
+			      # .select('buildings.formatted_street_address', 
+			      #   'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+			      #   'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
+			      #   'units.building_unit', 'units.status','units.rent', 
+			      #   'residential_listings.*', 
+			      #   'neighborhoods.name AS neighborhood_name', 
+			      #   'landlords.code AS landlord_code','landlords.id AS landlord_id',
+			      #   'units.available_by')
 				 	#listings = ResidentialListing.joins(:building)
 					
 					# enforce params that only make sense for residential
