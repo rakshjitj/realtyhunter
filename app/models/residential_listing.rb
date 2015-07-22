@@ -80,10 +80,11 @@ class ResidentialListing < ActiveRecord::Base
   # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 
   # neighborhoods, has_outdoor_space, features, pet_policy, ...
   def self.search(params, user, building_id=nil)
-    #puts "PARAMS #{params.inspect}"
-
+    # TODO: add amenities back in
+    # 'building_amenities.name AS bldg_amenity_name',
     @running_list = ResidentialListing.joins(unit: {building: [:landlord, :neighborhood]})
-      .where('units.archived = false').select('buildings.formatted_street_address', 
+      .where('units.archived = false')
+      .select('buildings.formatted_street_address', 
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent', 'residential_listings.beds', 
@@ -93,6 +94,7 @@ class ResidentialListing < ActiveRecord::Base
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by')
 
+    # TODO: handle diff exit cases
     unit_ids = @running_list.map(&:unit_id)
     @images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
 

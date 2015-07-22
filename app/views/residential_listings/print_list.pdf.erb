@@ -24,19 +24,19 @@
 					    <%= residential_unit.street_address_and_unit %>
 					    </td>
 					  <td>
-					    <%= residential_unit.landlord.code %>
+					    <%= residential_unit.landlord_code %>
 					  </td>
 
 					  <td style="width: 20%;"><%= residential_unit.access_info %></td>
 					  <td><%= residential_unit.bed_and_baths %></td>
-					  <td><%= residential_unit.available_by.strftime("%Y-%b-%d") %></td>
+					  <td><%= residential_unit.available_by %></td>
 					  <td><%= rent_formatted(residential_unit.rent) %></td>
 					  <td>
-					  	<%= residential_unit.neighborhood.name %>
+					  	<%= residential_unit.neighborhood_name %>
 					  </td>
 					  <td>
-						  <%= residential_unit.building.amenities_to_s %>
-						  <%= residential_unit.amenities_to_s %>
+						  <!-- %= residential_unit.building.amenities_to_s %-->
+						  <!--%= residential_unit.amenities_to_s %-->
 					  </td>
 					</tr>
 

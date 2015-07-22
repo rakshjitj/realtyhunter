@@ -1,5 +1,5 @@
 class ResidentialListingsController < ApplicationController
-  load_and_authorize_resource
+  #load_and_authorize_resource
   before_action :set_residential_listing, except: [:new, :create, :index, :filter, 
     :print_list, :neighborhoods_modal, :features_modal, 
     :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood] #:refresh_images, 
@@ -70,12 +70,13 @@ class ResidentialListingsController < ApplicationController
   # GET /residential_units/1.json
   def show
     #fresh_when([@residential_unit, @residential_unit.images])
-    @residential_unit
+    #@residential_unit
   end
 
   # GET /residential_units/new
   def new
     @residential_unit = ResidentialListing.new
+    @residential_unit.unit = Unit.new
     if params[:building_id]
       building = Building.find(params[:building_id])
       @residential_unit.building_id = building.id
@@ -92,12 +93,18 @@ class ResidentialListingsController < ApplicationController
   # POST /residential_units
   # POST /residential_units.json
   def create
-    @residential_unit = ResidentialListing.new(residential_listing_params)
-    if !@residential_unit.available_by?
-      @residential_unit.available_by = Date.today
+    ret1 = Unit.new(residential_listing_params[:unit])
+    r_params = residential_listing_params
+    r_params.delete('unit')
+    ret2 = ResidentialListing.new(r_params)
+    ret2.unit = ret1
+    
+    if !ret1.available_by?
+      ret1.available_by = Date.today
     end
 
-    if @residential_unit.save
+    if ret1.save && ret2.save
+      @residential_unit = ret2
       redirect_to @residential_unit
     else
       render 'new'
@@ -202,7 +209,6 @@ class ResidentialListingsController < ApplicationController
   # PATCH/PUT /residential_units/1
   # PATCH/PUT /residential_units/1.json
   def update
-    
     ret1 = @residential_unit.unit.update(residential_listing_params[:unit])
     r_params = residential_listing_params
     r_params.delete('unit')

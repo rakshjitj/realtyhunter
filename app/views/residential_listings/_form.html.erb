@@ -58,7 +58,7 @@
           <div class="row">
           <%= f.fields_for @residential_unit.unit do |unit_form| %>
             <div class="col-xs-12 col-md-2 form-label-responsive">
-              <%= unit_form.label :lease_type %>
+              <%= unit_form.label :status %>
             </div>
             <div class="col-xs-12 col-md-4">
               <div class="field">
@@ -162,7 +162,8 @@
               <%= unit_form.label :available_by, "Available Date" %>
             </div>
             <div class="col-md-4">
-              <div class='input-group date datepicker' data-available-by="<%= @residential_unit.unit.available_by.strftime("%m/%d/%Y") %>">
+              <div class='input-group date datepicker' 
+                data-available-by="<%= @residential_unit.unit.available_by ? @residential_unit.unit.available_by.strftime("%m/%d/%Y") : '' %>">
               
                 <%= unit_form.text_field :available_by, 
                   placeholder: "Available", class:"form-control", size:30 %>
