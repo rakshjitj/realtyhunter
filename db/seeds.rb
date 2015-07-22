@@ -150,7 +150,7 @@ end
   {name: "super admin"},
   ])
 
-@password = "lorimer713"
+@password = "Myspace123"
 
 # give them agent access
 @api_only = User.create!(
@@ -270,7 +270,7 @@ define_roles
 
 # 55.times do |n|
 
-#   ResidentialUnit.create!({
+#   ResidentialListing.create!({
 #     building_unit: Faker::Number.number(2),
 #     rent: Faker::Number.number(4),
 #     beds: Faker::Number.number(1),

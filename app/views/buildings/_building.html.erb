@@ -20,10 +20,12 @@
   <td><%= building.active_units.count %></td>
   <td><%= building.units.count %></td>
   <td><%= time_ago_in_words(building.updated_at) %></td>
-  <td>
-    <%= link_to 'Edit', edit_building_path(building) %> | 
-    <%= link_to 'Delete', delete_modal_building_path(building), 
-      data: {toggle: "modal", target: "#bldgDeleteModal"}, remote: true %>
-  </td>
+  <% if current_user.is_management? %>
+    <td>
+      <%= link_to 'Edit', edit_building_path(building) %> <br />
+      <%= link_to 'Delete', delete_modal_building_path(building), 
+        data: {toggle: "modal", target: "#bldgDeleteModal"}, remote: true %>
+    </td>
+  <% end %>
 </tr>
 <!--% end %--><!-- end cache -->

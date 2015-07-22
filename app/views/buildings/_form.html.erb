@@ -91,7 +91,7 @@
       </div>
     </div>
     <!-- for bigger screens -->
-    <div class="hidden-xs">
+    <!--div class="hidden-xs"-->
       <div class="row">
         <% i = 0 %>
         <%= f.collection_check_boxes(:building_amenity_ids, current_user.company.building_amenities, :id, :name) do |b| %>
@@ -110,29 +110,9 @@
         <% end %>
 
       </div><!-- row -->
-    </div>
+    <!--/div-->
 
-    <!-- for tiny screens -->
-    <div class="hidden-sm hidden-md hidden-lg">
-      <div class="row">
-        <% i = 0 %>
-        <%= f.collection_check_boxes(:building_amenity_ids, current_user.company.building_amenities, :id, :name) do |b| %>
-          
-          <% if i % 2 == 0 && i > 0 %>
-            </div>
-            <div class="row">
-          <% end %>
-
-          <div class="col-xs-6">
-            <%= b.check_box(class: "check_box") %>&nbsp;
-            <%= b.text.titleize %>
-          </div>
-
-        <% i = i+1 %>
-        <% end %>
-
-      </div><!-- row -->
-    </div>
+    <!-- cut -->
 
     <div class="row">
       <div class="col-xs-12">
@@ -170,27 +150,7 @@
       </div><!-- row -->
     </div>
 
-    <!-- for tiny screens -->
-    <div class="hidden-sm hidden-md hidden-lg">
-      <div class="row">
-        <% i = 0 %>
-        <%= f.collection_check_boxes(:utility_ids, current_user.company.utilities, :id, :name) do |b| %>
-          
-          <% if i % 2 == 0 && i > 0 %>
-            </div>
-            <div class="row">
-          <% end %>
-
-          <div class="col-xs-6">
-            <%= b.check_box(class: "check_box") %>&nbsp;
-            <%= b.text.titleize %>
-          </div>
-
-        <% i = i+1 %>
-        <% end %>
-
-      </div><!-- row -->
-    </div>
+    <!-- cut -->
 
     <div class="row">
     <div class="col-xs-12">

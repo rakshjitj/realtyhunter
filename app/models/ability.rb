@@ -59,15 +59,19 @@ class Ability
       # can only manage his/her profile
       # can't view landlords
       if user.company_id
-        alias_action :managers, :employees, :to => :view_staff
+        alias_action :managers, :employees, :agents, :to => :view_staff
 
         can :read, Company, :id => user.company.id
         can :view_staff, Company, :id => user.company.id
         can :read, Office, :company_id => user.company.id
+        can :view_staff, Office#, :id => user.company.id
 
         can :read, Building, :company_id => user.company_id
         can :read, ResidentialUnit do |residential_unit|
           residential_unit.building.company_id == user.company_id && user.handles_residential?
+        end
+        can :read, ResidentialListing do |residential_listing|
+          residential_listing.unit.building.company_id == user.company_id && user.handles_residential?
         end
         can :read, CommercialUnit do |commercial_unit|
           commercial_unit.building.company_id == user.company_id && user.handles_commercial?

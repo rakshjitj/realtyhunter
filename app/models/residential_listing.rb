@@ -7,12 +7,9 @@ class ResidentialListing < ActiveRecord::Base
   attr_accessor :include_photos, :inaccuracy_description, 
     :pet_policy_shorthand, :available_starting, :available_before
 
-  validates :building_unit, presence: true, length: {maximum: 50}
-
 	validates :lease_start, presence: true, length: {maximum: 5}
   validates :lease_end, presence: true, length: {maximum: 5}
   
-  validates :rent, presence: true, :numericality => { :greater_than => 0 }
 	validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }
 	validates :baths, presence: true, :numericality => { :less_than_or_equal_to => 11 }
   
@@ -94,27 +91,30 @@ class ResidentialListing < ActiveRecord::Base
   def self.search(params, user, building_id=nil)
     #puts "PARAMS #{params.inspect}"
 
-    @running_list = ResidentialListing.joins(unit: [:images, building: [:landlord, :neighborhood]])
+    @running_list = ResidentialListing.joins(unit: {building: [:landlord, :neighborhood]})
       .where('units.archived = false').select('buildings.formatted_street_address', 
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
-        'buildings.lat', 'buildings.lng',
+        'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent', 'residential_listings.beds', 
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at', 
         'neighborhoods.name AS neighborhood_name', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
-        'units.available_by').uniq
+        'units.available_by')
+
+    unit_ids = @running_list.map(&:unit_id)
+    @images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
 
     if !params && !building_id
-      return @running_list #ResidentialListing.joins(:building).unarchived
+      return @running_list
     elsif !params && building_id
-      #return ResidentialListing.joins(:building).unarchived.where(building_id: building_id)
       return @running_list.where(building_id: building_id)
     end
 
     # only admins are allowed to view off-market units
     if !user.is_management?
-     @running_list = @running_list.on_market
+     #@running_list = @running_list.on_market
+     @running_list = @running_list.where.not('status = ?', Unit.statuses['off'])
     end
 
     # all search params come in as strings from the url
@@ -126,7 +126,7 @@ class ResidentialListing < ActiveRecord::Base
       # cap query string length for security reasons
       address = params[:address][0, 500]
       @running_list = 
-       @running_list.where('formatted_street_address ILIKE ?', "%#{address}%")
+       @running_list.where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
     end
 
     # search by unit
@@ -244,7 +244,7 @@ class ResidentialListing < ActiveRecord::Base
         .where('residential_amenity_id IN (?)', features)
     end
 
-      @running_list#.uniq
+      return @running_list, @images
   end
 
   # mainly used in API
@@ -387,12 +387,19 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   private
+    # TODO: code review - should only be set if none exists
     def generate_unique_id
-      self.listing_id = SecureRandom.random_number(9999999)
-      while Unit.find_by(listing_id: listing_id) do
-        self.listing_id = rand(9999999)
+
+      if !self.unit.listing_id
+        listing_id = SecureRandom.random_number(9999999)
+        while Unit.find_by(listing_id: listing_id) do
+          listing_id = SecureRandom.random_number(9999999)
+        end
+
+        self.unit.listing_id = listing_id
+        #self.listing_id
       end
-      self.listing_id
+      self.unit.listing_id
     end
 
 end

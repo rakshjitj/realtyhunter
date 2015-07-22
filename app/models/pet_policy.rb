@@ -2,6 +2,7 @@ class PetPolicy < ActiveRecord::Base
 	belongs_to :company, touch: true
 	has_many :buildings
 	before_save :downcase_name
+	default_scope { order("name ASC") }
 
 	validates :company, presence: true
 	

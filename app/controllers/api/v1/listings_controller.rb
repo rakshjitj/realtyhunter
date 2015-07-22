@@ -19,7 +19,7 @@ module API
 			end
 
 			def show
-				@listing = ResidentialUnit.find(params[:id])
+				@listing = ResidentialListing.find(params[:id])
 			end
 		
 		protected
@@ -85,6 +85,7 @@ module API
 					agents: listing_params[:agents],
 					neighborhoods: listing_params[:neighborhoods],
 					});
+				#@listings.page(listing_params[:page]).per(listing_params[:per_page])
 			end
 
 			# Never trust parameters from the scary internet, only allow the white list through.

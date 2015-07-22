@@ -149,7 +149,7 @@ class BuildingsController < ApplicationController
       @buildings = Building.search(params[:page] || 0, 
         building_params[:filter], 
         building_params[:active_only])
-      #@buildings = custom_sort
+      @buildings = custom_sort
       @buildings = @buildings.page params[:page]
     end
 
@@ -161,11 +161,12 @@ class BuildingsController < ApplicationController
         @buildings = @buildings.order(sort_column + ' ' + sort_order)
       # otherwise call sort_by with our custom method
       else
-        if sort_order == "asc"
-          @buildings = @buildings.sort_by{|b| b.send(sort_column)}
-        else
-          @buildings = @buildings.sort_by{|b| b.send(sort_column)}.reverse
-        end
+        # TODO
+        # if sort_order == "asc"
+        #   @buildings = @buildings.sort_by{|b| b.send(sort_column)}
+        # else
+        #   @buildings = @buildings.sort_by{|b| b.send(sort_column)}.reverse
+        # end
       end
       @buildings
     end

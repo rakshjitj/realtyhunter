@@ -36,16 +36,18 @@ class Company < ActiveRecord::Base
 
 	# should we limit this to 1 per company?
 	def admins
-		users.unarchived.includes(:employee_title, :office, :image, :company, :manager).select{|u| u if u.is_company_admin? }
+		#users.unarchived.includes(:employee_title, :office, :image, :company, :manager).select{|u| u if u.is_company_admin? }
+		User.joins(:roles).where('roles.name = ?', 'company_admin').includes(:employee_title, :office, :image, :manager)
 	end
 
 	def managers
-		users.unarchived.includes(:employee_title, :office, :image, :company, :manager).select{|u| u if u.is_manager? }
+		User.joins(:roles).where('roles.name = ?', 'manager').includes(:employee_title, :office, :image, :manager)
 	end
 
-	def data_enterers
-		users.unarchived.includes(:employee_title, :office, :image, :company, :manager).select{|u| u if u.is_data_entry? }
-	end
+	# def data_enterers
+	# 	#users.unarchived.includes(:employee_title, :office, :image, :company, :manager).select{|u| u if u.is_data_entry? }
+	# 	User.joins(:roles).where('roles.name = ?', 'manager').includes(:employee_title, :office, :image, :manager)
+	# end
 
 	def update_agent_types
 		agent_types.split(/\r?\n/).each {|a|

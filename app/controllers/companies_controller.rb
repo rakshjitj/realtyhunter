@@ -42,7 +42,7 @@ class CompaniesController < ApplicationController
   def managers
     @title = 'Managers'
     @users = @company.managers
-    @users.sort_by!{|u| u.name.downcase }
+    #@users.sort_by!{|u| u.name.downcase }
     @users = @users.page params[:page]
     render 'users/index'
   end

@@ -44,12 +44,19 @@ class Office < ActiveRecord::Base
   end
 
 	def managers
-		User.joins(:office).merge(Office.where(id: self.id)).joins(:employee_title)
-			.merge(EmployeeTitle.where(name: 'manager')).map{|u| {name: u.name, id: u.id} }
+		# User.joins(:office).merge(Office.where(id: self.id)).joins(:employee_title)
+		# 	.merge(EmployeeTitle.where(name: 'manager')).map{|u| {name: u.name, id: u.id} }
+		User.joins([:office, :employee_title]).merge(Office.where(id: self.id))#.joins(:employee_title)
+			.merge(EmployeeTitle.where(name: 'manager'))
+			.order(:name)
 	end
 
 	def agents
-		User.joins(:office).merge(Office.where(id: self.id)).joins(:employee_title)
-			.merge(EmployeeTitle.where(name: 'agent')).map{|u| {name: u.name, id: u.id} }
+		# User.joins(:office).merge(Office.where(id: self.id)).joins(:employee_title)
+		# 	.merge(EmployeeTitle.where(name: 'agent')).map{|u| {name: u.name, id: u.id} }
+
+		User.joins([:office, :employee_title]).merge(Office.where(id: self.id))#.joins(:employee_title)
+			.merge(EmployeeTitle.where(name: 'agent'))
+			.order(:name)
 	end
 end

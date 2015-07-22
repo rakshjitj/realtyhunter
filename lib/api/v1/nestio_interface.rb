@@ -50,22 +50,23 @@ module API
 			# http://developers.nestio.com/api/v1/
 			def listing_search(company_id, search_params)
 
-				listings = Unit.joins(:building)
-					.where(archived: false)
-					.where('buildings.company_id = ?', @user.company_id)
+				# listings = Unit.joins(:building)
+				# 	.where(archived: false)
+				# 	.where('buildings.company_id = ?', @user.company_id)
 
-				listings = _restrict_on_unit_model(company_id, search_params, listings)
+				# listings = _restrict_on_unit_model(company_id, search_params, listings)
 
 				# restrict by listing type. handle specific search parameters
 
 				if search_params[:listing_type] == "10" # residential
-					listings = _restrict_on_residential_model(company_id, search_params, listings)
+					listings = _restrict_on_residential_model(company_id, search_params)#, listings)
 
 				elsif search_params[:listing_type] == "20" # sales
 					# TODO
 
 				elsif search_params[:listing_type] == "30" # commercial
-				 	listings = Unit.get_commercial(listings).page(search_params[:page]).per(search_params[:per_page])
+					# TODO
+				 	#listings = Unit.get_commercial(listings).page(search_params[:page]).per(search_params[:per_page])
 				end
 			
 				listings
@@ -155,12 +156,24 @@ module API
 					listings
 				end
 
-				# Filter our search by all fields relevent to the ResidentialUnit model:
+				# Filter our search by all fields relevent to the ResidentialListing model:
 				# beds, baths
-				def _restrict_on_residential_model(company_id, search_params, listings)
-					#listings = listings.where("actable_type = 'ResidentialUnit'")
-				 	listings = Unit.get_residential(listings)
+				def _restrict_on_residential_model(company_id, search_params) #, listings)
 
+				 	listings = ResidentialListing.joins(unit: {building: [:landlord, :neighborhood]})
+				 		.where('buildings.company_id = ?', company_id)
+			      .where('units.archived = false')
+			      .select('buildings.formatted_street_address', 
+			        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+			        'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
+			        'units.building_unit', 'units.status','units.rent', 'residential_listings.beds', 
+			        'residential_listings.id', 'residential_listings.baths','units.access_info',
+			        'residential_listings.has_fee', 'residential_listings.updated_at', 
+			        'neighborhoods.name AS neighborhood_name', 
+			        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+			        'units.available_by')
+				 	#listings = ResidentialListing.joins(:building)
+					
 					# enforce params that only make sense for residential
 					# bedrooms
 					listings = _restrict_layout(search_params[:layout], listings)
@@ -183,10 +196,11 @@ module API
 
 					# laundry_in_unit
 					listings = _search_by_residential_amenity('laundry_in_unit', company_id, listings, search_params)
-					listings = _sort_residential_by(search_params, listings)
+					#listings = _sort_residential_by(search_params, listings)
 
-					Kaminari.paginate_array(listings).page(search_params[:page]).per(search_params[:per_page])
-					
+					# TODO
+					listings.page(search_params[:page]).per(search_params[:per_page])
+					#listings
 				end
 
 				def _sort_residential_by(search_params, listings)

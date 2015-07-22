@@ -107,10 +107,10 @@ ResidentialListings = {};
 		// make a DELETE ajax request to delete the file
 		$.ajax({
 			type: 'DELETE',
-			url: '/residential_units/' + unit_id + '/unit_images/' + id,
+			url: '/residential_listings/' + unit_id + '/unit_images/' + id,
 			success: function(data){
 				//console.log(data.message);
-				$.getScript('/residential_units/' + unit_id + '/refresh_images')
+				$.getScript('/residential_listings/' + unit_id + '/refresh_images')
 			},
 			error: function(data) {
 				//console.log('ERROR:', data);
@@ -122,10 +122,10 @@ ResidentialListings = {};
 	ResidentialListings.buildContentString = function (key, info) {
 	  var contentString = '<strong>' + key + '</strong><hr />';
 	  for (var i=0; i<info['units'].length; i++) {
-	    contentString += '<a href="/residential_units/' + info['units'][i].id + '">#' + info['units'][i].building_unit + '</a>: ' + info['units'][i].beds + ' beds / ' 
+	    contentString += '<a href="/residential_listings/' + info['units'][i].id + '">#' + info['units'][i].building_unit + '</a>: ' + info['units'][i].beds + ' beds / ' 
 	      + info['units'][i].baths + ' baths $' + info['units'][i].rent + '<br />';
 	    if (i == 5) {
-	      contentString += '<a href="/residential_units?building_id=' + info['building_id'] + '">View more...</a>';
+	      contentString += '<a href="/residential_listings?building_id=' + info['building_id'] + '">View more...</a>';
 	      break;
 	    }
 	  }
@@ -287,8 +287,8 @@ ResidentialListings = {};
 				$(file.previewTemplate).find('.dz-remove').attr('unit_id', response.unitID);
 				// add the dz-success class (the green tick sign)
 				$(file.previewElement).addClass("dz-success");
-				console.log('/residential_units/' + response.unitID + '/refresh_images');
-				$.getScript('/residential_units/' + response.unitID + '/refresh_images')
+				console.log('/residential_listings/' + response.unitID + '/refresh_images');
+				$.getScript('/residential_listings/' + response.unitID + '/refresh_images')
 				file.previewElement.remove();
 			},
 			//when the remove button is clicked
@@ -324,7 +324,7 @@ ResidentialListings = {};
         var runit_id = $('#residential').attr('data-runit-id');
         $.ajax({
           type: "PUT",
-          url: '/residential_units/' + runit_id + '/unit_images/sort',
+          url: '/residential_listings/' + runit_id + '/unit_images/sort',
           data: { order: updated_order }
         });
     });

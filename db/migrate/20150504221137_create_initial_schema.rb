@@ -123,7 +123,7 @@
     create_table :images do |t|
       t.attachment :file
       t.boolean :file_processing
-      t.integer :priority
+      t.integer :priorit, default: 0
       t.belongs_to :building
       t.belongs_to :unit
       t.belongs_to :user, index: true

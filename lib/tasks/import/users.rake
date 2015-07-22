@@ -16,7 +16,7 @@ namespace :import do
     start_time = Time.now
     company = Company.find_by(name: 'MyspaceNYC')
     default_office = Office.find_by(name: 'Crown Heights')
-    default_password = "lorimer713"
+    default_password = "Myspace123"
 
     nestio_url = "https://nestiolistings.com/api/v1/public/agents?key=#{ENV['NESTIO_KEY']}"
 

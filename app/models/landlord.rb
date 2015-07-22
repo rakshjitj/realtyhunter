@@ -76,9 +76,10 @@ class Landlord < ActiveRecord::Base
     	@running_list = @running_list.joins(buildings: :units).where("status = 0")
     end
 
-    @running_list.uniq
+    @running_list#.uniq
 	end
 
+	# how to an individual's active/total listings?
 	def residential_units
     bldg_ids = self.building_ids
     @residential_units = ResidentialListing.for_buildings(bldg_ids)

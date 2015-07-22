@@ -110,6 +110,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :residential_forms, only: [:new, :create, :edit, :update]
+
   resources :residential_listings, concerns: :unit_images_uploadable do
     member do
       get 'delete_modal'

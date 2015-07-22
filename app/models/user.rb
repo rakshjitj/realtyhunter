@@ -53,20 +53,24 @@ class User < ActiveRecord::Base
 
   # primary units only currently
   def residential_units(active_only=false)
+    ids = []
     if active_only
-      @residential_units = Unit.get_residential(self.primary_units.active)
+      ids = self.primary_units.active.map(&:id)
     else
-      @residential_units = Unit.get_residential(self.primary_units)
+      ids = self.primary_units.map(&:id)
     end
+
+    ResidentialListing.where(unit_id: ids)
   end
 
   # primary units only currently
   def commercial_units(active_only=false)
     if active_only
-      @commercial_units = Unit.get_commercial(self.primary_units.active)
+      ids = self.primary_units.active.map(&:id)
     else
-      @commercial_units = Unit.get_commercial(self.primary_units)
+      ids = self.primary_units.map(&:id)
     end
+    CommercialUnit.where(unit_id: ids)
   end
 
   # Returns a random token.

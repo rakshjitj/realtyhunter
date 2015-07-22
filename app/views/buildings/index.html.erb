@@ -19,15 +19,17 @@
 <div id="search-filters" data-search-path="<%= filter_buildings_path %>">
   <%= form_tag buildings_path, :method => 'get' do %>
   <div class="row">
-    <div class="col-xs-12 col-md-6 vertical-padding">
-        <%= label_tag(:filter, "Filter:") %>
-        <%= text_field_tag :filter, params[:filter], placeholder: "name/address", size: 25 %>
-        <label>
-          <%= check_box_tag(:checkbox_active, "", params[:active_only] == "true" ? true : false) %>
-          Has active units
-        </label>
+    <div class="col-xs-12 col-md-4 vertical-padding">
+      <%= text_field_tag :filter, params[:filter], placeholder: "Filter by name/address", 
+        size: 25, class:'form-control' %>
     </div>
-    
+    <div class="col-xs-12 col-md-4 vertical-padding">
+      <label>
+        <%= check_box_tag(:checkbox_active, "", params[:active_only] == "true" ? true : false) %>
+        Has active units
+      </label>
+    </div>
+  </div>
   <% end %><!-- end form -->
     
   </div>
@@ -44,7 +46,9 @@
           <th><%= sortable "active_units_count", "Active Units" %></th>
           <th><%= sortable "total_units_count", "Total Units" %></th>
           <th><%= sortable "last_unit_updated" %></th>
-          <th colspan="1"></th>
+          <% if current_user.is_management? %>
+            <th colspan="1"></th>
+          <% end %>
         </tr>
       </thead>
 

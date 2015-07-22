@@ -129,7 +129,7 @@ namespace :import do
 		# after_destroy callbacks
 		#Rails.cache.clear
 		# clear old data
-		#ResidentialUnit.delete_all
+		#ResidentialListing.delete_all
 
 		# begin pulling down new data
 		total_pages = 99
@@ -267,7 +267,7 @@ namespace :import do
 					user = User.find_by(name: c["name"].strip, company: company)
 				}
 
-				unit = ResidentialUnit.find_by(building_id: building.id, building_unit: item['unit_number'])
+				unit = ResidentialListing.find_by(building_id: building.id, building_unit: item['unit_number'])
 				if unit
 					puts "- updating unit"
 					unit.update!({
@@ -290,7 +290,7 @@ namespace :import do
 						primary_agent: user
 					})
 				else
-					unit = ResidentialUnit.create!({
+					unit = ResidentialListing.create!({
 						building_unit: item['unit_number'],
 						rent: item['rent'].to_i,
 						available_by: item['date_available'],

@@ -148,7 +148,6 @@ class Building < ActiveRecord::Base
 
 	def self.search(page_num, query_str, active_only)
     # kaminari lists 50 items per page by default
-    offset = page_num * 50
 
     @running_list = Building.joins(:units, :landlord, :neighborhood).includes(:images)
       .where('units.archived = false')
@@ -158,8 +157,6 @@ class Building < ActiveRecord::Base
         'neighborhoods.name AS neighborhood_name', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by')
-      .offset(offset)
-      .limit(50)
       .uniq
 
 		#@running_list = Building.includes(:images).unarchived
@@ -167,7 +164,7 @@ class Building < ActiveRecord::Base
     
     @terms = query_str.split(" ")
     @terms.each do |term|
-      @running_list = @running_list.where('formatted_street_address ILIKE ? OR sublocality ILIKE ?', "%#{term}%", "%#{term}%")
+      @running_list = @running_list.where('buildings.formatted_street_address ILIKE ? OR buildings.sublocality ILIKE ?', "%#{term}%", "%#{term}%")
     end
 
     if active_only == "true"
@@ -206,15 +203,10 @@ class Building < ActiveRecord::Base
   end
 
   def residential_units(active_only=false)
-    #if active_only
-      #units = Unit.unarchived.where(building_id: id, status:"active")
     ResidentialListing.for_buildings([id], active_only)
-    #else
-      #units = Unit.unarchived.includes(:building).where(building_id: id)
-    #end
-    #units = Unit.get_residential(units)
   end
 
+  # TODO
   def commercial_units(active_only=false)
     # if active_only
     #   units = Unit.unarchived.where(building_id: id, status:"active")

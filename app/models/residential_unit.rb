@@ -442,8 +442,8 @@ class ResidentialUnit < ActiveRecord::Base
     # we can't expire old keys with a regex or delete_matched on dalli
     # instead use the strategy suggested here:
     # https://quickleft.com/blog/faking-regex-based-cache-keys-in-rails/
-    def increment_memcache_iterator
-      Rails.cache.write("runit-#{id}-memcache-iterator", self.memcache_iterator + 1)
-    end
+    # def increment_memcache_iterator
+    #   Rails.cache.write("runit-#{id}-memcache-iterator", self.memcache_iterator + 1)
+    # end
 
 end

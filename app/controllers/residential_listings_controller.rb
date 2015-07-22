@@ -200,7 +200,14 @@ class ResidentialListingsController < ApplicationController
   # PATCH/PUT /residential_units/1
   # PATCH/PUT /residential_units/1.json
   def update
-    if @residential_unit.update(residential_listing_params)
+    
+    ret1 = @residential_unit.unit.update(residential_listing_params[:unit])
+    r_params = residential_listing_params
+    r_params.delete('unit')
+    ret2 = @residential_unit.update(r_params)
+
+    # update res
+    if ret1 && ret2
       flash[:success] = "Unit successfully updated!"
       redirect_to @residential_unit
     else
@@ -301,10 +308,10 @@ class ResidentialListingsController < ApplicationController
         @bldg_features = BuildingAmenity.where(id: building_feature_ids)
       end
 
-      @residential_units = ResidentialListing.search(params, current_user, params[:building_id])
-      #@residential_units = custom_sort
+      @residential_units, @images = ResidentialListing.search(params, current_user, params[:building_id])
+      @residential_units = custom_sort
 
-      @residential_units
+      #@residential_units
     end
 
     def custom_sort
@@ -315,27 +322,30 @@ class ResidentialListingsController < ApplicationController
         @residential_units = @residential_units.order(sort_column + ' ' + sort_order)
       # otherwise call sort_by with our custom method
       else
-        if sort_order == "asc"
-          @residential_units = @residential_units.sort_by{|b| b.send(sort_column)}
-        else
-          @residential_units = @residential_units.sort_by{|b| b.send(sort_column)}.reverse
-        end
+        # TODO
+        # if sort_order == "asc"
+        #   @residential_units = @residential_units.sort_by{|b| b.send(sort_column)}
+        # else
+        #   @residential_units = @residential_units.sort_by{|b| b.send(sort_column)}.reverse
+        # end
       end
       @residential_units
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def residential_listing_params
-      data = params[:residential_unit].permit(:building_unit, :rent, :available_by, :tenant_occupied,
-        :access_info, :status, :has_fee, :open_house, :oh_exclusive,
-        :building_id, :primary_agent_id, :listing_agent_id, :beds, :baths, :notes, :description, :lease_start, :lease_end,
-        :include_photos, :inaccuracy_description, :op_fee_percentage, :available_starting, :available_before,
-        :tp_fee_percentage, :residential_amenity_ids => [])
+      data = params[:residential_listing].permit(:tenant_occupied,
+        :has_fee, :beds, :baths, :notes, :description, :lease_start, :lease_end,
+        :include_photos, :inaccuracy_description, :op_fee_percentage, 
+        :available_starting, :available_before,   :tp_fee_percentage, 
+        :unit => [:building_unit, :rent, :available_by, :access_info, :status, :open_house, :oh_exclusive, 
+          :building_id, :primary_agent_id, :listing_agent_id ],
+        :residential_amenity_ids => [])
 
-      if data[:oh_exclusive] == "1"
-        data[:oh_exclusive] = true
+      if data[:unit][:oh_exclusive] == "1"
+        data[:unit][:oh_exclusive] = true
       else
-        data[:oh_exclusive] = false
+        data[:unit][:oh_exclusive] = false
       end
 
       if data[:has_fee] == "1"
@@ -345,8 +355,8 @@ class ResidentialListingsController < ApplicationController
       end
 
       # convert into a datetime obj
-      if data[:available_by] && !data[:available_by].empty?
-        data[:available_by] = Date::strptime(data[:available_by], "%m/%d/%Y")
+      if data[:unit][:available_by] && !data[:unit][:available_by].empty?
+        data[:unit][:available_by] = Date::strptime(data[:unit][:available_by], "%m/%d/%Y")
       end
 
       data

@@ -1,6 +1,6 @@
 class OfficesController < ApplicationController
   load_and_authorize_resource
-  skip_load_resource :only => :create
+  skip_load_resource only: :create
   before_action :set_company, except: [:destroy]
   before_action :set_office, except: [:new, :create, :index]
   etag { current_user.id }
@@ -16,7 +16,7 @@ class OfficesController < ApplicationController
   def show
     @managers = @office.managers
     @agents = @office.agents
-    fresh_when(@office)
+    #fresh_when(@office)
   end
 
   # GET /offices/new
@@ -30,15 +30,15 @@ class OfficesController < ApplicationController
 
   def managers
     @users = @office.managers
+    @users = @users.page params[:page]
     @title = "Managers"
-    fresh_when(@users)
+    #fresh_when(@users)
   end
 
   def agents
     @users = @office.agents
-    @users.sort_by!{|u| u.name.downcase }
     @users = @users.page params[:page]
-    fresh_when(@users)
+    #fresh_when(@users)
     @title = "Agents"
     render 'users/index'    
   end

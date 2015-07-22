@@ -20,6 +20,7 @@ class Unit < ActiveRecord::Base
 	validates :listing_id, presence: true, uniqueness: true
 	
   validates :building, presence: true
+  validates :building_unit, allow_blank: true, length: {maximum: 50}
 
   def archive
     self.archived = true
@@ -30,21 +31,4 @@ class Unit < ActiveRecord::Base
     find_by!(id: id, archived: false)
   end
 
-
-  # ResidentialUnit.joins(unit: {building: [:landlord, :neighborhood]}).where(id: 1).select(["residential_units.id", "residential_units.beds", "landlords.code AS landlord_code"]) #.explain
-	# def self.get_residential(units)
- #    running_list = units.residential.uniq
- #    # searching by id breaks in factorygirl, so search by listing_id
- #    ids = running_list.map(&:listing_id)
- #    ResidentialUnit.includes(unit: {building: [:landlord, :neighborhood]}).where(listing_id: ids)
- #  end
-
-  # def self.get_commercial(units)
-  #   running_list = units.commercial.uniq
-  #   ids = running_list.map(&:listing_id)
-  #   # searching by id breaks in factorygirl, so search by listing_id
-  #   # TODO: add index on listing_id?
-  #   CommercialUnit.where(listing_id: ids)
-  # end
-  
 end

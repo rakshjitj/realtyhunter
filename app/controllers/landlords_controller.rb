@@ -94,6 +94,7 @@ class LandlordsController < ApplicationController
 
     def set_landlords
       @landlords = Landlord.search(params)
+      # TODO
       @landlords = custom_sort
       @landlords = @landlords.page params[:page]
     end
@@ -106,11 +107,11 @@ class LandlordsController < ApplicationController
         @landlords = @landlords.order(sort_column + ' ' + sort_order)
       else
         # otherwise call sort_by with our custom method
-        if sort_order == "asc"
-          @landlords = @landlords.sort_by{|b| b.send(sort_column)}
-        else
-          @landlords = @landlords.sort_by{|b| b.send(sort_column)}.reverse
-        end
+        # if sort_order == "asc"
+        #   @landlords = @landlords.sort_by{|b| b.send(sort_column)}
+        # else
+        #   @landlords = @landlords.sort_by{|b| b.send(sort_column)}.reverse
+        # end
       end
       @landlords
     end

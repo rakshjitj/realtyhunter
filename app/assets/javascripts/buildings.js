@@ -3,7 +3,7 @@ Buildings = {};
 (function() {
 
   Buildings.filterListings = function(event) {
-  	var search_path = $('#listings').attr('data-search-path');
+    var search_path = $('#listings').attr('data-search-path');
     $.ajax({
       url: search_path,
       data: {
@@ -16,17 +16,19 @@ Buildings = {};
   };
 
   Buildings.filterBuildings = function(event) {
+
   	var search_path = $('#search-filters').attr('data-search-path');
     //console.log("[" + search_path + "] BUILDINGS searching for " + $('#filter').val(), $('#checkbox_active').prop('checked'));
     // for whatever reason, we need to set dataType to json here in order
     // to trigger the call as js.
+    console.log('hii', search_path);
     $.ajax({
       url: search_path,
       data: {
         filter: $('#buildings #filter').val(),
         active_only: $('#buildings #checkbox_active').prop('checked')
       },
-      dataType: "script"
+      dataType: "json"
     }).fail(function(e) {
       //console.log("[FAILED] search bldgs update failed", e);
     });
@@ -97,18 +99,11 @@ Buildings = {};
   };
 
   Buildings.initialize = function() {
-    // // change all date input fields to auto-open the calendar
-    // $('.datepicker').datetimepicker({
-    //   viewMode: 'days',
-    //   format: 'MM/DD/YYYY',
-    //   allowInputToggle: true
-    // });
-    
     // search filters
     $('#buildings #filter').keydown(Buildings.preventEnter);
     $('#buildings #filter').change(Buildings.throttledBldgSearch);
     // toggle between active and inactive units
-    $('#buildings #checkbox_active').click(Buildings.filterBuildings);
+    $('#buildings #checkbox_active').click(Buildings.throttledBldgSearch);
     $('#buildings #listings_checkbox_active').click(Buildings.filterListings);
 
     var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';

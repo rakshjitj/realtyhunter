@@ -131,7 +131,7 @@ namespace :import do
 		#Rails.cache.clear
 		# clear old data
 		#Building.delete_all
-		#ResidentialUnit.delete_all
+		#ResidentialListing.delete_all
 
 		puts "Getting data for all zillow listings..."
 		log.info "Getting data for all zillow listings..."
@@ -194,7 +194,7 @@ namespace :import do
       end
       building = add_building(mechanize, row, company, landlord, log)
       if building
-				unit = ResidentialUnit.create!({
+				unit = ResidentialListing.create!({
 					building_unit: unit_number,
 					rent: rent,
 					available_by: date_available,

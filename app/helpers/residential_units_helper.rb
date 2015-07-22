@@ -14,7 +14,7 @@ module ResidentialUnitsHelper
 		descrip = "N/A"
 		if unit.open_house
 			if unit.oh_exclusive
-				descrip = "<strong>EXCLUSIVE!</strong>"
+				descrip = "<strong>EXCLUSIVE!</strong> "
 			end
 			descrip = descrip + unit.open_house
 		end

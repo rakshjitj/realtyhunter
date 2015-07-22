@@ -253,11 +253,12 @@ class CommercialUnitsController < ApplicationController
         @commercial_units = @commercial_units.order(sort_column + ' ' + sort_order)
       # otherwise call sort_by with our custom method
       else
-        if sort_order == "asc"
-          @commercial_units = @commercial_units.sort_by{|b| b.send(sort_column)}
-        else
-          @commercial_units = @commercial_units.sort_by{|b| b.send(sort_column)}.reverse
-        end
+        # TODO
+        # if sort_order == "asc"
+        #   @commercial_units = @commercial_units.sort_by{|b| b.send(sort_column)}
+        # else
+        #   @commercial_units = @commercial_units.sort_by{|b| b.send(sort_column)}.reverse
+        # end
       end
       @commercial_units
     end
