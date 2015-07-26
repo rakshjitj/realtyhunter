@@ -39,6 +39,10 @@ class Building < ActiveRecord::Base
 	validates :lng, presence: true, length: {maximum: 100}
 	validates :place_id, presence: true, length: {maximum: 100}
 
+  belongs_to :listing_agent, :class_name => 'User', touch: true
+  validates :listing_agent_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
+  # presence: true, 
+
 	validates :company, presence: true
 	validates :landlord, presence: true
 

@@ -100,10 +100,15 @@
             <div class="row">
               <div class="col-md-12">
                 <br />
-                <strong>Listing agent %:</strong> <%= @landlord.listing_agent_percentage %>
+                <strong>Source of updates:</strong>
               </div>
             </div>
-          
+            <div class="row">
+              <div class="col-md-12">
+                <%= @landlord.update_source %>
+              </div>
+            </div>
+
             <div class="row">
               <div class="col-md-12">
                 <br />

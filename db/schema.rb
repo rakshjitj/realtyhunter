@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150721044131) do
+ActiveRecord::Schema.define(version: 20150726203142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,10 +57,16 @@ ActiveRecord::Schema.define(version: 20150721044131) do
     t.integer  "images_id"
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
+    t.integer  "listing_agent_id"
+    t.integer  "listing_agent_percentage"
+    t.boolean  "has_fee"
+    t.integer  "op_fee_percentage"
+    t.integer  "tp_fee_percentage"
   end
 
   add_index "buildings", ["formatted_street_address"], name: "index_buildings_on_formatted_street_address", using: :btree
   add_index "buildings", ["images_id"], name: "index_buildings_on_images_id", using: :btree
+  add_index "buildings", ["listing_agent_id"], name: "index_buildings_on_listing_agent_id", using: :btree
   add_index "buildings", ["updated_at"], name: "index_buildings_on_updated_at", using: :btree
 
   create_table "buildings_utilities", id: false, force: :cascade do |t|
@@ -202,6 +208,7 @@ ActiveRecord::Schema.define(version: 20150721044131) do
     t.integer  "buildings_id"
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
+    t.string   "update_source"
   end
 
   add_index "landlords", ["buildings_id"], name: "index_landlords_on_buildings_id", using: :btree

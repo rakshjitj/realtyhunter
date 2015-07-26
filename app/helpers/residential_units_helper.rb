@@ -3,7 +3,11 @@ module ResidentialUnitsHelper
 	def pet_policy(residential_unit)
 		building = residential_unit.unit.building
 		if building.pet_policy
-			building.pet_policy_name.titleize
+			if building.pet_policy
+				building.pet_policy.name.titleize
+			else
+				building.pet_policy_name.titleize
+			end
 		else
 			"-"
 		end

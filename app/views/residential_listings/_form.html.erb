@@ -19,7 +19,7 @@
         <% if @residential_unit.id %>
 
           <br />
-          <%= form_for(@residential_unit, :url => residential_unit_unit_images_path(@residential_unit), 
+          <%= form_for(@residential_unit, :url => residential_listing_unit_images_path(@residential_unit), 
             html: {multipart: true, class: "dropzone", id: "runit-dropzone"}, method: :post) do |f| %>
             <div class="fallback">
               <%= f.file_field :file %><br>
@@ -260,7 +260,7 @@
         <br />
         <div class="row show-op">
           <div class="col-md-2 form-label-responsive">
-            <%= f.label :op_fee_percentage, 'Owner Fee %' %>
+            <%= f.label :op_fee_percentage, 'Owner Pays %' %>
           </div>
           <div class="col-md-4">
             <%= f.number_field :op_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>
@@ -269,7 +269,7 @@
 
         <div class="row show-tp">
           <div class="col-md-2 form-label-responsive">
-            <%= f.label :tp_fee_percentage, 'Tenant Fee %' %>
+            <%= f.label :tp_fee_percentage, 'Tenant Pays %' %>
           </div>
           <div class="col-md-4">
             <%= f.number_field :tp_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>
@@ -286,23 +286,6 @@
               <%= unit_form.select(:primary_agent_id, 
                 options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
                   [@residential_unit.unit.primary_agent ? @residential_unit.unit.primary_agent.id : '']), 
-                {prompt: "Choose one..."},
-                class: 'form-control',
-                :include_blank => true) %>
-            <% end %>
-          </div>
-        </div>
-
-        <br />
-        <div class="row">
-          <%= f.fields_for @residential_unit.unit do |unit_form| %>
-          <div class="col-md-2 form-label-responsive">
-            <%= unit_form.label :listing_agent_id, "Listing Agent" %>
-          </div>
-          <div class="col-md-4">
-            
-              <%= unit_form.select(:listing_agent_id, options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
-                [@residential_unit.unit.listing_agent ? @residential_unit.unit.listing_agent.id : '']), 
                 {prompt: "Choose one..."},
                 class: 'form-control',
                 :include_blank => true) %>

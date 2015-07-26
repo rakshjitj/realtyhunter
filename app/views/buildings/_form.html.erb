@@ -162,6 +162,63 @@
 
     <br />
     <div class="row">
+      <div class="col-md-3 form-label-responsive">
+        <%= f.label :listing_agent_id, "Primary Agent" %>
+      </div>
+      <div class="col-md-4">  
+        <%= f.select(:listing_agent_id, 
+          options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
+            [@building.listing_agent ? @building.listing_agent.id : '']), 
+          {prompt: "Choose one..."},
+          class: 'form-control',
+          :include_blank => true) %>
+      </div>
+    </div>
+
+    <br />
+    <div class="row">
+      <div class="col-md-3 form-label-responsive">
+        <%= f.label :listing_agent_percentage, 'Listing agent %' %>
+      </div>
+      <div class="col-md-4">
+        <div class="field">
+          <%= f.text_field :listing_agent_percentage, class: 'form-control' %>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <div class="row">
+      <div class="col-md-3 form-label-responsive">
+        <strong>Broker Fee</strong>
+      </div>
+      <div class="col-md-4">
+        <%= f.check_box :has_fee, class:"has-fee", checked: @building.has_fee %>
+        <%= f.label :has_fee %>
+      </div>
+    </div>
+
+    <br />
+    <div class="row show-op">
+      <div class="col-md-3 form-label-responsive">
+        <%= f.label :op_fee_percentage, 'Owner Pays %' %>
+      </div>
+      <div class="col-md-4">
+        <%= f.number_field :op_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>
+      </div>
+    </div>
+
+    <div class="row show-tp">
+      <div class="col-md-3 form-label-responsive">
+        <%= f.label :tp_fee_percentage, 'Tenant Pays %' %>
+      </div>
+      <div class="col-md-4">
+        <%= f.number_field :tp_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>
+      </div>
+    </div>
+
+    <br />
+    <div class="row">
       <div class="col-md-6">        
         <div class="field">
           <%= f.label :pet_policy_id %>

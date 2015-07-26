@@ -88,28 +88,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :residential_units, concerns: :unit_images_uploadable do
-    member do
-      get 'delete_modal'
-      get 'duplicate_modal'
-      post 'duplicate'
-      get 'inaccuracy_modal'
-      patch 'send_inaccuracy'
-      get 'take_off_modal'
-      patch 'take_off'
-      get 'print_modal'
-      get 'print_public'
-      get 'print_private'
-      get 'refresh_images'
-    end
-    collection do
-      get 'filter'
-      get 'print_list'
-      get 'neighborhoods_modal'
-      get 'features_modal'
-    end
-  end
-
   #resources :residential_forms, only: [:new, :create, :edit, :update]
 
   resources :residential_listings, concerns: :unit_images_uploadable do
@@ -146,27 +124,6 @@ Rails.application.routes.draw do
   resources :neighborhoods
 
   resources :building_amenities
-
-  resources :commercial_units, concerns: :unit_images_uploadable do
-    member do
-      get 'delete_modal'
-      get 'duplicate_modal'
-      post 'duplicate'
-      get 'inaccuracy_modal'
-      patch 'send_inaccuracy'
-    #   get 'take_off_modal'
-    #   patch 'take_off'
-      get 'print_modal'
-      get 'print_public'
-    #  get 'print_private'
-      get 'refresh_images'
-      get 'update_subtype'
-    end
-    collection do
-      get 'filter'
-      get 'print_list'
-    end
-  end
 
   resources :commercial_listings, concerns: :unit_images_uploadable do
     member do

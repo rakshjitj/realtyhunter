@@ -139,16 +139,12 @@
             <hr class="thin-line" />
           </div>
         </div>
-            
+
         <br />
         <div class="row">
-          <div class="col-md-3 form-label-responsive">
-            <%= f.label :listing_agent_percentage, 'Listing agent %' %>
-          </div>
-          <div class="col-md-9">
-            <div class="field">
-              <%= f.text_field :listing_agent_percentage, class: 'form-control' %>
-            </div>
+          <div class="col-md-12">
+            <%= f.label :update_source, "Source of updates" %><br />
+            <%= f.text_area :update_source, class: 'form-control', rows: 2 %>
           </div>
         </div>
 

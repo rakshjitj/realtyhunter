@@ -266,7 +266,7 @@
         <br />
         <div class="row show-op">
           <div class="col-md-2 form-label-responsive">
-            <%= f.label :op_fee_percentage, 'Owner Fee %' %>
+            <%= f.label :op_fee_percentage, 'Owner Pays %' %>
           </div>
           <div class="col-md-4">
             <%= f.number_field :op_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>
@@ -275,7 +275,7 @@
 
         <div class="row show-tp">
           <div class="col-md-2 form-label-responsive">
-            <%= f.label :tp_fee_percentage, 'Tenant Fee %' %>
+            <%= f.label :tp_fee_percentage, 'Tenant Pays %' %>
           </div>
           <div class="col-md-4">
             <%= f.number_field :tp_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>

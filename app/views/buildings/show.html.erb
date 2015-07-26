@@ -28,7 +28,7 @@
 		  			<%= link_to 'View all', buildings_path %>
 						<% if current_user.is_management? %>
 							| <%= link_to 'Edit', edit_building_path(@building) %> | 
-							<%= link_to 'Add a Unit', new_residential_unit_path(building_id: @building.id) %>
+							<%= link_to 'Add a Unit', new_residential_listing_path(building_id: @building.id) %>
 						<% end %>
 		  		</div>
 		  		<div class="col-xs-12 col-md-6 form-label-responsive">
@@ -132,6 +132,42 @@
 				  <strong>Utilities:</strong>
 				  <%= @building.utilities_to_s %>
 				</p>
+
+				<p>
+					<strong>Listing Agent</strong>
+					<% if @building.listing_agent %>
+		    		<%= link_to @building.listing_agent.name, @building.listing_agent %>
+		    	<% else %>
+		    		-
+		    	<% end %>
+		    </p>
+		    
+				<p>
+          <strong>Listing agent %:</strong>
+          <%= @building.listing_agent_percentage %>
+        </p>
+
+        <!-- Broker's Fee -->
+        <p>
+    		<% if @building.has_fee %>
+    			<strong>Tenant Pays:</strong> 
+    			<% if @building.tp_fee_percentage %>
+	    			<%= @building.tp_fee_percentage %>%
+	    		<% else %>
+	    			(no amount specified)
+	    		<% end %>
+    			
+    		<!-- No Broker's Fee -->
+    		<% else %>
+    			<strong>OP Pays:</strong> 
+    			<% if @building.op_fee_percentage %>
+	    			<%= @building.op_fee_percentage %>%
+	    		<% else %>
+	    			(no amount specified)
+	    		<% end %>
+	    		
+    		<% end %>
+    		</p>
 
 				<p>
 				  <strong>Created:</strong>

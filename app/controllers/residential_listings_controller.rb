@@ -79,7 +79,7 @@ class ResidentialListingsController < ApplicationController
     @residential_unit.unit = Unit.new
     if params[:building_id]
       building = Building.find(params[:building_id])
-      @residential_unit.building_id = building.id
+      @residential_unit.unit.building_id = building.id
     end
     
     @panel_title = "Add a listing"
@@ -340,9 +340,10 @@ class ResidentialListingsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def residential_listing_params
       data = params[:residential_listing].permit(:tenant_occupied,
-        :has_fee, :beds, :baths, :notes, :description, :lease_start, :lease_end,
-        :include_photos, :inaccuracy_description, :op_fee_percentage, 
-        :available_starting, :available_before,   :tp_fee_percentage, 
+        :beds, :baths, :notes, :description, :lease_start, :lease_end,
+        :include_photos, :inaccuracy_description, 
+        :has_fee, :op_fee_percentage, :tp_fee_percentage, 
+        :available_starting, :available_before,   
         :unit => [:building_unit, :rent, :available_by, :access_info, :status, :open_house, :oh_exclusive, 
           :building_id, :primary_agent_id, :listing_agent_id ],
         :residential_amenity_ids => [])
