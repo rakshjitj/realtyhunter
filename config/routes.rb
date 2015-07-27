@@ -138,11 +138,11 @@ Rails.application.routes.draw do
       get 'print_public'
     #  get 'print_private'
       get 'refresh_images'
-      get 'update_subtype'
     end
     collection do
       get 'filter'
       get 'print_list'
+      get 'update_subtype'
     end
   end
 

@@ -16,7 +16,7 @@
       <% if @commercial_unit.id %>
 
         <br />
-        <%= form_for(@commercial_unit, :url => commercial_unit_unit_images_path(@commercial_unit), 
+        <%= form_for(@commercial_unit, :url => commercial_listing_unit_images_path(@commercial_unit), 
           html: {multipart: true, class: "dropzone", id: "cunit-dropzone"}, method: :post) do |f| %>
           <div class="fallback">
             <%= f.file_field :file %><br>
@@ -94,16 +94,19 @@
                 {},
                 {:size => 8,
                   class: 'form-control',
-                  data: {"update-subtype-path": update_subtype_commercial_listing_path(@commercial_unit)} }) %>
+                  data: {
+                  }
+                }) %>
+                <!-- "update-subtype-path": update_subtype_commercial_listing_path(@commercial_unit), --> 
             </div>
           </div>
           <div class="col-md-5">
             <div class="field">
               <!-- gets updated when property_type changes -->
               <%= render 'sub_types_select' %>
-              </div>
             </div>
           </div>
+        </div>
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
@@ -141,33 +144,35 @@
         </div>
         <br />
 
-        <div class="row">
-          <div class="col-md-4 form-label-responsive">
-            <%= f.label :building_id %>
-          </div>
-          <div class="col-md-8">
-            <div class="field">
-              <!-- TODO: turn this into an autocomplete field -->
-              <%= f.select(:building_id, 
-                options_for_select(current_user.company.buildings.collect {|b| [b.street_address, b.id]},
-                  [@commercial_unit.building ? @commercial_unit.building.id : '']), 
-                {prompt: "Choose one..."},
-                class: 'form-control',
-                :include_blank => true) %>
+        <%= f.fields_for @commercial_unit.unit do |unit_form| %>
+          <div class="row">
+            <div class="col-md-4 form-label-responsive">
+              <%= unit_form.label :building_id %>
+            </div>
+            <div class="col-md-8">
+              <div class="field">
+                <!-- TODO: turn this into an autocomplete field -->
+                <%= unit_form.select(:building_id, 
+                  options_for_select(current_user.company.buildings.collect {|b| [b.street_address, b.id]},
+                    [@commercial_unit.unit.building ? @commercial_unit.unit.building.id : '']), 
+                  {prompt: "Choose one..."},
+                  class: 'form-control',
+                  :include_blank => true) %>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-4 form-label-responsive">
-            <%= f.label :building_unit, "Suite/Apt/Unit" %>
-          </div>
-          <div class="col-md-2">
-            <div class="field">
-              <%= f.text_field :building_unit, class: 'form-control' %>
+        
+          <div class="row">
+            <div class="col-md-4 form-label-responsive">
+              <%= unit_form.label :building_unit, "Suite/Apt/Unit" %>
+            </div>
+            <div class="col-md-2">
+              <div class="field">
+                <%= unit_form.text_field :building_unit, class: 'form-control' %>
+              </div>
             </div>
           </div>
-        </div>
+        <% end %>
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
@@ -190,17 +195,19 @@
             </div>
           </div>
         </div>
-
+        
         <div class="row">
+          <%= f.fields_for @commercial_unit.unit do |unit_form| %>
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :rent, 'Rental rate' %>
+            <%= unit_form.label :rent, 'Rental rate' %>
           </div>
           <div class="col-md-2">
             <div class="field">
-              <%= f.number_field :rent, class: 'form-control', :required => true %>
+              <%= unit_form.number_field :rent, class: 'form-control', :required => true %>
               <!-- SF/YEAR SF/Month Amnt/Month Amt/Year -->
             </div>
           </div>
+          <% end %>
           <div class="col-md-3">
             <div class="field">
               <%= f.check_box :rate_is_negotiable, checked: @commercial_unit.rate_is_negotiable %>&nbsp;
@@ -209,14 +216,15 @@
           </div>
         </div>
 
+        <%= f.fields_for @commercial_unit.unit do |unit_form| %>
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :available_by, 'Date available' %>
+            <%= unit_form.label :available_by, 'Date available' %>
           </div>
           <div class="col-md-4">
             <div class="field">
               <div class='input-group date datepicker'>
-                <%= f.text_field :available_by, 
+                <%= unit_form.text_field :available_by, 
                   class:"form-control", placeholder: "Available" %>
                 <label class="input-group-addon btn" for="date">
                   <span class="fa fa-calendar open-datepicker"></span>
@@ -225,6 +233,7 @@
             </div>
           </div>
         </div>
+        <% end %>
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
@@ -233,7 +242,7 @@
           <div class="col-md-4">
             <div class="field">
               <%= f.select :lease_type, 
-                options_for_select(CommercialUnit.lease_types.collect { |s| [s[0].humanize.titleize, s[0]] }, 
+                options_for_select(CommercialListing.lease_types.collect { |s| [s[0].humanize.titleize, s[0]] }, 
                   [@commercial_unit.lease_type]), 
                 {prompt: "Choose one..."},
                 :required => true,
@@ -252,11 +261,11 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :minimum_divisble, 'Minimum Divisible (SF)' %>
+            <%= f.label :minimum_divisible, 'Minimum Divisible (SF)' %>
           </div>
           <div class="col-md-2">
             <div class="field">
-              <%= f.number_field :minimum_divisble, class: 'form-control', :required => true %>
+              <%= f.number_field :minimum_divisible, class: 'form-control', :required => true %>
             </div>
           </div>
         </div>

@@ -1,0 +1,47 @@
+  <tr class="<%= cycle('even', 'odd') -%>">
+    <td>
+      <% if @com_images[commercial_listing.unit_id] %>
+        <%= link_to(image_tag(@com_images[commercial_listing.unit_id].file.url(:thumb), :class => 'img-responsive', 
+          alt: @com_images[commercial_listing.unit_id].file.url(:medium)), commercial_listing) %>
+      <% else %>
+        <!-- placeholder image -->
+        <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), commercial_listing) %>
+      <% end %>
+    </td>
+    <td>
+      <%= link_to commercial_listing.street_address_and_unit, commercial_listing %><br />
+      <% if commercial_listing.neighborhood_name %>
+        <small><%= commercial_listing.neighborhood_name %></small>
+      <% end %>
+    </td>
+    <td>
+      <% if current_user.is_management? %>
+        <%= link_to commercial_listing.landlord_code, landlord_path(commercial_listing.landlord_id) %>
+      <% else %>
+        <%= commercial_listing.landlord_code %>
+      <% end %>
+    </td>
+
+    <td><%= commercial_listing.summary %></td>
+    <td><%= money_formatted(commercial_listing.rent) %>/Month</td>
+    <td><%= commercial_listing.sq_footage %></td>
+    <td><%= commercial_listing.available_by %></td>
+
+    <td>
+      <% if commercial_listing.status == Unit.statuses["active"] %>
+        <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
+      <% elsif commercial_listing.status == Unit.statuses["pending"] %>
+        <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
+      <% elsif commercial_listing.status == Unit.statuses["off"] %>
+        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+      <% end %>
+    </td>
+
+    <% if current_user.is_management? %>
+      <td>
+        <%= link_to 'Edit', edit_commercial_listing_path(commercial_listing) %><br />
+        <%= link_to 'Delete', delete_modal_commercial_listing_path(commercial_listing), 
+          data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
+      </td>
+    <% end %>
+  </tr>

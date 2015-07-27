@@ -50,8 +50,6 @@ gem 'cancancan', '~> 1.10'
 #used to add semi-realistic users
 gem 'faker'
 gem 'ffaker'
-# simulate multiple table inheritance
-gem 'active_record-acts_as'
 # autocomplete fields (like building addresses in our case)
 gem 'rails4-autocomplete'
 #gem 'pdfkit'

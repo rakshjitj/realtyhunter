@@ -21,7 +21,6 @@ class CommercialListing < ActiveRecord::Base
   end
 
   def self.find_unarchived(id)
-    #find_by!(id: id, archived: false)
     CommercialListing.joins(unit: [building: [:landlord, :neighborhood]])
       .where(id: id)
       .where('units.archived = false')
@@ -54,9 +53,18 @@ class CommercialListing < ActiveRecord::Base
   # end
 
   def summary
-  	summary = unit.status.capitalize() + ' - ' + commercial_property_type.property_type
-  	if commercial_property_type.property_sub_type
-  		summary += ' (' + commercial_property_type.property_sub_type + ')'
+    status_str = ""
+    if status == 0
+      status_str = "Off"
+    elsif status == 1
+      status_str = "Pending"
+    elsif status == 2
+      status_str = "Active"
+    end 
+      
+  	summary = status_str + ' - ' + property_category
+  	if property_sub_type
+  		summary += ' (' + property_sub_type + ')'
   	end
 
   	summary
@@ -65,18 +73,19 @@ class CommercialListing < ActiveRecord::Base
   def price_per_sq_ft
     unit.rent.to_f / sq_footage
   end
-
+  
   def self.search(params, user, building_id=nil)
 
-    @running_list = CommercialListing.joins(unit: {building: [:landlord, :neighborhood]})
+    @running_list = CommercialListing.joins([:commercial_property_type, unit: {building: [:landlord, :neighborhood]}])
       .where('units.archived = false')
       .select('buildings.formatted_street_address', 
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
-        'units.building_unit', 'units.status','units.rent', 
+        'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage', 
         'commercial_listings.id', 'commercial_listings.updated_at', 
         'neighborhoods.name AS neighborhood_name', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
         'units.available_by')
 
     # TODO: handle diff exit cases
@@ -202,7 +211,7 @@ class CommercialListing < ActiveRecord::Base
     for i in 0..cunits.length-1
       #bldg = cunits[i].unit.building
       cunit = cunits[i]
-      street_address = cunit.street_address
+      street_address = cunit.street_number + " " + cunit.route
       bldg_info = {
         building_id: cunit.building_id,
         lat: cunit.lat, 
@@ -211,7 +220,7 @@ class CommercialListing < ActiveRecord::Base
         id: cunits[i].id,
         building_unit: cunits[i].building_unit,
         rent: cunits[i].rent,
-        property_type: cunits[i].commercial_property_type.property_type,
+        property_type: cunits[i].commercial_property_type,
         sq_footage: cunits[i].sq_footage
        }
 

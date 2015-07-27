@@ -1,7 +1,7 @@
 class CommercialListingsController < ApplicationController
   load_and_authorize_resource
   before_action :set_commercial_listing, except: [:new, :create, :index, :filter, 
-    :neighborhoods_modal, :features_modal, :update_subtype, :refresh_images ]
+    :neighborhoods_modal, :features_modal, :refresh_images ] #:update_subtype
   etag { current_user.id }
 
   # GET /commercial_units
@@ -44,7 +44,7 @@ class CommercialListingsController < ApplicationController
   def new
     @commercial_unit = CommercialListing.new
     @commercial_unit.unit = Unit.new
-
+    @property_sub_types = CommercialPropertyType.subtypes_for("Retail", current_user.company)
     if params[:building_id]
       building = Building.find(params[:building_id])
       @commercial_unit.unit.building_id = building.id
@@ -63,6 +63,7 @@ class CommercialListingsController < ApplicationController
   def update_subtype
     ptype = params[:property_type]
     @property_sub_types = CommercialPropertyType.subtypes_for(ptype, current_user.company)
+    puts "\n\n\n **** #{@property_sub_types.inspect}"
     respond_to do |format|
       format.js  
     end
@@ -71,12 +72,18 @@ class CommercialListingsController < ApplicationController
   # POST /commercial_units
   # POST /commercial_units.json
   def create
-    @commercial_unit = CommercialListing.new(commercial_listing_params)
-    if !@commercial_unit.unit.available_by?
-      @commercial_unit.unit.available_by = Date.today
+    ret1 = Unit.new(commercial_listing_params[:unit])
+    c_params= commercial_listing_params
+    c_params.delete('unit')
+    ret2 = CommercialListing.new(c_params)
+    ret2.unit = ret1
+
+    if !ret1.available_by?
+      ret1.available_by = Date.today
     end
 
-    if @commercial_unit.save
+    if ret1.save! && ret2.save!
+      @commercial_unit = ret2
       redirect_to @commercial_unit
     else
       render 'new'
@@ -155,7 +162,7 @@ class CommercialListingsController < ApplicationController
   # PATCH/PUT /commercial_units/1
   # PATCH/PUT /commercial_units/1.json
   def update
-    ret1 = @commercial_unit.unit.update(commercial_listing_params)
+    ret1 = @commercial_unit.unit.update(commercial_listing_params[:unit])
     c_params = commercial_listing_params
     c_params.delete('unit')
     ret2 = @commercial_unit.update(c_params)
@@ -274,12 +281,12 @@ class CommercialListingsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def commercial_listing_params
       if params[:commercial_property_type_id]
-        params[:commercial_unit][:commercial_property_type_id] = params[:commercial_property_type_id]
+        params[:commercial_listing][:commercial_property_type_id] = params[:commercial_property_type_id]
       end
 
-      data = params[:commercial_unit].permit(:building_unit, :rent, :status, :available_by, 
+      data = params[:commercial_listing].permit(:building_unit, :rent, :status, :available_by, 
         :status, :building_id, :user_id, :include_photos,
-        :sq_footage, :floor, :building_size, :build_to_suit, :minimum_divisble, :maximum_contiguous,
+        :sq_footage, :floor, :building_size, :build_to_suit, :minimum_divisible, :maximum_contiguous,
         :lease_type, :is_sublease, :property_description, :location_description,
         :construction_status, :no_parking_spaces, :pct_procurement_fee, :lease_term_months,
         :rate_is_negotiable, :total_lot_size, :property_type, :commercial_property_type_id,

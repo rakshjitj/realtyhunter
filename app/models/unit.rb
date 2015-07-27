@@ -1,5 +1,4 @@
 class Unit < ActiveRecord::Base
-	actable
 	belongs_to :building, touch: true
   belongs_to :primary_agent, :class_name => 'User', touch: true
   #belongs_to :listing_agent, :class_name => 'User', touch: true

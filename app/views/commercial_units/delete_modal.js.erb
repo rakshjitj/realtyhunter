@@ -1,9 +1,0 @@
-$('#unitDeleteModal .modal-body').html("<%= j(render :partial => "delete_modal_helper", locals: { commercial_unit: @commercial_unit }) %>");
-
-$('#unitDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', @commercial_unit, remote: true, method: :delete, class: 'btn btn-danger link-as-button', id: 'delete-link') %>");
-$('#unitDeleteModal #delete-link').click( function(event) {
-	$('#unitDeleteModal').modal('hide');
-	event.preventDefault();
-});
-
-$('#unitDeleteModal').modal('show');

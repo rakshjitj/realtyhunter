@@ -1,1 +1,3 @@
-$('#commercial_property_type_id').html('<%= j( render 'sub_types_select', locals: { property_sub_types: @property_sub_types, commercial_unit: @commercial_unit }) %>')
+$('#commercial_property_type_id').html('<%= j( render 'sub_types_select', locals: { property_sub_types: @property_sub_types }) %>');
+console.log('here');
+//commercial_unit: @commercial_unit

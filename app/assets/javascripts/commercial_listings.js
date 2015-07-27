@@ -2,13 +2,17 @@ CommercialUnits = {};
 
 (function() {
   CommercialUnits.updatePropertySubTypes = function (ptype) {
-    var url_path = $('#commercial_unit_property_type').attr('data-update-subtype-path');
+    var url_path = $('#commercial_listing_property_type').attr('data-update-subtype-path');
+    //console.log('got path ', url_path);
     $.ajax({
-      url: url_path,
+      url: "/commercial_listings/update_subtype", //url_path,
       data: {
           property_type: ptype
       },
       dataType: "script",
+      error: function(data) {
+        console.log('ERROR:', data.responseText);
+      }
     });
   };
 
@@ -73,10 +77,10 @@ CommercialUnits = {};
     // make a DELETE ajax request to delete the file
     $.ajax({
       type: 'DELETE',
-      url: '/commercial_units/' + unit_id + '/unit_images/' + id,
+      url: '/commercial_listings/' + unit_id + '/unit_images/' + id,
       success: function(data){
         //console.log(data.message);
-        $.getScript('/commercial_units/' + unit_id + '/refresh_images')
+        $.getScript('/commercial_listings/' + unit_id + '/refresh_images')
       },
       error: function(data) {
         //console.log('ERROR:', data);
@@ -104,16 +108,11 @@ CommercialUnits = {};
 
   //call when typing or enter or focus leaving
   CommercialUnits.initialize = function () {
-    // change all date input fields to auto-open the calendar
-    // $('#commercial .datepicker').datetimepicker({
-    //   viewMode: 'days',
-    //   format: 'MM/DD/YYYY',
-    //   allowInputToggle: true
-    // });
 
-    $('#commercial_unit_property_type').change(function(e) {
+    $('#commercial_listing_property_type').change(function(e) {
       var optionSelected = $("option:selected", this);
       var textSelected   = optionSelected.text();
+      console.log(textSelected);
       CommercialUnits.updatePropertySubTypes(textSelected);
     });
   	
@@ -165,7 +164,7 @@ CommercialUnits = {};
         $(file.previewTemplate).find('.dz-remove').attr('unit_id', response.unitID);
         // add the dz-success class (the green tick sign)
         $(file.previewElement).addClass("dz-success");
-        $.getScript('/commercial_units/' + response.unitID + '/refresh_images')
+        $.getScript('/commercial_listings/' + response.unitID + '/refresh_images')
         file.previewElement.remove();
       },
       //when the remove button is clicked
@@ -202,7 +201,7 @@ CommercialUnits = {};
         var cunit_id = $('#commercial').attr('data-cunit-id');
         $.ajax({
           type: "PUT",
-          url: '/commercial_units/' + cunit_id + '/unit_images/sort',
+          url: '/commercial_listings/' + cunit_id + '/unit_images/sort',
           data: { order: updated_order }
         });
     });

@@ -11,10 +11,6 @@ class ChangeListingAgent < ActiveRecord::Migration
   	add_column :buildings, :op_fee_percentage, :integer
   	add_column :buildings, :tp_fee_percentage, :integer
 
-  	# drop all the old data!
-		#drop_column :units, :listing_agent
-		#drop_column :landlords, :listing_agent_percentage
-
-    add_column :landlords, :update_source, :string
+  	add_column :landlords, :update_source, :string
   end
 end

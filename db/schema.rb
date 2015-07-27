@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150726203142) do
+ActiveRecord::Schema.define(version: 20150727000253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,26 +103,6 @@ ActiveRecord::Schema.define(version: 20150726203142) do
     t.string   "property_sub_type"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
-  end
-
-  create_table "commercial_units", force: :cascade do |t|
-    t.integer "sq_footage"
-    t.integer "floor"
-    t.integer "building_size"
-    t.boolean "build_to_suit",               default: false
-    t.integer "minimum_divisble"
-    t.integer "maximum_contiguous"
-    t.integer "lease_type"
-    t.boolean "is_sublease",                 default: false
-    t.string  "property_description"
-    t.string  "location_description"
-    t.integer "construction_status",         default: 0
-    t.integer "no_parking_spaces"
-    t.integer "pct_procurement_fee"
-    t.integer "lease_term_months"
-    t.boolean "rate_is_negotiable"
-    t.integer "total_lot_size"
-    t.integer "commercial_property_type_id"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -306,22 +286,6 @@ ActiveRecord::Schema.define(version: 20150726203142) do
     t.integer  "unit_id"
   end
 
-  create_table "residential_units", force: :cascade do |t|
-    t.integer "beds"
-    t.float   "baths"
-    t.string  "notes"
-    t.string  "lease_start"
-    t.string  "lease_end"
-    t.boolean "has_fee"
-    t.integer "op_fee_percentage"
-    t.integer "tp_fee_percentage"
-    t.boolean "tenant_occupied",   default: false
-    t.string  "description"
-  end
-
-  add_index "residential_units", ["baths"], name: "index_residential_units_on_baths", using: :btree
-  add_index "residential_units", ["beds"], name: "index_residential_units_on_beds", using: :btree
-
   create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.integer  "resource_id"
@@ -349,8 +313,6 @@ ActiveRecord::Schema.define(version: 20150726203142) do
     t.integer  "images_id"
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
-    t.integer  "actable_id"
-    t.string   "actable_type"
     t.integer  "residential_listing_id"
     t.integer  "commercial_listing_id"
   end

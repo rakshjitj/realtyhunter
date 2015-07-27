@@ -1,9 +1,10 @@
 <% if @property_sub_types %>
-
+	
 	<%= select_tag(:commercial_property_type_id, 
 	  options_for_select(@property_sub_types.collect {|b| [b.property_sub_type, b.id]},
-	  [@commercial_unit.commercial_property_type_id]), 
-	  {:size => 8,
+	  []), 
+	  { :size => 8,
 	  	:required => true,
 	    class: 'form-control'}) %>
 <% end %>
+<!-- @commercial_unit.commercial_property_type_id -->
