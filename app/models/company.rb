@@ -110,7 +110,7 @@ class Company < ActiveRecord::Base
 		])
 
 		RentalTerm.create!([
-			{name: "First & Last month", company: self},
+			{name: "First & Security", company: self},
 			{name: "First, Last & Security", company: self},
 			{name: "First & 2 Securities", company: self},
 			{name: "First, Security & Broker's Fee", company: self},

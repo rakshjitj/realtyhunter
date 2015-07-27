@@ -263,6 +263,9 @@ class CommercialListingsController < ApplicationController
     def custom_sort
       sort_column = params[:sort_by] || "updated_at"
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+      # reset params so that view helper updates correctly
+      params[:sort_by] = sort_column
+      params[:direction] = sort_order
       # if sorting by an actual db column, use order
       if CommercialListing.column_names.include?(params[:sort_by])
         @commercial_units = @commercial_units.order(sort_column + ' ' + sort_order)

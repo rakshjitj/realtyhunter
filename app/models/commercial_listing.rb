@@ -73,6 +73,14 @@ class CommercialListing < ActiveRecord::Base
   def price_per_sq_ft
     unit.rent.to_f / sq_footage
   end
+
+  # for use in search method below
+  # for use in search method below
+  def self.get_images(list)
+    unit_ids = list.map(&:unit_id)
+    images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
+    images
+  end
   
   def self.search(params, user, building_id=nil)
 
@@ -94,11 +102,10 @@ class CommercialListing < ActiveRecord::Base
 
     # actable_type to restrict to commercial only
     if !params && !building_id
-      return @running_list
-    #  return CommercialListing.unarchived
+      return @running_list, get_images(@running_list)
     elsif !params && building_id
-      return @running_list.where(building_id: building_id)
-    #  return CommercialListing.unarchived.where(building_id: building_id)
+      @running_list.where(building_id: building_id)
+      return @running_list, get_images(@running_list)
     end
 
     # only admins are allowed to view off-market units
@@ -157,7 +164,7 @@ class CommercialListing < ActiveRecord::Base
     #   @running_list = @running_list.joins(:commercial_property_type)
     #   .where("commercial_property_type_id ILIKE ?", "%#{params[:landlord]}%")
       
-    return @running_list, @images
+    return @running_list, get_images(@running_list)
   end
 
   # TODO: run this in the background. See Image class for stub

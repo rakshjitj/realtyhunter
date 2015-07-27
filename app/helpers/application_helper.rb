@@ -12,7 +12,13 @@ module ApplicationHelper
   def sortable(column, title = nil)
     title ||= column.titleize
     direction = (column == params[:sort_by] && params[:direction] == "asc") ? "desc" : "asc"
-    css_class = (direction == "asc") ? "glyphicon glyphicon-triangle-top" : "glyphicon glyphicon-triangle-bottom"
+    # toggle arrow
+    if direction == "desc"
+      css_class = "glyphicon glyphicon-triangle-top"
+    elsif direction == "asc"
+      css_class = "glyphicon glyphicon-triangle-bottom"
+    end
+
     link_to "<i class=\"#{css_class}\"></i> #{title}".html_safe, {:sort_by => column, :direction => direction}
   end
 

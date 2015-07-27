@@ -157,6 +157,9 @@ class BuildingsController < ApplicationController
     def custom_sort
       sort_column = building_params[:sort_by] || "formatted_street_address"
       sort_order = %w[asc desc].include?(building_params[:direction]) ? building_params[:direction] : "asc"
+      # reset params so that view helper updates correctly
+      params[:sort_by] = sort_column
+      params[:direction] = sort_order
       # if sorting by an actual db column, use order
       if Building.column_names.include?(building_params[:sort_by])
         @buildings = @buildings.order(sort_column + ' ' + sort_order)

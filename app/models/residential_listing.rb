@@ -76,6 +76,13 @@ class ResidentialListing < ActiveRecord::Base
     contacts = [unit.primary_agent];
   end
 
+
+  def self.get_images(list)
+    unit_ids = list.map(&:unit_id)
+    images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
+    images
+  end
+
   # takes in a hash of search options
   # can be formatted_street_address, landlord
   # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 
@@ -95,14 +102,12 @@ class ResidentialListing < ActiveRecord::Base
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by')
 
-    # TODO: handle diff exit cases
-    unit_ids = @running_list.map(&:unit_id)
-    @images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
 
     if !params && !building_id
-      return @running_list
+      return @running_list, get_images(@running_list)
     elsif !params && building_id
-      return @running_list.where(building_id: building_id)
+      @running_list = @running_list.where(building_id: building_id)
+      return @running_list, get_images(@running_list)
     end
 
     # only admins are allowed to view off-market units
@@ -237,7 +242,10 @@ class ResidentialListing < ActiveRecord::Base
         .where('residential_amenity_id IN (?)', features)
     end
 
-      return @running_list, @images
+    unit_ids = @running_list.map(&:unit_id)
+    @images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
+
+    return @running_list, get_images(@running_list)
   end
 
   # mainly used in API
