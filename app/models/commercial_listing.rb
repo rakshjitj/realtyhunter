@@ -96,7 +96,6 @@ class CommercialListing < ActiveRecord::Base
         "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
         'units.available_by')
 
-    # TODO: handle diff exit cases
     unit_ids = @running_list.map(&:unit_id)
     @images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
 
@@ -170,7 +169,6 @@ class CommercialListing < ActiveRecord::Base
   # TODO: run this in the background. See Image class for stub
   def deep_copy_imgs(dst_id)
     #puts "YEAAAAAA MAN #{src_id} #{dst_id}"
-    #@src = ResidentialListing.find(src_id)
     @dst = CommercialListing.find(dst_id)
 
     # deep copy photos

@@ -76,7 +76,7 @@ class ResidentialListing < ActiveRecord::Base
     contacts = [unit.primary_agent];
   end
 
-
+  # for use in search method below
   def self.get_images(list)
     unit_ids = list.map(&:unit_id)
     images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
@@ -101,7 +101,6 @@ class ResidentialListing < ActiveRecord::Base
         'neighborhoods.name AS neighborhood_name', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by')
-
 
     if !params && !building_id
       return @running_list, get_images(@running_list)
