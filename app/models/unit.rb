@@ -9,8 +9,7 @@ class Unit < ActiveRecord::Base
 
   scope :unarchived, ->{ where(archived: false) }
   scope :active, ->{ where(status: "active") }
-  #scope :commercial, ->{ where("actable_type = 'CommercialUnit'") }
-
+  
 	enum status: [ :active, :pending, :off ]
   scope :on_market, ->{where.not(status: Unit.statuses["off"])}
 	validates :status, presence: true, inclusion: { in: %w(active pending off) }

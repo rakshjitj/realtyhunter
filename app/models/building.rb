@@ -210,15 +210,8 @@ class Building < ActiveRecord::Base
     ResidentialListing.for_buildings([id], active_only)
   end
 
-  # TODO
   def commercial_units(active_only=false)
-    # if active_only
-    #   units = Unit.unarchived.where(building_id: id, status:"active")
-    # else
-    #   units = Unit.unarchived.includes(:building).where(building_id: id)
-    # end
-    # Unit.get_commercial(units)
-    CommercialUnit.none
+    CommercialListing.for_buildings([id], active_only)
   end
 
   private

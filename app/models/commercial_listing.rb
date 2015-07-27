@@ -236,4 +236,52 @@ class CommercialListing < ActiveRecord::Base
     map_infos.to_json
   end
 
+  def self.for_buildings(bldg_ids, is_active=nil)
+    listings = CommercialListing.joins([:commercial_property_type, unit: {building: [:landlord, :neighborhood]}])
+      .where('units.archived = false')
+      .where('buildings.id in (?)', bldg_ids)
+      .select('buildings.formatted_street_address', 
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+        'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
+        'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage', 
+        'commercial_listings.id', 'commercial_listings.updated_at', 
+        'neighborhoods.name AS neighborhood_name', 
+        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
+        'units.available_by')
+      
+    if is_active
+      result.where('units.status = ?', Unit.status["active"])
+    end
+    
+    unit_ids = listings.map(&:unit_id)
+    images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
+      
+    return listings, images
+  end
+
+  def self.for_units(unit_ids, is_active=nil)
+    listings = CommercialListing.joins([:commercial_property_type, unit: {building: [:landlord, :neighborhood]}])
+      .where('units.archived = false')
+      .where('units.id in (?)', unit_ids)
+      .select('buildings.formatted_street_address', 
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+        'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
+        'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage', 
+        'commercial_listings.id', 'commercial_listings.updated_at', 
+        'neighborhoods.name AS neighborhood_name', 
+        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
+        'units.available_by')
+      
+    if is_active
+      result.where('units.status = ?', Unit.status["active"])
+    end
+    
+    unit_ids = listings.map(&:unit_id)
+    images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
+      
+    return listings, images
+  end
+
 end
