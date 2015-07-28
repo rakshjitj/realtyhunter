@@ -38,10 +38,10 @@ class Ability
 
       can :manage, Building, :company_id => user.company.id
       can :manage, ResidentialListing do |residential_listing|
-        !residential_listing.unit || user.is_management? || (residential_listing.building.company_id == user.company_id && user.handles_residential?)
+        !residential_listing.unit || user.is_management? || (residential_listing.unit.building.company_id == user.company_id && user.handles_residential?)
       end
       can :manage, CommercialListing do |commercial_listing|
-        !commercial_listing.unit || user.is_management? || (commercial_listing.building.company_id == user.company_id && user.handles_commercial?)
+        !commercial_listing.unit || user.is_management? || (commercial_listing.unit.building.company_id == user.company_id && user.handles_commercial?)
       end
     
     elsif user.has_role?(:external_vendor)
