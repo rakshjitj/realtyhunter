@@ -2,6 +2,7 @@ class Image < ActiveRecord::Base
 	belongs_to :building, touch: true
 	belongs_to :unit, touch: true
   default_scope { order("priority ASC") }
+  after_save :check_priority
   # after_update :clear_cache
   # after_destroy :clear_cache
 
@@ -57,26 +58,37 @@ class Image < ActiveRecord::Base
   # end
 
   # TODO: test
-  def reorder_by_unit(unit_id)
-    images = Image.where(unit_id: unit_id)
+  def self.reorder_by_unit(unit_id)
+    images = Image.where(unit_id: unit_id).order("priority ASC")
     pos = 0
     images.each{ |x|
-      if image.priority != pos
-        image.update(priority: pos)
+      if x.priority != pos
+        x.update(priority: pos)
       end
       pos = pos + 1
     }
   end
 
-  def reorder_by_building(bldg_id)
-    images = Image.where(building_id: bldg_id)
+  def self.reorder_by_building(bldg_id)
+    images = Image.where(building_id: bldg_id).order("priority ASC")
     pos = 0
     images.each{ |x|
-      if image.priority != pos
-        image.update(priority: pos)
+      if x.priority != pos
+        x.update(priority: pos)
       end
       pos = pos + 1
     }
   end
 
+  private
+
+    # preserve order. keep numbers starting at 0
+    def check_priority
+      images = []
+      if self.building_id
+        Image.reorder_by_building(building_id)
+      elsif self.unit_id
+        Image.reorder_by_unit(unit_id)
+      end
+    end
 end

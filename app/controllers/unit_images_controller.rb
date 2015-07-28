@@ -48,11 +48,12 @@ class UnitImagesController < ApplicationController
     end
 
     def set_unit
-      if params[:residential_unit_id]
-        #puts "WE GOT R-ID #{params[:residential_unit_id]}"
-        @unit = ResidentialListing.find(params[:residential_unit_id]).unit
-      elsif params[:commercial_unit_id]
-        @unit = CommercialUnit.find(params[:commercial_unit_id]).unit
+      if params[:residential_listing_id]
+        #puts "WE GOT R-ID #{params[:residential_listing_id]}"
+        @unit = ResidentialListing.find(params[:residential_listing_id]).unit
+      elsif params[:commercial_listing_id]
+        #puts "WE GOT C-ID #{params[:commercial_listing_id]}"
+        @unit = CommercialListing.find(params[:commercial_listing_id]).unit
       end
       #@unit = Unit.find(params[:unit_id])
     end

@@ -1,5 +1,5 @@
 class ResidentialListingsController < ApplicationController
-  #load_and_authorize_resource
+  load_and_authorize_resource
   before_action :set_residential_listing, except: [:new, :create, :index, :filter, 
     :print_list, :neighborhoods_modal, :features_modal, 
     :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood] #:refresh_images, 

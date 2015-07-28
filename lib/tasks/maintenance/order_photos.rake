@@ -1,19 +1,21 @@
 namespace :maintenance do
 	desc "clean up to match latest schema changes"
-	task :change_passwords => :environment do
-		log = ActiveSupport::Logger.new('log/change_passwords.log')
+	task :order_photos => :environment do
+		log = ActiveSupport::Logger.new('log/import_landlords.log')
 		start_time = Time.now
 
 	  company = Company.find_by(name: 'MyspaceNYC')
 
-		puts "Changing passwords..."
-		log.info "Changing passwords..."
+		puts "Updating photo priority..."
+		log.info "Updating photo priority..."
 
-		@users = User.all
-		@users.each {|u|
-			if u.name != 'Blank Slate'
-				u.update!(password: '123456', password_confirmation: '123456')
-			end
+		company.buildings.each {|b|
+			Image.reorder_by_building(b.id)
+
+			units, unit_images = b.residential_units
+			units.each {|r|
+				Image.reorder_by_unit(r.id)
+			}
 		}
 
 		puts "Done!\n"

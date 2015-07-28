@@ -1,7 +1,7 @@
 namespace :maintenance do
 	desc "clean up to match latest schema changes"
 	task :update_listing_agent => :environment do
-		log = ActiveSupport::Logger.new('log/import_landlords.log')
+		log = ActiveSupport::Logger.new('log/update_listing_agent.log')
 		start_time = Time.now
 
 	  company = Company.find_by(name: 'MyspaceNYC')
