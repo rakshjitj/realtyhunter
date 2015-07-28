@@ -32,7 +32,6 @@ module ApplicationHelper
 
   def wrap_text(text, max_char_count=15)
     words = text.strip.split(" ")
-    puts "\n\n\n***** #{words.inspect}"
     out_text = ""
 
     # number of chars on current line
@@ -47,7 +46,6 @@ module ApplicationHelper
       out_text = out_text + w + " "
       char_count = char_count + w.length + 1
     }
-    puts out_text
     out_text.html_safe
   end
 end

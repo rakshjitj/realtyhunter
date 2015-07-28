@@ -1,6 +1,14 @@
 CommercialUnits = {};
 
 (function() {
+  CommercialUnits.showSpinner = function() {
+    $('#commercial .index-spinner-desktop').show();
+  };
+
+  CommercialUnits.hideSpinner = function() {
+    $('#commercial .index-spinner-desktop').hide();
+  };
+
   CommercialUnits.updatePropertySubTypes = function (ptype) {
     var url_path = $('#commercial_listing_property_type').attr('data-update-subtype-path');
     //console.log('got path ', url_path);
@@ -10,13 +18,12 @@ CommercialUnits = {};
           property_type: ptype
       },
       dataType: "script",
-      error: function(data) {
-        console.log('ERROR:', data.responseText);
-      }
     });
   };
 
   CommercialUnits.doSearch = function(event) {
+    CommercialUnits.showSpinner();
+
     // sanitize invalid input before submitting
     if ($('#commercial #neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
       $('#commercial #neighborhood_ids').val('');
@@ -37,7 +44,13 @@ CommercialUnits = {};
           neighborhood_ids: $('#commercial #neighborhood_ids').val(),
         //}
       },
-      dataType: "script"
+      dataType: "script",
+      success: function(data) {
+        CommercialUnits.hideSpinner();
+      },
+      error: function(data) {
+        CommercialUnits.hideSpinner();
+      }
     });
   };
 
@@ -108,6 +121,10 @@ CommercialUnits = {};
 
   //call when typing or enter or focus leaving
   CommercialUnits.initialize = function () {
+    CommercialUnits.hideSpinner();
+    $('#commercial a').click(function() {
+      CommercialUnits.showSpinner();
+    });
 
     $('#commercial_listing_property_type').change(function(e) {
       var optionSelected = $("option:selected", this);

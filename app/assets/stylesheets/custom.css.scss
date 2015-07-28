@@ -407,3 +407,10 @@ vertical-padding-lg {
 .text-left {
   text-align: left !important;
 }
+
+.index-spinner-desktop {
+  position: absolute;
+  left: 10%;
+  top: 20%;
+  z-index: 1;
+}

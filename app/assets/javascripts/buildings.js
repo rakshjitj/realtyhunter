@@ -1,6 +1,13 @@
 Buildings = {};
 
 (function() {
+  Buildings.showSpinner = function() {
+    $('#buildings .index-spinner-desktop').show();
+  };
+
+  Buildings.hideSpinner = function() {
+    $('#buildings .index-spinner-desktop').hide();
+  };
 
   Buildings.filterListings = function(event) {
     var search_path = $('#listings').attr('data-search-path');
@@ -10,12 +17,19 @@ Buildings = {};
         active_only: $('#listings_checkbox_active').prop('checked')
       },
       dataType: "script",
-    }).fail(function() {
-      //console.log("[FAILED] search listings update failed");
+      success: function(data) {
+        //console.log('SUCCESS:', data.responseText);
+        Buildings.hideSpinner();
+      },
+      error: function(data) {
+        //console.log('ERROR:', data.responseText);
+        Buildings.hideSpinner();
+      }
     });
   };
 
   Buildings.filterBuildings = function(event) {
+    Buildings.showSpinner();
 
   	var search_path = $('#search-filters').attr('data-search-path');
     //console.log("[" + search_path + "] BUILDINGS searching for " + $('#filter').val(), $('#checkbox_active').prop('checked'));
@@ -27,22 +41,19 @@ Buildings = {};
         filter: $('#buildings #filter').val(),
         active_only: $('#buildings #checkbox_active').prop('checked')
       },
-      dataType: "script"
-    }).fail(function(e) {
-      console.log("[FAILED] search bldgs update failed", e.message);
+      dataType: "script",
+      success: function(data) {
+        Buildings.hideSpinner();
+      },
+      error: function(data) {
+        Buildings.hideSpinner();
+      }
     });
   };
 
   // search as user types
   Buildings.timer;
   Buildings.throttledBldgSearch = function() {
-    // only accept letter/number keys as search input
-    // var charTyped = String.fromCharCode(e.which);
-    // if (/[a-z\d]/i.test(charTyped)) {
-    //     console.log("Letter or number typed: " + charTyped);
-    // } else {
-    //   return;
-    // }
     clearTimeout(Buildings.timer);  //clear any interval on key up
     Buildings.timer = setTimeout(Buildings.filterBuildings, 500);
   };
@@ -109,6 +120,11 @@ Buildings = {};
   };
 
   Buildings.initialize = function() {
+    Buildings.hideSpinner();
+    $('#buildings a').click(function() {
+      Buildings.showSpinner();
+    });
+
     $('#buildings .has-fee').click(Buildings.toggleFeeOptions);
     Buildings.toggleFeeOptions();
 

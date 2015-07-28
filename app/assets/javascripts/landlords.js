@@ -2,6 +2,14 @@ Landlords = {};
 
 (function() {
 
+  Landlords.showSpinner = function() {
+    $('#landlords .index-spinner-desktop').show();
+  };
+
+  Landlords.hideSpinner = function() {
+    $('#landlords .index-spinner-desktop').hide();
+  };
+
   Landlords.doSearch = function(event) {
     var search_path = $('#landlord-search-filters').attr('data-search-path');
     $.ajax({
@@ -10,15 +18,22 @@ Landlords = {};
         filter: $('#filter').val(),
         active_only: $('#checkbox_active').prop('checked')
       },
-      dataType: "script"
-    }).fail(function() {
-      //console.log("[FAILED] search update failed");
+      dataType: "script",
+      success: function(data) {
+        //console.log('SUCCESS:', data.responseText);
+        Landlords.hideSpinner();
+      },
+      error: function(data) {
+        //console.log('ERROR:', data.responseText);
+        Landlords.hideSpinner();
+      }
     });
   };
 
   // search as user types
   Landlords.timer;
   Landlords.throttledSearch = function() {
+    Landlords.showSpinner();
     // only accept letter/number keys as search input
     // var charTyped = String.fromCharCode(e.which);
     // if (/[a-z\d]/i.test(charTyped)) {
@@ -40,13 +55,12 @@ Landlords = {};
   };
 
   Landlords.initialize = function() {
-    // change all date input fields to auto-open the calendar
-    $('.datepicker').datetimepicker({
-      viewMode: 'days',
-      format: 'MM/DD/YYYY',
-      allowInputToggle: true
+
+    Landlords.hideSpinner();
+    $('#landlords a').click(function() {
+      Landlords.showSpinner();
     });
-    
+
     var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
 
     $(".autocomplete-input").geocomplete({
@@ -61,10 +75,9 @@ Landlords = {};
       console.log(bldg_address, "[ERROR]: " + result);
     });
 
-    $('#filter').keydown(Landlords.preventEnter);
-
-    $('#filter').change(Landlords.throttledSearch);
-    $('#checkbox_active').click(Landlords.doSearch);
+    $('#landlords #filter').keydown(Landlords.preventEnter);
+    $('#landlords #filter').change(Landlords.throttledSearch);
+    $('#landlords #checkbox_active').click(Landlords.throttledSearch);
   };
 })();
 
