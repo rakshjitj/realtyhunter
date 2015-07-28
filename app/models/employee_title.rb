@@ -74,4 +74,13 @@ class EmployeeTitle < ActiveRecord::Base
 		@agent_title
 	end
 
+	def self.data_entry
+		@agent_title = EmployeeTitle.where(name: "data entry").first;
+		if !@agent_title
+			@agent_title = EmployeeTitle.create(name: "data entry")
+		end
+
+		@agent_title
+	end
+
 end

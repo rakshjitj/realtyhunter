@@ -178,21 +178,21 @@
 
         <br />
         <div class="row">
-          <div class="col-md-2 form-label-responsive">
+          <div class="col-xs-2 form-label-responsive">
             <strong>Lease Duration</strong>
           </div>
-          <div class="col-md-2">
+          <div class="col-xs-2">
             <%= f.text_field :lease_start, class: 'form-control', 
             required: true, placeholder: "min" %>
           </div>
-          <div class="col-md-1">
+          <div class="col-xs-1">
             to
           </div>
-          <div class="col-md-2">
+          <div class="col-xs-2">
             <%= f.text_field :lease_end, class: 'form-control', 
             required: true, placeholder: "max" %>
           </div>
-          <div class="col-md-1">
+          <div class="col-xs-1">
             Months
           </div>
         </div>
@@ -204,7 +204,7 @@
           </div>
 
           <!-- for bigger screens -->
-          <div class="col-xs-12 col-md-9 hidden-xs">
+          <div class="col-xs-12 col-md-9">
             <div class="row">
               
               <% i = 0 %>
@@ -215,7 +215,7 @@
                   <div class="row">
                 <% end %>
 
-                <div class="col-xs-4">
+                <div class="col-sm-4">
                   <%= b.check_box(class: "check_box") %>&nbsp;
                   <%= b.text.titleize %>
                 </div>
@@ -225,6 +225,7 @@
             
             </div><!-- row -->
           </div><!-- col -->
+        </div>
 
         <br />
         <div class="row">

@@ -78,7 +78,7 @@ class CommercialListing < ActiveRecord::Base
   # for use in search method below
   def self.get_images(list)
     unit_ids = list.map(&:unit_id)
-    images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
+    images = Image.where(unit_id: unit_ids, priority: 0).index_by(&:unit_id)
     images
   end
   

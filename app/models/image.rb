@@ -3,8 +3,6 @@ class Image < ActiveRecord::Base
 	belongs_to :unit, touch: true
   default_scope { order("priority ASC") }
   after_save :check_priority
-  # after_update :clear_cache
-  # after_destroy :clear_cache
 
 	# This method associates the attribute ":file" with a file attachment
   has_attached_file :file, styles: {
@@ -46,18 +44,6 @@ class Image < ActiveRecord::Base
   #   #Resque.enqueue(CopyResidentialUnitImages, src_id, dst_id)
   # end
 
-  # def clear_cache
-  #   if building_id
-  #     building.increment_memcache_iterator
-  #   end
-
-  #   if unit_id
-  #     # cast to either residential or commercial unit
-  #     unit.specific.clear_cache
-  #   end
-  # end
-
-  # TODO: test
   def self.reorder_by_unit(unit_id)
     images = Image.where(unit_id: unit_id).order("priority ASC")
     pos = 0

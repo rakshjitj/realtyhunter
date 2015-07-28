@@ -3,6 +3,23 @@ ResidentialListings = {};
 // TODO: break this up by controller action
 
 (function() {
+	// ResidentialListings.toggleMap = function() {
+	// 	$('.mobile-toggle-map').toggleClass();
+	// 	if ($('.mobile-toggle-map').is(":visible")) {
+	// 		$('.display-toggle-map').text('Hide Map');
+	// 	} else {
+	// 		$('.display-toggle-map').text('Display Map');
+	// 	}
+	// };
+
+	ResidentialListings.showSpinner = function() {
+		$('.res-spinner-desktop').show();
+	};
+
+	ResidentialListings.hideSpinner = function() {
+		$('.res-spinner-desktop').hide();
+	};
+
 	// for searching on the index page
 	ResidentialListings.doSearch = function (event) {
 		//console.log('PERFORMING SEARCH');
@@ -18,6 +35,9 @@ ResidentialListings = {};
 	  }
 
 	  var search_path = $('#res-search-filters').attr('data-search-path');
+	  
+	  ResidentialListings.showSpinner();
+
 	  $.ajax({
 	    url: search_path,
 	    data: {
@@ -43,9 +63,11 @@ ResidentialListings = {};
 	    dataType: 'script',
 	    success: function(data) {
 	    	//console.log('SUCCESS:', data.responseText);
+	    	ResidentialListings.hideSpinner();
 			},
 			error: function(data) {
 				//console.log('ERROR:', data.responseText);
+				ResidentialListings.hideSpinner();
 			}
 	  });
 	};
@@ -89,9 +111,6 @@ ResidentialListings = {};
 			console.log('yes, clearing');
 		  clearTimeout(ResidentialListings.timer);
 		}
-		// if (jqXHR && jqXHR.abort) { 
-		// 	jqXHR.abort(); 
-		// }
 	  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 500);
 	};
 
@@ -213,6 +232,19 @@ ResidentialListings = {};
 	};
 	
 	ResidentialListings.initialize = function() {
+		// hide map on mobile by default. give them the option to un-hide
+		//ResidentialListings.toggleMap();
+
+		ResidentialListings.hideSpinner();
+
+		$('a').click(function() {
+			//console.log('detected click');
+			ResidentialListings.showSpinner();
+		});
+		$('.close').click(function() {
+			//console.log('detected click');
+			ResidentialListings.hideSpinner();
+		});
 
 		$('#residential .has-fee').click(ResidentialListings.toggleFeeOptions);
 		ResidentialListings.toggleFeeOptions();
@@ -244,7 +276,7 @@ ResidentialListings = {};
 
 	  // print pdf from the index page
 	  $('#residential .btn-print-list').click( function(event) {
-		  // show spinner
+		  ResidentialListings.showSpinner();
 		  $(this).toggleClass('active');
 		});
 

@@ -283,6 +283,7 @@ class User < ActiveRecord::Base
   def is_management?
     if (has_role? :company_admin) || 
       (has_role? :operations) ||
+      (has_role? :data_entry) ||
       (has_role? :broker) || 
       (has_role? :associate_broker) ||
       (has_role? :manager)
