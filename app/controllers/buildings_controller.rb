@@ -143,7 +143,8 @@ class BuildingsController < ApplicationController
       active_only = params[:active_only] == "true"
       @residential_units, @res_images = @building.residential_units(active_only)
       @residential_units = @residential_units.page params[:page]
-      @commercial_units = @building.commercial_units(active_only).page params[:page]
+      @commercial_units, @com_images = @building.commercial_units(active_only)
+      @commercial_units = @commercial_units.page params[:page]
     end
 
     def set_buildings

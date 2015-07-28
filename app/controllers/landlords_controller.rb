@@ -90,7 +90,8 @@ class LandlordsController < ApplicationController
       @landlord = Landlord.find_unarchived(params[:id])
       @residential_units, @res_images = @landlord.residential_units
       @residential_units = @residential_units.page params[:page]
-      @commercial_units = @landlord.commercial_units.page params[:page]
+      @commercial_units, @com_images = @landlord.commercial_units
+      @commercial_units = @commercial_units.page params[:page]
     end
 
     def set_landlords
