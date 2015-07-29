@@ -167,9 +167,10 @@ class User < ActiveRecord::Base
     #   .select('users.name', )
     #   #.select('users.name', 'employee_titles.name as title').map{|u| [u.name, u.title]}
     
+    #:employee_title, :office, :company, :manager, :image, :roles)
     @running_list = User.unarchived
     .includes(
-      :employee_title, :office, :company, :manager, :image, :roles)
+      :employee_title, :image)
     .where(company: current_user.company)
     if !query_params || !query_params[:name_email]
       return @running_list 

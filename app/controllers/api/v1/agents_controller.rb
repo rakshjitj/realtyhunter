@@ -22,14 +22,17 @@ module API
 					end
 				end
 
-				#if !params[:changed_at]
-					@agents = User.search(params, current_user)#unarchived.where(company: @user.company)
-						.page(agent_params[:page]).per(per_page)
-				#else
-				# 	@agents = User.search(params)
-				# 		.where('updated_at > ?', params[:changed_at])
-				# 		.page(agent_params[:page]).per(per_page)
-				# end
+				@agents = User.where(archived: false)
+					.where(company: current_user.company)
+					.joins(:image, :employee_title)
+					.select('users.name', 'users.email', 'users.id', 'users.phone_number',
+						'users.updated_at', 'users.mobile_phone_number', 'users.bio',
+						'employee_titles.name AS title')
+				@agents = @agents.page(agent_params[:page]).per(per_page)
+
+				# @images = Image.where(user_id: @agents.map(&:id))
+				# @agents = User.search(params, current_user)
+				# 	.page(agent_params[:page]).per(per_page)
 			end
 
 			def show
