@@ -1,23 +1,3 @@
-<script>
-  function initialize() {
-    if ('<%= @user.employee_title.name %>' === '<%= @agent_title.name %>') {
-      $('.agent-type').show();
-    } else {
-      $('.agent-type').hide();
-    }
-  };
-  // TODO: get rid of document.ready
-  $(document).ready(initialize);
-
-  function title_onchange_handler(input) {
-    if (input.toLowerCase() === '<%= @agent_title.name %>') {
-      $('.agent-type').show();
-    } else {
-      $('.agent-type').hide();
-    }
-  };
-</script>
-
 <div class="row">
   <div class="col-md-6">
       <!-- User image form -->
@@ -29,7 +9,7 @@
         </div>
       </div>
 
-      <% if @user.is_management? %>
+      <% if current_user.is_management? %>
         <br />
         <div class="row">
           <div class="col-md-12">
@@ -68,7 +48,7 @@
         <%= f.telephone_field :mobile_phone_number, placeholder: "(XXX)XXX-XXXX",
             class: 'form-control' %>
       </div>
-      <% if @user.is_management? %>
+      <% if current_user.is_management? %>
         <div class="field">
           <%= f.label :bio, "Short Bio (Max 500 chars)" %><br>
           <%= f.text_area :bio, class: 'form-control', :size => "20x10" %>
@@ -86,16 +66,20 @@
 
       <div class="row">
 
-        <% if @user.is_management? %>
+        <% if current_user.is_management? %>
         <div class="col-md-6">
           <div class="field">
             <%= f.label :employee_title_id, "Role within the company" %><br>
-            <%= f.select(:employee_title_id, options_for_select(EmployeeTitle.all_cached.collect {|t| [t.name.titleize, t.id]}, [@user.employee_title.id]), 
+            <%= f.select(:employee_title_id, options_for_select(EmployeeTitle.all_cached.collect {|t| [t.name.titleize, t.id]}, 
+              [@user.employee_title.id]), 
               {prompt: "Choose one..."},
-              :onchange => "title_onchange_handler($(this).find('option:selected').text())",
               :required => true, 
               class: 'form-control',
-              :include_blank => true) %>
+              :include_blank => true,
+              data: { 
+                agent_title_name: @agent_title.name,
+                user_title_name: @user.employee_title.name
+              }) %>
           </div>
         </div>
         <% end %>

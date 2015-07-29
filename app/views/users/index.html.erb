@@ -1,39 +1,4 @@
-<script>
-  //call when typing or enter or focus leaving
-  function initialize() {
-
-    function doSearch(event) {
-      $.ajax({
-        url: "<%= filter_users_path %>",
-        data: {
-          search_params: {
-            name_email: $('#name_email').val()
-          } 
-        },
-        dataType: "script"
-      });
-    };
-
-    // search as user types
-    var timer;
-    function throttledSearch() {
-      clearInterval(timer);  //clear any interval on key up
-      timer = setTimeout(doSearch, 500);
-    };
-    
-    // change enter key to tab
-    function preventEnter(event) {
-      if (event.keyCode == 13) {
-        return false;
-      }
-    };
-
-    $('input').keydown(preventEnter); 
-    $('#name_email').keyup(throttledSearch);
-  };
-
-  $(document).ready(initialize);
-</script>
+<div id="users">
 
 <div class="page-header">
   <div class="row">
@@ -44,10 +9,15 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-12 col-md-4 vertical-padding">
-    <%= form_tag users_path, :method => 'get' do %>
-      <%= text_field_tag :name_email, params[:search], placeholder: "Filter by name/email", class: 'form-control' %>
-    <% end %>
+
+  <div id="user-search-filters" data-search-path="<%= filter_users_path %>">
+
+    <div class="col-xs-12 col-md-4 vertical-padding">
+      <%= form_tag users_path, :method => 'get' do %>
+        <%= text_field_tag :name_email, params[:search], placeholder: "Filter by name/email", class: 'form-control' %>
+      <% end %>
+    </div>
+
   </div>
 </div>
 
@@ -82,4 +52,4 @@
   </div>
 </div>
 
-
+</div>

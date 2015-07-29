@@ -1,21 +1,3 @@
-
-<script>
-  function initialize() {
-    $('.agent-type').hide();
-  }
-  // TODO: get rid of document.ready
-  $(document).ready(initialize);
-
-  function title_onchange_handler(input) {
-    if (input.toLowerCase() === '<%= @agent_title.name %>') {
-      $('.agent-type').show();
-    } else {
-      $('.agent-type').hide();
-    }
-  };
-</script>
-
-
 <%= form_for(@user, html: { class: "directUpload" }) do |f| %>
   <%= render :partial => 'shared/error_messages', 
       :locals => {:model => @user} %>
@@ -67,10 +49,13 @@
         <%= f.label :employee_title_id, "Role within the company" %><br>
         <%= f.select(:employee_title_id, options_for_select(@employtee_titles.collect {|t| [t.name.titleize, t.id]}), 
           {prompt: "Choose one..."},
-          :onchange => "title_onchange_handler($(this).find('option:selected').text())",
           :required => true, 
           class: 'form-control',
-          :include_blank => true) %>
+          :include_blank => true,
+          data: { 
+            agent_title_name: @agent_title.name,
+            user_title_name: @user.employee_title.name
+          }) %>
       </div>
     </div>
 

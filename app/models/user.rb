@@ -385,7 +385,7 @@ class User < ActiveRecord::Base
   # for use in our API
   def set_auth_token
     return if auth_token.present?
-    self.auth_token = generate_auth_token
+    self.update(auth_token: generate_auth_token)
   end
 
   private

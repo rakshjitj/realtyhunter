@@ -1,3 +1,2 @@
-
 <strong>API Auth token:</strong> <%= @user.auth_token %><br />
 <%= link_to 'Generate new token', new_auth_token_user_path(@user), remote: true, method: :patch %>
