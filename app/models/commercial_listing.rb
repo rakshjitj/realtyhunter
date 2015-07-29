@@ -63,7 +63,9 @@ class CommercialListing < ActiveRecord::Base
   #   building.landlord.code
   # end
 
+  # TODO
   def summary
+    # 'Active', 'Offer Submitted', 'Offer Accepted', 'Binder Signed', 'Off Market for Lease Execution', 'Off'
     status_str = ""
     if status == 0
       status_str = "Off"

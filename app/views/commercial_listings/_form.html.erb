@@ -58,30 +58,24 @@
         <br />
 
         <div class="row">
-          <div class="col-md-4 form-label-responsive">
-            <%= f.label :status, "Current Listing Status", class: 'required' %>
-          </div>
-          <div class="col-md-8">
-            <div class="field">
-              <%= f.fields_for @commercial_unit.unit do |unit_form| %>
-                <%= unit_form.radio_button :status, "active", checked: (@commercial_unit.unit.status == "active") %>
-                <%= unit_form.label :status_active, "Active" %>&nbsp;&nbsp;&nbsp;
-                <%= unit_form.radio_button :status, "off", checked: (@commercial_unit.unit.status == "off") %>
-                <%= unit_form.label :status_off, "Off" %><br>
-              <% end %>
+          <%= f.fields_for @commercial_unit.unit do |unit_form| %>
+            <div class="col-md-4 form-label-responsive">
+              <%= unit_form.label :status, class: 'required' %>
             </div>
-          </div>
-        </div>
+            <div class="col-md-5">
+              <div class="field">
 
-        <div class="row">
-          <div class="col-md-12 form-section-header">
-            <hr class="thin-line" />
-            <%= f.label :status, "Current Listing Status", class: 'required' %>
-            <h4>Property Type</h4>
-            <hr class="thin-line" />
-          </div>
+                <%= unit_form.select :status, 
+                  options_for_select(['Active', 'Offer Submitted', 'Offer Accepted', 'Binder Signed', 'Off Market for Lease Execution', 'Off'], 
+                    [@commercial_unit.unit.status.titleize]), 
+                  {prompt: "Choose one..."},
+                  :required => true,
+                  class: "form-control" %>
+              
+              </div>
+            </div>
+          <% end %>
         </div>
-        <br />
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">

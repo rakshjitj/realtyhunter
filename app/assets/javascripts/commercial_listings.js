@@ -2,11 +2,11 @@ CommercialUnits = {};
 
 (function() {
   CommercialUnits.showSpinner = function() {
-    $('#commercial .index-spinner-desktop').show();
+    $('#commercial .res-spinner-desktop').show();
   };
 
   CommercialUnits.hideSpinner = function() {
-    $('#commercial .index-spinner-desktop').hide();
+    $('#commercial .res-spinner-desktop').hide();
   };
 
   CommercialUnits.updatePropertySubTypes = function (ptype) {
@@ -31,18 +31,16 @@ CommercialUnits = {};
 
     var search_path = $('#com-search-filters').attr('data-search-path');
     $.ajax({
-      url: search_path, //"<%= filter_commercial_listings_path %>",
+      url: search_path, 
       data: {
-        //search_params: {
-          address: $('#commercial #address').val(),
-          rent_min: $('#commercial #rent_min').val(),
-          rent_max: $('#commercial #rent_max').val(),
-          landlord: $('#commercial #landlord').val(),
-          status: $('#commercial #status').val(),
-          status: $('#commercial #property_type').val(),
-          status: $('#commercial #listing_id').val(),
-          neighborhood_ids: $('#commercial #neighborhood_ids').val(),
-        //}
+        address: $('#commercial #address').val(),
+        rent_min: $('#commercial #rent_min').val(),
+        rent_max: $('#commercial #rent_max').val(),
+        landlord: $('#commercial #landlord').val(),
+        status: $('#commercial #status').val(),
+        property_type: $('#commercial #property_type').val(),
+        listing_id: $('#commercial #listing_id').val(),
+        neighborhood_ids: $('#commercial #neighborhood_ids').val(),
       },
       dataType: "script",
       success: function(data) {

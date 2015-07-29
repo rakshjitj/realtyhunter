@@ -26,6 +26,34 @@ class CommercialListingsController < ApplicationController
     end
   end
 
+  # GET 
+  # handles ajax call. uses latest data in modal
+  def neighborhoods_modal
+    @neighborhoods = Neighborhood.unarchived.where(
+      city: current_user.office.administrative_area_level_2_short).all
+    
+    # if boroughs are defined for this area, organize the neighborhoods by boroughs
+    boroughs = @neighborhoods.collect(&:borough).uniq
+    @by_boroughs = {}
+    if !boroughs.empty?
+      @neighborhoods.each do |neighborhood|
+        if !@by_boroughs.has_key? neighborhood.borough
+          @by_boroughs[neighborhood.borough] = []
+        end
+        @by_boroughs[neighborhood.borough] << neighborhood
+      end
+
+      # alphabetize
+      @by_boroughs.each do |b,n_array|
+        n_array.sort_by!{|n| n.name.downcase}
+      end
+    end
+
+    respond_to do |format|
+      format.js  
+    end
+  end
+  
   # GET /commercial_units/1
   # GET /commercial_units/1.json
   def show
@@ -247,6 +275,13 @@ class CommercialListingsController < ApplicationController
         params[:status] = "active"
       end
 
+      # parse neighborhood ids into strings for display in the view
+      @selected_neighborhoods = []
+      if params[:neighborhood_ids]
+        neighborhood_ids = params[:neighborhood_ids].split(",").select{|i| !i.empty?}
+        @selected_neighborhoods = Neighborhood.where(id: neighborhood_ids)
+      end
+      
       @commercial_units, @com_images = CommercialListing.search(params, current_user, params[:building_id])
       @commercial_units = custom_sort
     end

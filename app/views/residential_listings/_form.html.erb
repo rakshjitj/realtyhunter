@@ -63,8 +63,8 @@
               <div class="field">
 
                 <%= unit_form.select :status, 
-                  options_for_select(Unit.statuses.collect { |s| [s[0].humanize.titleize, s[0]] }, 
-                    [@residential_unit.unit.status]), 
+                  options_for_select(%w(Active Pending Off), 
+                    [@residential_unit.unit.status.titleize]), 
                   {prompt: "Choose one..."},
                   :required => true,
                   class: "form-control" %>

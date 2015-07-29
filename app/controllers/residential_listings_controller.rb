@@ -359,6 +359,10 @@ class ResidentialListingsController < ApplicationController
         data[:unit][:oh_exclusive] = false
       end
 
+      if data[:unit][:status]
+        data[:unit][:status] = data[:unit][:status].downcase
+      end
+
       if data[:has_fee] == "1"
         data[:has_fee] = true
       else
@@ -375,6 +379,7 @@ class ResidentialListingsController < ApplicationController
       else
         data[:include_photos] = false
       end
+
 
       data
     end

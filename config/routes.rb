@@ -143,6 +143,7 @@ Rails.application.routes.draw do
       get 'filter'
       get 'print_list'
       get 'update_subtype'
+      get 'neighborhoods_modal'
     end
   end
 

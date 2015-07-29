@@ -10,9 +10,14 @@ class Unit < ActiveRecord::Base
   scope :unarchived, ->{ where(archived: false) }
   scope :active, ->{ where(status: "active") }
   
-	enum status: [ :active, :pending, :off ]
-  scope :on_market, ->{where.not(status: Unit.statuses["off"])}
-	validates :status, presence: true, inclusion: { in: %w(active pending off) }
+	enum status: [ 
+    :active, :pending, :off, #residential
+    :offer_submitted, :offer_accepted, :binder_signed, :off_market_for_lease_execution #commercial
+   ]
+  #scope :on_market, ->{where.not(status: Unit.statuses["off"])}
+	validates :status, presence: true, inclusion: { 
+    in: ['active', 'pending', 'off', 
+         'offer submitted', 'offer accepted', 'binder signed', 'off market for lease execution'] }
 	
 	validates :rent, presence: true, numericality: { only_integer: true }
 	validates :listing_id, presence: true, uniqueness: true
