@@ -15,25 +15,25 @@
             <%= link_to 'Edit', edit_user_path(user) %>
                 
             <% if !user.archived %>
-              <%= link_to 'Delete', @user, method: :delete, 
+              | &nbsp;<%= link_to 'Delete', @user, method: :delete, 
                 data: { confirm: "Are you sure you want to delete #{user.name}?" } %>
               <% @prev_link = true %>
             <% end %>
           <% end %>
 
           <% if current_user.can_manage_team(user) %>
-            <% if @prev_link %> | <% end %>
+            <% if @prev_link %> |&nbsp; <% end %>
             <%= link_to 'Manage team', subordinates_user_path(user) %>
             <% @prev_link = true %>
           <% end %>
 
           <% if current_user.can_approve(user) %>
             <% if !user.approved? %>
-              <% if @prev_link %> | <% end %>
+              <% if @prev_link %> |&nbsp; <% end %>
               <%= link_to 'Authorize account', admin_approve_user_path(user), :remote => true, method: :post, data: { confirm: "Are you sure you want to approve #{user.name}'s account?" } %>
             <% else %>
-              <% if @prev_link %> | <% end %>
-              <%= link_to 'Unauthorize account', admin_unapprove_user_path(user), :remote => true, method: :post, data: { confirm: "Are you sure you want to unapprove #{user.name}'s account?" } %>
+              <% if @prev_link %> |&nbsp; <% end %>
+              <%= link_to 'Suspend account', admin_unapprove_user_path(user), :remote => true, method: :post, data: { confirm: "Are you sure you want to unapprove #{user.name}'s account?" } %>
             <% end %>
             <% @prev_link = true %>
           <% end %>
