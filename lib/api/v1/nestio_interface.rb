@@ -61,7 +61,10 @@ module API
 					listings = Unit.none
 				# all units
 				else
-					listings = Unit.joins(building: :neighborhood).where('buildings.company_id = ?', company_id)
+					listings = Unit.joins(:building)
+						.joins('left outer join neighborhoods on buildings.neighborhood_id=neighborhoods.id')
+						.joins('left outer join pet_policies on buildings.pet_policy_id=pet_policies.id')
+						.where('buildings.company_id = ?', company_id)
 				end
 
 				listings = _restrict_on_residential_model(company_id, search_params, listings)
@@ -201,13 +204,15 @@ module API
 					if (search_params[:cats_allowed] && !search_params[:cats_allowed].empty?)
 						cats_allowed = to_boolean(search_params[:cats_allowed])
 						pet_policies = PetPolicy.policies_that_allow_cats(company_id, cats_allowed)
-						listings = listings.joins(building: :pet_policy).where('buildings.pet_policy_id IN (?)', pet_policies.map(&:id));
+						listings = listings#.joins(building: :pet_policy)
+						.where('buildings.pet_policy_id IN (?)', pet_policies.map(&:id));
 					end
 					# dogs allowed
 					if (search_params[:dogs_allowed] && !search_params[:dogs_allowed].empty?)
 						dogs_allowed = to_boolean(search_params[:dogs_allowed])
 						pet_policies = PetPolicy.policies_that_allow_dogs(company_id, dogs_allowed)
-						listings = listings.joins(building: :pet_policy).where('buildings.pet_policy_id IN (?)', pet_policies.map(&:id));
+						listings = listings#.joins(building: :pet_policy)
+							.where('buildings.pet_policy_id IN (?)', pet_policies.map(&:id));
 					end
 					# laundry_in_unit
 					listings = _search_by_residential_amenity('laundry_in_unit', company_id, listings, search_params)

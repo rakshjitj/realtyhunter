@@ -67,15 +67,14 @@ end
 	json.building do
 		#json.partial! listing.building, building: listing.building, as: :building
 
-
 		json.city listing.administrative_area_level_2_short
 		json.state listing.administrative_area_level_1_short
 		json.zipcode listing.postal_code
 
-		if listing.neighborhood_name #building.neighborhood
+		if listing.neighborhood_name
 			json.neighborhood do
-				json.name listing.neighborhood_name #building.neighborhood.name
-				json.area listing.neighborhood_borough #building.neighborhood.borough
+				json.name listing.neighborhood_name
+				json.area listing.neighborhood_borough
 			end
 		else
 			# we don't have info for everything
@@ -93,11 +92,12 @@ end
 		end
 
 	end
-	#if listing.building.pet_policy.name
-		# TODO json.pets listing.building.pet_policy.name
-	#else
+	
+	if listing.pet_policy_name
+		json.pets listing.pet_policy_name
+	else
 		json.pets nil
-	#end
+	end
 #end
 
 json.date_available listing.available_by
@@ -107,6 +107,7 @@ json.date_available listing.available_by
 
 json.changed_at listing.updated_at
 
+# TODO
 json.photos do
 	json.array! listing.images do |i|
 		json.large i.file.url(:medium)

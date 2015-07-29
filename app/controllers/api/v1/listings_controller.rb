@@ -99,9 +99,9 @@ module API
 					'buildings.lng',
 					'neighborhoods.name as neighborhood_name',
 					'neighborhoods.borough as neighborhood_borough',
-
-					)#, 'buildings.pet_policy.name AS pet_policy_name')
-
+					'pet_policies.name AS pet_policy_name',
+					)
+					
 				@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
 				@listings
 			end
