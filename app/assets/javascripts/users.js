@@ -63,7 +63,7 @@ Users = {};
     // if the user is currently an agent, display the select input with suboptions
   	var agent_title_name = $('#user_employee_title_id').attr('data-agent-title-name');
   	var user_title_name = $('#user_employee_title_id').attr('data-user-title-name');
-  	console.log(agent_title_name, user_title_name);
+  	//console.log(agent_title_name, user_title_name);
   	if (agent_title_name == user_title_name) {
       $('.agent-type').show();
     } else {

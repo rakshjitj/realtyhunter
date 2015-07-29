@@ -88,15 +88,12 @@ class CommercialListing < ActiveRecord::Base
   end
 
   # for use in search method below
-  # for use in search method below
   def self.get_images(list)
     unit_ids = list.map(&:unit_id)
-    images = Image.where(unit_id: unit_ids, priority: 0).index_by(&:unit_id)
-    images
+    Image.where(unit_id: unit_ids, priority: 0).index_by(&:unit_id)
   end
   
   def self.search(params, user, building_id=nil)
-
     @running_list = CommercialListing.joins([:commercial_property_type, unit: {building: [:landlord, :neighborhood]}])
       .where('units.archived = false')
       .select('buildings.formatted_street_address', 
@@ -108,9 +105,6 @@ class CommercialListing < ActiveRecord::Base
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
         'units.available_by')
-
-    unit_ids = @running_list.map(&:unit_id)
-    @images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
 
     # actable_type to restrict to commercial only
     if !params && !building_id
@@ -132,19 +126,17 @@ class CommercialListing < ActiveRecord::Base
     # search by address (building)
     if params[:address]
       # cap query string length for security reasons
-      address = params[:address][0, 256]
-      @terms = address.split(" ")
-      @terms.each do |term|
-       @running_list = @running_list.joins(:building)
-       .where('buildings.formatted_street_address ILIKE ?', "%#{term}%")
-      end
+      address = params[:address][0, 500]
+      @running_list = 
+       @running_list.where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
     end
 
     # search by status
     if params[:status]
-      included = %w[active off].include?(params[:status])
+      status = params[:status].downcase
+      included = ['active', 'offer submitted', 'offer accepted', 'binder signed', 'off market for lease execution', 'off'].include?(status)
       if included
-       @running_list = @running_list.where("status = ?", Unit.statuses[params[:status]])
+        @running_list = @running_list.where("status = ?", Unit.statuses[status])
       end
     end
 
@@ -160,14 +152,14 @@ class CommercialListing < ActiveRecord::Base
     # search neighborhoods
     if params[:neighborhood_ids]
       neighborhood_ids = params[:neighborhood_ids][0, 256]
-      neighborhoods = neighborhood_ids.split(",")
-      @running_list = @running_list.joins(building: :neighborhood)
+      neighborhoods = neighborhood_ids.split(",").select{|i| !i.empty?}
+      @running_list = @running_list
        .where('neighborhood_id IN (?)', neighborhoods)
     end
 
     # search landlord code
     if params[:landlord]
-      @running_list = @running_list.joins(building: :landlord)
+      @running_list = @running_list
       .where("code ILIKE ?", "%#{params[:landlord]}%")
     end
 
