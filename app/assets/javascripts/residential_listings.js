@@ -283,6 +283,11 @@ ResidentialListings = {};
 		if (available_by) {
 			$('#residential .datepicker').data("DateTimePicker").date(available_by);
 		}
+		$('.datepicker').datetimepicker({
+		  viewMode: 'days',
+		  format: 'MM/DD/YYYY',
+		  allowInputToggle: true
+		});
 
 		ResidentialListings.updateOverviewMap();
 
