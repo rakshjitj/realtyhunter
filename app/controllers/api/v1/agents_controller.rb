@@ -31,11 +31,8 @@ module API
 					.select('users.name', 'users.email', 'users.id', 'users.phone_number',
 						'users.updated_at', 'users.mobile_phone_number', 'users.bio',
 						'employee_titles.name AS title')
+					.includes(:image)
 				@agents = @agents.page(agent_params[:page]).per(per_page)
-
-				# @images = Image.where(user_id: @agents.map(&:id))
-				# @agents = User.search(params, @user)
-				# 	.page(agent_params[:page]).per(per_page)
 			end
 
 			def show

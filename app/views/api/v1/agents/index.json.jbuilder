@@ -5,7 +5,5 @@ json.total_pages @agents.total_pages
 json.page @agents.current_page
 
 json.items do
-	json.array!(@agents) do |agent|
-		json.partial! agent, agent:agent
-	end
+	json.partial! 'api/v1/users/user', collection: @agents, as: :user
 end

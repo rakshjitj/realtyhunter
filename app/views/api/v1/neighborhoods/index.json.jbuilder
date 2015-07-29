@@ -5,7 +5,5 @@ json.total_pages @neighborhoods.total_pages
 json.page @neighborhoods.current_page
 
 json.items do
-	json.array!(@neighborhoods) do |neighborhood|
-		json.partial! neighborhood, neighborhood:neighborhood
-	end
+	json.partial! 'api/v1/neighborhoods/neighborhood', collection: @neighborhoods, as: :neighborhood
 end

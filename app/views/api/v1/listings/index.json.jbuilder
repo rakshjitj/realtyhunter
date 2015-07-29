@@ -5,7 +5,5 @@ json.total_pages @listings.total_pages
 json.page @listings.current_page
 
 json.items do
-	json.array!(@listings) do |listing|
-		json.partial! listing, listing:listing
-	end
+	json.partial! 'api/v1/units/unit', collection: @listings, as: :listing
 end
