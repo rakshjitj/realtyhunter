@@ -1,15 +1,5 @@
-<script>
-  $(document).ready(function(){
-    $('.auth-token-toggle').click(function (event) {
-      $('.auth-token').toggleClass('hidden');
-      event.preventDefault();
-    });
-  });
-</script>
-
 <% provide(:title, @user.name) %>
 
-<% cache user do %>
 <div class="row">
   <div class="col-md-offset-3 col-md-6">
     <div class="page-header">
@@ -175,4 +165,3 @@
 </div>
 
 
-<% end %><!-- end cache -->
