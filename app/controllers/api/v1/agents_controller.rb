@@ -17,13 +17,19 @@ module API
 				per_page = 50
 				if agent_params[:per_page] && !agent_params[:per_page].empty?
 					per_page = agent_params[:per_page].to_i
-					if per_page < 0 || per_page > 50
-						per_page = 50
+					if per_page < 0 || per_page > 500
+						per_page = 500
 					end
 				end
 
-				@agents = User.unarchived.where(company: @user.company)
-					.page(agent_params[:page]).per(per_page)
+				#if !params[:changed_at]
+					@agents = User.unarchived.where(company: @user.company)
+						.page(agent_params[:page]).per(per_page)
+				#else
+				# 	@agents = User.unarchived.where(company: @user.company)
+				# 		.where('updated_at > ?', params[:changed_at])
+				# 		.page(agent_params[:page]).per(per_page)
+				# end
 			end
 
 			def show
@@ -32,7 +38,7 @@ module API
 		
 		protected
 			def agent_params
-				params.permit(:token, :pretty, :format, :per_page, :page)
+				params.permit(:token, :pretty, :format, :per_page, :page, :changed_at)
 			end
 		
 		end

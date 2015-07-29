@@ -21,5 +21,7 @@ elsif user.has_role? :agent
 elsif user.has_role? :unlic_agent
 	json.title "Inactive Real-Estate Agent"
 else
-	json.title "Non-agent"
+	json.title "Other"
 end
+
+json.changed_at user.updated_at

@@ -236,7 +236,7 @@ ResidentialListings = {};
 		//ResidentialListings.toggleMap();
 
 		ResidentialListings.hideSpinner();
-		$('a').click(function() {
+		$('#residential a').click(function() {
 			//console.log('detected click');
 			ResidentialListings.showSpinner();
 		});
