@@ -96,10 +96,10 @@ class ResidentialListing < ActiveRecord::Base
         'units.available_by')
 
     if !params && !building_id
-      return @running_list, get_images(@running_list)
+      return @running_list
     elsif !params && building_id
       @running_list = @running_list.where(building_id: building_id)
-      return @running_list, get_images(@running_list)
+      return @running_list
     end
 
     # only admins are allowed to view off-market units
@@ -234,10 +234,7 @@ class ResidentialListing < ActiveRecord::Base
         .where('residential_amenity_id IN (?)', features)
     end
 
-    unit_ids = @running_list.map(&:unit_id)
-    @images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
-
-    return @running_list, get_images(@running_list)
+    @running_list
   end
 
   # mainly used in API

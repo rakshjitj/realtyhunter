@@ -50,7 +50,7 @@
         <div class="col-md-2">
           <div class="field">
             <%= f.label :employee_title_id, "Role within the company" %><br>
-            <%= f.select(:employee_title_id, options_for_select(EmployeeTitle.all_cached.collect {|t| [t.name.titleize, t.id]}), 
+            <%= f.select(:employee_title_id, options_for_select(EmployeeTitle.all.collect {|t| [t.name.titleize, t.id]}), 
               {prompt: "Choose one..."},
               :required => true, 
               class: 'form-control',
@@ -65,7 +65,7 @@
         <div class="col-md-2 agent-type">
           <div class="field " >
             <%= f.label :agent_types, "Specialty Areas" %><br>
-            <%= f.select(:agent_types, options_for_select(AgentType.all_cached.collect {|t| [t.name.titleize]}, ['Residential']),
+            <%= f.select(:agent_types, options_for_select(AgentType.all.collect {|t| [t.name.titleize]}, ['Residential']),
                 {},
                 {
                 :multiple => true,

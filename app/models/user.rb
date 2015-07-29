@@ -252,10 +252,6 @@ class User < ActiveRecord::Base
 
   def is_agent?
     employee_title == EmployeeTitle.agent
-    # AgentType.all_cached.each do |at|
-    #   return true if self.has_role? at.name
-    # end
-    # return false
   end
 
   def make_manager
@@ -309,7 +305,7 @@ class User < ActiveRecord::Base
 
   def agent_specialties
     @specialities = []
-    AgentType.all_cached.each do |a|
+    AgentType.all.each do |a|
       if self.has_role? a.name
         @specialities << a.name.titleize
       end
@@ -319,7 +315,7 @@ class User < ActiveRecord::Base
 
   def agent_specialties_as_indicies
     @specialities = []
-    AgentType.all_cached.each do |a|
+    AgentType.all.each do |a|
       if self.has_role? a.name
         @specialities << a.id
       end

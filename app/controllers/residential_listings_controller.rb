@@ -281,9 +281,13 @@ class ResidentialListingsController < ApplicationController
 
     def set_residential_listings
       do_search
+
+      @residential_units = custom_sort
+
       @count_all = ResidentialListing.all.count
-      @map_infos = ResidentialListing.set_location_data(@residential_units)
+      @map_infos = ResidentialListing.set_location_data(@residential_units.to_a)
       @residential_units = @residential_units.page params[:page]
+      @res_images = ResidentialListing.get_images(@residential_units)
     end
 
     def residential_listings_no_pagination
@@ -316,8 +320,7 @@ class ResidentialListingsController < ApplicationController
         @bldg_features = BuildingAmenity.where(id: building_feature_ids)
       end
 
-      @residential_units, @res_images = ResidentialListing.search(params, current_user, params[:building_id])
-      @residential_units = custom_sort
+      @residential_units = ResidentialListing.search(params, current_user, params[:building_id])
     end
 
     def custom_sort

@@ -14,11 +14,11 @@ class EmployeeTitle < ActiveRecord::Base
   	name.titleize.gsub('_', ' ')
   end
 
-  def self.all_cached
-    Rails.cache.fetch('employee_titles') {
-      EmployeeTitle.all
-    }
-  end
+  # def self.all_cached
+  #   Rails.cache.fetch('employee_titles') {
+  #     EmployeeTitle.all
+  #   }
+  # end
 
   def self.agent
 		@agent_title = EmployeeTitle.where(name: "agent").first;
