@@ -150,8 +150,14 @@ class Building < ActiveRecord::Base
 		end
 	end
 
+    # for use in search method below
+  def self.get_images(list)
+    bldg_ids = list.map(&:id)
+    Image.where(building_id: bldg_ids, priority: 0).index_by(&:building_id)
+  end
+
 	def self.search(page_num, query_str, active_only)
-    @running_list = Building.joins(:units, :landlord, :neighborhood).includes(:images)
+    @running_list = Building.joins(:units, :landlord, :neighborhood)
       .where('units.archived = false')
       .select('buildings.formatted_street_address', 'buildings.notes',
         'buildings.id', 'buildings.street_number', 'buildings.route', 
@@ -162,7 +168,6 @@ class Building < ActiveRecord::Base
         'neighborhoods.name AS neighborhood_name', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by')
-      .uniq
 
     return @running_list if !query_str
     
@@ -175,7 +180,7 @@ class Building < ActiveRecord::Base
     	@running_list = @running_list.where(units: {status:"active"})
     end
 
-    @running_list#.uniq
+    @running_list
 	end
 
 	def amenities_to_s

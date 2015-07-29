@@ -108,10 +108,10 @@ class CommercialListing < ActiveRecord::Base
 
     # actable_type to restrict to commercial only
     if !params && !building_id
-      return @running_list, get_images(@running_list)
+      return @running_list
     elsif !params && building_id
       @running_list.where(building_id: building_id)
-      return @running_list, get_images(@running_list)
+      return @running_list
     end
 
     # only admins are allowed to view off-market units
@@ -168,7 +168,7 @@ class CommercialListing < ActiveRecord::Base
     #   @running_list = @running_list.joins(:commercial_property_type)
     #   .where("commercial_property_type_id ILIKE ?", "%#{params[:landlord]}%")
       
-    return @running_list, get_images(@running_list)
+    return @running_list
   end
 
   # TODO: run this in the background. See Image class for stub

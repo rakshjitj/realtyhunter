@@ -260,9 +260,12 @@ class CommercialListingsController < ApplicationController
 
     def set_commercial_listings
       do_search
+      @commercial_units = custom_sort
+
       @count_all = CommercialListing.all.count
-      @map_infos = CommercialListing.set_location_data(@commercial_units)
+      @map_infos = CommercialListing.set_location_data(@commercial_units.to_a)
       @commercial_units = @commercial_units.page params[:page]
+      @com_images = CommercialListing.get_images(@commercial_units)
     end
 
     def commercial_units_no_pagination
@@ -281,9 +284,6 @@ class CommercialListingsController < ApplicationController
         neighborhood_ids = params[:neighborhood_ids].split(",").select{|i| !i.empty?}
         @selected_neighborhoods = Neighborhood.where(id: neighborhood_ids)
       end
-      
-      @commercial_units, @com_images = CommercialListing.search(params, current_user, params[:building_id])
-      @commercial_units = custom_sort
     end
 
     def set_property_types
