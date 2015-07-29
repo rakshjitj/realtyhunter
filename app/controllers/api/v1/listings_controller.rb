@@ -53,7 +53,7 @@ module API
 				# has_photos
 				has_photos = _is_valid_bool_value(listing_params[:has_photos])
 				# sort order defaults to order by last udpated
-				sort = %w[layout rent date_available updated status_updated].include?(listing_params[:sort]) ? listing_params[:sort] : "updated"
+				sort_column = %w[layout rent date_available updated status_updated].include?(listing_params[:sort]) ? listing_params[:sort] : "updated"
 				# sort_dir
 				sort_dir = %w[asc desc].include?(listing_params[:sort_dir]) ? listing_params[:sort_dir] : ""
 				# pagination
@@ -81,14 +81,14 @@ module API
 					laundry_in_building: laundry_in_building,
 					laundry_in_unit: laundry_in_unit,
 					has_photos: has_photos,
-					sort: sort,
+					sort_column: sort_column,
 					sort_dir: sort_dir,
 					per_page: per_page,
 					page: listing_params[:page],
 					agents: listing_params[:agents],
 					neighborhoods: listing_params[:neighborhoods],
 					});
-				#puts "\n\n\n **** #{@listings[0].inspect}"
+				
 				@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
 				@listings
 			end

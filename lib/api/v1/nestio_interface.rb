@@ -50,22 +50,24 @@ module API
 			# http://developers.nestio.com/api/v1/
 			def listing_search(company_id, search_params)
 				listings = nil
-				#puts search_params
-				# restrict by listing type. handle specific search parameters
-				if search_params[:listing_type] == "10" # rentals
+				# rentals
+				if search_params[:listing_type] == "10"
 					ids = ResidentialListing.joins(unit: :building)
 					 	.where('buildings.company_id = ?', company_id).map(&:id)
 					listings = Unit.where(id: ids).joins(:building)
-					# this reduces total results #: :building_amenities);
-					listings = _restrict_on_residential_model(company_id, search_params, listings)
-				elsif search_params[:listing_type] == "20" # sales
+				# sales
+				elsif search_params[:listing_type] == "20"
 					# TODO
 					listings = Unit.none
+				# all units
 				else
 					listings = Unit.joins(:building).where('buildings.company_id = ?', company_id)
 				end
 
+				listings = _restrict_on_residential_model(company_id, search_params, listings)
 				listings = _restrict_on_unit_model(company_id, search_params, listings)
+				listings = _sort_by(search_params, listings)
+				listings = listings.page(search_params[:page]).per(search_params[:per_page])
 				listings
 			end
 
@@ -81,7 +83,7 @@ module API
 						# some fields need to be tranlated into our terminology
 						additonal_listings = []
 						if feature == 'laundry_in_building'
-							feature = "laundry in bldg"
+							return _search_laundry_in_bldg(company_id, listings)
 						end
 						# make sure feature is all lowercase
 						feature_record = BuildingAmenity.where(company_id: company_id, name: feature.downcase).first
@@ -94,24 +96,50 @@ module API
 					listings
 				end
 
+				def _search_laundry_in_bldg(company_id, listings)
+					# make sure feature is all lowercase
+					feature_record1 = ResidentialAmenity.where(company_id: company_id)
+						.where('name ILIKE ?', "%washer/dryer%").first
+					if feature_record1
+						listings1_ids = listings.joins(residential_listing: :residential_amenities)
+  	    			.where('residential_amenity_id = ?', feature_record1.id).map(&:id)
+  	    	end
+
+  	    	feature_record2 = BuildingAmenity
+  	    		.where(company_id: company_id).
+  	    		where('name ILIKE ?', 'laundry in bldg').first
+					if feature_record2
+						listings2_ids = listings.joins(building: :building_amenities)
+  	    			.where('building_amenity_id = ?', feature_record2.id).map(&:id)
+  	    	end
+
+  	    	listings = Unit.where(id: [listings1_ids, listings2_ids].flatten)
+  	    	listings
+				end
+
 				def _search_by_residential_amenity(feature, company_id, listings, search_params)
-					if search_params[feature.to_sym] && !search_params[feature.to_sym].empty?
-						feature_required = to_boolean(search_params[feature.to_sym])
-						if (feature_required)
-							# some fields need to be tranlated into our terminology
-							if feature == "laundry_in_unit" || feature == "laundry_in_building"
-								feature = "washer/dryer"
-							end
-							# make sure feature is all lowercase
-							#.where("code ILIKE ?", "%#{params[:landlord]}%")
-							feature_record = ResidentialAmenity.where(company_id: company_id)
-								.where('name ILIKE ?', "%#{feature.downcase}%").first
-							if feature_record
-								listings = listings.joins(residential_listing: :residential_amenities)
-  	  	    			.where('residential_amenity_id = ?', feature_record.id)
-  	  	    	end
-    	    	end
+					puts "SEARCHING #{feature}"
+					if !search_params[feature.to_sym] || search_params[feature.to_sym].empty?
+						return listings
 					end
+					feature_required = to_boolean(search_params[feature.to_sym])
+					if !feature_required
+						return listings
+					end
+
+					# some fields need to be tranlated into our terminology
+					if feature == "laundry_in_unit"
+						feature = "washer/dryer"
+					end
+					puts "GETTING FEATURE #{feature}"
+					# make sure feature is all lowercase
+					feature_record = ResidentialAmenity.where(company_id: company_id)
+						.where('name ILIKE ?', "%#{feature.downcase}%").first
+					if feature_record
+						listings = listings.joins(residential_listing: :residential_amenities)
+  	    			.where('residential_amenity_id = ?', feature_record.id)
+  	    	end
+
 					listings
 				end
 
@@ -141,64 +169,57 @@ module API
 						available_by = Date::strptime(search_params[:date_available_after], "%Y-%m-%d")
 						listings = listings.where('available_by > ?', search_params[:date_available_after])
 					end
-					# # laundry_in_building
+					# laundry_in_building
 					listings = _search_by_bldg_amenity('laundry_in_building', company_id, listings, search_params)
 					
 					if search_params[:has_photos] && search_params[:has_photos] == "true"
 						listings = listings.joins(:images)
 					end
 
-					# # agents
-					# if search_params[:agents] && !search_params[:agents].empty?
-					# 	agent_ids = search_params[:agents].split(',')
-					# 	listings = listings.where(user_id: agent_ids)
-					# end
+					# neighborhoods
+					if search_params[:neighborhoods] && !search_params[:neighborhoods].empty?
+						neighborhood_ids = search_params[:neighborhoods].split(',')
+						listings = listings
+							.where('neighborhood_id IN (?)', neighborhood_ids)
+					end
 
-					# # neighborhoods
-					# if search_params[:neighborhoods] && !search_params[:neighborhoods].empty?
-					# 	neighborhood_ids = search_params[:neighborhoods].split(',')
-					# 	listings = listings#.joins(:building)
-					# 		.where('neighborhood_id IN (?)', neighborhood_ids)
-					# end			
+					# agents
+					if search_params[:agents] && !search_params[:agents].empty?
+						agent_ids = search_params[:agents].split(',')
+						listings = listings.where(primary_agent_id: agent_ids)
+					end
 
 					listings
 				end
 
 				# Filter our search by all fields relevent to the ResidentialListing model:
-				# beds, baths
 				def _restrict_on_residential_model(company_id, search_params, listings)
-					# enforce params that only make sense for residential
 					# bedrooms
 					listings = _restrict_layout(search_params[:layout], listings)
 					# bathrooms
 					listings = _restrict_bathrooms(search_params[:bathrooms], listings)
-
 					# cats allowed
 					if (search_params[:cats_allowed] && !search_params[:cats_allowed].empty?)
 						cats_allowed = to_boolean(search_params[:cats_allowed])
 						pet_policies = PetPolicy.policies_that_allow_cats(company_id, cats_allowed)
 						listings = listings.joins(building: :pet_policy).where('buildings.pet_policy_id IN (?)', pet_policies.map(&:id));
 					end
-
 					# dogs allowed
 					if (search_params[:dogs_allowed] && !search_params[:dogs_allowed].empty?)
 						dogs_allowed = to_boolean(search_params[:dogs_allowed])
 						pet_policies = PetPolicy.policies_that_allow_dogs(company_id, dogs_allowed)
 						listings = listings.joins(building: :pet_policy).where('buildings.pet_policy_id IN (?)', pet_policies.map(&:id));
 					end
-
 					# laundry_in_unit
-					listings = _search_by_residential_amenity('laundry_in_building', company_id, listings, search_params)
+					puts "WHAAAT"
 					listings = _search_by_residential_amenity('laundry_in_unit', company_id, listings, search_params)
 
-					# TODO
-					listings.page(search_params[:page]).per(search_params[:per_page])
-					#listings
+					listings
 				end
 
-				def _sort_residential_by(search_params, listings)
-					sort_column = search_params[:sort]
-					return if sort_column.empty?
+				def _sort_by(search_params, listings)
+					return if !search_params[:sort_column] || search_params[:sort_column].empty?
+					sort_column = search_params[:sort_column]
 
 					sort_column = sort_column.downcase
 					case(sort_column)
@@ -215,14 +236,9 @@ module API
 						sort_column = 'updated_at'
 					end
 
-					# TODO: why does this reduce the # of results?
-					if (search_params[:sort_dir].downcase != 'desc')
-						listings = listings.sort_by{|l| l.send(sort_column)}
-					else
-						listings = listings.sort_by{|l| l.send(sort_column)}.reverse
-					end
+					sort_order = search_params[:sort_dir]
 
-					listings
+					listings.order(sort_column + ' ' + sort_order)
 				end
 
 				def _restrict_layout(layout, listings)
