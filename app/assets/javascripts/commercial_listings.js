@@ -133,6 +133,18 @@ CommercialUnits = {};
       CommercialUnits.updatePropertySubTypes(textSelected);
     });
   	
+    // make sure datepicker is formatted before setting initial date below
+    $('.datepicker').datetimepicker({
+      viewMode: 'days',
+      format: 'MM/DD/YYYY',
+      allowInputToggle: true
+    });
+    var available_by = $('#commercial .datepicker').attr('data-available-by');
+    if (available_by) {
+      $('#commercial .datepicker').data("DateTimePicker").date(available_by);
+    }
+
+
     // google map on show page
     var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
     $("#cunit-panel").geocomplete({
