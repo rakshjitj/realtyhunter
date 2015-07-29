@@ -24,7 +24,7 @@ module API
 
 				@agents = User.where(archived: false)
 					.where(company: current_user.company)
-					.joins(:image, :employee_title)
+					.joins(:employee_title)
 					.select('users.name', 'users.email', 'users.id', 'users.phone_number',
 						'users.updated_at', 'users.mobile_phone_number', 'users.bio',
 						'employee_titles.name AS title')
