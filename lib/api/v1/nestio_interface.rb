@@ -61,7 +61,7 @@ module API
 					listings = Unit.none
 				# all units
 				else
-					listings = Unit.joins(:building).where('buildings.company_id = ?', company_id)
+					listings = Unit.joins(building: :neighborhood).where('buildings.company_id = ?', company_id)
 				end
 
 				listings = _restrict_on_residential_model(company_id, search_params, listings)
@@ -118,7 +118,6 @@ module API
 				end
 
 				def _search_by_residential_amenity(feature, company_id, listings, search_params)
-					puts "SEARCHING #{feature}"
 					if !search_params[feature.to_sym] || search_params[feature.to_sym].empty?
 						return listings
 					end
@@ -131,7 +130,7 @@ module API
 					if feature == "laundry_in_unit"
 						feature = "washer/dryer"
 					end
-					puts "GETTING FEATURE #{feature}"
+					
 					# make sure feature is all lowercase
 					feature_record = ResidentialAmenity.where(company_id: company_id)
 						.where('name ILIKE ?', "%#{feature.downcase}%").first
@@ -211,7 +210,6 @@ module API
 						listings = listings.joins(building: :pet_policy).where('buildings.pet_policy_id IN (?)', pet_policies.map(&:id));
 					end
 					# laundry_in_unit
-					puts "WHAAAT"
 					listings = _search_by_residential_amenity('laundry_in_unit', company_id, listings, search_params)
 
 					listings

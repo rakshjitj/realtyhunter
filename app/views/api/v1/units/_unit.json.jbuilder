@@ -63,24 +63,50 @@ else
 	json.layout nil
 end
 
-if listing.building
+#if listing.building
 	json.building do
-		json.partial! listing.building, building: listing.building, as: :building
+		#json.partial! listing.building, building: listing.building, as: :building
+
+
+		json.city listing.administrative_area_level_2_short
+		json.state listing.administrative_area_level_1_short
+		json.zipcode listing.postal_code
+
+		if listing.neighborhood_name #building.neighborhood
+			json.neighborhood do
+				json.name listing.neighborhood_name #building.neighborhood.name
+				json.area listing.neighborhood_borough #building.neighborhood.borough
+			end
+		else
+			# we don't have info for everything
+			json.name nil
+			json.area nil
+		end
+
+		json.name json.nil
+		# TODO json.amenities building.building_amenities.map{|a| a.name}
+		json.id json.nil
+		json.street_address listing.street_number + ' ' + listing.route #listing.street_address
+		json.location do
+			json.latitude listing.lat
+			json.longitude listing.lng
+		end
+
 	end
-	if listing.building.pet_policy
-		json.pets listing.building.pet_policy.name
-	end
-end
+	#if listing.building.pet_policy.name
+		# TODO json.pets listing.building.pet_policy.name
+	#else
+		json.pets nil
+	#end
+#end
 
 json.date_available listing.available_by
 
 # TODO
 #json.open_houses listing.open_house
 
-
 json.changed_at listing.updated_at
 
-# TODO
 json.photos do
 	json.array! listing.images do |i|
 		json.large i.file.url(:medium)

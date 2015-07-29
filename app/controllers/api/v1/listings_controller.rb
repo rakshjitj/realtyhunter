@@ -89,6 +89,19 @@ module API
 					neighborhoods: listing_params[:neighborhoods],
 					});
 				
+				@listings = @listings.select('units.building_unit', 'units.status', 'units.available_by',
+					'units.listing_id', 'units.updated_at', 'units.rent',
+					'buildings.administrative_area_level_2_short AS administrative_area_level_2_short',
+					'buildings.administrative_area_level_1_short AS administrative_area_level_1_short',
+					'buildings.street_number', 'buildings.route',
+					'buildings.postal_code',
+					'buildings.lat',
+					'buildings.lng',
+					'neighborhoods.name as neighborhood_name',
+					'neighborhoods.borough as neighborhood_borough',
+
+					)#, 'buildings.pet_policy.name AS pet_policy_name')
+
 				@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
 				@listings
 			end
