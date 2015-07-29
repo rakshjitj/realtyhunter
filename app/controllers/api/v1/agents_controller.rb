@@ -23,10 +23,10 @@ module API
 				end
 
 				#if !params[:changed_at]
-					@agents = User.unarchived.where(company: @user.company)
+					@agents = User.search(params, current_user)#unarchived.where(company: @user.company)
 						.page(agent_params[:page]).per(per_page)
 				#else
-				# 	@agents = User.unarchived.where(company: @user.company)
+				# 	@agents = User.search(params)
 				# 		.where('updated_at > ?', params[:changed_at])
 				# 		.page(agent_params[:page]).per(per_page)
 				# end

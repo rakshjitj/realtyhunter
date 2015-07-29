@@ -250,7 +250,7 @@ class UsersController < ApplicationController
     end
 
     def set_users
-      @users = User.search(params[:search_params])
+      @users = User.search(params[:search_params], current_user)
       @users = @users.page params[:page]
     end
 

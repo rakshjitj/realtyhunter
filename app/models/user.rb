@@ -160,11 +160,17 @@ class User < ActiveRecord::Base
     reset_sent_at < 2.hours.ago
   end
 
-  def self.search(query_params)
+  def self.search(query_params, current_user)
     # food for thought:
-    #User.joins(:employee_title).select('users.name', 'employee_titles.name as title').map{|u| [u.name, u.title]}
-    @running_list = User.unarchived.includes(
+    # @running_list = User.joins(:employee_title)
+    #   .where(archived: false)
+    #   .select('users.name', )
+    #   #.select('users.name', 'employee_titles.name as title').map{|u| [u.name, u.title]}
+    
+    @running_list = User.unarchived
+    .includes(
       :employee_title, :office, :company, :manager, :image, :roles)
+    .where(company: current_user.company)
     if !query_params || !query_params[:name_email]
       return @running_list 
     end
