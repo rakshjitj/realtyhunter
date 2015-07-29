@@ -60,7 +60,10 @@ module API
 				per_page = 50
 				if listing_params[:per_page] && !listing_params[:per_page].empty?
 					per_page = listing_params[:per_page].to_i
-					if per_page < 0 || per_page > 500
+					if per_page < 50
+						per_page = 50
+					end
+					if per_page > 500
 						per_page = 500
 					end
 				end
