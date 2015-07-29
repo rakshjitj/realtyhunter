@@ -1,8 +1,23 @@
 json.prettify! if %w(1 yes true).include?(params["pretty"])
 
+# TODO: support sales, lump all listings together
+json.listing_type "rental"
+json.property_type "residential"
+json.commercial_use nil
+
+
+json.unit_number listing.unit.building_unit
 json.max_lease_term listing.lease_end
 
-json.status listing.unit.status
+# TODO: verify
+if listing.unit.status == "active"
+	json.status "Active"
+elsif listing.unit.status == "pending"
+	json.status "App Pending"
+else
+	json.status "Closed"
+end
+
 json.min_lease_term listing.lease_start
 
 if listing.tp_fee_percentage

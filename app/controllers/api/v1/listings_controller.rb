@@ -33,7 +33,7 @@ module API
 			def restrict_results
 				# 10 = residential, 20 = sales, 30 = commercial
 				# default to residential
-				listing_type = %w[10 20 30].include?(listing_params[:listing_type]) ? listing_params[:listing_type] : "10"
+				listing_type = %w[10 20 30].include?(listing_params[:listing_type]) ? listing_params[:listing_type] : ""
 				# 10 - studio, 20 - 1 BR, 30 - 2 BR, 40 - 3 BR, 50 - 4+ BR, 80 - LOFT
 				layout = %w[10 20 30 40 50 80].include?(listing_params[:layout]) ? listing_params[:layout] : ""
 				# 10 - 1 B, 15 - 1.5 B, 20 - 2 B, 25 - 2.5 B, 30 - 3 B, 35 - 3.5+ B
@@ -50,6 +50,8 @@ module API
 				laundry_in_building = _is_valid_bool_value(listing_params[:laundry_in_building])
 				# laundry in unit
 				laundry_in_unit = _is_valid_bool_value(listing_params[:laundry_in_unit])
+				# has_photos
+				has_photos = _is_valid_bool_value(listing_params[:has_photos])
 				# sort order defaults to order by last udpated
 				sort = %w[layout rent date_available updated status_updated].include?(listing_params[:sort]) ? listing_params[:sort] : "updated"
 				# sort_dir
@@ -78,6 +80,7 @@ module API
 					date_available_after: listing_params[:date_available_after],
 					laundry_in_building: laundry_in_building,
 					laundry_in_unit: laundry_in_unit,
+					has_photos: has_photos,
 					sort: sort,
 					sort_dir: sort_dir,
 					per_page: per_page,
@@ -86,8 +89,8 @@ module API
 					neighborhoods: listing_params[:neighborhoods],
 					});
 				#puts "\n\n\n **** #{@listings[0].inspect}"
-				@listings.page(listing_params[:page]).per(listing_params[:per_page])
-
+				@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
+				@listings
 			end
 
 			# Never trust parameters from the scary internet, only allow the white list through.

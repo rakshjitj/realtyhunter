@@ -29,6 +29,14 @@ class Unit < ActiveRecord::Base
     find_by!(id: id, archived: false)
   end
 
+  # mainly for use in our API. Returns list of any
+  # agent contacts for this listing. Currently we have
+  # 1 primary agent for each listing, but could change in the future.
+  def contacts
+    # TODO: commercial has 2
+    contacts = [primary_agent];
+  end
+
   private
     # TODO: code review - should only be set if none exists
     def generate_unique_id

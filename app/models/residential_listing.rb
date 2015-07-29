@@ -69,13 +69,6 @@ class ResidentialListing < ActiveRecord::Base
     amenities ? amenities.join(", ") : "None"
   end
 
-  # mainly for use in our API. Returns list of any
-  # agent contacts for this listing. Currently we have
-  # 1 primary agent for each listing, but could change in the future.
-  def contacts
-    contacts = [unit.primary_agent];
-  end
-
   # for use in search method below
   def self.get_images(list)
     unit_ids = list.map(&:unit_id)

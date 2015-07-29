@@ -23,7 +23,7 @@ module API
 				end
 
 				@agents = User.where(archived: false)
-					.where(company: current_user.company)
+					.where(company: @user.company)
 					.joins(:employee_title)
 					.select('users.name', 'users.email', 'users.id', 'users.phone_number',
 						'users.updated_at', 'users.mobile_phone_number', 'users.bio',
@@ -31,7 +31,7 @@ module API
 				@agents = @agents.page(agent_params[:page]).per(per_page)
 
 				# @images = Image.where(user_id: @agents.map(&:id))
-				# @agents = User.search(params, current_user)
+				# @agents = User.search(params, @user)
 				# 	.page(agent_params[:page]).per(per_page)
 			end
 
