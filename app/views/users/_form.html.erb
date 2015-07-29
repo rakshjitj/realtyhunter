@@ -33,18 +33,18 @@
         :locals => {:model => @user} %>
 
       <div class="field">
-        <%= f.label :email, "Email (Will be your username)" %><br>
+        <%= f.label :email, "Email (Will be your username)", class: 'required' %><br>
         <%= f.email_field :email, class: 'form-control', 
             :required => true %>
       </div>
       
       <div class="field">
-        <%= f.label :name, "Name" %><br>
+        <%= f.label :name, "Name", class: 'required' %><br>
         <%= f.text_field :name, class: 'form-control', 
             :required => true %>
       </div>
       <div class="field">
-        <%= f.label :mobile_phone_number, "Mobile" %><br>
+        <%= f.label :mobile_phone_number, "Mobile", class: 'required' %><br>
         <%= f.telephone_field :mobile_phone_number, placeholder: "(XXX)XXX-XXXX",
             class: 'form-control' %>
       </div>
@@ -56,7 +56,7 @@
       <% end %>
 
       <div class="field">
-        <%= f.label :office_id, "Office" %><br>
+        <%= f.label :office_id, "Office", class: 'required' %><br>
         <%= f.select(:office_id, options_for_select(@user.company.offices.collect {|t| [t.name.titleize, t.id]}, [@user.office.id]), 
           {prompt: "Choose one..."},
           :required => true, 
@@ -69,7 +69,7 @@
         <% if current_user.is_management? %>
         <div class="col-md-6">
           <div class="field">
-            <%= f.label :employee_title_id, "Role within the company" %><br>
+            <%= f.label :employee_title_id, "Role within the company", class: 'required' %><br>
             <%= f.select(:employee_title_id, options_for_select(EmployeeTitle.all_cached.collect {|t| [t.name.titleize, t.id]}, 
               [@user.employee_title.id]), 
               {prompt: "Choose one..."},
@@ -86,7 +86,7 @@
 
         <div class="col-md-6 agent-type">
           <div class="field " >
-            <%= f.label :agent_types, "Areas you work in" %><br>
+            <%= f.label :agent_types, "Areas you work in", class: 'required' %><br>
             <%= f.select(:agent_types, options_for_select(AgentType.all_cached.collect {|t| [t.name.titleize]}, @user.agent_specialties),
                 {},
                 {

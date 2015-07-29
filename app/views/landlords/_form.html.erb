@@ -17,21 +17,21 @@
         <br />
         <div class="row">
           <div class="col-md-3 form-label-responsive">
-            <%= f.label :code %>
+            <%= f.label :code, class: 'required' %>
           </div>
           <div class="col-md-9">
-              <%= f.text_field :code, class: 'form-control' %>
+              <%= f.text_field :code, :required => true, class: 'form-control' %>
           </div>
         </div>
 
         <br />
         <div class="row">
-          <div class="col-md-3 form-label-responsive">
-            <%= f.label :name %>
-          </div>
-          <div class="col-md-9">
-            <div class="field">
-              <%= f.text_field :name, class: 'form-control' %>
+          <div class="form-group">
+            <div class="col-md-3 form-label-responsive">
+              <%= f.label :name, class: 'required' %>
+            </div>
+            <div class="col-md-9">
+                <%= f.text_field :name, :required => true, class: 'form-control' %>
             </div>
           </div>
         </div>

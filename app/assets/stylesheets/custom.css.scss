@@ -414,3 +414,9 @@ vertical-padding-lg {
   top: 20%;
   z-index: 1;
 }
+
+// forms
+label.required:after {
+  content:" *";
+  color: #2E8B57;
+}

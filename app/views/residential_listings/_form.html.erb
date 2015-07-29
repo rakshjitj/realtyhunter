@@ -53,12 +53,11 @@
         <%= render :partial => 'shared/error_messages', 
           :locals => {:model => @residential_unit} %>
        
-          
           <br />
           <div class="row">
           <%= f.fields_for @residential_unit.unit do |unit_form| %>
             <div class="col-xs-12 col-md-2 form-label-responsive">
-              <%= unit_form.label :status %>
+              <%= unit_form.label :status, class: 'required' %>
             </div>
             <div class="col-xs-12 col-md-4">
               <div class="field">
@@ -78,7 +77,7 @@
         <br />
         <div class="row">
           <div class="col-xs-12 col-md-2 form-label-responsive">
-            <%= f.label :building_id %>
+            <%= f.label :building_id, class: 'required' %>
           </div>
           <div class="col-xs-12 col-md-4">
             <%= f.fields_for @residential_unit.unit do |unit_form| %>
@@ -98,7 +97,7 @@
         <br />
         <div class="row">
           <div class="col-md-2 form-label-responsive">
-            <%= f.label :building_unit, "Unit" %>
+            <%= f.label :building_unit, "Unit", class: 'required' %>
           </div>
           <div class="col-md-4">
             <%= f.fields_for @residential_unit.unit do |unit_form| %>
@@ -110,7 +109,7 @@
         <br />
         <div class="row">
           <div class="col-md-2 form-label-responsive">
-            <%= f.label :rent %>
+            <%= f.label :rent, class: 'required' %>
           </div>
           <div class="col-md-4">
             <%= f.fields_for @residential_unit.unit do |unit_form| %>
@@ -136,7 +135,7 @@
         <br />
         <div class="row">
           <div class="col-md-2 form-label-responsive">
-            <%= f.label :beds %>
+            <%= f.label :beds, class: 'required' %>
           </div>
           <div class="col-md-4">
             <%= f.number_field :beds, class: 'form-control',
@@ -147,7 +146,7 @@
         <br />
         <div class="row">
           <div class="col-md-2 form-label-responsive">
-            <%= f.label :baths %>
+            <%= f.label :baths, class: 'required' %>
           </div>
           <div class="col-md-4">
             <%= f.number_field :baths, class: 'form-control', step: 0.5, in: 0.0..10.0, 
@@ -159,7 +158,7 @@
         <div class="row">
           <%= f.fields_for @residential_unit.unit do |unit_form| %>
             <div class="col-md-2 form-label-responsive">
-              <%= unit_form.label :available_by, "Available Date" %>
+              <%= unit_form.label :available_by, "Available Date", class: 'required' %>
             </div>
             <div class="col-md-4">
               <div class='input-group date datepicker' 
@@ -179,7 +178,7 @@
         <br />
         <div class="row">
           <div class="col-xs-2 form-label-responsive">
-            <strong>Lease Duration</strong>
+            <%= f.label :lease_start, "Lease Duration", class: 'required' %>
           </div>
           <div class="col-xs-2">
             <%= f.text_field :lease_start, class: 'form-control', 

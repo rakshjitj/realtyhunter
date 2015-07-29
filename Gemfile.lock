@@ -272,7 +272,7 @@ GEM
     wicked_pdf (0.11.0)
       rails
     wkhtmltopdf-binary-edge (0.12.2.1)
-    wkhtmltopdf-heroku (2.12.2.1)
+    wkhtmltopdf-heroku (2.12.2.4)
 
 PLATFORMS
   ruby

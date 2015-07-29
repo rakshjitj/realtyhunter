@@ -59,7 +59,7 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <strong>Current Listing Status</strong>
+            <%= f.label :status, "Current Listing Status", class: 'required' %>
           </div>
           <div class="col-md-8">
             <div class="field">
@@ -76,6 +76,7 @@
         <div class="row">
           <div class="col-md-12 form-section-header">
             <hr class="thin-line" />
+            <%= f.label :status, "Current Listing Status", class: 'required' %>
             <h4>Property Type</h4>
             <hr class="thin-line" />
           </div>
@@ -84,7 +85,7 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <strong>Property Type</strong>
+            <%= f.label :property_type, "Property Type", class: 'required' %>
           </div>
           <div class="col-md-3">
             <div class="field">
@@ -110,7 +111,7 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <strong>Construction Status</strong>
+            <%= f.label :construction_status, "Construction Status", class: 'required' %>
           </div>
           <div class="col-md-8">
             <div class="field">
@@ -147,7 +148,7 @@
         <%= f.fields_for @commercial_unit.unit do |unit_form| %>
           <div class="row">
             <div class="col-md-4 form-label-responsive">
-              <%= unit_form.label :building_id %>
+              <%= unit_form.label :building_id, class: 'required' %>
             </div>
             <div class="col-md-8">
               <div class="field">
@@ -176,7 +177,7 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :floor, "Floor" %>
+            <%= f.label :floor, "Floor", class: 'required' %>
           </div>
           <div class="col-md-2">
             <div class="field">
@@ -187,7 +188,7 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :sq_footage, 'Space Available (SF)' %>
+            <%= f.label :sq_footage, 'Space Available (SF)', class: 'required' %>
           </div>
           <div class="col-md-2">
             <div class="field">
@@ -199,7 +200,7 @@
         <div class="row">
           <%= f.fields_for @commercial_unit.unit do |unit_form| %>
           <div class="col-md-4 form-label-responsive">
-            <%= unit_form.label :rent, 'Rental rate' %>
+            <%= unit_form.label :rent, 'Rental rate', class: 'required' %>
           </div>
           <div class="col-md-2">
             <div class="field">
@@ -237,7 +238,7 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :lease_type %>
+            <%= f.label :lease_type, class: 'required' %>
           </div>
           <div class="col-md-4">
             <div class="field">
@@ -253,15 +254,18 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            Sublease?
+            <%= f.label :is_sublease, 'Sublease?' %>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-1">
+            <div class="field">
+              <%= f.check_box :is_sublease, class: 'form-control', checked: @commercial_unit.is_sublease %>
+            </div>
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :minimum_divisible, 'Minimum Divisible (SF)' %>
+            <%= f.label :minimum_divisible, 'Minimum Divisible (SF)', class: 'required' %>
           </div>
           <div class="col-md-2">
             <div class="field">
@@ -272,7 +276,7 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :maximum_contiguous, 'Maximum Contiguous (SF)' %>
+            <%= f.label :maximum_contiguous, 'Maximum Contiguous (SF)', class: 'required' %>
           </div>
           <div class="col-md-2">
             <div class="field">
@@ -283,7 +287,7 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :lease_term_months, 'Lease Term (Months)' %>
+            <%= f.label :lease_term_months, 'Lease Term (Months)', class: 'required' %>
           </div>
           <div class="col-md-2">
             <div class="field">
@@ -294,7 +298,7 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :no_parking_spaces, '# Parking Spaces' %>
+            <%= f.label :no_parking_spaces, '# Parking Spaces', class: 'required' %>
           </div>
           <div class="col-md-2">
             <div class="field">
@@ -305,7 +309,7 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :pct_procurement_fee, 'Procurement Fee %' %>
+            <%= f.label :pct_procurement_fee, 'Procurement Fee %', class: 'required' %>
           </div>
           <div class="col-md-2">
             <div class="field">
@@ -325,7 +329,7 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :property_description %>
+            <%= f.label :property_description, class: 'required' %>
           </div>
           <div class="col-md-8">
             <div class="field">
@@ -336,7 +340,7 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :location_description %>
+            <%= f.label :location_description, class: 'required' %>
           </div>
           <div class="col-md-8">
             <div class="field">
@@ -347,7 +351,7 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :building_size, 'Total Building Size (SF)' %>
+            <%= f.label :building_size, 'Total Building Size (SF)', class: 'required' %>
           </div>
           <div class="col-md-2">
             <div class="field">
@@ -359,7 +363,7 @@
         
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :total_lot_size, 'Total Lot Size' %>
+            <%= f.label :total_lot_size, 'Total Lot Size', class: 'required' %>
           </div>
           <div class="col-md-2">
             <div class="field">

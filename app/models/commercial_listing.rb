@@ -10,10 +10,21 @@ class CommercialListing < ActiveRecord::Base
   
   enum lease_type: [ :na, :full_service, :nnn, :modified_gross, :modified_net, :industrial_gross, :other ]
   validates :lease_type, presence: true, inclusion: { in: %w(na full_service nnn modified_gross modified_net industrial_gross other) }
+  validates :lease_term_months, presence: true
+  validates :pct_procurement_fee, presence: true
+
+  validates :minimum_divisible, presence: true
+  validates :maximum_contiguous, presence: true
+  validates :no_parking_spaces, presence: true
 
 	validates :sq_footage, presence: true, :numericality => { :less_than_or_equal_to => 99999999 }
 	validates :floor, presence: true, :numericality => { :less_than_or_equal_to => 999 }
 	validates :building_size, presence: true, :numericality => { :less_than_or_equal_to => 99999999 }
+  validates :total_lot_size, presence: true
+
+  validates :property_description, presence: true
+  validates :location_description, presence: true
+
 
   def archive
     self.archived = true

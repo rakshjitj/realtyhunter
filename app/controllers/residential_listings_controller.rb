@@ -1,5 +1,6 @@
 class ResidentialListingsController < ApplicationController
-  #load_and_authorize_resource
+  load_and_authorize_resource
+  skip_load_resource only: :create
   before_action :set_residential_listing, except: [:new, :create, :index, :filter, 
     :print_list, :neighborhoods_modal, :features_modal, 
     :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood] #:refresh_images, 
@@ -347,7 +348,8 @@ class ResidentialListingsController < ApplicationController
         :include_photos, :inaccuracy_description, 
         :has_fee, :op_fee_percentage, :tp_fee_percentage, 
         :available_starting, :available_before,   
-        :unit => [:building_unit, :rent, :available_by, :access_info, :status, :open_house, :oh_exclusive, 
+        :unit => [:building_unit, :rent, :available_by, :access_info, :status, 
+          :open_house, :oh_exclusive, 
           :building_id, :primary_agent_id, :listing_agent_id ],
         :residential_amenity_ids => [])
 

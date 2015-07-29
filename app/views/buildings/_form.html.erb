@@ -46,7 +46,7 @@
         <br />
         <div class="row">
           <div class="col-md-3 form-label-responsive">
-            <%= f.label :landlord_id, "Landlord" %>
+            <%= f.label :landlord_id, "Landlord", class: 'required' %>
           </div>
           <div class="col-md-9">
             <%= f.select(:landlord_id, options_for_select(current_user.company.landlords.collect {|l| [l.code, l.id]},
@@ -61,7 +61,7 @@
         <br />
         <div class="row">
           <div class="col-md-3 form-label-responsive">
-            <%= f.label :formatted_street_address, "Street Address" %>
+            <%= f.label :formatted_street_address, "Street Address", class: 'required' %>
           </div>
           <div class="col-md-9">
             <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input', placeholder: "123 Main St" %>
@@ -219,9 +219,9 @@
 
     <br />
     <div class="row">
-      <div class="col-md-6">        
+      <div class="col-md-6">
         <div class="field">
-          <%= f.label :pet_policy_id %>
+          <%= f.label :pet_policy_id, class: 'required' %>
           <%= f.select(:pet_policy_id, 
             options_for_select(current_user.company.pet_policies.all.collect { |r| [r.name.titleize, r.id] }, 
             [@building.pet_policy ? @building.pet_policy.id : '']),
