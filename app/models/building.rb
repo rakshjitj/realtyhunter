@@ -180,7 +180,7 @@ class Building < ActiveRecord::Base
     	@running_list = @running_list.where(units: {status:"active"})
     end
 
-    @running_list
+    @running_list.uniq
 	end
 
 	def amenities_to_s
