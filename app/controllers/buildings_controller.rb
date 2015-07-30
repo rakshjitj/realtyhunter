@@ -38,7 +38,7 @@ class BuildingsController < ApplicationController
   # GET /buildings/1
   # GET /buildings/1.json
   def show
-    fresh_when([@building, @building.images])
+    #fresh_when([@building, @building.images])
   end
 
   # GET /buildings/new
@@ -151,7 +151,7 @@ class BuildingsController < ApplicationController
       @buildings = Building.search(params[:page] || 0, 
         building_params[:filter], 
         building_params[:active_only])
-      
+
       @buildings = custom_sort
       @buildings = @buildings.page params[:page]
       @bldg_imgs = Building.get_images(@buildings)

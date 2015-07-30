@@ -252,6 +252,7 @@ class UsersController < ApplicationController
     def set_users
       @users = User.search(params[:search_params], current_user)
       @users = @users.page params[:page]
+      @user_images = User.get_images(@users)
     end
 
     def set_units

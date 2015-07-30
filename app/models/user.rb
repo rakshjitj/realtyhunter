@@ -160,6 +160,12 @@ class User < ActiveRecord::Base
     reset_sent_at < 2.hours.ago
   end
 
+  # for use in search method below
+  def self.get_images(list)
+    user_ids = list.map(&:id)
+    Image.where(user_id: user_ids).index_by(&:user_id)
+  end
+
   def self.search(query_params, current_user)
     # food for thought:
     # @running_list = User.joins(:employee_title)
@@ -167,11 +173,13 @@ class User < ActiveRecord::Base
     #   .select('users.name', )
     #   #.select('users.name', 'employee_titles.name as title').map{|u| [u.name, u.title]}
     
-    #:employee_title, :office, :company, :manager, :image, :roles)
     @running_list = User.unarchived
-    .includes(
-      :employee_title, :image)
+    .joins(
+      :employee_title)
     .where(company: current_user.company)
+    .select('users.company_id', 'users.archived', 'users.id', 'users.name', 'users.email', 'users.activated', 'users.approved', 'users.last_login_at',
+      'employee_titles.name AS employee_title_name', 'employee_titles.id AS employee_title_id',)
+
     if !query_params || !query_params[:name_email]
       return @running_list 
     end
@@ -297,31 +305,28 @@ class User < ActiveRecord::Base
   end
 
   def coworkers
-    #@coworkers = Array.new(self.company.users)
-    #@coworkers.delete(self)
-    #@coworkers
     company.users
   end
 
+  # keep a running list of my specialties so we 
+  # don't always have to recalculate
   def agent_specialties
-    @specialities = []
-    AgentType.all.each do |a|
-      if self.has_role? a.name
-        @specialities << a.name.titleize
-      end
-    end
-    @specialities
+    specialties = AgentType.where(name: self.roles.map(&:name)).map(&:name)
+    # specialties.each do |s|
+    #   s = s.titleize
+    # end
+    specialties
   end
 
   def agent_specialties_as_indicies
-    @specialities = []
-    AgentType.all.each do |a|
-      if self.has_role? a.name
-        @specialities << a.id
-      end
-    end
-
-    @specialities
+    
+    # @specialities = []
+    # AgentType.all.each do |a|
+    #   if self.has_role? a.name
+    #     @specialities << a.id
+    #   end
+    # end
+    AgentType.where(name: self.roles.map(&:name)).map(&:id)
   end
 
   def add_sanitized_role(unsan_role_name, is_agent_type)
@@ -351,8 +356,13 @@ class User < ActiveRecord::Base
   # - From the same company as the other user
   # - Higher in rank than the other user
   def can_approve(other_user)
-    return self.is_company_admin? &&
+    if other_user.employee_title_id && self.employee_title_id
+      return self.is_company_admin? &&
+    other_user.employee_title_id < self.employee_title_id
+    else
+      return self.is_company_admin? &&
     other_user.employee_title.id < self.employee_title.id
+    end
   end
 
   # In order to kick another user from their team, we must be:

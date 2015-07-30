@@ -10,13 +10,13 @@ module UsersHelper
 
 
 	def employee_title_and_specialty(user)
-		html = user.employee_title.name.titleize
+		html = user.employee_title_name.titleize
 		if user.is_company_admin?
 			html = html + ' <span class="glyphicon glyphicon-star dark-orange" aria-hidden="true"></span>'
 		end
 		
-		if user.is_agent? 
-			html = html + ' | ' + user.agent_specialties.join(", ")
+		if user.employee_title_name == 'agent'
+			html = html + ' | ' + user.agent_specialties.join(", ").titleize
 		end
 
 		html.html_safe

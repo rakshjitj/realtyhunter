@@ -96,7 +96,6 @@ class LandlordsController < ApplicationController
 
     def set_landlords
       @landlords = Landlord.search(params)
-      # TODO
       @landlords = custom_sort
       @landlords = @landlords.page params[:page]
     end

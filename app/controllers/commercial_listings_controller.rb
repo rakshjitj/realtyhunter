@@ -284,6 +284,8 @@ class CommercialListingsController < ApplicationController
         neighborhood_ids = params[:neighborhood_ids].split(",").select{|i| !i.empty?}
         @selected_neighborhoods = Neighborhood.where(id: neighborhood_ids)
       end
+
+      @commercial_units = CommercialListing.search(params, current_user, params[:building_id])
     end
 
     def set_property_types
@@ -338,6 +340,10 @@ class CommercialListingsController < ApplicationController
         data[:unit][:oh_exclusive] = true
       else
         data[:unit][:oh_exclusive] = false
+      end
+
+      if data[:unit][:status]
+        data[:unit][:status] = data[:unit][:status].downcase
       end
       
       # convert into a datetime obj

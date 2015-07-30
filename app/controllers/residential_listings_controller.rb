@@ -281,7 +281,6 @@ class ResidentialListingsController < ApplicationController
 
     def set_residential_listings
       do_search
-
       @residential_units = custom_sort
 
       @count_all = ResidentialListing.all.count
