@@ -42,8 +42,8 @@ class CompaniesController < ApplicationController
   def managers
     @title = 'Managers'
     @users = @company.managers
-    #@users.sort_by!{|u| u.name.downcase }
     @users = @users.page params[:page]
+    @user_images = User.get_images(@users)
     render 'users/index'
   end
 
@@ -51,6 +51,7 @@ class CompaniesController < ApplicationController
     @title = 'Employees'
     @users = @company.users.includes(
       :office, :employee_title, :image, :company, :manager, :roles).page params[:page]
+    @user_images = User.get_images(@users)
     render 'users/index'
   end
 
