@@ -50,66 +50,6 @@ class Building < ActiveRecord::Base
 	# some address lookups don't return a valid neighborhood
 	#validates :neighborhood, presence: true
 
-  # def increment_memcache_iterator
-  #   Rails.cache.write("building-#{id}-memcache-iterator", self.memcache_iterator + 1)
-  # end
-
-  # def memcache_iterator
-  #   # fetch the user's memcache key
-  #   # If there isn't one yet, assign it a random integer between 0 and 10
-  #   Rails.cache.fetch("building-#{id}-memcache-iterator") { rand(10) }
-  # end
-
-  # def cache_key
-  #   "building-#{id}-#{self.memcache_iterator}"
-  # end
-
-	# def cached_neighborhood
- #    #Rails.cache.fetch("#{cache_key}_neighborhood") {
- #      neighborhood
- #    #}
- #  end
-
- #  def cached_landlord
- #    #Rails.cache.fetch("#{cache_key}_landlord") {
- #      landlord
- #    #}
- #  end
-
- #  def cached_primary_img
- #    #Rails.cache.fetch("#{cache_key}_primary_img") {
- #      images[0] ? images[0] : nil
- #    #}
- #  end
-
- #  def cached_units
- #    units.unarchived
- #    # Rails.cache.fetch("#{cache_key}_units") {
- #    #   units.unarchived.order('updated_at DESC')
- #    # }
- #  end
-
- #  def cached_active_units
- #    units.unarchived.active
- #    # Rails.cache.fetch("#{cache_key}_active_units") {
- #    #   units.unarchived.active.order('updated_at DESC')
- #    # }
- #  end
-
- #  def cached_units_count
- #    units.unarchived.count
- #    # Rails.cache.fetch("#{cache_key}_units_count") {
- #    #   cached_units.count
- #    # }
- #  end
-
- #  def cached_active_units_count
- #    units.unarchived.active.count
- #    # Rails.cache.fetch("#{cache_key}_active_units_count") {
- #    #   cached_active_units.count
- #    # }
- #  end
-
   def archive
     self.archived = true
     self.save
@@ -157,17 +97,21 @@ class Building < ActiveRecord::Base
   end
 
 	def self.search(page_num, query_str, active_only)
-    @running_list = Building.joins(:units, :landlord, :neighborhood)
-      .where('units.archived = false')
+    #return Building.all
+
+    @running_list = Building.joins(:landlord).includes(:neighborhood)#, :units)
+      .where('buildings.archived = false')
       .select('buildings.formatted_street_address', 'buildings.notes',
         'buildings.id', 'buildings.street_number', 'buildings.route', 
-        'buildings.sublocality', 
+        'buildings.sublocality', 'buildings.neighborhood_id',
         'buildings.administrative_area_level_2_short',
         'buildings.administrative_area_level_1_short', 'buildings.postal_code',
-        'buildings.updated_at', 'units.status',
-        'neighborhoods.name AS neighborhood_name', 
+        'buildings.updated_at', 
+        #'units.status',
+        #'neighborhoods.name AS neighborhood_name', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
-        'units.available_by')
+        #'units.available_by'
+      )
 
     return @running_list if !query_str
     
@@ -180,7 +124,7 @@ class Building < ActiveRecord::Base
     	@running_list = @running_list.where(units: {status:"active"})
     end
 
-    @running_list.uniq
+    @running_list
 	end
 
 	def amenities_to_s

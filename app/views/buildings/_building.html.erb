@@ -17,8 +17,12 @@
     <%= link_to "#{building.street_address}", building %><br />
     <%= short_location_title(building) %>
   </td>
-  <td><%= building.active_units.count %></td>
-  <td><%= building.units.count %></td>
+  <td>
+    <%= building.active_units.count %>
+  </td>
+  <td>
+    <%= building.units.count %>
+  </td>
   <td><%= time_ago_in_words(building.updated_at) %></td>
   <% if current_user.is_management? %>
     <td>
