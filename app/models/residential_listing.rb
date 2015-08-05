@@ -91,7 +91,7 @@ class ResidentialListing < ActiveRecord::Base
         'units.building_unit', 'units.status','units.rent', 'residential_listings.beds', 
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at', 
-        'neighborhoods.name AS neighborhood_name', 
+        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by')
 
