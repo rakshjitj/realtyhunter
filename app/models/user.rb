@@ -188,7 +188,7 @@ class User < ActiveRecord::Base
     query_string = query_string[0..500] # truncate for security reasons
     @terms = query_string.split(" ")
     @terms.each do |term|
-      @running_list = @running_list.where('name ILIKE ? or email ILIKE ?', "%#{term}%", "%#{term}%").all
+      @running_list = @running_list.where('users.name ILIKE ? or users.email ILIKE ?', "%#{term}%", "%#{term}%").all
     end
 
     @running_list.uniq
