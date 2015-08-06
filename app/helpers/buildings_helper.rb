@@ -11,7 +11,7 @@ module BuildingsHelper
 			if building.neighborhood
 	      "<small>#{building.neighborhood.name}</small>".html_safe
 	    else
-	    	"blah"
+	    	""
 	    end
 	  end
 	end
