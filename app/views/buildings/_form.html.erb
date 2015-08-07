@@ -68,6 +68,17 @@
           </div>
         </div>
 
+        <br />
+        <div class="row">
+          <div class="col-md-3 form-label-responsive">
+            <%= f.label :custom_neighborhood, "Neighborhood", class: 'required' %>
+          </div>
+          <div class="col-md-9">
+            <%= f.text_field :custom_neighborhood, class: 'form-control', 
+              placeholder: "Override Google's default choice" %>
+          </div>
+        </div>
+
     <div class="field">
       <br/>
       <p>Visually confirm the building's location:</p>

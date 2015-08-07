@@ -20,7 +20,7 @@ class Building < ActiveRecord::Base
 	has_and_belongs_to_many :utilities
 
 	attr_accessor :building, :inaccuracy_description, 
-    :custom_rental_term, :custom_amenities, :custom_utilities
+    :custom_rental_term, :custom_amenities, :custom_utilities, :custom_neighborhood
 
 	validates :formatted_street_address, presence: true, length: {maximum: 200}, 
 		uniqueness: { case_sensitive: false }

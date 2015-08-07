@@ -7,10 +7,3 @@ class DropOldData < ActiveRecord::Migration
 		remove_column :units, :actable_type
   end
 end
-
-# class MoveDescripIntoUnits < ActiveRecord::Migration
-#   def change
-# 		remove_column :units, :listing_agent
-# 		remove_column :landlords, :listing_agent_percentage
-#   end
-# end

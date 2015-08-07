@@ -52,11 +52,6 @@ class ResidentialListing < ActiveRecord::Base
     output
   end
 
-  # used as a sorting condition
-  # def bed_and_baths
-  #   "#{beds} / #{baths}"
-  # end
-
   def amenities_to_s
     amenities = residential_amenities.map{|a| a.name.titleize}
     amenities ? amenities.join(", ") : "None"
@@ -370,6 +365,7 @@ class ResidentialListing < ActiveRecord::Base
       .select('buildings.formatted_street_address', 
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
         'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id', 
+        'beds || \'/\' || baths as bed_and_baths',
         'residential_listings.beds', 'residential_listings.id', 
         'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at', 
@@ -394,6 +390,7 @@ class ResidentialListing < ActiveRecord::Base
       .select('buildings.formatted_street_address', 
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
         'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id', 
+        'beds || \'/\' || baths as bed_and_baths',
         'residential_listings.beds', 'residential_listings.id', 
         'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at', 
