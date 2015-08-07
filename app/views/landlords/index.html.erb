@@ -21,8 +21,11 @@
   <%= form_tag landlords_path, :method => 'get' do %>
     <div class="row">
       <div class="col-xs-12 col-md-4 vertical-padding">
-        <%= text_field_tag :filter, params[:filter], 
-          placeholder: "Filter by code/name", size: 30, class:'form-control' %>
+        <%= autocomplete_field_tag :filter, params[:filter], 
+          autocomplete_landlord_code_landlords_path,
+          update_elements: {},
+          placeholder: "Filter by code", 
+          size: 30, class:'form-control' %>
       </div>
       <div class="col-xs-12 col-md-2 vertical-padding">
         <label>

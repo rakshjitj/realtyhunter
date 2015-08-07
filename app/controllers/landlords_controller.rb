@@ -1,7 +1,8 @@
 class LandlordsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
-  before_action :set_landlord, except: [:index, :new, :create, :filter]
+  before_action :set_landlord, except: [:index, :new, :create, :filter, :autocomplete_landlord_code]
+  autocomplete :landlord, :code, full: true
   etag { current_user.id }
     
   # GET /landlords

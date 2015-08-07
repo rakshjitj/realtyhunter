@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   default_scope { order("users.name ASC") }
   scope :unarchived, ->{where(archived: false)}
-    
+  
   belongs_to :office, touch: true
   belongs_to :company, touch: true
   belongs_to :manager, :class_name => "User", touch: true

@@ -2,8 +2,9 @@ class UsersController < ApplicationController
   load_and_authorize_resource
   skip_before_action :logged_in_user, only: [:new, :create, :update_offices]
   before_action :set_user, except: [:index, :filter, :filter_listings, :teams, :new, :create, :admin_new, 
-    :admin_create, :update_offices]
+    :admin_create, :update_offices, :autocomplete_user_name]
   before_action :set_company, except: [:update_offices]
+  autocomplete :user, :name, full: true
   etag { current_user.id }
   
   # GET /users

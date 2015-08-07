@@ -75,6 +75,7 @@ Landlords = {};
       console.log(bldg_address, "[ERROR]: " + result);
     });
 
+    $('#landlords #filter').bind('railsAutocomplete.select', Landlords.throttledSearch);
     $('#landlords #filter').keydown(Landlords.preventEnter);
     $('#landlords #filter').change(Landlords.throttledSearch);
     $('#landlords #checkbox_active').click(Landlords.throttledSearch);

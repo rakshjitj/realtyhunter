@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   root :to => 'static_pages#home'
   
   resources :users, except: 'new' do
+    get :autocomplete_user_name, :on => :collection
     collection do
       get 'update_offices'
       get 'filter'
@@ -115,6 +116,7 @@ Rails.application.routes.draw do
   end
 
   resources :landlords do
+    get :autocomplete_landlord_code, :on => :collection
     collection do
       get 'filter'
     end

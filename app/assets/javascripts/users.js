@@ -45,6 +45,7 @@ Users = {};
 	    event.preventDefault();
 	  });
 
+    $('#name_email').bind('railsAutocomplete.select', Users.throttledSearch);
     $('input').keydown(Users.preventEnter); 
     $('#name_email').change(Users.throttledSearch);
 
