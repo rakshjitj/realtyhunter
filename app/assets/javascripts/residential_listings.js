@@ -234,7 +234,9 @@ ResidentialListings = {};
 	ResidentialListings.initialize = function() {
 		// hide map on mobile by default. give them the option to un-hide
 		//ResidentialListings.toggleMap();
-
+		document.addEventListener("page:restore", function() {
+		  ResidentialListings.hideSpinner();
+		});
 		ResidentialListings.hideSpinner();
 		$('#residential a').click(function() {
 			//console.log('detected click');
