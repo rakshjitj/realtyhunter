@@ -1,5 +1,6 @@
 class Neighborhood < ActiveRecord::Base
 	has_many :buildings
+
 	default_scope { order("name ASC") }
 	scope :unarchived, ->{where(archived: false)}
 

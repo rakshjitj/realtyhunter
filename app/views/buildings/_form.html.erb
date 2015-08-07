@@ -68,15 +68,8 @@
           </div>
         </div>
 
-        <br />
-        <div class="row">
-          <div class="col-md-3 form-label-responsive">
-            <%= f.label :custom_neighborhood, "Neighborhood", class: 'required' %>
-          </div>
-          <div class="col-md-9">
-            <%= f.text_field :custom_neighborhood, class: 'form-control', 
-              placeholder: "Override Google's default choice" %>
-          </div>
+        <div class="neighborhood_options">
+          <%= render 'neighborhood_options' %>
         </div>
 
     <div class="field">
@@ -263,7 +256,6 @@
       <%= f.hidden_field :street_number, name: "street_number" %>
       <%= f.hidden_field :route, name: "route" %>
       <%= f.hidden_field :intersection, name: "intersection" %>
-      <%= f.hidden_field :neighborhood, name:"neighborhood" %>
       <%= f.hidden_field :sublocality, name:"sublocality" %>
       <%= f.hidden_field :administrative_area_level_2_short, name:"administrative_area_level_2_short" %>
       <%= f.hidden_field :administrative_area_level_1_short, name:"administrative_area_level_1_short" %>

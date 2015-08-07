@@ -82,9 +82,11 @@ Rails.application.routes.draw do
       patch 'send_inaccuracy'
       get 'refresh_images'
       get 'filter_listings'
+      
     end
     collection do
       get 'filter'
+      get 'neighborhood_options'
     end
   end
 

@@ -1,7 +1,7 @@
 class BuildingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
-  before_action :set_building, except: [:index, :new, :create, :filter, :filter_listings, :refresh_images]
+  before_action :set_building, except: [:index, :new, :create, :filter, :filter_listings, :refresh_images, :neighborhood_options]
   etag { current_user.id }
   
   # GET /buildings
@@ -132,10 +132,22 @@ class BuildingsController < ApplicationController
     end
   end
 
+  def neighborhood_options
+    @building = Building.new
+    @building.sublocality = params[:sublocality]
+
+    respond_to do |format|
+      format.js  
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_building
       @building = Building.find_unarchived(params[:id])
+      if @building.neighborhood
+        @building.custom_neighborhood_id = @building.neighborhood.id
+      end
       set_units
     end
 
@@ -172,8 +184,8 @@ class BuildingsController < ApplicationController
       # into the right format for our model
       param_obj = building_params
       param_obj[:building].each{ |k,v| param_obj[k] = v };
+
       param_obj.delete("building")
-      
       # delete so that this field doesn't conflict with our foreign key
       @neighborhood_name = param_obj[:neighborhood]
       param_obj.delete("neighborhood")
@@ -183,8 +195,6 @@ class BuildingsController < ApplicationController
       end
 
       @building.company = current_user.company
-      # TODO: once this data has been populated enough by google
-      # revert to regular save  #.save
       @building.neighborhood = @building.find_or_create_neighborhood(@neighborhood_name, param_obj[:sublocality], 
         param_obj[:administrative_area_level_2_short], param_obj[:administrative_area_level_1_short])
 
@@ -202,12 +212,15 @@ class BuildingsController < ApplicationController
     # will not map to them correctly
     def building_params
       params.permit(:sort_by, :direction, :filter, :active_only, :street_number, :route, :intersection, 
-        :neighborhood, :sublocality, :administrative_area_level_2_short, :administrative_area_level_1_short, 
+        :neighborhood, 
+        :sublocality, :administrative_area_level_2_short, 
+        :administrative_area_level_1_short, 
         :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id, :file,
         :building => [:formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description, 
           :pet_policy_id, :rental_term_id, :custom_rental_term, :file, :custom_amenities,
           :custom_utilities, :listing_agent_percentage, :listing_agent_id,
           :has_fee, :op_fee_percentage, :tp_fee_percentage, 
+          :neighborhood_id, :neighborhood,
           :building_amenity_ids => [], images_files: [], :utility_ids => [] ])
     end
 end

@@ -4,8 +4,6 @@ class Building < ActiveRecord::Base
   before_save :process_rental_term
   before_save :process_custom_amenities
   before_save :process_custom_utilities
-  # after_update :clear_cache
-  # after_destroy :clear_cache
 
 	belongs_to :company, touch: true
 	belongs_to :landlord, touch: true
@@ -20,7 +18,7 @@ class Building < ActiveRecord::Base
 	has_and_belongs_to_many :utilities
 
 	attr_accessor :building, :inaccuracy_description, 
-    :custom_rental_term, :custom_amenities, :custom_utilities, :custom_neighborhood
+    :custom_rental_term, :custom_amenities, :custom_utilities, :custom_neighborhood_id
 
 	validates :formatted_street_address, presence: true, length: {maximum: 200}, 
 		uniqueness: { case_sensitive: false }

@@ -155,10 +155,40 @@ Buildings = {};
       if (this.value == "New York, NY, USA") {
         this.value = '';
       }
+      
+      // update neighborhood options from google results
+
+      var sublocality = '';
+      for (var i =0; i<result["address_components"].length; i++) {
+        if (result["address_components"][i]["types"][1] == "sublocality") {
+          sublocality = result["address_components"][i]["short_name"];
+        }
+      }
+
+      // if no neighborhood already set, update neighborhood from google results
+      if ($('#neighborhood').val() == "") {
+        $.ajax({
+          type: "GET",
+          url: '/buildings/neighborhood_options',
+          data: { 
+            sublocality: sublocality,
+          },
+          success: function(data) {
+            for (var i =0; i<result["address_components"].length; i++) {
+              if (result["address_components"][i]["types"][0] == "neighborhood") {
+                var nabe = result["address_components"][i]["short_name"];
+                console.log(nabe);
+                $('#neighborhood').val(nabe);
+              }
+            }
+          }
+        });
+      }
+
     }).bind("geocode:error", function(event, result){
     	//console.log("[ERROR]: " + result);
     });
-  		
+
   	// editing photos
 
   	// disable auto discover
