@@ -1,9 +1,12 @@
 class BuildingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
-  before_action :set_building, except: [:index, :new, :create, :filter, :filter_listings, :refresh_images, :neighborhood_options]
-  etag { current_user.id }
+  before_action :set_building, except: [:index, :new, :create, :filter, :filter_listings, 
+    :refresh_images, :neighborhood_options, :autocomplete_building_formatted_street_address]
   
+  autocomplete :building, :formatted_street_address, full: true
+  etag { current_user.id }
+    
   # GET /buildings
   # GET /buildings.json
   def index

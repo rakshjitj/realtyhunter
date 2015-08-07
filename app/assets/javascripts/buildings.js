@@ -32,9 +32,6 @@ Buildings = {};
     Buildings.showSpinner();
 
   	var search_path = $('#search-filters').attr('data-search-path');
-    //console.log("[" + search_path + "] BUILDINGS searching for " + $('#filter').val(), $('#checkbox_active').prop('checked'));
-    // for whatever reason, we need to set dataType to json here in order
-    // to trigger the call as js.
     $.ajax({
       url: search_path,
       data: {
@@ -129,6 +126,7 @@ Buildings = {};
     Buildings.toggleFeeOptions();
 
     // search filters
+    $('#buildings #filter').bind('railsAutocomplete.select', Buildings.throttledBldgSearch);
     $('#buildings #filter').keydown(Buildings.preventEnter);
     $('#buildings #filter').change(Buildings.throttledBldgSearch);
     // toggle between active and inactive units
@@ -177,7 +175,7 @@ Buildings = {};
             for (var i =0; i<result["address_components"].length; i++) {
               if (result["address_components"][i]["types"][0] == "neighborhood") {
                 var nabe = result["address_components"][i]["short_name"];
-                console.log(nabe);
+                //console.log(nabe);
                 $('#neighborhood').val(nabe);
               }
             }
@@ -241,7 +239,7 @@ Buildings = {};
       $('#buildings .img-thumbnail').each(function(i){
         updated_order.push({ id: $(this).data('id'), position: i+1 });
       });
-  		console.log(updated_order);
+  		//console.log(updated_order);
       
       // send the updated order via ajax
       var bldg_id = $('#buildings').attr('data-bldg-id');

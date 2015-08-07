@@ -39,14 +39,9 @@ class Building < ActiveRecord::Base
 
   belongs_to :listing_agent, :class_name => 'User', touch: true
   validates :listing_agent_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
-  # presence: true, 
 
 	validates :company, presence: true
 	validates :landlord, presence: true
-
-	# TODO: make editable?
-	# some address lookups don't return a valid neighborhood
-	#validates :neighborhood, presence: true
 
   def archive
     self.archived = true
@@ -198,9 +193,5 @@ class Building < ActiveRecord::Base
         }
       end
     end
-
-    # def clear_cache
-    #   increment_memcache_iterator
-    # end
   
 end
