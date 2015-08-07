@@ -329,17 +329,7 @@ class ResidentialListingsController < ApplicationController
       params[:sort_by] = sort_column
       params[:direction] = sort_order
       # if sorting by an actual db column, use order
-      if ResidentialListing.column_names.include?(params[:sort_by])
-        @residential_units = @residential_units.order(sort_column + ' ' + sort_order)
-      # otherwise call sort_by with our custom method
-      else
-        # TODO
-        # if sort_order == "asc"
-        #   @residential_units = @residential_units.sort_by{|b| b.send(sort_column)}
-        # else
-        #   @residential_units = @residential_units.sort_by{|b| b.send(sort_column)}.reverse
-        # end
-      end
+      @residential_units = @residential_units.order(sort_column + ' ' + sort_order)
       @residential_units
     end
 

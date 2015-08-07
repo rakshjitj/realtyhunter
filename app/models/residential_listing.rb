@@ -53,9 +53,9 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   # used as a sorting condition
-  def bed_and_baths
-    "#{beds} / #{baths}"
-  end
+  # def bed_and_baths
+  #   "#{beds} / #{baths}"
+  # end
 
   def amenities_to_s
     amenities = residential_amenities.map{|a| a.name.titleize}
@@ -89,6 +89,7 @@ class ResidentialListing < ActiveRecord::Base
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent', 'residential_listings.beds', 
+        'beds || \'/\' || baths as bed_and_baths',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at', 
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
