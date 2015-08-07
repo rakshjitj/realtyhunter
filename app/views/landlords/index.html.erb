@@ -41,12 +41,12 @@
     <table class="table table-striped table-hover table-condensed table-responsive">
       <thead>
         <tr>
-          <th><%= sortable "code" %></th>
-          <th><%= sortable "name" %></th>
+          <th class="th-sortable <%= sort_css_class("code") %>"><%= sortable "code" %></th>
+          <th class="th-sortable <%= sort_css_class("name") %>"><%= sortable "name" %></th>
           <th>Mobile</th>
-          <th><%= sortable "active_units_count" %></th>
-          <th><%= sortable "total_units_count" %></th>
-          <th><%= sortable "last_unit_updated" %></th>
+          <th class="th-sortable <%= sort_css_class("active_units_count") %>"><%= sortable "active_units_count" %></th>
+          <th class="th-sortable <%= sort_css_class("total_units_count") %>"><%= sortable "total_units_count" %></th>
+          <th class="th-sortable <%= sort_css_class("last_unit_updated") %>"><%= sortable "last_unit_updated" %></th>
           <th colspan="1"></th>
         </tr>
       </thead>

@@ -144,13 +144,13 @@
       <thead>
         <tr>
           <th><!-- first image --></th>
-          <th><%= sortable('street_address', 'Address') %></th>
-          <th><%= sortable 'landlord' %></th>
-          <th><%= sortable 'summary' %></th>
-          <th><%= sortable 'rent', "Price" %></th>
-          <th><%= sortable 'sq_footage' %></th>
-          <th><%= sortable 'available_by', "Available" %></th>
-          <th><%= sortable 'status' %></th>
+          <th class="th-sortable <%= sort_css_class("street_address") %>"><%= sortable('street_address', 'Address') %></th>
+          <th class="th-sortable <%= sort_css_class("landlord") %>"><%= sortable 'landlord' %></th>
+          <th class="th-sortable <%= sort_css_class("summary") %>"><%= sortable 'summary' %></th>
+          <th class="th-sortable <%= sort_css_class("rent") %>"><%= sortable 'rent', "Price" %></th>
+          <th class="th-sortable <%= sort_css_class("sq_footage") %>"><%= sortable 'sq_footage' %></th>
+          <th class="th-sortable <%= sort_css_class("available_by") %>"><%= sortable 'available_by', "Available" %></th>
+          <th class="th-sortable <%= sort_css_class("status") %>"><%= sortable 'status' %></th>
           <% if current_user.is_management? %>
             <th colspan="1"></th>
           <% end %>

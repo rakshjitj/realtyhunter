@@ -9,17 +9,30 @@ module ApplicationHelper
     end
   end
 
+  def sort_css_class(column)
+    if params[:sort_by] == column
+      "selected-sort"
+    else
+      ""
+    end
+  end
+
   def sortable(column, title = nil)
     title ||= column.titleize
     direction = (column == params[:sort_by] && params[:direction] == "asc") ? "desc" : "asc"
     # toggle arrow
-    if direction == "desc"
-      css_class = "glyphicon glyphicon-triangle-top"
-    elsif direction == "asc"
-      css_class = "glyphicon glyphicon-triangle-bottom"
+    css_class=""
+    
+    if params[:sort_by] == column
+      if direction == "desc"
+        css_class = "glyphicon glyphicon-triangle-bottom"
+      elsif direction == "asc"
+        css_class = "glyphicon glyphicon-triangle-top"
+      end
     end
 
-    link_to "<i class=\"#{css_class}\"></i> #{title}".html_safe, {:sort_by => column, :direction => direction}
+    link_to "<i class=\"#{css_class}\"></i> #{title}".html_safe, 
+    {sort_by: column, direction: direction}
   end
 
   def rent_formatted(rent)

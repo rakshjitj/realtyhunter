@@ -237,4 +237,10 @@ CommercialUnits = {};
 
 })();
 
+$(document).on('keyup',function(evt) {
+  if (evt.keyCode == 27) {
+    CommercialListings.hideSpinner();
+  }
+});
+
 $(document).ready(CommercialUnits.initialize);

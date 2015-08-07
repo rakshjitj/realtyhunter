@@ -62,10 +62,11 @@ module API
 				# all units
 				else
 					listings = Unit.joins(:building)
-						.joins('left outer join neighborhoods on buildings.neighborhood_id=neighborhoods.id')
-						.joins('left outer join pet_policies on buildings.pet_policy_id=pet_policies.id')
 						.where('buildings.company_id = ?', company_id)
 				end
+
+				listings = listings.joins('left outer join neighborhoods on buildings.neighborhood_id=neighborhoods.id')
+					.joins('left outer join pet_policies on buildings.pet_policy_id=pet_policies.id')
 
 				listings = _restrict_on_residential_model(company_id, search_params, listings)
 				listings = _restrict_on_unit_model(company_id, search_params, listings)
@@ -190,6 +191,12 @@ module API
 						agent_ids = search_params[:agents].split(',')
 						listings = listings.where(primary_agent_id: agent_ids)
 					end
+
+					# updated_at
+					if search_params[:updated_at] && !search_params[:updated_at].empty?
+						time = Time.parse(search_params[:updated_at]).in_time_zone
+		        listings = listings.where('units.updated_at > ?', time);
+		      end
 
 					listings
 				end

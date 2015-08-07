@@ -94,6 +94,16 @@ a:hover.btn-danger {
   padding-top: 0 !important;
 }
 
+.selected-sort {
+  background-color: #F0F0F0;
+}
+
+.th-sortable:hover {
+  background-color: #F0F0F0; 
+  a {
+    text-decoration: none;
+  }
+}
 
 /* header */
 #logo {

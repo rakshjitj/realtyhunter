@@ -97,9 +97,7 @@ class Building < ActiveRecord::Base
   end
 
 	def self.search(page_num, query_str, active_only)
-    #return Building.all
-
-    @running_list = Building.joins(:landlord).includes(:neighborhood)#, :units)
+    @running_list = Building.joins(:landlord).includes(:neighborhood)
       .where('buildings.archived = false')
       .select('buildings.formatted_street_address', 'buildings.notes',
         'buildings.id', 'buildings.street_number', 'buildings.route', 
@@ -107,11 +105,9 @@ class Building < ActiveRecord::Base
         'buildings.administrative_area_level_2_short',
         'buildings.administrative_area_level_1_short', 'buildings.postal_code',
         'buildings.updated_at', 
-        #'units.status',
-        #'neighborhoods.name AS neighborhood_name', 
+        '(select COUNT(*) FROM units where units.building_id = buildings.id) AS total_unit_count',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
-        #'units.available_by'
-      )
+        '(select COUNT(*) FROM units where units.building_id = buildings.id AND units.status = ' + Unit.statuses['active'].to_s + ') AS active_unit_count')
 
     return @running_list if !query_str
     

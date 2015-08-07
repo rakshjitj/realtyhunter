@@ -6,7 +6,7 @@
   <td><%= landlord.active_units_count %></td>
   <td><%= landlord.total_units_count %></td>
   <td>
-    <% if landlord.last_unit_updated != '--No buildings--' %>
+    <% if landlord.last_unit_updated.to_s != '--No buildings--' %>
       <%= landlord.last_unit_updated %>
     <% else %>
       <%= time_ago_in_words(landlord.last_unit_updated) %>

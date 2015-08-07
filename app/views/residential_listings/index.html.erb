@@ -228,14 +228,14 @@
       <thead>
         <tr>
           <th></th>
-          <th><%= sortable('street_address_and_unit', 'Address') %></th>
-          <th><%= sortable 'landlord_by_code', 'Landlord' %></th>
+          <th class="th-sortable <%= sort_css_class("street_address_and_unit") %>"><%= sortable('street_address_and_unit', 'Address') %></th>
+          <th class="th-sortable <%= sort_css_class("landlord_by_code") %>"><%= sortable 'landlord_by_code', 'Landlord' %></th>
           <th style="width: 20%;">Access</th>
-          <th><%= sortable 'bed_and_baths', "Beds/Baths" %></th>
-          <th><%= sortable 'available_by', "Available" %></th>
-          <th><%= sortable 'rent', "Price" %></th>
-          <th><%= sortable 'updated_at', "Updated" %></th>
-          <th><%= sortable 'status' %></th>
+          <th class="th-sortable <%= sort_css_class("bed_and_baths") %>"><%= sortable 'bed_and_baths', "Beds/Baths" %></th>
+          <th class="th-sortable <%= sort_css_class("available_by") %>"><%= sortable 'available_by', "Available" %></th>
+          <th class="th-sortable <%= sort_css_class("rent") %>"><%= sortable 'rent', "Price" %></th>
+          <th class="th-sortable <%= sort_css_class("updated_at") %>"><%= sortable 'updated_at', "Updated" %></th>
+          <th class="th-sortable <%= sort_css_class("status") %>"><%= sortable 'status' %></th>
           <% if current_user.is_management? %>
             <th colspan="1"></th>
           <% end %>

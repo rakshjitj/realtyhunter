@@ -1,6 +1,6 @@
 json.prettify! if %w(1 yes true).include?(params["pretty"])
 
-#puts json.test listing.residential_listing
+puts json.test listing.residential_listing
 
 if listing.residential_listing
 	json.listing_type "rental"

@@ -163,18 +163,7 @@ class BuildingsController < ApplicationController
       # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      # if sorting by an actual db column, use order
-      if Building.column_names.include?(building_params[:sort_by])
-        @buildings = @buildings.order(sort_column + ' ' + sort_order)
-      # otherwise call sort_by with our custom method
-      else
-        # TODO
-        # if sort_order == "asc"
-        #   @buildings = @buildings.sort_by{|b| b.send(sort_column)}
-        # else
-        #   @buildings = @buildings.sort_by{|b| b.send(sort_column)}.reverse
-        # end
-      end
+      @buildings = @buildings.order(sort_column + ' ' + sort_order)
       @buildings
     end
 

@@ -57,6 +57,8 @@ class Landlord < ActiveRecord::Base
 
 	def self.search(params)
 		@running_list = Landlord.unarchived.includes(:buildings)
+			.select('landlords.id', 'landlords.code', 'landlords.name',
+				'landlords.updated_at', 'landlords.mobile')
 		if !params
 	    return @running_list 
   	end
@@ -73,7 +75,7 @@ class Landlord < ActiveRecord::Base
     	@running_list = @running_list.joins(buildings: :units).where("status = 0")
     end
 
-    @running_list#.uniq
+    @running_list
 	end
 
 	# how to an individual's active/total listings?

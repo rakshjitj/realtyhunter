@@ -18,10 +18,10 @@
     <%= short_location_title(building) %>
   </td>
   <td>
-    <%= building.active_units.count %>
+    <%= building.active_unit_count %>
   </td>
   <td>
-    <%= building.units.count %>
+    <%= building.total_unit_count %>
   </td>
   <td><%= time_ago_in_words(building.updated_at) %></td>
   <% if current_user.is_management? %>

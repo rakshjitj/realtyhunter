@@ -45,10 +45,10 @@
       <thead>
         <tr>
           <th></th>
-          <th><%= sortable "formatted_street_address", "Address" %></th>
-          <th><%= sortable "active_units_count", "Active Units" %></th>
-          <th><%= sortable "total_units_count", "Total Units" %></th>
-          <th><%= sortable "last_unit_updated" %></th>
+          <th class="th-sortable <%= sort_css_class("formatted_street_address") %>"><%= sortable "formatted_street_address", "Address" %></th>
+          <th class="th-sortable <%= sort_css_class("active_unit_count") %>"><%= sortable "active_unit_count", "Active Units" %></th>
+          <th class="th-sortable <%= sort_css_class("total_unit_count") %>"><%= sortable "total_unit_count", "Total Units" %></th>
+          <th class="th-sortable <%= sort_css_class("last_unit_updated") %>"><%= sortable "last_unit_updated" %></th>
           <% if current_user.is_management? %>
             <th colspan="1"></th>
           <% end %>

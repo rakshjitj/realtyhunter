@@ -371,4 +371,11 @@ ResidentialListings = {};
 
 })();
 
+$(document).on('keyup',function(evt) {
+  if (evt.keyCode == 27) {
+    ResidentialListings.hideSpinner();
+  }
+});
+
+
 $(document).ready(ResidentialListings.initialize);

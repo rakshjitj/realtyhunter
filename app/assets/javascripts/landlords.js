@@ -81,5 +81,10 @@ Landlords = {};
   };
 })();
 
+$(document).on('keyup',function(evt) {
+  if (evt.keyCode == 27) {
+    Landlords.hideSpinner();
+  }
+});
+
 $(document).ready(Landlords.initialize);
-  
