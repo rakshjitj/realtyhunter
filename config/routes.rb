@@ -94,6 +94,8 @@ Rails.application.routes.draw do
   #resources :residential_forms, only: [:new, :create, :edit, :update]
 
   resources :residential_listings, concerns: :unit_images_uploadable do
+    get :autocomplete_building_formatted_street_address, :on => :collection
+    get :autocomplete_landlord_code, :on => :collection
     member do
       get 'delete_modal'
       get 'duplicate_modal'

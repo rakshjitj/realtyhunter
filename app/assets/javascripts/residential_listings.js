@@ -250,6 +250,7 @@ ResidentialListings = {};
 
 		// index filtering
 		$('#residential input').keydown(ResidentialListings.preventEnter);
+		$('#residential #address').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
 	  $('#residential #address').change(ResidentialListings.throttledSearch);
 	  $('#residential #unit').change(ResidentialListings.throttledSearch);
 	  $('#residential #rent_min').change(ResidentialListings.throttledSearch);
@@ -258,6 +259,7 @@ ResidentialListings = {};
 	  $('#residential #bed_max').change(ResidentialListings.throttledSearch);
 	  $('#residential #bath_min').change(ResidentialListings.throttledSearch);
 	  $('#residential #bath_max').change(ResidentialListings.throttledSearch);
+	  $('#residential #landlord').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
 	  $('#residential #landlord').change(ResidentialListings.throttledSearch);
 	  $('#residential #available_starting').blur(ResidentialListings.throttledSearch);
 	  $('#residential #available_before').blur(ResidentialListings.throttledSearch);

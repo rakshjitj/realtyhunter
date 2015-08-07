@@ -33,7 +33,12 @@
             <%= label_tag(:address, "Address") %>
           </div>
           <div class="col-xs-9 col-sm-left-padding">
-            <%= text_field_tag :address, params[:address], placeholder: "123 Main St", class:"form-control" %>
+          <%= autocomplete_field_tag :address, params[:address], 
+              autocomplete_building_formatted_street_address_residential_listings_path,
+              update_elements: {},
+              placeholder: "123 Main St", 
+              class:'form-control' %>
+
           </div>
         </div>
         <div class="row vertical-padding">
@@ -95,7 +100,11 @@
             <%= label_tag(:landlord, "Landlord ") %>
           </div>
           <div class="col-xs-9 col-sm-left-padding">
-            <%= text_field_tag :landlord, params[:landlord], placeholder: "code", class:"form-control"  %>
+            <%= autocomplete_field_tag :landlord, params[:landlord], 
+              autocomplete_landlord_code_residential_listings_path,
+              update_elements: {},
+              placeholder: "code", 
+              size: 30, class:'form-control' %>
           </div>
         </div>
         <div class="row vertical-padding">
