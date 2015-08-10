@@ -371,6 +371,14 @@ ResidentialListings = {};
         });
     });
 
+    // activate tooltips
+    //$(function () {
+		  $('[data-toggle="tooltip"]').tooltip()
+		//});
+
+		$('input[type=number]').mousewheel(function(){
+			event.preventDefault();
+		});
 	};
 
 })();

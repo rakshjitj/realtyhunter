@@ -1,4 +1,5 @@
 <% provide(:title, @building.formatted_street_address) %>
+<div id="buildings">
 
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
@@ -18,7 +19,7 @@
 								<%= @building.units.count %> total units.
 							</p>
 		  			</div>
-		  			<!--div class="col-md-6 form-label-responsive"></div-->
+		  			
 		  		</div>
 			  </div><!-- panel-title -->
 		  </div><!-- panel-heading -->
@@ -133,19 +134,19 @@
 				  <%= @building.utilities_to_s %>
 				</p>
 
-				<p>
+				<!--p>
 					<strong>Listing Agent</strong>
-					<% if @building.listing_agent %>
-		    		<%= link_to @building.listing_agent.name, @building.listing_agent %>
-		    	<% else %>
+					<#% if @building.listing_agent %>
+		    		<#%= link_to @building.listing_agent.name, @building.listing_agent %>
+		    	<#% else %>
 		    		-
-		    	<% end %>
-		    </p>
+		    	<#% end %>
+		    </p-->
 		    
-				<p>
+				<!--p>
           <strong>Listing agent %:</strong>
-          <%= @building.listing_agent_percentage %>
-        </p>
+          <#%= @building.listing_agent_percentage %>
+        </p-->
 
         <!-- Broker's Fee -->
         <p>
@@ -214,3 +215,5 @@
     </div>
   </div>
 </div>
+
+</div><!-- buildings -->

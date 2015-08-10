@@ -5,11 +5,13 @@ class Landlord < ActiveRecord::Base
 	belongs_to :company, touch: true
 	validates :company, presence: true
 
+  belongs_to :listing_agent, :class_name => 'User', touch: true
+  validates :listing_agent_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
+
 	validates :code, presence: true, length: {maximum: 100}, 
 		uniqueness: { case_sensitive: false }
 
-	validates :name, presence: true, length: {maximum: 100}, 
-		uniqueness: { case_sensitive: false }
+	validates :name, presence: true, length: {maximum: 100}
 
 	VALID_TELEPHONE_REGEX = /(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/
 	validates :mobile, allow_blank: true, length: {maximum: 25}, 
@@ -78,15 +80,14 @@ class Landlord < ActiveRecord::Base
     @running_list
 	end
 
-	# how to an individual's active/total listings?
-	def residential_units
+	def residential_units(active_only=false)
     bldg_ids = self.building_ids
-    ResidentialListing.for_buildings(bldg_ids)
+    ResidentialListing.for_buildings(bldg_ids, active_only)
   end
 
-  def commercial_units
+  def commercial_units(active_only=false)
   	bldg_ids = self.building_ids
-    CommercialListing.for_buildings(bldg_ids)
+    CommercialListing.for_buildings(bldg_ids, active_only)
   end
 
 	private

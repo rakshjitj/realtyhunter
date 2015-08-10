@@ -105,6 +105,13 @@ a:hover.btn-danger {
   }
 }
 
+// turn off scrollers on input type=number fields
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
 /* header */
 #logo {
   float: left;
@@ -425,6 +432,13 @@ vertical-padding-lg {
   z-index: 1;
 }
 
+.ll-spinner-desktop {
+  position: absolute;
+  left: 10%;
+  top: 20%; //28%;
+  z-index: 1;
+}
+
 // forms
 label.required:after {
   content:" *";
@@ -434,3 +448,7 @@ label.required:after {
 // .modal-dialog {
 //   min-width: 400px;
 //}
+
+.explainer-text {
+  color: #00008B;
+}

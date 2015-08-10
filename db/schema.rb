@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150807010936) do
+ActiveRecord::Schema.define(version: 20150810172615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -188,10 +188,14 @@ ActiveRecord::Schema.define(version: 20150807010936) do
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
     t.string   "update_source"
+    t.integer  "listing_agent_id"
+    t.integer  "listing_agent_percentage"
+    t.integer  "op_fee_percentage"
   end
 
   add_index "landlords", ["buildings_id"], name: "index_landlords_on_buildings_id", using: :btree
   add_index "landlords", ["code"], name: "index_landlords_on_code", using: :btree
+  add_index "landlords", ["listing_agent_id"], name: "index_landlords_on_listing_agent_id", using: :btree
 
   create_table "neighborhoods", force: :cascade do |t|
     t.boolean  "archived",     default: false

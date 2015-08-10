@@ -68,4 +68,22 @@ module ResidentialUnitsHelper
 
 	end
 
+	def trim_zeros cell
+	  if cell.is_a?(Float)
+    	i = cell.to_i
+	    cell == i.to_f ? i : cell
+	  else
+	    cell
+	  end
+	end
+
+	def trim_access text
+		if !text.nil? && text.size > 47
+			text[0..47] + '...'
+		else
+			text
+		end
+
+	end
+
 end

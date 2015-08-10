@@ -264,6 +264,11 @@
           </div>
           <div class="col-md-4">
             <%= f.number_field :op_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>
+            <p class="explainer-text">
+            <% if @residential_unit.unit.building.op_fee_percentage %>
+              The building's default OP is <%= @residential_unit.unit.building.op_fee_percentage %>%.
+            <% end %>
+            </p>
           </div>
         </div>
 

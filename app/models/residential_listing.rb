@@ -121,7 +121,7 @@ class ResidentialListing < ActiveRecord::Base
     if params[:unit]
       # cap query string length for security reasons
       address = params[:unit][0, 50]
-      @running_list = @running_list.where("building_unit = ?", params[:unit])
+      @running_list = @running_list.where("building_unit = ?", params[:unit].downcase)
     end
 
     # search by status
@@ -268,6 +268,10 @@ class ResidentialListing < ActiveRecord::Base
         residential_unit_dup.unit = unit_dup
         residential_unit_dup.save
 
+        self.residential_amenities.each {|a| 
+          residential_unit_dup.residential_amenities << a
+        }
+
         #Image.async_copy_residential_unit_images(self.id, residential_unit_dup.id)
         if include_photos
           self.deep_copy_imgs(residential_unit_dup.id)
@@ -376,7 +380,7 @@ class ResidentialListing < ActiveRecord::Base
         'units.available_by')
       
     if is_active
-      result.where('units.status = ?', Unit.status["active"])
+      listings = listings.where("status = ?", Unit.statuses["active"])
     end
     
     unit_ids = listings.map(&:unit_id)
@@ -401,7 +405,7 @@ class ResidentialListing < ActiveRecord::Base
         'units.available_by')
       
     if is_active
-      result.where('units.status = ?', Unit.status["active"])
+      listings = listings.where("status = ?", Unit.statuses["active"])
     end
     
     unit_ids = listings.map(&:unit_id)

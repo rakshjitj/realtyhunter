@@ -261,7 +261,7 @@ class CommercialListing < ActiveRecord::Base
         'units.available_by')
       
     if is_active
-      result.where('units.status = ?', Unit.status["active"])
+      listings = listings.where("status = ?", Unit.statuses["active"])
     end
     
     unit_ids = listings.map(&:unit_id)
@@ -285,7 +285,7 @@ class CommercialListing < ActiveRecord::Base
         'units.available_by')
       
     if is_active
-      result.where('units.status = ?', Unit.status["active"])
+      listings = listings.where("status = ?", Unit.statuses["active"])
     end
     
     unit_ids = listings.map(&:unit_id)

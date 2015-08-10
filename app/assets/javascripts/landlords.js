@@ -3,11 +3,28 @@ Landlords = {};
 (function() {
 
   Landlords.showSpinner = function() {
-    $('#landlords .index-spinner-desktop').show();
+    $('#landlords .ll-spinner-desktop').show();
   };
 
   Landlords.hideSpinner = function() {
-    $('#landlords .index-spinner-desktop').hide();
+    $('#landlords .ll-spinner-desktop').hide();
+  };
+
+  Landlords.filterListings = function(event) {
+    var search_path = $('#listings').attr('data-search-path');
+    $.ajax({
+      url: search_path,
+      data: {
+        active_only: $('#landlords #listings_checkbox_active').prop('checked')
+      },
+      dataType: "script",
+      success: function(data) {
+        Landlords.hideSpinner();
+      },
+      error: function(data) {
+        Landlords.hideSpinner();
+      }
+    });
   };
 
   Landlords.doSearch = function(event) {
@@ -56,6 +73,9 @@ Landlords = {};
 
   Landlords.initialize = function() {
 
+    document.addEventListener("page:restore", function() {
+      Landlords.hideSpinner();
+    });
     Landlords.hideSpinner();
     $('#landlords a').click(function() {
       Landlords.showSpinner();
@@ -79,6 +99,7 @@ Landlords = {};
     $('#landlords #filter').keydown(Landlords.preventEnter);
     $('#landlords #filter').change(Landlords.throttledSearch);
     $('#landlords #checkbox_active').click(Landlords.throttledSearch);
+    $('#landlords #listings_checkbox_active').click(Landlords.filterListings);
   };
 })();
 

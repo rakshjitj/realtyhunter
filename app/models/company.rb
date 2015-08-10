@@ -92,6 +92,7 @@ class Company < ActiveRecord::Base
 			{name: "Storage", company: self},
 			{name: "Roof Deck", company: self},
 			{name: "Garage Parking", company: self},
+			{name: "Parking", company: self},
 			{name: "Elevator", company: self}
 		])
 
@@ -132,7 +133,7 @@ class Company < ActiveRecord::Base
 			{name: "Washer/dryer hookups", company: self},
 			{name: "Central A/C", company: self},
 			{name: "Central heat", company: self},
-			{name: "Airconditioning", company: self},
+			{name: "Airconditioning unit", company: self},
 			{name: "Balcony/Terrace", company: self},
 			{name: "Hardwood floors", company: self},
 			{name: "Private yard", company: self},
@@ -140,7 +141,6 @@ class Company < ActiveRecord::Base
 			{name: "Bay windows", company: self},
 			{name: "Dishwasher", company: self},
 			{name: "Microwave", company: self},
-			{name: "Doorman", company: self},
 			{name: "Duplex", company: self},
 			{name: "Triplex", company: self},
 			{name: "Railroad", company: self},

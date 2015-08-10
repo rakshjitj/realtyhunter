@@ -120,6 +120,9 @@ CommercialUnits = {};
 
   //call when typing or enter or focus leaving
   CommercialUnits.initialize = function () {
+    document.addEventListener("page:restore", function() {
+      CommercialUnits.hideSpinner();
+    });
     CommercialUnits.hideSpinner();
     $('#commercial a').click(function() {
       CommercialUnits.showSpinner();

@@ -2,6 +2,23 @@ Users = {};
 
 (function() {
 
+  Users.filterListings = function(event) {
+    var search_path = $('#listings').attr('data-search-path');
+    $.ajax({
+      url: search_path,
+      data: {
+        active_only: $('#users #listings_checkbox_active').prop('checked')
+      },
+      dataType: "script",
+      success: function(data) {
+        Landlords.hideSpinner();
+      },
+      error: function(data) {
+        Landlords.hideSpinner();
+      }
+    });
+  };
+
 	Users.doSearch = function (event) {
 		var search_path = $('#user-search-filters').attr('data-search-path');
     $.ajax({
@@ -48,6 +65,7 @@ Users = {};
     $('#name_email').bind('railsAutocomplete.select', Users.throttledSearch);
     $('input').keydown(Users.preventEnter); 
     $('#name_email').change(Users.throttledSearch);
+    $('#users #listings_checkbox_active').click(Users.filterListings);
 
     // $('#companies_select').change(function() {
     //   $.ajax({

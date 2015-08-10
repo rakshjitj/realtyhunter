@@ -12,7 +12,7 @@
 		    	<div class="row">
 			  		<div class="col-xs-12 col-md-7">
 				  		<h2><%= @residential_unit.street_address_and_unit %></h2>
-				  		<h3><%= rent_formatted(@residential_unit.unit.rent) %> &nbsp;&nbsp;&nbsp; <%= @residential_unit.beds %> Beds / <%= @residential_unit.baths %> Baths</h3>
+				  		<h3><%= rent_formatted(@residential_unit.unit.rent) %> &nbsp;&nbsp;&nbsp; <%= @residential_unit.beds %> Beds / <%= trim_zeros(@residential_unit.baths) %> Baths</h3>
 				  		<p>
 			  				<%= small_header(@residential_unit) %><br />
 			  				<%= render 'market_status' %>
@@ -36,7 +36,7 @@
 			  		</div>
 			  		<div class="col-xs-12 col-md-5 form-label-responsive">
 			  			<h1><%= rent_formatted(@residential_unit.unit.rent) %></h1>
-			  			<p><%= @residential_unit.beds %> Beds / <%= @residential_unit.baths %> Baths</p>
+			  			<p><%= @residential_unit.beds %> Beds / <%= trim_zeros(@residential_unit.baths) %> Baths</p>
 			  		</div>
 			  	</div><!-- row -->
 			  	<div class="row">
@@ -194,7 +194,7 @@
 	    			<strong>Beds/Baths:</strong>
 	    		</div>
 	    		<div class="col-xs-6 col-md-4">
-	    			<%= @residential_unit.beds %> / <%= @residential_unit.baths %>
+	    			<%= @residential_unit.beds %> / <%= trim_zeros(@residential_unit.baths) %>
 	    		</div>
 	    		
 	    		<!-- Broker's Fee -->

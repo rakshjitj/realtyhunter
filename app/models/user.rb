@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
       ids = self.primary_units.map(&:id)
     end
     
-    ResidentialListing.for_units(ids) #, active_only)
+    ResidentialListing.for_units(ids)
   end
 
   # primary units only currently
@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
     else
       ids = self.primary_units.map(&:id)
     end
-    CommercialListing.for_units(ids) #, active_only)
+    CommercialListing.for_units(ids)
   end
 
   # Returns a random token.

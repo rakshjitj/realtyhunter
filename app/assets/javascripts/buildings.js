@@ -14,7 +14,7 @@ Buildings = {};
     $.ajax({
       url: search_path,
       data: {
-        active_only: $('#listings_checkbox_active').prop('checked')
+        active_only: $('#buildings #listings_checkbox_active').prop('checked')
       },
       dataType: "script",
       success: function(data) {
@@ -117,6 +117,10 @@ Buildings = {};
   };
 
   Buildings.initialize = function() {
+
+    document.addEventListener("page:restore", function() {
+      Buildings.hideSpinner();
+    });
     Buildings.hideSpinner();
     $('#buildings a').click(function() {
       Buildings.showSpinner();

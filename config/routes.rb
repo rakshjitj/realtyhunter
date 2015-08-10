@@ -82,8 +82,7 @@ Rails.application.routes.draw do
       get 'inaccuracy_modal'
       patch 'send_inaccuracy'
       get 'refresh_images'
-      get 'filter_listings'
-      
+      get 'filter_listings' 
     end
     collection do
       get 'filter'
@@ -124,6 +123,7 @@ Rails.application.routes.draw do
     end
     member do
       get 'delete_modal'
+      get 'filter_listings'
     end
   end
 

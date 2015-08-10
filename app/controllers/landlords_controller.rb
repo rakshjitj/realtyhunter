@@ -1,7 +1,8 @@
 class LandlordsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
-  before_action :set_landlord, except: [:index, :new, :create, :filter, :autocomplete_landlord_code]
+  before_action :set_landlord, except: [:index, :new, :create, :filter, 
+    :filter_listings, :autocomplete_landlord_code]
   autocomplete :landlord, :code, full: true
   etag { current_user.id }
     
@@ -23,6 +24,17 @@ class LandlordsController < ApplicationController
   # AJAX call
   def filter
     set_landlords
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  # AJAX call
+  def filter_listings
+    set_units
+    respond_to do |format|
+      format.js
+    end
   end
 
   # GET /landlords/1
@@ -89,9 +101,14 @@ class LandlordsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_landlord
       @landlord = Landlord.find_unarchived(params[:id])
-      @residential_units, @res_images = @landlord.residential_units
+      set_units
+    end
+
+    def set_units
+      active_only = params[:active_only] == "true"
+      @residential_units, @res_images = @landlord.residential_units(active_only)
       @residential_units = @residential_units.page params[:page]
-      @commercial_units, @com_images = @landlord.commercial_units
+      @commercial_units, @com_images = @landlord.commercial_units(active_only)
       @commercial_units = @commercial_units.page params[:page]
     end
 
@@ -107,16 +124,8 @@ class LandlordsController < ApplicationController
       # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      # if sorting by an actual db column, use order
       if Landlord.column_names.include?(params[:sort_by])
         @landlords = @landlords.order(sort_column + ' ' + sort_order)
-      else
-        # otherwise call sort_by with our custom method
-        #if sort_order == "asc"
-          #@landlords = @landlords.sort_by{|b| b.send(sort_column)}
-        #else
-          #@landlords = @landlords.sort_by{|b| b.send(sort_column)}.reverse
-        #end
       end
       @landlords
     end
@@ -139,6 +148,7 @@ class LandlordsController < ApplicationController
         :administrative_area_level_1_short, :postal_code, :country_short, :lat, :lng, :place_id, 
         :landlord => [:code, :name, :contact_name, :mobile, :office_phone, :fax, 
           :email, :website, :formatted_street_address, :notes, 
+          :listing_agent_percentage, :listing_agent_id,
           :management_info, :key_pick_up_location, :update_source ])
     end
 end

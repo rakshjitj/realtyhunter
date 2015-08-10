@@ -133,7 +133,6 @@
       </div>
     </div>
     <!-- for bigger screens -->
-    <div class="hidden-xs">
       <div class="row">
         <% i = 0 %>
         <%= f.collection_check_boxes(:utility_ids, current_user.company.utilities, :id, :name) do |b| %>
@@ -143,7 +142,7 @@
             <div class="row">
           <% end %>
 
-          <div class="col-xs-4">
+          <div class="col-sm-4">
             <%= b.check_box(class: "check_box") %>&nbsp;
             <%= b.text.titleize %>
           </div>
@@ -152,8 +151,7 @@
         <% end %>
 
       </div><!-- row -->
-    </div>
-
+    
     <!-- cut -->
 
     <div class="row">
@@ -166,34 +164,7 @@
 
     <br />
     <div class="row">
-      <div class="col-md-3 form-label-responsive">
-        <%= f.label :listing_agent_id, "Primary Agent" %>
-      </div>
-      <div class="col-md-4">  
-        <%= f.select(:listing_agent_id, 
-          options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
-            [@building.listing_agent ? @building.listing_agent.id : '']), 
-          {prompt: "Choose one..."},
-          class: 'form-control',
-          :include_blank => true) %>
-      </div>
-    </div>
-
-    <br />
-    <div class="row">
-      <div class="col-md-3 form-label-responsive">
-        <%= f.label :listing_agent_percentage, 'Listing agent %' %>
-      </div>
-      <div class="col-md-4">
-        <div class="field">
-          <%= f.text_field :listing_agent_percentage, class: 'form-control' %>
-        </div>
-      </div>
-    </div>
-
-    <br />
-    <div class="row">
-      <div class="col-md-3 form-label-responsive">
+      <div class="col-md-2">
         <strong>Broker Fee</strong>
       </div>
       <div class="col-md-4">
@@ -204,7 +175,7 @@
 
     <br />
     <div class="row show-op">
-      <div class="col-md-3 form-label-responsive">
+      <div class="col-md-2">
         <%= f.label :op_fee_percentage, 'Owner Pays %' %>
       </div>
       <div class="col-md-4">
@@ -235,7 +206,10 @@
             :include_blank => true) %>
         </div>
       </div>
+    </div>
 
+    <br />
+    <div class="row">
       <div class="col-md-6">
         <div class="field">
           <%= f.label :rental_term_id, "Rental Terms" %>

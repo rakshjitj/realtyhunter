@@ -24,7 +24,9 @@
       <% end %>
     </td>
 
-    <td><%= residential_listing.access_info %></td>
+    <td data-toggle="tooltip" data-placement="top" title="<%= residential_listing.access_info %>"
+      data-delay="1500">
+      <%= trim_access residential_listing.access_info %></td>
     <td><%= residential_listing.bed_and_baths %></td>
     <td>
       <% if residential_listing.available_by %>

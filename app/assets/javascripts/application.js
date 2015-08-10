@@ -24,7 +24,7 @@
 //= require local_time
 //= require moment
 //= require bootstrap-datetimepicker
-
+//= require jquery.mousewheel.min
 
 // change all date input fields to auto-open the calendar
 $('.datepicker').datetimepicker({
@@ -33,4 +33,8 @@ $('.datepicker').datetimepicker({
   allowInputToggle: true
 });
 
-
+$(document).ready(function() {
+	$('input[type=number]').mousewheel(function(){
+		event.preventDefault();
+	});
+});
