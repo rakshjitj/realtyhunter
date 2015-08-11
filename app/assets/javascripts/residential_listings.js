@@ -105,10 +105,10 @@ ResidentialListings = {};
 	ResidentialListings.timer;
 
 	ResidentialListings.throttledSearch = function () {
-		console.log('throttling?');
+		//console.log('throttling?');
 		//clear any interval on key up
 		if (ResidentialListings.timer) {
-			console.log('yes, clearing');
+			//console.log('yes, clearing');
 		  clearTimeout(ResidentialListings.timer);
 		}
 	  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 500);
@@ -372,20 +372,14 @@ ResidentialListings = {};
     });
 
     // activate tooltips
-    //$(function () {
-		  $('[data-toggle="tooltip"]').tooltip()
-		//});
-
-		$('input[type=number]').mousewheel(function(){
-			event.preventDefault();
-		});
+    $('[data-toggle="tooltip"]').tooltip();
 	};
 
 })();
 
 $(document).on('keyup',function(evt) {
   if (evt.keyCode == 27) {
-    ResidentialListings.hideSpinner();
+  	ResidentialListings.hideSpinner();
   }
 });
 

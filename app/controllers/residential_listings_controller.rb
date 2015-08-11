@@ -33,9 +33,10 @@ class ResidentialListingsController < ApplicationController
   # GET 
   # handles ajax call. uses latest data in modal
   def neighborhoods_modal
+    puts "MODAL"
     @neighborhoods = Neighborhood.unarchived.where(
       city: current_user.office.administrative_area_level_2_short).all
-    
+    puts "COUNT #{@neighborhoods.count}"
     # if boroughs are defined for this area, organize the neighborhoods by boroughs
     boroughs = @neighborhoods.collect(&:borough).uniq
     @by_boroughs = {}
@@ -347,33 +348,38 @@ class ResidentialListingsController < ApplicationController
           :building_id, :primary_agent_id, :listing_agent_id ],
         :residential_amenity_ids => [])
 
-      if data[:unit][:oh_exclusive] == "1"
-        data[:unit][:oh_exclusive] = true
-      else
-        data[:unit][:oh_exclusive] = false
+      if data[:unit]
+        if data[:unit][:oh_exclusive] == "1"
+          data[:unit][:oh_exclusive] = true
+        else
+          data[:unit][:oh_exclusive] = false
+        end
+
+        if data[:unit][:status]
+          data[:unit][:status] = data[:unit][:status].downcase
+        end
+
+        # convert into a datetime obj
+        if data[:unit][:available_by] && !data[:unit][:available_by].empty?
+          data[:unit][:available_by] = Date::strptime(data[:unit][:available_by], "%m/%d/%Y")
+        end
       end
 
-      if data[:unit][:status]
-        data[:unit][:status] = data[:unit][:status].downcase
+      if !data[:has_fee].nil? 
+        if data[:has_fee] == "1"
+          data[:has_fee] = true
+        else
+          data[:has_fee] = false
+        end
       end
 
-      if data[:has_fee] == "1"
-        data[:has_fee] = true
-      else
-        data[:has_fee] = false
+      if !data[:include_photos].nil?
+        if data[:include_photos] == "1"
+          data[:include_photos] = true
+        else
+          data[:include_photos] = false
+        end
       end
-
-      # convert into a datetime obj
-      if data[:unit][:available_by] && !data[:unit][:available_by].empty?
-        data[:unit][:available_by] = Date::strptime(data[:unit][:available_by], "%m/%d/%Y")
-      end
-
-      if data[:include_photos] == "1"
-        data[:include_photos] = true
-      else
-        data[:include_photos] = false
-      end
-
 
       data
     end

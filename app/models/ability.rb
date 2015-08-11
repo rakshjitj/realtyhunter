@@ -36,6 +36,10 @@ class Ability
         end
       end
 
+      can :manage, Neighborhood
+      can :manage, BuildingAmenity, :company_id => user.company.id
+      can :manage, ResidentialAmenity, :company_id => user.company.id
+      can :manage, Utility, :company_id => user.company.id
       can :manage, Building, :company_id => user.company.id
       can :manage, ResidentialListing do |residential_listing|
         !residential_listing.unit || user.is_management? || (residential_listing.unit.building.company_id == user.company_id && user.handles_residential?)
@@ -66,7 +70,11 @@ class Ability
         can :read, ResidentialListing do |residential_listing|
           residential_listing.unit.building.company_id == user.company_id && user.handles_residential?
         end
-        can :filter, ResidentialListing, :company_id => user.company_id
+        
+        can [:filter, :neighborhoods_modal, :features_modal, :print_list], [ResidentialListing, CommercialListing]
+        can [:inaccuracy_modal, :send_inaccuracy, :print_modal, :print_public, :print_private], [ResidentialListing, CommercialListing]
+        can [:autocomplete_building_formatted_street_address], [ResidentialListing, CommercialListing, Building]
+        can [:autocomplete_landlord_code], [ResidentialListing, Landlord]
 
         can :read, CommercialListing do |commercial_listing|
           commercial_listing.unit.building.company_id == user.company_id && user.handles_commercial?
@@ -74,9 +82,14 @@ class Ability
         can :filter, CommercialListing, :company_id => user.company_id
 
         can :read, User, :company_id => user.company_id
-
+      
+        can :read, :Neighborhood
+        can :read, BuildingAmenity, :company_id => user.company.id
+        can :read, ResidentialAmenity, :company_id => user.company.id
+        can :read, Utility, :company_id => user.company.id
       end
       can :manage, User, :id => user.id
+      can [:autocomplete_user_name], User
     end
     
   end
