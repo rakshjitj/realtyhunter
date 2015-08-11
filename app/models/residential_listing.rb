@@ -99,6 +99,11 @@ class ResidentialListing < ActiveRecord::Base
     User.where(id: agent_ids).select('id', 'name', 'email', 'mobile_phone_number', 'phone_number').to_a.group_by(&:id)
   end
 
+  def self.get_amenities(list)
+    ids = list.map(&:id)
+    ResidentialAmenity.where(residential_listing_id: ids).select('name').to_a.group_by(&:residential_listing_id)
+  end
+
   # takes in a hash of search options
   # can be formatted_street_address, landlord
   # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 

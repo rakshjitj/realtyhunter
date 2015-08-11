@@ -13,7 +13,9 @@ if @listing_type == 10
 		json.renter_fee "No Fee"
 	end
 	json.bathrooms listing.baths
+	
 	json.unit_amenities listing.residential_amenities.map{|a| a.name}
+	
 	json.unit_description listing.description
 	json.floor json.nil
 	json.layout listing.beds_to_s
@@ -103,7 +105,7 @@ json.building do
 	end
 
 	json.name json.nil
-	# TODO json.amenities building.building_amenities.map{|a| a.name}
+	# TODO json.amenities unit.building.building_amenities.map{|a| a.name}
 	json.id json.nil
 	json.street_address listing.street_number + ' ' + listing.route #listing.street_address
 	json.location do

@@ -46,10 +46,10 @@ module API
 
 			def residential_search(company_id, search_params)
 				listings = ResidentialListing.joins(unit: {building: [:neighborhood, :pet_policy]})
-				
+					.includes(:residential_amenities) #, unit: {building: :building_amenities})
 				listings = _restrict_on_residential_model(company_id, search_params, listings)
 				listings = _restrict_on_unit_model(company_id, search_params, listings)
-				listings = _sort_by(search_params, listings)
+				#listings = _sort_by(search_params, listings)
 
 				listings = listings
 					.select('units.building_unit', 'units.status', 'units.available_by',
