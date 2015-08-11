@@ -37,4 +37,13 @@ $(document).ready(function() {
 	$('input[type=number]').mousewheel(function(){
 		event.preventDefault();
 	});
+
+	// submit login form on enter
+	$('#session_password').keydown(function(e) {
+		console.log('sdfdsds');
+	    if (e.keyCode == 13) {
+	      $(this).closest('form').submit();
+	    }
+	});
 });
+

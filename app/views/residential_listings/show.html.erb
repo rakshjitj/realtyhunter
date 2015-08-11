@@ -37,11 +37,15 @@
 			  		<div class="col-xs-12 col-md-5 form-label-responsive">
 			  			<h1><%= rent_formatted(@residential_unit.unit.rent) %></h1>
 			  			<p><%= @residential_unit.beds %> Beds / <%= trim_zeros(@residential_unit.baths) %> Baths</p>
+			  			
 			  		</div>
 			  	</div><!-- row -->
 			  	<div class="row">
-			  		<div class="col-xs-12">
+			  		<div class="col-xs-7">
 			  			<p><%= render 'market_status' %></p>
+			  		</div>
+			  		<div class="col-xs-5 form-label-responsive">
+			  			<p>Available by <%= @residential_unit.unit.available_by %></p>
 			  		</div>
 			  	</div>
 			  </div><!-- panel title -->
