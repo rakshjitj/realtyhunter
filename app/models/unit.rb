@@ -7,7 +7,8 @@ class Unit < ActiveRecord::Base
   before_validation :generate_unique_id
 
   scope :unarchived, ->{ where(archived: false) }
-  scope :active, ->{ where(status: "active") }
+  scope :active, ->{ where(status: Unit.statuses["active"]) }
+  scope :on_market, ->{ where(status: [Unit.statuses["active"], Unit.statuses["pending"]]) }
   
 	enum status: [ 
     :active, :pending, :off, #residential

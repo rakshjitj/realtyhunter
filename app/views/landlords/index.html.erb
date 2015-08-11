@@ -27,10 +27,10 @@
           placeholder: "Filter by code", 
           size: 30, class:'form-control' %>
       </div>
-      <div class="col-xs-12 col-md-2 vertical-padding">
+      <div class="col-xs-12 col-md-3 vertical-padding">
         <label>
           <%= check_box_tag(:checkbox_active, "", params[:active_only] == "true" ? true : false) %>
-          Has active units
+          Has on-market units
         </label>
       </div>
     </div>
@@ -47,8 +47,8 @@
           <th class="th-sortable <%= sort_css_class("code") %>"><%= sortable "code" %></th>
           <th class="th-sortable <%= sort_css_class("name") %>"><%= sortable "name" %></th>
           <th>Mobile</th>
-          <th class="th-sortable <%= sort_css_class("active_units_count") %>"><%= sortable "active_units_count" %></th>
-          <th class="th-sortable <%= sort_css_class("total_units_count") %>"><%= sortable "total_units_count" %></th>
+          <th class="th-sortable <%= sort_css_class("active_units_count") %>"><%= sortable "active_units_count", "On-Market Units" %></th>
+          <th class="th-sortable <%= sort_css_class("total_units_count") %>"><%= sortable "total_units_count", "Total Units" %></th>
           <th class="th-sortable <%= sort_css_class("last_unit_updated") %>"><%= sortable "last_unit_updated" %></th>
           <th colspan="1"></th>
         </tr>

@@ -73,8 +73,8 @@ class Landlord < ActiveRecord::Base
 	  end
 
     if params[:active_only] == "true"
-    	# 'active' is always the first status, so search with 0
-    	@running_list = @running_list.joins(buildings: :units).where("status = 0")
+    	# misnamed. this actually means active + pending
+    	@running_list = @running_list.joins(buildings: :units).where.not("status = ?", Unit.statuses["off"]).uniq
     end
 
     @running_list

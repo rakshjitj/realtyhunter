@@ -32,7 +32,7 @@
     <div class="col-xs-12 col-md-4 vertical-padding">
       <label>
         <%= check_box_tag(:checkbox_active, "", params[:active_only] == "true" ? true : false) %>
-        Has active units
+        Has on-market units
       </label>
     </div>
   </div>
@@ -41,6 +41,7 @@
   </div>
 </div>
 
+<br />
 <div class="row">
   <div class="col-md-12">
       
@@ -49,9 +50,12 @@
         <tr>
           <th></th>
           <th class="th-sortable <%= sort_css_class("formatted_street_address") %>"><%= sortable "formatted_street_address", "Address" %></th>
-          <th class="th-sortable <%= sort_css_class("active_unit_count") %>"><%= sortable "active_unit_count", "Active Units" %></th>
-          <th class="th-sortable <%= sort_css_class("total_unit_count") %>"><%= sortable "total_unit_count", "Total Units" %></th>
-          <th class="th-sortable <%= sort_css_class("last_unit_updated") %>"><%= sortable "last_unit_updated" %></th>
+          <th class="th-sortable <%= sort_css_class("active_unit_count") %>">
+            <%= sortable "active_unit_count", "On-Market Units" %></th>
+          <th class="th-sortable <%= sort_css_class("total_unit_count") %>">
+            <%= sortable "total_unit_count", "Total Units" %></th>
+          <th class="th-sortable <%= sort_css_class("last_unit_updated") %>">
+            <%= sortable "last_unit_updated" %></th>
           <% if current_user.is_management? %>
             <th colspan="1"></th>
           <% end %>

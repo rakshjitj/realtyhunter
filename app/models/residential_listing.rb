@@ -380,7 +380,7 @@ class ResidentialListing < ActiveRecord::Base
         'units.available_by')
       
     if is_active
-      listings = listings.where("status = ?", Unit.statuses["active"])
+      listings = listings.where.not("status = ?", Unit.statuses["off"])
     end
     
     unit_ids = listings.map(&:unit_id)
@@ -405,7 +405,7 @@ class ResidentialListing < ActiveRecord::Base
         'units.available_by')
       
     if is_active
-      listings = listings.where("status = ?", Unit.statuses["active"])
+      listings = listings.where.not("status = ?", Unit.statuses["off"])
     end
     
     unit_ids = listings.map(&:unit_id)

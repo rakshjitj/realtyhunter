@@ -61,18 +61,15 @@ class Building < ActiveRecord::Base
 	end
 
 	def active_units
-	# 	self.active_units
-    units.unarchived.active.order('updated_at DESC')
+    units.unarchived.on_market.order('updated_at DESC')
 	end
 
 	def total_units_count
-		#self.units.count
     units.unarchived.count
 	end
 
 	def active_units_count
-		#self.active_units.count
-    units.unarchived.active.count
+    units.unarchived.on_market.count
 	end
 
 	def last_unit_updated
@@ -100,7 +97,7 @@ class Building < ActiveRecord::Base
         'buildings.updated_at', 
         '(select COUNT(*) FROM units where units.building_id = buildings.id) AS total_unit_count',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
-        '(select COUNT(*) FROM units where units.building_id = buildings.id AND units.status = ' + Unit.statuses['active'].to_s + ') AS active_unit_count')
+        '(select COUNT(*) FROM units where units.building_id = buildings.id AND units.status != ' + Unit.statuses['off'].to_s + ') AS active_unit_count')
 
     return @running_list if !query_str
     
@@ -110,7 +107,7 @@ class Building < ActiveRecord::Base
     end
 
     if active_only == "true"
-    	@running_list = @running_list.where(units: {status:"active"})
+      @running_list = @running_list.joins(:units).where("units.status != ? ", Unit.statuses["off"])
     end
 
     @running_list
