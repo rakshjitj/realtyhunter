@@ -102,38 +102,6 @@ module API
 				listings
 			end
 
-			# # General search function, called by our external API.
-			# # Can handle any and all search params supported by Nestio's API:
-			# # http://developers.nestio.com/api/v1/
-			# def listing_search(company_id, search_params)
-			# 	listings = nil
-			# 	# rentals
-			# 	if search_params[:listing_type] == "10"
-			# 		ids = ResidentialListing.joins(unit: :building)
-			# 		 	.where('buildings.company_id = ?', company_id).map(&:id)
-			# 		listings = Unit.where(id: ids).joins(:building, :residential_listing)
-			# 	# sales
-			# 	elsif search_params[:listing_type] == "20"
-			# 		# TODO
-			# 		listings = Unit.none
-			# 	# all units
-			# 	else
-			# 		listings = Unit.joins(:building)
-			# 			.where('buildings.company_id = ?', company_id)
-			# 	end
-
-			# 	# TODO: clean up joins here
-			# 	#listings = listings.joins('left outer join neighborhoods on buildings.neighborhood_id=neighborhoods.id')
-			# 	#	.joins('left outer join pet_policies on buildings.pet_policy_id=pet_policies.id')
-			# 	#listings = listings.joins(building: [:neighborhood, :pet_policy])
-
-			# 	listings = _restrict_on_residential_model(company_id, search_params, listings)
-			# 	listings = _restrict_on_unit_model(company_id, search_params, listings)
-			# 	listings = _sort_by(search_params, listings)
-			# 	#listings = listings.page(search_params[:page]).per(search_params[:per_page])
-			# 	listings
-			# end
-
 			private
 
 				def _search_by_bldg_amenity(feature, company_id, listings, search_params)
@@ -162,7 +130,7 @@ module API
 				def _search_laundry_in_bldg(company_id, listings)
 					# make sure feature is all lowercase
 					feature_record1 = ResidentialAmenity.where(company_id: company_id)
-						.where('name ILIKE ?', "%washer/dryer%").first
+						.where('residential_amenities.name ILIKE ?', "%washer/dryer%").first
 					if feature_record1
 						listings1_ids = listings.joins(:residential_amenities)
   	    			.where('residential_amenity_id = ?', feature_record1.id).map(&:id)
@@ -176,8 +144,9 @@ module API
   	    			.where('building_amenity_id = ?', feature_record2.id).map(&:id)
   	    	end
 
-  	    	listings = Unit.where(id: [listings1_ids, listings2_ids].flatten)
-  	    	listings
+  	    	new_ids = [listings1_ids, listings2_ids].flatten
+  	    	listings = listings.where(id: new_ids)
+  	     	listings
 				end
 
 				def _search_by_residential_amenity(feature, company_id, listings, search_params)
