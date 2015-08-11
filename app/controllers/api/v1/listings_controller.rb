@@ -9,7 +9,7 @@ module API
 			# params: token (required)
 
 			# response codes
-			# 200 - success, 400 - invalid params, 403 - invalid API key
+			# 200 - success, 403 - invalid API key
 
 			# example request
 			# https://nestiolistings.com/api/v1/public/listings/?layout=10&min_rent=1500&max_rent=2000&key={API KEY}

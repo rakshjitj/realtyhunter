@@ -11,7 +11,7 @@ module API
 				self.headers['WWW-Authenticate'] = 'Token realm-"Agents"'
 
 				respond_to do |format|
-					format.json { render json: 'Bad credentials', status: 401 }
+					format.json { render json: 'Bad credentials', status: 403 }
 				end
 			end
 
