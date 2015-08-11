@@ -11,11 +11,16 @@
     </td>
     
     <td>
-      <%= link_to "#{residential_listing.street_address_and_unit} ##{residential_listing.building_unit}", residential_listing_path(residential_listing.id) %><br />
+      <%= link_to "#{residential_listing.street_address}", residential_listing_path(residential_listing.id) %><br />
       <% if residential_listing.neighborhood_name %>
         <small><%= residential_listing.neighborhood_name %></small>
       <% end %>
     </td>
+
+    <td>
+      <%= residential_listing.building_unit %>
+    </td>
+
     <td>
       <% if current_user.is_management? %>
         <%= link_to residential_listing.landlord_code, landlord_path(residential_listing.landlord_id) %>

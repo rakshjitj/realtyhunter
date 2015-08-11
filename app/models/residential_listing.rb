@@ -52,6 +52,23 @@ class ResidentialListing < ActiveRecord::Base
     output
   end
 
+  def street_address
+    output = ""
+     # calling from 'show', for example with full objects loaded
+    if !self.respond_to? :street_number
+      if unit.building.street_number
+        output = unit.building.street_number + ' ' + unit.building.route
+      end
+
+    else # otherwise, we used a select statement to cherry pick fields
+      if street_number
+        output = street_number + ' ' + route
+      end
+    end
+
+    output
+  end
+
   def amenities_to_s
     amenities = residential_amenities.map{|a| a.name.titleize}
     amenities ? amenities.join(", ") : "None"
