@@ -41,39 +41,98 @@ module API
 
 				# TODO - Unused param from Nestio:
 				# company_building_limit optional - Passing true to this option will limit the neighborhoods returned to those that the company owns buildings in.
-
 				neighborhoods
 			end
 
-			# General search function, called by our external API.
-			# Can handle any and all search params supported by Nestio's API:
-			# http://developers.nestio.com/api/v1/
-			def listing_search(company_id, search_params)
-				listings = nil
-				# rentals
-				if search_params[:listing_type] == "10"
-					ids = ResidentialListing.joins(unit: :building)
-					 	.where('buildings.company_id = ?', company_id).map(&:id)
-					listings = Unit.where(id: ids).joins(:building)
-				# sales
-				elsif search_params[:listing_type] == "20"
-					# TODO
-					listings = Unit.none
-				# all units
-				else
-					listings = Unit.joins(:building)
-						.where('buildings.company_id = ?', company_id)
-				end
-
-				listings = listings.joins('left outer join neighborhoods on buildings.neighborhood_id=neighborhoods.id')
-					.joins('left outer join pet_policies on buildings.pet_policy_id=pet_policies.id')
-
+			def residential_search(company_id, search_params)
+				listings = ResidentialListing.joins(unit: {building: [:neighborhood, :pet_policy]})
+				
 				listings = _restrict_on_residential_model(company_id, search_params, listings)
 				listings = _restrict_on_unit_model(company_id, search_params, listings)
 				listings = _sort_by(search_params, listings)
-				listings = listings.page(search_params[:page]).per(search_params[:per_page])
+
+				listings = listings
+					.select('units.building_unit', 'units.status', 'units.available_by',
+					'units.listing_id', 'units.updated_at', 'units.rent',
+					'buildings.administrative_area_level_2_short AS administrative_area_level_2_short',
+					'buildings.administrative_area_level_1_short AS administrative_area_level_1_short',
+					'buildings.street_number', 'buildings.route', 
+					'buildings.postal_code',
+					'buildings.lat',
+					'buildings.lng',
+					'neighborhoods.name as neighborhood_name',
+					'neighborhoods.borough as neighborhood_borough',
+					'pet_policies.name AS pet_policy_name',
+					'residential_listings.lease_start', 'residential_listings.lease_end', 
+					'residential_listings.tp_fee_percentage', 'residential_listings.beds', 
+					'residential_listings.baths', 'residential_listings.description',
+					'residential_listings.unit_id', 'units.primary_agent_id'
+				)
+
 				listings
 			end
+
+			# TODO
+			def sales_search(company_id, search_params)
+				listings = ResidentialListing.none
+			end
+
+			def commercial_search(company_id, search_params)
+				listings = CommercialListing.joins(unit: {building: [:neighborhood]})
+				# TODO: restrict by commercial params
+				listings = _restrict_on_unit_model(company_id, search_params, listings)
+				listings = _sort_by(search_params, listings)
+
+				listings = listings
+					.select('units.building_unit', 'units.status', 'units.available_by',
+					'units.listing_id', 'units.updated_at', 'units.rent',
+					'buildings.administrative_area_level_2_short AS administrative_area_level_2_short',
+					'buildings.administrative_area_level_1_short AS administrative_area_level_1_short',
+					'buildings.street_number', 'buildings.route',
+					'buildings.postal_code',
+					'buildings.lat',
+					'buildings.lng',
+					'neighborhoods.name as neighborhood_name',
+					'neighborhoods.borough as neighborhood_borough',
+					'commercial_listings.unit_id', 'commercial_listings.lease_term_months', 
+					'commercial_listings.property_description', 
+					'units.primary_agent_id'
+				)
+
+				listings
+			end
+
+			# # General search function, called by our external API.
+			# # Can handle any and all search params supported by Nestio's API:
+			# # http://developers.nestio.com/api/v1/
+			# def listing_search(company_id, search_params)
+			# 	listings = nil
+			# 	# rentals
+			# 	if search_params[:listing_type] == "10"
+			# 		ids = ResidentialListing.joins(unit: :building)
+			# 		 	.where('buildings.company_id = ?', company_id).map(&:id)
+			# 		listings = Unit.where(id: ids).joins(:building, :residential_listing)
+			# 	# sales
+			# 	elsif search_params[:listing_type] == "20"
+			# 		# TODO
+			# 		listings = Unit.none
+			# 	# all units
+			# 	else
+			# 		listings = Unit.joins(:building)
+			# 			.where('buildings.company_id = ?', company_id)
+			# 	end
+
+			# 	# TODO: clean up joins here
+			# 	#listings = listings.joins('left outer join neighborhoods on buildings.neighborhood_id=neighborhoods.id')
+			# 	#	.joins('left outer join pet_policies on buildings.pet_policy_id=pet_policies.id')
+			# 	#listings = listings.joins(building: [:neighborhood, :pet_policy])
+
+			# 	listings = _restrict_on_residential_model(company_id, search_params, listings)
+			# 	listings = _restrict_on_unit_model(company_id, search_params, listings)
+			# 	listings = _sort_by(search_params, listings)
+			# 	#listings = listings.page(search_params[:page]).per(search_params[:per_page])
+			# 	listings
+			# end
 
 			private
 
@@ -105,7 +164,7 @@ module API
 					feature_record1 = ResidentialAmenity.where(company_id: company_id)
 						.where('name ILIKE ?', "%washer/dryer%").first
 					if feature_record1
-						listings1_ids = listings.joins(residential_listing: :residential_amenities)
+						listings1_ids = listings.joins(:residential_amenities)
   	    			.where('residential_amenity_id = ?', feature_record1.id).map(&:id)
   	    	end
 
@@ -113,7 +172,7 @@ module API
   	    		.where(company_id: company_id).
   	    		where('name ILIKE ?', 'laundry in bldg').first
 					if feature_record2
-						listings2_ids = listings.joins(building: :building_amenities)
+						listings2_ids = listings.joins(unit: {building: :building_amenities})
   	    			.where('building_amenity_id = ?', feature_record2.id).map(&:id)
   	    	end
 
@@ -139,7 +198,7 @@ module API
 					feature_record = ResidentialAmenity.where(company_id: company_id)
 						.where('name ILIKE ?', "%#{feature.downcase}%").first
 					if feature_record
-						listings = listings.joins(residential_listing: :residential_amenities)
+						listings = listings.joins(:residential_amenities)
   	    			.where('residential_amenity_id = ?', feature_record.id)
   	    	end
 
@@ -176,7 +235,7 @@ module API
 					listings = _search_by_bldg_amenity('laundry_in_building', company_id, listings, search_params)
 					
 					if search_params[:has_photos] && search_params[:has_photos] == "true"
-						listings = listings.joins(:images)
+						listings = listings.joins(unit: :images)
 					end
 
 					# neighborhoods
@@ -211,14 +270,14 @@ module API
 					if (search_params[:cats_allowed] && !search_params[:cats_allowed].empty?)
 						cats_allowed = to_boolean(search_params[:cats_allowed])
 						pet_policies = PetPolicy.policies_that_allow_cats(company_id, cats_allowed)
-						listings = listings#.joins(building: :pet_policy)
+						listings = listings
 						.where('buildings.pet_policy_id IN (?)', pet_policies.map(&:id));
 					end
 					# dogs allowed
 					if (search_params[:dogs_allowed] && !search_params[:dogs_allowed].empty?)
 						dogs_allowed = to_boolean(search_params[:dogs_allowed])
 						pet_policies = PetPolicy.policies_that_allow_dogs(company_id, dogs_allowed)
-						listings = listings#.joins(building: :pet_policy)
+						listings = listings
 							.where('buildings.pet_policy_id IN (?)', pet_policies.map(&:id));
 					end
 					# laundry_in_unit
@@ -235,15 +294,17 @@ module API
 					case(sort_column)
 					when 'layout'
 						sort_column = 'beds'
+					when 'rent'
+						sort_column = 'rent'
 					when 'date_available'
-						sort_column = 'available_by'
+						sort_column = 'units.available_by'
 					when 'updated'
-						sort_column = 'updated_at'
+						sort_column = 'units.updated_at'
 					when 'status_updated'
 						# TODO: we don't explicitly support this. map to be the same as updated_at
-						sort_column = 'updated_at'
+						sort_column = 'units.updated_at'
 					else
-						sort_column = 'updated_at'
+						sort_column = 'units.updated_at'
 					end
 
 					sort_order = search_params[:sort_dir]
@@ -262,15 +323,15 @@ module API
 
 					case(layout)
 					when "10"
-						listings = listings.joins(:residential_listing).where('residential_listings.beds = ?', 0)
+						listings = listings.where('residential_listings.beds = ?', 0)
 					when "20"
-						listings = listings.joins(:residential_listing).where('residential_listings.beds = ?', 1)
+						listings = listings.where('residential_listings.beds = ?', 1)
 					when "30"
-						listings = listings.joins(:residential_listing).where('residential_listings.beds = ?', 2)
+						listings = listings.where('residential_listings.beds = ?', 2)
 					when "40"
-						listings = listings.joins(:residential_listing).where('residential_listings.beds = ?', 3)
+						listings = listings.where('residential_listings.beds = ?', 3)
 					when "50"
-						listings = listings.joins(:residential_listing).where('residential_listings.beds > ?', 3)
+						listings = listings.where('residential_listings.beds > ?', 3)
 					when "80"
 						# loft
 						# TODO: what the heck am I supposed to do with this?
@@ -291,17 +352,17 @@ module API
 
 					case(num_bathrooms)
 					when "10"
-						listings = listings.joins(:residential_listing).where('residential_listings.baths = ?', 1)
+						listings = listings.where('residential_listings.baths = ?', 1)
 					when "15"
-						listings = listings.joins(:residential_listing).where('residential_listings.baths = ?', 1.5)
+						listings = listings.where('residential_listings.baths = ?', 1.5)
 					when "20"
-						listings = listings.joins(:residential_listing).where('residential_listings.baths = ?', 2)
+						listings = listings.where('residential_listings.baths = ?', 2)
 					when "25"
-						listings = listings.joins(:residential_listing).where('residential_listings.baths = ?', 2.5)
+						listings = listings.where('residential_listings.baths = ?', 2.5)
 					when "30"
-						listings = listings.joins(:residential_listing).where('residential_listings.baths = ?', 3)
+						listings = listings.where('residential_listings.baths = ?', 3)
 					when "35"
-						listings = listings.joins(:residential_listing).where('residential_listings.baths > ?', 3)
+						listings = listings.where('residential_listings.baths > ?', 3)
 					end
 
 					listings

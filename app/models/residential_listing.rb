@@ -82,10 +82,21 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   # for use in search method below
+  # returns the first image for each unit
   def self.get_images(list)
     unit_ids = list.map(&:unit_id)
-    images = Image.where(unit_id: unit_ids, priority: 0).index_by(&:unit_id)
-    images
+    Image.where(unit_id: unit_ids, priority: 0).index_by(&:unit_id)
+  end
+
+  # returns all images for each unit
+  def self.get_all_images(list)
+    unit_ids = list.map(&:unit_id)
+    Image.where(unit_id: unit_ids).to_a.group_by(&:unit_id)
+  end
+
+  def self.get_primary_agents(list)
+    agent_ids = list.map(&:primary_agent_id)
+    User.where(id: agent_ids).select('id', 'name', 'email', 'mobile_phone_number', 'phone_number').to_a.group_by(&:id)
   end
 
   # takes in a hash of search options
@@ -138,7 +149,7 @@ class ResidentialListing < ActiveRecord::Base
     if params[:unit]
       # cap query string length for security reasons
       address = params[:unit][0, 50]
-      @running_list = @running_list.where("building_unit = ?", params[:unit].downcase)
+      @running_list = @running_list.where("building_unit ILIKE ?", "%#{params[:unit]}%")
     end
 
     # search by status

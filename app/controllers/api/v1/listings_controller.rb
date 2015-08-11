@@ -33,7 +33,7 @@ module API
 			def restrict_results
 				# 10 = residential, 20 = sales, 30 = commercial
 				# default to residential
-				listing_type = %w[10 20 30].include?(listing_params[:listing_type]) ? listing_params[:listing_type] : ""
+				@listing_type = %w[10 20 30].include?(listing_params[:listing_type]) ? listing_params[:listing_type] : "10"
 				# 10 - studio, 20 - 1 BR, 30 - 2 BR, 40 - 3 BR, 50 - 4+ BR, 80 - LOFT
 				layout = %w[10 20 30 40 50 80].include?(listing_params[:layout]) ? listing_params[:layout] : ""
 				# 10 - 1 B, 15 - 1.5 B, 20 - 2 B, 25 - 2.5 B, 30 - 3 B, 35 - 3.5+ B
@@ -69,8 +69,8 @@ module API
 				end
 				
 				# calls our API::V1::NestioInterface module located under /lib
-				@listings = listing_search(@user.company_id, {
-					listing_type: listing_type,
+				search_params = {
+					listing_type: @listing_type,
 					layout: layout,
 					bathrooms: bathrooms,
 					min_rent: listing_params[:min_rent],
@@ -91,25 +91,32 @@ module API
 					agents: listing_params[:agents],
 					neighborhoods: listing_params[:neighborhoods],
 					updated_at: listing_params[:updated_at]
-					});
-				
-				
-				@listings = @listings
-					.includes(:residential_listing, :commercial_listing, :images)	
-					.select('units.building_unit', 'units.status', 'units.available_by',
-					'units.listing_id', 'units.updated_at', 'units.rent',
-					'buildings.administrative_area_level_2_short AS administrative_area_level_2_short',
-					'buildings.administrative_area_level_1_short AS administrative_area_level_1_short',
-					'buildings.street_number', 'buildings.route',
-					'buildings.postal_code',
-					'buildings.lat',
-					'buildings.lng',
-					'neighborhoods.name as neighborhood_name',
-					'neighborhoods.borough as neighborhood_borough',
-					'pet_policies.name AS pet_policy_name')
-					
-				@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
-				@listings
+				}
+
+				search_type_breakdown(search_params)
+				@listing_type = @listing_type.to_i
+			end
+
+			def search_type_breakdown(search_params)
+				if search_params[:listing_type] == "10"
+					@listings = residential_search(@user.company_id, search_params)
+					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
+					@images = ResidentialListing.get_all_images(@listings)
+					@primary_agents = ResidentialListing.get_primary_agents(@listings)
+
+				# sales
+				elsif search_params[:listing_type] == "20"
+					@listings = sales_search(@user.company_id, search_params)
+					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
+
+				# commercial
+				elsif search_params[:listing_type] == "30"
+					@listings = commercial_search(@user.company_id, search_params)
+					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
+					@images = CommercialListing.get_all_images(@listings)
+					@primary_agents = CommercialListing.get_primary_agents(@listings)
+
+				end
 			end
 
 			# Never trust parameters from the scary internet, only allow the white list through.

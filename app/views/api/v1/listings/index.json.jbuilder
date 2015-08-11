@@ -5,5 +5,5 @@ json.total_pages @listings.total_pages
 json.page @listings.current_page
 
 json.items do
-	json.partial! 'api/v1/units/unit', collection: @listings, as: :listing
+	json.partial! 'api/v1/units/unit', collection: @listings, as: :listing, locals: {images: @images, listing_type: @listing_type, primary_agents: @primary_agents}
 end
