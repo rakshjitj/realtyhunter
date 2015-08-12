@@ -167,6 +167,7 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
+    rack-timeout (0.2.4)
     rails (4.2.3)
       actionmailer (= 4.2.3)
       actionpack (= 4.2.3)
@@ -315,6 +316,7 @@ DEPENDENCIES
   pg
   puma
   rack-cors
+  rack-timeout
   rails (= 4.2.3)
   rails4-autocomplete
   rails_12factor
