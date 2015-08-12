@@ -139,58 +139,76 @@ ResidentialListings = {};
 
 	// for giant google map
 	ResidentialListings.buildContentString = function (key, info) {
-	  var contentString = '<strong>' + key + '</strong><hr />';
+	  var contentString = '<strong>' + key + '</strong><br />'; //<hr />';
 	  for (var i=0; i<info['units'].length; i++) {
-	    contentString += '<a href="/residential_listings/' + info['units'][i].id + '">#' + info['units'][i].building_unit + '</a>: ' + info['units'][i].beds + ' beds / ' 
+	    contentString += '<a href="http://realtymonster.myspacenyc.com/residential_listings/' + info['units'][i].id + '">#' + info['units'][i].building_unit + '</a> ' + info['units'][i].beds + ' bd / ' 
 	      + info['units'][i].baths + ' baths $' + info['units'][i].rent + '<br />';
 	    if (i == 5) {
-	      contentString += '<a href="/residential_listings?building_id=' + info['building_id'] + '">View more...</a>';
+	      contentString += '<a href="http://realtymonster.myspacenyc.com/residential_listings?building_id=' + info['building_id'] + '">View more...</a>';
 	      break;
 	    }
 	  }
 	  return contentString;
 	};
 
-	ResidentialListings.updateOverviewMap = function (in_data) {
-		// for displaying the map points on the index page
-		if ($('#big-map').length > 0) {
-			var mapOptions = {
-		    center: { lat: 40.6739591, lng: -73.9570342},
-		    zoom: 12
-		  };
-		  var map = new google.maps.Map(document.getElementById('big-map'), mapOptions);
-		  var dataPoints;
-		  // if updating from an ajax call, in_data will hava content.
-		  // we load data from a data attribute on page load, but that remains cached forever -
-		  // it will not update with subsequent ajax calls.
-		  if (in_data) {
-		  	dataPoints = JSON.parse(in_data);
-		  } else {
-		  	dataPoints = JSON.parse($('#big-map').attr('data-map-points'));
-		  }
+	ResidentialListings.map;
+	ResidentialListings.overlays;
 
-			var infoWindow;
-		  Object.keys(dataPoints).forEach(function(key, index) {
-		    // draw each marker + load with data
-		    var info = dataPoints[key];
-		    var myLatlng = new google.maps.LatLng(info.lat, info.lng);
-		    var marker = new google.maps.Marker({
-		      map:map,
-		      animation: google.maps.Animation.DROP,
-		      position: myLatlng,
-		    });
-		    google.maps.event.addListener(marker, 'click', function() {
-		    	if (infoWindow) {
-		    		infoWindow.close();
-		    	}
-		    	var content = ResidentialListings.buildContentString(key, info);
-		    	infoWindow = new google.maps.InfoWindow({
-			    	content: content
-			    });
-		      infoWindow.open(map, marker);
-		    });
-			});
-		}
+	ResidentialListings.updateOverviewMap = function(in_data) {
+		ResidentialListings.overlays.clearLayers();
+    var markers = new L.MarkerClusterGroup().addTo(ResidentialListings.overlays);//{ showCoverageOnHover: false });
+		
+    var dataPoints;
+	  // if updating from an ajax call, in_data will hava content.
+	  // we load data from a data attribute on page load, but that remains cached forever -
+	  // it will not update with subsequent ajax calls.
+	  if (in_data) {
+	  	dataPoints = JSON.parse(in_data);
+	  } else {
+	  	dataPoints = JSON.parse($('#big-map').attr('data-map-points'));
+	  }
+	  var features = [];
+	  Object.keys(dataPoints).forEach(function(key, index) {
+	    // draw each marker + load with data
+	    var info = dataPoints[key];
+	    var content = ResidentialListings.buildContentString(key, info);
+	    var marker = L.marker(new L.LatLng(info.lat, info.lng), {
+	      icon: L.mapbox.marker.icon({
+	      	'marker-size': 'small', 
+	      	'marker-color': '#f86767'
+	      }),
+	      'title': key,
+	    });
+	    marker.bindPopup(content);
+      markers.addLayer(marker);
+	    // var feature = {
+     //    type: 'Feature',
+     //    properties: {
+     //        title: key,
+     //        'marker-color': '#f86767',
+     //        'description': ResidentialListings.buildContentString(key, info),
+     //        'marker-size': 'small'
+     //    },
+     //    geometry: {
+     //        type: 'Point',
+     //        coordinates: [info.lng, info.lat]
+     //    }
+    	// };
+    	
+    	// features.push(feature);
+		});
+
+		var geojson = {
+			'type': 'FeatureCollection',
+			'features': features
+		};
+
+    //markerLayer.setGeoJSON(geojson);
+    var geoJsonLayer = L.geoJson(geojson);
+    //geoJsonLayer.clearLayers();
+    markers.addLayer(geoJsonLayer);
+ 		ResidentialListings.map.addLayer(markers);
+    map.fitBounds(markers.getBounds());
 	};
 
 	ResidentialListings.toggleFeeOptions = function(event) {
@@ -294,7 +312,18 @@ ResidentialListings = {};
 			$('#residential .datepicker').data("DateTimePicker").date(available_by);
 		}
 
-		ResidentialListings.updateOverviewMap();
+		if ($('#big-map')) {
+			// mapbox
+	    L.mapbox.accessToken = ENV['MAPBOX_TOKEN'];
+	    ResidentialListings.map = L.mapbox.map('big-map', 'rakelblujeans.8594241c', { zoomControl: false })
+	    	.setView([40.6739591, -73.9570342], 13);
+
+			new L.Control.Zoom({ position: 'topright' }).addTo(ResidentialListings.map);
+	    //map.removeLayer(marker)
+	    //var markerLayer = L.mapbox.featureLayer().addTo(map);
+	    ResidentialListings.overlays = L.layerGroup().addTo(ResidentialListings.map);
+	    ResidentialListings.updateOverviewMap();
+		}
 
 		// google map on show page
 		var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
@@ -373,6 +402,7 @@ ResidentialListings = {};
 
     // activate tooltips
     $('[data-toggle="tooltip"]').tooltip();
+
 	};
 
 })();
