@@ -312,7 +312,7 @@ ResidentialListings = {};
 			$('#residential .datepicker').data("DateTimePicker").date(available_by);
 		}
 
-		if ($('#big-map')) {
+		if ($('#big-map').length > 0) {
 			// mapbox
 			L.mapbox.accessToken = $('#mapbox-token').attr('data-mapbox-token');
 	    ResidentialListings.map = L.mapbox.map('big-map', 'rakelblujeans.8594241c', { zoomControl: false })
