@@ -208,7 +208,7 @@ ResidentialListings = {};
     //geoJsonLayer.clearLayers();
     markers.addLayer(geoJsonLayer);
  		ResidentialListings.map.addLayer(markers);
-    map.fitBounds(markers.getBounds());
+    ResidentialListings.map.fitBounds(markers.getBounds());
 	};
 
 	ResidentialListings.toggleFeeOptions = function(event) {
@@ -314,7 +314,7 @@ ResidentialListings = {};
 
 		if ($('#big-map')) {
 			// mapbox
-	    L.mapbox.accessToken = ENV['MAPBOX_TOKEN'];
+			L.mapbox.accessToken = $('#mapbox-token').attr('data-mapbox-token');
 	    ResidentialListings.map = L.mapbox.map('big-map', 'rakelblujeans.8594241c', { zoomControl: false })
 	    	.setView([40.6739591, -73.9570342], 13);
 
