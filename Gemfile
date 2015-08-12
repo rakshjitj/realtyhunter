@@ -73,7 +73,7 @@ gem 'rollbar', '~> 1.2.7'
 #gem 'yajl-ruby', :require => "yajl"
 gem "oj"
 # timeout requests, note error in logs
-gem "rack-timeout"
+#gem "rack-timeout"
 
 group :production do
 	gem 'rails_12factor'

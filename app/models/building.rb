@@ -87,17 +87,25 @@ class Building < ActiveRecord::Base
   end
 
 	def self.search(page_num, query_str, active_only)
+    # TODO: remove that extra join
     @running_list = Building.joins(:landlord).includes(:neighborhood)
       .where('buildings.archived = false')
-      .select('buildings.formatted_street_address', 'buildings.notes',
+      .select(
+        'buildings.formatted_street_address', 'buildings.notes',
         'buildings.id', 'buildings.street_number', 'buildings.route', 
         'buildings.sublocality', 'buildings.neighborhood_id',
         'buildings.administrative_area_level_2_short',
         'buildings.administrative_area_level_1_short', 'buildings.postal_code',
         'buildings.updated_at', 
-        '(select COUNT(*) FROM units where units.building_id = buildings.id) AS total_unit_count',
+        'sq.last_unit_updated, sq.total_unit_count',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
-        '(select COUNT(*) FROM units where units.building_id = buildings.id AND units.status != ' + Unit.statuses['off'].to_s + ') AS active_unit_count')
+        '(SELECT COUNT(*) FROM units where units.building_id = buildings.id AND units.status != ' + Unit.statuses['off'].to_s + ') AS active_unit_count',
+        ).joins('LEFT OUTER JOIN (
+          SELECT units.building_id, count(units.id) as total_unit_count, 
+          max(units.updated_at) as last_unit_updated
+          FROM units 
+          GROUP BY units.building_id
+        ) sq on sq.building_id = buildings.id')
 
     return @running_list if !query_str
     
