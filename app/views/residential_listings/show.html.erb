@@ -141,150 +141,159 @@
 
 	    	<br />
 	    	<div class="row">
-	    		<div class="col-xs-6 col-md-2">
-	    			<strong>Building:</strong>
-	    		</div>
-	    		<div class="col-xs-6 col-md-4">
-	    			<%= link_to @residential_unit.unit.building.street_address, @residential_unit.unit.building %>
-	    		</div>
-	    		<div class="col-xs-6 col-md-3">
-	    			<strong>Pet Policy:</strong>
-	    		</div>
-	    		<div class="col-xs-6 col-md-3">
-	    			<%= pet_policy(@residential_unit) %>
-	    		</div>
-	    	</div>
-
-		   	<div class="row">
-	    		<div class="col-xs-6 col-md-2">
-	    			<strong>Unit:</strong>
-	    		</div>
-	    		<div class="col-xs-6 col-md-4">
-	    			<%= @residential_unit.unit.building_unit %>
-	    		</div>
-	    		<div class="col-xs-6 col-md-3">
-	    			<strong>Landlord:</strong>
-	    		</div>
-	    		<div class="col-xs-6 col-md-3">
-	    			<% if current_user.is_management? %>
-							<%= link_to @residential_unit.unit.building.landlord.code, @residential_unit.unit.building.landlord %>
-						<% else %>
-							<%= @residential_unit.unit.building.landlord.code %>
-						<% end %>
-	    		</div>
-
-	    		
-	    	</div>
-
-	    	<div class="row">
-	    		<div class="col-xs-6 col-md-2">
-	    			<strong>Beds/Baths:</strong>
-	    		</div>
-	    		<div class="col-xs-6 col-md-4">
-	    			<%= @residential_unit.beds %> / <%= trim_zeros(@residential_unit.baths) %>
-	    		</div>
-	    		
-	    		<div class="col-xs-6 col-md-3">
-	    			<strong>Lease duration:</strong>
-	    		</div>
-	    		<div class="col-xs-6 col-md-3">
-	    			<%= lease_duration(@residential_unit) %>
-	    		</div>
-	    	</div>
-
-	    	<div class="row">
-	    		<div class="col-xs-6 col-md-2">
-	    			<strong>Price:</strong>
-	    		</div>
-	    		<div class="col-xs-6 col-md-4">
-	    			<%= rent_formatted(@residential_unit.unit.rent) %>
-	    		</div>
-	    		
-	    		<!-- Broker's Fee -->
-	    		<% if @residential_unit.has_fee %>
-	    			<div class="col-xs-6 col-md-3">
-		    			<strong>Tenant Pays:</strong>
-		    		</div>
-		    		<div class="col-xs-6 col-md-3">
-	    			<% if @residential_unit.tp_fee_percentage %>
-		    			<%= @residential_unit.tp_fee_percentage %>%
-		    		<% else %>
-		    		<% end %>
+	    		<div class="col-md-6">
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Building:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= link_to @residential_unit.unit.building.street_address, @residential_unit.unit.building %>
+			    		</div>
 	    			</div>
-	    		<!-- No Broker's Fee -->
-	    		<% else %>
-	    			<div class="col-xs-6 col-md-3">
-		    			<strong>OP Pays:</strong>
-		    		</div>
-		    		<div class="col-xs-6 col-md-3">
-	    			<% if @residential_unit.op_fee_percentage %>
-		    			<%= @residential_unit.op_fee_percentage %>%
-		    		<% else %>
-		    		<% end %>
-		    		</div>
-	    		<% end %>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Unit:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @residential_unit.unit.building_unit %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Beds/Baths:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @residential_unit.beds %> / <%= trim_zeros(@residential_unit.baths) %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Price:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= rent_formatted(@residential_unit.unit.rent) %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Available:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<% if @residential_unit.unit.available_by %>
+									<%= @residential_unit.unit.available_by %>
+								<% else %>
+									- 
+								<% end %>
+							</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Rental Term:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<% if @residential_unit.unit.building.rental_term %>
+				    			<%= @residential_unit.unit.building.rental_term.name.titleize %>
+				    		<% else %>
+				    			-
+				    		<% end %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+			    		<div class="col-xs-5">
+			    			<strong>Utilities:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<% if !@residential_unit.unit.building.utilities_to_s.empty? %>
+				    			<%= @residential_unit.unit.building.utilities_to_s.titleize %>
+				    		<% else %>
+				    			- 
+				    		<% end %>
+			    		</div>
+			    	</div>
+	    		</div>
 
-	    	</div>
-
-	    	<div class="row">
-	    		<div class="col-xs-6 col-md-2">
-	    			<strong>Available:</strong>
-	    		</div>
-	    		<div class="col-xs-6 col-md-4">
-	    			<% if @residential_unit.unit.available_by %>
-							<%= @residential_unit.unit.available_by %>
-					<% else %>
-						- 
-					<% end %>
-	    		</div>
-	    		<div class="col-xs-6 col-md-3">
-	    			<strong>Primary agent:</strong>
-	    		</div>
-	    		<div class="col-xs-6 col-md-3">
-	    			<% if @residential_unit.unit.primary_agent %>
-	    				<%= link_to @residential_unit.unit.primary_agent.name, @residential_unit.unit.primary_agent %>
-	    			<% else %>
-	    				- 
-	    			<% end %>
-	    		</div>
+	    		<div class="col-md-6">
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Pet Policy:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= pet_policy(@residential_unit) %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Landlord:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<% if current_user.is_management? %>
+									<%= link_to @residential_unit.unit.building.landlord.code, @residential_unit.unit.building.landlord %>
+								<% else %>
+									<%= @residential_unit.unit.building.landlord.code %>
+								<% end %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Lease duration:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= lease_duration(@residential_unit) %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<!-- Broker's Fee -->
+			    		<% if @residential_unit.has_fee %>
+			    			<div class="col-xs-5">
+				    			<strong>Tenant Pays:</strong>
+				    		</div>
+				    		<div class="col-xs-7">
+			    			<% if @residential_unit.tp_fee_percentage %>
+				    			<%= @residential_unit.tp_fee_percentage %>%
+				    		<% else %>
+				    		<% end %>
+			    			</div>
+			    		<!-- No Broker's Fee -->
+			    		<% else %>
+			    			<div class="col-xs-5">
+				    			<strong>OP Pays:</strong>
+				    		</div>
+				    		<div class="col-xs-7">
+			    			<% if @residential_unit.op_fee_percentage %>
+				    			<%= @residential_unit.op_fee_percentage %>%
+				    		<% else %>
+				    		<% end %>
+				    		</div>
+			    		<% end %>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Primary agent:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<% if @residential_unit.unit.primary_agent %>
+			    				<%= link_to @residential_unit.unit.primary_agent.name, @residential_unit.unit.primary_agent %>
+			    			<% else %>
+			    				- 
+			    			<% end %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Listing ID:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @residential_unit.unit.listing_id %>
+			    		</div>
+	    			</div>
+	    		</div>	
 	    	</div>
 
 	    	<!-- TODO: integrate with dept of buildings to get
 						DOM, total floors, total units, year built, lot, block, community district, school district -->
 					<!-- Landlord info -->
-	    	<div class="row">
-	    	<div class="col-xs-6 col-md-2">
-	    			<strong>Rental Term:</strong>
-	    		</div>
-	    		<div class="col-xs-6 col-md-4">
-	    			<% if @residential_unit.unit.building.rental_term %>
-		    			<%= @residential_unit.unit.building.rental_term.name.titleize %>
-		    		<% else %>
-		    			-
-		    		<% end %>
-	    		</div>
-
-	    		<div class="col-xs-6 col-md-3">
-	    			<strong>Listing ID:</strong>
-	    		</div>
-	    		<div class="col-xs-6 col-md-3">
-	    			<%= @residential_unit.unit.listing_id %>
-	    		</div>
-	    	</div>
-
-	    	<div class="row">
-	    		<div class="col-xs-6 col-md-2">
-	    			<strong>Utilities:</strong>
-	    		</div>
-	    		<div class="col-xs-6 col-md-4">
-	    			<% if !@residential_unit.unit.building.utilities_to_s.empty? %>
-		    			<%= @residential_unit.unit.building.utilities_to_s.titleize %>
-		    		<% else %>
-		    			- 
-		    		<% end %>
-	    		</div>
-	    		
-	    	</div>
+	    
+	    	
 
 	    	<br />
 	    	<div class="row">
