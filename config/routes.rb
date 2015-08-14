@@ -113,6 +113,7 @@ Rails.application.routes.draw do
       get 'print_list'
       get 'neighborhoods_modal'
       get 'features_modal'
+      get 'fee_options'
     end
   end
 

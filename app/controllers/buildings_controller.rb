@@ -162,7 +162,7 @@ class BuildingsController < ApplicationController
     end
 
     def set_buildings
-      @buildings = Building.search(params[:page] || 0, 
+      @buildings = Building.search(
         building_params[:filter], 
         building_params[:active_only])
 
@@ -221,7 +221,6 @@ class BuildingsController < ApplicationController
         :building => [:formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description, 
           :pet_policy_id, :rental_term_id, :custom_rental_term, :file, :custom_amenities,
           :custom_utilities, 
-          :has_fee, :op_fee_percentage, :tp_fee_percentage, 
           :neighborhood_id, :neighborhood,
           :building_amenity_ids => [], images_files: [], :utility_ids => [] ])
     end

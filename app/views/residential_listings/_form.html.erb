@@ -82,7 +82,7 @@
             
               <!-- TODO: turn this into an autocomplete field -->
               <%= unit_form.select(:building_id, 
-                options_for_select(current_user.company.buildings.collect {|b| [b.street_address, b.id]},
+                options_for_select(current_user.company.buildings.order("formatted_street_address ASC").collect {|b| [b.street_address, b.id]},
                   [@residential_unit.unit.building ? @residential_unit.unit.building.id : '']), 
                 {prompt: "Choose one..."},
                 class: 'form-control',
@@ -261,21 +261,18 @@
             <%= f.label :op_fee_percentage, 'Owner Pays %' %>
           </div>
           <div class="col-md-4">
-            <%= f.number_field :op_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>
-            <p class="explainer-text">
-            <% if @residential_unit.unit.building.op_fee_percentage %>
-              The building's default OP is <%= @residential_unit.unit.building.op_fee_percentage %>%.
-            <% end %>
-            </p>
+            <%= f.number_field :op_fee_percentage, class: 'form-control', min: 0, default: 95 %>
+            <div id="op_explainer_text"></div>
           </div>
         </div>
-
+        
         <div class="row show-tp">
           <div class="col-md-2 form-label-responsive">
             <%= f.label :tp_fee_percentage, 'Tenant Pays %' %>
           </div>
           <div class="col-md-4">
-            <%= f.number_field :tp_fee_percentage, class: 'form-control', min: 0, default: 95, step: 5 %>
+            <%= f.number_field :tp_fee_percentage, class: 'form-control', min: 0, default: 95 %>
+            <div id="tp_explainer_text"></div>
           </div>
         </div>
 

@@ -20,8 +20,5 @@ class MoveListingAgent < ActiveRecord::Migration
   		end
   	}
 
-  	#remove_reference :buildings, :listing_agent, index: true
-  	#remove_column :buildings, :listing_agent_percentage, :integer
-    #remove_column :residential_amenities, :residential_unit, :string
   end
 end

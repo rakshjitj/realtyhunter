@@ -105,16 +105,16 @@ Buildings = {};
     });
   };
 
-  Buildings.toggleFeeOptions = function(event) {
-    var isChecked = $('#buildings .has-fee').prop('checked');
-    if (isChecked) {
-      $('#buildings .show-op').addClass('hide');
-      $('#buildings .show-tp').removeClass('hide');
-    } else {
-      $('#buildings .show-op').removeClass('hide');
-      $('#buildings .show-tp').addClass('hide');
-    }
-  };
+  // Buildings.toggleFeeOptions = function(event) {
+  //   var isChecked = $('#buildings .has-fee').prop('checked');
+  //   if (isChecked) {
+  //     $('#buildings .show-op').addClass('hide');
+  //     $('#buildings .show-tp').removeClass('hide');
+  //   } else {
+  //     $('#buildings .show-op').removeClass('hide');
+  //     $('#buildings .show-tp').addClass('hide');
+  //   }
+  // };
 
   Buildings.initialize = function() {
 
@@ -126,8 +126,8 @@ Buildings = {};
       Buildings.showSpinner();
     });
 
-    $('#buildings .has-fee').click(Buildings.toggleFeeOptions);
-    Buildings.toggleFeeOptions();
+    // $('#buildings .has-fee').click(Buildings.toggleFeeOptions);
+    // Buildings.toggleFeeOptions();
 
     // search filters
     $('#buildings #filter').bind('railsAutocomplete.select', Buildings.throttledBldgSearch);

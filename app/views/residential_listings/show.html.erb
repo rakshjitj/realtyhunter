@@ -251,6 +251,9 @@
 			    			<% if @residential_unit.tp_fee_percentage %>
 				    			<%= @residential_unit.tp_fee_percentage %>%
 				    		<% else %>
+				    			<% if @residential_unit.unit.building.landlord.tp_fee_percentage %>
+				    				<%= @residential_unit.unit.building.landlord.tp_fee_percentage %>%
+				    			<% end %>
 				    		<% end %>
 			    			</div>
 			    		<!-- No Broker's Fee -->
@@ -262,6 +265,9 @@
 			    			<% if @residential_unit.op_fee_percentage %>
 				    			<%= @residential_unit.op_fee_percentage %>%
 				    		<% else %>
+				    			<% if @residential_unit.unit.building.landlord.op_fee_percentage %>
+				    				<%= @residential_unit.unit.building.landlord.op_fee_percentage %>%
+				    			<% end %>
 				    		<% end %>
 				    		</div>
 			    		<% end %>

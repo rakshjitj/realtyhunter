@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150810172615) do
+ActiveRecord::Schema.define(version: 20150814003118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,8 +57,6 @@ ActiveRecord::Schema.define(version: 20150810172615) do
     t.integer  "images_id"
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
-    t.integer  "listing_agent_id"
-    t.integer  "listing_agent_percentage"
     t.boolean  "has_fee"
     t.integer  "op_fee_percentage"
     t.integer  "tp_fee_percentage"
@@ -66,7 +64,6 @@ ActiveRecord::Schema.define(version: 20150810172615) do
 
   add_index "buildings", ["formatted_street_address"], name: "index_buildings_on_formatted_street_address", using: :btree
   add_index "buildings", ["images_id"], name: "index_buildings_on_images_id", using: :btree
-  add_index "buildings", ["listing_agent_id"], name: "index_buildings_on_listing_agent_id", using: :btree
   add_index "buildings", ["updated_at"], name: "index_buildings_on_updated_at", using: :btree
 
   create_table "buildings_utilities", id: false, force: :cascade do |t|
@@ -191,6 +188,8 @@ ActiveRecord::Schema.define(version: 20150810172615) do
     t.integer  "listing_agent_id"
     t.integer  "listing_agent_percentage"
     t.integer  "op_fee_percentage"
+    t.boolean  "has_fee"
+    t.integer  "tp_fee_percentage"
   end
 
   add_index "landlords", ["buildings_id"], name: "index_landlords_on_buildings_id", using: :btree
@@ -268,7 +267,6 @@ ActiveRecord::Schema.define(version: 20150810172615) do
   end
 
   create_table "residential_amenities_units", id: false, force: :cascade do |t|
-    t.integer "residential_unit_id"
     t.integer "residential_amenity_id"
     t.integer "residential_listing_id"
   end

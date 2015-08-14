@@ -222,6 +222,21 @@ ResidentialListings = {};
 		}
 	};
 
+	ResidentialListings.inheritFeeOptions = function() {
+		bldg_id = $('#residential #residential_listing_unit_building_id').val();
+		console.log('got new ids', bldg_id);
+		
+		$.ajax({
+			type: 'GET',
+			url: '/residential_listings/fee_options/',
+			data: {
+				building_id: bldg_id,
+			},
+			//success: function(data) {},
+			//error: function(data) {}
+		});
+	};
+
 	ResidentialListings.setPositions = function() {
 	  // loop through and give each task a data-pos
 	  // attribute that holds its position in the DOM
@@ -266,7 +281,10 @@ ResidentialListings = {};
 		});
 
 		$('#residential .has-fee').click(ResidentialListings.toggleFeeOptions);
+		// when editing form
 		ResidentialListings.toggleFeeOptions();
+		// when creating a new listing, inherit TP/OP from building's landlord
+		$('#residential #residential_listing_unit_building_id').change(ResidentialListings.inheritFeeOptions);
 
 		// index filtering
 		$('#residential input').keydown(ResidentialListings.preventEnter);

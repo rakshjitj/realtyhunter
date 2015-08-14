@@ -158,6 +158,33 @@
               </div>
             </div>
 
+            <div class="row">
+              <div class="col-md-12">
+                <!-- Broker's Fee -->
+                <br />
+                <% if @landlord.has_fee %>
+                  <strong>Tenant Pays:</strong> 
+                  <% if @landlord.tp_fee_percentage %>
+                    <%= @landlord.tp_fee_percentage %>%
+                  <% else %>
+                    (no amount specified)
+                  <% end %>
+                  
+                <!-- No Broker's Fee -->
+                <% else %>
+                  <strong>OP Pays:</strong> 
+                  <% if @landlord.op_fee_percentage %>
+                    <%= @landlord.op_fee_percentage %>%
+                  <% else %>
+                    (no amount specified)
+                  <% end %>
+                  
+                <% end %>
+
+
+              </div>
+            </div>
+
           </div>
         </div>
 

@@ -37,9 +37,6 @@ class Building < ActiveRecord::Base
 	validates :lng, presence: true, length: {maximum: 100}
 	validates :place_id, presence: true, length: {maximum: 100}
 
-  belongs_to :listing_agent, :class_name => 'User', touch: true
-  validates :listing_agent_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
-
 	validates :company, presence: true
 	validates :landlord, presence: true
 
@@ -86,7 +83,7 @@ class Building < ActiveRecord::Base
     Image.where(building_id: bldg_ids, priority: 0).index_by(&:building_id)
   end
 
-	def self.search(page_num, query_str, active_only)
+	def self.search(query_str, active_only)
     # TODO: remove that extra join
     @running_list = Building.joins(:landlord).includes(:neighborhood)
       .where('buildings.archived = false')

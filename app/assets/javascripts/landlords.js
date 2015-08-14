@@ -71,6 +71,17 @@ Landlords = {};
     }
   };
 
+  Landlords.toggleFeeOptions = function(event) {
+    var isChecked = $('#landlords .has-fee').prop('checked');
+    if (isChecked) {
+      $('#landlords .show-op').addClass('hide');
+      $('#landlords .show-tp').removeClass('hide');
+    } else {
+      $('#landlords .show-op').removeClass('hide');
+      $('#landlords .show-tp').addClass('hide');
+    }
+  };
+
   Landlords.initialize = function() {
 
     document.addEventListener("page:restore", function() {
@@ -80,6 +91,9 @@ Landlords = {};
     $('#landlords a').click(function() {
       Landlords.showSpinner();
     });
+
+    $('#landlords .has-fee').click(Landlords.toggleFeeOptions);
+    Landlords.toggleFeeOptions();
 
     var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
 

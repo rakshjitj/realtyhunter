@@ -134,21 +134,7 @@
 				  <%= @building.utilities_to_s %>
 				</p>
 
-				<!--p>
-					<strong>Listing Agent</strong>
-					<#% if @building.listing_agent %>
-		    		<#%= link_to @building.listing_agent.name, @building.listing_agent %>
-		    	<#% else %>
-		    		-
-		    	<#% end %>
-		    </p-->
-		    
-				<!--p>
-          <strong>Listing agent %:</strong>
-          <#%= @building.listing_agent_percentage %>
-        </p-->
-
-        <!-- Broker's Fee -->
+				<!-- Broker's Fee -->
         <p>
     		<% if @building.has_fee %>
     			<strong>Tenant Pays:</strong> 

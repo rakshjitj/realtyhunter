@@ -35,9 +35,11 @@ class UnitImagesController < ApplicationController
     # TODO
     #puts "\n\n\n ***** SORT #{params.inspect}"
     params[:order].each do |key,value|
-      Image.find(value[:id]).update_attribute(:priority, value[:position])
+      img = Image.find(value[:id])
+      if img.priority != value[:position]
+        Image.find(value[:id]).update_attribute(:priority, value[:position])
+      end
     end
-    #@unit.clear_cache
     render :nothing => true
   end
 

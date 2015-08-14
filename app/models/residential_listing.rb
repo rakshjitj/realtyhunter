@@ -2,7 +2,7 @@ class ResidentialListing < ActiveRecord::Base
   scope :unarchived, ->{where(archived: false)}
   has_and_belongs_to_many :residential_amenities
   belongs_to :unit, touch: true
-  before_create :inherit_building_info
+  #before_create :inherit_building_info
 
   attr_accessor :include_photos, :inaccuracy_description, 
     :pet_policy_shorthand, :available_starting, :available_before
@@ -448,15 +448,13 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   # fee info is inherited from the building
-  def inherit_building_info
-
-    self.has_fee = unit.building.has_fee
-    if !self.op_fee_percentage
-      self.op_fee_percentage = unit.building.op_fee_percentage
-    end
-    if !self.tp_fee_percentage
-      self.tp_fee_percentage = unit.building.tp_fee_percentage
-    end
-
-  end
+  # def inherit_building_info
+  #   self.has_fee = unit.building.landlord.has_fee
+  #   if !self.op_fee_percentage
+  #     self.op_fee_percentage = unit.building.landlord.op_fee_percentage
+  #   end
+  #   if !self.tp_fee_percentage
+  #     self.tp_fee_percentage = unit.building.landlord.tp_fee_percentage
+  #   end
+  # end
 end

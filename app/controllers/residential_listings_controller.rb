@@ -3,7 +3,7 @@ class ResidentialListingsController < ApplicationController
   skip_load_resource only: :create
   before_action :set_residential_listing, except: [:new, :create, :index, :filter, 
     :print_list, :neighborhoods_modal, :features_modal, 
-    :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood] #:refresh_images,
+    :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood, :fee_options] #:refresh_images,
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
   etag { current_user.id }
@@ -268,9 +268,17 @@ class ResidentialListingsController < ApplicationController
   # GET /refresh_images
   # ajax call
   def refresh_images
-    # invalidate cache
-    #@residential_unit.clear_cache
     #puts "\n\n\n **** HELLO------- REFRESHING IMAGE #{@residential_unit} -- #{params.inspect}"
+    respond_to do |format|
+      format.js  
+    end
+  end
+
+  def fee_options
+    building = Building.find(params[:building_id])
+    if building
+      @landlord = building.landlord
+    end
     respond_to do |format|
       format.js  
     end

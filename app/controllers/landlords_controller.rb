@@ -149,6 +149,7 @@ class LandlordsController < ApplicationController
         :landlord => [:code, :name, :contact_name, :mobile, :office_phone, :fax, 
           :email, :website, :formatted_street_address, :notes, 
           :listing_agent_percentage, :listing_agent_id,
+          :has_fee, :op_fee_percentage, :tp_fee_percentage, 
           :management_info, :key_pick_up_location, :update_source ])
     end
 end
