@@ -141,10 +141,10 @@ ResidentialListings = {};
 	ResidentialListings.buildContentString = function (key, info) {
 	  var contentString = '<strong>' + key + '</strong><br />'; //<hr />';
 	  for (var i=0; i<info['units'].length; i++) {
-	    contentString += '<a href="http://realtymonster.myspacenyc.com/residential_listings/' + info['units'][i].id + '">#' + info['units'][i].building_unit + '</a> ' + info['units'][i].beds + ' bd / ' 
+	    contentString += '<a href="https://myspace-realty-monster.herokuapp.com/residential_listings/' + info['units'][i].id + '">#' + info['units'][i].building_unit + '</a> ' + info['units'][i].beds + ' bd / ' 
 	      + info['units'][i].baths + ' baths $' + info['units'][i].rent + '<br />';
 	    if (i == 5) {
-	      contentString += '<a href="http://realtymonster.myspacenyc.com/residential_listings?building_id=' + info['building_id'] + '">View more...</a>';
+	      contentString += '<a href="https://myspace-realty-monster.herokuapp.com/residential_listings?building_id=' + info['building_id'] + '">View more...</a>';
 	      break;
 	    }
 	  }
