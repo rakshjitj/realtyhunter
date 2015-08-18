@@ -89,7 +89,7 @@ end
 json.building do
 	#json.partial! listing.building, building: listing.building, as: :building
 
-	json.city listing.administrative_area_level_2_short
+	json.city listing.sublocality # should display city (brooklyn, new york)
 	json.state listing.administrative_area_level_1_short
 	json.zipcode listing.postal_code
 
@@ -135,7 +135,7 @@ json.photos do
 		json.small i.file.url(:square)
 		json.media_type "10" #i.file.content_type
 		json.original i.file.url(:original)
-		json.id nil #i.id
+		json.id nil # don't return db id if we don't have to
 		json.thumbnail i.file.url(:thumb)
 	end
 end

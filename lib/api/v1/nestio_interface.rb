@@ -54,8 +54,9 @@ module API
 				listings = listings
 					.select('units.building_unit', 'units.status', 'units.available_by',
 					'units.listing_id', 'units.updated_at', 'units.rent',
-					'buildings.administrative_area_level_2_short AS administrative_area_level_2_short',
-					'buildings.administrative_area_level_1_short AS administrative_area_level_1_short',
+					'buildings.administrative_area_level_2_short',
+					'buildings.administrative_area_level_1_short',
+					'buildings.sublocality',
 					'buildings.street_number', 'buildings.route', 
 					'buildings.postal_code',
 					'buildings.lat',

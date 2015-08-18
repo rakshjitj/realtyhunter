@@ -33,11 +33,11 @@ class ResidentialListingsController < ApplicationController
   # GET 
   # handles ajax call. uses latest data in modal
   def neighborhoods_modal
-    puts "MODAL"
     @neighborhoods = Neighborhood.unarchived.where(
       city: current_user.office.administrative_area_level_2_short).all
-    puts "COUNT #{@neighborhoods.count}"
+
     # if boroughs are defined for this area, organize the neighborhoods by boroughs
+    #TODO: theres a faster way to do this...
     boroughs = @neighborhoods.collect(&:borough).uniq
     @by_boroughs = {}
     if !boroughs.empty?
