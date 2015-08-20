@@ -12,7 +12,7 @@ class Ability
     # company admins can do anything, but for his/her particular company only
     # managers/data entry can do most things
     elsif user.has_role?(:company_admin) || user.has_role?(:manager) || user.has_role?(:data_entry) || user.has_role?(:closing_manager)
-      if user.has_role?(:company_admin)
+      if user.has_role?(:company_admin) || user.has_role?(:closing_manager)
         can :manage, User, :company_id => user.company_id
         can :manage, Company, :id => user.company.id
         can :manage, Office, :company_id => user.company.id
