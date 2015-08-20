@@ -78,6 +78,7 @@ class UsersController < ApplicationController
   def admin_new
     @agent_title = EmployeeTitle.agent
     @user = User.new
+    @user.employee_title = EmployeeTitle.agent
   end
 
   # POST /users/batch_create

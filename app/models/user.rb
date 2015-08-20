@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   
   belongs_to :office, touch: true
   belongs_to :company, touch: true
-  belongs_to :manager, :class_name => "User", touch: true
+  belongs_to :manager, :class_name => "User"#, : true
   belongs_to :employee_title
   has_many   :subordinates, :class_name => "User", :foreign_key => "manager_id"
   
@@ -43,6 +43,7 @@ class User < ActiveRecord::Base
 
   validates :company, presence: true
   validates :office, presence: true
+  #validates :auth_token, presence: true
 
 	# Returns the hash digest of the given string.
   def User.digest(string)
@@ -391,7 +392,7 @@ class User < ActiveRecord::Base
   # for use in our API
   def set_auth_token
     return if auth_token.present?
-    self.update(auth_token: generate_auth_token)
+    self.auth_token = generate_auth_token
   end
 
   private
@@ -412,7 +413,13 @@ class User < ActiveRecord::Base
     def generate_auth_token
       loop do
         token = SecureRandom.hex
-        break token unless self.class.exists?(auth_token: token)
+        found_user = User.find_by(auth_token: token)
+        #break token unless found_user #self.class.exists?(auth_token: token)
+        if !found_user
+          return token
+        end
+
       end
-    end  
+      puts "done"
+    end
 end
