@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150814003118) do
+ActiveRecord::Schema.define(version: 20150821224728) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,9 +57,6 @@ ActiveRecord::Schema.define(version: 20150814003118) do
     t.integer  "images_id"
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
-    t.boolean  "has_fee"
-    t.integer  "op_fee_percentage"
-    t.integer  "tp_fee_percentage"
   end
 
   add_index "buildings", ["formatted_street_address"], name: "index_buildings_on_formatted_street_address", using: :btree
@@ -83,8 +80,6 @@ ActiveRecord::Schema.define(version: 20150814003118) do
     t.string   "property_description"
     t.string   "location_description"
     t.integer  "construction_status",         default: 0
-    t.integer  "no_parking_spaces"
-    t.integer  "pct_procurement_fee"
     t.integer  "lease_term_months"
     t.boolean  "rate_is_negotiable"
     t.integer  "total_lot_size"

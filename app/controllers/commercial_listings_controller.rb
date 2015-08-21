@@ -325,11 +325,11 @@ class CommercialListingsController < ApplicationController
         params[:commercial_listing][:commercial_property_type_id] = params[:commercial_property_type_id]
       end
 
-      data = params[:commercial_listing].permit(:building_unit, :rent, :status, :available_by, 
-        :status, :building_id, :user_id, :include_photos,
+      data = params[:commercial_listing].permit(#:building_unit, :rent, :status, :available_by, :building_id, 
+        :user_id, :include_photos,
         :sq_footage, :floor, :building_size, :build_to_suit, :minimum_divisible, :maximum_contiguous,
         :lease_type, :is_sublease, :property_description, :location_description,
-        :construction_status, :no_parking_spaces, :pct_procurement_fee, :lease_term_months,
+        :construction_status, :lease_term_months,
         :rate_is_negotiable, :total_lot_size, :property_type, :commercial_property_type_id,
         :commercial_unit_id, :inaccuracy_description,
         :unit => [:building_unit, :rent, :available_by, :access_info, :status, :open_house, :oh_exclusive, 
@@ -343,7 +343,8 @@ class CommercialListingsController < ApplicationController
       end
 
       if data[:unit][:status]
-        data[:unit][:status] = data[:unit][:status].downcase
+        data[:unit][:status] = data[:unit][:status].downcase.gsub(/ /, '_')
+        puts "***** #{data[:unit][:status]}"
       end
       
       # convert into a datetime obj

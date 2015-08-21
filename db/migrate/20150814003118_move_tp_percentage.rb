@@ -22,8 +22,5 @@ class MoveTpPercentage < ActiveRecord::Migration
   	remove_reference :buildings, :listing_agent, index: true
   	remove_column :buildings, :listing_agent_percentage, :integer
     remove_column :residential_amenities_units, :residential_unit_id, :string
-    #remove_column :buildings, :has_fee, :boolean
-    #remove_column :buildings, :op_fee_percentage, :integer
-    #remove_column :buildings, :tp_fee_percentage, :integer
   end
 end

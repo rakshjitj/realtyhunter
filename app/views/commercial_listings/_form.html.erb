@@ -98,7 +98,7 @@
           <div class="col-md-5">
             <div class="field">
               <!-- gets updated when property_type changes -->
-              <%= render 'sub_types_select' %>
+              <%= render 'commercial_listings/sub_types_select' %>
             </div>
           </div>
         </div>
@@ -171,22 +171,22 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :floor, "Floor", class: 'required' %>
+            <%= f.label :floor, "Floor" %>
           </div>
           <div class="col-md-2">
             <div class="field">
-              <%= f.text_field :floor, class: 'form-control', :required => true %>
+              <%= f.text_field :floor, class: 'form-control' %>
             </div>
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :sq_footage, 'Space Available (SF)', class: 'required' %>
+            <%= f.label :sq_footage, 'Space Available (SF)' %>
           </div>
           <div class="col-md-2">
             <div class="field">
-              <%= f.number_field :sq_footage, class: 'form-control', :required => true %>
+              <%= f.number_field :sq_footage, class: 'form-control' %>
             </div>
           </div>
         </div>
@@ -259,55 +259,33 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :minimum_divisible, 'Minimum Divisible (SF)', class: 'required' %>
+            <%= f.label :minimum_divisible, 'Minimum Divisible (SF)' %>
           </div>
           <div class="col-md-2">
             <div class="field">
-              <%= f.number_field :minimum_divisible, class: 'form-control', :required => true %>
+              <%= f.number_field :minimum_divisible, class: 'form-control' %>
             </div>
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :maximum_contiguous, 'Maximum Contiguous (SF)', class: 'required' %>
+            <%= f.label :maximum_contiguous, 'Maximum Contiguous (SF)' %>
           </div>
           <div class="col-md-2">
             <div class="field">
-              <%= f.number_field :maximum_contiguous, class: 'form-control', :required => true %>
+              <%= f.number_field :maximum_contiguous, class: 'form-control' %>
             </div>
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :lease_term_months, 'Lease Term (Months)', class: 'required' %>
+            <%= f.label :lease_term_months, 'Lease Term (Months)' %>
           </div>
           <div class="col-md-2">
             <div class="field">
-              <%= f.number_field :lease_term_months, class: 'form-control', :required => true %> 
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-4 form-label-responsive">
-            <%= f.label :no_parking_spaces, '# Parking Spaces', class: 'required' %>
-          </div>
-          <div class="col-md-2">
-            <div class="field">
-              <%= f.number_field :no_parking_spaces, class: 'form-control', :required => true %>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-4 form-label-responsive">
-            <%= f.label :pct_procurement_fee, 'Procurement Fee %', class: 'required' %>
-          </div>
-          <div class="col-md-2">
-            <div class="field">
-              <%= f.number_field :pct_procurement_fee, class: 'form-control', :required => true %>
+              <%= f.number_field :lease_term_months, class: 'form-control' %> 
             </div>
           </div>
         </div>

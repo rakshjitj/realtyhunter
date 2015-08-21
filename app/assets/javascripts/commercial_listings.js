@@ -146,7 +146,6 @@ CommercialUnits = {};
       $('#commercial .datepicker').data("DateTimePicker").date(available_by);
     }
 
-
     // google map on show page
     var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
     $("#cunit-panel").geocomplete({
