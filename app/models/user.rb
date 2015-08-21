@@ -298,7 +298,8 @@ class User < ActiveRecord::Base
       (has_role? :data_entry) ||
       (has_role? :broker) || 
       (has_role? :associate_broker) ||
-      (has_role? :manager)
+      (has_role? :manager) ||
+      (has_role? :closing_manager)
       true
     else 
       false
