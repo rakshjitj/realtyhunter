@@ -148,7 +148,7 @@
               <div class="field">
                 <!-- TODO: turn this into an autocomplete field -->
                 <%= unit_form.select(:building_id, 
-                  options_for_select(current_user.company.buildings.collect {|b| [b.street_address, b.id]},
+                  options_for_select(current_user.company.buildings.order("formatted_street_address ASC").collect {|b| [b.street_address, b.id]},
                     [@commercial_unit.unit.building ? @commercial_unit.unit.building.id : '']), 
                   {prompt: "Choose one..."},
                   class: 'form-control',
