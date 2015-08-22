@@ -49,7 +49,7 @@
             <%= f.label :landlord_id, "Landlord", class: 'required' %>
           </div>
           <div class="col-md-9">
-            <%= f.select(:landlord_id, options_for_select(current_user.company.landlords.collect {|l| [l.code, l.id]},
+            <%= f.select(:landlord_id, options_for_select(current_user.company.landlords.order("code ASC").collect {|l| [l.code, l.id]},
               [@building.landlord ? @building.landlord.id : '']),
               {prompt: "Choose one..."},
               required: true, 

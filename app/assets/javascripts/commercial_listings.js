@@ -165,9 +165,11 @@ CommercialUnits = {};
     });
 
     $('#commercial input').keydown(CommercialUnits.preventEnter);
+    $('#commercial #address').bind('railsAutocomplete.select', CommercialUnits.throttledSearch);
     $('#commercial #address').change(CommercialUnits.throttledSearch);
     $('#commercial #rent_min').change(CommercialUnits.throttledSearch);
     $('#commercial #rent_max').change(CommercialUnits.throttledSearch);
+    $('#commercial #landlord').bind('railsAutocomplete.select', CommercialUnits.throttledSearch);
     $('#commercial #landlord').change(CommercialUnits.throttledSearch);
     $('#commercial #status').change(CommercialUnits.throttledSearch);
     $('#commercial #neighborhood_ids').change(CommercialUnits.throttledSearch);

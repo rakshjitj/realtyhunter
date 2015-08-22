@@ -8,9 +8,13 @@ namespace :maintenance do
 		mechanize.user_agent_alias = "Mac Safari"
 		mechanize.follow_meta_refresh = true
 
-		def mark_done(log, start_time)
+		def mark_done(log, start_time, skipped)
 			puts "Done!\n"
   		log.info "Done!\n"
+  		puts "These listings not processed:\n"
+		  puts skipped.join("\n")
+		  log.info "These listings not processed:\n"
+		  log.info skipped.join("\n")
   		end_time = Time.now
 	    duration = (start_time - end_time) / 1.minute
 	    log.info "Task finished at #{end_time} and last #{duration} minutes."
@@ -29,9 +33,10 @@ namespace :maintenance do
 		log.info "Pulling Nestio data for all listings...";
 
 	  done = false
+	  skipped = []
 	  for j in 1..total_pages
 	  	if done
-	  		mark_done(log, start_time)
+	  		mark_done(log, start_time, skipped)
 	  		break
 	  	end
 
@@ -61,21 +66,24 @@ namespace :maintenance do
 	      # 	next
 	      # end
 
-	      puts "[#{i}] #{item['building']['street_address']} #{item['unit_number']}"
-	      log.info "[#{i}] #{item['building']['street_address']} #{item['unit_number']}"
+	      addr = item['building']['street_address'].gsub("\n", ' ').squeeze(' ').strip
+
+	      puts "[#{i}] #{addr} #{item['unit_number']}"
+	      log.info "[#{i}] #{addr} #{item['unit_number']}"
 
 				unit = Unit.joins(:building)
 					.where(building_unit: item['unit_number'])
 					.where("buildings.company_id = ?", company.id)
-					.where("buildings.formatted_street_address ILIKE ?", "%#{item['building']['street_address']}%")
+					.where("buildings.formatted_street_address ILIKE ?", "%#{addr}%")
 					.first
 
 				if unit
-					puts "- updating unit listing ID to #{item['id']} #{unit.inspect}"
+					puts "- updating unit listing ID to #{item['id']}"
 					unit.update({listing_id: item['id']})
 					unit.save!
 				else
-					puts "- NOT FOUND"	
+					puts "- NOT FOUND"
+					skipped << addr
 				end			
 	    end
 	  end
