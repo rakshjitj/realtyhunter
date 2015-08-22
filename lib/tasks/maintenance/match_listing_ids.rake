@@ -67,12 +67,13 @@ namespace :maintenance do
 	      # end
 
 	      addr = item['building']['street_address'].gsub("\n", ' ').squeeze(' ').strip
+	      building_unit = item['unit_number'].gsub("\n", ' ').squeeze(' ').strip
 
-	      puts "[#{i}] #{addr} #{item['unit_number']}"
-	      log.info "[#{i}] #{addr} #{item['unit_number']}"
+	      puts "[#{i}] #{addr} #{building_unit}"
+	      log.info "[#{i}] #{addr} #{building_unit}"
 
 				unit = Unit.joins(:building)
-					.where(building_unit: item['unit_number'])
+					.where(building_unit: building_unit)
 					.where("buildings.company_id = ?", company.id)
 					.where("buildings.formatted_street_address ILIKE ?", "%#{addr}%")
 					.first
@@ -83,7 +84,7 @@ namespace :maintenance do
 					unit.save!
 				else
 					puts "- NOT FOUND"
-					skipped << addr
+					skipped << addr + " #{building_unit}"
 				end			
 	    end
 	  end
