@@ -22,7 +22,7 @@ class Unit < ActiveRecord::Base
 	validates :rent, presence: true, numericality: { only_integer: true }
 	validates :listing_id, presence: true, uniqueness: true
 	
-  validates :building, presence: true
+  validates :building_id, presence: true
   validates :building_unit, allow_blank: true, length: {maximum: 50}
 
   def archive
@@ -45,15 +45,16 @@ class Unit < ActiveRecord::Base
   private
     # TODO: code review - should only be set if none exists
     def generate_unique_id
+      # if !listing_id
+      #   puts "*** calling generate"
+      #   #if !self.unit.listing_id
+      #     listing_id = SecureRandom.random_number(9999999)
+      #     while Unit.find_by(listing_id: listing_id) do
+      #       listing_id = SecureRandom.random_number(9999999)
+      #     end
 
-      #if !self.unit.listing_id
-        listing_id = SecureRandom.random_number(9999999)
-        while Unit.find_by(listing_id: listing_id) do
-          listing_id = SecureRandom.random_number(9999999)
-        end
-
-        self.listing_id = listing_id
-      #end
+      #     self.listing_id = listing_id
+      # end
     end
 
 end

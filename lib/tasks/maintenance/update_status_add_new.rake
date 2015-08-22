@@ -269,7 +269,7 @@ namespace :maintenance do
 				unit = Unit.find_by(building_id: building.id, building_unit: item['unit_number'])
 				if unit
 					puts "- updating unit"
-					unit.update!({
+					unit.update({
 						#building_unit: item['unit_number'],
 						#rent: item['rent'].to_i,
 						#available_by: item['date_available'],

@@ -3,7 +3,7 @@ class Landlord < ActiveRecord::Base
 
 	has_many :buildings, dependent: :destroy
 	belongs_to :company, touch: true
-	validates :company, presence: true
+	validates :company_id, presence: true
 
   belongs_to :listing_agent, :class_name => 'User', touch: true
   validates :listing_agent_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }

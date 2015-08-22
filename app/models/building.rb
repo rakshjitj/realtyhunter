@@ -37,8 +37,8 @@ class Building < ActiveRecord::Base
 	validates :lng, presence: true, length: {maximum: 100}
 	validates :place_id, presence: true, length: {maximum: 100}
 
-	validates :company, presence: true
-	validates :landlord, presence: true
+	validates :company_id, presence: true
+	validates :landlord_id, presence: true
 
   def archive
     self.archived = true
