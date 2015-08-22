@@ -145,8 +145,8 @@ class CommercialListing < ActiveRecord::Base
 
     # search by status
     if params[:status]
-      status = params[:status].downcase
-      included = ['active', 'offer submitted', 'offer accepted', 'binder signed', 'off market for lease execution', 'off'].include?(status)
+      status = params[:status].downcase.gsub(/ /, '_')
+      included = ['active', 'offer_submitted', 'offer_accepted', 'binder_signed', 'off_market_for_lease_execution', 'off'].include?(status)
       if included
         @running_list = @running_list.where("status = ?", Unit.statuses[status])
       end

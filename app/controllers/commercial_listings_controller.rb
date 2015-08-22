@@ -274,6 +274,7 @@ class CommercialListingsController < ApplicationController
 
     def do_search
       # default to searching for active units
+      puts "**** #{params[:status]}"
       if !params[:status]
         params[:status] = "active"
       end
@@ -344,7 +345,6 @@ class CommercialListingsController < ApplicationController
 
       if data[:unit][:status]
         data[:unit][:status] = data[:unit][:status].downcase.gsub(/ /, '_')
-        puts "***** #{data[:unit][:status]}"
       end
       
       # convert into a datetime obj
