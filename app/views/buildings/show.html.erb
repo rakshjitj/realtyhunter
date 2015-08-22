@@ -136,10 +136,10 @@
 
 				<!-- Broker's Fee -->
         <p>
-    		<% if @building.has_fee %>
+    		<% if @building.landlord.has_fee %>
     			<strong>Tenant Pays:</strong> 
-    			<% if @building.tp_fee_percentage %>
-	    			<%= @building.tp_fee_percentage %>%
+    			<% if @building.landlord.tp_fee_percentage %>
+	    			<%= @building.landlord.tp_fee_percentage %>%
 	    		<% else %>
 	    			(no amount specified)
 	    		<% end %>
@@ -147,8 +147,8 @@
     		<!-- No Broker's Fee -->
     		<% else %>
     			<strong>OP Pays:</strong> 
-    			<% if @building.op_fee_percentage %>
-	    			<%= @building.op_fee_percentage %>%
+    			<% if @building.landlord.op_fee_percentage %>
+	    			<%= @building.landlord.op_fee_percentage %>%
 	    		<% else %>
 	    			(no amount specified)
 	    		<% end %>
