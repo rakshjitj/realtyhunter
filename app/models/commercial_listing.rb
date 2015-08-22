@@ -21,8 +21,8 @@ class CommercialListing < ActiveRecord::Base
 
 
   def archive
-    self.archived = true
-    self.save
+    self.unit.archived = true
+    self.unit.save
   end
 
   def self.find_unarchived(id)

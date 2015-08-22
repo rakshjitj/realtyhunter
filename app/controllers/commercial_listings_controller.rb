@@ -274,7 +274,6 @@ class CommercialListingsController < ApplicationController
 
     def do_search
       # default to searching for active units
-      puts "**** #{params[:status]}"
       if !params[:status]
         params[:status] = "active"
       end
@@ -308,14 +307,6 @@ class CommercialListingsController < ApplicationController
       # if sorting by an actual db column, use order
       if CommercialListing.column_names.include?(params[:sort_by])
         @commercial_units = @commercial_units.order(sort_column + ' ' + sort_order)
-      # otherwise call sort_by with our custom method
-      else
-        # TODO
-        # if sort_order == "asc"
-        #   @commercial_units = @commercial_units.sort_by{|b| b.send(sort_column)}
-        # else
-        #   @commercial_units = @commercial_units.sort_by{|b| b.send(sort_column)}.reverse
-        # end
       end
       @commercial_units
     end
