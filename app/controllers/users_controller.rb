@@ -132,7 +132,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    if @user.update(user_params)
+    if @user.update(user_params.merge({updated_at: Time.now}))
       @user.update_roles
       flash[:success] = "Profile updated!"
       redirect_to @user

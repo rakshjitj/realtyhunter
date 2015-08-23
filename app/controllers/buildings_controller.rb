@@ -80,7 +80,7 @@ class BuildingsController < ApplicationController
   # PATCH/PUT /buildings/1
   # PATCH/PUT /buildings/1.json
   def update
-    if @building.update(format_params_before_save(false))
+    if @building.update(format_params_before_save(false).merge({updated_at: Time.now}))
       flash[:success] = "Building updated!"
       redirect_to @building
     else

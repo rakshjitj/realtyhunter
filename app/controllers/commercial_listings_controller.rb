@@ -193,10 +193,10 @@ class CommercialListingsController < ApplicationController
   # PATCH/PUT /commercial_units/1
   # PATCH/PUT /commercial_units/1.json
   def update
-    ret1 = @commercial_unit.unit.update(commercial_listing_params[:unit])
+    ret1 = @commercial_unit.unit.update(commercial_listing_params[:unit].merge({updated_at: Time.now}))
     c_params = commercial_listing_params
     c_params.delete('unit')
-    ret2 = @commercial_unit.update(c_params)
+    ret2 = @commercial_unit.update(c_params.merge({updated_at: Time.now}))
     if ret1 && ret2
       flash[:success] = "Unit successfully updated!"
       redirect_to @commercial_unit

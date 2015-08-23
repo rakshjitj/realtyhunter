@@ -213,10 +213,10 @@ class ResidentialListingsController < ApplicationController
   # PATCH/PUT /residential_units/1
   # PATCH/PUT /residential_units/1.json
   def update
-    ret1 = @residential_unit.unit.update(residential_listing_params[:unit])
+    ret1 = @residential_unit.unit.update(residential_listing_params[:unit].merge({updated_at: Time.now}))
     r_params = residential_listing_params
     r_params.delete('unit')
-    ret2 = @residential_unit.update(r_params)
+    ret2 = @residential_unit.update(r_params.merge({updated_at: Time.now}))
 
     # update res
     if ret1 && ret2
