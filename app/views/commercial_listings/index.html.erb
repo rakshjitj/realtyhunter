@@ -152,13 +152,13 @@
       <thead>
         <tr>
           <th><!-- first image --></th>
-          <th class="th-sortable <%= sort_css_class("street_address") %>"><%= sortable('street_address', 'Address') %></th>
-          <th class="th-sortable <%= sort_css_class("landlord") %>"><%= sortable 'landlord' %></th>
-          <th class="th-sortable <%= sort_css_class("summary") %>"><%= sortable 'summary' %></th>
-          <th class="th-sortable <%= sort_css_class("rent") %>"><%= sortable 'rent', "Price" %></th>
-          <th class="th-sortable <%= sort_css_class("sq_footage") %>"><%= sortable 'sq_footage' %></th>
-          <th class="th-sortable <%= sort_css_class("available_by") %>"><%= sortable 'available_by', "Available" %></th>
-          <th class="th-sortable <%= sort_css_class("status") %>"><%= sortable 'status' %></th>
+          <th data-sort="formatted_street_address" class="th-sortable">Address</th>
+          <th data-sort="landlord_code" class="th-sortable">Landlord</th>
+          <th>Summary</th>
+          <th data-sort="rent" class="th-sortable">Price</th>
+          <th data-sort="sq_footage" class="th-sortable">Sq Footage</th>
+          <th data-sort="available_by" class="th-sortable">Available</th>
+          <th data-sort="status" class="th-sortable">Status</th>
           <% if current_user.is_management? %>
             <th colspan="1"></th>
           <% end %>

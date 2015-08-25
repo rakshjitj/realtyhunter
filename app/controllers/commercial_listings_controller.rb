@@ -307,7 +307,9 @@ class CommercialListingsController < ApplicationController
       params[:sort_by] = sort_column
       params[:direction] = sort_order
       # if sorting by an actual db column, use order
-      if CommercialListing.column_names.include?(params[:sort_by])
+      if sort_column == 'landlord_code'
+        @commercial_units = @commercial_units.order("LOWER(code) " + sort_order)
+      else
         @commercial_units = @commercial_units.order(sort_column + ' ' + sort_order)
       end
       @commercial_units

@@ -28,7 +28,7 @@ Buildings = {};
     });
   };
 
-  Buildings.filterBuildings = function(event) {
+  Buildings.filterBuildings = function(sort_by_col, sort_direction) {
     Buildings.showSpinner();
 
   	var search_path = $('#search-filters').attr('data-search-path');
@@ -36,7 +36,9 @@ Buildings = {};
       url: search_path,
       data: {
         filter: $('#buildings #filter').val(),
-        active_only: $('#buildings #checkbox_active').prop('checked')
+        active_only: $('#buildings #checkbox_active').prop('checked'),
+        sort_by: sort_by_col,
+        direction: sort_direction,
       },
       dataType: "script",
       success: function(data) {
@@ -45,6 +47,39 @@ Buildings = {};
       error: function(data) {
         Buildings.hideSpinner();
       }
+    });
+  };
+
+  Buildings.setupSortableColumns = function() {
+    $('#buildings .th-sortable').click(function(e) {
+      e.preventDefault();
+      
+      if ($(this).hasClass('selected-sort')) {
+        // switch sort order
+        var i = $('.selected-sort i');
+        if (i) {
+          if (i.hasClass('glyphicon glyphicon-triangle-bottom')) {
+            i.removeClass('glyphicon glyphicon-triangle-bottom').addClass('glyphicon glyphicon-triangle-top');
+            $(this).attr('data-direction', 'desc');
+          }
+          else if (i.hasClass('glyphicon glyphicon-triangle-top')) {
+            i.removeClass('glyphicon glyphicon-triangle-top').addClass('glyphicon glyphicon-triangle-bottom');
+            $(this).attr('data-direction', 'asc');
+          }
+        }
+      } else {
+        // remove selection from old row
+        $('.selected-sort').attr('data-direction', '');
+        $('th i').remove(); // remove arrows
+        $('.selected-sort').removeClass('selected-sort');
+        // select new column
+        $(this).addClass('selected-sort').append(' <i class="glyphicon glyphicon-triangle-bottom"></i>');
+        $(this).attr('data-direction', 'asc');
+      }
+
+      var sort_by_col = $(this).attr('data-sort');
+      var sort_direction = $(this).attr('data-direction');
+      Buildings.filterBuildings(sort_by_col, sort_direction);
     });
   };
 
@@ -125,6 +160,9 @@ Buildings = {};
     $('#buildings a').click(function() {
       Buildings.showSpinner();
     });
+
+    // main index table
+    Buildings.setupSortableColumns();
 
     // $('#buildings .has-fee').click(Buildings.toggleFeeOptions);
     // Buildings.toggleFeeOptions();

@@ -121,11 +121,16 @@ class LandlordsController < ApplicationController
     def custom_sort
       sort_column = params[:sort_by] || "name"
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
-      # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order
+      #puts "***** #{params[:sort_by]} #{params[:direction]}"
+      # TODO: fix it so we can sort by all columns
       if Landlord.column_names.include?(params[:sort_by])
-        @landlords = @landlords.order(sort_column + ' ' + sort_order)
+        if sort_column == 'name' || sort_column == 'code'
+          @landlords = @landlords.order("LOWER(#{sort_column}) " + sort_order)
+        else
+          @landlords = @landlords.order(sort_column + ' ' + sort_order)
+        end
       end
       @landlords
     end

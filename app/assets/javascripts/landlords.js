@@ -27,13 +27,16 @@ Landlords = {};
     });
   };
 
-  Landlords.doSearch = function(event) {
+  Landlords.doSearch = function(sort_by_col, sort_direction) {
+    //console.log(sort_by_col, sort_direction);
     var search_path = $('#landlord-search-filters').attr('data-search-path');
     $.ajax({
       url: search_path,
       data: {
         filter: $('#filter').val(),
-        active_only: $('#checkbox_active').prop('checked')
+        active_only: $('#checkbox_active').prop('checked'),
+        sort_by: sort_by_col,
+        direction: sort_direction,
       },
       dataType: "script",
       success: function(data) {
@@ -44,6 +47,39 @@ Landlords = {};
         //console.log('ERROR:', data.responseText);
         Landlords.hideSpinner();
       }
+    });
+  };
+
+  Landlords.setupSortableColumns = function() {
+    $('#landlords .th-sortable').click(function(e) {
+      e.preventDefault();
+      
+      if ($(this).hasClass('selected-sort')) {
+        // switch sort order
+        var i = $('.selected-sort i');
+        if (i) {
+          if (i.hasClass('glyphicon glyphicon-triangle-bottom')) {
+            i.removeClass('glyphicon glyphicon-triangle-bottom').addClass('glyphicon glyphicon-triangle-top');
+            $(this).attr('data-direction', 'desc');
+          }
+          else if (i.hasClass('glyphicon glyphicon-triangle-top')) {
+            i.removeClass('glyphicon glyphicon-triangle-top').addClass('glyphicon glyphicon-triangle-bottom');
+            $(this).attr('data-direction', 'asc');
+          }
+        }
+      } else {
+        // remove selection from old row
+        $('.selected-sort').attr('data-direction', '');
+        $('th i').remove(); // remove arrows
+        $('.selected-sort').removeClass('selected-sort');
+        // select new column
+        $(this).addClass('selected-sort').append(' <i class="glyphicon glyphicon-triangle-bottom"></i>');
+        $(this).attr('data-direction', 'asc');
+      }
+
+      var sort_by_col = $(this).attr('data-sort');
+      var sort_direction = $(this).attr('data-direction');
+      Landlords.doSearch(sort_by_col, sort_direction);
     });
   };
 
@@ -91,6 +127,9 @@ Landlords = {};
     $('#landlords a').click(function() {
       Landlords.showSpinner();
     });
+
+    // main index table
+    Landlords.setupSortableColumns();
 
     $('#landlords .has-fee').click(Landlords.toggleFeeOptions);
     Landlords.toggleFeeOptions();

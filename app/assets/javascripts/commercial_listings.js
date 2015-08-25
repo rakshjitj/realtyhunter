@@ -21,7 +21,7 @@ CommercialUnits = {};
     });
   };
 
-  CommercialUnits.doSearch = function(event) {
+  CommercialUnits.doSearch = function(sort_by_col, sort_direction) {
     CommercialUnits.showSpinner();
 
     // sanitize invalid input before submitting
@@ -30,7 +30,7 @@ CommercialUnits = {};
     }
 
     var search_path = $('#com-search-filters').attr('data-search-path');
-    console.log(search_path);
+    //console.log(sort_by_col, sort_direction);
     $.ajax({
       url: search_path, 
       data: {
@@ -42,6 +42,8 @@ CommercialUnits = {};
         property_type: $('#commercial #property_type').val(),
         listing_id: $('#commercial #listing_id').val(),
         neighborhood_ids: $('#commercial #neighborhood_ids').val(),
+        sort_by: sort_by_col,
+        direction: sort_direction,
       },
       dataType: "script",
       success: function(data) {
@@ -50,6 +52,39 @@ CommercialUnits = {};
       error: function(data) {
         CommercialUnits.hideSpinner();
       }
+    });
+  };
+
+  CommercialUnits.setupSortableColumns = function() {
+    $('#commercial .th-sortable').click(function(e) {
+      e.preventDefault();
+      
+      if ($(this).hasClass('selected-sort')) {
+        // switch sort order
+        var i = $('.selected-sort i');
+        if (i) {
+          if (i.hasClass('glyphicon glyphicon-triangle-bottom')) {
+            i.removeClass('glyphicon glyphicon-triangle-bottom').addClass('glyphicon glyphicon-triangle-top');
+            $(this).attr('data-direction', 'desc');
+          }
+          else if (i.hasClass('glyphicon glyphicon-triangle-top')) {
+            i.removeClass('glyphicon glyphicon-triangle-top').addClass('glyphicon glyphicon-triangle-bottom');
+            $(this).attr('data-direction', 'asc');
+          }
+        }
+      } else {
+        // remove selection from old row
+        $('.selected-sort').attr('data-direction', '');
+        $('th i').remove(); // remove arrows
+        $('.selected-sort').removeClass('selected-sort');
+        // select new column
+        $(this).addClass('selected-sort').append(' <i class="glyphicon glyphicon-triangle-bottom"></i>');
+        $(this).attr('data-direction', 'asc');
+      }
+
+      var sort_by_col = $(this).attr('data-sort');
+      var sort_direction = $(this).attr('data-direction');
+      CommercialUnits.doSearch(sort_by_col, sort_direction);
     });
   };
 
@@ -120,6 +155,7 @@ CommercialUnits = {};
 
   //call when typing or enter or focus leaving
   CommercialUnits.initialize = function () {
+
     document.addEventListener("page:restore", function() {
       CommercialUnits.hideSpinner();
     });
@@ -127,6 +163,9 @@ CommercialUnits = {};
     $('#commercial a').click(function() {
       CommercialUnits.showSpinner();
     });
+
+    // main index table
+    CommercialUnits.setupSortableColumns();
 
     $('#commercial_listing_property_type').change(function(e) {
       var optionSelected = $("option:selected", this);

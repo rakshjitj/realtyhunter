@@ -269,19 +269,17 @@ ResidentialListings = {};
 	ResidentialListings.setupSortableColumns = function() {
 		$('#residential .th-sortable').click(function(e) {
 			e.preventDefault();
-			var sort_by_col = $(this).attr('data-sort');
-			var sort_direction = $(this).attr('data-direction');
 			
 			if ($(this).hasClass('selected-sort')) {
 				// switch sort order
-				var i = $(this).children('i');
+				var i = $('.selected-sort i');
 				if (i) {
 					if (i.hasClass('glyphicon glyphicon-triangle-bottom')) {
 						i.removeClass('glyphicon glyphicon-triangle-bottom').addClass('glyphicon glyphicon-triangle-top');
 						$(this).attr('data-direction', 'desc');
 					}
 					else if (i.hasClass('glyphicon glyphicon-triangle-top')) {
-						i.removeClass('glyphicon glyphicon-triangle-top').append('<i class="glyphicon glyphicon-triangle-bottom"></i>'); //.addClass('glyphicon glyphicon-triangle-bottom');
+						i.removeClass('glyphicon glyphicon-triangle-top').addClass('glyphicon glyphicon-triangle-bottom');
 						$(this).attr('data-direction', 'asc');
 					}
 				}
@@ -291,10 +289,12 @@ ResidentialListings = {};
 				$('th i').remove(); // remove arrows
 				$('.selected-sort').removeClass('selected-sort');
 				// select new column
-				$(this).addClass('selected-sort').append('<i class="glyphicon glyphicon-triangle-bottom"></i>');//.addClass('glyphicon glyphicon-triangle-bottom');
+				$(this).addClass('selected-sort').append(' <i class="glyphicon glyphicon-triangle-bottom"></i>');
 				$(this).attr('data-direction', 'asc');
 			}
 
+			var sort_by_col = $(this).attr('data-sort');
+			var sort_direction = $(this).attr('data-direction');
 			ResidentialListings.doSearch(sort_by_col, sort_direction);
 		});
 	};

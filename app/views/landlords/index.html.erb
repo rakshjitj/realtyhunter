@@ -44,12 +44,18 @@
     <table class="table table-striped table-hover table-condensed table-responsive">
       <thead>
         <tr>
-          <th class="th-sortable <%= sort_css_class("code") %>"><%= sortable "code" %></th>
-          <th class="th-sortable <%= sort_css_class("name") %>"><%= sortable "name" %></th>
+          <th data-sort="code" class="th-sortable">Code</th>
+          <th data-sort="name" class="th-sortable selected-sort">Name <i class="glyphicon glyphicon-triangle-bottom"></i></th>
           <th>Mobile</th>
-          <th class="th-sortable <%= sort_css_class("active_units_count") %>"><%= sortable "active_units_count", "On-Market Units" %></th>
-          <th class="th-sortable <%= sort_css_class("total_units_count") %>"><%= sortable "total_units_count", "Total Units" %></th>
-          <th class="th-sortable <%= sort_css_class("last_unit_updated") %>"><%= sortable "last_unit_updated" %></th>
+          <th data-sort="active_units_count" class="th-sortable">
+            On-Market Units
+          </th>
+          <th data-sort="total_units_count" class="th-sortable">
+            Total Units
+          </th>
+          <th data-sort="last_unit_updated" class="th-sortable">
+            Last Unit Updated
+          </th>
           <th colspan="1"></th>
         </tr>
       </thead>

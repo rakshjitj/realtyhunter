@@ -38,7 +38,6 @@
   </div>
   <% end %><!-- end form -->
     
-  </div>
 </div>
 
 <br />
@@ -49,13 +48,14 @@
       <thead>
         <tr>
           <th></th>
-          <th class="th-sortable <%= sort_css_class("formatted_street_address") %>"><%= sortable "formatted_street_address", "Address" %></th>
-          <th class="th-sortable <%= sort_css_class("active_unit_count") %>">
-            <%= sortable "active_unit_count", "On-Market Units" %></th>
-          <th class="th-sortable <%= sort_css_class("total_unit_count") %>">
-            <%= sortable "total_unit_count", "Total Units" %></th>
-          <th class="th-sortable <%= sort_css_class("last_unit_updated") %>">
-            <%= sortable "last_unit_updated" %></th>
+          <th data-sort="formatted_street_address" class="th-sortable selected-sort">
+            Address <i class="glyphicon glyphicon-triangle-bottom"></i></th>
+          <th data-sort="active_unit_count" class="th-sortable">
+            On-Market Units</th>
+          <th data-sort="total_unit_count" class="th-sortable">
+            Total Units</th>
+          <th data-sort="last_unit_updated" class="th-sortable">
+            Last Unit Updated</th>
           <% if current_user.is_management? %>
             <th colspan="1"></th>
           <% end %>
