@@ -33,6 +33,7 @@ module API
 						'employee_titles.name AS title')
 					.includes(:image)
 
+					@agents = @agents.where('employee_titles.name = ?', EmployeeTitle.agent.name)
 				# updated_at
 				if agent_params[:updated_at] && !agent_params[:updated_at].empty?
 					time = Time.parse(agent_params[:updated_at]).in_time_zone
