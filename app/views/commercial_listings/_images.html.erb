@@ -1,4 +1,4 @@
-<% @commercial_unit.images.each do |image| %>
+<% @commercial_unit.unit.images.each do |image| %>
 	  <div class="img-thumbnail col-xs-2" data-id="<%= image.id %>" data-unit-id="<%= @commercial_unit.id %>">
 	  	<%= image_tag image.file.url(:thumb), :class => 'img-responsive center-block', alt: image.file.url(:thumb) %>
 	  	<%= link_to "Remove", "", 

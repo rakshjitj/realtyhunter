@@ -269,7 +269,7 @@ CommercialUnits = {};
         });
         console.log(updated_order);
         // send the updated order via ajax
-        var cunit_id = $('#commercial').attr('data-cunit-id');
+        var cunit_id = $('#commercial').attr('data-unit-id');
         $.ajax({
           type: "PUT",
           url: '/commercial_listings/' + cunit_id + '/unit_images/sort',
