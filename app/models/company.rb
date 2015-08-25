@@ -36,12 +36,11 @@ class Company < ActiveRecord::Base
 
 	# should we limit this to 1 per company?
 	def admins
-		#users.unarchived.includes(:employee_title, :office, :image, :company, :manager).select{|u| u if u.is_company_admin? }
-		User.joins(:roles).where('roles.name = ?', 'company_admin').includes(:employee_title, :office, :image, :manager)
+		User.joins(:roles).where('roles.name = ?', 'company_admin').includes(:employee_title, :office, :image, :manager).unarchived
 	end
 
 	def managers
-		User.joins(:roles).where('roles.name = ?', 'manager').includes(:employee_title, :office, :image, :manager)
+		User.joins(:roles).where('roles.name = ?', 'manager').includes(:employee_title, :office, :image, :manager).unarchived
 	end
 
 	# def data_enterers
