@@ -10,29 +10,31 @@ module ApplicationHelper
   end
 
   def sort_css_class(column)
-    if params[:sort_by] == column
-      "selected-sort"
-    else
-      ""
-    end
+    # if params[:sort_by] == column
+    #   "selected-sort"
+    # else
+    #   ""
+    # end
   end
 
   def sortable(column, title = nil)
-    title ||= column.titleize
-    direction = (column == params[:sort_by] && params[:direction] == "asc") ? "desc" : "asc"
-    # toggle arrow
-    css_class=""
+    #title ||= column.titleize
+    # direction = (column == params[:sort_by] && params[:direction] == "asc") ? "desc" : "asc"
+    # # toggle arrow
+    # css_class=""
     
-    if params[:sort_by] == column
-      if direction == "desc"
-        css_class = "glyphicon glyphicon-triangle-bottom"
-      elsif direction == "asc"
-        css_class = "glyphicon glyphicon-triangle-top"
-      end
-    end
-
-    link_to "<i class=\"#{css_class}\"></i> #{title}".html_safe, 
-    {sort_by: column, direction: direction}
+    # if params[:sort_by] == column
+    #   if direction == "desc"
+    #     css_class = "glyphicon glyphicon-triangle-bottom"
+    #   elsif direction == "asc"
+    #     css_class = "glyphicon glyphicon-triangle-top"
+    #   end
+    # end
+    
+    # params.merge({sort_by: column, direction: direction})
+    #link_to "<i class=\"#{css_class}\"></i> #{title}".html_safe
+    #"<div class=\"test\" data-sort=\"#{column}\" data-direction=\"#{direction}\"> <i class=\"#{css_class}\"></i> #{title} </div>".html_safe
+    #"#{title}".html_safe
   end
 
   def rent_formatted(rent)

@@ -14,23 +14,14 @@ else
 	end
 end
 
-#if user.is_management?
-#	json.title "Executive Agent"
-#elsif user.has_role? :agent
-#  json.title "Licensed Real-Estate Agent"
-#elsif user.has_role? :unlic_agent
-#	json.title "Inactive Real-Estate Agent"
-#else
-#	json.title "Other"
-#end
-
 if user.title == "manager" || 
 	user.title == "company admin" || 
 	user.title == "data entry" || 
 	user.title == "broker" || 
 	user.title == "closing manager"
 
-	json.title "Executive Agent"
+	#json.title "Executive Agent"
+	json.title "Other"
 
 elsif user.title == "agent"
 	json.title "Licensed Real-Estate Agent"

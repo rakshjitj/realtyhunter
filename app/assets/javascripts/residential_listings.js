@@ -21,8 +21,8 @@ ResidentialListings = {};
 	};
 
 	// for searching on the index page
-	ResidentialListings.doSearch = function (event) {
-		//console.log('PERFORMING SEARCH');
+	ResidentialListings.doSearch = function (sort_by_col, sort_direction) {
+		//console.log(sort_by_col, sort_direction);
 		// sanitize invalid input before submitting
 	  if ($('#residential #neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
 	    $('#residential #neighborhood_ids').val('');
@@ -59,6 +59,8 @@ ResidentialListings = {};
         neighborhood_ids: $('#residential #neighborhood_ids').val(),
         unit_feature_ids: $('#residential #unit_feature_ids').val(),
         building_feature_ids: $('#residential #building_feature_ids').val(),
+        sort_by: sort_by_col,
+        direction: sort_direction,
 	    },
 	    dataType: 'script',
 	    success: function(data) {
@@ -264,17 +266,51 @@ ResidentialListings = {};
 		});
 	};
 	
+	ResidentialListings.setupSortableColumns = function() {
+		$('#residential .th-sortable').click(function(e) {
+			e.preventDefault();
+			var sort_by_col = $(this).attr('data-sort');
+			var sort_direction = $(this).attr('data-direction');
+			
+			if ($(this).hasClass('selected-sort')) {
+				// switch sort order
+				var i = $(this).children('i');
+				if (i) {
+					if (i.hasClass('glyphicon glyphicon-triangle-bottom')) {
+						i.removeClass('glyphicon glyphicon-triangle-bottom').addClass('glyphicon glyphicon-triangle-top');
+						$(this).attr('data-direction', 'desc');
+					}
+					else if (i.hasClass('glyphicon glyphicon-triangle-top')) {
+						i.removeClass('glyphicon glyphicon-triangle-top').append('<i class="glyphicon glyphicon-triangle-bottom"></i>'); //.addClass('glyphicon glyphicon-triangle-bottom');
+						$(this).attr('data-direction', 'asc');
+					}
+				}
+			} else {
+				// remove selection from old row
+				$('.selected-sort').attr('data-direction', '');
+				$('th i').remove(); // remove arrows
+				$('.selected-sort').removeClass('selected-sort');
+				// select new column
+				$(this).addClass('selected-sort').append('<i class="glyphicon glyphicon-triangle-bottom"></i>');//.addClass('glyphicon glyphicon-triangle-bottom');
+				$(this).attr('data-direction', 'asc');
+			}
+
+			ResidentialListings.doSearch(sort_by_col, sort_direction);
+		});
+	};
+
 	ResidentialListings.initialize = function() {
-		// hide map on mobile by default. give them the option to un-hide
-		//ResidentialListings.toggleMap();
 		document.addEventListener("page:restore", function() {
 		  ResidentialListings.hideSpinner();
 		});
 		ResidentialListings.hideSpinner();
 		$('#residential a').click(function() {
-			//console.log('detected click');
 			ResidentialListings.showSpinner();
 		});
+
+		// main index table
+		ResidentialListings.setupSortableColumns();		
+
 		$('.close').click(function() {
 			//console.log('detected click');
 			ResidentialListings.hideSpinner();

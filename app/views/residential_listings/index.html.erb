@@ -214,6 +214,7 @@
 
             <%= hidden_field_tag :unit_feature_ids, params[:unit_feature_ids] %>
             <%= hidden_field_tag :building_feature_ids, params[:building_feature_ids] %>
+            
           </div>
         </div>
         <div class="row vertical-padding">
@@ -241,15 +242,15 @@
       <thead>
         <tr>
           <th></th>
-          <th class="th-sortable <%= sort_css_class("street_address") %>"><%= sortable('street_address', 'Address') %></th>
-          <th class="th-sortable <%= sort_css_class("unit") %>"><%= sortable('unit') %></th>
-          <th class="th-sortable <%= sort_css_class("landlord_by_code") %>"><%= sortable 'landlord_by_code', 'Landlord' %></th>
+          <th data-sort="formatted_street_address" class="th-sortable">Address</th>
+          <th data-sort="building_unit" class="th-sortable">Unit</th>
+          <th data-sort="landlord_code" class="th-sortable">Landlord</th>
           <th style="min-width: 20%;">Access</th>
-          <th class="th-sortable <%= sort_css_class("bed_and_baths") %>"><%= sortable 'bed_and_baths', "Beds/Baths" %></th>
-          <th class="th-sortable <%= sort_css_class("available_by") %>"><%= sortable 'available_by', "Available" %></th>
-          <th class="th-sortable <%= sort_css_class("rent") %>"><%= sortable 'rent', "Price" %></th>
-          <th class="th-sortable <%= sort_css_class("updated_at") %>"><%= sortable 'updated_at', "Updated" %></th>
-          <th class="th-sortable <%= sort_css_class("status") %>"><%= sortable 'status' %></th>
+          <th data-sort="bed_and_baths" class="th-sortable">Beds/Baths</th>
+          <th data-sort="available_by" class="th-sortable">Available</th>
+          <th data-sort="rent" class="th-sortable">Price</th>
+          <th data-sort="updated_at" class="th-sortable selected-sort">Updated</th>
+          <th data-sort="status" class="th-sortable">Status</th>
           <% if current_user.is_management? %>
             <th colspan="1"></th>
           <% end %>
