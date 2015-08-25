@@ -87,7 +87,7 @@
 
 							<!-- clickable navigation -->
 							<!-- first building photos... -->
-							<% if @commercial_unit.unit.building.images.length + @commercial_unit.images.length > 1 %>
+							<% if @commercial_unit.unit.building.images.length + @commercial_unit.unit.images.length > 1 %>
 								<% i = 0 %>
 								<% for i in 0..@commercial_unit.unit.building.images.length-1 %>
 									<% image = @commercial_unit.unit.building.images[i] %>
@@ -97,8 +97,8 @@
 							    </a>
 						  	<% end %>
 						  	<!-- now display unit photos -->
-						  	<% for j in 0..@commercial_unit.images.length-1 %>
-									<% image = @commercial_unit.images[j] %>
+						  	<% for j in 0..@commercial_unit.unit.images.length-1 %>
+									<% image = @commercial_unit.unit.images[j] %>
 						  		<a href="#commercial_unit-carousel" data-slide-to="<%= (j+i) %>">
 							      <%= image_tag image.file.url(:thumb), :class => 'photo-inline', 
 							      	alt: image.file.url(:thumb) %>
