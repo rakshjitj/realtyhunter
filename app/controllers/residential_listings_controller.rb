@@ -3,7 +3,7 @@ class ResidentialListingsController < ApplicationController
   skip_load_resource only: :create
   before_action :set_residential_listing, except: [:new, :create, :index, :filter, 
     :print_list, :neighborhoods_modal, :features_modal, 
-    :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood, :fee_options] #:refresh_images,
+    :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood, :fee_options]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
   etag { current_user.id }

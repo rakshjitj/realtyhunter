@@ -2,7 +2,7 @@ class CommercialListingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource only: :create
   before_action :set_commercial_listing, except: [:new, :create, :index, :filter, 
-    :neighborhoods_modal, :features_modal, :refresh_images ] #:update_subtype
+    :neighborhoods_modal, :features_modal ] #:update_subtype, :refresh_images
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
   etag { current_user.id }

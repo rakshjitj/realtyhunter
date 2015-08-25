@@ -11,8 +11,13 @@ class UnitImagesController < ApplicationController
     # dropzone expects a json response code
     if @image.save(image_params)
       @unit.images << @image
-      render json: { message: "success", fileID: @image.id, unitID: @unit.id, runitID: @unit.residential_listing.id },
-        :status => 200
+      if params[:residential_listing_id] && !params[:residential_listing_id].empty?
+        render json: { message: "success", fileID: @image.id, unitID: @unit.id, runitID: @unit.residential_listing.id },
+          :status => 200
+      elsif params[:commercial_listing_id] && !params[:commercial_listing_id].empty?
+        render json: { message: "success", fileID: @image.id, unitID: @unit.id, cunitID: @unit.commercial_listing.id },
+          :status => 200
+      end
     else 
       #  you need to send an error header, otherwise Dropzone
       #  will not interpret the response as an error:

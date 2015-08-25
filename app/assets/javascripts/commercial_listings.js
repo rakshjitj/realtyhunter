@@ -147,8 +147,8 @@ CommercialUnits = {};
     $('#commercial .delete-unit-img').click(function(event) {
       event.preventDefault();
       var id = $(this).attr('data-id');
-      var unit_id = $(this).attr('data-unit-id');
-      //console.log(id, unit_id);
+      var unit_id = $(this).attr('data-cunit-id');
+      //console.log('********', id, unit_id);
       CommercialUnits.removeImage(id, unit_id);
     });
   };
@@ -232,10 +232,10 @@ CommercialUnits = {};
         // find the remove button link of the uploaded file and give it an id
         // based of the fileID response from the server
         $(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
-        $(file.previewTemplate).find('.dz-remove').attr('unit_id', response.unitID);
+        $(file.previewTemplate).find('.dz-remove').attr('cunit_id', response.cunitID);
         // add the dz-success class (the green tick sign)
         $(file.previewElement).addClass("dz-success");
-        $.getScript('/commercial_listings/' + response.unitID + '/refresh_images')
+        $.getScript('/commercial_listings/' + response.cunitID + '/refresh_images')
         file.previewElement.remove();
       },
       //when the remove button is clicked
@@ -269,7 +269,7 @@ CommercialUnits = {};
         });
         console.log(updated_order);
         // send the updated order via ajax
-        var cunit_id = $('#commercial').attr('data-unit-id');
+        var cunit_id = $('#commercial').attr('data-cunit-id');
         $.ajax({
           type: "PUT",
           url: '/commercial_listings/' + cunit_id + '/unit_images/sort',
