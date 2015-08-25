@@ -87,10 +87,10 @@
 
 							<!-- clickable navigation -->
 							<!-- first building photos... -->
-							<% if @commercial_unit.building.images.length + @commercial_unit.images.length > 1 %>
+							<% if @commercial_unit.unit.building.images.length + @commercial_unit.images.length > 1 %>
 								<% i = 0 %>
-								<% for i in 0..@commercial_unit.building.images.length-1 %>
-									<% image = @commercial_unit.building.images[i] %>
+								<% for i in 0..@commercial_unit.unit.building.images.length-1 %>
+									<% image = @commercial_unit.unit.building.images[i] %>
 						  		<a href="#commercial_unit-carousel" data-slide-to="<%= i %>">
 							      <%= image_tag image.file.url(:thumb), :class => 'photo-inline', 
 							      	alt: image.file.url(:thumb) %>
