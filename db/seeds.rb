@@ -172,7 +172,7 @@ end
 # super admin
 @super_admin = User.create!(
   { name: 'Super Admin', 
-    email: 'admin@realtymonster.com', 
+    email: 'admin@realtyhunter.com', 
     password: @password, 
     password_confirmation: @password, 
     activated: true, 

@@ -39,6 +39,6 @@ class UserMailer < ApplicationMailer
   def added_by_admin(company, user)
     @user = user
     @company = company
-    mail to: user.email, subject: "You have been added to #{company}"
+    mail to: user.email, subject: "You have been added to #{company.name}"
   end
 end
