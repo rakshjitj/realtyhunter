@@ -80,6 +80,7 @@ module API
 
 			def commercial_search(company_id, search_params)
 				listings = CommercialListing.joins(unit: {building: [:neighborhood]})
+
 				# TODO: restrict by commercial params
 				listings = _restrict_on_unit_model(company_id, search_params, listings)
 				listings = _sort_by(search_params, listings)
@@ -89,6 +90,7 @@ module API
 					'units.listing_id', 'units.updated_at', 'units.rent',
 					'buildings.administrative_area_level_2_short AS administrative_area_level_2_short',
 					'buildings.administrative_area_level_1_short AS administrative_area_level_1_short',
+					'buildings.sublocality',
 					'buildings.street_number', 'buildings.route',
 					'buildings.postal_code',
 					'buildings.lat',
