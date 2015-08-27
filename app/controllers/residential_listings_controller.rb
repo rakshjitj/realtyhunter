@@ -38,9 +38,9 @@ class ResidentialListingsController < ApplicationController
     .to_a
     .group_by(&:borough)
     
-    @neighborhoods.each do |borough, list|
-      puts list.inspect
-    end
+    # @neighborhoods.each do |borough, list|
+    #   puts list.inspect
+    # end
 
     respond_to do |format|
       format.js  
