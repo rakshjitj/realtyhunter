@@ -9,26 +9,25 @@
 
 	<div role="tabpanel" id="neighborhood-tabpanel">
 		
-			<!-- if we have multiple boroughs defined -->
-			<% if @by_boroughs && @by_boroughs.length > 1 %>
-
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs" role="tablist">
-					<% @by_boroughs.each do |b,n| %>
-						<li role="presentation"><a href="#<%= b %>" aria-controls="<%= b %>" role="tab" data-toggle="tab"><%= b %></a></li>
+					<% @neighborhoods.each do |borough, list| %>
+						<li role="presentation"><a href="#<%= borough %>" aria-controls="<%= borough %>" role="tab" data-toggle="tab">
+							<%= borough %></a>
+						</li>
 					<% end %>
 				</ul>
 
 				<!-- Tab panes -->
 				<div class="tab-content">
-	  		<% @by_boroughs.each do |b,neighs| %>
+	  		<% @neighborhoods.each do |borough, list| %>
 	  				
-			    	<div role="tabpanel" class="tab-pane" id="<%= b %>">
+			    	<div role="tabpanel" class="tab-pane" id="<%= borough %>">
 			    		<br />
 			    		<div class="row">
 			    		
-			    			<% for i in 0..neighs.count-1 %>
-				    			<% neighborhood = neighs[i] %>
+			    			<% for i in 0..list.count-1 %>
+				    			<% neighborhood = list[i] %>
 				    			<% if i % 3 == 0 && i > 0 %>
 				    				</div>
 				    				<div class="row">
@@ -50,30 +49,7 @@
 				<% end %><!-- boroughs -->
 				</div><!-- tab-content -->
 
-			<% else %>
-				<!-- No boroughs specified OR there is only 1 borough, skip the tabs. 
-					Just display the neighborhoods directly. -->
-					<div class="row">
-	    			<% for i in 0..neighs.count-1 %>
-		    			<% neighborhood = neighs[i] %>
-		    			<% if i % 3 == 0 && i > 0 %>
-		    				</div>
-		    				<div class="row">
-		    			<% end %>
-
-		    			<div class="col-xs-4">
-		    				<div class="btn-group neighborhood-buttons" data-toggle="buttons">
-				    			<label class="btn btn-xs btn-link btn-as-checkbox" 
-				    				id="<%= neighborhood.id %>" name="<%= neighborhood.name %>">
-									  <input type="checkbox" autocomplete="off"><%= wrap_text(neighborhood.name.titleize, 20) %>
-									</label>
-								</div>
-							</div>
-		    		<% end %>
-				</div>
-
-			<% end %><!-- by_boroughs -->
-		
+			
 	</div>
 
 

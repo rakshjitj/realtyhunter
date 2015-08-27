@@ -33,25 +33,13 @@ class ResidentialListingsController < ApplicationController
   # GET 
   # handles ajax call. uses latest data in modal
   def neighborhoods_modal
-    @neighborhoods = Neighborhood.unarchived.where(
-      city: current_user.office.administrative_area_level_2_short).all
-
-    # if boroughs are defined for this area, organize the neighborhoods by boroughs
-    #TODO: theres a faster way to do this...
-    boroughs = @neighborhoods.collect(&:borough).uniq
-    @by_boroughs = {}
-    if !boroughs.empty?
-      @neighborhoods.each do |neighborhood|
-        if !@by_boroughs.has_key? neighborhood.borough
-          @by_boroughs[neighborhood.borough] = []
-        end
-        @by_boroughs[neighborhood.borough] << neighborhood
-      end
-
-      # alphabetize
-      @by_boroughs.each do |b,n_array|
-        n_array.sort_by!{|n| n.name.downcase}
-      end
+    @neighborhoods = Neighborhood.unarchived
+    .where(city: current_user.office.administrative_area_level_2_short)
+    .to_a
+    .group_by(&:borough)
+    
+    @neighborhoods.each do |borough, list|
+      puts list.inspect
     end
 
     respond_to do |format|
