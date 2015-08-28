@@ -48,10 +48,9 @@ module API
 				listings = Unit.joins('left join residential_listings on units.id = residential_listings.unit_id
 left join commercial_listings on units.id = commercial_listings.unit_id')
 				.joins(building: [:neighborhood, :pet_policy])
-				residential_amenities = ResidentialListing.get_amenities(listings)
-
+				
 				listings = _restrict_on_unit_model(company_id, search_params, listings)
-				listings = _restrict_on_residential_model(company_id, search_params, listings, residential_amenities)
+				listings = _restrict_on_residential_model(company_id, search_params, listings)
 				listings = _sort_by(search_params, listings)
 
 				listings = listings
@@ -76,17 +75,18 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'units.primary_agent_id'
 				)
 
-				return [listings, residential_amenities]
+				#return [listings, residential_amenities]
+				return listings
 			end
 
 			def residential_search(company_id, search_params)
 				#listings = ResidentialListing.joins(unit: {building: [:neighborhood, :pet_policy]})
 				#	.includes(:residential_amenities)
 				listings = Unit.joins(:residential_listing, unit: {building: [:neighborhood, :pet_policy]})
-				residential_amenities = ResidentialListing.get_amenities(listings)
+				#residential_amenities = ResidentialListing.get_amenities(listings)
 
 				listings = _restrict_on_residential_model(company_id, search_params, listings)
-				listings = _restrict_on_unit_model(company_id, search_params, listings, residential_amenities)
+				listings = _restrict_on_unit_model(company_id, search_params, listings)
 				listings = _sort_by(search_params, listings)
 
 				listings = listings
@@ -110,7 +110,8 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'units.primary_agent_id'
 				)
 
-				return [listings, residential_amenities]
+				#return [listings, residential_amenities]
+				return listings
 			end
 
 			# TODO
@@ -282,7 +283,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 				end
 
 				# Filter our search by all fields relevent to the ResidentialListing model:
-				def _restrict_on_residential_model(company_id, search_params, listings, residential_amenities)
+				def _restrict_on_residential_model(company_id, search_params, listings)
 					# bedrooms
 					listings = _restrict_layout(search_params[:layout], listings)
 					# bathrooms
