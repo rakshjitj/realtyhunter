@@ -1,7 +1,6 @@
 json.prettify! if %w(1 yes true).include?(params["pretty"])
-#building.respond_to?("neighborhood_name".to_sym)
 
-if @listing_type == 10 || (@listing_type == "" && listing.r_id)
+if listing.r_id
 
 	json.listing_type "rental"
 	json.property_type "residential"
@@ -46,22 +45,7 @@ if @listing_type == 10 || (@listing_type == "" && listing.r_id)
 		end
 	end
 
-elsif @listing_type == 20
-	# TODO
-	json.listing_type "sales"
-	json.property_type "residential"
-	#json.commercial_use nil
-
-	json.min_lease_term nil
-	json.max_lease_term nil
-	json.renter_fee "Fee"
-	json.bathrooms nil
-	json.unit_amenities nil
-	json.unit_description nil
-	json.floor json.nil
-	json.layout nil
-
-elsif @listing_type == 30 || (@listing_type == "" && listing.c_id)
+elsif listing.c_id
 
 	json.listing_type "rental"
 	json.property_type "commercial"
