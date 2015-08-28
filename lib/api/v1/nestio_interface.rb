@@ -67,23 +67,21 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'neighborhoods.borough as neighborhood_borough',
 					'pet_policies.name AS pet_policy_name',
 					'residential_listings.id AS r_id', 
-					'commercial_listings.id as c_id',
 					'residential_listings.lease_start', 'residential_listings.lease_end', 
 					'residential_listings.tp_fee_percentage', 'residential_listings.beds', 
 					'residential_listings.baths', 'residential_listings.description',
+					'commercial_listings.id as c_id',
+					'commercial_listings.lease_term_months', 
+					'commercial_listings.property_description', 
 					'units.id as unit_id',
 					'units.primary_agent_id'
 				)
 
-				#return [listings, residential_amenities]
-				return listings
+				listings
 			end
 
 			def residential_search(company_id, search_params)
-				#listings = ResidentialListing.joins(unit: {building: [:neighborhood, :pet_policy]})
-				#	.includes(:residential_amenities)
 				listings = Unit.joins(:residential_listing, unit: {building: [:neighborhood, :pet_policy]})
-				#residential_amenities = ResidentialListing.get_amenities(listings)
 
 				listings = _restrict_on_residential_model(company_id, search_params, listings)
 				listings = _restrict_on_unit_model(company_id, search_params, listings)
@@ -110,8 +108,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'units.primary_agent_id'
 				)
 
-				#return [listings, residential_amenities]
-				return listings
+				listings
 			end
 
 			# TODO
@@ -120,7 +117,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 			end
 
 			def commercial_search(company_id, search_params)
-				listings = CommercialListing.joins(unit: {building: [:neighborhood]})
+				listings = Unit.joins(:commercial_listing, building: [:neighborhood])
 
 				# TODO: restrict by commercial params
 				listings = _restrict_on_unit_model(company_id, search_params, listings)
@@ -138,7 +135,8 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'buildings.lng',
 					'neighborhoods.name as neighborhood_name',
 					'neighborhoods.borough as neighborhood_borough',
-					'commercial_listings.unit_id', 'commercial_listings.lease_term_months', 
+					'units.id as unit_id',
+					'commercial_listings.lease_term_months', 
 					'commercial_listings.property_description', 
 					'units.primary_agent_id'
 				)

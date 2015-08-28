@@ -50,7 +50,7 @@ json.building do
 	json.name json.nil
 	# TODO json.amenities unit.building.building_amenities.map{|a| a.name}
 	json.id json.nil
-	json.street_address listing.street_number + ' ' + listing.route #listing.street_address
+	json.street_address listing.street_number + ' ' + listing.route
 	json.location do
 		json.latitude listing.lat
 		json.longitude listing.lng
