@@ -6,7 +6,8 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by(email: params[:session][:email].downcase)
+    # automatically lowercase their email and trim any whitespaces
+    user = User.find_by(email: params[:session][:email].downcase.gsub(/\A\p{Space}*|\p{Space}*\z/, ''))
     #puts "\n^^^^ found user #{user.inspect}"
     if user && user.authenticate(params[:session][:password])
       #puts "111111"
