@@ -14,21 +14,10 @@ else
 	end
 end
 
-if user.title == "manager" || 
-	user.title == "company admin" || 
-	user.title == "data entry" || 
-	user.title == "broker" || 
-	user.title == "closing manager"
-
-	#json.title "Executive Agent"
-	json.title "Other"
-
-elsif user.title == "agent"
+if user.title == "agent"
 	json.title "Licensed Real-Estate Agent"
-
 else
 	json.title "Other"
-
 end
 
 json.changed_at user.updated_at

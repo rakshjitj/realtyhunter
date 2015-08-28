@@ -93,17 +93,10 @@ class CommercialListing < ActiveRecord::Base
   end
 
   # returns all images for each unit
-  def self.get_all_images(list)
-    unit_ids = list.map(&:unit_id)
-    Image.where(unit_id: unit_ids).to_a.group_by(&:unit_id)
-  end
-  
-  # TODO
-  def self.get_primary_agents(list)
-    agent_ids = list.map(&:primary_agent_id)
-    User.where(id: agent_ids).select('id', 'name', 'email', 'mobile_phone_number', 'phone_number').to_a.group_by(&:id)
-    User.none
-  end
+  # def self.get_all_images(list)
+  #   unit_ids = list.map(&:unit_id)
+  #   Image.where(unit_id: unit_ids).to_a.group_by(&:unit_id)
+  # end
   
   def self.search(params, user, building_id=nil)
     @running_list = CommercialListing.joins([:commercial_property_type, unit: {building: [:landlord, :neighborhood]}])

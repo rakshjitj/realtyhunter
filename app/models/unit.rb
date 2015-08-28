@@ -34,6 +34,18 @@ class Unit < ActiveRecord::Base
     find_by!(id: id, archived: false)
   end
 
+  # returns all images for each unit
+  def self.get_all_images(list)
+    unit_ids = list.map(&:unit_id)
+    Image.where(unit_id: unit_ids).to_a.group_by(&:unit_id)
+  end
+
+  # Used by API.
+  def self.get_primary_agents(list)
+    agent_ids = list.map(&:primary_agent_id)
+    User.where(id: agent_ids).select('id', 'name', 'email', 'mobile_phone_number', 'phone_number').to_a.group_by(&:id)
+  end
+
   # mainly for use in our API. Returns list of any
   # agent contacts for this listing. Currently we have
   # 1 primary agent for each listing, but could change in the future.

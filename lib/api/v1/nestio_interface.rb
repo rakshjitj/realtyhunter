@@ -44,12 +44,15 @@ module API
 				neighborhoods
 			end
 
-			def residential_search(company_id, search_params)
-				listings = ResidentialListing.joins(unit: {building: [:neighborhood, :pet_policy]})
-					.includes(:residential_amenities) #, unit: {building: :building_amenities})
-				listings = _restrict_on_residential_model(company_id, search_params, listings)
+			def all_listings_search(company_id, search_params)
+				listings = Unit.joins('left join residential_listings on units.id = residential_listings.unit_id
+left join commercial_listings on units.id = commercial_listings.unit_id')
+				.joins(building: [:neighborhood, :pet_policy])
+				residential_amenities = ResidentialListing.get_amenities(listings)
+
 				listings = _restrict_on_unit_model(company_id, search_params, listings)
-				#listings = _sort_by(search_params, listings)
+				listings = _restrict_on_residential_model(company_id, search_params, listings, residential_amenities)
+				listings = _sort_by(search_params, listings)
 
 				listings = listings
 					.select('units.building_unit', 'units.status', 'units.available_by',
@@ -64,13 +67,50 @@ module API
 					'neighborhoods.name as neighborhood_name',
 					'neighborhoods.borough as neighborhood_borough',
 					'pet_policies.name AS pet_policy_name',
+					'residential_listings.id AS r_id', 
+					'commercial_listings.id as c_id',
 					'residential_listings.lease_start', 'residential_listings.lease_end', 
 					'residential_listings.tp_fee_percentage', 'residential_listings.beds', 
 					'residential_listings.baths', 'residential_listings.description',
-					'residential_listings.unit_id', 'units.primary_agent_id'
+					'units.id as unit_id',
+					'units.primary_agent_id'
 				)
 
-				listings
+				return [listings, residential_amenities]
+			end
+
+			def residential_search(company_id, search_params)
+				#listings = ResidentialListing.joins(unit: {building: [:neighborhood, :pet_policy]})
+				#	.includes(:residential_amenities)
+				listings = Unit.joins(:residential_listing, unit: {building: [:neighborhood, :pet_policy]})
+				residential_amenities = ResidentialListing.get_amenities(listings)
+
+				listings = _restrict_on_residential_model(company_id, search_params, listings)
+				listings = _restrict_on_unit_model(company_id, search_params, listings, residential_amenities)
+				listings = _sort_by(search_params, listings)
+
+				listings = listings
+					.select('units.building_unit', 'units.status', 'units.available_by',
+					'units.listing_id', 'units.updated_at', 'units.rent',
+					'buildings.administrative_area_level_2_short',
+					'buildings.administrative_area_level_1_short',
+					'buildings.sublocality',
+					'buildings.street_number', 'buildings.route', 
+					'buildings.postal_code',
+					'buildings.lat',
+					'buildings.lng',
+					'neighborhoods.name as neighborhood_name',
+					'neighborhoods.borough as neighborhood_borough',
+					'pet_policies.name AS pet_policy_name',
+					'residential_listings.id AS r_id', 
+					'residential_listings.lease_start', 'residential_listings.lease_end', 
+					'residential_listings.tp_fee_percentage', 'residential_listings.beds', 
+					'residential_listings.baths', 'residential_listings.description',
+					'units.id as unit_id',
+					'units.primary_agent_id'
+				)
+
+				return [listings, residential_amenities]
 			end
 
 			# TODO
@@ -170,8 +210,16 @@ module API
 					feature_record = ResidentialAmenity.where(company_id: company_id)
 						.where('name ILIKE ?', "%#{feature.downcase}%").first
 					if feature_record
-						listings = listings.joins(:residential_amenities)
-  	    			.where('residential_amenity_id = ?', feature_record.id)
+						# listings is still a list of unit records
+						unit_ids = listings.map(&:id)
+				    restricted_unit_ids = ResidentialListing.joins(:residential_amenities)
+				    .where(unit_id: unit_ids)
+				    .where('residential_amenity_id = ?', feature_record.id)
+				    .map{|r| r.unit_id}
+
+						#listings = listings.joins(residential_listing: :residential_amenities)
+  	    		#	.where('residential_amenity_id = ?', feature_record.id)
+  	    		listings = listings.where(id: restricted_unit_ids)
   	    	end
 
 					listings
@@ -206,8 +254,9 @@ module API
 					# laundry_in_building
 					listings = _search_by_bldg_amenity('laundry_in_building', company_id, listings, search_params)
 					
-					if search_params[:has_photos] && search_params[:has_photos] == "true"
-						listings = listings.joins(unit: :images)
+					if search_params[:has_photos] && (search_params[:has_photos] == "true" || search_params[:has_photos] == "1")
+						#listings = listings.joins(unit: :images)
+						listings = listings.joins(:images)
 					end
 
 					# neighborhoods
@@ -233,7 +282,7 @@ module API
 				end
 
 				# Filter our search by all fields relevent to the ResidentialListing model:
-				def _restrict_on_residential_model(company_id, search_params, listings)
+				def _restrict_on_residential_model(company_id, search_params, listings, residential_amenities)
 					# bedrooms
 					listings = _restrict_layout(search_params[:layout], listings)
 					# bathrooms

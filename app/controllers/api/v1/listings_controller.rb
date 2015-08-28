@@ -33,7 +33,7 @@ module API
 			def restrict_results
 				# 10 = residential, 20 = sales, 30 = commercial
 				# default to residential
-				@listing_type = %w[10 20 30].include?(listing_params[:listing_type]) ? listing_params[:listing_type] : "10"
+				@listing_type = %w[10 20 30].include?(listing_params[:listing_type]) ? listing_params[:listing_type] : ""
 				# 10 - studio, 20 - 1 BR, 30 - 2 BR, 40 - 3 BR, 50 - 4+ BR, 80 - LOFT
 				layout = %w[10 20 30 40 50 80].include?(listing_params[:layout]) ? listing_params[:layout] : ""
 				# 10 - 1 B, 15 - 1.5 B, 20 - 2 B, 25 - 2.5 B, 30 - 3 B, 35 - 3.5+ B
@@ -98,23 +98,33 @@ module API
 			end
 
 			def search_type_breakdown(search_params)
-				if search_params[:listing_type] == "10"
-					@listings = residential_search(@user.company_id, search_params)
+
+				if !search_params[:listing_type] || search_params[:listing_type].empty?
+					@listings, @residential_amenities = all_listings_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
-					@images = ResidentialListing.get_all_images(@listings)
-					@primary_agents = ResidentialListing.get_primary_agents(@listings)
+					@images = Unit.get_all_images(@listings)
+					@primary_agents = Unit.get_primary_agents(@listings)
+
+				elsif search_params[:listing_type] == "10"
+					@listings, @residential_amenities = all_listings_search(@user.company_id, search_params)
+					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
+					@images = Unit.get_all_images(@listings)
+					@primary_agents = Unit.get_primary_agents(@listings)
 
 				# sales
 				elsif search_params[:listing_type] == "20"
 					@listings = sales_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
+					@images = Unit.get_all_images(@listings)
+					@primary_agents = Unit.get_primary_agents(@listings)
 
 				# commercial
 				elsif search_params[:listing_type] == "30"
 					@listings = commercial_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
-					@images = CommercialListing.get_all_images(@listings)
-					@primary_agents = CommercialListing.get_primary_agents(@listings)
+					@images = Unit.get_all_images(@listings)
+					@primary_agents = Unit.get_primary_agents(@listings)
+					#@primary_agents = CommercialListing.get_primary_agents(@listings)
 
 				end
 			end

@@ -88,15 +88,10 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   # returns all images for each unit
-  def self.get_all_images(list)
-    unit_ids = list.map(&:unit_id)
-    Image.where(unit_id: unit_ids).to_a.group_by(&:unit_id)
-  end
-
-  def self.get_primary_agents(list)
-    agent_ids = list.map(&:primary_agent_id)
-    User.where(id: agent_ids).select('id', 'name', 'email', 'mobile_phone_number', 'phone_number').to_a.group_by(&:id)
-  end
+  # def self.get_all_images(list)
+  #   unit_ids = list.map(&:unit_id)
+  #   Image.where(unit_id: unit_ids).to_a.group_by(&:unit_id)
+  # end
 
   def self.get_amenities(list)
     ids = list.map(&:id)
@@ -265,12 +260,6 @@ class ResidentialListing < ActiveRecord::Base
     end
 
     @running_list
-  end
-
-  # mainly used in API
-  # prints layout in Nestio's format
-  def beds_to_s
-    beds == 0 ? "Studio" : (beds.to_s + ' Bedroom')
   end
 
   # TODO: run this in the background. See Image class for stub
@@ -446,14 +435,12 @@ class ResidentialListing < ActiveRecord::Base
     return listings, images
   end
 
-  # fee info is inherited from the building
-  # def inherit_building_info
-  #   self.has_fee = unit.building.landlord.has_fee
-  #   if !self.op_fee_percentage
-  #     self.op_fee_percentage = unit.building.landlord.op_fee_percentage
-  #   end
-  #   if !self.tp_fee_percentage
-  #     self.tp_fee_percentage = unit.building.landlord.tp_fee_percentage
-  #   end
-  # end
+  # Used in our API. Takes in a list of units
+  def self.get_amenities(list_of_units)
+    unit_ids = list_of_units.map(&:id)
+    ResidentialListing.joins(:residential_amenities)
+    .where(unit_id: unit_ids).select('name', 'unit_id', 'id')
+    .to_a.group_by(&:unit_id)
+  end
+
 end
