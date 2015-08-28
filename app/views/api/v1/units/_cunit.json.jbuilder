@@ -14,22 +14,23 @@ json.prettify! if %w(1 yes true).include?(params["pretty"])
 	json.layout nil
 
 
-if listing.status == Unit.statuses["active"]
+if listing.status == "active"
 	json.status  "Active"
 
-elsif listing.status == Unit.statuses["pending"] ||
-listing.status == Unit.statuses["offer_submitted"] ||
-listing.status == Unit.statuses["offer_accepted"] ||
-listing.status == Unit.statuses["binder_signed"]
+elsif listing.status == "pending" ||
+listing.status == "offer_submitted" ||
+listing.status == "offer_accepted" ||
+listing.status == "binder_signed"
 
 	json.status "App Pending"
 
-elsif listing.status == Unit.statuses["off"] ||
-listing.status == Unit.statuses["off_market_for_lease_execution"]
+elsif listing.status == "off" ||
+listing.status == "off_market_for_lease_execution"
 	
 	json.status "Lease Out"
 
 end
+
 
 json.building do
 	json.city listing.sublocality # should display city (brooklyn, new york)
