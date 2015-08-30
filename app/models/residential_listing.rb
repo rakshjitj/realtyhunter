@@ -281,26 +281,30 @@ class ResidentialListing < ActiveRecord::Base
 
   def duplicate(new_unit_num, include_photos=false)
     if new_unit_num && new_unit_num != self.id
-        # copy objects
-        unit_dup = self.unit.dup
-        unit_dup.building_unit = new_unit_num
-        unit_dup.save
+      # copy objects
+      unit_dup = self.unit.dup
+      unit_dup.building_unit = new_unit_num
+      unit_dup.listing_id = nil
+      if unit_dup.save!
+
         residential_unit_dup = self.dup
-        residential_unit_dup.unit = unit_dup
-        residential_unit_dup.save
+        residential_unit_dup.update(unit_id: unit_dup.id)
 
         self.residential_amenities.each {|a| 
           residential_unit_dup.residential_amenities << a
         }
+      else
+        raise "Error saving unit"
+      end    
 
-        #Image.async_copy_residential_unit_images(self.id, residential_unit_dup.id)
-        if include_photos
-          self.deep_copy_imgs(residential_unit_dup.id)
-        end
+      #Image.async_copy_residential_unit_images(self.id, residential_unit_dup.id)
+      if include_photos
+        self.deep_copy_imgs(residential_unit_dup.id)
+      end
 
-        #building.increment_memcache_iterator
-        #puts "NEW UNIT NUM #{residential_unit_dup.unit.building_unit}"
-        residential_unit_dup
+      #building.increment_memcache_iterator
+      #puts "NEW UNIT NUM #{residential_unit_dup.unit.building_unit}"
+      residential_unit_dup
     else
       raise "No unit number, invalid unit number, or unit number already taken specified"
     end
