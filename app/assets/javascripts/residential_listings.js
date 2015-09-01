@@ -158,7 +158,9 @@ ResidentialListings = {};
 
 	ResidentialListings.updateOverviewMap = function(in_data) {
 		ResidentialListings.overlays.clearLayers();
-    var markers = new L.MarkerClusterGroup().addTo(ResidentialListings.overlays);//{ showCoverageOnHover: false });
+    var markers = new L.MarkerClusterGroup({
+    	maxClusterRadius: 30 // lean towards showing more individual markers
+    }).addTo(ResidentialListings.overlays);//{ showCoverageOnHover: false });
 		
     var dataPoints;
 	  // if updating from an ajax call, in_data will hava content.
