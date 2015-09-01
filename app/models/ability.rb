@@ -3,7 +3,8 @@ class Ability
 
   def initialize(user)
     user ||= User.new # guest user (not logged in)
-    
+    alias_action :managers, :employees, :agents, :to => :view_staff
+
     # global super admin can control everything
     if user.has_role? :super_admin
       # can do anything
@@ -12,6 +13,7 @@ class Ability
     # company admins can do anything, but for his/her particular company only
     # managers/data entry can do most things
     elsif user.has_role?(:company_admin) || user.has_role?(:manager) || user.has_role?(:data_entry) || user.has_role?(:closing_manager)
+
       if user.has_role?(:company_admin) || user.has_role?(:closing_manager)
         can :manage, User, :company_id => user.company_id
         can :manage, Company, :id => user.company.id
@@ -20,16 +22,25 @@ class Ability
           !landlord.company_id || landlord.company_id == user.company_id
         end
       elsif user.has_role?(:data_entry)
-        can :read, User, :company_id => user.company_id
+
         can :read, Company, :id => user.company.id
+        can :view_staff, Company, :id => user.company.id
         can :read, Office, :company_id => user.company.id
+        can :view_staff, Office, :id => user.company.id
+
+        can :read, Building, :company_id => user.company_id
+        can :filter, Building, :company_id => user.company_id
+
+        can :read, User, :company_id => user.company_id
         can :manage, Landlord do |landlord|
           !landlord.company_id || landlord.company_id == user.company_id
         end
+      
+
       elsif user.has_role?(:manager)
         can :read, User, :company_id => user.company_id
         can :manage, User, :id => user.id
-        can :read, Company, :id => user.company.id
+        can :view_staff, Company, :id => user.company.id
         can :read, Office, :company_id => user.company.id
         can :read, Landlord do |landlord|
           landlord.company_id == user.company_id
@@ -47,6 +58,14 @@ class Ability
       can :manage, CommercialListing do |commercial_listing|
         !commercial_listing.unit || user.is_management? || (commercial_listing.unit.building.company_id == user.company_id && user.handles_commercial?)
       end
+
+      # everyone can filter, send error reports
+      can [:filter, :neighborhoods_modal, :features_modal, :print_list], [ResidentialListing, CommercialListing]
+      can [:inaccuracy_modal, :send_inaccuracy, :print_modal, :print_public, :print_private], [ResidentialListing, CommercialListing]
+      can [:autocomplete_building_formatted_street_address], [ResidentialListing, CommercialListing, Building]
+      can [:autocomplete_landlord_code], [ResidentialListing, Landlord]
+      can [:autocomplete_user_name, :filter, :filter_listings, :coworkers, :subordinates], [User]
+
     
     elsif user.has_role?(:external_vendor)
       cannot :read, :all
@@ -57,7 +76,7 @@ class Ability
       # can only manage his/her profile
       # can't view landlords
       if user.company_id
-        alias_action :managers, :employees, :agents, :to => :view_staff
+        
 
         can :read, Company, :id => user.company.id
         can :view_staff, Company, :id => user.company.id
@@ -71,6 +90,7 @@ class Ability
           residential_listing.unit.building.company_id == user.company_id && user.handles_residential?
         end
         
+        # everyone can filter, send error reports
         can [:filter, :neighborhoods_modal, :features_modal, :print_list], [ResidentialListing, CommercialListing]
         can [:inaccuracy_modal, :send_inaccuracy, :print_modal, :print_public, :print_private], [ResidentialListing, CommercialListing]
         can [:autocomplete_building_formatted_street_address], [ResidentialListing, CommercialListing, Building]
