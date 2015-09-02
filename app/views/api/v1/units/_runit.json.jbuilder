@@ -79,7 +79,13 @@ json.building do
 	end
 
 	json.name json.nil
-	# TODO json.amenities unit.building.building_amenities.map{|a| a.name}
+	
+	if @building_amenities[listing.building_id]
+		json.amenities @building_amenities[listing.building_id].map{|b| b.name}
+	else
+		json.amenities nil
+	end
+
 	json.id json.nil
 	json.street_address listing.street_number + ' ' + listing.route #listing.street_address
 	json.location do

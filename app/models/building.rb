@@ -154,6 +154,14 @@ class Building < ActiveRecord::Base
     CommercialListing.for_buildings([id], active_only)
   end
 
+  # Used in our API. Takes in a list of units
+  def self.get_amenities(list_of_units)
+    building_ids = list_of_units.map(&:building_id)
+    list = Building.joins(:building_amenities)
+      .where(id: building_ids).select('name', 'id')
+      .to_a.group_by(&:id)
+  end
+
   private
 
   	def process_rental_term

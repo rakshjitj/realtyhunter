@@ -178,15 +178,18 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					feature_record1 = ResidentialAmenity.where(company_id: company_id)
 						.where('residential_amenities.name ILIKE ?', "%washer/dryer%").first
 					if feature_record1
-						listings1_ids = listings.joins(:residential_amenities)
-  	    			.where('residential_amenity_id = ?', feature_record1.id).map(&:id)
+						unit_ids = listings.map(&:id)
+				    listings1_ids = ResidentialListing.joins(:residential_amenities)
+				    .where(unit_id: unit_ids)
+				    .where('residential_amenity_id = ?', feature_record1.id)
+				    .map{|r| r.unit_id}
   	    	end
 
   	    	feature_record2 = BuildingAmenity
   	    		.where(company_id: company_id).
   	    		where('name ILIKE ?', 'laundry in bldg').first
 					if feature_record2
-						listings2_ids = listings.joins(unit: {building: :building_amenities})
+						listings2_ids = listings.joins(building: :building_amenities)
   	    			.where('building_amenity_id = ?', feature_record2.id).map(&:id)
   	    	end
 

@@ -102,8 +102,6 @@ module API
 				if search_params[:listing_type] == "10" # residential
 					@listings = residential_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
-					@images = Unit.get_all_images(@listings)
-					@primary_agents = Unit.get_primary_agents(@listings)
 					@pet_policies = Unit.get_pet_policies(@listings)
 					@residential_amenities = ResidentialListing.get_amenities(@listings)
 
@@ -111,26 +109,24 @@ module API
 				elsif search_params[:listing_type] == "20" # sales
 					@listings = sales_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
-					@images = Unit.get_all_images(@listings)
-					@primary_agents = Unit.get_primary_agents(@listings)
-
+					
 				# commercial
 				elsif search_params[:listing_type] == "30" #commercial
 					@listings = commercial_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
-					@images = Unit.get_all_images(@listings)
-					@primary_agents = Unit.get_primary_agents(@listings)
 					#@primary_agents = CommercialListing.get_primary_agents(@listings)
 
 				else
 					@listings = all_listings_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
-					@images = Unit.get_all_images(@listings)
-					@primary_agents = Unit.get_primary_agents(@listings)
 					@residential_amenities = ResidentialListing.get_amenities(@listings)
 					@pet_policies = Unit.get_pet_policies(@listings)
 
 				end
+
+				@images = Unit.get_all_images(@listings)
+				@primary_agents = Unit.get_primary_agents(@listings)
+				@building_amenities = Building.get_amenities(@listings)
 			end
 
 			# Never trust parameters from the scary internet, only allow the white list through.

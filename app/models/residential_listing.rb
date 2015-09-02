@@ -444,10 +444,10 @@ class ResidentialListing < ActiveRecord::Base
 
   # Used in our API. Takes in a list of units
   def self.get_amenities(list_of_units)
-    unit_ids = list_of_units.map(&:id)
-    ResidentialListing.joins(:residential_amenities)
-    .where(unit_id: unit_ids).select('name', 'unit_id', 'id')
-    .to_a.group_by(&:unit_id)
+    unit_ids = list_of_units.map(&:unit_id)
+    list = ResidentialListing.joins(:residential_amenities)
+      .where(unit_id: unit_ids).select('name', 'unit_id', 'id')
+      .to_a.group_by(&:unit_id)
   end
 
 end
