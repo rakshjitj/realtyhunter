@@ -104,6 +104,9 @@ class LandlordsController < ApplicationController
     def set_landlord
       @landlord = Landlord.find_unarchived(params[:id])
       set_units
+    rescue ActiveRecord::RecordNotFound
+      flash[:warning] = "Sorry, that landlord is not active."
+      redirect_to :action => 'index'
     end
 
     def set_units

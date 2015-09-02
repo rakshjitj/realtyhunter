@@ -258,6 +258,9 @@ class CommercialListingsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_commercial_listing
       @commercial_unit = CommercialListing.find_unarchived(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:warning] = "Sorry, that listing is not active."
+      redirect_to :action => 'index'
     end
 
     def set_commercial_listings
