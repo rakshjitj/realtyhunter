@@ -15,6 +15,7 @@ class Ability
     elsif user.has_role?(:company_admin) || user.has_role?(:manager) || user.has_role?(:data_entry) || user.has_role?(:closing_manager)
 
       if user.has_role?(:company_admin) || user.has_role?(:closing_manager)
+        # managers/admins of any kind can manage user accounts
         can :manage, User, :company_id => user.company_id
         can :manage, Company, :id => user.company.id
         can :manage, Office, :company_id => user.company.id
@@ -31,15 +32,19 @@ class Ability
         can :read, Building, :company_id => user.company_id
         can :filter, Building, :company_id => user.company_id
 
+        # should only be able to edit their own user profile
         can :read, User, :company_id => user.company_id
+        can :manage, User, :id => user.id
+
         can :manage, Landlord do |landlord|
           !landlord.company_id || landlord.company_id == user.company_id
         end
       
 
       elsif user.has_role?(:manager)
+        # managers/admins of any kind can manage user accounts
+        can :manage, User, :company_id => user.company_id
         can :read, User, :company_id => user.company_id
-        can :manage, User, :id => user.id
         can :view_staff, Company, :id => user.company.id
         can :read, Office, :company_id => user.company.id
         can :read, Landlord do |landlord|
@@ -76,7 +81,6 @@ class Ability
       # can only manage his/her profile
       # can't view landlords
       if user.company_id
-        
 
         can :read, Company, :id => user.company.id
         can :view_staff, Company, :id => user.company.id
