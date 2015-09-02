@@ -123,8 +123,9 @@ class ResidentialListing < ActiveRecord::Base
     if !params && !building_id
       return @running_list
     elsif !params && building_id
-      @running_list = @running_list.where(building_id: building_id)
-      return @running_list
+      # TODO
+      #@running_list = @running_list.where(building_id: building_id)
+      #return @running_list
     end
 
     # only admins are allowed to view off-market units
@@ -185,11 +186,8 @@ class ResidentialListing < ActiveRecord::Base
     if params[:building_feature_ids]
       features = params[:building_feature_ids][0, 256]
       features = features.split(",").select{|i| !i.empty?}
-        #@running_list = @running_list.joins(unit: {building: :building_amenities})
-        #.where('building_amenity_id IN (?)', features)
-
         bldg_ids = Building.joins(:building_amenities).where('building_amenity_id IN (?)', features).map(&:id)
-        @running_list = @running_list.where('building_id = ?', bldg_ids)
+        @running_list = @running_list.where("building_id IN (?)", bldg_ids)
     end
 
     # search landlord code
