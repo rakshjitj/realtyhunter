@@ -87,13 +87,6 @@ Landlords = {};
   Landlords.timer;
   Landlords.throttledSearch = function() {
     Landlords.showSpinner();
-    // only accept letter/number keys as search input
-    // var charTyped = String.fromCharCode(e.which);
-    // if (/[a-z\d]/i.test(charTyped)) {
-    //     console.log("Letter or number typed: " + charTyped);
-    // } else {
-    //   return;
-    // }
     
     clearTimeout(Landlords.timer);  //clear any interval on key up
     Landlords.timer = setTimeout(Landlords.doSearch, 500);

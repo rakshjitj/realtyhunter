@@ -9,11 +9,13 @@ class LandlordsController < ApplicationController
   # GET /landlords
   # GET /landlords.json
   def index
-    set_landlords
 
     respond_to do |format|
-      format.html
+      format.html do
+        set_landlords
+      end
       format.csv do
+        set_landlords_csv
         headers['Content-Disposition'] = "attachment; filename=\"landlords-list.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
@@ -116,6 +118,11 @@ class LandlordsController < ApplicationController
       @landlords = Landlord.search(params)
       @landlords = custom_sort
       @landlords = @landlords.page params[:page]
+    end
+
+    def set_landlords_csv
+      @landlords = Landlord.search_csv(params)
+      @landlords = custom_sort
     end
 
     def custom_sort

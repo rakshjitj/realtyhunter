@@ -57,10 +57,7 @@ class Landlord < ActiveRecord::Base
 		end
 	end
 
-	def self.search(params)
-		@running_list = Landlord.unarchived.includes(:buildings)
-			.select('landlords.id', 'landlords.code', 'landlords.name',
-				'landlords.updated_at', 'landlords.mobile')
+	def self._search(params)
 		if !params
 	    return @running_list 
   	end
@@ -78,6 +75,18 @@ class Landlord < ActiveRecord::Base
     end
 
     @running_list
+	end
+
+	def self.search_csv(params)
+		@running_list = Landlord.unarchived.includes(:buildings)
+		self._search(params)
+	end
+
+	def self.search(params)
+		@running_list = Landlord.unarchived.includes(:buildings)
+			.select('landlords.id', 'landlords.code', 'landlords.name',
+				'landlords.updated_at', 'landlords.mobile')
+		self._search(params)
 	end
 
 	def residential_units(active_only=false)
