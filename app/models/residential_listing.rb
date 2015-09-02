@@ -112,13 +112,13 @@ class ResidentialListing < ActiveRecord::Base
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent', 'residential_listings.beds', 
         'beds || \'/\' || baths as bed_and_baths',
-        # unit.building.street_number + ' ' + unit.building.route
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at', 
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by')
+      # unit.building.street_number + ' ' + unit.building.route
 
     if !params && !building_id
       return @running_list
@@ -156,7 +156,6 @@ class ResidentialListing < ActiveRecord::Base
       status = params[:status].downcase
       included = ['active + pending', 'active', 'pending', 'off'].include?(status)
       if included
-        #puts "\n\n\n GOT STATUS #{status} #{Unit.statuses[status]}\n\n\n"
         if status == 'active + pending'
           @running_list = @running_list.where("status = ? or status = ?", 
             Unit.statuses["active"], Unit.statuses["pending"])
@@ -186,8 +185,11 @@ class ResidentialListing < ActiveRecord::Base
     if params[:building_feature_ids]
       features = params[:building_feature_ids][0, 256]
       features = features.split(",").select{|i| !i.empty?}
-        @running_list = @running_list.joins(building: :building_amenities)
-        .where('building_amenity_id IN (?)', features)
+        #@running_list = @running_list.joins(unit: {building: :building_amenities})
+        #.where('building_amenity_id IN (?)', features)
+
+        bldg_ids = Building.joins(:building_amenities).where('building_amenity_id IN (?)', features).map(&:id)
+        @running_list = @running_list.where('building_id = ?', bldg_ids)
     end
 
     # search landlord code
