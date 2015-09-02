@@ -48,13 +48,13 @@ module API
 				listings = Unit.joins('left join residential_listings on units.id = residential_listings.unit_id
 left join commercial_listings on units.id = commercial_listings.unit_id')
 				.joins(building: :neighborhood)
+				.where('units.archived = false')
 				
 				listings = _restrict_on_unit_model(company_id, search_params, listings)
 				listings = _restrict_on_residential_model(company_id, search_params, listings)
 				listings = _sort_by(search_params, listings)
 
 				listings = listings
-					.where('units.archived = false')
 					.select('units.building_unit', 'units.status', 'units.available_by',
 					'units.listing_id', 'units.updated_at', 'units.rent',
 					'buildings.id as building_id',
