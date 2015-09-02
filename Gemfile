@@ -76,7 +76,7 @@ gem "oj"
 #gem "rack-timeout"
 
 group :production do
-	gem 'rails_12factor'
+	gem 'rails_12factor' # related to serving static assets
 	gem 'puma'
 	gem 'wkhtmltopdf-heroku', '~> 2.12.2.1'
   gem 'connection_pool'
