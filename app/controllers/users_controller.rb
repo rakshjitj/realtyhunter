@@ -249,6 +249,9 @@ class UsersController < ApplicationController
       @user = User.find_unarchived(params[:id])
       @agent_title = EmployeeTitle.agent
       set_units
+    rescue ActiveRecord::RecordNotFound
+      flash[:warning] = "Sorry, that user account is not active."
+      redirect_to :action => 'index'
     end
 
     def set_users

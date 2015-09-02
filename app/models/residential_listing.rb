@@ -178,9 +178,12 @@ class ResidentialListing < ActiveRecord::Base
     # search neighborhoods
     if params[:neighborhood_ids]
       neighborhood_ids = params[:neighborhood_ids][0, 256]
-      neighborhoods = neighborhood_ids.split(",").select{|i| !i.empty?}
-      @running_list = @running_list
-       .where('neighborhood_id IN (?)', neighborhoods)
+      neighborhoods = neighborhood_ids.split(",").select{|i| !i.strip.empty?}
+      puts "**** #{neighborhoods.inspect}"
+      if neighborhoods.length > 0 # ignore empty selection
+        @running_list = @running_list
+         .where('neighborhood_id IN (?)', neighborhoods)
+      end
     end
 
     if params[:building_feature_ids]
