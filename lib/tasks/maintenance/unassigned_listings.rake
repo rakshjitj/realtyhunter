@@ -14,12 +14,17 @@ namespace :maintenance do
 			.where("units.status = ?", Unit.statuses['active'])
 			.order('buildings.street_number')
 
+		results = []
 		@units.each {|u|
 			if u.unit && !u.unit.primary_agent
-				puts u.street_address_and_unit
+				#puts u.street_address_and_unit
+				results << u.street_address_and_unit
 			end
 		}
 
+		puts "Found #{results.count} results:"
+		puts results.join("\n")
+		
 		puts "Done!\n"
 		log.info "Done!\n"
 		end_time = Time.now
