@@ -76,7 +76,7 @@
           </div>
           <div class="col-xs-9">
             <%= select_tag(:status, 
-              options_for_select(['Active', 'Offer Submitted', 'Offer Accepted', 'Binder Signed', 'Off Market for Lease Execution', 'Off'], 
+              options_for_select(['Any', 'Active', 'Offer Submitted', 'Offer Accepted', 'Binder Signed', 'Off Market for Lease Execution', 'Off'], 
               params[:status] ? params[:status].titleize : "Active"),
               class:"form-control") %>
           </div>
@@ -146,6 +146,20 @@
 </div>
 
 <div class="row">
+  <div class="col-md-6">
+    <br />
+    <p class="totals">
+      <%= @count_all %> total units found. <%= @commercial_units.total_count %> units shown.
+    </p>
+  </div>
+  <div class="col-md-6">
+    <div class="form-label-responsive">
+      <%= render partial: 'shared/pagination', locals: {models: @commercial_units} %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
   <div class="col-md-12">
     <br />
     <table class="table table-striped table-hover table-condensed table-responsive">
@@ -165,7 +179,6 @@
         </tr>
       </thead>
 
-      <%= @commercial_listings %>
       <tbody class="commercial_units_table_body">
         <%= render partial: 'commercial_listings/commercial_listing', 
         collection: @commercial_units, locals: {com_images: @com_images} %>

@@ -30,7 +30,7 @@ CommercialUnits = {};
     }
 
     var search_path = $('#com-search-filters').attr('data-search-path');
-    //console.log(sort_by_col, sort_direction);
+    
     $.ajax({
       url: search_path, 
       data: {

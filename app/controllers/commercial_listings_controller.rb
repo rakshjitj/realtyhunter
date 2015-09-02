@@ -264,7 +264,7 @@ class CommercialListingsController < ApplicationController
       do_search
       @commercial_units = custom_sort
 
-      @count_all = CommercialListing.all.count
+      @count_all = CommercialListing.joins(:unit).where('units.archived = false').count
       @map_infos = CommercialListing.set_location_data(@commercial_units.to_a)
       @commercial_units = @commercial_units.page params[:page]
       @com_images = CommercialListing.get_images(@commercial_units)
