@@ -9,7 +9,7 @@ class Image < ActiveRecord::Base
     thumb: '100x100>',
     square: '200x200#',
     medium: '300x300>'
-  }
+  }, default_url: "/images/:style/missing.png"
   process_in_background :file
 
   # Validate filename

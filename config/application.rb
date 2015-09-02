@@ -23,7 +23,7 @@ module RealtyHunter
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
     config.autoload_paths += %W(#{config.root}/lib) # add this line
-    config.assets.precompile += ['application.css', 'custom.css']
+    config.assets.precompile += ['application.css', 'custom.css', 'bootstrap/glyphicon*']
 
     config.middleware.insert_before 0, "Rack::Cors", :debug => true, :logger => (-> { Rails.logger }) do
       allow do
@@ -41,6 +41,9 @@ module RealtyHunter
           :max_age => 0
       end
     end
+
+    # maybe this will help with the bootstrap font issue? (rollbar #53)
+    # config.serve_static_files = true
 
     #config.active_job.queue_adapter = :delayed_job
   end
