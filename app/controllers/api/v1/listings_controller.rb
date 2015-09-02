@@ -99,21 +99,23 @@ module API
 
 			def search_type_breakdown(search_params)
 
-				if search_params[:listing_type] == "10"
+				if search_params[:listing_type] == "10" # residential
 					@listings = all_listings_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
 					@images = Unit.get_all_images(@listings)
 					@primary_agents = Unit.get_primary_agents(@listings)
+					@pet_policies = Unit.get_pet_policies(@listings)
 					@residential_amenities = ResidentialListing.get_amenities(@listings)
+
 				# sales
-				elsif search_params[:listing_type] == "20"
+				elsif search_params[:listing_type] == "20" # sales
 					@listings = sales_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
 					@images = Unit.get_all_images(@listings)
 					@primary_agents = Unit.get_primary_agents(@listings)
 
 				# commercial
-				elsif search_params[:listing_type] == "30"
+				elsif search_params[:listing_type] == "30" #commercial
 					@listings = commercial_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
 					@images = Unit.get_all_images(@listings)
@@ -126,7 +128,8 @@ module API
 					@images = Unit.get_all_images(@listings)
 					@primary_agents = Unit.get_primary_agents(@listings)
 					@residential_amenities = ResidentialListing.get_amenities(@listings)
-					
+					@pet_policies = Unit.get_pet_policies(@listings)
+
 				end
 			end
 

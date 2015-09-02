@@ -40,10 +40,18 @@ class Unit < ActiveRecord::Base
     Image.where(unit_id: unit_ids).to_a.group_by(&:unit_id)
   end
 
-  # Used by API.
+  # Used by API
   def self.get_primary_agents(list)
     agent_ids = list.map(&:primary_agent_id)
     User.where(id: agent_ids).select('id', 'name', 'email', 'mobile_phone_number', 'phone_number').to_a.group_by(&:id)
+  end
+
+  # Used by API
+  def self.get_pet_policies(list)
+    bldg_ids = list.map(&:building_id)
+    Building.joins(:pet_policy).where(id: bldg_ids)
+      .select('buildings.id', 'pet_policies.name as pet_policy_name')
+      .to_a.group_by(&:id)
   end
 
   # mainly for use in our API. Returns list of any

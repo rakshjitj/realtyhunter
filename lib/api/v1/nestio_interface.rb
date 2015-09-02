@@ -47,7 +47,7 @@ module API
 			def all_listings_search(company_id, search_params)
 				listings = Unit.joins('left join residential_listings on units.id = residential_listings.unit_id
 left join commercial_listings on units.id = commercial_listings.unit_id')
-				.joins(building: [:neighborhood, :pet_policy])
+				.joins(building: :neighborhood)
 				
 				listings = _restrict_on_unit_model(company_id, search_params, listings)
 				listings = _restrict_on_residential_model(company_id, search_params, listings)
@@ -57,6 +57,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					.where('units.archived = false')
 					.select('units.building_unit', 'units.status', 'units.available_by',
 					'units.listing_id', 'units.updated_at', 'units.rent',
+					'buildings.id as building_id',
 					'buildings.administrative_area_level_2_short',
 					'buildings.administrative_area_level_1_short',
 					'buildings.sublocality',
@@ -66,7 +67,6 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'buildings.lng',
 					'neighborhoods.name as neighborhood_name',
 					'neighborhoods.borough as neighborhood_borough',
-					'pet_policies.name AS pet_policy_name',
 					'residential_listings.id AS r_id', 
 					'residential_listings.lease_start', 'residential_listings.lease_end', 
 					'residential_listings.tp_fee_percentage', 'residential_listings.beds', 
@@ -83,7 +83,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 
 			def residential_search(company_id, search_params)
 				listings = Unit
-					.joins(:residential_listing, unit: {building: [:neighborhood, :pet_policy]})
+					.joins(:residential_listing, unit: {building: :neighborhood})
 					.where('units.archived = false')
 
 				listings = _restrict_on_residential_model(company_id, search_params, listings)
@@ -93,6 +93,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 				listings = listings
 					.select('units.building_unit', 'units.status', 'units.available_by',
 					'units.listing_id', 'units.updated_at', 'units.rent',
+					'buildings.id as building_id',
 					'buildings.administrative_area_level_2_short',
 					'buildings.administrative_area_level_1_short',
 					'buildings.sublocality',
@@ -102,7 +103,6 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'buildings.lng',
 					'neighborhoods.name as neighborhood_name',
 					'neighborhoods.borough as neighborhood_borough',
-					'pet_policies.name AS pet_policy_name',
 					'residential_listings.id AS r_id', 
 					'residential_listings.lease_start', 'residential_listings.lease_end', 
 					'residential_listings.tp_fee_percentage', 'residential_listings.beds', 

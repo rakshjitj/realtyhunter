@@ -28,8 +28,8 @@ if listing.r_id
 
 	json.unit_number listing.building_unit
 
-	if listing.pet_policy_name
-		json.pets listing.pet_policy_name
+	if @pet_policies[listing.building_id]
+		json.pets @pet_policies[listing.building_id][0].pet_policy_name
 	else
 		json.pets nil
 	end
