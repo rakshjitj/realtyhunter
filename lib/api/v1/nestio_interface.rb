@@ -83,7 +83,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 
 			def residential_search(company_id, search_params)
 				listings = Unit
-					.joins(:residential_listing, unit: {building: :neighborhood})
+					.joins(:residential_listing, building: :neighborhood)
 					.where('units.archived = false')
 
 				listings = _restrict_on_residential_model(company_id, search_params, listings)
@@ -120,7 +120,8 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 			end
 
 			def commercial_search(company_id, search_params)
-				listings = Unit.joins(:commercial_listing, building: [:neighborhood]).where('units.archived = false')
+				listings = Unit.joins(:commercial_listing, building: :neighborhood)
+					.where('units.archived = false')
 
 				# TODO: restrict by commercial params
 				listings = _restrict_on_unit_model(company_id, search_params, listings)

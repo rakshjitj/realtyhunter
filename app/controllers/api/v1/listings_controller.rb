@@ -100,7 +100,7 @@ module API
 			def search_type_breakdown(search_params)
 
 				if search_params[:listing_type] == "10" # residential
-					@listings = all_listings_search(@user.company_id, search_params)
+					@listings = residential_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
 					@images = Unit.get_all_images(@listings)
 					@primary_agents = Unit.get_primary_agents(@listings)
