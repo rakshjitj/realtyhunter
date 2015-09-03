@@ -211,6 +211,7 @@ class User < ActiveRecord::Base
     # (almost) everyone should always be able to see residential stuff
     if self.employee_title != EmployeeTitle.external_vendor
       self.add_role :residential
+      self.add_role :commercial
     end
     
     # if you're an agent, add in specific roles for the type of
@@ -223,6 +224,7 @@ class User < ActiveRecord::Base
       # always make sure they at least have one specialty area selected
       if !self.agent_types || !self.agent_types.any?
         self.add_role :residential
+        self.add_role :commercial
       else
         # otherwise, note the specialities they indicated
         self.agent_types.each do |role|
