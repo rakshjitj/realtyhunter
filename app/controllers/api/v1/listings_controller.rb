@@ -18,6 +18,13 @@ module API
 				restrict_results
 			end
 
+			def street_easy
+				restrict_results
+				respond_to do |format|
+		      format.rss { render :layout => false }
+		    end
+			end
+
 			def show
 				@listing = ResidentialListing.find(params[:id])
 			end
@@ -90,7 +97,7 @@ module API
 					page: listing_params[:page],
 					agents: listing_params[:agents],
 					neighborhoods: listing_params[:neighborhoods],
-					updated_at: listing_params[:updated_at]
+					changed_at: listing_params[:changed_at]
 				}
 
 				search_type_breakdown(search_params)
@@ -134,7 +141,7 @@ module API
 	      params.permit(:token, :pretty, :format, 
 	      	:listing_type, :layout, :bathrooms, :min_rent, :max_rent,
 	      	:cats_allowed, :dogs_allowed, :elevator, :doorman, :date_available_after, 
-	      	:date_available_before, :laundry_in_building, :laundry_in_unit, :updated_at,
+	      	:date_available_before, :laundry_in_building, :laundry_in_unit, :changed_at,
 	      	:has_photos, :featured, :sort, :sort_dir, :per_page, :page,
 	      	:neighborhoods, :geometry, :agents)
     	end

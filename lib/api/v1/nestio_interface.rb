@@ -279,8 +279,8 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					end
 
 					# updated_at
-					if search_params[:updated_at] && !search_params[:updated_at].empty?
-						time = Time.parse(search_params[:updated_at]).in_time_zone
+					if search_params[:changed_at] && !search_params[:changed_at].empty?
+						time = Time.parse(search_params[:changed_at]).in_time_zone
 		        listings = listings.where('units.updated_at > ?', time);
 		      end
 
