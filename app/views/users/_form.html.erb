@@ -9,21 +9,7 @@
         </div>
       </div>
 
-      <% if current_user.is_management? %>
-        <br />
-        <div class="row">
-          <div class="col-md-12">
-            <%= form_for(@user, :url => upload_image_user_path(@user), 
-              html: {multipart: true}, method: :post) do |f| %>
-              <%= f.file_field :file %><br>
-              <%= f.submit "Upload Photo", class: "btn btn-warning" %>
-            <% end %>
-          </div>
-        </div>
-      <% else %>
-      <br />
-        <p>(Photo, bio, and employee title are only editable by company management.)</p><br />
-      <% end %>
+      
   </div>
 
   <div class="col-md-6">
