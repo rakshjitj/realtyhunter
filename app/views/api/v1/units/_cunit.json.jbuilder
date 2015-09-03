@@ -15,7 +15,7 @@ json.prettify! if %w(1 yes true).include?(params["pretty"])
 
 
 if listing.status == "active"
-	json.status  "Active"
+	json.status  "Available"
 
 elsif listing.status == "pending" ||
 listing.status == "offer_submitted" ||
