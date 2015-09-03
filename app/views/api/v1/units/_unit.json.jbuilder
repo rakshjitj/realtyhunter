@@ -79,7 +79,7 @@ elsif @listing_type == 30 || (@listing_type == "" && listing.c_id)
 end
 
 if listing.status == Unit.statuses["active"]
-	json.status  "Active"
+	json.status  "Available"
 
 elsif listing.status == Unit.statuses["pending"] ||
 listing.status == Unit.statuses["offer_submitted"] ||
