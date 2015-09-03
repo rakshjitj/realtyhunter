@@ -64,7 +64,7 @@
             <strong><%= @user.employee_title.display_name %>
             <% if @user.is_agent? %>
               <% @sp = @user.agent_specialties; if @sp.length > 0 %> 
-                | <%= @sp.join(", ").titleize %>
+                | <%= @sp.join(", ") %>
               <% end %>
             <% end %>
             </strong>

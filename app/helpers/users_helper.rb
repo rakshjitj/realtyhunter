@@ -24,7 +24,7 @@ module UsersHelper
 		end
 		
 		if title == 'agent'
-			html = html + ' | ' + user.agent_specialties.join(", ").titleize
+			html = html + ' | ' + user.agent_specialties.join(", ")#.titleize
 		end
 
 		html.html_safe

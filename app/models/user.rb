@@ -316,20 +316,11 @@ class User < ActiveRecord::Base
   # don't always have to recalculate
   def agent_specialties
     specialties = AgentType.where(name: self.roles.map(&:name)).map(&:name)
-    # specialties.each do |s|
-    #   s = s.titleize
-    # end
+    specialties = specialties.map {|s| s.titleize}
     specialties
   end
 
   def agent_specialties_as_indicies
-    
-    # @specialities = []
-    # AgentType.all.each do |a|
-    #   if self.has_role? a.name
-    #     @specialities << a.id
-    #   end
-    # end
     AgentType.where(name: self.roles.map(&:name)).map(&:id)
   end
 

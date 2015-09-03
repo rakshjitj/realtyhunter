@@ -56,7 +56,8 @@
         <div class="col-md-6">
           <div class="field">
             <%= f.label :employee_title_id, "Role in the company", class: 'required' %><br>
-            <%= f.select(:employee_title_id, options_for_select(EmployeeTitle.all.collect {|t| [t.name.titleize, t.id]}, 
+            <%= f.select(:employee_title_id, 
+              options_for_select(EmployeeTitle.all.collect {|t| [t.name.titleize, t.id]}, 
               [@user.employee_title.id]), 
               {prompt: "Choose one..."},
               :required => true, 
@@ -71,9 +72,10 @@
         <% end %>
 
         <div class="col-md-6 agent-type">
-          <div class="field " >
+          <div class="field" >
             <%= f.label :agent_types, "Specialization Area", class: 'required' %><br>
-            <%= f.select(:agent_types, options_for_select(AgentType.all.collect {|t| [t.name.titleize]}, @user.agent_specialties),
+            <%= f.select(:agent_types, options_for_select(AgentType.all.collect {|t| [t.name.titleize]}, 
+              @user.agent_specialties),
                 {},
                 {
                 :multiple => true,
