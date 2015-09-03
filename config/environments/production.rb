@@ -61,6 +61,7 @@
     {namespace: 'myspace-realty-monster',
      username: ENV["MEMCACHIER_USERNAME"],
      password: ENV["MEMCACHIER_PASSWORD"],
+     #:pool_size => 7,
      failover: true,
      socket_timeout: 1.5,
      socket_failure_delay: 0.2,

@@ -49,7 +49,7 @@ class Image < ActiveRecord::Base
     pos = 0
     images.each{ |x|
       if x.priority != pos
-        x.update(priority: pos)
+        x.update_columns(priority: pos)
       end
       pos = pos + 1
     }
@@ -60,7 +60,7 @@ class Image < ActiveRecord::Base
     pos = 0
     images.each{ |x|
       if x.priority != pos
-        x.update(priority: pos)
+        x.update_columns(priority: pos)
       end
       pos = pos + 1
     }

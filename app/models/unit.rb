@@ -43,7 +43,9 @@ class Unit < ActiveRecord::Base
   # Used by API
   def self.get_primary_agents(list)
     agent_ids = list.map(&:primary_agent_id)
-    User.where(id: agent_ids).select('id', 'name', 'email', 'mobile_phone_number', 'phone_number').to_a.group_by(&:id)
+    User.where(id: agent_ids)
+      .select('id', 'name', 'email', 'mobile_phone_number', 'phone_number')
+      .to_a.group_by(&:id)
   end
 
   # Used by API
