@@ -36,8 +36,8 @@ module API
 				@agents = @agents.where('employee_titles.name = ?', EmployeeTitle.agent.name)
 				
 				# updated_at
-				if agent_params[:updated_at] && !agent_params[:updated_at].empty?
-					time = Time.parse(agent_params[:updated_at]).in_time_zone
+				if agent_params[:changed_at] && !agent_params[:changed_at].empty?
+					time = Time.parse(agent_params[:changed_at]).in_time_zone
 	        @agents = @agents.where('users.updated_at > ?', time);
 	      end
 
