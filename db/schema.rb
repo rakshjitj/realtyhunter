@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150821224728) do
+ActiveRecord::Schema.define(version: 20150904231406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -311,6 +311,7 @@ ActiveRecord::Schema.define(version: 20150821224728) do
     t.datetime "updated_at",                             null: false
     t.integer  "residential_listing_id"
     t.integer  "commercial_listing_id"
+    t.string   "public_url"
   end
 
   add_index "units", ["commercial_listing_id"], name: "index_units_on_commercial_listing_id", using: :btree
@@ -345,6 +346,7 @@ ActiveRecord::Schema.define(version: 20150821224728) do
     t.integer  "manager_id"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.string   "public_url"
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", using: :btree

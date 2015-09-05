@@ -77,7 +77,7 @@ class Building < ActiveRecord::Base
 		end
 	end
 
-    # for use in search method below
+  # for use in search method below
   def self.get_images(list)
     bldg_ids = list.map(&:id)
     Image.where(building_id: bldg_ids, priority: 0).index_by(&:building_id)

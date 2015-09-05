@@ -18,13 +18,6 @@ module API
 				restrict_results
 			end
 
-			def street_easy
-				restrict_results
-				respond_to do |format|
-		      format.rss { render :layout => false }
-		    end
-			end
-
 			def show
 				@listing = ResidentialListing.find(params[:id])
 			end

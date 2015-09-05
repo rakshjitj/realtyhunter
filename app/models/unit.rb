@@ -40,12 +40,27 @@ class Unit < ActiveRecord::Base
     Image.where(unit_id: unit_ids).to_a.group_by(&:unit_id)
   end
 
-  # Used by API
+  # Used by Nestio API
   def self.get_primary_agents(list)
     agent_ids = list.map(&:primary_agent_id)
-    User.where(id: agent_ids)
-      .select('id', 'name', 'email', 'mobile_phone_number', 'phone_number')
+    User.joins(:office).where(id: agent_ids)
+      .select('id', 'name', 'email', 'mobile_phone_number', 'phone_number', 'public_url',
+        'offices.telephone AS office_telephone', 'offices.fax AS office_fax')
       .to_a.group_by(&:id)
+  end
+
+  # Used by streeteasy API
+  def self.get_primary_agents_and_images(list)
+    agent_ids = list.map(&:primary_agent_id)
+    users = User.joins(:office).where(id: agent_ids)
+      .select('id', 'name', 'email', 'mobile_phone_number', 'phone_number', 'public_url',
+        'offices.telephone AS office_telephone', 'offices.fax AS office_fax')
+      .to_a.group_by(&:id)
+
+
+    images = Image.where(user_id: agent_ids).index_by(&:user_id)
+
+    return [users, images]
   end
 
   # Used by API

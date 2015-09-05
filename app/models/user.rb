@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
   validates :office, presence: true
   #validates :auth_token, presence: true
 
-	# Returns the hash digest of the given string.
+  # Returns the hash digest of the given string.
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
                                                   BCrypt::Engine.cost
@@ -168,18 +168,14 @@ class User < ActiveRecord::Base
   end
 
   def self.search(query_params, current_user)
-    # food for thought:
-    # @running_list = User.joins(:employee_title)
-    #   .where(archived: false)
-    #   .select('users.name', )
-    #   #.select('users.name', 'employee_titles.name as title').map{|u| [u.name, u.title]}
-    
     @running_list = User.unarchived
     .joins(
       :employee_title)
     .where(company: current_user.company)
-    .select('users.company_id', 'users.archived', 'users.id', 'users.name', 'users.email', 'users.activated', 'users.approved', 'users.last_login_at',
-      'employee_titles.name AS employee_title_name', 'employee_titles.id AS employee_title_id',)
+    .select('users.company_id', 'users.archived', 'users.id', 
+      'users.name', 'users.email', 'users.activated', 'users.approved', 'users.last_login_at',
+      'employee_titles.name AS employee_title_name', 'employee_titles.id AS employee_title_id',
+      )
 
     if !query_params || !query_params[:name_email]
       return @running_list 
@@ -393,6 +389,8 @@ class User < ActiveRecord::Base
     # Converts email to all lower-case.
     def downcase_email
       self.email = email.downcase
+      email_md5 = Digest::MD5.hexdigest(self.email)
+      self.public_url = "http://myspacenyc.com/agent/AGENT-#{email_md5}"
     end
     
     def create_activation_digest
