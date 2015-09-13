@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
 
   resources :images
-  get 'static_pages/help'
-  get 'static_pages/home'
+  #get 'static_pages/help'
+  #get 'static_pages/home'
 
   get 'signup'  => 'users#new'
   get 'sessions/new'
@@ -166,6 +166,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :street_easy, :defaults => { :format => 'rss' }, path:'streeteasy', only: :show
+  #resources :street_easy, :defaults => { :format => 'rss' }, path:'streeteasy', only: :show
 
 end
