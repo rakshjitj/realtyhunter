@@ -2,10 +2,10 @@ class BuildingNeighborhoodSerializer < ActiveModel::Serializer
   attributes :name, :area
 
   def name
-  	object.name
+  	object.neighborhood_name
   end
 
   def area
-  	object.borough
+  	object.neighborhood_borough
   end
 end

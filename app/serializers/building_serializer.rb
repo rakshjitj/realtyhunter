@@ -3,7 +3,7 @@ class BuildingSerializer < ActiveModel::Serializer
   
   attribute :neighborhood, serializer: BuildingNeighborhoodSerializer
   def neighborhood
-    BuildingNeighborhoodSerializer.new(object.neighborhood).attributes
+    BuildingNeighborhoodSerializer.new(object).attributes
   end
 
   def city

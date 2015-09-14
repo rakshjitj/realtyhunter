@@ -7,8 +7,11 @@ module StreetEasyInterface
 left join commercial_listings on units.id = commercial_listings.unit_id')
 		.joins(building: [:neighborhood, :landlord])
 		.where('units.archived = false')
-		.where('units.status = ?', Units.statuses["active"])
-		
+		.where.not('units.status IN (?)', [Unit.statuses["off"], Unit.statuses["off_market_for_lease_execution"]])
+		.where("residential_listings.description <> '' OR commercial_listings.property_description <> '' ")
+		.where('units.primary_agent_id > 0')
+		#puts "***** GOT #{listings.count}"
+
 		listings = listings
 			.select('units.building_unit', 'units.status', 'units.available_by',
 			'units.listing_id', 'units.updated_at', 'units.rent',

@@ -1,13 +1,13 @@
 class ListingSerializer < ActiveModel::Serializer
 	attributes :listing_type, :property_type, :commercial_use, :min_lease_term, 
 	:max_lease_term, :renter_fee, :bathrooms, :unit_amenities, :unit_description,
-	:floor, :layout, :unit_number, :pets, :status, :building, :date_available,
+	:floor, :layout, :bedrooms, :unit_number, :pets, :status, :building, :date_available,
 	:changed_at, :square_footage, :rent, :id
 
 	attribute :building, serializer: BuildingSerializer
 
 	def building
-    BuildingSerializer.new(object.listing.building).attributes
+    BuildingSerializer.new(object.listing).attributes
   end
 
  attributes :contacts
@@ -117,6 +117,14 @@ class ListingSerializer < ActiveModel::Serializer
 	def layout
 		if object.listing.respond_to?(:r_id)
 			object.listing.beds == 0 ? "Studio" : (object.listing.beds.to_s + ' Bedroom')
+		else
+			nil
+		end
+	end
+
+	def bedrooms
+		if object.listing.respond_to?(:r_id)
+			object.listing.beds
 		else
 			nil
 		end

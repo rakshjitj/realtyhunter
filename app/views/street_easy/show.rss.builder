@@ -53,8 +53,13 @@ xml.streeteasy :version => "1.6" do
 					xml.bedrooms listing.beds
 					xml.bathrooms listing.baths
 					xml.availableOn listing.available_by # rentals only
-					xml.description listing.description
 
+					if listing.r_id
+						xml.description listing.description
+					elsif listing.c_id
+						xml.description listing.property_description
+					end
+					
 					xml.propertyType "rental"
 
 					# 	if @pet_policies[listing.building_id]

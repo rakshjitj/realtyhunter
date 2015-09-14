@@ -166,6 +166,6 @@ Rails.application.routes.draw do
     end
   end
 
-  #resources :street_easy, :defaults => { :format => 'rss' }, path:'streeteasy', only: :show
+  resources :street_easy, :defaults => { :format => 'rss' }, path:'streeteasy', only: :show
 
 end
