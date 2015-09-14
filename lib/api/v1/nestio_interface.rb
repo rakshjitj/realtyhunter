@@ -74,10 +74,11 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'commercial_listings.id as c_id',
 					'commercial_listings.lease_term_months', 
 					'commercial_listings.property_description', 
+					'commercial_listings.floor',
 					'units.id as unit_id',
 					'units.primary_agent_id'
 				)
-
+				
 				listings
 			end
 
@@ -108,7 +109,8 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'residential_listings.tp_fee_percentage', 'residential_listings.beds', 
 					'residential_listings.baths', 'residential_listings.description',
 					'units.id as unit_id',
-					'units.primary_agent_id'
+					'units.primary_agent_id',
+					'residential_listings.id AS r_id', 
 				)
 
 				listings
@@ -137,12 +139,15 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'buildings.postal_code',
 					'buildings.lat',
 					'buildings.lng',
+					'buildings.id as building_id',
 					'neighborhoods.name as neighborhood_name',
 					'neighborhoods.borough as neighborhood_borough',
 					'units.id as unit_id',
 					'commercial_listings.lease_term_months', 
 					'commercial_listings.property_description', 
-					'units.primary_agent_id'
+					'commercial_listings.floor',
+					'units.primary_agent_id',
+					'commercial_listings.id as c_id',
 				)
 
 				listings

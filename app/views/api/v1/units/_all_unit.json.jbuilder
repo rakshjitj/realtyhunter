@@ -1,4 +1,4 @@
-json.prettify! if %w(1 yes true).include?(params["pretty"])
+#json.prettify! if %w(1 yes true).include?(params["pretty"])
 
 if listing.r_id
 
@@ -57,7 +57,7 @@ elsif listing.c_id
 	json.bathrooms nil
 	json.unit_amenities nil
 	json.unit_description listing.property_description
-	json.floor json.floor
+	json.floor listing.floor
 	json.layout nil
 
 end
@@ -78,24 +78,6 @@ listing.status == "off_market_for_lease_execution"
 	json.status "Lease Out"
 
 end
-
-
-#if listing.status == Unit.statuses["active"]
-#	json.status  "Available"
-
-#elsif listing.status == Unit.statuses["pending"] ||
-#listing.status == Unit.statuses["offer_submitted"] ||
-#listing.status == Unit.statuses["offer_accepted"] ||
-#listing.status == Unit.statuses["binder_signed"]
-
-#	json.status "App Pending"
-
-#elsif listing.status == Unit.statuses["off"] ||
-#listing.status == Unit.statuses["off_market_for_lease_execution"]
-	
-#	json.status "Lease Out"
-
-#end
 
 json.building do
 	json.city listing.sublocality # should display city (brooklyn, new york)
@@ -142,8 +124,8 @@ json.rent listing.rent
 
 json.id listing.listing_id
 
-json.photos do
-	json.array! @images[listing.unit_id] do |i|
+#json.cache! ["v1", listing, "images"], expires_in: 30.seconds do
+	json.photos @images[listing.unit_id] do |i|
 		json.large i.file.url(:medium)
 		json.is_floorplan false
 		json.local_file_name i.file_file_name
@@ -153,5 +135,4 @@ json.photos do
 		json.id nil # don't return db id if we don't have to
 		json.thumbnail i.file.url(:thumb)
 	end
-end
-
+#end

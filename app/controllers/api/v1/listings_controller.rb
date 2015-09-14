@@ -98,6 +98,8 @@ module API
 			end
 
 			def search_type_breakdown(search_params)
+				@residential_amenities = []
+				@pet_policies = []
 
 				if search_params[:listing_type] == "10" # residential
 					@listings = residential_search(@user.company_id, search_params)
@@ -127,6 +129,28 @@ module API
 				@images = Unit.get_all_images(@listings)
 				@primary_agents = Unit.get_primary_agents(@listings)
 				@building_amenities = Building.get_amenities(@listings)
+
+				# repackage into a format that's easily digestible
+				# by our API renderer
+				output = []
+				@listings.each do |l|
+					output << Listing.new({
+						listing: l, 
+						residential_amenities: @residential_amenities[l.unit_id],
+						pet_policies: @pet_policies[l.building_id],
+						primary_agents: @primary_agents[l.primary_agent_id],
+						building_amenities: @building_amenities[l.building_id],
+						images: @images[l.unit_id]
+						})
+				end
+
+				@lb = ListingBlob.new({ 
+					items: output,
+					total_count: @listings.total_count,
+					total_pages: @listings.total_pages,
+					page: @listings.current_page
+					})
+				render json: @lb
 			end
 
 			# Never trust parameters from the scary internet, only allow the white list through.

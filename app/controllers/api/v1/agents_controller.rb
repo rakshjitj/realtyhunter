@@ -42,8 +42,8 @@ module API
 	      end
 
 				@agents = @agents.page(agent_params[:page]).per(per_page)
-				@ac = AgentBlob.new({users: @agents})
-				render json: @ac
+				@ab = AgentBlob.new({users: @agents})
+				render json: @ab
 			end
 
 			def show
