@@ -44,6 +44,11 @@ class Image < ActiveRecord::Base
   #   #Resque.enqueue(CopyResidentialUnitImages, src_id, dst_id)
   # end
 
+  def to_builder
+    Jbuilder.new do |i|
+    end
+  end
+
   def self.reorder_by_unit(unit_id)
     images = Image.where(unit_id: unit_id).order("priority ASC")
     pos = 0

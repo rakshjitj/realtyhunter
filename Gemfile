@@ -76,6 +76,8 @@ gem "oj"
 # timeout requests, note error in logs
 #gem "rack-timeout"
 
+gem "active_model_serializers", github: "rails-api/active_model_serializers"
+
 group :production do
 	gem 'rails_12factor' # related to serving static assets
 	gem 'puma'
