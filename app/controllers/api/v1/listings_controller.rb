@@ -134,6 +134,7 @@ module API
 				# by our API renderer
 				output = []
 				@listings.each do |l|
+					
 					output << Listing.new({
 						listing: l, 
 						residential_amenities: @residential_amenities[l.unit_id],

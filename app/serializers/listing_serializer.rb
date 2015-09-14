@@ -91,7 +91,7 @@ class ListingSerializer < ActiveModel::Serializer
 	end
 
 	def unit_amenities
-		if object.listing.respond_to?(:r_id) && object.residential_amenities
+		if object.residential_amenities #object.listing.respond_to?(:r_id) &&
 			object.residential_amenities.map{|a| a.name}
 		else
 			nil
