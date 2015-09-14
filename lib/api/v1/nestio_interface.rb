@@ -49,6 +49,7 @@ module API
 left join commercial_listings on units.id = commercial_listings.unit_id')
 				.joins(building: :neighborhood)
 				.where('units.archived = false')
+				.where.not('units.status IN (?)', [Unit.statuses["off"], Unit.statuses["off_market_for_lease_execution"]])
 				
 				listings = _restrict_on_unit_model(company_id, search_params, listings)
 				listings = _restrict_on_residential_model(company_id, search_params, listings)
