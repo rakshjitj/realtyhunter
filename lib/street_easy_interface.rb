@@ -7,6 +7,7 @@ module StreetEasyInterface
 left join commercial_listings on units.id = commercial_listings.unit_id')
 		.joins(building: [:neighborhood, :landlord])
 		.where('units.archived = false')
+		.where('units.status = ?', Units.statuses["active"])
 		
 		listings = listings
 			.select('units.building_unit', 'units.status', 'units.available_by',

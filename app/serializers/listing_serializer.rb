@@ -32,7 +32,7 @@ class ListingSerializer < ActiveModel::Serializer
 
 	def listing_type
 		#building.respond_to?("neighborhood_name".to_sym)
-		if object.respond_to?(:r_id) || object.respond_to?(:c_id)
+		if object.listing.respond_to?(:r_id) || object.listing.respond_to?(:c_id)
 			"rentals"
 		else
 			"sales"
@@ -40,58 +40,58 @@ class ListingSerializer < ActiveModel::Serializer
 	end
 
 	def property_type
-		if object.respond_to?(:r_id)
+		if object.listing.respond_to?(:r_id)
 			"residential"
-		elsif object.respond_to?(:c_id)
+		elsif object.listing.respond_to?(:c_id)
 			"commercial"
 		end
 	end
 
 	def commercial_use
 		nil
-	# 	if object.respond_to?(:c_id) && object.listing.commercial_property_type
+	# 	if object.listing.respond_to?(:c_id) && object.listing.commercial_property_type
 	# 		object.listing.commercial_property_type.property_type
 	# 	end
 	end
 
 	def min_lease_term
-		if object.respond_to?(:r_id)
+		if object.listing.respond_to?(:r_id)
 			object.listing.lease_start
-		elsif object.respond_to?(:c_id)
+		elsif object.listing.respond_to?(:c_id)
 			object.listing.lease_term_months
 		end
 	end
 
 	def max_lease_term
-		if object.respond_to?(:r_id)
+		if object.listing.respond_to?(:r_id)
 			object.listing.lease_end
-		elsif object.respond_to?(:c_id)
+		elsif object.listing.respond_to?(:c_id)
 			object.listing.lease_term_months
 		end
 	end
 
 	def renter_fee
-		if object.respond_to?(:r_id)
+		if object.listing.respond_to?(:r_id)
 			if object.listing.tp_fee_percentage
 				"Fee"
 			else
 				"No Fee"
 			end
-		elsif object.respond_to?(:c_id)
+		elsif object.listing.respond_to?(:c_id)
 			"Fee"
 		end
 	end
 
 	def bathrooms
-		if object.respond_to?(:r_id)
+		if object.listing.respond_to?(:r_id)
 			object.listing.baths
-		elsif object.respond_to?(:c_id)
+		elsif object.listing.respond_to?(:c_id)
 			nil
 		end
 	end
 
 	def unit_amenities
-		if object.respond_to?(:r_id) && object.residential_amenities
+		if object.listing.respond_to?(:r_id) && object.residential_amenities
 			object.residential_amenities.map{|a| a.name}
 		else
 			nil
@@ -99,25 +99,25 @@ class ListingSerializer < ActiveModel::Serializer
 	end
 
 	def unit_description
-		if object.respond_to?(:r_id)
+		if object.listing.respond_to?(:r_id)
 			object.listing.description
-		elsif object.respond_to?(:c_id)
+		elsif object.listing.respond_to?(:c_id)
 			object.listing.property_description
 		end
 	end
 
 	def floor
-		if object.respond_to?(:r_id)
+		if object.listing.respond_to?(:r_id)
 			nil
-		elsif object.respond_to?(:c_id)
+		elsif object.listing.respond_to?(:c_id)
 			object.listing.floor
 		end
 	end
 
 	def layout
-		if object.respond_to?(:r_id)
+		if object.listing.respond_to?(:r_id)
 			object.listing.beds == 0 ? "Studio" : (object.listing.beds.to_s + ' Bedroom')
-		elsif object.respond_to?(:c_id)
+		else
 			nil
 		end
 	end
@@ -127,7 +127,7 @@ class ListingSerializer < ActiveModel::Serializer
 	end
 
 	def pets
-		if object.respond_to?(:r_id) && object.pet_policies
+		if object.listing.respond_to?(:r_id) && object.pet_policies
 			object.pet_policies[0].pet_policy_name
 		else
 			nil
