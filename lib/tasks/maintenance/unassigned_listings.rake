@@ -28,8 +28,8 @@ namespace :maintenance do
 		#managers = ['sbrewer@myspacenyc.com', 'info@myspacenyc.com']
 		managers = ['rbujans@myspacenyc.com']
 		UserMailer.send_unassigned_report(managers, results).deliver_now
-		puts "Email sent"
-		log.info "Email sent"
+		puts "Email sent to #{managers.inspect}"
+		log.info "Email sent to #{managers.inspect}"
 
 		puts "Done!\n"
 		log.info "Done!\n"
