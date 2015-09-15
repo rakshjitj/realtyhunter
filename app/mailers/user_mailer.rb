@@ -41,4 +41,9 @@ class UserMailer < ApplicationMailer
     @company = company
     mail to: user.email, subject: "You have been added to #{company.name}"
   end
+
+  def send_unassigned_report(managers, data)
+    @data = data
+    mail to: managers, subject: "Unassigned Listings Report"
+  end
 end
