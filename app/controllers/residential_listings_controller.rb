@@ -344,7 +344,7 @@ class ResidentialListingsController < ApplicationController
         :has_fee, :op_fee_percentage, :tp_fee_percentage, 
         :available_starting, :available_before,   
         :unit => [:building_unit, :rent, :available_by, :access_info, :status, 
-          :open_house, :oh_exclusive, 
+          :open_house, :oh_exclusive, :exclusive,
           :building_id, :primary_agent_id, :listing_agent_id ],
         :residential_amenity_ids => [])
 

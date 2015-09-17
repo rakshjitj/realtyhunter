@@ -305,6 +305,12 @@
           </div>
           <div class="col-md-8">
             <div class="field">
+              <%= f.fields_for @commercial_unit.unit do |unit_form| %>
+                <%= unit_form.check_box :exclusive, checked: @commercial_unit.unit.exclusive %>
+                <%= f.label :exclusive %>
+              <% end %>
+              <br />Exclusive listings will display the full address when syndicated.<br />
+
               <%= f.text_area :property_description, class: 'form-control', :required => true, rows: 5 %>
             </div>
           </div>

@@ -388,6 +388,10 @@
 	    	</div>
 	    	<div class="row">
 	    		<div class="col-xs-12 col-md-12">
+	    			<% if @residential_unit.unit.exclusive? %>
+	    				<strong class="exclusive-listing">Myspace Exclusive!</strong>
+	    				<br />
+	    			<% end %>
 	    			<%= @residential_unit.description %>
 	    		</div>
 	    	</div>

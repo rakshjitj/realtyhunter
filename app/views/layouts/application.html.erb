@@ -66,9 +66,6 @@
               <li><%= link_to "Commercial", commercial_listings_path %></li>
             <% end %>
 
-            <% if current_user.handles_residential? || current_user.is_management? %>
-              <li><%= link_to "Sales", sales_listings_path %></li>
-            <% end %>
 
             <% if current_user.handles_residential? || current_user.handles_commercial? %>
               <li><%= link_to "Buildings", buildings_path %></li>

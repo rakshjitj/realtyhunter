@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150917022521) do
+ActiveRecord::Schema.define(version: 20150917150240) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -343,6 +343,7 @@ ActiveRecord::Schema.define(version: 20150917022521) do
     t.integer  "commercial_listing_id"
     t.string   "public_url"
     t.integer  "sales_listing_id"
+    t.boolean  "exclusive"
   end
 
   add_index "units", ["commercial_listing_id"], name: "index_units_on_commercial_listing_id", using: :btree

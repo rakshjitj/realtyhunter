@@ -332,7 +332,7 @@ class CommercialListingsController < ApplicationController
         :rate_is_negotiable, :total_lot_size, :property_type, :commercial_property_type_id,
         :commercial_unit_id, :inaccuracy_description,
         :unit => [:building_unit, :rent, :available_by, :access_info, :status, :open_house, :oh_exclusive, 
-          :building_id, :primary_agent_id, :listing_agent_id ],
+          :building_id, :primary_agent_id, :listing_agent_id, :exclusive ],
         )
 
       if data[:unit][:oh_exclusive] == "1"
