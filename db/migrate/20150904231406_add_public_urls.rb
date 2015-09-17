@@ -1,4 +1,4 @@
-class AddPublicUrLs < ActiveRecord::Migration
+class AddPublicUrls < ActiveRecord::Migration
   def change
   	add_column :units, :public_url, :string
   	add_column :users, :public_url, :string

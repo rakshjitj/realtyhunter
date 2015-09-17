@@ -1,0 +1,20 @@
+<div class="row">
+	<div class="col-md-8 col-md-offset-2">
+		<% provide(:title, 'Editing Unit') %>
+
+		<div class="page-header">
+		  <div class="row">
+		    <div class="col-md-6">
+		      <h1><%= @sales_unit.unit.building.street_address %> <small>#<%= @sales_unit.unit.building_unit %></small></h1>
+		    </div>
+		    <div class="col-md-6 form-label-responsive">
+					<%= link_to 'Show', @sales_unit %> |
+					<%= link_to 'All units', sales_listings_path %>
+		    </div>
+		  </div>
+		</div>
+	  	
+		<%= render 'form' %>
+
+	</div>
+</div>

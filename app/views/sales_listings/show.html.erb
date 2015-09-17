@@ -1,0 +1,492 @@
+<% provide(:title, @sales_unit.street_address_and_unit) %>
+
+<div id="sales">
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+  	<br/>
+  	<br/>
+  	<div id="sunit-panel" class="panel panel-default">
+  		<div class="panel-heading hidden-md hidden-lg">
+		    <div class="panel-title">
+		    	<div class="row">
+			  		<div class="col-xs-12 col-md-7">
+				  		<h2><%= @sales_unit.street_address_and_unit %></h2>
+				  		<h3><%= rent_formatted(@sales_unit.unit.price) %> &nbsp;&nbsp;&nbsp; <%= @sales_unit.beds %> Beds / <%= trim_zeros(@sales_unit.baths) %> Baths</h3>
+				  		<p>
+			  				<%= small_header(@sales_unit) %><br />
+			  				<%= render 'market_status' %>
+			  			</p>
+			  		</div>
+			  		
+			  	</div><!-- row -->
+			  </div><!-- panel title -->
+			</div><!-- panel heading -->
+
+		  <div class="panel-heading hidden-xs hidden-sm ">
+		    <div class="panel-title">
+		    	<div class="row">
+			  		<div class="col-xs-12 col-md-7">
+				  		<h1>
+				  			<%= @sales_unit.street_address_and_unit %>
+				  		</h1>
+				  		<p>
+			  				<%= small_header(@sales_unit) %>
+			  			</p>
+			  		</div>
+			  		<div class="col-xs-12 col-md-5 form-label-responsive">
+			  			<h1><%= rent_formatted(@sales_unit.unit.price) %></h1>
+			  			<p><%= @sales_unit.beds %> Beds / <%= trim_zeros(@sales_unit.baths) %> Baths</p>
+			  			
+			  		</div>
+			  	</div><!-- row -->
+			  	<div class="row">
+			  		<div class="col-xs-7">
+			  			<p><%= render 'market_status' %></p>
+			  		</div>
+			  		<div class="col-xs-5 form-label-responsive">
+			  			<p>Available <%= @sales_unit.unit.available_by %></p>
+			  		</div>
+			  	</div>
+			  </div><!-- panel title -->
+			</div><!-- panel heading -->
+
+			<div class="panel-body">
+		  	<div class="row">
+			  	<div class="col-md-9 vertical-padding">
+			  		<%= link_to 'View all', sales_listings_path %>
+			  		| <%= link_to 'Print', print_modal_sales_listing_path(@sales_unit), 
+			      		data: {toggle: "modal", target: "#printModal"}, remote: true %>
+			  		<% if current_user.is_management? %>
+		  				| <%= link_to 'Edit', edit_sales_listing_path(@sales_unit.id) %>
+			        | <%= link_to 'Duplicate', duplicate_modal_sales_listing_path(@sales_unit), 
+			    				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
+			      	<!-- %= link_to 'Take off market', take_off_modal_sales_listing_path(@sales_unit), 
+			      			data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %-->
+			      <% end %>
+			  	</div>
+			  	<div class="col-md-3 form-label-responsive vertical-padding">
+			  		<%= link_to 'Report Inaccuracy', inaccuracy_modal_sales_listing_path(@sales_unit), 
+		  				class: "btn btn-danger btn-sm",
+		  				data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
+		  		</div>
+		    </div>
+
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-md-12">
+	    			<!-- begin photos -->
+				  	<% if @sales_unit.unit.images.length > 0 || @sales_unit.unit.building.images.length > 0 %>
+							<div id="sales_unit-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+							  <!-- Wrapper for slides -->
+							  <div class="carousel-inner" role="listbox">
+							  <!-- first display building photos... -->
+							  	<% @sales_unit.unit.building.images.each do |image| %>
+							  		<div class="item">
+								      <%= image_tag image.file.url(:original), :class => 'img-responsive center-block', 
+								      	alt: image.file.url(:original)  %>
+								    </div>
+							  	<% end %>
+							  	<!-- now display unit photos -->
+							  	<% @sales_unit.unit.images.each do |image| %>
+							  		<div class="item">
+								      <%= image_tag image.file.url(:original), :class => 'img-responsive center-block', 
+								      	alt: image.file.url(:original) %>
+								    </div>
+							  	<% end %>
+							  </div>
+
+							  <!-- Controls -->
+							  <% if @sales_unit.unit.building.images.length + @sales_unit.unit.images.length > 1 %>
+								  <a class="left carousel-control" href="#sales_unit-carousel" role="button" data-slide="prev">
+								    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+								    <span class="sr-only">Previous</span>
+								  </a>
+								  <a class="right carousel-control" href="#sales_unit-carousel" role="button" data-slide="next">
+								    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+								    <span class="sr-only">Next</span>
+								  </a>
+							  <% end %>
+							</div>
+
+							<!-- clickable navigation -->
+							<!-- first building photos... -->
+							<% if @sales_unit.unit.building.images.length + @sales_unit.unit.images.length > 1 %>
+								<% i = 0 %>
+								<% for i in 0..@sales_unit.unit.building.images.length-1 %>
+									<% image = @sales_unit.unit.building.images[i] %>
+						  		<a href="#sales_unit-carousel" data-slide-to="<%= i %>">
+							      <%= image_tag image.file.url(:thumb), :class => 'photo-inline', 
+							      	alt: image.file.url(:thumb) %>
+							    </a>
+						  	<% end %>
+						  	<!-- now display unit photos -->
+						  	<% for j in 0..@sales_unit.unit.images.length-1 %>
+									<% image = @sales_unit.unit.images[j] %>
+						  		<a href="#sales_unit-carousel" data-slide-to="<%= (j+i) %>">
+							      <%= image_tag image.file.url(:thumb), :class => 'photo-inline', 
+							      	alt: image.file.url(:thumb) %>
+							    </a>
+						  	<% end %>
+						  <% end %>
+
+					  <% else %>
+					  	<!-- placeholder image -->
+              <%= image_tag "listing_soon.png", alt: "Image coming soon",
+              	:class => 'img-responsive center-block', width: "80%" %>
+					  <% end %>
+					  <!-- end photos -->
+	    		</div>
+	    	</div><!-- row -->
+
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-md-6">
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Building:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= link_to @sales_unit.unit.building.street_address, @sales_unit.unit.building %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Unit:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @sales_unit.unit.building_unit %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Beds/Baths:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @sales_unit.beds %> / <%= trim_zeros(@sales_unit.baths) %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Price:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= rent_formatted(@sales_unit.unit.price) %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Available:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<% if @sales_unit.unit.available_by %>
+									<%= @sales_unit.unit.available_by %>
+								<% else %>
+									- 
+								<% end %>
+							</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Rental Term:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<% if @sales_unit.unit.building.rental_term %>
+				    			<%= @sales_unit.unit.building.rental_term.name.titleize %>
+				    		<% else %>
+				    			-
+				    		<% end %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+			    		<div class="col-xs-5">
+			    			<strong>Utilities:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<% if !@sales_unit.unit.building.utilities_to_s.empty? %>
+				    			<%= @sales_unit.unit.building.utilities_to_s.titleize %>
+				    		<% else %>
+				    			- 
+				    		<% end %>
+			    		</div>
+			    	</div>
+	    		</div>
+
+	    		<div class="col-md-6">
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Pet Policy:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= pet_policy(@sales_unit) %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Landlord:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<% if current_user.is_management? %>
+									<%= link_to @sales_unit.unit.building.landlord.code, @sales_unit.unit.building.landlord %>
+								<% else %>
+									<%= @sales_unit.unit.building.landlord.code %>
+								<% end %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Lease duration:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= lease_duration(@sales_unit) %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<!-- Broker's Fee -->
+			    		<% if @sales_unit.has_fee %>
+			    			<div class="col-xs-5">
+				    			<strong>Tenant Pays:</strong>
+				    		</div>
+				    		<div class="col-xs-7">
+			    			<% if @sales_unit.tp_fee_percentage %>
+				    			<%= @sales_unit.tp_fee_percentage %>%
+				    		<% else %>
+				    			<% if @sales_unit.unit.building.landlord.tp_fee_percentage %>
+				    				<%= @sales_unit.unit.building.landlord.tp_fee_percentage %>%
+				    			<% end %>
+				    		<% end %>
+			    			</div>
+			    		<!-- No Broker's Fee -->
+			    		<% else %>
+			    			<div class="col-xs-5">
+				    			<strong>OP Pays:</strong>
+				    		</div>
+				    		<div class="col-xs-7">
+			    			<% if @sales_unit.op_fee_percentage %>
+				    			<%= @sales_unit.op_fee_percentage %>%
+				    		<% else %>
+				    			<% if @sales_unit.unit.building.landlord.op_fee_percentage %>
+				    				<%= @sales_unit.unit.building.landlord.op_fee_percentage %>%
+				    			<% end %>
+				    		<% end %>
+				    		</div>
+			    		<% end %>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Primary agent:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<% if @sales_unit.unit.primary_agent %>
+			    				<%= link_to @sales_unit.unit.primary_agent.name, @sales_unit.unit.primary_agent %>
+			    			<% else %>
+			    				- 
+			    			<% end %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Listing ID:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @sales_unit.unit.listing_id %>
+			    		</div>
+	    			</div>
+	    		</div>	
+	    	</div>
+
+	    	<!-- TODO: integrate with dept of buildings to get
+						DOM, total floors, total units, year built, lot, block, community district, school district -->
+					<!-- Landlord info -->
+	    
+	    	
+
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-xs-12 col-md-3">
+	    			<strong>Access info:</strong>
+	    		</div>
+	    		<div class="col-xs-12 col-md-9">
+	    			<%= occupancy_status(@sales_unit) %>
+	    			<%= @sales_unit.unit.access_info %>
+	    		</div>
+	    	</div>
+
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-xs-12 col-md-3">
+	    			<strong>Open House:</strong>
+	    		</div>
+	    		<div class="col-xs-12 col-md-9">
+	    			<%= open_house(@sales_unit) %>
+	    		</div>
+	    	</div>
+
+	    	<!-- Building info -->
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-xs-12 col-md-3">
+	    			<strong>Building Amenities:</strong>
+	    		</div>
+	    		<div class="col-xs-12 col-md-9">
+	    			<%= @sales_unit.unit.building.amenities_to_s %>
+	    		</div>
+	    	</div>
+
+	    	<!-- Unit info -->
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-xs-12 col-md-3">
+	    			<strong>Unit Amenities:</strong>
+	    		</div>
+	    		<div class="col-xs-12 col-md-9">
+	    			<%= @sales_unit.amenities_to_s %>
+	    		</div>
+	    	</div>
+
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-xs-12 col-md-12">
+	    			<strong>Landlord Notes:</strong>
+	    		</div>
+	    	</div>
+	    	<div class="row">
+	    		<div class="col-xs-12 col-md-12">
+	    			<%= @sales_unit.unit.building.landlord.notes %>
+	    		</div>
+	    	</div>
+
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-xs-12 col-md-12">
+	    			<strong>Building Notes:</strong>
+	    		</div>
+	    	</div>
+	    	<div class="row">
+	    		<div class="col-xs-12 col-md-12">
+	    			<%= @sales_unit.unit.building.notes %>
+	    		</div>
+	    	</div>
+
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-xs-12 col-md-12">
+	    			<strong>Private unit notes:</strong>
+	    		</div>
+	    	</div>
+	    	<div class="row">
+	    		<div class="col-xs-12 col-md-12">
+	    			<%= @sales_unit.notes %>
+	    		</div>
+	    	</div>
+
+				<br />
+	    	<div class="row">
+	    		<div class="col-xs-12 col-md-12">
+	    			<strong>Public Unit Description:</strong>
+	    		</div>
+	    	</div>
+	    	<div class="row">
+	    		<div class="col-xs-12 col-md-12">
+	    			<%= @sales_unit.description %>
+	    		</div>
+	    	</div>
+
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-md-12">
+	    			<!-- Nav tabs -->
+				    <ul class="nav nav-tabs" role="tablist">
+				      <li role="google-map-tab" class="active"><a href="#google-map-tab" aria-controls="google-map-tab" 
+				      	role="tab" data-toggle="tab">Map</a></li>
+				      <li role="walkscore"><a href="#walkscore" aria-controls="walkscore" role="tab" data-toggle="tab">Walkscore</a></li>
+				    </ul>
+
+	    			<div class="tab-content">
+				      <!-- ******************** first tablpanel - google maps ******************** -->
+				      <div role="tabpanel" class="tab-pane fade in active" id="google-map-tab">
+				      	<div id="map_canvas" data-address="<%= @sales_unit.unit.building.formatted_street_address %>"></div>
+				      </div><!-- end tabpanel - google maps -->
+				      <!-- ******************** first tabpanel - walkscore ********************-->
+				      <div role="tabpanel" class="tab-pane fade center" id="walkscore">
+				      	<script type='text/javascript'>
+									var ws_wsid = 'e4004727da4a47a2bcb676b7abf930b6';
+									var ws_address = '<%= @sales_unit.unit.building.formatted_street_address %>';
+									var ws_width = '600';
+									var ws_height = '444';
+									var ws_layout = 'horizontal';
+									var ws_commute = 'true';
+									var ws_transit_score = 'true';
+									var ws_map_modules = 'all';
+									</script><style type='text/css'>#ws-walkscore-tile{position:relative;text-align:left}#ws-walkscore-tile *{float:none;}#ws-foottext, #ws-footer a,#ws-footer a:link{font:11px/14px Verdana,Arial,Helvetica,sans-serif;margin-right:6px;white-space:nowrap;padding:0;color:#000;font-weight:bold;text-decoration:none}#ws-footer a:hover{color:#000;text-decoration:none}#ws-footer a:active{color:#b14900}</style><div id='ws-walkscore-tile'><div id='ws-footer' style='position:absolute;top:426px;left:8px;width:588px'><form id='ws-form'><span id='ws-foottext' style='float: left;'>Score <a id='ws-a' href='https://www.redfin.com/how-walk-score-works' target='_blank'>Your Home</a>: </span><input type='text' id='ws-street' style='position:absolute;top:0px;left:170px;width:386px' /><input type='image' id='ws-go' src='//cdn2.walk.sc/2/images/tile/go-btn.gif' height='15' width='26' border='0' alt='get my Walk Score' style='position:absolute;top:0px;right:0px' /></form></div></div><script type='text/javascript' src='https://www.walkscore.com/tile/show-walkscore-tile.php'></script>
+
+    					</div><!-- end tabpanel - walkscore -->
+    				</div>
+
+	    			
+	    		</div>
+	    	</div><!-- row -->
+
+			</div><!-- panel body -->
+		</div><!-- panel heading -->
+	</div><!-- main centered column -->
+
+
+<!-- modals that are common to show/index pages -->
+<%# Template Dependency: layouts/modals %>
+<%= render 'layouts/modals' %>
+
+<!-- Print Modal: only on the show page -->
+<div class="modal fade" id="printModal" tabindex="-1" role="dialog" 
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Generating Printable PDF</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="row">
+        	<div class="col-md-12">
+        		<p>Please be patient, generating pdfs can take a few moments. </p>
+        		<br />
+        	</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-3 form-label-responsive">
+            <%= link_to print_private_sales_listing_path(@sales_unit, :format => :pdf), 
+            	class:"btn btn-warning link-as-button print-private-btn has-spinner" do %>
+              <span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Private
+            <% end %>
+          </div>
+          <div class="col-xs-9">
+            <p>
+              For <strong>internal</strong> use only. Includes sensitive data about listings such as the 
+              address, landlord info, current tenant info, etc
+            </p>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-xs-3 form-label-responsive">
+            <%= link_to print_public_sales_listing_path(@sales_unit, :format => :pdf), 
+            	class:"btn btn-warning link-as-button print-public-btn has-spinner" do %>
+            	<span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Public
+            <% end %>
+          </div>
+          <div class="col-xs-9">
+            <p>For <strong>external</strong> use</p>
+          </div>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</style>

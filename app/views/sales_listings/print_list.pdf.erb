@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-xs-12">
+
+  <div class="row">
+	  <div class="col-md-12">
+	    <br />
+	   
+
+	    <table class="table table-striped table-hover table-condensed table-responsive splitForPrint new_section">
+	        <tr class="heading1">
+	          <th>Address</th>
+	          <th>Landlord</th>
+	          <th style="width: 20%;">Access</th>
+	          <th>Beds / Baths</th>
+	          <th>Available</th>
+	          <th>Price</th>
+	          <th>Neighborhood</th>
+	          <th style="width: 20%;">Features</th>
+	        </tr>
+	      <% @sales_units.each do |sales_unit| %>
+	      	
+	      	<tr class="<%= cycle('even', 'odd') -%>">
+					  <td>
+					    <%= sales_unit.street_address_and_unit %>
+					    </td>
+					  <td>
+					    <%= sales_unit.landlord_code %>
+					  </td>
+
+					  <td style="width: 20%;"><%= sales_unit.access_info %></td>
+					  <td><%= sales_unit.bed_and_baths %></td>
+					  <td><%= sales_unit.available_by %></td>
+					  <td><%= rent_formatted(sales_unit.price) %></td>
+					  <td>
+					  	<%= sales_unit.neighborhood_name %>
+					  </td>
+					  <td>
+						  <!-- %= sales_unit.building.amenities_to_s %-->
+						  <!--%= sales_unit.amenities_to_s %-->
+					  </td>
+					</tr>
+
+				<% end %>
+	    </table>
+	  </div>
+	</div>
+
+
+	</div><!-- end col-xs-12 -->
+</div><!-- end row -->

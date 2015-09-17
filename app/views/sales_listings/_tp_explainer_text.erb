@@ -1,0 +1,7 @@
+<p class="explainer-text">
+  <% if @landlord.tp_fee_percentage %>
+    The landlords's default TP is <%= @landlord.tp_fee_percentage %>%.
+  <% else %>
+  The landlord has no default TP % specified.
+  <% end %>
+</p>

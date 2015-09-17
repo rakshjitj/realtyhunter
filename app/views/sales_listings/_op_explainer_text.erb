@@ -1,0 +1,7 @@
+<p class="explainer-text">
+  <% if @landlord.op_fee_percentage %>
+    The landlords's default OP is <%= @landlord.op_fee_percentage %>%.
+  <% else %>
+    The landlord has no default OP % specified.
+  <% end %>
+</p>

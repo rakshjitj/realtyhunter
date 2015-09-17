@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150904231406) do
+ActiveRecord::Schema.define(version: 20150917022521) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(version: 20150904231406) do
     t.integer  "rental_terms_id"
     t.integer  "pet_policies_id"
     t.integer  "residential_amenities_id"
+    t.integer  "sales_amenities_id"
   end
 
   add_index "companies", ["building_amenities_id"], name: "index_companies_on_building_amenities_id", using: :btree
@@ -123,6 +124,7 @@ ActiveRecord::Schema.define(version: 20150904231406) do
   add_index "companies", ["pet_policies_id"], name: "index_companies_on_pet_policies_id", using: :btree
   add_index "companies", ["rental_terms_id"], name: "index_companies_on_rental_terms_id", using: :btree
   add_index "companies", ["residential_amenities_id"], name: "index_companies_on_residential_amenities_id", using: :btree
+  add_index "companies", ["sales_amenities_id"], name: "index_companies_on_sales_amenities_id", using: :btree
   add_index "companies", ["users_id"], name: "index_companies_on_users_id", using: :btree
   add_index "companies", ["utilities_id"], name: "index_companies_on_utilities_id", using: :btree
 
@@ -293,6 +295,35 @@ ActiveRecord::Schema.define(version: 20150904231406) do
   add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
+  create_table "sales_amenities", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "company_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "sales_amenities_units", id: false, force: :cascade do |t|
+    t.integer "sales_listing_id"
+    t.integer "sales_amenity_id"
+  end
+
+  create_table "sales_listings", force: :cascade do |t|
+    t.integer  "price"
+    t.integer  "beds"
+    t.float    "baths"
+    t.string   "notes"
+    t.string   "description"
+    t.string   "lease_start"
+    t.string   "lease_end"
+    t.boolean  "has_fee"
+    t.integer  "op_fee_percentage"
+    t.integer  "tp_fee_percentage"
+    t.boolean  "tenant_occupied",   default: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.integer  "unit_id"
+  end
+
   create_table "units", force: :cascade do |t|
     t.boolean  "archived",               default: false
     t.integer  "listing_id"
@@ -304,7 +335,6 @@ ActiveRecord::Schema.define(version: 20150904231406) do
     t.string   "open_house"
     t.boolean  "oh_exclusive",           default: false
     t.integer  "building_id"
-    t.integer  "listing_agent_id"
     t.integer  "primary_agent_id"
     t.integer  "images_id"
     t.datetime "created_at",                             null: false
@@ -312,12 +342,14 @@ ActiveRecord::Schema.define(version: 20150904231406) do
     t.integer  "residential_listing_id"
     t.integer  "commercial_listing_id"
     t.string   "public_url"
+    t.integer  "sales_listing_id"
   end
 
   add_index "units", ["commercial_listing_id"], name: "index_units_on_commercial_listing_id", using: :btree
   add_index "units", ["images_id"], name: "index_units_on_images_id", using: :btree
   add_index "units", ["rent"], name: "index_units_on_rent", using: :btree
   add_index "units", ["residential_listing_id"], name: "index_units_on_residential_listing_id", using: :btree
+  add_index "units", ["sales_listing_id"], name: "index_units_on_sales_listing_id", using: :btree
   add_index "units", ["status"], name: "index_units_on_status", using: :btree
   add_index "units", ["updated_at"], name: "index_units_on_updated_at", using: :btree
 

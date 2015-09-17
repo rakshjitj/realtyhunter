@@ -1,0 +1,327 @@
+<div id="sales" data-sunit-id="<%= @sales_unit.id %>">
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><%= @panel_title %></h3>
+  </div>
+  <div class="panel-body">
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#basic-info" aria-controls="basic-info" role="tab" data-toggle="tab">Basic Info</a></li>
+      <li role="photos"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <!-- ******************** second tabpanel - photos ******************** -->
+      <div role="tabpanel" class="tab-pane fade" id="photos">
+        
+        <% if @sales_unit.id %>
+
+          <br />
+          <%= form_for(@sales_unit, :url => sales_listing_unit_images_path(@sales_unit), 
+            html: {multipart: true, class: "dropzone", id: "sunit-dropzone"}, method: :post) do |f| %>
+            <div class="fallback">
+              <%= f.file_field :file %><br>
+              <%= f.submit "Upload" %>
+            </div>
+          <% end %>
+        
+          <br />
+          <div class="row">
+            <div class="col-md-12">
+              <p><strong>Edit current photos (drag to reorder):</strong></p>
+              <div class="images sortable">
+                <% if @sales_unit.unit.images.length > 0 %>
+                  <%= render 'images',  locals: { sales_unit: @sales_unit } %>
+                <% else %>
+                  <p>(No files uploaded yet.)</p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+        <% else %>
+          <br />
+          <strong>Save the basic info first!</strong>
+        <% end %>
+        
+      </div><!-- end tabpanel photos -->
+      <!-- ******************** first tabpanel - basic info ********************-->
+      <div role="tabpanel" class="tab-pane fade in active" id="basic-info">
+        <%= form_for(@sales_unit) do |f| %>
+        <%= render :partial => 'shared/error_messages', 
+          :locals => {:model => @sales_unit} %>
+       
+          <br />
+          <div class="row">
+          <%= f.fields_for @sales_unit.unit do |unit_form| %>
+            <div class="col-xs-12 col-md-2 form-label-responsive">
+              <%= unit_form.label :status, class: 'required' %>
+            </div>
+            <div class="col-xs-12 col-md-4">
+              <div class="field">
+                <%= unit_form.select :status, 
+                  options_for_select(%w(Active Pending Off), 
+                    [@sales_unit.unit.status.titleize]), 
+                  {prompt: "Choose one..."},
+                  :required => true,
+                  class: "form-control" %>
+            </div>
+          </div>
+          <% end %>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-xs-12 col-md-2 form-label-responsive">
+            <%= f.label :building_id, class: 'required' %>
+          </div>
+          <div class="col-xs-12 col-md-4">
+            <%= f.fields_for @sales_unit.unit do |unit_form| %>
+            
+              <!-- TODO: turn this into an autocomplete field -->
+              <%= unit_form.select(:building_id, 
+                options_for_select(current_user.company.buildings.order("formatted_street_address ASC").collect {|b| [b.street_address, b.id]},
+                  [@sales_unit.unit.building ? @sales_unit.unit.building.id : '']), 
+                {prompt: "Choose one..."},
+                class: 'form-control',
+                :include_blank => true) %>
+
+            <% end %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-2 form-label-responsive">
+            <%= f.label :building_unit, "Unit", class: 'required' %>
+          </div>
+          <div class="col-md-4">
+            <%= f.fields_for @sales_unit.unit do |unit_form| %>
+              <%= unit_form.text_field :building_unit, class: 'form-control', :required => true %>
+            <% end %>
+          </div>
+        </div>
+        
+        <br />
+        <div class="row">
+          <div class="col-md-2 form-label-responsive">
+            <%= f.label :beds, class: 'required' %>
+          </div>
+          <div class="col-md-4">
+            <%= f.number_field :beds, class: 'form-control',
+              in: 0.0..10.0, :required => true %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-2 form-label-responsive">
+            <%= f.label :baths, class: 'required' %>
+          </div>
+          <div class="col-md-4">
+            <%= f.number_field :baths, class: 'form-control', step: 0.5, in: 0.0..10.0, 
+            :required => true %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <%= f.fields_for @sales_unit.unit do |unit_form| %>
+            <div class="col-md-2 form-label-responsive">
+              <%= unit_form.label :available_by, "Available", class: 'required' %>
+            </div>
+            <div class="col-md-4">
+              <div class='input-group date datepicker' 
+                data-available-by="<%= @sales_unit.unit.available_by ? @sales_unit.unit.available_by.strftime("%m/%d/%Y") : '' %>">
+              
+                <%= unit_form.text_field :available_by, 
+                  placeholder: "Available", class:"form-control", size:30 %>
+              
+                <label class="input-group-addon btn" for="date">
+                  <span class="fa fa-calendar open-datepicker"></span>
+                </label>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-2 form-label-responsive">
+            <%= f.label :access_info %>
+          </div>
+          <div class="col-md-9">
+            <%= f.check_box :tenant_occupied, checked: @sales_unit.tenant_occupied %>
+            <%= f.label :tenant_occupied %><br />
+            <%= f.fields_for @sales_unit.unit do |unit_form| %>
+              <%= unit_form.text_area :access_info, class: 'form-control', rows: 4 %>
+            <% end %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-2 form-label-responsive">
+            <%= f.label :price, class: 'required' %>
+          </div>
+          <div class="col-md-4">
+            <%= f.number_field :price, class: 'form-control', :required => true %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-xs-2 form-label-responsive">
+            <%= f.label :lease_start, "Lease Duration", class: 'required' %>
+          </div>
+          <div class="col-xs-2">
+            <%= f.text_field :lease_start, class: 'form-control', 
+            required: true, placeholder: "min" %>
+          </div>
+          <div class="col-xs-1">
+            to
+          </div>
+          <div class="col-xs-2">
+            <%= f.text_field :lease_end, class: 'form-control', 
+            required: true, placeholder: "max" %>
+          </div>
+          <div class="col-xs-1">
+            Months
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-xs-12 col-md-2 form-label-responsive">
+            <%= f.label :sales_amenity_ids, "Unit Amenities" %>
+          </div>
+
+          <!-- for bigger screens -->
+          <div class="col-xs-12 col-md-9">
+            <div class="row">
+              
+              <% i = 0 %>
+              <%= f.collection_check_boxes(:sales_amenity_ids, current_user.company.sales_amenities, :id, :name) do |b| %>
+                
+                <% if i % 3 == 0 && i > 0 %>
+                  </div>
+                  <div class="row">
+                <% end %>
+
+                <div class="col-sm-4">
+                  <%= b.check_box(class: "check_box") %>&nbsp;
+                  <%= b.text.titleize %>
+                </div>
+
+              <% i = i+1 %>
+              <% end %>
+            
+            </div><!-- row -->
+          </div><!-- col -->
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-2 form-label-responsive">
+            <%= f.label :notes, "Internal Notes" %>
+          </div>
+          <div class="col-md-9">
+            <%= f.text_area :notes, class: 'form-control', rows: 6 %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-2 form-label-responsive">
+            <%= f.label :description, "Public Description" %>
+          </div>
+          <div class="col-md-9">
+            <%= f.text_area :description, class: 'form-control', rows: 6 %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-2 form-label-responsive">
+            <strong>Broker Fee</strong>
+          </div>
+          <div class="col-md-4">
+            <%= f.check_box :has_fee, class:"has-fee", checked: @sales_unit.has_fee %>
+            <%= f.label :has_fee %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row show-op">
+          <div class="col-md-2 form-label-responsive">
+            <%= f.label :op_fee_percentage, 'Owner Pays %' %>
+          </div>
+          <div class="col-md-4">
+            <%= f.number_field :op_fee_percentage, class: 'form-control', min: 0, default: 95 %>
+            <div id="op_explainer_text"></div>
+          </div>
+        </div>
+        
+        <div class="row show-tp">
+          <div class="col-md-2 form-label-responsive">
+            <%= f.label :tp_fee_percentage, 'Tenant Pays %' %>
+          </div>
+          <div class="col-md-4">
+            <%= f.number_field :tp_fee_percentage, class: 'form-control', min: 0, default: 95 %>
+            <div id="tp_explainer_text"></div>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-2 form-label-responsive">
+            <%= f.label :primary_agent_id, "Primary Agent" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.fields_for @sales_unit.unit do |unit_form| %>
+              <%= unit_form.select(:primary_agent_id, 
+                options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
+                  [@sales_unit.unit.primary_agent ? @sales_unit.unit.primary_agent.id : '']), 
+                {prompt: "Choose one..."},
+                class: 'form-control',
+                :include_blank => true) %>
+            <% end %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-2 form-label-responsive">
+            <strong>Open House</strong>
+          </div>
+          <div class="col-md-9">
+            <%= f.fields_for @sales_unit.unit do |unit_form| %>
+              <%= unit_form.check_box(:oh_exclusive) %>
+              <%= unit_form.label :oh_exclusive, "Is Exclusive" %><br />
+              <%= unit_form.label :open_house, "Date & Time Details" %>
+              <%= unit_form.text_area :open_house, class: 'form-control', rows: 3 %>
+            <% end %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-9 col-md-offset-2">
+            <div class="actions">
+              <%= f.submit class: "btn btn-warning" %>
+            </div>
+          </div>
+        </div>
+
+        
+        <% end %>
+
+      </div><!-- end tabpanel home -->
+    </div><!-- tab content -->
+
+  </div><!-- panelbody -->
+</div><!-- panel -->
+
+</div>

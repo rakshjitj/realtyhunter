@@ -1,0 +1,56 @@
+<script>
+	function initialize() {
+		$('#neighborhood-tabpanel a:first').tab('show')
+	};
+	$(document).ready(initialize);
+</script>
+
+<div class="modal-body">
+
+	<div role="tabpanel" id="neighborhood-tabpanel">
+		
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+					<% @neighborhoods.each do |borough, list| %>
+						<li role="presentation"><a href="#<%= borough %>" aria-controls="<%= borough %>" role="tab" data-toggle="tab">
+							<%= borough %></a>
+						</li>
+					<% end %>
+				</ul>
+
+				<!-- Tab panes -->
+				<div class="tab-content">
+	  		<% @neighborhoods.each do |borough, list| %>
+	  				
+			    	<div role="tabpanel" class="tab-pane" id="<%= borough %>">
+			    		<br />
+			    		<div class="row">
+			    		
+			    			<% for i in 0..list.count-1 %>
+				    			<% neighborhood = list[i] %>
+				    			<% if i % 3 == 0 && i > 0 %>
+				    				</div>
+				    				<div class="row">
+				    			<% end %>
+
+				    			<div class="col-xs-4">
+				    				<div class="btn-group neighborhood-buttons" data-toggle="buttons">
+						    			<label class="btn btn-xs btn-link btn-as-checkbox text-left" 
+						    				id="<%= neighborhood.id %>" name="<%= neighborhood.name %>">
+											  <input type="checkbox" autocomplete="off"><%= wrap_text(neighborhood.name.titleize, 20) %>
+											</label>
+										</div>
+									</div>
+				    		<% end %>
+
+							</div>
+			    	</div><!-- tabpanel -->
+
+				<% end %><!-- boroughs -->
+				</div><!-- tab-content -->
+
+			
+	</div>
+
+
+</div>

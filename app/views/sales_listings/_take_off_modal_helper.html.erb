@@ -1,0 +1,34 @@
+<%= form_for(sales_unit, url: take_off_sales_listing_path(@sales_unit), remote: true) do |f| %>
+
+	<div class="modal-body">
+		<p>Taking this unit off the market means it cannot be advertised, syndicated, or shared.</p>
+
+		<p>Are you sure you want take off 
+			<strong><%= @sales_unit.unit.building.street_address %> #<%= @sales_unit.unit.building_unit %></strong>?</p>
+		<br />
+		
+		<div class="field">
+			<%= f.fields_for @sales_unit.unit do |unit_form| %>
+				<%= unit_form.label :available_by, "Update new lease end date:" %>
+
+				<div class='input-group date datepicker' data-available-by="<%= @sales_unit.unit.available_by.strftime("%m/%d/%Y") %>">
+              
+          <%= unit_form.text_field :available_by, 
+            placeholder: "Available", class:"form-control", size:30 %>
+        
+          <label class="input-group-addon btn" for="date">
+            <span class="fa fa-calendar open-datepicker"></span>
+          </label>
+        </div>
+
+				
+				
+	    <% end %>
+	  </div>
+	</div>
+	<div class="modal-footer">
+		<%= f.submit 'Take off market', class: 'btn btn-danger submit-link' %>
+	  <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+	</div>
+
+<% end %>

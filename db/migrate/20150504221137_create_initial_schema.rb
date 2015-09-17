@@ -1,4 +1,4 @@
-  class CreateInitialSchema < ActiveRecord::Migration
+class CreateInitialSchema < ActiveRecord::Migration
   def change
     create_table :companies do |t|
       t.boolean :archived, default: false

@@ -1,6 +1,6 @@
-class ResidentialAmenity < ActiveRecord::Base
+class SalesAmenity < ActiveRecord::Base
 	belongs_to :company, touch: true
-	has_and_belongs_to_many :residential_listings
+	has_and_belongs_to_many :sales_listings
 	before_save :downcase_name
 	default_scope { order("name ASC") }
 	

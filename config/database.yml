@@ -11,7 +11,7 @@ default: &default
   username: myspace
   password: Myspace722!
   host: localhost
-  port: 5434
+  port: 5433
 
 # development:
 #   url: "postgres://ikwtqpfcsmvqkg:7dfJ_Ygg7VclI7BFygNjjAfRCy@ec2-54-235-145-226.compute-1.amazonaws.com:5432/d6p9h0rklvj5q"

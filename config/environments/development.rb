@@ -74,6 +74,6 @@ Rails.application.configure do
     # }
     #{ :namespace => 'realty-monster', :expires_in => 1.day, :compress => true }, 
     #{ :pool_size => 5 }
-  #config.action_controller.perform_caching = true
+  config.action_controller.perform_caching = true
   
 end

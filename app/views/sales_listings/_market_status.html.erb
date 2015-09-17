@@ -1,0 +1,10 @@
+<!--div class="market_status"-->
+	<% if @sales_unit.unit.status == "active" %>
+	  <span class="green">On Market</span>
+	<% elsif @sales_unit.unit.status == "pending" %>
+		<span class="green">On Market</span>
+	  <span class="dark-orange">Pending Application</span>
+	<% elsif @sales_unit.unit.status == "off" %>
+	  <span class="grey">Off Market</span>
+	<% end %>
+<!--/div-->

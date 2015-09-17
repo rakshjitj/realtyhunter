@@ -1,0 +1,4 @@
+$('.market_status').html("<%= escape_javascript (render :partial => "market_status", locals: { sales_unit: @sales_unit}) %>");
+$('.available_by').html("<%= escape_javascript (render :partial => "available_by", locals: { sales_unit: @sales_unit}) %>");
+
+$('.sales_units_table_body').html("<%= escape_javascript (render :partial => @sales_units) %>");

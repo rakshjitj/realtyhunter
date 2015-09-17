@@ -117,6 +117,31 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :sales_listings, concerns: :unit_images_uploadable do
+    get :autocomplete_building_formatted_street_address, :on => :collection
+    get :autocomplete_landlord_code, :on => :collection
+    member do
+      get 'delete_modal'
+      get 'duplicate_modal'
+      post 'duplicate'
+      get 'inaccuracy_modal'
+      patch 'send_inaccuracy'
+      get 'take_off_modal'
+      patch 'take_off'
+      get 'print_modal'
+      get 'print_public'
+      get 'print_private'
+      get 'refresh_images'
+    end
+    collection do
+      get 'filter'
+      get 'print_list'
+      get 'neighborhoods_modal'
+      get 'features_modal'
+      get 'fee_options'
+    end
+  end
+
   resources :landlords do
     get :autocomplete_landlord_code, :on => :collection
     collection do

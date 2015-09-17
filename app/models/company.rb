@@ -14,6 +14,7 @@ class Company < ActiveRecord::Base
 	has_many :rental_terms, dependent: :destroy
 	has_many :pet_policies, dependent: :destroy
 	has_many :residential_amenities, dependent: :destroy
+	has_many :sales_amenities, dependent: :destroy
 	has_many :commercial_property_types
 	
 	#attr_accessor :agent_types, :employee_titles
