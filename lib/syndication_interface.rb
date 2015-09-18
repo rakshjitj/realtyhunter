@@ -1,6 +1,10 @@
 # This module is designed to match StreetEasy's feed format
 # http://streeteasy.com/home/feed_format
-module StreetEasyInterface
+module SyndicationInterface
+
+	def is_true?(string)
+	  ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(string)
+	end
 
 	def pull_data(company_id, search_params)
 		listings = Unit.joins('left join residential_listings on units.id = residential_listings.unit_id
@@ -10,7 +14,13 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 		.where.not('units.status IN (?)', [Unit.statuses["off"], Unit.statuses["off_market_for_lease_execution"]])
 		.where("residential_listings.description <> '' OR commercial_listings.property_description <> '' ")
 		.where('units.primary_agent_id > 0')
-		#puts "***** GOT #{listings.count}"
+
+		puts search_params.inspect
+
+		if is_true?(search_params[:exclusive])
+			listings = listings.where('units.exclusive = TRUE')
+		end
+		puts "***** GOT #{listings.count}"
 
 		listings = listings
 			.select('units.building_unit', 'units.status', 'units.available_by',

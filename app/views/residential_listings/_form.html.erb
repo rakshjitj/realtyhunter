@@ -240,10 +240,12 @@
             <%= f.label :description, "Public Description" %>
           </div>
           <div class="col-md-9">
+              <small><em>Exclusive listings will display the full address when syndicated.
+              Must have a description AND assigned agent in order to be syndicated.</em></small><br />
               <%= f.fields_for @residential_unit.unit do |unit_form| %>
                 <%= unit_form.check_box :exclusive, checked: @residential_unit.unit.exclusive %>
                 <%= f.label :exclusive %>
-              <% end %> &nbsp;&nbsp;&nbsp;&nbsp;Exclusive listings will display the full address when syndicated.<br />
+              <% end %> 
 
             <%= f.text_area :description, class: 'form-control', rows: 6 %>
           </div>
@@ -306,8 +308,8 @@
           <div class="col-md-9">
             <%= f.fields_for @residential_unit.unit do |unit_form| %>
               <%= unit_form.check_box(:oh_exclusive) %>
-              <%= unit_form.label :oh_exclusive, "Is Exclusive" %><br />
-              <%= unit_form.label :open_house, "Date & Time Details" %>
+              <%= unit_form.label :oh_exclusive, "Exclusive" %><br />
+              <%= unit_form.label :open_house, "Date & Time:" %>
               <%= unit_form.text_area :open_house, class: 'form-control', rows: 3 %>
             <% end %>
           </div>

@@ -191,6 +191,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :street_easy, :defaults => { :format => 'rss' }, path:'public_feed', only: :show
+  resources :syndication, :defaults => { :format => 'rss' }, only: :show #path:'public_feed', 
 
 end

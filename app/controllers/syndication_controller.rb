@@ -1,7 +1,7 @@
-class StreetEasyController < ApplicationController
+class SyndicationController < ApplicationController
   skip_authorize_resource
   skip_before_action :logged_in_user
-  include StreetEasyInterface
+  include SyndicationInterface
   
   def show
     set_listings
@@ -11,9 +11,9 @@ class StreetEasyController < ApplicationController
   end
 
   def set_listings
-    @company = Company.find(streeteasy_params[:id])
+    @company = Company.find(syndication_params[:id])
     if @company
-      @listings = pull_data(@company.id, streeteasy_params)
+      @listings = pull_data(@company.id, syndication_params)
       @pet_policies = Unit.get_pet_policies(@listings)
       @residential_amenities = ResidentialListing.get_amenities(@listings)
       @building_amenities = Building.get_amenities(@listings)
@@ -23,7 +23,7 @@ class StreetEasyController < ApplicationController
     end
   end
 
-  def streeteasy_params
-    params.permit(:format, :id)
+  def syndication_params
+    params.permit(:format, :id, :exclusive)
   end
 end
