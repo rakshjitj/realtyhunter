@@ -1,4 +1,3 @@
-console.log('asfsdfsd');
 SalesListings = {};
 
 // TODO: break this up by controller action
@@ -146,69 +145,69 @@ SalesListings = {};
 	  return contentString;
 	};
 
-	SalesListings.map;
-	SalesListings.overlays;
+	// SalesListings.map;
+	// SalesListings.overlays;
 
-	SalesListings.updateOverviewMap = function(in_data) {
-		SalesListings.overlays.clearLayers();
-    var markers = new L.MarkerClusterGroup({
-    	maxClusterRadius: 30 // lean towards showing more individual markers
-    }).addTo(SalesListings.overlays);//{ showCoverageOnHover: false });
+	// SalesListings.updateOverviewMap = function(in_data) {
+	// 	SalesListings.overlays.clearLayers();
+ //    var markers = new L.MarkerClusterGroup({
+ //    	maxClusterRadius: 30 // lean towards showing more individual markers
+ //    }).addTo(SalesListings.overlays);//{ showCoverageOnHover: false });
 		
-    var dataPoints;
-	  // if updating from an ajax call, in_data will hava content.
-	  // we load data from a data attribute on page load, but that remains cached forever -
-	  // it will not update with subsequent ajax calls.
-	  if (in_data) {
-	  	dataPoints = JSON.parse(in_data);
-	  } else {
-	  	dataPoints = JSON.parse($('#big-map').attr('data-map-points'));
-	  }
+ //    var dataPoints;
+	//   // if updating from an ajax call, in_data will hava content.
+	//   // we load data from a data attribute on page load, but that remains cached forever -
+	//   // it will not update with subsequent ajax calls.
+	//   if (in_data) {
+	//   	dataPoints = JSON.parse(in_data);
+	//   } else {
+	//   	dataPoints = JSON.parse($('#big-map').attr('data-map-points'));
+	//   }
 
-	  var features = [];
-	  Object.keys(dataPoints).forEach(function(key, index) {
-	    // draw each marker + load with data
-	    var info = dataPoints[key];
+	//   var features = [];
+	//   Object.keys(dataPoints).forEach(function(key, index) {
+	//     // draw each marker + load with data
+	//     var info = dataPoints[key];
 
-	    var content = SalesListings.buildContentString(key, info);
-	    var marker = L.marker(new L.LatLng(info.lat, info.lng), {
-	      icon: L.mapbox.marker.icon({
-	      	'marker-size': 'small', 
-	      	'marker-color': '#f86767'
-	      }),
-	      'title': key,
-	    });
-	    marker.bindPopup(content);
-      markers.addLayer(marker);
-	    // var feature = {
-     //    type: 'Feature',
-     //    properties: {
-     //        title: key,
-     //        'marker-color': '#f86767',
-     //        'description': SalesListings.buildContentString(key, info),
-     //        'marker-size': 'small'
-     //    },
-     //    geometry: {
-     //        type: 'Point',
-     //        coordinates: [info.lng, info.lat]
-     //    }
-    	// };
+	//     var content = SalesListings.buildContentString(key, info);
+	//     var marker = L.marker(new L.LatLng(info.lat, info.lng), {
+	//       icon: L.mapbox.marker.icon({
+	//       	'marker-size': 'small', 
+	//       	'marker-color': '#f86767'
+	//       }),
+	//       'title': key,
+	//     });
+	//     marker.bindPopup(content);
+ //      markers.addLayer(marker);
+	//     // var feature = {
+ //     //    type: 'Feature',
+ //     //    properties: {
+ //     //        title: key,
+ //     //        'marker-color': '#f86767',
+ //     //        'description': SalesListings.buildContentString(key, info),
+ //     //        'marker-size': 'small'
+ //     //    },
+ //     //    geometry: {
+ //     //        type: 'Point',
+ //     //        coordinates: [info.lng, info.lat]
+ //     //    }
+ //    	// };
     	
-    	// features.push(feature);
-		});
+ //    	// features.push(feature);
+	// 	});
 
-		var geojson = {
-			'type': 'FeatureCollection',
-			'features': features
-		};
+	// 	var geojson = {
+	// 		'type': 'FeatureCollection',
+	// 		'features': features
+	// 	};
 
-    //markerLayer.setGeoJSON(geojson);
-    var geoJsonLayer = L.geoJson(geojson);
-    //geoJsonLayer.clearLayers();
-    markers.addLayer(geoJsonLayer);
- 		SalesListings.map.addLayer(markers);
-    SalesListings.map.fitBounds(markers.getBounds());
-	};
+ //    //markerLayer.setGeoJSON(geojson);
+ //    var geoJsonLayer = L.geoJson(geojson);
+ //    //geoJsonLayer.clearLayers();
+ //    markers.addLayer(geoJsonLayer);
+ // 		SalesListings.map.addLayer(markers);
+ //    SalesListings.map.fitBounds(markers.getBounds());
+	// };
 
 	SalesListings.toggleFeeOptions = function(event) {
 		var isChecked = $('#sales .has-fee').prop('checked');
@@ -223,7 +222,7 @@ SalesListings = {};
 
 	SalesListings.inheritFeeOptions = function() {
 		bldg_id = $('#sales #sales_listing_unit_building_id').val();
-		console.log('got new ids', bldg_id);
+		//console.log('got new ids', bldg_id);
 		
 		$.ajax({
 			type: 'GET',
@@ -297,7 +296,6 @@ SalesListings = {};
 	};
 
 	SalesListings.initialize = function() {
-		console.log('111111');
 		document.addEventListener("page:restore", function() {
 		  SalesListings.hideSpinner();
 		});
@@ -364,18 +362,18 @@ SalesListings = {};
 			$('#sales .datepicker').data("DateTimePicker").date(available_by);
 		}
 
-		if ($('#big-map').length > 0) {
-			// mapbox
-			L.mapbox.accessToken = $('#mapbox-token').attr('data-mapbox-token');
-	    SalesListings.map = L.mapbox.map('big-map', 'rakelblujeans.8594241c', { zoomControl: false })
-	    	.setView([40.6739591, -73.9570342], 13);
+		// if ($('#big-map').length > 0) {
+		// 	// mapbox
+		// 	L.mapbox.accessToken = $('#mapbox-token').attr('data-mapbox-token');
+	 //    // SalesListings.map = L.mapbox.map('big-map', 'rakelblujeans.8594241c', { zoomControl: false })
+	    // 	.setView([40.6739591, -73.9570342], 13);
 
-			new L.Control.Zoom({ position: 'topright' }).addTo(SalesListings.map);
-	    //map.removeLayer(marker)
-	    //var markerLayer = L.mapbox.featureLayer().addTo(map);
-	    SalesListings.overlays = L.layerGroup().addTo(SalesListings.map);
-	    SalesListings.updateOverviewMap();
-		}
+			// new L.Control.Zoom({ position: 'topright' }).addTo(SalesListings.map);
+	  //   //map.removeLayer(marker)
+	  //   //var markerLayer = L.mapbox.featureLayer().addTo(map);
+	  //   SalesListings.overlays = L.layerGroup().addTo(SalesListings.map);
+	  //   SalesListings.updateOverviewMap();
+		//}
 
 		// google map on show page
 		var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
