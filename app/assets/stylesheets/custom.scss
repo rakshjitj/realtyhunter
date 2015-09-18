@@ -269,7 +269,7 @@ aside {
   padding-left: 0px;
 }
 
-@media (max-width:992) {
+@media (max-width:768) {
   // .mobile-toggle-map{
   //   display: none;
   // }
@@ -278,7 +278,7 @@ aside {
     text-align: left;
   }
 }
-@media (min-width:992) {
+@media (min-width:768) {
   .form-label-responsive {
     text-align: right;
     padding-right: 10px;
