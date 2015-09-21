@@ -57,7 +57,7 @@
 			  		<%= link_to 'View all', residential_listings_path %>
 			  		| <%= link_to 'Print', print_modal_residential_listing_path(@residential_unit), 
 			      		data: {toggle: "modal", target: "#printModal"}, remote: true %>
-			  		<% if current_user.is_management? %>
+			  		<% if current_user.is_management? || current_user.is_listings_manager? %>
 		  				| <%= link_to 'Edit', edit_residential_listing_path(@residential_unit.id) %>
 			        | <%= link_to 'Duplicate', duplicate_modal_residential_listing_path(@residential_unit), 
 			    				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>

@@ -9,7 +9,7 @@
     </div>
     <div class="col-md-6 form-label-responsive">
       
-      <% if current_user.is_management? %>
+      <% if current_user.is_management? || current_user.is_listings_manager? %>
         <%= link_to 'Add a unit', new_residential_listing_path, class: 'btn btn-warning btn-sm link-as-button' %>
       <% end %>
 
@@ -111,7 +111,7 @@
             <%= label_tag :status, "Status" %>
           </div>
           <div class="col-xs-7">
-            <% if current_user.is_management? %>
+            <% if current_user.is_management? || current_user.is_listings_manager? %>
               <%= select_tag(:status, 
                 options_for_select(['Any', 'Active + Pending', 'Active', 'Pending', 'Off'], 
                 params[:status] ? params[:status].titleize : "Active")) %>
@@ -261,7 +261,7 @@
           <th data-sort="rent" class="th-sortable">Price</th>
           <th data-sort="updated_at" class="th-sortable selected-sort">Updated <i class="glyphicon glyphicon-triangle-bottom"></i></th>
           <th data-sort="status" class="th-sortable">Status</th>
-          <% if current_user.is_management? %>
+          <% if current_user.is_management? || current_user.is_listings_manager? %>
             <th colspan="1"></th>
           <% end %>
         </tr>

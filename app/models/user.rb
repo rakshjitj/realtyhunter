@@ -304,6 +304,14 @@ class User < ActiveRecord::Base
     end    
   end
 
+  def is_listings_manager?
+    if has_role? :listings_manager
+      true
+    else
+      false
+    end
+  end
+
   def coworkers
     company.users
   end

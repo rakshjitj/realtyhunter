@@ -24,7 +24,7 @@
     <%= building.total_unit_count %>
   </td>
   <td><%= time_ago_in_words(building.updated_at) %></td>
-  <% if current_user.is_management? %>
+  <% if current_user.is_management? || current_user.is_listings_manager? %>
     <td>
       <%= link_to 'Edit', edit_building_path(building) %> <br />
       <%= link_to 'Delete', delete_modal_building_path(building), 

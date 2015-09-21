@@ -51,7 +51,7 @@
         <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
       <% end %>
     </td>
-    <% if current_user.is_management? %>
+    <% if current_user.is_management? || current_user.is_listings_manager? %>
       <td>
         <%= link_to 'Edit', edit_residential_listing_path(residential_listing) %> 
         <br /><%= link_to 'Delete', delete_modal_residential_listing_path(residential_listing), 

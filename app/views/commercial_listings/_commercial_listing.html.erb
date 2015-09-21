@@ -37,7 +37,7 @@
       <% end %>
     </td>
 
-    <% if current_user.is_management? %>
+    <% if current_user.is_management? || current_user.is_listings_manager? %>
       <td>
         <%= link_to 'Edit', edit_commercial_listing_path(commercial_listing) %><br />
         <%= link_to 'Delete', delete_modal_commercial_listing_path(commercial_listing), 

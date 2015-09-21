@@ -144,6 +144,7 @@ end
   {name: "data entry"},
   {name: "manager"},
   {name: "closing manager"},
+  {name: "posting admin"},
   {name: "marketing"},
   {name: "operations"},
   {name: "company admin"},

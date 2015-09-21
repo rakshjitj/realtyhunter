@@ -77,8 +77,8 @@
             <%= f.select(:agent_types, options_for_select(AgentType.all.collect {|t| [t.name.titleize]}, 
               @user.agent_specialties),
                 {},
-                {
-                :multiple => true,
+                { size: 5,
+                multiple: true,
                 class: 'form-control' } ) %>
           </div>
         </div>

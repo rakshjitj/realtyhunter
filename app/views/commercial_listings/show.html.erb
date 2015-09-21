@@ -33,7 +33,7 @@
 				  	  <%= link_to 'View all', commercial_listings_path %>
 		        	| <%= link_to 'Print', print_modal_commercial_listing_path(@commercial_unit), 
 		        		data: {toggle: "modal", target: "#printModal"}, remote: true %>
-		        	<% if current_user.is_management? %>
+		        	<% if current_user.is_management? || current_user.is_listings_manager? %>
 					  		| <%= link_to 'Edit', edit_commercial_listing_path(@commercial_unit) %>
 					  		| <%= link_to 'Duplicate', duplicate_modal_commercial_listing_path(@commercial_unit), 
 			      				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
