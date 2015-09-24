@@ -42,11 +42,11 @@ xml.streeteasy :version => "1.6" do
 				xml.details do
 					xml.price listing.rent
 
-				 	if !listing.tp_fee_percentage
+				 	if !listing.has_fee
 				 		xml.noFee
 				 	end
 				
-					if listing.code == "myspace"
+					if listing.exclusive
 						xml.exclusive
 					end
 

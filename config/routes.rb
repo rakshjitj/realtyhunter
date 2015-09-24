@@ -191,6 +191,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :syndication, :defaults => { :format => 'rss' }, only: :show #path:'public_feed', 
+  resources :syndication, :defaults => { :format => 'rss' } do #:show #path:'public_feed', 
+    member do
+      get 'naked_apts'
+      get 'streeteasy'
+      get 'trulia'
+    end
+  end
 
 end
