@@ -35,4 +35,8 @@ module ApplicationHelper
     }
     out_text.html_safe
   end
+
+  def url_with_protocol(url)
+    /^http/i.match(url) ? url : "http://#{url}"
+  end
 end

@@ -4,7 +4,7 @@ class CommercialPropertyType < ActiveRecord::Base
 
 	def self.subtypes_for(term, company)
 		CommercialPropertyType.where(company: company)
-			.where('property_type ILIKE (?)', "%#{term}")
+			.where('property_type ILIKE (?)', "%#{term}").distinct
 	end
 
 end

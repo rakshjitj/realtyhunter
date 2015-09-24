@@ -8,7 +8,7 @@
       <h1>Buildings</h1>
     </div>
     <div class="col-md-6 form-label-responsive">
-      <% if current_user.is_management? %>
+      <% if current_user.is_management? || current_user.is_listings_manager? %>
         <%= link_to 'Add a building', new_building_path, class: 'btn btn-warning btn-sm link-as-button' %>
         <%= link_to 'Download CSV', buildings_path(format: :csv), class: 'btn btn-warning btn-sm link-as-button' %>
       <% end %>
