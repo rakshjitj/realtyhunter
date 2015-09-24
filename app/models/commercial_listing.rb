@@ -99,8 +99,9 @@ class CommercialListing < ActiveRecord::Base
   # end
   
   def self.search(params, user, building_id=nil)
-    @running_list = CommercialListing.joins([:commercial_property_type, unit: {building: [:landlord, :neighborhood]}])
+    @running_list = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord, :neighborhood]}])
       .where('units.archived = false')
+      .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address', 
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',

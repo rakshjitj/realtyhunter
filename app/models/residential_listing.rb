@@ -105,8 +105,9 @@ class ResidentialListing < ActiveRecord::Base
   def self.search(params, user, building_id=nil)
     # TODO: add amenities back in
     # 'building_amenities.name AS bldg_amenity_name',
-    @running_list = ResidentialListing.joins(unit: {building: [:landlord, :neighborhood]})
+    @running_list = ResidentialListing.joins(unit: {building: [:company, :landlord, :neighborhood]})
       .where('units.archived = false')
+      .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address', 
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',

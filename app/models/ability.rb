@@ -12,6 +12,8 @@ class Ability
   end
 
   def posting_permissions(user)
+    can :manage, Building, :company_id => user.company.id
+
     can :manage, ResidentialListing do |residential_listing|
       !residential_listing.unit || user.is_management? || (residential_listing.unit.building.company_id == user.company_id && user.handles_residential?)
     end
@@ -31,17 +33,6 @@ class Ability
       can :manage, BuildingAmenity, :company_id => user.company.id
       can :manage, ResidentialAmenity, :company_id => user.company.id
       can :manage, Utility, :company_id => user.company.id
-      can :manage, Building, :company_id => user.company.id
-      can :manage, ResidentialListing do |residential_listing|
-        !residential_listing.unit || user.is_management? || (residential_listing.unit.building.company_id == user.company_id && user.handles_residential?)
-      end
-      can :manage, SalesListing do |sales_listing|
-        !sales_listing.unit || user.is_management? || (sales_listing.unit.building.company_id == user.company_id && user.handles_residential?)
-      end
-      can :manage, CommercialListing do |commercial_listing|
-        !commercial_listing.unit || user.is_management? || (commercial_listing.unit.building.company_id == user.company_id && user.handles_commercial?)
-      end
-
       posting_permissions(user)
   end
 
