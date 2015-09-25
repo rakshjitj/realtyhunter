@@ -33,6 +33,7 @@ xml.streeteasy :version => "1.6" do
 				xml.location do
 					# note we don't want to give out the building number for rentals!
 					xml.address listing.street_number + " " + listing.route
+					xml.apartment listing.building_unit
 					xml.city listing.sublocality
 					xml.state listing.administrative_area_level_1_short
 					xml.zipcode listing.postal_code
