@@ -14,9 +14,9 @@ end
 		xml.unit listing.building_unit
 
 		if listing.exclusive
-			xml.street hide:"false"
+			xml.street listing.street_number + " " + listing.route, hide:"false"
 		else
-			xml.street hide:"true"
+			xml.street listing.street_number + " " + listing.route, hide:"true"
 		end
 
 		xml.city listing.sublocality
