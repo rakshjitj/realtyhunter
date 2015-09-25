@@ -4,7 +4,6 @@ class SyndicationController < ApplicationController
   include SyndicationInterface
   
   def naked_apts
-    #syndication_params[:network] = 'naked_apts'
     set_listings
     respond_to do |format|
       format.rss { render :layout => false }
@@ -12,7 +11,6 @@ class SyndicationController < ApplicationController
   end
 
   def streeteasy
-    #syndication_params[:network] = 'streeteasy'
     set_listings
     respond_to do |format|
       format.rss { render :layout => false }
@@ -20,38 +18,28 @@ class SyndicationController < ApplicationController
   end
 
   def trulia
-    #syndication_params[:network] = 'trulia'
     set_listings
     respond_to do |format|
       format.rss { render :layout => false }
     end
   end
 
-  # def show
-  #   set_listings
-  #   respond_to do |format|
-  #     format.rss { render :layout => false }
-  #   end
-  # end
-
   def set_listings
     @company = Company.find(syndication_params[:id])
     if @company
       if syndication_params[:action] == 'naked_apts'
         @listings = naked_apts_listings(@company.id, syndication_params)
-        #puts "#{@listings.count} #{@listings.inspect}"
       elsif syndication_params[:action] == 'streeteasy'
         @listings = streeteasy_listings(@company.id, syndication_params)
       elsif syndication_params[:action] == 'trulia'
         @listings = trulia_listings(@company.id, syndication_params)
       end
           
-      #@listings = pull_data(@company.id, syndication_params)
       @pet_policies = Unit.get_pet_policies(@listings)
       @residential_amenities = ResidentialListing.get_amenities(@listings)
       @building_amenities = Building.get_amenities(@listings)
       @images = Unit.get_all_images(@listings)
-
+      @utilities = Building.get_utilities(@listings)
       @primary_agents, @agent_images = Unit.get_primary_agents_and_images(@listings)
     end
   end

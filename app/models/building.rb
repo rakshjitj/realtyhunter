@@ -162,6 +162,14 @@ class Building < ActiveRecord::Base
       .to_a.group_by(&:id)
   end
 
+  # Used by syndication
+  def self.get_utilities(list)
+    bldg_ids = list.map(&:building_id)
+    Building.joins(:utilities).where(id: bldg_ids)
+      .select('buildings.id', 'utilities.name as utility_name')
+      .to_a.group_by(&:id)
+  end
+
   private
 
   	def process_rental_term
