@@ -69,7 +69,7 @@ end
 		end
 
 		if @residential_amenities && @residential_amenities[listing.unit_id]
-			#@residential_amenities[listing.unit_id].map{|a| a.name}.each do |rm|
+			@residential_amenities[listing.unit_id].map{|a| a.name}.each do |rm|
 				xml.listingTag type:"MODEL_AMENITY" do
 					if rm == "laundry_in_unit" || rm == "washer/dryer" || rm == "washer/dryer in unit"
 						xml.listingTag type:"LAUNDRY" do
