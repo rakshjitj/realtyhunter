@@ -214,7 +214,7 @@ class ResidentialListing < ActiveRecord::Base
       end
 
       if policies
-        @running_list = @running_list.joins(building: :pet_policy)
+        @running_list = @running_list#.joins(building: :pet_policy)
           .where('pet_policy_id IN (?)', policies.ids)
       end
     end
