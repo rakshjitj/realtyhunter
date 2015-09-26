@@ -342,7 +342,7 @@ class ResidentialListingsController < ApplicationController
         :beds, :baths, :notes, :description, :lease_start, :lease_end,
         :include_photos, :inaccuracy_description, 
         :has_fee, :op_fee_percentage, :tp_fee_percentage, 
-        :available_starting, :available_before,   
+        :available_starting, :available_before, :custom_amenities,
         :unit => [:building_unit, :rent, :available_by, :access_info, :status, 
           :open_house, :oh_exclusive, :exclusive,
           :building_id, :primary_agent_id, :listing_agent_id ],

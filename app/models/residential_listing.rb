@@ -2,9 +2,10 @@ class ResidentialListing < ActiveRecord::Base
   scope :unarchived, ->{where(archived: false)}
   has_and_belongs_to_many :residential_amenities
   belongs_to :unit, touch: true
+  before_save :process_custom_amenities
 
   attr_accessor :include_photos, :inaccuracy_description, 
-    :pet_policy_shorthand, :available_starting, :available_before
+    :pet_policy_shorthand, :available_starting, :available_before, :custom_amenities
 
 	validates :lease_start, presence: true, length: {maximum: 5}
   validates :lease_end, presence: true, length: {maximum: 5}
@@ -450,5 +451,22 @@ class ResidentialListing < ActiveRecord::Base
       .where(unit_id: unit_ids).select('name', 'unit_id', 'id')
       .to_a.group_by(&:unit_id)
   end
+
+  private
+    def process_custom_amenities
+      if custom_amenities
+        amenities = custom_amenities.split(',')
+        amenities.each{|a|
+          if !a.empty?
+            a = a.downcase.strip
+            found = ResidentialAmenity.find_by(name: a, company: self.unit.building.company)
+            if !found
+              self.residential_amenities << ResidentialAmenity.create!(name: a, company: self.unit.building.company)
+            end
+          end
+        }
+      end
+    end
+
 
 end
