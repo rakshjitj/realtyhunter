@@ -1,5 +1,6 @@
 <!--% cache residential_listing do %-->
   <tr class="<%= cycle('even', 'odd') -%>">
+    <!-- ****** IMAGE ****************************************** -->
     <td>
       <% if @res_images[residential_listing.unit_id] %>
         <%= link_to(image_tag(@res_images[residential_listing.unit_id].file.url(:thumb), :class => 'img-responsive', 
@@ -10,6 +11,7 @@
       <% end %>
     </td>
     
+    <!-- ****** ADDRESS ****************************************** -->
     <td>
       <%= link_to "#{residential_listing.street_address}", residential_listing_path(residential_listing.id) %><br />
       <% if residential_listing.neighborhood_name %>
@@ -17,10 +19,30 @@
       <% end %>
     </td>
 
+    <!-- ****** UNIT ****************************************** -->
+    <td><%= residential_listing.building_unit %></td>
+
+    <!-- ****** BEDS/BATHS ****************************************** -->
+    <td><%= residential_listing.bed_and_baths %></td>
+
+    <!-- ****** PRICE ****************************************** -->
+    <td><%= rent_formatted(residential_listing.rent) %></td>
+
+    <!-- ****** AVAILBLE_BY ****************************************** -->
     <td>
-      <%= residential_listing.building_unit %>
+      <% if residential_listing.available_by %>
+        <%= residential_listing.available_by.strftime("%b %d") %>
+      <% else %>
+        -
+      <% end %>
     </td>
 
+    <!-- ****** ACCESS ****************************************** -->
+    <td data-toggle="tooltip" data-placement="top" title="<%= residential_listing.access_info %>"
+      data-delay="1500">
+      <%= trim_access residential_listing.access_info %></td>
+    
+    <!-- ****** LANDLORD ****************************************** -->
     <td>
       <% if current_user.is_management? %>
         <%= link_to residential_listing.landlord_code, landlord_path(residential_listing.landlord_id) %>
@@ -29,19 +51,10 @@
       <% end %>
     </td>
 
-    <td data-toggle="tooltip" data-placement="top" title="<%= residential_listing.access_info %>"
-      data-delay="1500">
-      <%= trim_access residential_listing.access_info %></td>
-    <td><%= residential_listing.bed_and_baths %></td>
-    <td>
-      <% if residential_listing.available_by %>
-        <%= residential_listing.available_by.strftime("%b %d") %>
-      <% else %>
-        -
-      <% end %>
-    </td>
-    <td><%= rent_formatted(residential_listing.rent) %></td>
+    <!-- ****** UPDATED_AT ****************************************** -->
     <td><%= time_ago_in_words(residential_listing.updated_at) %></td>
+
+    <!-- ****** STATUS ****************************************** -->
     <td>
       <% if residential_listing.status == Unit.statuses["active"] %>
         <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
@@ -51,6 +64,8 @@
         <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
       <% end %>
     </td>
+
+    <!-- ****** LINKS ****************************************** -->
     <% if current_user.is_management? || current_user.is_listings_manager? %>
       <td>
         <%= link_to 'Edit', edit_residential_listing_path(residential_listing) %> 
