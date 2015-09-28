@@ -33,6 +33,8 @@ module API
 				# calls our API::V1::NestioInterface module located under /lib
 				@neighborhoods = neighborhood_search(neighborhood_params)
 				@neighborhoods = @neighborhoods.page neighborhood_params[:page]
+
+				render json: @neighborhoods
 			end
 
 			def show
