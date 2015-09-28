@@ -33,6 +33,7 @@ module API
 						'employee_titles.name AS title')
 					.includes(:image)
 
+
 				@agents = @agents.where('employee_titles.name = ?', EmployeeTitle.agent.name)
 				
 				# updated_at
@@ -41,6 +42,7 @@ module API
 	        @agents = @agents.where('users.updated_at > ?', time);
 	      end
 
+	      @agents = @agents.order("users.name ASC")
 				@agents = @agents.page(agent_params[:page]).per(per_page)
 				@ab = AgentBlob.new({users: @agents})
 				render json: @ab
