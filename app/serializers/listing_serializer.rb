@@ -180,7 +180,11 @@ class ListingSerializer < ActiveModel::Serializer
 	end
 
 	def square_footage
-		nil
+		if is_residential
+			nil
+		elsif is_commercial
+			object.listing.sq_footage
+		end
 	end
 
 	def rent

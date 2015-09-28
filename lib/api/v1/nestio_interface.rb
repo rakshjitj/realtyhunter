@@ -76,6 +76,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'commercial_listings.lease_term_months', 
 					'commercial_listings.property_description', 
 					'commercial_listings.floor',
+					'commercial_listings.sq_footage',
 					'units.id as unit_id',
 					'units.primary_agent_id'
 				)
@@ -149,6 +150,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'commercial_listings.lease_term_months', 
 					'commercial_listings.property_description', 
 					'commercial_listings.floor',
+					'commercial_listings.sq_footage',
 					'units.primary_agent_id',
 					'commercial_listings.id as c_id',
 				)
