@@ -85,11 +85,9 @@ class CompaniesController < ApplicationController
   # PATCH/PUT /companies/1.json
   def update
     respond_to do |format|
-      #img_params = company_params.dup
       file = params[:company].delete("file")
 
       if @company.update(company_params)
-        #img_params.delete("name")
         if !file.blank?
           @company.image = Image.create(file: file)
         end
