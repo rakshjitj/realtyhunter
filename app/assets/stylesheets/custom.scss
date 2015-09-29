@@ -58,6 +58,10 @@ a:hover.btn-warning {
   background-color: #eb9114 !important;
 }
 
+li > a:hover {
+  background-color: rgba(235, 145, 20, 0.3) !important;
+}
+
 a:hover.btn-danger {
   background-color: #C34B47 !important;
 }
@@ -450,3 +454,50 @@ label.required:after {
 .exclusive-listing {
   color: #3333FF;
 }
+
+// main index page
+// dropdown
+
+.dropdown-menu > li > a {
+  padding: 3px 10px !important;
+}
+
+.pdf-company-logo {
+  padding-bottom: 20px;
+  padding-right: 10px;
+}
+
+.pdf-table {
+  border: none !important;
+  border-collapse: collapse !important;
+
+  td {
+    border: none !important;
+    border-collapse: collapse !important;
+  }
+  tr {
+    border: none !important;
+    border-collapse: collapse !important;
+  }
+  tr.heading-row {
+    border: none !important;
+    background-color: #A0A0A0 !important;
+    color: white !important;
+  }
+  tr.neighborhood-row {
+    border: none !important;
+    background-color: #606060 !important;
+    color: white !important;
+  }
+  th {
+    border-top: none !important;
+    border-bottom: none !important;
+    //border-right: 1px solid #FFF !important;
+    border-left: 1px solid #FFF !important;
+  }
+
+  .odd {
+    background-color: rgb(242, 240, 240);
+  }
+}
+

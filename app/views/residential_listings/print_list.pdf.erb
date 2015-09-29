@@ -1,5 +1,18 @@
+<!-- display company info -->
 <div class="row">
-  <div class="col-xs-12">
+			  		<div class="col-xs-8">
+							<h1><%= current_user.company.name %></h1>
+			  		</div>
+			  		<div class="col-xs-4 text-right">
+			  			<br />
+			  			<address>
+				  			<strong><%= current_user.name %></strong><br />
+				  			<abbr title="Phone">P:</abbr><%= current_user.mobile_phone_number %><br />
+				  			<a href="mailto:#"><%= current_user.email %></a>
+				  		</address>
+		  			</div>
+	  			</div>
+
 
   <div class="row">
 	  <div class="col-md-12">
@@ -17,7 +30,7 @@
 	          <th>Neighborhood</th>
 	          <th style="width: 20%;">Features</th>
 	        </tr>
-	      <% @residential_units.each do |residential_unit| %>
+	      <% @listings.each do |residential_unit| %>
 	      	
 	      	<tr class="<%= cycle('even', 'odd') -%>">
 					  <td>
@@ -45,6 +58,94 @@
 	  </div>
 	</div>
 
+
+	</div><!-- end col-xs-12 -->
+</div><!-- end row -->
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+
+  	<div class="row">
+  		<div class="col-xs-12">
+  			<div class="page-header">
+
+
+	  		</div><!-- page-header -->
+
+		    <div class="row">
+	        <div class="col-xs-5">
+            <% if listing.unit.images.length > 0 %>
+  	          <%= image_tag listing.unit.images[0].file.url(:medium), :class => 'photo-inline', 
+                alt: listing.unit.images[0].file.url(:medium), size:"100%" %>
+              <br />
+            <% else %>
+              <!-- placeholder image -->
+              <%= wicked_pdf_image_tag "listing_soon.png", alt: "Image coming soon",
+                :class => 'img-responsive center-block' %>
+            <% end %>
+	        </div>
+	        <div class="col-xs-7">
+	        		<div class="row">
+                <div class="col-xs-5 text-right">
+                  <strong>Neighborhood</strong>
+                </div>
+                <div class="col-xs-7">
+                  <%= listing.unit.building.neighborhood.name %>
+                </div>
+	            </div>
+
+              <div class="row">
+                <div class="col-xs-5 text-right">
+                  <strong>LL Pays %</strong>
+                </div>
+                <div class="col-xs-7">
+                  <%= listing.op_fee_percentage %>
+                </div>
+	            </div>
+              
+              <div class="row">
+                <div class="col-xs-5 text-right">
+                  <strong>Tenant Pays %</strong>
+                </div>
+                <div class="col-xs-7">
+                  <%= listing.tp_fee_percentage %>
+                </div>
+              </div>
+
+	            <div class="row">
+                <div class="col-xs-5 text-right">
+                  <strong>Listing ID</strong>
+                </div>
+                <div class="col-xs-7">
+                  <%= listing.unit.listing_id %>
+                </div>
+	            </div>
+	        </div><!-- body -->
+
+		  		<div class="row"><!-- footer -->
+			  		<div class="col-xs-12">
+			  			<hr >
+
+			  			<div class="row">
+			  				<div class="col-xs-6">
+			  					<%= current_user.company.name %><br />
+									<abbr title="Phone">P:</abbr><%= current_user.office.telephone %>
+			  				</div>
+			  				<div class="col-xs-6 text-right">
+			  					<address>
+						  			<%= current_user.name %><br />
+						  			<abbr title="Phone">P:</abbr><%= current_user.mobile_phone_number %><br />
+						  			<a href="mailto:#"><%= current_user.email %></a>
+						  		</address>
+			  				</div>
+			  			</div>
+		  			</div>
+	  			</div><!-- end footer -->
+
+	  	</div>
+	  </div><!-- row -->
 
 	</div><!-- end col-xs-12 -->
 </div><!-- end row -->

@@ -99,6 +99,25 @@ class ResidentialListing < ActiveRecord::Base
     ResidentialAmenity.where(residential_listing_id: ids).select('name').to_a.group_by(&:residential_listing_id)
   end
 
+  def self.listings_by_neighborhood(user, listing_ids)
+    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord, :neighborhood]})
+      .where('companies.id = ?', user.company_id)
+      .where('units.listing_id IN (?)', listing_ids)
+      .select('buildings.formatted_street_address', 
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+        'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
+        'units.building_unit', 'units.status','units.rent', 'residential_listings.beds', 
+        'beds || \'/\' || baths as bed_and_baths',
+        'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
+        'residential_listings.id', 'residential_listings.baths','units.access_info',
+        'residential_listings.has_fee', 'residential_listings.updated_at', 
+        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
+        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        'units.available_by')
+      .to_a.group_by(&:neighborhood_name)
+    running_list
+  end
+
   # takes in a hash of search options
   # can be formatted_street_address, landlord
   # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 
@@ -181,7 +200,7 @@ class ResidentialListing < ActiveRecord::Base
     if params[:neighborhood_ids]
       neighborhood_ids = params[:neighborhood_ids][0, 256]
       neighborhoods = neighborhood_ids.split(",").select{|i| !i.strip.empty?}
-      puts "**** #{neighborhoods.inspect}"
+      #puts "**** #{neighborhoods.inspect}"
       if neighborhoods.length > 0 # ignore empty selection
         @running_list = @running_list
          .where('neighborhood_id IN (?)', neighborhoods)

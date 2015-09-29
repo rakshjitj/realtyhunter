@@ -1,5 +1,12 @@
 <!--% cache residential_listing do %-->
-  <tr class="<%= cycle('even', 'odd') -%>">
+  <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= residential_listing.unit.listing_id %>" >
+    
+    <!-- ****** checkboxes ****************************************** -->
+    <td>
+      <i data-action="selectUnit" class="fa fa-square-o"></i>
+      <!-- %= check_box_tag "residential_listing_ids[]", residential_listing.id, false, data: {action:'selectListing'} % -->
+    </td>
+
     <!-- ****** IMAGE ****************************************** -->
     <td>
       <% if @res_images[residential_listing.unit_id] %>

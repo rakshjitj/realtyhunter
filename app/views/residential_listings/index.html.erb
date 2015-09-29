@@ -13,10 +13,10 @@
         <%= link_to 'Add a unit', new_residential_listing_path, class: 'btn btn-warning btn-sm link-as-button' %>
       <% end %>
 
-      <%= link_to print_list_residential_listings_path, 
-        class:"btn btn-sm btn-warning link-as-button btn-print-list has-spinner" do %>
-        <span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Print
-      <% end %>
+      <!--%= link_to print_list_residential_listings_path, 
+        class:"btn btn-sm btn-warning link-as-button btn-print-list has-spinner" do %-->
+        <!--span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Print -->
+      <!--% end %-->
     </div>
   </div>
 </div>
@@ -232,10 +232,28 @@
   </div>
 </div>
 
+<%= form_tag print_list_residential_listings_path do %>
+
 <div class="row">
   <div class="col-md-6">
     <br />
     <p class="totals">
+      <!-- will be a dropdown of either print pdf or email -->
+      <div class="dropdown">
+        <button class="btn btn-warning btn-sm dropdown-toggle disabled" id="selected-listings-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="menu">
+          0 Selected Listings
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu selected-listings-menu" aria-labelledby="selected-listings-dropdown">
+          <li role="presentation"><a class="list-item-sm-padding" data-action="send" role="menuitem" tabindex="-1">
+            <i class="fa fa-fw fa-envelope"></i> Email</a></li>
+          <li role="presentation"><a class="list-item-sm-padding" data-action="listingsSheet" role="menuitem" tabindex="-1">
+            <i class="fa fa-fw fa-file-text"></i> Show Sheet</a></li>
+          <li role="presentation"><a class="list-item-sm-padding" data-action="internalListingsSheet" role="menuitem" tabindex="-1">
+            <i class="fa fa-fw fa-file-text"></i> Internal Listings Sheet</a></li>
+        </ul>
+      </div>
+
       <%= @count_all %> total units found. <%= @residential_units.total_count %> units shown.
     </p>
   </div>
@@ -251,6 +269,10 @@
     <table class="table table-striped table-hover table-condensed table-responsive">
       <thead>
         <tr>
+          <th>
+            <!-- checkboxes -->
+            <!-- <i data-action="selectAll" class="select-all selected fa fa-check-square"><i></i></i> -->
+          </th>
           <th><!-- first image --></th>
           <th data-sort="formatted_street_address" class="th-sortable">Address</th>
           <th data-sort="building_unit" class="th-sortable">Unit</th>
@@ -267,6 +289,7 @@
         </tr>
       </thead>
 
+      
       <tbody class="residential_units_table_body">
         <%= render partial: 'residential_listings/residential_listing', 
         collection: @residential_units, locals: {res_images: @res_images} %>
@@ -275,6 +298,8 @@
 
   </div>
 </div>
+
+<% end %><!-- form -->
 
 <div class="row">
   <div class="col-md-12 form-label-responsive">

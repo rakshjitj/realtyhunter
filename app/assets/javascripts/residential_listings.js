@@ -3,14 +3,47 @@ ResidentialListings = {};
 // TODO: break this up by controller action
 
 (function() {
-	// ResidentialListings.toggleMap = function() {
-	// 	$('.mobile-toggle-map').toggleClass();
-	// 	if ($('.mobile-toggle-map').is(":visible")) {
-	// 		$('.display-toggle-map').text('Hide Map');
-	// 	} else {
-	// 		$('.display-toggle-map').text('Display Map');
-	// 	}
-	// };
+
+	ResidentialListings.selectedListings = [];
+
+	ResidentialListings.toggleListingSelection = function() {
+		// TODO: cap the max # of listings you can select?
+		var isChecked = $(this).hasClass('fa-check-square');
+		var listing_id = $(this).parent().parent().attr('data-id');
+		
+		if (isChecked) {
+			$(this).addClass('fa-square-o').removeClass('fa-check-square');
+			ResidentialListings.selectedListings.splice(ResidentialListings.selectedListings.indexOf(listing_id), 1);
+		} else {
+			$(this).addClass('fa-check-square').removeClass('fa-square-o');
+			ResidentialListings.selectedListings.push(listing_id);
+		}
+
+		$('#selected-listings-dropdown').html(ResidentialListings.selectedListings.length + " Selected Listings <span class=\"caret\"></span>");
+		if (ResidentialListings.selectedListings.length == 0) {
+			$('#selected-listings-dropdown').addClass("disabled");
+		} else {
+			$('#selected-listings-dropdown').removeClass("disabled");
+		}
+	};
+
+	ResidentialListings.indexMenuActions = {
+		
+		'send': function() {
+			console.log('sending!');
+			var params = 'residential_listing_ids=' + ResidentialListings.selectedListings.join(",");
+			window.location.href = '/residential_listings/print_list?' + params;
+		},
+		'listingsSheet': function() {
+			//console.log('sheet!');
+			var params = 'residential_listing_ids=' + ResidentialListings.selectedListings.join(",");
+			window.location.href = '/residential_listings/print_public?' + params;
+		},
+		'internalListingsSheet': function() {
+			var params = 'residential_listing_ids=' + ResidentialListings.selectedListings.join(",");//("%2C+");
+			window.location.href = '/residential_listings/print_private?' + params;
+		}
+	};
 
 	ResidentialListings.showSpinner = function() {
 		$('.res-spinner-desktop').show();
@@ -352,9 +385,18 @@ ResidentialListings = {};
 	  $('#residential .remove-neighborhood').click(ResidentialListings.removeNeighborhood);
 
 	  // print pdf from the index page
-	  $('#residential .btn-print-list').click( function(event) {
-		  ResidentialListings.showSpinner();
-		  $(this).toggleClass('active');
+	 //  $('#residential .btn-print-list').click( function(event) {
+		//   ResidentialListings.showSpinner();
+		//   $(this).toggleClass('active');
+		// });
+
+		// index page - selecting listings
+		$('tbody').on('click', 'i', ResidentialListings.toggleListingSelection);
+		ResidentialListings.selectedListings = [];
+		$('.selected-listings-menu').on('click', 'a', function() {
+			console.log*('asdfasdfsd');
+			var action = $(this).data('action');
+			if (action in ResidentialListings.indexMenuActions) ResidentialListings.indexMenuActions[action]();
 		});
 
 		// make sure datepicker is formatted before setting initial date below

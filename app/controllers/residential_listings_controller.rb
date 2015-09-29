@@ -1,9 +1,12 @@
 class ResidentialListingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource only: :create
-  before_action :set_residential_listing, except: [:new, :create, :index, :filter, 
-    :print_list, :neighborhoods_modal, :features_modal, 
-    :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood, :fee_options]
+  before_action :set_residential_listing, only: [:show, :edit, :duplicate_modal, :duplicate, 
+    :take_off_modal, :take_off, :update, :delete_modal, :destroy, 
+    :inaccuracy_modal, :send_inaccuracy, :refresh_images]
+    # except: [:new, :create, :index, :filter, 
+    # :print_list, :print_private, :neighborhoods_modal, :features_modal, 
+    # :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood, :fee_options]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
   etag { current_user.id }
@@ -155,31 +158,36 @@ class ResidentialListingsController < ApplicationController
   # GET
   # handles ajax call. uses latest data in modal
   # Modal collects info and prep unit to be taken off the market
-  def print_modal
-    respond_to do |format|
-      format.js  
-    end
-  end
+  # def print_modal
+  #   respond_to do |format|
+  #     format.js  
+  #   end
+  # end
 
   def print_list
-    residential_listings_no_pagination
-    render pdf: current_user.name + ' Residential Listings',
-      template: "/residential_listings/print_list.pdf.erb",
-      #disposition: "attachment",
-      layout:   "/layouts/pdf_layout.html",
-      orientation: 'Landscape',
-      title: current_user.name + 'Residential Listings',
-      default_header: false,
-      header:  { right: '[page] of [topage]' },
-      margin: { top: 0, bottom: 0, left: 0, right: 0}
+    #listings = ResidentialListing.find(params[:residential_listing_ids])
+    
+    #residential_listings_no_pagination
+    # render pdf: current_user.name + ' Residential Listings',
+    #   template: "/residential_listings/print_list.pdf.erb",
+    #   #disposition: "attachment",
+    #   layout:   "/layouts/pdf_layout.html",
+    #   orientation: 'Landscape',
+    #   title: current_user.name + 'Residential Listings',
+    #   default_header: false,
+    #   header:  { right: '[page] of [topage]' },
+    #   margin: { top: 0, bottom: 0, left: 0, right: 0}
   end
 
   def print_private
+    ids = params[:residential_listing_ids].split(',')
+    @neighborhood_group = ResidentialListing.listings_by_neighborhood(current_user, ids)
+
     #respond_to do |format|
     #  format.pdf do
-        render pdf: current_user.name + ' - Residential - Private',
+        render pdf: current_user.company.name + ' - Private Listings - ' + Date.today.strftime("%b%d%Y"),
           template: "/residential_listings/print_private.pdf.erb",
-          #disposition: "attachment",
+          orientation: 'Landscape',
           layout:   "/layouts/pdf_layout.html"
     #  end
     #end
@@ -188,11 +196,14 @@ class ResidentialListingsController < ApplicationController
   # PATCH ajax
   # Takes a unit off the market
   def print_public
+    ids = params[:residential_listing_ids].split(',')
+    @neighborhood_group = ResidentialListing.listings_by_neighborhood(current_user, ids)
+
     #respond_to do |format|
     #  format.pdf do
-        render pdf: current_user.name + ' - Residential',
+        render pdf: current_user.company.name + ' - Public Listings - ' + Date.today.strftime("%b%d%Y"),
           template: "/residential_listings/print_public.pdf.erb",
-          #disposition: "attachment",
+          orientation: 'Landscape',
           layout:   "/layouts/pdf_layout.html"
     #  end
     #end
