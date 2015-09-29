@@ -157,7 +157,7 @@ class ResidentialListing < ActiveRecord::Base
         'residential_listings.has_fee', 'residential_listings.updated_at', 
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
-        'units.available_by')
+        'units.available_by', 'units.public_url')
       # unit.building.street_number + ' ' + unit.building.route
 
     if !params && !building_id
@@ -453,7 +453,7 @@ class ResidentialListing < ActiveRecord::Base
         'residential_listings.has_fee', 'residential_listings.updated_at', 
         'neighborhoods.name AS neighborhood_name', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
-        'units.available_by')
+        'units.available_by', 'units.listing_id')
       
     if is_active
       listings = listings.where.not("status = ?", Unit.statuses["off"])
@@ -478,7 +478,7 @@ class ResidentialListing < ActiveRecord::Base
         'residential_listings.has_fee', 'residential_listings.updated_at', 
         'neighborhoods.name AS neighborhood_name', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
-        'units.available_by')
+        'units.available_by', 'units.listing_id')
       
     if is_active
       listings = listings.where.not("status = ?", Unit.statuses["off"])
