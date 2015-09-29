@@ -106,6 +106,8 @@ GEM
     faker (1.5.0)
       i18n (~> 0.5)
     ffaker (2.1.0)
+    font-awesome-rails (4.4.0.0)
+      railties (>= 3.2, < 5.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     http-cookie (1.0.2)
@@ -288,6 +290,9 @@ GEM
       rails
     wkhtmltopdf-binary-edge (0.12.2.1)
     wkhtmltopdf-heroku (2.12.2.4)
+    wysiwyg-rails (1.2.8)
+      font-awesome-rails (>= 4.3.0.0)
+      railties (>= 3.2, < 5.0)
 
 PLATFORMS
   ruby
@@ -345,6 +350,7 @@ DEPENDENCIES
   wicked_pdf
   wkhtmltopdf-binary-edge (~> 0.12.2.1)
   wkhtmltopdf-heroku (~> 2.12.2.1)
+  wysiwyg-rails
 
 BUNDLED WITH
    1.10.2

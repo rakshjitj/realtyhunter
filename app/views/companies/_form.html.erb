@@ -5,7 +5,7 @@
         :locals => {:model => @company} %>
 
       <div class="field">
-        <%= f.label :name, "Company name" %><br>
+        <%= f.label :name, "Company name", class: 'required' %><br>
         <%= f.text_field :name, class: 'form-control required' %>
       </div>
 
@@ -45,6 +45,22 @@
         <!--%= f.label :employee_titles, "Departments: (separate by comma or newline)" %-->
         <!--%= f.text_area :employee_titles, class: 'form-control', rows: 8 %-->
       <!--/div-->
+
+      <br />
+      <div class="row">
+        <div class="col-md-12">
+          <%= f.label :privacy_policy %><br>
+          <%= f.text_area :privacy_policy, class: 'form-control', rows: 10 %><br>
+        </div>
+      </div>
+
+      <br />
+      <div class="row">
+        <div class="col-md-12">
+          <%= f.label :terms_conditions, "Terms & Conditions" %><br>
+          <%= f.text_area :terms_conditions, class: 'form-control', rows: 10 %><br>
+        </div>
+      </div>
 
       <div class="actions">
         <%= f.submit class:'btn btn-warning' %>

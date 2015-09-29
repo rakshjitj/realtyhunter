@@ -2,8 +2,7 @@
 <div class="row">
   <div class="col-xs-9">
     <%= image_tag current_user.company.image.file.url(:thumb), :class => 'photo-inline pdf-company-logo', 
-      alt: current_user.company.image.file.url(:thumb), align:"left" %>
-    
+      alt: current_user.company.image.file.url(:thumb), align:"left" %>    
     <h3>
       <%= current_user.company.name %> Listings<br />
       <small><%= Time.now.strftime("%B %d, %Y") %></small><br />

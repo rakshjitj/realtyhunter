@@ -3,6 +3,13 @@
 
 /* universal */
 
+/* Don't print link hrefs */
+@media print {
+  a[href]:after {
+    content: none
+  }
+}
+
 body {
   padding-top: 60px;
 }

@@ -3,7 +3,7 @@ class Company < ActiveRecord::Base
 	scope :unarchived, ->{where(archived: false)}
 	
 	has_one :image, dependent: :destroy
-	after_save :create_environment
+	after_create :create_environment
 	has_many :offices, :dependent => :destroy
 	has_many :users, dependent: :destroy
 	accepts_nested_attributes_for :users
@@ -25,6 +25,9 @@ class Company < ActiveRecord::Base
 
 	validates :name, presence: true, length: {maximum: 50},
 		uniqueness: { case_sensitive: false }
+
+	validates :privacy_policy, allow_blank: true, length: {maximum: 2000}
+	validates :terms_conditions, allow_blank: true, length: {maximum: 2000}
 
   def archive
     self.archived = true

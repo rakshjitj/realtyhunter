@@ -57,4 +57,22 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-md-12">
+      <strong>Privacy Policy:</strong>
+      <div class="froala-view">
+        <%= @company.privacy_policy.html_safe %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <strong>Terms & Conditions:</strong>
+      <div class="froala-view">
+        <%= @company.terms_conditions.html_safe %>
+      </div>
+    </div>
+  </div>
+
 </div>

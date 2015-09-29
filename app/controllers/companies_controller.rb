@@ -85,12 +85,14 @@ class CompaniesController < ApplicationController
   # PATCH/PUT /companies/1.json
   def update
     respond_to do |format|
-      img_params = company_params.dup
-      params[:company].delete("file")
+      #img_params = company_params.dup
+      file = params[:company].delete("file")
 
       if @company.update(company_params)
-        img_params.delete("name")
-        @company.image = Image.create(img_params)
+        #img_params.delete("name")
+        if !file.blank?
+          @company.image = Image.create(file: file)
+        end
         flash[:success] = 'Company was successfully updated.'
         # TODO: make environment editable
         #@company.update_agent_types
@@ -137,6 +139,7 @@ class CompaniesController < ApplicationController
 
     def company_params
       params.require(:company).permit(:name, :file, :agent_types, :employee_titles,
+        :privacy_policy, :terms_conditions,
         users_attributes: [:name, :email, :password, :password_confirmation])
     end
 end
