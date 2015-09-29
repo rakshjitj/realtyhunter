@@ -1,24 +1,33 @@
+
+
 <div class="email-company-header">
 	<div class="row">
 	  <div class="col-xs-1 col-xs-offset-5">
 	    <%= image_tag @source_agent.company.image.file.url(:thumb), :class => 'photo-inline pdf-company-logo', 
 	      alt: @source_agent.company.image.file.url(:thumb), align:"left" %>
+	    <h3>
+	      <%= current_user.company.name %> Listings<br />
+	      <small><%= Time.now.strftime("%B %d, %Y") %></small><br />
+	      <small>FOR INTERNAL USE ONLY</small>
+	    </h3>
 	  </div>
 	</div>
 </div>
 
 <hr />
 
-<p>@message</p>
+<% if @message %>
+	<p><%= @message %></p>
+<% end %>
 
 <div id="email-listings-body">
 	<!-- agent header -->
 	<div class="row">
-		<div class="col-sm-1">
+		<div class="col-xs-2">
 			<%= image_tag @source_agent.image.file.url(:thumb), class: 'img-responsive', 
   	    alt: @source_agent.image.file.url(:thumb) %>
   	</div>
-  	<div class="col-sm-11">
+  	<div class="col-xs-10">
   		<%= @source_agent.name %>
 	    <% if !@source_agent.email.blank? %>
 	      <br /><%= mail_to @source_agent.email, @source_agent.email, subject: 'Responding to Your Sent Listings' %>
@@ -38,7 +47,7 @@
 				<div class="row">
 			<% end %>
 
-			<div class="col-sm-3">
+			<div class="col-xs-3">
 			<% if @images[listing.unit_id] %>
         <%= link_to(image_tag(@images[listing.unit_id].file.url(:thumb), :class => 'img-responsive', 
           alt: @images[listing.unit_id].file.url(:medium)), listing) %>
@@ -46,7 +55,7 @@
         <!-- placeholder image -->
         <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), listing) %>
       <% end %>
-
+      	<br />
 	      <%= rent_formatted(listing.rent) %><br />
 	      <%= listing.beds %> BR / <%= trim_zeros(listing.baths) %> Bath<br />
 	      <%= listing.route %>, <% listing.neighborhood_name %><br />
@@ -63,6 +72,7 @@
 	        <%= listing.unit.building.utilities_to_s %>
 	      <% end %>
 
+	      <br />
 	      <a href="<%= listing.public_url %>" class="btn btn-sm btn-warning">View Photos and Details</a>
 			</div><!-- col -->
 			
