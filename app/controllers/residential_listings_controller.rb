@@ -155,6 +155,20 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
+  # sends listings info to clients
+  def send_listings
+    recipients = residential_listing_params[:recipients].split(',')
+    sub = residential_listing_params[:title]
+    msg = residential_listing_params[:message]
+    ids = residential_listing_params[:listing_ids].split(',')
+    listings = ResidentialListing.listings_by_id(current_user, ids)
+    images = ResidentialListing.get_images(listings)
+    ResidentialListing.send_listings(current_user, listings, images, recipients, sub, msg)
+    
+    flash[:success] = "Listings sent!" 
+    redirect_to :action => 'index'
+  end
+
   # GET
   # handles ajax call. uses latest data in modal
   # Modal collects info and prep unit to be taken off the market
@@ -164,7 +178,7 @@ class ResidentialListingsController < ApplicationController
   #   end
   # end
 
-  def print_list
+  #def print_list
     #listings = ResidentialListing.find(params[:residential_listing_ids])
     
     #residential_listings_no_pagination
@@ -177,7 +191,7 @@ class ResidentialListingsController < ApplicationController
     #   default_header: false,
     #   header:  { right: '[page] of [topage]' },
     #   margin: { top: 0, bottom: 0, left: 0, right: 0}
-  end
+  #end
 
   def print_private
     ids = params[:residential_listing_ids].split(',')
@@ -260,7 +274,7 @@ class ResidentialListingsController < ApplicationController
     @residential_unit.inaccuracy_description = residential_listing_params[:inaccuracy_description]
     @residential_unit.send_inaccuracy_report(current_user)
     respond_to do |format|
-      format.js { flash[:notice] = "Report submitted! Thank you." }
+      format.js { flash[:success] = "Report submitted! Thank you." }
     end
   end
 
@@ -349,7 +363,9 @@ class ResidentialListingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def residential_listing_params
-      data = params[:residential_listing].permit(:tenant_occupied,
+      data = params[:residential_listing].permit(
+        :recipients, :title, :message, :listing_ids,
+        :tenant_occupied,
         :beds, :baths, :notes, :description, :lease_start, :lease_end,
         :include_photos, :inaccuracy_description, 
         :has_fee, :op_fee_percentage, :tp_fee_percentage, 
@@ -357,7 +373,8 @@ class ResidentialListingsController < ApplicationController
         :unit => [:building_unit, :rent, :available_by, :access_info, :status, 
           :open_house, :oh_exclusive, :exclusive,
           :building_id, :primary_agent_id, :listing_agent_id ],
-        :residential_amenity_ids => [])
+        :residential_amenity_ids => []
+        )
 
       if data[:unit]
         if data[:unit][:oh_exclusive] == "1"

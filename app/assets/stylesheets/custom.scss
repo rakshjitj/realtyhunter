@@ -313,6 +313,10 @@ aside {
   padding: 0;
 }
 
+.inline {
+  display: inline;
+}
+
 .link-as-button {
   color: white !important;
 }
@@ -406,6 +410,11 @@ aside {
 .vertical-padding {
   padding: 3px 0 3px 0;
 }
+
+.horizontal-padding {
+  padding: 3px 0 3px 0;
+}
+
 vertical-padding-lg {
   padding: 6px 0 6px 0;
 }

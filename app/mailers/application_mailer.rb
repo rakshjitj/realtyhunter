@@ -1,4 +1,6 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "rbujans@myspacenyc.com"
+  default from: "no-reply@realtyhunter.com"
+  helper ApplicationHelper
+  helper ResidentialUnitsHelper
   layout 'mailer'
 end

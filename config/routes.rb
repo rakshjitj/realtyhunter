@@ -115,6 +115,7 @@ Rails.application.routes.draw do
       get 'print_modal'
       get 'print_public'
       get 'print_private'
+      post 'send_listings'
     end
   end
 

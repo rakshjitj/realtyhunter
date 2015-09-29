@@ -1,0 +1,73 @@
+<div class="email-company-header">
+	<div class="row">
+	  <div class="col-xs-1 col-xs-offset-5">
+	    <%= image_tag @source_agent.company.image.file.url(:thumb), :class => 'photo-inline pdf-company-logo', 
+	      alt: @source_agent.company.image.file.url(:thumb), align:"left" %>
+	  </div>
+	</div>
+</div>
+
+<hr />
+
+<p>@message</p>
+
+<div id="email-listings-body">
+	<!-- agent header -->
+	<div class="row">
+		<div class="col-sm-1">
+			<%= image_tag @source_agent.image.file.url(:thumb), class: 'img-responsive', 
+  	    alt: @source_agent.image.file.url(:thumb) %>
+  	</div>
+  	<div class="col-sm-11">
+  		<%= @source_agent.name %>
+	    <% if !@source_agent.email.blank? %>
+	      <br /><%= mail_to @source_agent.email, @source_agent.email, subject: 'Responding to Your Sent Listings' %>
+	    <% end %>
+	    <% if !@source_agent.mobile_phone_number.blank? %>
+	      <br /><%= link_to "tel:" + @source_agent.mobile_phone_number, @source_agent.mobile_phone_number %>
+	    <% end %>
+  	</div>
+	</div>
+
+	<div class="row">	
+		<% idx = 0 %>
+		<% @listings.each do |listing| %>
+
+			<% if idx > 0 && idx % 3 == 0 %>
+				</div>
+				<div class="row">
+			<% end %>
+
+			<div class="col-sm-3">
+			<% if @images[listing.unit_id] %>
+        <%= link_to(image_tag(@images[listing.unit_id].file.url(:thumb), :class => 'img-responsive', 
+          alt: @images[listing.unit_id].file.url(:medium)), listing) %>
+      <% else %>
+        <!-- placeholder image -->
+        <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), listing) %>
+      <% end %>
+
+	      <%= rent_formatted(listing.rent) %><br />
+	      <%= listing.beds %> BR / <%= trim_zeros(listing.baths) %> Bath<br />
+	      <%= listing.route %>, <% listing.neighborhood_name %><br />
+
+	      <hr />
+
+	      <% if !listing.all_amenities_to_s.blank? %>
+	        <%= listing.all_amenities_to_s %>
+	      <% end %>
+	      <% if !listing.all_amenities_to_s.blank? && !listing.unit.building.utilities_to_s.blank? %>
+	       ,
+	      <% end %>
+	      <% if !listing.unit.building.utilities_to_s.blank? %>
+	        <%= listing.unit.building.utilities_to_s %>
+	      <% end %>
+
+	      <a href="<%= listing.public_url %>" class="btn btn-sm btn-warning">View Photos and Details</a>
+			</div><!-- col -->
+			
+			<% idx = idx + 1 %>
+		<% end %>
+	</div><!-- row -->
+
+</div>

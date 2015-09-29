@@ -19,7 +19,7 @@
         <% if @residential_unit.id %>
 
           <br />
-          <%= form_for(@residential_unit, :url => residential_listing_unit_images_path(@residential_unit), 
+          <%= form_for(@residential_unit, url: residential_listing_unit_images_path(@residential_unit), 
             html: {multipart: true, class: "dropzone", id: "runit-dropzone"}, method: :post) do |f| %>
             <div class="fallback">
               <%= f.file_field :file %><br>

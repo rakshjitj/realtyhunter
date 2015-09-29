@@ -22,6 +22,9 @@ ResidentialListings = {};
 		} else {
 			$('#selected-listings-dropdown').removeClass("disabled");
 		}
+
+		// update the hidden tag with the latest list of ids
+		$('#residential_listing_listing_ids').val(ResidentialListings.selectedListings);
 	};
 	// private
 	// if any individual listings get unchecked, then uncheck
@@ -441,7 +444,13 @@ ResidentialListings = {};
 		//   $(this).toggleClass('active');
 		// });
 
-		// index page - selecting listings
+		// index page - selecting listings menu dropdown
+		$('#emailListings').click(function(e) {
+			$('#residential_listing_recipients').val('');
+			//$('#residential_listing_title').val('');
+			$('#residential_listing_message').val('');
+			e.preventDefault();
+		});
 		$('tbody').on('click', 'i', ResidentialListings.toggleListingSelection);
 		$('.select-all-listings').click(ResidentialListings.selectAllListings);
 		ResidentialListings.selectedListings = [];

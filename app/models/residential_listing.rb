@@ -118,6 +118,24 @@ class ResidentialListing < ActiveRecord::Base
     running_list
   end
 
+  def self.listings_by_id(user, listing_ids)
+    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord, :neighborhood]})
+      .where('companies.id = ?', user.company_id)
+      .where('units.listing_id IN (?)', listing_ids)
+      .select('buildings.formatted_street_address', 
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+        'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
+        'units.building_unit', 'units.status','units.rent', 'residential_listings.beds', 
+        'beds || \'/\' || baths as bed_and_baths',
+        'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
+        'residential_listings.id', 'residential_listings.baths','units.access_info',
+        'residential_listings.has_fee', 'residential_listings.updated_at', 
+        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
+        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        'units.available_by', 'units.public_url')
+    running_list
+  end
+
   # takes in a hash of search options
   # can be formatted_street_address, landlord
   # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 
@@ -129,6 +147,7 @@ class ResidentialListing < ActiveRecord::Base
       .where('units.archived = false')
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address', 
+        'units.listing_id',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent', 'residential_listings.beds', 
@@ -331,6 +350,14 @@ class ResidentialListing < ActiveRecord::Base
       residential_unit_dup
     else
       raise "No unit number, invalid unit number, or unit number already taken specified"
+    end
+  end
+
+  def self.send_listings(source_agent, listings, images, recipients, sub, msg)
+    if source_agent
+      UnitMailer.send_listings(source_agent, listings, images, recipients, sub, msg).deliver_now
+    else
+      "No sender specified"
     end
   end
 
