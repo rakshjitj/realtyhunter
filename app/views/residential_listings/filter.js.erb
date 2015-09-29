@@ -4,4 +4,4 @@ $('.pagination').html("<%= escape_javascript (render :partial => 'shared/paginat
 
 ResidentialListings.updateOverviewMap("<%= escape_javascript(@map_infos).to_s.html_safe %>");
 
-$('.totals').html("<%= @count_all %> total units found. <%= @residential_units.total_count %> units shown.");
+$('.totals').html("<%= @residential_units.count %> Units");

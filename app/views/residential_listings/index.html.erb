@@ -232,14 +232,13 @@
   </div>
 </div>
 
+<hr />
 <%= form_tag print_list_residential_listings_path do %>
-
+<br />
 <div class="row">
   <div class="col-md-6">
-    <br />
-    <p class="totals">
       <!-- will be a dropdown of either print pdf or email -->
-      <div class="dropdown">
+      <div class="dropdown selected-listings">
         <button class="btn btn-warning btn-sm dropdown-toggle disabled" id="selected-listings-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="menu">
           0 Selected Listings
           <span class="caret"></span>
@@ -250,13 +249,16 @@
           <li role="presentation"><a class="list-item-sm-padding" data-action="listingsSheet" role="menuitem" tabindex="-1">
             <i class="fa fa-fw fa-file-text"></i> Show Sheet</a></li>
           <li role="presentation"><a class="list-item-sm-padding" data-action="internalListingsSheet" role="menuitem" tabindex="-1">
-            <i class="fa fa-fw fa-file-text"></i> Internal Listings Sheet</a></li>
+            <i class="fa fa-fw fa-list"></i> Internal Listings Sheet</a></li>
         </ul>
       </div>
-
-      <%= @count_all %> total units found. <%= @residential_units.total_count %> units shown.
-    </p>
+    
+  
+    <span class="totals">
+      &nbsp;&nbsp;<%= @residential_units.count %> Units found
+    </span>
   </div>
+
   <div class="col-md-6">
     <div class="form-label-responsive">
       <%= render partial: 'shared/pagination', locals: {models: @residential_units} %>

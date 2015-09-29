@@ -23,8 +23,12 @@ textarea {
   margin-bottom: 10px;
 }
 
-/* typography */
+/* for pdfs, don't page break inside a row */
+table, tr, td, th, tbody, thead, tfoot {
+  page-break-inside: avoid !important;
+}
 
+/* typography */
 h1, h2, h3, h4, h5, h6 {
   line-height: 1;
 }
@@ -457,6 +461,9 @@ label.required:after {
 
 // main index page
 // dropdown
+.selected-listings {
+  display: inline-block;
+}
 
 .dropdown-menu > li > a {
   padding: 3px 10px !important;
@@ -500,4 +507,3 @@ label.required:after {
     background-color: rgb(242, 240, 240);
   }
 }
-

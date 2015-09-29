@@ -40,7 +40,7 @@ ResidentialListings = {};
 			window.location.href = '/residential_listings/print_public?' + params;
 		},
 		'internalListingsSheet': function() {
-			var params = 'residential_listing_ids=' + ResidentialListings.selectedListings.join(",");//("%2C+");
+			var params = 'residential_listing_ids=' + ResidentialListings.selectedListings.join(",");
 			window.location.href = '/residential_listings/print_private?' + params;
 		}
 	};
