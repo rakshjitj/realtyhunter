@@ -23,10 +23,10 @@ namespace :maintenance do
 		}
 
 		puts "Found #{results.count} results:"
-		puts results.join("\n")
+		results = "\n" + results.join("\n")
+		puts results
 		
-		#managers = ['sbrewer@myspacenyc.com', 'info@myspacenyc.com']
-		managers = ['rbujans@myspacenyc.com']
+		managers = ['sbrewer@myspacenyc.com', 'info@myspacenyc.com','rbujans@myspacenyc.com']
 		UserMailer.send_unassigned_report(managers, results).deliver_now
 		puts "Email sent to #{managers.inspect}"
 		log.info "Email sent to #{managers.inspect}"
