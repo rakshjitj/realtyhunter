@@ -55,8 +55,8 @@
 		  	<div class="row">
 			  	<div class="col-md-9 vertical-padding">
 			  		<%= link_to 'View all', residential_listings_path %>
-			  		| <%= link_to 'Print', print_modal_residential_listing_path(@residential_unit), 
-			      		data: {toggle: "modal", target: "#printModal"}, remote: true %>
+			  		<!--%= link_to 'Print', print_modal_residential_listing_path(@residential_unit), 
+			      		data: {toggle: "modal", target: "#printModal"}, remote: true %-->
 			  		<% if current_user.is_management? || current_user.is_listings_manager? %>
 		  				| <%= link_to 'Edit', edit_residential_listing_path(@residential_unit.id) %>
 			        | <%= link_to 'Duplicate', duplicate_modal_residential_listing_path(@residential_unit), 
@@ -458,10 +458,7 @@
         </div>
         <div class="row">
           <div class="col-xs-3 form-label-responsive">
-            <%= link_to print_private_residential_listing_path(@residential_unit, :format => :pdf), 
-            	class:"btn btn-warning link-as-button print-private-btn has-spinner" do %>
-              <span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Private
-            <% end %>
+
           </div>
           <div class="col-xs-9">
             <p>
@@ -474,10 +471,7 @@
         <br />
         <div class="row">
           <div class="col-xs-3 form-label-responsive">
-            <%= link_to print_public_residential_listing_path(@residential_unit, :format => :pdf), 
-            	class:"btn btn-warning link-as-button print-public-btn has-spinner" do %>
-            	<span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Public
-            <% end %>
+            
           </div>
           <div class="col-xs-9">
             <p>For <strong>external</strong> use</p>
