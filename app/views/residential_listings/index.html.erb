@@ -244,8 +244,8 @@
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu selected-listings-menu" aria-labelledby="selected-listings-dropdown">
-          <li role="presentation"><a class="list-item-sm-padding" data-action="send" role="menuitem" tabindex="-1">
-            <i class="fa fa-fw fa-envelope"></i> Email</a></li>
+          <!--li role="presentation"><a class="list-item-sm-padding" data-action="send" role="menuitem" tabindex="-1">
+            <i class="fa fa-fw fa-envelope"></i> Email</a></li-->
           <li role="presentation"><a class="list-item-sm-padding" data-action="listingsSheet" role="menuitem" tabindex="-1">
             <i class="fa fa-fw fa-file-text"></i> Show Sheet</a></li>
           <li role="presentation"><a class="list-item-sm-padding" data-action="internalListingsSheet" role="menuitem" tabindex="-1">
@@ -255,7 +255,7 @@
     
   
     <span class="totals">
-      &nbsp;&nbsp;<%= @residential_units.count %> Units found
+      &nbsp;&nbsp;<%= @residential_units.total_count %> Units found
     </span>
   </div>
 
@@ -273,7 +273,8 @@
         <tr>
           <th>
             <!-- checkboxes -->
-            <!-- <i data-action="selectAll" class="select-all selected fa fa-check-square"><i></i></i> -->
+            <!--i data-action="selectAllUnits" class="select-all-listings fa fa-square-o"></i-->
+            <!--i data-action="selectAll" class="fa fa-check-square"></i-->
           </th>
           <th><!-- first image --></th>
           <th data-sort="formatted_street_address" class="th-sortable">Address</th>

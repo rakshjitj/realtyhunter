@@ -6,6 +6,22 @@ ResidentialListings = {};
 
 	ResidentialListings.selectedListings = [];
 
+	ResidentialListings.selectAllListings = function() {
+		var isChecked = $(this).hasClass('fa-check-square');
+		if (isChecked) {
+			// uncheck all boxes, clear our list
+			$(this).addClass('fa-square-o').removeClass('fa-check-square');
+			ResidentialListings.selectedListings = [];
+		} else {
+			// check all boxes, fill out list
+			$(this).addClass('fa-check-square').removeClass('fa-square-o');
+			ResidentialListings.selectedListings = $('tr').map(function() {
+				//$(this).addClass('fa-check-square').removeClass('fa-square-o');
+				return $(this).attr('data-id');
+			}).get();
+		}
+	};
+
 	ResidentialListings.toggleListingSelection = function() {
 		// TODO: cap the max # of listings you can select?
 		var isChecked = $(this).hasClass('fa-check-square');
@@ -392,9 +408,9 @@ ResidentialListings = {};
 
 		// index page - selecting listings
 		$('tbody').on('click', 'i', ResidentialListings.toggleListingSelection);
+		$('.select-all-listings').click(ResidentialListings.selectAllListings);
 		ResidentialListings.selectedListings = [];
 		$('.selected-listings-menu').on('click', 'a', function() {
-			console.log*('asdfasdfsd');
 			var action = $(this).data('action');
 			if (action in ResidentialListings.indexMenuActions) ResidentialListings.indexMenuActions[action]();
 		});
