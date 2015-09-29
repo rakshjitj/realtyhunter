@@ -21,10 +21,11 @@ class ListingSerializer < ActiveModel::Serializer
   end
 
 	def contacts
+		#object.primary_agents, each_serializer: PrimaryAgentSerializer
 		if object.primary_agents
 			object
 	      .primary_agents
-	      .map { |x| ActiveModel::Serializer::Adapter::FlattenJson.new(PrimaryAgentSerializer.new(x)).as_json }			
+	      .map { |x| ActiveModel::Serializer::Adapter::Attributes.new(PrimaryAgentSerializer.new(x)).as_json }			
 		end
 	end
 
@@ -34,7 +35,7 @@ class ListingSerializer < ActiveModel::Serializer
   	if object.images
 	    object
 	      .images
-	      .map { |x| ActiveModel::Serializer::Adapter::FlattenJson.new(ListingImageSerializer.new(x)).as_json }
+	      .map { |x| ActiveModel::Serializer::Adapter::Attributes.new(ListingImageSerializer.new(x)).as_json }
 	  end
   end
 
