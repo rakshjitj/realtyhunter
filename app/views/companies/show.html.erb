@@ -70,7 +70,7 @@
           <h4 class="modal-title" id="ppModalLabel">Privacy Policy</h4>
         </div>
         <div class="modal-body">
-          <div class="froala-view">
+          <div class="">
             <% if !@company.privacy_policy.blank? %>
               <%= @company.privacy_policy.html_safe %>
             <% else %>
@@ -94,7 +94,7 @@
           <h4 class="modal-title" id="tcModalLabel">Terms & Conditions</h4>
         </div>
         <div class="modal-body">
-          <div class="froala-view">
+          <div class="">
             <% if !@company.terms_conditions.blank? %>
               <%= @company.terms_conditions.html_safe %>
             <% else %>

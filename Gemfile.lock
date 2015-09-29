@@ -67,12 +67,21 @@ GEM
       sass (>= 3.3.0)
     bootstrap3-datetimepicker-rails (4.14.30)
       momentjs-rails (>= 2.8.1)
+    bootsy (2.1.0)
+      carrierwave (~> 0.10)
+      mini_magick (~> 4.0)
+      remotipart (~> 1.2)
     builder (3.2.2)
     bullet (4.14.7)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.9.0)
     byebug (6.0.2)
     cancancan (1.12.0)
+    carrierwave (0.10.0)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
+      json (>= 1.7)
+      mime-types (>= 1.16)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.7)
@@ -106,8 +115,6 @@ GEM
     faker (1.5.0)
       i18n (~> 0.5)
     ffaker (2.1.0)
-    font-awesome-rails (4.4.0.0)
-      railties (>= 3.2, < 5.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     http-cookie (1.0.2)
@@ -154,6 +161,7 @@ GEM
       webrobots (>= 0.0.9, < 0.2)
     mime-types (2.6.2)
     mimemagic (0.3.0)
+    mini_magick (4.3.3)
     mini_portile (0.6.2)
     minitest (5.8.1)
     momentjs-rails (2.10.3)
@@ -234,6 +242,7 @@ GEM
       redis-store (~> 1.1.0)
     redis-store (1.1.6)
       redis (>= 2.2)
+    remotipart (1.2.1)
     resque (1.25.2)
       mono_logger (~> 1.0)
       multi_json (~> 1.0)
@@ -290,9 +299,6 @@ GEM
       rails
     wkhtmltopdf-binary-edge (0.12.2.1)
     wkhtmltopdf-heroku (2.12.2.4)
-    wysiwyg-rails (1.2.8)
-      font-awesome-rails (>= 4.3.0.0)
-      railties (>= 3.2, < 5.0)
 
 PLATFORMS
   ruby
@@ -306,6 +312,7 @@ DEPENDENCIES
   bootstrap-kaminari-views
   bootstrap-sass (~> 3.3.4)
   bootstrap3-datetimepicker-rails (~> 4.14.30)
+  bootsy
   bullet
   byebug
   cancancan (~> 1.10)
@@ -350,7 +357,6 @@ DEPENDENCIES
   wicked_pdf
   wkhtmltopdf-binary-edge (~> 0.12.2.1)
   wkhtmltopdf-heroku (~> 2.12.2.1)
-  wysiwyg-rails
 
 BUNDLED WITH
    1.10.2

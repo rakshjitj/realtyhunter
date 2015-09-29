@@ -1,7 +1,8 @@
 class Company < ActiveRecord::Base
+	include Bootsy::Container
 	default_scope { order("name ASC") }
 	scope :unarchived, ->{where(archived: false)}
-	
+
 	has_one :image, dependent: :destroy
 	after_create :create_environment
 	has_many :offices, :dependent => :destroy
