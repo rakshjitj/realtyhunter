@@ -6,20 +6,57 @@ ResidentialListings = {};
 
 	ResidentialListings.selectedListings = [];
 
+	// private
+	ResidentialListings.checkTheBox = function(item) {
+		item.addClass('fa-check-square').removeClass('fa-square-o');
+	};
+	// private
+	ResidentialListings.uncheckTheBox = function(item) {
+		item.addClass('fa-square-o').removeClass('fa-check-square');
+	};
+	// private
+	ResidentialListings.updateSelectedButton = function() {
+		$('#selected-listings-dropdown').html(ResidentialListings.selectedListings.length + " Selected Listings <span class=\"caret\"></span>");
+		if (ResidentialListings.selectedListings.length == 0) {
+			$('#selected-listings-dropdown').addClass("disabled");
+		} else {
+			$('#selected-listings-dropdown').removeClass("disabled");
+		}
+	};
+	// private
+	// if any individual listings get unchecked, then uncheck
+	// the main toggle inside our th
+	ResidentialListings.uncheckHeadToggle = function() {
+		ResidentialListings.uncheckTheBox($('th > i'));
+	};
+
 	ResidentialListings.selectAllListings = function() {
 		var isChecked = $(this).hasClass('fa-check-square');
 		if (isChecked) {
 			// uncheck all boxes, clear our list
-			$(this).addClass('fa-square-o').removeClass('fa-check-square');
+			ResidentialListings.uncheckTheBox($(this));
 			ResidentialListings.selectedListings = [];
+
+			$('td > i').map(function() {
+				if ($(this).hasClass('fa-check-square')) {
+					ResidentialListings.uncheckTheBox($(this));
+				}
+			});
 		} else {
-			// check all boxes, fill out list
-			$(this).addClass('fa-check-square').removeClass('fa-square-o');
+			// check all boxes, fill our list
+			ResidentialListings.checkTheBox($(this));
 			ResidentialListings.selectedListings = $('tr').map(function() {
-				//$(this).addClass('fa-check-square').removeClass('fa-square-o');
 				return $(this).attr('data-id');
 			}).get();
+
+			$('td > i').map(function() {
+				if ($(this).hasClass('fa-square-o')) {
+					ResidentialListings.checkTheBox($(this));
+				}
+			});
 		}
+
+		ResidentialListings.updateSelectedButton();
 	};
 
 	ResidentialListings.toggleListingSelection = function() {
@@ -28,19 +65,17 @@ ResidentialListings = {};
 		var listing_id = $(this).parent().parent().attr('data-id');
 		
 		if (isChecked) {
-			$(this).addClass('fa-square-o').removeClass('fa-check-square');
+			//$(this).addClass('fa-square-o').removeClass('fa-check-square');
+			ResidentialListings.uncheckTheBox($(this));
 			ResidentialListings.selectedListings.splice(ResidentialListings.selectedListings.indexOf(listing_id), 1);
+			ResidentialListings.uncheckHeadToggle();
 		} else {
-			$(this).addClass('fa-check-square').removeClass('fa-square-o');
+			//$(this).addClass('fa-check-square').removeClass('fa-square-o');
+			ResidentialListings.checkTheBox($(this));
 			ResidentialListings.selectedListings.push(listing_id);
 		}
 
-		$('#selected-listings-dropdown').html(ResidentialListings.selectedListings.length + " Selected Listings <span class=\"caret\"></span>");
-		if (ResidentialListings.selectedListings.length == 0) {
-			$('#selected-listings-dropdown').addClass("disabled");
-		} else {
-			$('#selected-listings-dropdown').removeClass("disabled");
-		}
+		ResidentialListings.updateSelectedButton();
 	};
 
 	ResidentialListings.indexMenuActions = {
