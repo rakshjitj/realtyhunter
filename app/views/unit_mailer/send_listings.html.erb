@@ -4,10 +4,8 @@
 		<td>
 			<%= image_tag @source_agent.company.image.file.url(:thumb), 
       	alt: @source_agent.company.image.file.url(:thumb), align:"left" %>
-      <%= image_tag @source_agent.image.file.url(:thumb), 
-  	    alt: @source_agent.image.file.url(:thumb) %>
 		</td>
-		<td>
+		<td style="min-width:200px;">
 			<%= @source_agent.name %>
 	    <% if !@source_agent.email.blank? %>
 	      <br /><%= mail_to @source_agent.email, @source_agent.email, subject: 'Responding to Your Sent Listings' %>
@@ -17,7 +15,8 @@
 	    <% end %>
 		</td>
 		<td>
-			
+			<%= image_tag @source_agent.image.file.url(:thumb), 
+  	    alt: @source_agent.image.file.url(:thumb) %>
 		</td>
 	</tr>
 </table>
