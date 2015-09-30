@@ -6,10 +6,13 @@ class Image < ActiveRecord::Base
 
 	# This method associates the attribute ":file" with a file attachment
   has_attached_file :file, styles: {
-    thumb: '100x100>',
-    square: '200x200#',
-    medium: '300x300>'
-  }, default_url: "/images/:style/missing.png"
+      thumb:  '100x100>',
+      square: '200x200#',
+      medium: '300x300>',
+      large:  '500x500>'
+    }, 
+    default_url: "/images/:style/missing.png",
+    source_file_options: { all: '-auto-orient' }
   process_in_background :file
 
   # Validate filename

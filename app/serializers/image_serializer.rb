@@ -3,7 +3,7 @@ class ImageSerializer < ActiveModel::Serializer
   attributes :original, :thumbnail
 
   def original
-  	object ? object.file.url(:original) : "test"
+  	object ? object.file.url(:large) : "test" #:original
   end
 
   def thumbnail
