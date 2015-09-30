@@ -87,3 +87,22 @@
 		<% end %>
 	</tr>
 </table>
+
+
+<!-- footer -->
+<hr />
+<table>
+	<tr>
+		<td>
+			<%= image_tag @source_agent.company.image.file.url(:thumb), 
+		    alt: @source_agent.company.image.file.url(:thumb), align:"left" %>
+		</th>
+		<td style="vertical-align: top;">
+			<b><%= @source_agent.company.name %></b>
+			<br />
+			<% if @source_agent.company.website %>
+				<%= link_to @source_agent.company.website, @source_agent.company.website %>
+			<% end %>
+		</th>
+	</tr>
+</table>
