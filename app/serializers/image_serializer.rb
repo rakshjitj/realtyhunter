@@ -4,7 +4,7 @@ class ImageSerializer < ActiveModel::Serializer
 
   def original
   	if object
-  		if image.file.exists?(:large)
+  		if object.file.exists?(:large)
   			object.file.url(:large)
 			else
 				object.file.url(:medium)
