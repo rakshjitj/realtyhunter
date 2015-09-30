@@ -47,8 +47,13 @@
     <div class="row">
       <div class="col-md-6">
         <% if @user.image %>
-          <%= image_tag @user.image.file.url(:large), class: 'img-responsive', 
-            alt: @user.image.file.url(:large) %>
+          <% if @user.image.file.exists?(:large) %>
+            <%= image_tag @user.image.file.url(:large), class: 'img-responsive', 
+              alt: @user.image.file.url(:large) %>
+          <% else %>
+            <%= image_tag @user.image.file.url(:medium), class: 'img-responsive', 
+              alt: @user.image.file.url(:medium) %>
+          <% end %>
         <% else %>
           <!-- placeholder image -->
           <%= image_tag "agent_soon.jpg", alt: "Agent image coming soon",
