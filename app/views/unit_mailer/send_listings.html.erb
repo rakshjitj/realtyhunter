@@ -4,9 +4,20 @@
 		<td>
 			<%= image_tag @source_agent.company.image.file.url(:thumb), 
       	alt: @source_agent.company.image.file.url(:thumb), align:"left" %>
+      <%= image_tag @source_agent.image.file.url(:thumb), 
+  	    alt: @source_agent.image.file.url(:thumb) %>
 		</td>
 		<td>
-			<h3><%= @source_agent.company.name %> Listings</h3>
+			<%= @source_agent.name %>
+	    <% if !@source_agent.email.blank? %>
+	      <br /><%= mail_to @source_agent.email, @source_agent.email, subject: 'Responding to Your Sent Listings' %>
+	    <% end %>
+	    <% if !@source_agent.mobile_phone_number.blank? %>
+	      <br /><%= link_to @source_agent.mobile_phone_number, "tel:" + @source_agent.mobile_phone_number %>
+	    <% end %>
+		</td>
+		<td>
+			
 		</td>
 	</tr>
 </table>
@@ -21,18 +32,9 @@
 <table>
 	<tr>
 		<td>
-			<%= image_tag @source_agent.image.file.url(:thumb), 
-  	    alt: @source_agent.image.file.url(:thumb) %>
+			
 		</td>
-		<td>
-			<%= @source_agent.name %>
-	    <% if !@source_agent.email.blank? %>
-	      <br /><%= mail_to @source_agent.email, @source_agent.email, subject: 'Responding to Your Sent Listings' %>
-	    <% end %>
-	    <% if !@source_agent.mobile_phone_number.blank? %>
-	      <br /><%= link_to @source_agent.mobile_phone_number, "tel:" + @source_agent.mobile_phone_number %>
-	    <% end %>
-		</td>
+		
 	</tr>
 </table>
 
