@@ -137,7 +137,7 @@ class CompaniesController < ApplicationController
 
     def company_params
       params.require(:company).permit(:name, :file, :agent_types, :employee_titles,
-        :privacy_policy, :terms_conditions,
+        :privacy_policy, :terms_conditions, :website,
         users_attributes: [:name, :email, :password, :password_confirmation])
     end
 end
