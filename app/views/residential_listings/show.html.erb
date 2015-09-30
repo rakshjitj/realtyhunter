@@ -308,7 +308,9 @@
 	    		</div>
 	    		<div class="col-xs-12 col-md-9">
 	    			<%= occupancy_status(@residential_unit) %>
-	    			<%= @residential_unit.unit.access_info %>
+	    			<div class="access-info">
+		    			<%= @residential_unit.unit.access_info %>
+		    		</div>
 	    		</div>
 	    	</div>
 
