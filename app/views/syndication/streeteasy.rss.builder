@@ -168,7 +168,7 @@ xml.streeteasy :version => "1.6" do
 							xml.name agent.name
 							xml.company @company.name
 							if @agent_images[agent.id]
-								if image.file.exists?(:large)
+								if @agent_images[agent.id].file.exists?(:large)
 									xml.photo @agent_images[agent.id].file.url(:large)
 								else
 									xml.photo @agent_images[agent.id].file.url(:medium)

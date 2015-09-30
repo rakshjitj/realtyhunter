@@ -29,6 +29,6 @@ class UnitMailer < ApplicationMailer
     @source_agent = source_agent
     @message = msg
     @images = images
-    mail to: recipients, subject: sub, from: source_agent.email
+    mail to: recipients, subject: sub, from: @source_agent.email
   end
 end
