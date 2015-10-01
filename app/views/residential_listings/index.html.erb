@@ -315,7 +315,7 @@
     <div class="modal-content">
       <div class="modal-body">
         
-        <%= form_tag(send_listings_residential_listings_path) do %>
+        <%= form_tag(send_listings_residential_listings_path, remote:true) do %>
         <div class="row vertical-padding">
           <div class="col-md-12">
             <%= label_tag "residential_listing[recipients]", "Recipients", class: 'required' %>

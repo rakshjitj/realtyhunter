@@ -20,12 +20,31 @@
         <div role="tabpanel" class="tab-pane fade in active" id="residential-listings">
         	<br />
         	<div class="row">
-					  <div class="col-md-12">
-              <%= form_tag "#", :method => 'get' do %>
-  					  	<%= check_box_tag(:listings_checkbox_active, class: "checkbox inline") %>
-  					    <%= label_tag :listings_checkbox_active, "On-market units only" %>
-              <% end %>
+					  <div class="col-md-2">
+              <!-- will be a dropdown of either print pdf or email -->
+              <div class="dropdown selected-listings">
+                <button class="btn btn-warning btn-sm dropdown-toggle disabled" id="selected-listings-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="menu">
+                  0 Selected Listings
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu selected-listings-menu" aria-labelledby="selected-listings-dropdown">
+                  <li role="presentation"><a class="list-item-sm-padding" id="emailListings" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#emailModal">
+                    <i class="fa fa-fw fa-envelope"></i> Email</a></li>
+                  <li role="presentation"><a class="list-item-sm-padding" data-action="listingsSheet" role="menuitem" tabindex="-1">
+                    <i class="fa fa-fw fa-file-text"></i> Show Sheet</a></li>
+                  <li role="presentation"><a class="list-item-sm-padding" data-action="internalListingsSheet" role="menuitem" tabindex="-1">
+                    <i class="fa fa-fw fa-list"></i> Internal Listings Sheet</a></li>
+                </ul>
+              </div>
+
 					  </div>
+            <div class="col-md-2">
+              <%= form_tag "#", method: 'get' do %>
+                <%= check_box_tag(:listings_checkbox_active, class: "checkbox inline") %>
+                <%= label_tag :listings_checkbox_active, "On-market units only" %>
+              <% end %>
+            </div>
+
 					</div>
 
           <%= render partial:'residential_listings/table', 
@@ -54,5 +73,57 @@
 
   </div><!-- col -->
 </div><!-- row -->
+
+<!-- Email Modal -->
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" 
+  aria-labelledby="emailModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        
+        <%= form_tag(send_listings_residential_listings_path, remote: true) do %>
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "residential_listing[recipients]", "Recipients", class: 'required' %>
+            <i><small>Use commas to separate email addresses</small></i>
+            <%= text_field_tag "residential_listing[recipients]", nil, class: 'form-control', required: true %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "residential_listing[title]", "Title", class: 'required' %>
+            <%= text_field_tag "residential_listing[title]", "Check out these great listings!", class: 'form-control', required: true %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "residential_listing[message]", "Message" %>
+            <%= text_area_tag "residential_listing[message]", nil, class: 'form-control' %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            
+          </div>
+        </div>
+
+        <%= hidden_field_tag "residential_listing[listing_ids]" %>
+        
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp; 
+        <%= submit_tag "Send Email", class:"btn btn-warning" %>
+      </div>
+
+      <% end %>
+
+    </div>
+  </div>
+</div>
 
 <% end %>

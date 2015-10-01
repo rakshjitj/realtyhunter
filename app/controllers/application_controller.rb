@@ -7,7 +7,8 @@ class ApplicationController < ActionController::Base
   before_action :logged_in_user
   #before_action :set_locale
   before_action ->{ @remote_ip = request.headers['REMOTE_ADDR'] }
-
+  after_filter :clear_xhr_flash
+  
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, :alert => exception.message
   end
@@ -15,12 +16,13 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   include SessionsHelper
   before_action :expire_hsts
-  
-  # protected
-  #   def set_locale
-  #     I18n.locale = request.headers['Accept-Language']
-  #   end
 
+  def clear_xhr_flash
+    if request.xhr?
+      # Also modify 'flash' to other attributes which you use in your common/flashes for js
+      flash.discard
+    end
+  end
   private
 
     # Confirms a logged-in user.

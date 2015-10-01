@@ -134,10 +134,9 @@
   </header>
 
 	<!-- error msgs -->
-	<% flash.each do |message_type, message| %>
-    <br /><br />
-    <%= content_tag(:div, message, class: "alert alert-#{message_type}") %>
-  <% end %>		
+  <div id="notices">
+    <%= render 'layouts/notices' %>
+  </div>
   
 	<%= yield %>
 

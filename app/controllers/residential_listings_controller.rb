@@ -165,8 +165,9 @@ class ResidentialListingsController < ApplicationController
     images = ResidentialListing.get_images(listings)
     ResidentialListing.send_listings(current_user, listings, images, recipients, sub, msg)
     
-    flash[:success] = "Listings sent!" 
-    redirect_to :action => 'index'
+    respond_to do |format|
+      format.js { flash[:success] = "Listings sent!"  }
+    end
   end
 
   # GET
