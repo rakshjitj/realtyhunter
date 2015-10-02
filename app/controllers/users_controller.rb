@@ -89,6 +89,7 @@ class UsersController < ApplicationController
     @user.assign_random_password
     if @user.save
       @user.approve
+      @user.activate
       # add in each role type
       @user.update_roles
       # send users an email prompting them to change pass & login

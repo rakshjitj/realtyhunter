@@ -22,12 +22,12 @@ class ListingImageSerializer < ActiveModel::Serializer
   end
 
   def original
-  	#object.file.url(:large)#:original)
-    if object.file.exists?(:large)
-      object.file.url(:large)
-    else
-      object.file.url(:medium)
-    end
+  	bject.file.url(:original)
+    # if object.file.exists?(:large)
+    #   object.file.url(:large)
+    # else
+    #   object.file.url(:medium)
+    # end
   end
 
   def id
