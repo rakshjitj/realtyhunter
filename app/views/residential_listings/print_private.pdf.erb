@@ -39,7 +39,7 @@
             <td><%= listing.beds %> / <%= trim_zeros(listing.baths) %></td>
             <td><%= rent_formatted(listing.unit.rent) %></td>
             <td>
-              <% if listing.unit.available_by && listing.unit.available_by <= Date.today %>
+              <% if !listing.unit.available_by.blank? && listing.unit.available_by <= Date.today %>
                 Now
               <% else %>
                 <%= listing.unit.available_by %>
