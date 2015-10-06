@@ -202,4 +202,16 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :roommates do
+    member do
+      get 'delete_modal'
+    end
+    collection do 
+      get 'filter'
+      get 'neighborhoods_modal'
+      get 'print_list'
+      post 'send_listings'
+      get 'download'
+    end
+  end
 end

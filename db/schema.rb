@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150929225024) do
+ActiveRecord::Schema.define(version: 20151006153411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -112,12 +112,12 @@ ActiveRecord::Schema.define(version: 20150929225024) do
   end
 
   create_table "companies", force: :cascade do |t|
-    t.boolean  "archived",                 default: false
+    t.boolean  "archived",                     default: false
     t.string   "name"
     t.string   "logo_id"
     t.string   "string"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.integer  "offices_id"
     t.integer  "users_id"
     t.integer  "buildings_id"
@@ -131,6 +131,7 @@ ActiveRecord::Schema.define(version: 20150929225024) do
     t.string   "website"
     t.text     "privacy_policy"
     t.text     "terms_conditions"
+    t.integer  "wufoo_roommates_web_forms_id"
   end
 
   add_index "companies", ["building_amenities_id"], name: "index_companies_on_building_amenities_id", using: :btree
@@ -144,6 +145,7 @@ ActiveRecord::Schema.define(version: 20150929225024) do
   add_index "companies", ["sales_amenities_id"], name: "index_companies_on_sales_amenities_id", using: :btree
   add_index "companies", ["users_id"], name: "index_companies_on_users_id", using: :btree
   add_index "companies", ["utilities_id"], name: "index_companies_on_utilities_id", using: :btree
+  add_index "companies", ["wufoo_roommates_web_forms_id"], name: "index_companies_on_wufoo_roommates_web_forms_id", using: :btree
 
   create_table "employee_titles", force: :cascade do |t|
     t.string   "name"
@@ -211,17 +213,19 @@ ActiveRecord::Schema.define(version: 20150929225024) do
   add_index "landlords", ["listing_agent_id"], name: "index_landlords_on_listing_agent_id", using: :btree
 
   create_table "neighborhoods", force: :cascade do |t|
-    t.boolean  "archived",     default: false
+    t.boolean  "archived",                     default: false
     t.string   "name"
     t.string   "borough"
     t.string   "city"
     t.string   "state"
     t.integer  "buildings_id"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+    t.integer  "wufoo_roommates_web_forms_id"
   end
 
   add_index "neighborhoods", ["buildings_id"], name: "index_neighborhoods_on_buildings_id", using: :btree
+  add_index "neighborhoods", ["wufoo_roommates_web_forms_id"], name: "index_neighborhoods_on_wufoo_roommates_web_forms_id", using: :btree
 
   create_table "offices", force: :cascade do |t|
     t.boolean  "archived",                          default: false
@@ -312,6 +316,27 @@ ActiveRecord::Schema.define(version: 20150929225024) do
   add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
+  create_table "roommates", force: :cascade do |t|
+    t.string   "name_first"
+    t.string   "name_last"
+    t.string   "phone_number"
+    t.string   "email"
+    t.string   "how_did_you_hear_about_us"
+    t.string   "upload_picture_of_yourself"
+    t.string   "describe_yourself"
+    t.string   "monthly_budget"
+    t.datetime "move_in_date"
+    t.integer  "neighborhood_id"
+    t.boolean  "dogs_allowed"
+    t.boolean  "cats_allowed"
+    t.string   "created_by"
+    t.boolean  "archived",                   default: false
+    t.integer  "company_id"
+    t.integer  "user_id"
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+  end
+
   create_table "sales_amenities", force: :cascade do |t|
     t.string   "name"
     t.integer  "company_id"
@@ -372,7 +397,7 @@ ActiveRecord::Schema.define(version: 20150929225024) do
   add_index "units", ["updated_at"], name: "index_units_on_updated_at", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.boolean  "archived",            default: false
+    t.boolean  "archived",                     default: false
     t.string   "auth_token"
     t.string   "name"
     t.string   "email"
@@ -382,10 +407,10 @@ ActiveRecord::Schema.define(version: 20150929225024) do
     t.string   "remember_digest"
     t.text     "bio"
     t.string   "activation_digest"
-    t.boolean  "activated",           default: false
+    t.boolean  "activated",                    default: false
     t.datetime "activated_at"
     t.string   "approval_digest"
-    t.boolean  "approved",            default: false
+    t.boolean  "approved",                     default: false
     t.datetime "approved_at"
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
@@ -394,9 +419,10 @@ ActiveRecord::Schema.define(version: 20150929225024) do
     t.integer  "office_id"
     t.integer  "employee_title_id"
     t.integer  "manager_id"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.string   "public_url"
+    t.integer  "wufoo_roommates_web_forms_id"
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", using: :btree
@@ -404,6 +430,7 @@ ActiveRecord::Schema.define(version: 20150929225024) do
   add_index "users", ["employee_title_id"], name: "index_users_on_employee_title_id", using: :btree
   add_index "users", ["manager_id"], name: "index_users_on_manager_id", using: :btree
   add_index "users", ["name"], name: "index_users_on_name", using: :btree
+  add_index "users", ["wufoo_roommates_web_forms_id"], name: "index_users_on_wufoo_roommates_web_forms_id", using: :btree
 
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"
@@ -417,6 +444,54 @@ ActiveRecord::Schema.define(version: 20150929225024) do
     t.integer  "company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "wufoo_commercial_listings_forms", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "phone_number"
+    t.string   "message"
+    t.boolean  "archived",     default: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  create_table "wufoo_contact_us_forms", force: :cascade do |t|
+    t.string   "name"
+    t.string   "phone_number"
+    t.string   "email"
+    t.string   "how_did_you_hear_about_us"
+    t.string   "min_price"
+    t.string   "max_price"
+    t.string   "any_notes_for_us"
+    t.boolean  "archived",                  default: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+  end
+
+  create_table "wufoo_partner_with_myspace_nyc_forms", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "phone_number"
+    t.string   "how_did_you_hear_about_us"
+    t.string   "address"
+    t.string   "number_of_bedrooms"
+    t.string   "renovated"
+    t.string   "utilities"
+    t.datetime "datetime"
+    t.boolean  "archived",                  default: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+  end
+
+  create_table "wufoo_rental_listings_forms", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "phone_number"
+    t.string   "message"
+    t.boolean  "archived",     default: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
 end

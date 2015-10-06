@@ -17,6 +17,8 @@ class User < ActiveRecord::Base
   
   has_many :primary_units, class_name: 'Unit', :foreign_key => 'primary_agent_id'
   has_many :listed_units,  class_name: 'Unit', :foreign_key => 'listing_agent_id'
+  #has_many :wufoo_roommates_web_forms, dependent: :destroy
+  has_many :roommates, class_name: 'WufooRoommatesWebForm' #, :foreign_key => 'roommate_referral_agent_id'
 
   has_one :image, dependent: :destroy
 

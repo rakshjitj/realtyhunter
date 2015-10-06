@@ -30,6 +30,7 @@ class Ability
   # managers v agents
 
   def common_managerial_permissions(user)
+      can :manage, Roommate
       can :manage, Neighborhood
       can :manage, BuildingAmenity, :company_id => user.company.id
       can :manage, ResidentialAmenity, :company_id => user.company.id

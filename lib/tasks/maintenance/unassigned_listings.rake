@@ -17,14 +17,12 @@ namespace :maintenance do
 		results = []
 		@units.each {|u|
 			if u.unit && !u.unit.primary_agent
-				#puts u.street_address_and_unit
 				results << u.street_address_and_unit
 			end
 		}
 
 		puts "Found #{results.count} results:"
-		results = "\n" + results.join("\n")
-		puts results
+		puts "\n" + results.join("\n")
 		
 		managers = ['sbrewer@myspacenyc.com', 'info@myspacenyc.com','rbujans@myspacenyc.com']
 		UserMailer.send_unassigned_report(managers, results).deliver_now

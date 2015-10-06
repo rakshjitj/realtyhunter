@@ -119,6 +119,9 @@ GEM
       activesupport (>= 4.1.0)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
+    httparty (0.13.7)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     i18n (0.7.0)
     jbuilder (2.3.1)
       activesupport (>= 3.0.0, < 5)
@@ -168,6 +171,8 @@ GEM
       railties (>= 3.1)
     mono_logger (1.1.0)
     multi_json (1.11.2)
+    multi_xml (0.5.5)
+    multipart-post (2.0.0)
     net-http-digest_auth (1.4)
     net-http-persistent (2.9.4)
     newrelic_rpm (3.13.2.302)
@@ -299,6 +304,10 @@ GEM
       rails
     wkhtmltopdf-binary-edge (0.12.2.1)
     wkhtmltopdf-heroku (2.12.2.4)
+    wuparty (1.2.5)
+      httparty (>= 0.6.1)
+      mime-types (>= 1.16)
+      multipart-post (>= 1.0.1)
 
 PLATFORMS
   ruby
@@ -357,6 +366,7 @@ DEPENDENCIES
   wicked_pdf
   wkhtmltopdf-binary-edge (~> 0.12.2.1)
   wkhtmltopdf-heroku (~> 2.12.2.1)
+  wuparty
 
 BUNDLED WITH
    1.10.2

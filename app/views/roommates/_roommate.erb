@@ -1,0 +1,82 @@
+  <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= roommate.id %>" >
+    
+    <!-- ****** checkboxes ****************************************** -->
+    <td>
+      <i data-action="selectUnit" class="fa fa-square-o"></i>
+      <!-- %= check_box_tag "roommate_ids[]", roommate.id, false, data: {action:'selectListing'} % -->
+    </td>
+
+    <!-- ****** IMAGE ****************************************** -->
+    <td>
+      <% if @roommate_images[roommate.id] %>
+        <%= link_to(image_tag(@roommate_images[roommate.id].file.url(:thumb), :class => 'img-responsive', 
+          alt: @roommate_images[roommate.id].file.url(:medium)), roommate) %>
+      <% else %>
+        <!-- placeholder image -->
+        <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), roommate) %>
+      <% end %>
+    </td>
+    
+    <!-- ****** NAME ****************************************** -->
+    <td>
+      <%= link_to "#{roommate.name}", roommate_path(roommate.id) %><br />
+    </td>
+
+    <!-- ****** PHONE ****************************************** -->
+    <td><%= roommate.phone_number %></td>
+
+    <!-- ****** EMAIL ****************************************** -->
+    <td><%= roommate.email %></td>
+
+    <!-- ****** BUDGET ****************************************** -->
+    <td>
+      <% if roommate.monthly_budget %>
+        <%= roommate.monthly_budget %>
+      <% end %>
+    </td>
+
+    <!-- ****** MOVE IN DATE ****************************************** -->
+    <td>
+      <% if roommate.move_in_date %>
+        <%= roommate.move_in_date.strftime("%b %d") %>
+      <% end %>
+    </td>
+
+    <!-- ****** NEIGHBORHOOD ****************************************** -->
+    <td>
+      <% if roommate.neighborhood_name %>
+        <%= roommate.neighborhood_name %>
+      <% end %>
+    </td>
+
+    <!-- ****** DOGS ALLOWED ****************************************** -->
+    <td>
+      <% if !roommate.dogs_allowed.blank? %>
+        <%= roommate.dogs_allowed %>
+      <% end %>
+    </td>
+
+    <!-- ****** CATS ALLOWED ****************************************** -->
+    <td>
+      <% if !roommate.cats_allowed.blank? %>
+        <%= roommate.cats_allowed %>
+      <% end %>
+    </td>
+
+    <!-- ****** SUBMITTED DATE ****************************************** -->
+    <td>
+      <% if roommate.submitted_date %>
+        <%= roommate.submitted_date.strftime("%b %d") %>
+      <% end %>
+    </td>
+
+    <!-- ****** LINKS ****************************************** -->
+    <% if current_user.is_management? || current_user.is_listings_manager? %>
+      <td>
+        <%= link_to 'Edit', edit_roommate_path(roommate) %> 
+        <br /><%= link_to 'Delete', delete_modal_roommate_path(roommate), 
+          data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
+        <br />
+      </td>
+    <% end %>
+  </tr>
