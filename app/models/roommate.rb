@@ -36,6 +36,7 @@ class Roommate < ActiveRecord::Base
 	def self.search(params)
 		Roommate.unarchived.joins('left join neighborhoods on roommates.neighborhood_id = neighborhoods.id').select(
 			'roommates.id',
+			'upload_picture_of_yourself',
 			'name_first', 'name_last', 'phone_number', 'email', 
 			'neighborhoods.name as neighborhood_name',
 			'monthly_budget', 'move_in_date', 'dogs_allowed', 'cats_allowed',
@@ -44,13 +45,13 @@ class Roommate < ActiveRecord::Base
 			)
 	end
 
+	def self.get_images(list)
+    ids = list.map(&:id)
+    Image.where(roommate_id: ids).index_by(&:roommate_id)
+  end
+
 	def name
 		name_first + ' ' + name_last
 	end
 
-#	private
-
-		# def downcase_name
-  #     self.name = name.downcase
-  #   end
 end

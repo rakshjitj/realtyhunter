@@ -18,7 +18,9 @@
               | &nbsp;<%= link_to 'Delete', @roommate, method: :delete, 
                 data: { confirm: "Are you sure you want to delete #{@roommate.name}?" } %>
               <% @prev_link = true %>
+            <!-- TODO: un-archive -->
             <% end %>
+            | <%= link_to 'All roommates', roommates_path %>
           <% end %>
 
       </div>
@@ -91,55 +93,55 @@
 
         <br />
         <div class="row">
-          <div class="col-md-5">
+          <div class="col-md-6">
             <strong>Monthly Budget:</strong>
           </div>
-          <div class="col-md-7">
+          <div class="col-md-6">
             <%= @roommate.monthly_budget %>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-5">
+          <div class="col-md-6">
             <strong>Move In Date:</strong>
           </div>
-          <div class="col-md-7">
+          <div class="col-md-6">
             <%= @roommate.move_in_date %>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-5">
+          <div class="col-md-6">
             <strong>Target Neighborhood:</strong>
           </div>
-          <div class="col-md-7">
+          <div class="col-md-6">
             <%= @roommate.neighborhood ? @roommate.neighborhood.name : 'None Specified' %>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-5">
+          <div class="col-md-6">
             <strong>Dogs allowed:</strong>
           </div>
-          <div class="col-md-7">
+          <div class="col-md-6">
             <%= @roommate.dogs_allowed ? 'Yes' : 'No' %>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-5">
+          <div class="col-md-6">
             <strong>Cats allowed:</strong>
           </div>
-          <div class="col-md-7">
+          <div class="col-md-6">
             <%= @roommate.cats_allowed ? 'Yes' : 'No' %>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-5">
+          <div class="col-md-6">
             <strong>Referred By:</strong>
           </div>
-          <div class="col-md-7">
+          <div class="col-md-6">
             <%= @roommate.user.blank? ? 'Website' : @roomate.user.name %>
           </div>
         </div>

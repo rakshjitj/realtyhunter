@@ -79,9 +79,18 @@ class RoommatesController < ApplicationController
     end
   end
 
+  def update
+    if @roommate.update(roommate_params[:roommate].merge({updated_at: Time.now}))
+      flash[:success] = "Profile updated!"
+      redirect_to @roommate
+    else
+      render 'edit'
+    end
+  end
+
   # POST /users/1
   def upload_image
-    image = Image.create(roommate_params)
+    image = Image.create(roommate_params[:roommate])
     if image
       # delete old image
       # TODO verify this removes old image from S3!
@@ -113,6 +122,7 @@ class RoommatesController < ApplicationController
   		do_search
       #@roommates = custom_sort
       @roommates = @roommates.page params[:page]
+      @roommate_images = User.get_images(@roommates)
   	end
 
   	def custom_sort
@@ -135,16 +145,47 @@ class RoommatesController < ApplicationController
     end
 
     def roommate_params
-    	params.permit(:sort_by, :filter)
+    	data = params.permit(:sort_by, :filter, :neighborhood_ids, :submitted_date, :move_in_date, :monthly_budget, 
+        :user_id, :dogs_allowed, :cats_allowed,
+        roommate: [:name_first, :name_last, :phone_number, 
+          :email, :how_did_you_hear_about_us, :upload_picture_of_yourself, :describe_yourself,
+          :monthly_budget, :move_in_date, :neighborhood, :dogs_allowed, :cats_allowed,
+          :user_id,
+          :avatar, :remove_avatar, :remote_avatar_url, :file])
+
+      if data[:roommate]
+        if !data[:roommate][:cats_allowed].blank?
+          if data[:roommate][:cats_allowed] == "Yes"
+            data[:roommate][:cats_allowed] = true
+          else
+            data[:roommate][:cats_allowed] = false
+          end
+        end
+
+        if !data[:roommate][:dogs_allowed].blank?
+          if data[:roommate][:dogs_allowed] == "Yes"
+            data[:roommate][:dogs_allowed] = true
+          else
+            data[:roommate][:dogs_allowed] = false
+          end
+        end
+
+        # convert into a datetime obj
+        if !data[:roommate][:move_in_date].blank?
+          data[:roommate][:move_in_date] = Date::strptime(data[:roommate][:move_in_date], "%m/%d/%Y")
+        end
+
+        if !data[:roommate][:neighborhood].blank? && data[:roommate][:neighborhood] != 'Other'
+          data[:roommate][:neighborhood] = Neighborhood.find_by(name: data[:roommate][:neighborhood])
+        end
+      end
 
       # params.permit(:sort_by, :filter, :agent_filter, :active_only, :street_number, :route, 
       #   :neighborhood, :sublocality, :administrative_area_level_2_short, 
       #   :administrative_area_level_1_short, :postal_code, :country_short, :lat, :lng, :place_id, 
       #   :landlord => [:code, :name, :contact_name, :mobile, :office_phone, :fax, 
-      #     :email, :website, :formatted_street_address, :notes, 
-      #     :listing_agent_percentage, :listing_agent_id,
-      #     :has_fee, :op_fee_percentage, :tp_fee_percentage, 
-      #     :management_info, :key_pick_up_location, :update_source ])
+
+      data
     end
 
   end

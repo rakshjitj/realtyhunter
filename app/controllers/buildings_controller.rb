@@ -91,7 +91,6 @@ class BuildingsController < ApplicationController
   # GET /refresh_images
   # ajax call
   def refresh_images
-    #@building.increment_memcache_iterator
     respond_to do |format|
       format.js  
     end
@@ -202,13 +201,7 @@ class BuildingsController < ApplicationController
 
       param_obj
     end
-
-    def clear_xhr_flash
-      if request.xhr?
-        # Also modify 'flash' to other attributes which you use in your common/flashes for js
-        flash.discard
-      end
-    end
+    
     # Never trust parameters from the scary internet, only allow the white list through.
     # Need to take in additional params here. Can't rename them, or the geocode plugin
     # will not map to them correctly

@@ -1,3 +1,5 @@
+<div id="roommates">
+
 <div class="row">
   <div class="col-md-6">
       <!-- User image form -->
@@ -42,7 +44,7 @@
       
       <div class="field">
         <%= f.label :how_did_you_hear_about_us %><br>
-        <%= f.select(:how_did_you_hear_about_us, options_for_select(['Roommate Mixer Event', 'Email', 'Facebook', 'Google Search', 'Building Sign', 'Word of Mouth', 'Other'], ['']), 
+        <%= f.select(:how_did_you_hear_about_us, options_for_select(['Roommate Mixer Event', 'Email', 'Facebook', 'Google Search', 'Building Sign', 'Word of Mouth', 'Other'], [@roommate.how_did_you_hear_about_us ? @roommate.how_did_you_hear_about_us : '']), 
           {prompt: "Choose one..."},
           class: 'form-control',
           :include_blank => true) %>
@@ -55,7 +57,7 @@
 
       <div class="field">
         <%= f.label :monthly_budget %><br>
-        <%= f.select(:monthly_budget, options_for_select(['$500 - $749', '$750 - $999', '$1,000 - $1,249', '$1,250 - $1,499', '$1,500+']), 
+        <%= f.select(:monthly_budget, options_for_select(['$500 - $749', '$750 - $999', '$1,000 - $1,249', '$1,250 - $1,499', '$1,500+'], [@roommate.monthly_budget ? @roommate.monthly_budget : '']), 
           {prompt: "Choose one..."},
           class: 'form-control',
           :include_blank => true) %>
@@ -85,7 +87,7 @@
           'Williamsburg',
           'Flatbush - Ditmas Park',
           'Other'
-          ]), 
+          ], [@roommate.neighborhood ? @roommate.neighborhood.name : '']), 
           {prompt: "Choose one..."},
           class: 'form-control',
           :include_blank => true) %>
@@ -93,7 +95,8 @@
 
       <div class="field">
         <%= f.label :dogs_allowed %><br />
-        <%= f.select(:dogs_allowed, options_for_select(['Yes', 'No']), 
+        <%= f.select(:dogs_allowed, options_for_select(['Yes', 'No'], 
+          [@roommate.dogs_allowed == 'Yes' ? 'Yes' : 'No']), 
           {prompt: "Choose one..."},
           class: 'form-control',
           :include_blank => true) %>
@@ -101,7 +104,8 @@
 
       <div class="field">
         <%= f.label :cats_allowed %><br />
-        <%= f.select(:cats_allowed, options_for_select(['Yes', 'No']), 
+        <%= f.select(:cats_allowed, options_for_select(['Yes', 'No'],
+          [@roommate.cats_allowed == 'Yes' ? 'Yes' : 'No']), 
           {prompt: "Choose one..."},
           class: 'form-control',
           :include_blank => true) %>
@@ -112,4 +116,6 @@
       </div>
     <% end %>    
   </div>
+</div>
+
 </div>
