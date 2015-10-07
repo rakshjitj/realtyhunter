@@ -5,3 +5,6 @@ task :run_reports => :environment do
 		Rake::Task["maintenance:unassigned_listings"].invoke
 	end
 end
+task :run_wufoo_import => :environment do
+	Rake::Task["import:wufoo"].invoke
+end
