@@ -31,7 +31,7 @@ class Ability
   # managers v agents
 
   def common_managerial_permissions(user)
-      can :manage, Roommate
+      can :manage, Roommate, :company_id => user.company.id
       can :manage, Neighborhood
       can :manage, BuildingAmenity, :company_id => user.company.id
       can :manage, ResidentialAmenity, :company_id => user.company.id
@@ -40,6 +40,8 @@ class Ability
   end
 
   def agent_permissions(user)
+    can [:new, :create, :edit, :show, :destroy, :update, :upload_image, :destroy_image], Roommate, :user_id => user.id
+    #cannot :index, Roommate, :company_id => user.company.id
     can :read, :Neighborhood
     can :read, BuildingAmenity, :company_id => user.company.id
     can :read, ResidentialAmenity, :company_id => user.company.id

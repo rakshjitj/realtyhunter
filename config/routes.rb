@@ -213,7 +213,6 @@ Rails.application.routes.draw do
     end
     collection do 
       get 'filter'
-      get 'neighborhoods_modal'
       get 'print_list'
       post 'send_listings'
       get 'download'

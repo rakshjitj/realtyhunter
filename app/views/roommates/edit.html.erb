@@ -8,8 +8,10 @@
 		      <h1><%= @roommate.name %></h1>
 		    </div>
 		    <div class="col-md-6 form-label-responsive">
-					<%= link_to 'Show', @roommate %> |
-					<%= link_to 'All roommates', roommates_path %>
+					<%= link_to 'Show', @roommate %> 
+					<% if can? :manage, @roommate %>
+						| <%= link_to 'All roommates', roommates_path %>
+					<% end %>
 		    </div>
 		  </div>
 		</div>

@@ -11,7 +11,7 @@
         </div>
         <div class="col-md-6 form-label-responsive">
 
-          <% if can? :manage, @roommate %>
+          <% if can? :edit, @roommate %>
             <%= link_to 'Edit', edit_roommate_path(@roommate) %>
                 
             <% if !@roommate.archived %>
@@ -20,7 +20,9 @@
               <% @prev_link = true %>
             <!-- TODO: un-archive -->
             <% end %>
-            | <%= link_to 'All roommates', roommates_path %>
+            <% if can? :manage, @roommate %>
+              | <%= link_to 'All roommates', roommates_path %>
+            <% end %>
           <% end %>
 
       </div>

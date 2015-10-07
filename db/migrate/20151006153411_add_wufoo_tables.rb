@@ -35,48 +35,48 @@ class AddWufooTables < ActiveRecord::Migration
 		  t.belongs_to :roommate, index: true
 		end
 
-  	create_table :wufoo_contact_us_forms do |t|
-			t.string :name
-			t.string :phone_number
-			t.string :email
-			t.string :how_did_you_hear_about_us
-			t.string :min_price
-			t.string :max_price
-			t.string :any_notes_for_us
-			t.boolean :archived, default: false
-			t.timestamps null: false
-  	end
+  	# create_table :wufoo_contact_us_forms do |t|
+			# t.string :name
+			# t.string :phone_number
+			# t.string :email
+			# t.string :how_did_you_hear_about_us
+			# t.string :min_price
+			# t.string :max_price
+			# t.string :any_notes_for_us
+			# t.boolean :archived, default: false
+			# t.timestamps null: false
+  	# end
 
-  	create_table :wufoo_rental_listings_forms do |t|
-			t.string :name
-			t.string :email
-			t.string :phone_number
-			t.string :message
-			t.boolean :archived, default: false
-			t.timestamps null: false
-  	end
+  	# create_table :wufoo_rental_listings_forms do |t|
+			# t.string :name
+			# t.string :email
+			# t.string :phone_number
+			# t.string :message
+			# t.boolean :archived, default: false
+			# t.timestamps null: false
+  	# end
 
-  	create_table :wufoo_commercial_listings_forms do |t|
-			t.string :name
-			t.string :email
-			t.string :phone_number
-			t.string :message
-			t.boolean :archived, default: false
-			t.timestamps null: false
-  	end
+  	# create_table :wufoo_commercial_listings_forms do |t|
+			# t.string :name
+			# t.string :email
+			# t.string :phone_number
+			# t.string :message
+			# t.boolean :archived, default: false
+			# t.timestamps null: false
+  	# end
 
-  	create_table :wufoo_partner_with_myspace_nyc_forms do |t|
-			t.string :name
-			t.string :email
-			t.string :phone_number
-			t.string :how_did_you_hear_about_us
-			t.string :address
-			t.string :number_of_bedrooms
-			t.string :renovated
-			t.string :utilities
-			t.datetime :datetime
-			t.boolean :archived, default: false
-			t.timestamps null: false
-  	end
+  	# create_table :wufoo_partner_with_myspace_nyc_forms do |t|
+			# t.string :name
+			# t.string :email
+			# t.string :phone_number
+			# t.string :how_did_you_hear_about_us
+			# t.string :address
+			# t.string :number_of_bedrooms
+			# t.string :renovated
+			# t.string :utilities
+			# t.datetime :datetime
+			# t.boolean :archived, default: false
+			# t.timestamps null: false
+  	# end
   end
 end

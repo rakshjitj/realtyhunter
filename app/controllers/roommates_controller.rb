@@ -23,7 +23,6 @@ class RoommatesController < ApplicationController
   # GET /residential_units/new
   def new
     @roommate = Roommate.new
-    @panel_title = "New Roomsharing Referral"
   end
 
   # POST /residential_units
@@ -33,6 +32,7 @@ class RoommatesController < ApplicationController
     @roommate.user = current_user
     @roommate.company = current_user.company
     if @roommate.save
+      flash[:success] = "Roomsharing referral data saved!"
       redirect_to @roommate
     else
       # error
@@ -60,18 +60,6 @@ class RoommatesController < ApplicationController
   end
 
   def send_update
-  end
-
-  # handles ajax call. uses latest data in modal
-  def neighborhoods_modal
-    @neighborhoods = Neighborhood.unarchived
-    .where(city: current_user.office.administrative_area_level_2_short)
-    .to_a
-    .group_by(&:borough)
-    
-    respond_to do |format|
-      format.js  
-    end
   end
 
   def show
@@ -159,11 +147,13 @@ class RoommatesController < ApplicationController
 
   private
   	def set_roommate
+      @roommate = Roommate.find_unarchived(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:warning] = "Sorry, that roommate is not active."
+      redirect_to :action => 'index'
   	end
 
   	def set_roommates
-  		
-      #@roommates = custom_sort
       @neighborhoods = Neighborhood.where(name: [
         'Bedford Stuyvesant',
         'Bushwick',
@@ -176,6 +166,11 @@ class RoommatesController < ApplicationController
         'Flatbush Ditmas Park'])
       @referrers = current_user.company.users.unarchived.map(&:name).to_a
       @referrers.insert(0, 'Website')
+
+      # if we are logged in as an agent, only let me view my own referrals
+      # if cannot? :manage, @roommate
+      #   params[:referred_by] = current_user.id
+      # end
 
       @roommates = Roommate.search(params)
       @roommates = custom_sort

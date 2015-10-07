@@ -65,7 +65,14 @@ namespace :import do
 				hash[:company_id] = company.id
 
 				#puts hash.inspect
-				Roommate.find_or_create_by!(hash)
+				found = Roommate.where(name: hash[:name],
+					email: hash[:email],
+					phone_number: hash[:phone_number],
+					created_by: hash[:created_by],
+					created_at: hash[:created_at])
+				if !found
+					Roommate.create!(hash)
+				end
 				#puts wu.errors.inspect
 			end
 		end
