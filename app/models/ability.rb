@@ -9,6 +9,7 @@ class Ability
     can [:autocomplete_building_formatted_street_address], [ResidentialListing, CommercialListing, Building]
     can [:autocomplete_landlord_code], [ResidentialListing, Landlord]
     can [:autocomplete_user_name, :filter, :filter_listings, :coworkers, :subordinates], [User]
+
     can [:send_listings], [ResidentialListing, CommercialListing]
   end
 

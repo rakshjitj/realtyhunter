@@ -13,6 +13,10 @@ class RoommatesController < ApplicationController
   end
 
   def filter
+    set_roommates
+    respond_to do |format|
+      format.js  
+    end
   end
 
   def download
@@ -130,6 +134,9 @@ class RoommatesController < ApplicationController
         'Ridgewood',
         'Williamsburg',
         'Flatbush Ditmas Park'])
+      @referrers = current_user.company.users.unarchived.map(&:name).to_a
+      @referrers.insert(0, 'Website')
+
       @roommates = @roommates.page params[:page]
       @roommate_images = User.get_images(@roommates)
   	end
@@ -138,11 +145,11 @@ class RoommatesController < ApplicationController
   	end
 
   	def do_search
-  		@selected_neighborhoods = []
-      if params[:neighborhood_ids]
-        neighborhood_ids = params[:neighborhood_ids].split(",").select{|i| !i.empty?}
-        @selected_neighborhoods = Neighborhood.where(id: neighborhood_ids)
-      end
+  		# @selected_neighborhoods = []
+    #   if params[:neighborhood_ids]
+    #     neighborhood_ids = params[:neighborhood_ids].split(",").select{|i| !i.empty?}
+    #     @selected_neighborhoods = Neighborhood.where(id: neighborhood_ids)
+    #   end
 
       @roommates = Roommate.search(params)
       @roommate_images = []
@@ -154,8 +161,9 @@ class RoommatesController < ApplicationController
     end
 
     def roommate_params
-    	data = params.permit(:sort_by, :filter, :neighborhood_ids, :submitted_date, :move_in_date, :monthly_budget, 
-        :user_id, :dogs_allowed, :cats_allowed,
+    	data = params.permit(:sort_by, :filter, :name, :referred_by, :neighborhood_id,
+        :submitted_date, :move_in_date, :monthly_budget, 
+        :dogs_allowed, :cats_allowed,
         roommate: [:name, :phone_number, 
           :email, :how_did_you_hear_about_us, :upload_picture_of_yourself, :describe_yourself,
           :monthly_budget, :move_in_date, :neighborhood, :dogs_allowed, :cats_allowed,

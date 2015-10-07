@@ -33,15 +33,59 @@ class Roommate < ActiveRecord::Base
   end
 
 	def self.search(params)
-		Roommate.unarchived.joins('left join neighborhoods on roommates.neighborhood_id = neighborhoods.id').select(
+		roommates = Roommate.unarchived.joins('left join neighborhoods on roommates.neighborhood_id = neighborhoods.id').select(
 			'roommates.id',
-			'upload_picture_of_yourself',
-			'name', 'phone_number', 'email', 
+			'roommates.upload_picture_of_yourself',
+			'roommates.name', 'roommates.phone_number', 'roommates.email', 
 			'neighborhoods.name as neighborhood_name',
-			'monthly_budget', 'move_in_date', 'dogs_allowed', 'cats_allowed',
-			'roommates.created_at as submitted_date',
+			'roommates.monthly_budget', 'roommates.move_in_date', 'roommates.dogs_allowed', 
+			'roommates.cats_allowed', 'roommates.created_at as submitted_date',
 			'roommates.archived'
 			)
+
+		# all search params come in as strings from the url
+    # clear out any invalid search params
+    params.delete_if{ |k,v| (!v || v == 0 || v.empty?) }
+
+    if !params[:name].blank?
+    	roommates = roommates.where(name: params[:name])
+    end
+
+    if !params[:referred_by].blank?
+    	if params[:referred_by] == 'Website'
+    		roommates = roommates.where(user_id: nil)
+    	else
+    		user = User.find_by(name: params[:referred_by])
+    		roommates = roommates.where(user_id: user)
+    	end
+    end
+
+    if !params[:neighborhood_id].blank?
+    	nabe = Neighborhood.find_by(id: params[:neighborhood_id])
+    	roommates = roommates.where(neighborhood_id: nabe.id)
+    end
+
+    if !params[:submitted_date].blank?
+    	roommates = roommates.where('roommates.created_at >= ?', params[:submitted_date])
+    end
+
+    if !params[:move_in_date].blank?
+    	roommates = roommates.where('roommates.move_in_date >= ?', params[:move_in_date])
+    end
+
+    if !params[:monthly_budget].blank?
+    	roommates = roommates.where('roommates.monthly_budget = ?', params[:monthly_budget])
+    end
+
+    if !params[:dogs_allowed].blank?
+    	roommates = roommates.where('roommates.dogs_allowed = ?', params[:dogs_allowed])
+    end
+
+    if !params[:cats_allowed].blank?
+    	roommates = roommates.where('roommates.cats_allowed = ?', params[:cats_allowed])
+    end
+
+    roommates
 	end
 
 	def self.get_images(list)

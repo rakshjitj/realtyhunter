@@ -57,15 +57,19 @@
 
     <!-- ****** DOGS ALLOWED ****************************************** -->
     <td>
-      <% if !roommate.dogs_allowed.blank? %>
-        <%= roommate.dogs_allowed %>
+      <% if roommate.dogs_allowed == true %>
+        <span class="glyphicon glyphicon-ok green text-center" aria-hidden="true"></span>
+      <% else %>
+        <span class="glyphicon glyphicon-remove red middle" aria-hidden="true"></span>
       <% end %>
     </td>
 
     <!-- ****** CATS ALLOWED ****************************************** -->
     <td>
-      <% if !roommate.cats_allowed.blank? %>
-        <%= roommate.cats_allowed %>
+      <% if roommate.cats_allowed == true %>
+        <span class="glyphicon glyphicon-ok green text-center" aria-hidden="true"></span>
+      <% else %>
+        <span class="glyphicon glyphicon-remove red middle" aria-hidden="true"></span>
       <% end %>
     </td>
 

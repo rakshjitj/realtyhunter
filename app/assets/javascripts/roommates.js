@@ -108,9 +108,9 @@ Roommates = {};
 	Roommates.doSearch = function (sort_by_col, sort_direction) {
 		//console.log(sort_by_col, sort_direction);
 		// sanitize invalid input before submitting
-	  if ($('#rommates #neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
-	    $('#rommates #neighborhood_ids').val('');
-	  }
+	  // if ($('#rommates #neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
+	  //   $('#rommates #neighborhood_ids').val('');
+	  // }
 
 	  var search_path = $('#room-search-filters').attr('data-search-path');
 	  
@@ -121,12 +121,13 @@ Roommates = {};
 	    data: {
         name: $('#roommates #name').val(),
         referred_by: $('#roommates #referred_by').val(),
-        monthly_budget: $('#roommates #monthly_budget').val(),
+        neighborhood_id: $('#roommates #neighborhood_id').val(),
         submitted_date: $('#roommates #submitted_date').val(),
         move_in_date: $('#roommates #move_in_date').val(),
+        monthly_budget: $('#roommates #monthly_budget').val(),
         dogs_allowed: $('#roommates #dogs_allowed').val(),
         cats_allowed: $('#roommates #cats_allowed').val(),
-        neighborhood_ids: $('#roommates #neighborhood_ids').val(),
+        
         sort_by: sort_by_col,
         direction: sort_direction,
 	    },
@@ -226,9 +227,10 @@ Roommates = {};
 		$('#roommates name').keydown(Roommates.preventEnter);
 		$('#roommates #name').bind('railsAutocomplete.select', Roommates.throttledSearch);
 	  $('#roommates #referred_by').change(Roommates.throttledSearch);
+	  $('#roommates #neighborhood_id').change(Roommates.throttledSearch);
+	  $('#roommates #submitted_date').blur(Roommates.throttledSearch);
+	  $('#roommates #move_in_date').blur(Roommates.throttledSearch);
 	  $('#roommates #monthly_budget').change(Roommates.throttledSearch);
-	  $('#roommates #submitted_date').change(Roommates.throttledSearch);
-	  $('#roommates #move_in_date').change(Roommates.throttledSearch);
 	  $('#roommates #dogs_allowed').change(Roommates.throttledSearch);
 	  $('#roommates #cats_allowed').change(Roommates.throttledSearch);
 	  

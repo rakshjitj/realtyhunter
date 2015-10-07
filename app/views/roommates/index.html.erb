@@ -35,11 +35,11 @@
 
         <div class="row vertical-padding">
           <div class="col-xs-5 form-label-responsive">
-            <%= label_tag :user, 'Referred By' %>
+            <%= label_tag :referred_by, 'Referred By' %>
           </div>
           <div class="col-xs-7 col-sm-left-padding">
-            <%= select_tag(:user, 
-              options_for_select(current_user.company.users.collect {|u| [u.name, u.id]}),
+            <%= select_tag(:referred_by, 
+              options_for_select(@referrers),
               {class: "form-control", 
               prompt: "Any"}) %>
           </div>
@@ -47,10 +47,10 @@
 
         <div class="row vertical-padding">
           <div class="col-xs-5 form-label-responsive">
-            <%= label_tag :neighborhood %>
+            <%= label_tag :neighborhood_id, "Neighborhood" %>
           </div>
           <div class="col-xs-7 col-sm-left-padding">
-            <%= select_tag(:neighborhood, 
+            <%= select_tag(:neighborhood_id, 
               options_for_select(@neighborhoods.collect {|u| [u.name, u.id]}),
               {class: "form-control", 
               prompt: "Any"}) %>
