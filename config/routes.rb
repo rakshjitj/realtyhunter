@@ -217,6 +217,7 @@ Rails.application.routes.draw do
       get 'print_list'
       post 'send_listings'
       get 'download'
+      get 'send_update'
     end
   end
 end

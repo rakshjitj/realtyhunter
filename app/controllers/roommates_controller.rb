@@ -1,7 +1,7 @@
 class RoommatesController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
-  before_action :set_roommate, except: [:index, :new, :create, :filter]
+  before_action :set_roommate, except: [:index, :new, :create, :filter, :download, :send_update]
   autocomplete :roommate, :name, full: true
 
   def index
@@ -17,6 +17,26 @@ class RoommatesController < ApplicationController
     set_roommates
     respond_to do |format|
       format.js  
+    end
+  end
+
+  # GET /residential_units/new
+  def new
+    @roommate = Roommate.new
+    @panel_title = "New Roomsharing Referral"
+  end
+
+  # POST /residential_units
+  # POST /residential_units.json
+  def create
+    @roommate = Roommate.new(roommate_params[:roommate])
+    @roommate.user = current_user
+    @roommate.company = current_user.company
+    if @roommate.save
+      redirect_to @roommate
+    else
+      # error
+      render 'new'
     end
   end
 
@@ -37,6 +57,9 @@ class RoommatesController < ApplicationController
           layout:   "/layouts/pdf_layout.html"
       end
     end
+  end
+
+  def send_update
   end
 
   # handles ajax call. uses latest data in modal
@@ -165,14 +188,8 @@ class RoommatesController < ApplicationController
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      puts "***** #{params[:sort_by]} #{params[:direction]}"
-      #if Roommate.column_names.include?(params[:sort_by])
-        @roommates = @roommates.order(sort_column + ' ' + sort_order)
-      #else
-        # if sort_column == 'neighborhood_name'
-        #   @roommates = @roommates.order('neighborhood_name' + sort_order)
-        # end
-      #end
+      #puts "***** #{params[:sort_by]} #{params[:direction]}"
+      @roommates = @roommates.order(sort_column + ' ' + sort_order)
       @roommates
   	end
 
@@ -216,6 +233,8 @@ class RoommatesController < ApplicationController
         if !data[:roommate][:neighborhood].blank? && data[:roommate][:neighborhood] != 'Other'
           data[:roommate][:neighborhood] = Neighborhood.find_by(name: data[:roommate][:neighborhood])
         end
+
+        data[:roommate].delete_if{|k,v| (!v || v.blank?) }
       end
 
       data

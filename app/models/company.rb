@@ -17,7 +17,7 @@ class Company < ActiveRecord::Base
 	has_many :residential_amenities, dependent: :destroy
 	has_many :sales_amenities, dependent: :destroy
 	has_many :commercial_property_types
-	has_many :roommates, class_name: 'WufooRoommatesWebForm', dependent: :destroy
+	has_many :roommates, dependent: :destroy
 	
 	#attr_accessor :agent_types, :employee_titles
 	#attr_access :building_amenities

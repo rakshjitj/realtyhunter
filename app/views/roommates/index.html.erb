@@ -8,7 +8,7 @@
       <h1>Roomsharing Referrals</h1>
     </div>
     <div class="col-md-6 form-label-responsive">
-      
+      <%= link_to 'New Referral', new_roommate_path, class: 'btn btn-warning btn-sm link-as-button' %>      
     </div>
   </div>
 </div>
@@ -253,7 +253,7 @@
         <div class="row vertical-padding">
           <div class="col-md-12">
             <%= label_tag "roommate[title]", "Title", class: 'required' %>
-            <%= text_field_tag "roommate[title]", "Check out these great listings!", class: 'form-control', required: true %>
+            <%= text_field_tag "roommate[title]", "Roomsharing Updates", class: 'form-control', required: true %>
           </div>
         </div>
 

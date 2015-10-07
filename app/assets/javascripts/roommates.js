@@ -1,7 +1,7 @@
 Roommates = {};
 
 (function() {
-	Roommates.selectedListings = [];
+	Roommates.selectedRoommates = [];
 
 	// private
 	Roommates.checkTheBox = function(item) {
@@ -13,15 +13,15 @@ Roommates = {};
 	};
 	// private
 	Roommates.updateSelectedButton = function() {
-		$('#selected-listings-dropdown').html(Roommates.selectedListings.length + " Selected Roommates <span class=\"caret\"></span>");
-		if (Roommates.selectedListings.length == 0) {
+		$('#selected-listings-dropdown').html(Roommates.selectedRoommates.length + " Selected Roommates <span class=\"caret\"></span>");
+		if (Roommates.selectedRoommates.length == 0) {
 			$('#selected-listings-dropdown').addClass("disabled");
 		} else {
 			$('#selected-listings-dropdown').removeClass("disabled");
 		}
 
 		// update the hidden tag with the latest list of ids
-		$('#roommate_listing_ids').val(Roommates.selectedListings);
+		$('#roommate_listing_ids').val(Roommates.selectedRoommates);
 	};
 	// private
 	// if any individual listings get unchecked, then uncheck
@@ -35,7 +35,7 @@ Roommates = {};
 		if (isChecked) {
 			// uncheck all boxes, clear our list
 			Roommates.uncheckTheBox($(this));
-			Roommates.selectedListings = [];
+			Roommates.selectedRoommates = [];
 
 			$('td > i').map(function() {
 				if ($(this).hasClass('fa-check-square')) {
@@ -45,7 +45,7 @@ Roommates = {};
 		} else {
 			// check all boxes, fill our list
 			Roommates.checkTheBox($(this));
-			Roommates.selectedListings = $('tr').map(function() {
+			Roommates.selectedRoommates = $('tr').map(function() {
 				return $(this).attr('data-id');
 			}).get();
 
@@ -60,38 +60,38 @@ Roommates = {};
 	};
 
 	Roommates.toggleListingSelection = function() {
+
 		// TODO: cap the max # of listings you can select?
 		var isChecked = $(this).hasClass('fa-check-square');
-		var listing_id = $(this).parent().parent().attr('data-id');
+		var roommate_id = $(this).parent().parent().attr('data-id');
 		
 		if (isChecked) {
 			//$(this).addClass('fa-square-o').removeClass('fa-check-square');
 			Roommates.uncheckTheBox($(this));
-			Roommates.selectedListings.splice(Roommates.selectedListings.indexOf(listing_id), 1);
+			Roommates.selectedRoommates.splice(Roommates.selectedRoommates.indexOf(roommate_id), 1);
 			Roommates.uncheckHeadToggle();
 		} else {
 			//$(this).addClass('fa-check-square').removeClass('fa-square-o');
 			Roommates.checkTheBox($(this));
-			Roommates.selectedListings.push(listing_id);
+			Roommates.selectedRoommates.push(roommate_id);
 		}
 
 		Roommates.updateSelectedButton();
 	};
 
 	Roommates.indexMenuActions = {
-		
 		'send': function() {
 			console.log('sending!');
-			var params = 'roommate_ids=' + Roommates.selectedListings.join(",");
+			var params = 'roommate_ids=' + Roommates.selectedRoommates.join(",");
 			window.location.href = '/roommates/print_list?' + params;
 		},
 		'PDF': function() {
 			//console.log('sheet!');
-			var params = 'roommate_ids=' + Roommates.selectedListings.join(",");
+			var params = 'roommate_ids=' + Roommates.selectedRoommates.join(",");
 			window.location.href = '/roommates/download.pdf?' + params;
 		},
 		'CSV': function() {
-			var params = 'roommate_ids=' + Roommates.selectedListings.join(",");
+			var params = 'roommate_ids=' + Roommates.selectedRoommates.join(",");
 			window.location.href = '/roommates/download.csv?' + params;
 		}
 	};
@@ -219,7 +219,7 @@ Roommates = {};
 		});
 
 		// index filtering
-		$('#roommates name').keydown(Roommates.preventEnter);
+		$('#roommates input').keydown(Roommates.preventEnter);
 		$('#roommates #name').bind('railsAutocomplete.select', Roommates.throttledSearch);
 	  $('#roommates #referred_by').change(Roommates.throttledSearch);
 	  $('#roommates #neighborhood_id').change(Roommates.throttledSearch);
@@ -230,29 +230,27 @@ Roommates = {};
 	  $('#roommates #cats_allowed').change(Roommates.throttledSearch);
 	  $('#roommates #status').change(Roommates.throttledSearch);
 	  
-	  // remove individual features by clicking on 'x' button
-	  $('#roommates .remove-neighborhood').click(Roommates.removeNeighborhood);
-
 	  // print pdf from the index page
-	 //  $('#roommates .btn-print-list').click( function(event) {
+	  //  $('#roommates .btn-print-list').click( function(event) {
 		//   Roommates.showSpinner();
 		//   $(this).toggleClass('active');
 		// });
 
 		// index page - selecting listings menu dropdown
-		$('#emailListings').click(function(e) {
-			$('#roommates_listing_recipients').val('');
-			//$('#roommates_listing_title').val('');
-			$('#roommates_listing_message').val('');
+		$('#roommates #emailListings').click(function(e) {
+			$('#roommate_recipients').val('');
+			$('#roommates_message').val('');
 			e.preventDefault();
 		});
-		$('tbody').on('click', 'i', Roommates.toggleListingSelection);
-		$('.select-all-listings').click(Roommates.selectAllListings);
-		Roommates.selectedListings = [];
-		$('.selected-listings-menu').on('click', 'a', function() {
+		$('#roommates tbody').on('click', 'i', Roommates.toggleListingSelection);
+		$('#roommates .select-all-listings').click(Roommates.selectAllListings);
+		Roommates.selectedRoommates = [];
+		$('#roommates .selected-listings-menu').on('click', 'a', function() {
 			var action = $(this).data('action');
 			if (action in Roommates.indexMenuActions) Roommates.indexMenuActions[action]();
 		});
+
+		
 
 		// make sure datepicker is formatted before setting initial date below
 		$('.datepicker').datetimepicker({

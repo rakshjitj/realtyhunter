@@ -5,6 +5,7 @@
 class Roommate < ActiveRecord::Base
   belongs_to :user, touch: true
   belongs_to :neighborhood, touch: true
+  belongs_to :company, touch: true
   has_one :image, dependent: :destroy
 	
   scope :unarchived, ->{where(archived: false)}
@@ -12,7 +13,7 @@ class Roommate < ActiveRecord::Base
   validates :name, presence: true, length: {maximum: 200}
   validates :phone_number, presence: true, length: {maximum: 20}
   validates :email, length: {maximum: 100}
-  validates :how_did_you_hear_about_us, presence: true, length: {maximum: 1000}
+  validates :how_did_you_hear_about_us, length: {maximum: 1000}
   validates :describe_yourself, allow_blank: true, length: {maximum: 1000}
   validates :upload_picture_of_yourself, length: {maximum: 500}
   validates :monthly_budget, length: {maximum: 50}
