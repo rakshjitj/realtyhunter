@@ -5,6 +5,7 @@ class RoommatesController < ApplicationController
   autocomplete :roommate, :name, full: true
 
   def index
+    params[:status] = 'Active'
     respond_to do |format|
       format.html do
         set_roommates
@@ -76,7 +77,23 @@ class RoommatesController < ApplicationController
     @roommate.archive
     set_roommates
     respond_to do |format|
-      format.html { redirect_to roommates_url, notice: 'Roommate was successfully deleted.' }
+      format.html { redirect_to roommates_url, notice: 'Roommate was successfully inactivated.' }
+      format.json { head :no_content }
+      format.js
+    end
+  end
+
+  def unarchive_modal
+    respond_to do |format|
+      format.js  
+    end
+  end
+
+  def unarchive
+    @roommate.unarchive
+    set_roommates
+    respond_to do |format|
+      format.html { redirect_to roommates_url, notice: 'Roommate was successfully activated.' }
       format.json { head :no_content }
       format.js
     end
@@ -162,7 +179,7 @@ class RoommatesController < ApplicationController
 
     def roommate_params
     	data = params.permit(:sort_by, :filter, :name, :referred_by, :neighborhood_id,
-        :submitted_date, :move_in_date, :monthly_budget, 
+        :submitted_date, :move_in_date, :monthly_budget, :status,
         :dogs_allowed, :cats_allowed,
         roommate: [:name, :phone_number, 
           :email, :how_did_you_hear_about_us, :upload_picture_of_yourself, :describe_yourself,

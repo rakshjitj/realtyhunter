@@ -1,0 +1,7 @@
+$('#roommateUnarchiveModal .delete-btn').replaceWith("<%= j(link_to 'Mark Active', unarchive_roommate_path(@roommate), remote: true, method: :post, class: 'btn btn-danger link-as-button', id: 'delete-link') %>");
+$('#roommateUnarchiveModal #delete-link').click( function(event) {
+	$('#roommateUnarchiveModal').modal('hide');
+	event.preventDefault();
+});
+
+$('#roommateUnarchiveModal').modal('show');

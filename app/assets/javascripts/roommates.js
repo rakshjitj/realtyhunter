@@ -127,7 +127,7 @@ Roommates = {};
         monthly_budget: $('#roommates #monthly_budget').val(),
         dogs_allowed: $('#roommates #dogs_allowed').val(),
         cats_allowed: $('#roommates #cats_allowed').val(),
-        
+        status: $('#roommates #status').val(),
         sort_by: sort_by_col,
         direction: sort_direction,
 	    },
@@ -233,6 +233,7 @@ Roommates = {};
 	  $('#roommates #monthly_budget').change(Roommates.throttledSearch);
 	  $('#roommates #dogs_allowed').change(Roommates.throttledSearch);
 	  $('#roommates #cats_allowed').change(Roommates.throttledSearch);
+	  $('#roommates #status').change(Roommates.throttledSearch);
 	  
 	  // remove individual features by clicking on 'x' button
 	  $('#roommates .remove-neighborhood').click(Roommates.removeNeighborhood);

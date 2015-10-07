@@ -11,6 +11,7 @@ class Image < ActiveRecord::Base
       medium: '300x300>',
       large:  '500x500>'
     }, 
+    source_file_options: { :all => '-auto-orient' }, 
     default_url: "/images/:style/missing.png",
     source_file_options: { all: '-auto-orient' }
   process_in_background :file

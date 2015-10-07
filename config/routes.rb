@@ -206,6 +206,8 @@ Rails.application.routes.draw do
     get :autocomplete_roommate_name, :on => :collection
     member do
       get 'delete_modal'
+      get 'unarchive_modal'
+      post 'unarchive'
       delete 'destroy_image'
       post 'upload_image'
     end

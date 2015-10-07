@@ -84,8 +84,14 @@
     <% if current_user.is_management? || current_user.is_listings_manager? %>
       <td>
         <%= link_to 'Edit', edit_roommate_path(roommate) %> 
-        <br /><%= link_to 'Delete', delete_modal_roommate_path(roommate), 
-          data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
+        <br />
+        <% if !roommate.archived %>
+          <%= link_to 'Mark Inactive', delete_modal_roommate_path(roommate), 
+            data: { toggle: "modal", target: "#roommateDeleteModal"}, remote: true %>
+        <% else %>
+          <%= link_to 'Mark Active', unarchive_modal_roommate_path(roommate), 
+            data: { toggle: "modal", target: "#roommateUnarchiveModal"}, remote: true %>
+        <% end %>
         <br />
       </td>
     <% end %>
