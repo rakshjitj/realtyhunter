@@ -67,7 +67,7 @@
             <% end %>
 
             <% if current_user.is_management? %>
-              <li><%= link_to "Roommsharing", roommates_path %></li>
+              <li><%= link_to "Roomsharing", roommates_path %></li>
             <% end %>
 
             <% if current_user.handles_residential? || current_user.handles_commercial? %>

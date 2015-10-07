@@ -149,6 +149,8 @@ end
 			xml.numHalfBaths 1
 		end
 		#xml.squareFeet
-		xml.dateAvailable listing.available_by.strftime("%Y-%m-%d")
+		if listing.available_by
+			xml.dateAvailable listing.available_by.strftime("%Y-%m-%d")
+		end
 	end
 end
