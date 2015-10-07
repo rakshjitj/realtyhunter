@@ -29,7 +29,7 @@ namespace :import do
 					db_column = fields[entry_field]
 					if !db_column.blank?
 						if db_column == 'cats_allowed' || db_column == 'dogs_allowed'
-							hash[db_column] = val == 'Yes' ? true : false
+							hash[db_column.to_sym] = val == 'Yes' ? true : false
 						elsif db_column == 'name_first'
 							name = val + name
 						elsif db_column == 'name_last'
@@ -39,17 +39,17 @@ namespace :import do
 							open_par = val.index('(')
 							close_par = val.index(')')
 							if open_par && close_par
-								hash[db_column] = val.slice(open_par + 1, close_par - open_par - 1)
+								hash[db_column.to_sym] = val.slice(open_par + 1, close_par - open_par - 1)
 							end
 
 						elsif db_column == 'what_neighborhood_do_you_want_to_live_in'
-							hash['neighborhood'] = Neighborhood.find_by(name: val)
+							hash[:neighborhood] = Neighborhood.find_by(name: val)
 
 						elsif db_column == 'move_in_date'
-							hash[db_column] = Date.parse(val) #	Tuesday, October 6, 2015
+							hash[db_column.to_sym] = Date.parse(val) #	Tuesday, October 6, 2015
 
 						else
-							hash[db_column] = val
+							hash[db_column.to_sym] = val
 						end
 					end
 				end
@@ -65,12 +65,17 @@ namespace :import do
 				hash[:company_id] = company.id
 
 				#puts hash.inspect
-				found = Roommate.where(name: hash[:name],
+				query = {name: hash[:name],
 					email: hash[:email],
 					phone_number: hash[:phone_number],
 					created_by: hash[:created_by],
-					created_at: hash[:created_at])
+					#created_at: hash[:created_at],
+					company_id: hash[:company_id]}
+
+				found = Roommate.where(query).first
+				puts "FOUND IS #{found.inspect} #{query.inspect} \n #{hash.inspect}"
 				if !found
+					puts "CREATING"
 					Roommate.create!(hash)
 				end
 				#puts wu.errors.inspect
