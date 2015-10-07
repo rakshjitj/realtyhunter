@@ -139,7 +139,7 @@ class RoommatesController < ApplicationController
   	end
 
   	def set_roommates
-  		do_search
+  		
       #@roommates = custom_sort
       @neighborhoods = Neighborhood.where(name: [
         'Bedford Stuyvesant',
@@ -154,27 +154,31 @@ class RoommatesController < ApplicationController
       @referrers = current_user.company.users.unarchived.map(&:name).to_a
       @referrers.insert(0, 'Website')
 
+      @roommates = Roommate.search(params)
+      @roommates = custom_sort
       @roommates = @roommates.page params[:page]
       @roommate_images = User.get_images(@roommates)
   	end
 
   	def custom_sort
-  	end
-
-  	def do_search
-  		# @selected_neighborhoods = []
-    #   if params[:neighborhood_ids]
-    #     neighborhood_ids = params[:neighborhood_ids].split(",").select{|i| !i.empty?}
-    #     @selected_neighborhoods = Neighborhood.where(id: neighborhood_ids)
-    #   end
-
-      @roommates = Roommate.search(params)
-      @roommate_images = []
+      sort_column = params[:sort_by] || "submitted_date"
+      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+      params[:sort_by] = sort_column
+      params[:direction] = sort_order
+      puts "***** #{params[:sort_by]} #{params[:direction]}"
+      #if Roommate.column_names.include?(params[:sort_by])
+        @roommates = @roommates.order(sort_column + ' ' + sort_order)
+      #else
+        # if sort_column == 'neighborhood_name'
+        #   @roommates = @roommates.order('neighborhood_name' + sort_order)
+        # end
+      #end
+      @roommates
   	end
 
   	def set_roommates_csv
-      #@landlords = Landlord.search_csv(params)
-      #@landlords = custom_sort
+      # @roommates = Roommate.search_csv(params)
+      # @roommates = custom_sort
     end
 
     def roommate_params
@@ -213,11 +217,6 @@ class RoommatesController < ApplicationController
           data[:roommate][:neighborhood] = Neighborhood.find_by(name: data[:roommate][:neighborhood])
         end
       end
-
-      # params.permit(:sort_by, :filter, :agent_filter, :active_only, :street_number, :route, 
-      #   :neighborhood, :sublocality, :administrative_area_level_2_short, 
-      #   :administrative_area_level_1_short, :postal_code, :country_short, :lat, :lng, :place_id, 
-      #   :landlord => [:code, :name, :contact_name, :mobile, :office_phone, :fax, 
 
       data
     end

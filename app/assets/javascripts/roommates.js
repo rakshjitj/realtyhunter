@@ -107,12 +107,7 @@ Roommates = {};
 	// for searching on the index page
 	Roommates.doSearch = function (sort_by_col, sort_direction) {
 		//console.log(sort_by_col, sort_direction);
-		// sanitize invalid input before submitting
-	  // if ($('#rommates #neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
-	  //   $('#rommates #neighborhood_ids').val('');
-	  // }
-
-	  var search_path = $('#room-search-filters').attr('data-search-path');
+		var search_path = $('#room-search-filters').attr('data-search-path');
 	  
 	  Roommates.showSpinner();
 

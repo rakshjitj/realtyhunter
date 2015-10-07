@@ -7,7 +7,6 @@ class Roommate < ActiveRecord::Base
   belongs_to :neighborhood, touch: true
   has_one :image, dependent: :destroy
 	
-  default_scope { order("roommates.created_at ASC") }
   scope :unarchived, ->{where(archived: false)}
 
   validates :name, presence: true, length: {maximum: 200}

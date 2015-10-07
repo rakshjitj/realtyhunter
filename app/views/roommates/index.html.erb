@@ -202,15 +202,15 @@
           </th>
           <th><!-- first image --></th>
           <th data-sort="name" class="th-sortable">Name</th>
-          <th data-sort="phone" class="th-sortable">Phone</th>
+          <th data-sort="phone">Phone</th>
           <th data-sort="email" class="th-sortable">Email</th>
           <th data-sort="monthly_budget" class="th-sortable">Monthly Budget</th>
           <th data-sort="move_in_date" class="th-sortable">Move In Date</th>
-          <th data-sort="what_neighborhood_do_you_want_to_live_in" class="th-sortable">Neighborhood</th>
+          <th data-sort="neighborhood_name" class="th-sortable">Neighborhood</th>
           <th data-sort="dogs_allowed" class="th-sortable">Dogs Ok</th>
           <th data-sort="cats_allowed" class="th-sortable">Cats Ok</th>
           <th data-sort="submitted_date" class="th-sortable selected-sort">Submitted <i class="glyphicon glyphicon-triangle-bottom"></i></th>
-          <th data-sort="status" class="th-sortable">Status</th>
+          <th data-sort="status">Status</th>
           <% if current_user.is_management? || current_user.is_listings_manager? %>
             <th colspan="1"></th>
           <% end %>
