@@ -10,8 +10,7 @@ class AddWufooTables < ActiveRecord::Migration
 			t.string :describe_yourself
 			t.string :monthly_budget
 			t.datetime :move_in_date
-			#t.string :what_neighborhood_do_you_want_to_live_in
-			t.belongs_to :neighborhood
+			t.belongs_to :neighborhood #what_neighborhood_do_you_want_to_live_in
 			t.boolean :dogs_allowed
 			t.boolean :cats_allowed
 			t.string :created_by
@@ -22,15 +21,19 @@ class AddWufooTables < ActiveRecord::Migration
   	end
 
   	change_table :companies do |t|
-		  t.references :wufoo_roommates_web_forms, index: true
+		  t.references :roommates, index: true
 		end
 
 		change_table :users do |t|
-		  t.references :wufoo_roommates_web_forms, index: true
+		  t.references :roommates, index: true
 		end
 
 		change_table :neighborhoods do |t|
-		  t.references :wufoo_roommates_web_forms, index: true
+		  t.references :roommates, index: true
+		end
+
+		change_table :images do |t|
+		  t.belongs_to :roommate, index: true
 		end
 
   	create_table :wufoo_contact_us_forms do |t|

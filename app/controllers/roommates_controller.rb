@@ -13,13 +13,6 @@ class RoommatesController < ApplicationController
     end
   end
 
-  def show
-  	@roommate = Roommate.find_unarchived(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:warning] = "Sorry, that roommate is no longer available."
-      redirect_to :action => 'index'
-  end
-
   def filter
   end
 
@@ -54,7 +47,18 @@ class RoommatesController < ApplicationController
     end
   end
 
+  def show
+    @roommate = Roommate.find_unarchived(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:warning] = "Sorry, that roommate is no longer available."
+      redirect_to :action => 'index'
+  end
+
   def edit
+    @roommate = Roommate.find_unarchived(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:warning] = "Sorry, that roommate is no longer available."
+      redirect_to :action => 'index'
   end
 
   def delete_modal
@@ -72,6 +76,32 @@ class RoommatesController < ApplicationController
       format.html { redirect_to roommates_url, notice: 'Roommate was successfully deleted.' }
       format.json { head :no_content }
       format.js
+    end
+  end
+
+  # POST /users/1
+  def upload_image
+    image = Image.create(roommate_params)
+    if image
+      # delete old image
+      # TODO verify this removes old image from S3!
+      @roommate.image = nil
+      # add new image
+      @roommate.image = image
+      flash[:success] = "Profile image updated!"
+      redirect_to @roommate
+    else
+      #puts "**** #{@roommate.errors.inspect}"
+      render 'edit'
+    end
+  end
+
+  def destroy_image
+    if @roommate.image
+      @roommate.image = nil
+    end
+    respond_to do |format|
+      format.js  
     end
   end
 

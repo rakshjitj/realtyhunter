@@ -112,12 +112,12 @@ ActiveRecord::Schema.define(version: 20151006153411) do
   end
 
   create_table "companies", force: :cascade do |t|
-    t.boolean  "archived",                     default: false
+    t.boolean  "archived",                 default: false
     t.string   "name"
     t.string   "logo_id"
     t.string   "string"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.integer  "offices_id"
     t.integer  "users_id"
     t.integer  "buildings_id"
@@ -131,7 +131,7 @@ ActiveRecord::Schema.define(version: 20151006153411) do
     t.string   "website"
     t.text     "privacy_policy"
     t.text     "terms_conditions"
-    t.integer  "wufoo_roommates_web_forms_id"
+    t.integer  "roommates_id"
   end
 
   add_index "companies", ["building_amenities_id"], name: "index_companies_on_building_amenities_id", using: :btree
@@ -142,10 +142,10 @@ ActiveRecord::Schema.define(version: 20151006153411) do
   add_index "companies", ["pet_policies_id"], name: "index_companies_on_pet_policies_id", using: :btree
   add_index "companies", ["rental_terms_id"], name: "index_companies_on_rental_terms_id", using: :btree
   add_index "companies", ["residential_amenities_id"], name: "index_companies_on_residential_amenities_id", using: :btree
+  add_index "companies", ["roommates_id"], name: "index_companies_on_roommates_id", using: :btree
   add_index "companies", ["sales_amenities_id"], name: "index_companies_on_sales_amenities_id", using: :btree
   add_index "companies", ["users_id"], name: "index_companies_on_users_id", using: :btree
   add_index "companies", ["utilities_id"], name: "index_companies_on_utilities_id", using: :btree
-  add_index "companies", ["wufoo_roommates_web_forms_id"], name: "index_companies_on_wufoo_roommates_web_forms_id", using: :btree
 
   create_table "employee_titles", force: :cascade do |t|
     t.string   "name"
@@ -167,8 +167,10 @@ ActiveRecord::Schema.define(version: 20151006153411) do
     t.integer  "unit_id"
     t.integer  "user_id"
     t.integer  "company_id"
+    t.integer  "roommate_id"
   end
 
+  add_index "images", ["roommate_id"], name: "index_images_on_roommate_id", using: :btree
   add_index "images", ["user_id"], name: "index_images_on_user_id", using: :btree
 
   create_table "landlords", force: :cascade do |t|
@@ -213,19 +215,19 @@ ActiveRecord::Schema.define(version: 20151006153411) do
   add_index "landlords", ["listing_agent_id"], name: "index_landlords_on_listing_agent_id", using: :btree
 
   create_table "neighborhoods", force: :cascade do |t|
-    t.boolean  "archived",                     default: false
+    t.boolean  "archived",     default: false
     t.string   "name"
     t.string   "borough"
     t.string   "city"
     t.string   "state"
     t.integer  "buildings_id"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
-    t.integer  "wufoo_roommates_web_forms_id"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.integer  "roommates_id"
   end
 
   add_index "neighborhoods", ["buildings_id"], name: "index_neighborhoods_on_buildings_id", using: :btree
-  add_index "neighborhoods", ["wufoo_roommates_web_forms_id"], name: "index_neighborhoods_on_wufoo_roommates_web_forms_id", using: :btree
+  add_index "neighborhoods", ["roommates_id"], name: "index_neighborhoods_on_roommates_id", using: :btree
 
   create_table "offices", force: :cascade do |t|
     t.boolean  "archived",                          default: false
@@ -397,7 +399,7 @@ ActiveRecord::Schema.define(version: 20151006153411) do
   add_index "units", ["updated_at"], name: "index_units_on_updated_at", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.boolean  "archived",                     default: false
+    t.boolean  "archived",            default: false
     t.string   "auth_token"
     t.string   "name"
     t.string   "email"
@@ -407,10 +409,10 @@ ActiveRecord::Schema.define(version: 20151006153411) do
     t.string   "remember_digest"
     t.text     "bio"
     t.string   "activation_digest"
-    t.boolean  "activated",                    default: false
+    t.boolean  "activated",           default: false
     t.datetime "activated_at"
     t.string   "approval_digest"
-    t.boolean  "approved",                     default: false
+    t.boolean  "approved",            default: false
     t.datetime "approved_at"
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
@@ -419,10 +421,10 @@ ActiveRecord::Schema.define(version: 20151006153411) do
     t.integer  "office_id"
     t.integer  "employee_title_id"
     t.integer  "manager_id"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.string   "public_url"
-    t.integer  "wufoo_roommates_web_forms_id"
+    t.integer  "roommates_id"
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", using: :btree
@@ -430,7 +432,7 @@ ActiveRecord::Schema.define(version: 20151006153411) do
   add_index "users", ["employee_title_id"], name: "index_users_on_employee_title_id", using: :btree
   add_index "users", ["manager_id"], name: "index_users_on_manager_id", using: :btree
   add_index "users", ["name"], name: "index_users_on_name", using: :btree
-  add_index "users", ["wufoo_roommates_web_forms_id"], name: "index_users_on_wufoo_roommates_web_forms_id", using: :btree
+  add_index "users", ["roommates_id"], name: "index_users_on_roommates_id", using: :btree
 
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"

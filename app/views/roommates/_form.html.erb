@@ -1,0 +1,115 @@
+<div class="row">
+  <div class="col-md-6">
+      <!-- User image form -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="avatar">
+            <%= render 'image', :locals => {:roommate => @roommate} %>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="col-md-6">
+    <!-- All other fields form -->
+    <%= form_for(@roommate) do |f| %>
+      <%= render :partial => 'shared/error_messages', 
+        :locals => {:model => @roommate} %>
+
+      <div class="field">
+        <%= f.label :name_first, "First name", class: 'required' %><br>
+        <%= f.text_field :name_first, class: 'form-control', 
+            :required => true %>
+      </div>
+      
+      <div class="field">
+        <%= f.label :name_last, "Last name", class: 'required' %><br>
+        <%= f.text_field :name_last, class: 'form-control', 
+            :required => true %>
+      </div>
+      
+      <div class="field">
+        <%= f.label :email, class: 'required' %><br>
+        <%= f.telephone_field :email,
+            class: 'form-control' %>
+      </div>
+
+      <div class="field">
+        <%= f.label :phone_number, "Phone", class: 'required' %><br>
+        <%= f.telephone_field :phone_number, placeholder: "(XXX)XXX-XXXX",
+            class: 'form-control' %>
+      </div>
+      
+      <div class="field">
+        <%= f.label :how_did_you_hear_about_us %><br>
+        <%= f.select(:how_did_you_hear_about_us, options_for_select(['Roommate Mixer Event', 'Email', 'Facebook', 'Google Search', 'Building Sign', 'Word of Mouth', 'Other'], ['']), 
+          {prompt: "Choose one..."},
+          class: 'form-control',
+          :include_blank => true) %>
+      </div>
+
+      <div class="field">
+        <%= f.label :describe_yourself %><br>
+        <%= f.text_area :describe_yourself, class: 'form-control', :size => "20x10" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :monthly_budget %><br>
+        <%= f.select(:monthly_budget, options_for_select(['$500 - $749', '$750 - $999', '$1,000 - $1,249', '$1,250 - $1,499', '$1,500+']), 
+          {prompt: "Choose one..."},
+          class: 'form-control',
+          :include_blank => true) %>
+      </div>
+
+      <div class="field">
+        <%= f.label :move_in_date %><br />
+        <div class='input-group date datepicker' 
+          data-available-by="<%= @roommate.move_in_date ? @roommate.move_in_date.strftime("%m/%d/%Y") : '' %>">
+          <%= f.text_field :move_in_date, class:"form-control", size:30 %>
+          <label class="input-group-addon btn" for="date">
+            <span class="fa fa-calendar open-datepicker"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <%= f.label :neighborhood %><br>
+        <%= f.select(:neighborhood, options_for_select([
+          'Bedford Stuyesant',
+          'Bushwick',
+          'Crown Heights',
+          'Greenpoint',
+          'Prospect Lefferts Gardens',
+          'Prospect Heights',
+          'Ridgewood',
+          'Williamsburg',
+          'Flatbush - Ditmas Park',
+          'Other'
+          ]), 
+          {prompt: "Choose one..."},
+          class: 'form-control',
+          :include_blank => true) %>
+      </div>
+
+      <div class="field">
+        <%= f.label :dogs_allowed %><br />
+        <%= f.select(:dogs_allowed, options_for_select(['Yes', 'No']), 
+          {prompt: "Choose one..."},
+          class: 'form-control',
+          :include_blank => true) %>
+      </div>
+
+      <div class="field">
+        <%= f.label :cats_allowed %><br />
+        <%= f.select(:cats_allowed, options_for_select(['Yes', 'No']), 
+          {prompt: "Choose one..."},
+          class: 'form-control',
+          :include_blank => true) %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit class: "btn btn-warning" %>
+      </div>
+    <% end %>    
+  </div>
+</div>

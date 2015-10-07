@@ -1,0 +1,154 @@
+<% provide(:title, @roommate.name) %>
+<div id="roommates">
+
+<div class="row">
+  <div class="col-md-offset-2 col-md-8">
+    <div class="page-header">
+      
+      <div class="row">
+        <div class="col-md-6">
+          <h1><%= @roommate.name %></h1>
+        </div>
+        <div class="col-md-6 form-label-responsive">
+
+          <% if can? :manage, @roommate %>
+            <%= link_to 'Edit', edit_roommate_path(@roommate) %>
+                
+            <% if !@roommate.archived %>
+              | &nbsp;<%= link_to 'Delete', @roommate, method: :delete, 
+                data: { confirm: "Are you sure you want to delete #{@roommate.name}?" } %>
+              <% @prev_link = true %>
+            <% end %>
+          <% end %>
+
+      </div>
+
+    </div><!-- page header -->
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-12">
+            <% if @roommate.upload_picture_of_yourself %>
+              <%= image_tag @roommate.upload_picture_of_yourself, class: 'img-responsive', 
+                  alt: @roommate.upload_picture_of_yourself %>
+            <% else %>
+              <% if @roommate.image %>
+                <%= image_tag @roommate.image.file.url(:medium), :class => 'img-responsive', 
+                alt: @roommate.image.file.url(:medium) %>
+              <% else %>
+                <!-- placeholder image -->
+                <%= image_tag "agent_soon.jpg", alt: "Agent image coming soon", class: 'img-responsive', width:"95%" %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-12">
+          <strong>e &nbsp;|</strong> <%= mail_to @roommate.email, @roommate.email %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <strong>m |</strong> <%= link_to @roommate.phone_number, 'tel:' + @roommate.phone_number %>
+          </div>
+        </div>
+
+      </div><!-- col-md-6 -->
+
+      <div class="col-md-6">
+        
+        <% if !@roommate.how_did_you_hear_about_us.blank? %>
+          <br />
+          <div class="row">
+            <div class="col-md-12">
+              <strong class="form-label-responsive">How Did You Hear About Us</strong>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <%= @roommate.how_did_you_hear_about_us %>
+            </div>
+          </div>
+        <% end %>
+
+        <% if !@roommate.describe_yourself.blank? %>
+          <br />
+          <div class="row">
+            <div class="col-md-12">
+              <strong class="form-label-responsive">Describe Yourself</strong>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <%= @roommate.describe_yourself %>
+            </div>
+          </div>
+        <% end %>
+
+        <br />
+        <div class="row">
+          <div class="col-md-5">
+            <strong>Monthly Budget:</strong>
+          </div>
+          <div class="col-md-7">
+            <%= @roommate.monthly_budget %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-5">
+            <strong>Move In Date:</strong>
+          </div>
+          <div class="col-md-7">
+            <%= @roommate.move_in_date %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-5">
+            <strong>Target Neighborhood:</strong>
+          </div>
+          <div class="col-md-7">
+            <%= @roommate.neighborhood ? @roommate.neighborhood.name : 'None Specified' %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-5">
+            <strong>Dogs allowed:</strong>
+          </div>
+          <div class="col-md-7">
+            <%= @roommate.dogs_allowed ? 'Yes' : 'No' %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-5">
+            <strong>Cats allowed:</strong>
+          </div>
+          <div class="col-md-7">
+            <%= @roommate.cats_allowed ? 'Yes' : 'No' %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-5">
+            <strong>Referred By:</strong>
+          </div>
+          <div class="col-md-7">
+            <%= @roommate.user.blank? ? 'Website' : @roomate.user.name %>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- end top half -->
+
+  </div><!-- main centering col -->
+</div><!-- overall row -->
+
+
+</div>

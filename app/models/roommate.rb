@@ -5,7 +5,8 @@
 class Roommate < ActiveRecord::Base
 	belongs_to :user, touch: true
 	belongs_to :neighborhood, touch: true
-
+	has_one :image, dependent: :destroy
+	
 	default_scope { order("roommates.created_at ASC") }
 	scope :unarchived, ->{where(archived: false)}
 	
@@ -29,10 +30,7 @@ class Roommate < ActiveRecord::Base
   end
   
   def self.find_unarchived(id)
-    ResidentialListing.joins(unit: [building: [:landlord, :neighborhood]])
-      .where(id: id)
-      .where('units.archived = false')
-      .first
+    Roommate.where(id: id).where(archived:false).first
   end
 
 	def self.search(params)

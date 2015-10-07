@@ -29,10 +29,21 @@ namespace :import do
 					if !db_column.blank?
 						if db_column == 'cats_allowed' || db_column == 'dogs_allowed'
 							hash[db_column] = val == 'Yes' ? true : false
+
+						elsif db_column == 'upload_picture_of_yourself'
+							# take the url from between the parentheses
+							open_par = val.index('(')
+							close_par = val.index(')')
+							if open_par && close_par
+								hash[db_column] = val.slice(open_par + 1, close_par - open_par - 1)
+							end
+
 						elsif db_column == 'what_neighborhood_do_you_want_to_live_in'
 							hash['neighborhood'] = Neighborhood.find_by(name: val)
+
 						elsif db_column == 'move_in_date'
 							hash[db_column] = Date.parse(val) #	Tuesday, October 6, 2015
+
 						else
 							hash[db_column] = val
 						end

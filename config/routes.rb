@@ -205,6 +205,8 @@ Rails.application.routes.draw do
   resources :roommates do
     member do
       get 'delete_modal'
+      delete 'destroy_image'
+      post 'upload_image'
     end
     collection do 
       get 'filter'
