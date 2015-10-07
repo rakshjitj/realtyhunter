@@ -224,7 +224,7 @@ Roommates = {};
 
 		// index filtering
 		$('#roommates name').keydown(Roommates.preventEnter);
-		//$('#roommates #address').bind('railsAutocomplete.select', Roommates.throttledSearch);
+		$('#roommates #name').bind('railsAutocomplete.select', Roommates.throttledSearch);
 	  $('#roommates #referred_by').change(Roommates.throttledSearch);
 	  $('#roommates #monthly_budget').change(Roommates.throttledSearch);
 	  $('#roommates #submitted_date').change(Roommates.throttledSearch);

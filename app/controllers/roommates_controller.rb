@@ -2,8 +2,7 @@ class RoommatesController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
   before_action :set_roommate, except: [:index, :new, :create, :filter]
-  #autocomplete :landlord, :code, full: true
-  etag { current_user.id }
+  autocomplete :roommate, :name, full: true
 
   def index
     respond_to do |format|
@@ -121,6 +120,16 @@ class RoommatesController < ApplicationController
   	def set_roommates
   		do_search
       #@roommates = custom_sort
+      @neighborhoods = Neighborhood.where(name: [
+        'Bedford Stuyvesant',
+        'Bushwick',
+        'Crown Heights',
+        'Greenpoint',
+        'Prospect Lefferts Gardens',
+        'Prospect Heights',
+        'Ridgewood',
+        'Williamsburg',
+        'Flatbush Ditmas Park'])
       @roommates = @roommates.page params[:page]
       @roommate_images = User.get_images(@roommates)
   	end
@@ -147,7 +156,7 @@ class RoommatesController < ApplicationController
     def roommate_params
     	data = params.permit(:sort_by, :filter, :neighborhood_ids, :submitted_date, :move_in_date, :monthly_budget, 
         :user_id, :dogs_allowed, :cats_allowed,
-        roommate: [:name_first, :name_last, :phone_number, 
+        roommate: [:name, :phone_number, 
           :email, :how_did_you_hear_about_us, :upload_picture_of_yourself, :describe_yourself,
           :monthly_budget, :move_in_date, :neighborhood, :dogs_allowed, :cats_allowed,
           :user_id,

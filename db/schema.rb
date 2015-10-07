@@ -319,8 +319,7 @@ ActiveRecord::Schema.define(version: 20151006153411) do
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
   create_table "roommates", force: :cascade do |t|
-    t.string   "name_first"
-    t.string   "name_last"
+    t.string   "name"
     t.string   "phone_number"
     t.string   "email"
     t.string   "how_did_you_hear_about_us"

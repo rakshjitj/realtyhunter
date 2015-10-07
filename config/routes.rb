@@ -203,6 +203,7 @@ Rails.application.routes.draw do
   end
 
   resources :roommates do
+    get :autocomplete_roommate_name, :on => :collection
     member do
       get 'delete_modal'
       delete 'destroy_image'

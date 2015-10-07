@@ -1,8 +1,7 @@
 class AddWufooTables < ActiveRecord::Migration
   def change
   	create_table :roommates do |t|
-  		t.string :name_first
-			t.string :name_last
+  		t.string :name
 			t.string :phone_number
 			t.string :email
 			t.string :how_did_you_hear_about_us

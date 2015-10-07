@@ -5,7 +5,7 @@
 <div class="page-header">
   <div class="row">
     <div class="col-md-6">
-      <h1>Roommates</h1>
+      <h1>Roomsharing</h1>
     </div>
     <div class="col-md-6 form-label-responsive">
       
@@ -20,77 +20,16 @@
 
     <div id="room-search-filters" data-search-path="<%= filter_roommates_path %>">
       <%= form_tag roommates_path, :method => 'get' do %>
-        
         <div class="row vertical-padding">
           <div class="col-xs-5 form-label-responsive">
-            <%= label_tag(:submitted_date, "Submitted Date") %>
+            <%= label_tag :name, 'Name' %>
           </div>
           <div class="col-xs-7 col-sm-left-padding">
-            <div class='input-group date datepicker'>
-              <%= text_field_tag :submitted_date, params[:submitted_date], 
-                placeholder: "date", class:"form-control", size:30 %>
-              <label class="input-group-addon btn" for="date">
-                <span class="fa fa-calendar open-datepicker"></span>
-              </label>
-            </div>
-          </div>
-        </div>
-        
-        <div class="row vertical-padding">
-          <div class="col-xs-5 form-label-responsive">
-            <%= label_tag(:move_in_date, "Move In Date") %>
-          </div>
-          <div class="col-xs-7 col-sm-left-padding">
-            <div class='input-group date datepicker'>
-              <%= text_field_tag :move_in_date, params[:move_in_date], 
-                placeholder: "date", class:"form-control", size:30 %>
-              <label class="input-group-addon btn" for="date">
-                <span class="fa fa-calendar open-datepicker"></span>
-              </label>
-            </div>
-          </div>
-        </div>
-        
-        <br />
-        <div class="row vertical-padding">
-          <div class="col-xs-12">
-            <%= link_to 'Neighborhoods', neighborhoods_modal_roommates_path, 
-              data: {toggle: "modal", target: "#neighborhoodsModal"}, remote: true, 
-              class: "link-as-button btn btn-sm btn-warning" %>
-            <div id="selected_neighborhoods" class="vertical-padding">
-              <!-- gets written over by neighborhood_modal.js.erb -->
-              <% @selected_neighborhoods.each do |f| %>
-                <%= link_to "", 
-                  class: "btn btn-xs btn-default remove-neighborhood", remote: "true", data: {id:f.id} do %>
-                  <%= f.name %> <span class="glyphicon glyphicon-remove"></span>
-                <% end %>
-              <% end %>
-            </div>
-            <%= hidden_field_tag :neighborhood_ids, params[:neighborhood_ids] %>
-          </div>
-        </div>
-
-        <div class="row vertical-padding">
-          <div class="col-xs-12">
-            <%= link_to 'Clear filters', roommates_path, class: 'btn btn-xs btn-default' %>
-          </div>
-        </div>
-
-      <% end %>
-    </div>
-  </div>
-  <div class="col-xs-12 col-md-4"><!-- hidden-sm hidden-xs -->
-     <div class="row vertical-padding">
-          <div class="col-xs-5 form-label-responsive">
-            <%= label_tag :monthly_budget %>
-          </div>
-          <div class="col-xs-7 col-sm-left-padding">
-       
-            <%= select_tag(:monthly_budget, 
-              options_for_select(['$500 - $749', '$750 - $999', '$1,000 - $1,249', '$1,250 - $1,499', '$1,500+'], 
-              ),
-              {class: "form-control", 
-              prompt: "Choose one..."}) %>
+            <%= autocomplete_field_tag :name, params[:name], 
+              autocomplete_roommate_name_roommates_path,
+              update_elements: {},
+              placeholder: "Bob Smith", 
+              class:'form-control' %>
           </div>
         </div>
 
@@ -102,9 +41,76 @@
             <%= select_tag(:user, 
               options_for_select(current_user.company.users.collect {|u| [u.name, u.id]}),
               {class: "form-control", 
-              prompt: "Choose one..."}) %>
+              prompt: "Any"}) %>
           </div>
         </div>
+
+        <div class="row vertical-padding">
+          <div class="col-xs-5 form-label-responsive">
+            <%= label_tag :neighborhood %>
+          </div>
+          <div class="col-xs-7 col-sm-left-padding">
+            <%= select_tag(:neighborhood, 
+              options_for_select(@neighborhoods.collect {|u| [u.name, u.id]}),
+              {class: "form-control", 
+              prompt: "Any"}) %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-xs-5 form-label-responsive">
+            <%= link_to 'Clear filters', roommates_path, class: 'btn btn-xs btn-default' %>
+          </div>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-4">
+
+    <div class="row vertical-padding">
+      <div class="col-xs-5 form-label-responsive">
+        <%= label_tag(:submitted_date, "Submitted Date") %>
+      </div>
+      <div class="col-xs-7 col-sm-left-padding">
+        <div class='input-group date datepicker'>
+          <%= text_field_tag :submitted_date, params[:submitted_date], 
+            placeholder: "date", class:"form-control", size:30 %>
+          <label class="input-group-addon btn" for="date">
+            <span class="fa fa-calendar open-datepicker"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row vertical-padding">
+      <div class="col-xs-5 form-label-responsive">
+        <%= label_tag(:move_in_date, "Move In Date") %>
+      </div>
+      <div class="col-xs-7 col-sm-left-padding">
+        <div class='input-group date datepicker'>
+          <%= text_field_tag :move_in_date, params[:move_in_date], 
+            placeholder: "date", class:"form-control", size:30 %>
+          <label class="input-group-addon btn" for="date">
+            <span class="fa fa-calendar open-datepicker"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row vertical-padding">
+      <div class="col-xs-5 form-label-responsive">
+        <%= label_tag :monthly_budget %>
+      </div>
+      <div class="col-xs-7 col-sm-left-padding">
+        <%= select_tag(:monthly_budget, 
+          options_for_select(['$500 - $749', '$750 - $999', '$1,000 - $1,249', '$1,250 - $1,499', '$1,500+'], 
+          ),
+          {class: "form-control", 
+          prompt: "Any"}) %>
+      </div>
+    </div>
+
   </div>
 
   <div class="col-xs-12 col-md-4"><!-- hidden-sm hidden-xs -->
@@ -118,7 +124,7 @@
           options_for_select(['Yes', 'No'], 
           ),
           {class: "form-control", 
-          prompt: "Choose one..."}) %>
+          prompt: "Doesn't matter"}) %>
       </div>
     </div>
 
@@ -132,7 +138,7 @@
           options_for_select(['Yes', 'No'], 
           ),
           {class: "form-control", 
-          prompt: "Choose one..."}) %>
+          prompt: "Doesn't matter"}) %>
       </div>
     </div>
   </div>
@@ -198,8 +204,7 @@
           <% end %>
         </tr>
       </thead>
-
-      
+    
       <tbody class="roommates_table_body">
         <%= render partial: 'roommates/roommate', 
         collection: @roommates, locals: {res_images: @roommate_images} %>
@@ -289,27 +294,5 @@
     </div>
   </div>
 </div>
-
-
-<!-- Neighborhood Modal -->
-<div class="modal fade" id="neighborhoodsModal" tabindex="-1" role="dialog" 
-  aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="neighborhood-modal-title">Select Neighborhoods</h4>
-      </div>
-      <div class="modal-body">
-        <div id="placeholder-body"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-warning btn-close" data-dismiss="modal">Done</button>
-      </div>
-
-    </div>
-  </div>
-</div>
-
 
 </div>

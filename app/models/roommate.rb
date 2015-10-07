@@ -10,8 +10,7 @@ class Roommate < ActiveRecord::Base
 	default_scope { order("roommates.created_at ASC") }
 	scope :unarchived, ->{where(archived: false)}
 	
-	validates :name_first, presence: true, length: {maximum: 50}
-	validates :name_last, presence: true, length: {maximum: 50}
+	validates :name, presence: true, length: {maximum: 200}
 	validates :phone_number, presence: true, length: {maximum: 20}
 	validates :email, length: {maximum: 100}
 	validates :how_did_you_hear_about_us, presence: true, length: {maximum: 1000}
@@ -37,7 +36,7 @@ class Roommate < ActiveRecord::Base
 		Roommate.unarchived.joins('left join neighborhoods on roommates.neighborhood_id = neighborhoods.id').select(
 			'roommates.id',
 			'upload_picture_of_yourself',
-			'name_first', 'name_last', 'phone_number', 'email', 
+			'name', 'phone_number', 'email', 
 			'neighborhoods.name as neighborhood_name',
 			'monthly_budget', 'move_in_date', 'dogs_allowed', 'cats_allowed',
 			'roommates.created_at as submitted_date',
@@ -50,8 +49,8 @@ class Roommate < ActiveRecord::Base
     Image.where(roommate_id: ids).index_by(&:roommate_id)
   end
 
-	def name
-		name_first + ' ' + name_last
-	end
+	# def name
+	# 	name_first + ' ' + name_last
+	# end
 
 end

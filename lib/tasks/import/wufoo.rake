@@ -16,20 +16,24 @@ namespace :import do
 			fields
 		end
 
+		# roommates-web-form
 		def import_roommates_web_form(wufoo, company)
-			# roommates-web-form
 			form = wufoo.form('z15ov1by0w7n41d') 
 			fields = build_fields(form)
 
 			hash = {}
 			entries = form.entries
 			entries.each do |entry|
+				name = ''
 				entry.each do |entry_field, val|
 					db_column = fields[entry_field]
 					if !db_column.blank?
 						if db_column == 'cats_allowed' || db_column == 'dogs_allowed'
 							hash[db_column] = val == 'Yes' ? true : false
-
+						elsif db_column == 'name_first'
+							name = val + name
+						elsif db_column == 'name_last'
+							name = name + ' ' + val
 						elsif db_column == 'upload_picture_of_yourself'
 							# take the url from between the parentheses
 							open_par = val.index('(')
@@ -49,6 +53,7 @@ namespace :import do
 						end
 					end
 				end
+				hash[:name] = name # full name
 
 				hash[:created_at] = entry["DateCreated"]
 				hash[:created_by] = entry["CreatedBy"]
