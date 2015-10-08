@@ -8,8 +8,7 @@ class UnitMailerPreview < ActionMailer::Preview
     UnitMailer.send_listings(source_agent, listings, images, 
       ['look.away@gmail.com'], 
       'Checkout these great listings', 
-      'amazing listings just for you')
-    
+      'amazing listings just for you')    
   end
 
 end

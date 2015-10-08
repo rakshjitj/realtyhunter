@@ -214,7 +214,7 @@ Rails.application.routes.draw do
     collection do 
       get 'filter'
       get 'print_list'
-      post 'send_listings'
+      post 'send_message'
       get 'download'
       get 'send_update'
     end

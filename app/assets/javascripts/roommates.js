@@ -2,7 +2,7 @@ Roommates = {};
 
 (function() {
 	Roommates.selectedRoommates = [];
-
+	Roommates.selectedRoommateEmails = [];
 	// private
 	Roommates.checkTheBox = function(item) {
 		item.addClass('fa-check-square').removeClass('fa-square-o');
@@ -36,6 +36,7 @@ Roommates = {};
 			// uncheck all boxes, clear our list
 			Roommates.uncheckTheBox($(this));
 			Roommates.selectedRoommates = [];
+			Roommates.selectedRoommateEmails = [];
 
 			$('td > i').map(function() {
 				if ($(this).hasClass('fa-check-square')) {
@@ -47,6 +48,10 @@ Roommates = {};
 			Roommates.checkTheBox($(this));
 			Roommates.selectedRoommates = $('tr').map(function() {
 				return $(this).attr('data-id');
+			}).get();
+
+			Roommates.selectedRoommateEmails = $('tr').map(function() {
+				return $(this).attr('data-email');
 			}).get();
 
 			$('td > i').map(function() {
@@ -64,29 +69,32 @@ Roommates = {};
 		// TODO: cap the max # of listings you can select?
 		var isChecked = $(this).hasClass('fa-check-square');
 		var roommate_id = $(this).parent().parent().attr('data-id');
-		
+		var roommate_email = $(this).parent().parent().attr('data-email');
+
 		if (isChecked) {
 			//$(this).addClass('fa-square-o').removeClass('fa-check-square');
 			Roommates.uncheckTheBox($(this));
 			Roommates.selectedRoommates.splice(Roommates.selectedRoommates.indexOf(roommate_id), 1);
+			Roommates.selectedRoommates.splice(Roommates.selectedRoommateEmails.indexOf(roommate_email), 1);
 			Roommates.uncheckHeadToggle();
 		} else {
 			//$(this).addClass('fa-check-square').removeClass('fa-square-o');
 			Roommates.checkTheBox($(this));
 			Roommates.selectedRoommates.push(roommate_id);
+			Roommates.selectedRoommateEmails.push(roommate_email);
 		}
 
 		Roommates.updateSelectedButton();
 	};
 
+	Roommates.sendMessage = function (e) {
+		$('#roommate_recipients').val(Roommates.selectedRoommateEmails.join(","));
+		$('#roommates_message').val('');
+		e.preventDefault();
+	};
+
 	Roommates.indexMenuActions = {
-		'send': function() {
-			console.log('sending!');
-			var params = 'roommate_ids=' + Roommates.selectedRoommates.join(",");
-			window.location.href = '/roommates/print_list?' + params;
-		},
 		'PDF': function() {
-			//console.log('sheet!');
 			var params = 'roommate_ids=' + Roommates.selectedRoommates.join(",");
 			window.location.href = '/roommates/download.pdf?' + params;
 		},
@@ -237,11 +245,7 @@ Roommates = {};
 		// });
 
 		// index page - selecting listings menu dropdown
-		$('#roommates #emailListings').click(function(e) {
-			$('#roommate_recipients').val('');
-			$('#roommates_message').val('');
-			e.preventDefault();
-		});
+		$('#roommates #emailListings').click(Roommates.sendMessage);
 		$('#roommates tbody').on('click', 'i', Roommates.toggleListingSelection);
 		$('#roommates .select-all-listings').click(Roommates.selectAllListings);
 		Roommates.selectedRoommates = [];
@@ -249,8 +253,6 @@ Roommates = {};
 			var action = $(this).data('action');
 			if (action in Roommates.indexMenuActions) Roommates.indexMenuActions[action]();
 		});
-
-		
 
 		// make sure datepicker is formatted before setting initial date below
 		$('.datepicker').datetimepicker({

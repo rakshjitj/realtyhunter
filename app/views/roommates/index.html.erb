@@ -241,7 +241,7 @@
     <div class="modal-content">
       <div class="modal-body">
         
-        <%= form_tag(send_listings_roommates_path, remote:true) do %>
+        <%= form_tag(send_message_roommates_path, remote:true) do %>
         <div class="row vertical-padding">
           <div class="col-md-12">
             <%= label_tag "roommate[recipients]", "Recipients", class: 'required' %>
@@ -260,7 +260,7 @@
         <div class="row vertical-padding">
           <div class="col-md-12">
             <%= label_tag "roommate[message]", "Message" %>
-            <%= text_area_tag "roommate[message]", nil, class: 'form-control' %>
+            <%= text_area_tag "roommate[message]", nil, class: 'form-control', rows: 8 %>
           </div>
         </div>
 

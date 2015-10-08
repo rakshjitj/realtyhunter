@@ -59,7 +59,15 @@ class RoommatesController < ApplicationController
     end
   end
 
-  def send_update
+  def send_message
+    recipients = params[:roommate][:recipients].split(/\s, \,/)
+    sub = roommate_params[:title]
+    msg = roommate_params[:message]
+    Roommate.send_message(current_user, recipients, sub, msg)
+    
+    respond_to do |format|
+      format.js { flash[:success] = "Message sent!"  }
+    end
   end
 
   def show

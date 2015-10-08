@@ -70,14 +70,14 @@
               
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                Roomsharing <b class="caret"></b></a>
+                Roommates <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><%= link_to "Referrals List", roommates_path %></li>
+                  <li><%= link_to "Roommates List", roommates_path %></li>
                   <li><%= link_to "Add a Referral", new_roommate_path %></li>
                 </ul>
               </li>
             <% else %>
-              <li><%= link_to "Roomsharing", new_roommate_path %></li>
+              <li><%= link_to "Roommates", new_roommate_path %></li>
             <% end %>
 
             <% if current_user.handles_residential? || current_user.handles_commercial? %>

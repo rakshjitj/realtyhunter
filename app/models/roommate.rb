@@ -102,4 +102,12 @@ class Roommate < ActiveRecord::Base
     Image.where(roommate_id: ids).index_by(&:roommate_id)
   end
 
+  def self.send_message(source_agent, recipients, sub, msg)
+    if source_agent
+      RoommateMailer.send_message(source_agent, recipients, sub, msg).deliver_now
+    else
+      "No sender specified"
+    end
+  end
+
 end
