@@ -157,7 +157,7 @@ class ResidentialListingsController < ApplicationController
 
   # sends listings info to clients
   def send_listings
-    recipients = residential_listing_params[:recipients].split(',')
+    recipients = residential_listing_params[:recipients].split(/[\,,\s]/)
     sub = residential_listing_params[:title]
     msg = residential_listing_params[:message]
     ids = residential_listing_params[:listing_ids].split(',')
