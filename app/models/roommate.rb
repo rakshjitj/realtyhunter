@@ -36,6 +36,7 @@ class Roommate < ActiveRecord::Base
 
   def self.pull_data_for_export(ids)
     roommates = Roommate
+      .joins('left join users on roommates.user_id = users.id')
       .joins('left join neighborhoods on roommates.neighborhood_id = neighborhoods.id')
       .where(id: ids)
       .select(
@@ -47,7 +48,7 @@ class Roommate < ActiveRecord::Base
         'roommates.upload_picture_of_yourself', 'roommates.move_in_date',
         'neighborhoods.name as neighborhood_name',
         'roommates.dogs_allowed', 'roommates.cats_allowed', 'roommates.created_by', 
-        'roommates.archived', 'roommates.user_id', 'roommates.created_at', 'roommates.updated_at')
+        'roommates.archived', 'users.name as user_name', 'roommates.created_at', 'roommates.updated_at')
   end
 
   def self.search(params)

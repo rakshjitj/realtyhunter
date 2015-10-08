@@ -46,13 +46,12 @@ class RoommatesController < ApplicationController
     
   	respond_to do |format|
       format.csv do
-        #set_roommates_csv
         headers['Content-Disposition'] = "attachment; filename=\"roommates-list.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
       format.pdf do
       	render pdf: current_user.company.name + ' - Roommates - ' + Date.today.strftime("%b%d%Y"),
-          template: "/roommates/roommates.pdf.erb",
+          template: "/roommates/download.pdf.erb",
           orientation: 'Landscape',
           layout:   "/layouts/pdf_layout.html"
       end

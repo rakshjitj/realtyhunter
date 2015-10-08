@@ -30,8 +30,7 @@
   	roommate.cats_allowed,
   	roommate.created_by,
   	roommate.archived,
-		
-		roommate.user_id,
+		roommate.user_name.blank? ? 'Website' : roommate.user_name,
   	roommate.created_at, 
   	roommate.updated_at
   	].to_csv.html_safe %>
