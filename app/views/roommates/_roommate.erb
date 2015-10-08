@@ -12,13 +12,8 @@
         <%= link_to(image_tag(roommate.upload_picture_of_yourself, class: 'img-responsive', size:'100x100',
           alt: roommate.upload_picture_of_yourself), roommate) %>
       <% else %>
-        <% if @roommate_images[roommate.id] %>
-          <%= link_to(image_tag(@roommate_images[roommate.id].file.url(:thumb), :class => 'img-responsive', 
-            alt: @roommate_images[roommate.id].file.url(:medium)), roommate) %>
-        <% else %>
-          <!-- placeholder image -->
-          <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), roommate) %>
-        <% end %>  
+        <!-- placeholder image -->
+        <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), roommate) %>
       <% end %>
     </td>
     

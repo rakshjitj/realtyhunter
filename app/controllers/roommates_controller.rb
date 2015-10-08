@@ -128,30 +128,30 @@ class RoommatesController < ApplicationController
   end
 
   # POST /users/1
-  def upload_image
-    image = Image.create(roommate_params[:roommate])
-    if image
-      # delete old image
-      # TODO verify this removes old image from S3!
-      @roommate.image = nil
-      # add new image
-      @roommate.image = image
-      flash[:success] = "Profile image updated!"
-      redirect_to @roommate
-    else
-      #puts "**** #{@roommate.errors.inspect}"
-      render 'edit'
-    end
-  end
+  # def upload_image
+  #   image = Image.create(roommate_params[:roommate])
+  #   if image
+  #     # delete old image
+  #     # TODO verify this removes old image from S3!
+  #     @roommate.image = nil
+  #     # add new image
+  #     @roommate.image = image
+  #     flash[:success] = "Profile image updated!"
+  #     redirect_to @roommate
+  #   else
+  #     #puts "**** #{@roommate.errors.inspect}"
+  #     render 'edit'
+  #   end
+  # end
 
-  def destroy_image
-    if @roommate.image
-      @roommate.image = nil
-    end
-    respond_to do |format|
-      format.js  
-    end
-  end
+  # def destroy_image
+  #   if @roommate.image
+  #     @roommate.image = nil
+  #   end
+  #   respond_to do |format|
+  #     format.js  
+  #   end
+  # end
 
   private
   	def set_roommate
@@ -208,8 +208,8 @@ class RoommatesController < ApplicationController
         roommate: [:name, :phone_number, 
           :email, :how_did_you_hear_about_us, :upload_picture_of_yourself, :describe_yourself,
           :monthly_budget, :move_in_date, :neighborhood, :dogs_allowed, :cats_allowed,
-          :user_id,
-          :avatar, :remove_avatar, :remote_avatar_url, :file])
+          :user_id,])
+          #:avatar, :remove_avatar, :remote_avatar_url, :file])
 
       if data[:roommate]
         if !data[:roommate][:cats_allowed].blank?

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151006153411) do
+ActiveRecord::Schema.define(version: 20151008191503) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -167,10 +167,8 @@ ActiveRecord::Schema.define(version: 20151006153411) do
     t.integer  "unit_id"
     t.integer  "user_id"
     t.integer  "company_id"
-    t.integer  "roommate_id"
   end
 
-  add_index "images", ["roommate_id"], name: "index_images_on_roommate_id", using: :btree
   add_index "images", ["user_id"], name: "index_images_on_user_id", using: :btree
 
   create_table "landlords", force: :cascade do |t|

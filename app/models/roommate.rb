@@ -6,7 +6,6 @@ class Roommate < ActiveRecord::Base
   belongs_to :user, touch: true
   belongs_to :neighborhood, touch: true
   belongs_to :company, touch: true
-  has_one :image, dependent: :destroy
 	
   scope :unarchived, ->{where(archived: false)}
 
@@ -18,8 +17,6 @@ class Roommate < ActiveRecord::Base
   validates :upload_picture_of_yourself, length: {maximum: 500}
   validates :monthly_budget, length: {maximum: 50}
   validates :move_in_date, length: {maximum: 50}
-  #validates :what_neighborhood_do_you_want_to_live_in, length: {maximum: 100}
-  #validates :neighborhood
   validates :dogs_allowed, length: {maximum: 50}
   validates :cats_allowed, length: {maximum: 50}
 
@@ -54,14 +51,16 @@ class Roommate < ActiveRecord::Base
   end
 
   def self.search(params)
-    roommates = Roommate.joins('left join neighborhoods on roommates.neighborhood_id = neighborhoods.id').select(
-	  'roommates.id',
-	  'roommates.upload_picture_of_yourself',
-	  'roommates.name', 'roommates.phone_number', 'roommates.email', 
-	  'neighborhoods.name as neighborhood_name',
-	  'roommates.monthly_budget', 'roommates.move_in_date', 'roommates.dogs_allowed', 
-	  'roommates.cats_allowed', 'roommates.created_at as submitted_date',
-	  'roommates.archived')
+    roommates = Roommate
+      .joins('left join neighborhoods on roommates.neighborhood_id = neighborhoods.id')
+      .select(
+    	  'roommates.id',
+    	  'roommates.upload_picture_of_yourself',
+    	  'roommates.name', 'roommates.phone_number', 'roommates.email', 
+    	  'neighborhoods.name as neighborhood_name',
+    	  'roommates.monthly_budget', 'roommates.move_in_date', 'roommates.dogs_allowed', 
+    	  'roommates.cats_allowed', 'roommates.created_at as submitted_date',
+    	  'roommates.archived')
 
 	   # all search params come in as strings from the url
     # clear out any invalid search params
@@ -115,11 +114,6 @@ class Roommate < ActiveRecord::Base
     end
     
     roommates
-  end
-
-  def self.get_images(list)
-    ids = list.map(&:id)
-    Image.where(roommate_id: ids).index_by(&:roommate_id)
   end
 
   def self.send_message(source_agent, recipients, sub, msg)
