@@ -42,8 +42,8 @@ class RoommatesController < ApplicationController
 
   def download
   	ids = params[:roommate_ids].split(',')
-  	@roommates = Roommate.where(id: ids)
-  	
+  	@roommates = Roommate.pull_data_for_export(ids)
+    
   	respond_to do |format|
       format.csv do
         #set_roommates_csv

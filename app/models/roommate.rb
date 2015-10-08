@@ -37,6 +37,22 @@ class Roommate < ActiveRecord::Base
     Roommate.where(id: id).where(archived:false).first
   end
 
+  def self.pull_data_for_export(ids)
+    roommates = Roommate
+      .joins('left join neighborhoods on roommates.neighborhood_id = neighborhoods.id')
+      .where(id: ids)
+      .select(
+        'roommates.id',
+        'roommates.upload_picture_of_yourself',
+        'roommates.name', 'roommates.phone_number', 'roommates.email', 
+        'roommates.how_did_you_hear_about_us', 'roommates.describe_yourself', 
+        'roommates.monthly_budget',
+        'roommates.upload_picture_of_yourself', 'roommates.move_in_date',
+        'neighborhoods.name as neighborhood_name',
+        'roommates.dogs_allowed', 'roommates.cats_allowed', 'roommates.created_by', 
+        'roommates.archived', 'roommates.user_id', 'roommates.created_at', 'roommates.updated_at')
+  end
+
   def self.search(params)
     roommates = Roommate.joins('left join neighborhoods on roommates.neighborhood_id = neighborhoods.id').select(
 	  'roommates.id',
@@ -47,9 +63,13 @@ class Roommate < ActiveRecord::Base
 	  'roommates.cats_allowed', 'roommates.created_at as submitted_date',
 	  'roommates.archived')
 
-	# all search params come in as strings from the url
+	   # all search params come in as strings from the url
     # clear out any invalid search params
     params.delete_if{ |k,v| (!v || v == 0 || v.empty?) }
+
+    if !params[:ids].blank?
+      roommates = roommates.where(id: params[:ids])
+    end
 
     if !params[:name].blank?
       roommates = roommates.where(name: params[:name])
