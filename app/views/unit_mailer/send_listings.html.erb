@@ -50,11 +50,11 @@
 
 		<td style="max-width: 200px; vertical-align: top;">
 			<% if @images[listing.unit_id] %>
-	      <%= link_to(image_tag(@images[listing.unit_id].file.url(:thumb), 
-	        alt: @images[listing.unit_id].file.url(:medium)), listing) %>
+	      <a href="<%= listing.public_url %>"><%= image_tag(@images[listing.unit_id].file.url(:thumb), 
+	        alt: @images[listing.unit_id].file.url(:medium)) %></a>
 	    <% else %>
 	      <!-- placeholder image -->
-	      <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), listing) %>
+	      <a href="<%= listing.public_url %>"><%= image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100") %></a>
 	    <% end %>
 	  	<br />
 	    <%= rent_formatted(listing.rent) %><br />

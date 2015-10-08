@@ -42,6 +42,7 @@ module RealtyHunter
       end
     end
 
+    config.action_mailer.default_url_options = { host: 'myspace-realty-monster.herokuapp.com' }
     config.action_mailer.asset_host = 'https://myspace-realty-monster.herokuapp.com'
 
     # maybe this will help with the bootstrap font issue? (rollbar #53)
