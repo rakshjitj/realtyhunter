@@ -160,7 +160,7 @@ class RoommatesController < ApplicationController
   	end
 
     def roommate_params
-    	data = params.permit(:sort_by, :filter, :name, :referred_by, :neighborhood_id,
+    	data = params.permit(:sort_by, :filter, :direction, :name, :referred_by, :neighborhood_id,
         :submitted_date, :move_in_date, :monthly_budget, :status,
         :dogs_allowed, :cats_allowed,
         roommate: [:name, :phone_number, 

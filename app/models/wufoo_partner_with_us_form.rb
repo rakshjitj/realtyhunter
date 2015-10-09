@@ -1,7 +1,7 @@
 # 
 # Encapsulates data from Wufoo form
 #
-class WufooContactUsForm < ActiveRecord::Base
+class WufooPartnerWithUsForm < ActiveRecord::Base
 	belongs_to :company, touch: true
 	
   scope :unarchived, ->{where(archived: false)}
@@ -9,11 +9,16 @@ class WufooContactUsForm < ActiveRecord::Base
   validates :name, presence: true, length: {maximum: 200}
   validates :email, presence: true, length: {maximum: 100}
   validates :phone_number, presence: true, length: {maximum: 20}
-  validates :how_did_you_hear_about_us, length: {maximum: 1000}
-  validates :min_price, length: {maximum: 20}
-  validates :max_price, length: {maximum: 20}
-  validates :any_notes_for_us, allow_blank: true, length: {maximum: 1000}
- 
+  validates :how_did_you_hear_about_us, presence: true, length: {maximum: 1000}
+  validates :address_street_address, allow_blank: true, length: {maximum: 500}
+  validates :address_address_line_2, allow_blank: true, length: {maximum: 500}
+  validates :address_city, allow_blank: true, length: {maximum: 500}
+  validates :address_state_province_region, allow_blank: true, length: {maximum: 100}
+  validates :address_postal_zip_code, allow_blank: true, length: {maximum: 15}
+  validates :address_country, allow_blank: true, length: {maximum: 500}
+  validates :number_of_bedrooms, allow_blank: true, length: {maximum: 10}
+  validates :renovated, allow_blank: true, length: {maximum: 1000}
+
   def archive
     self.archived = true
     self.save
@@ -25,7 +30,7 @@ class WufooContactUsForm < ActiveRecord::Base
   end
 
   def self.find_unarchived(id)
-    WufooContactUsForm.where(id: id).where(archived:false).first
+    WufooPartnerWithUsForm.where(id: id).where(archived:false).first
   end 
 
   def self.send_message(source_agent, recipients, sub, msg)
@@ -37,7 +42,7 @@ class WufooContactUsForm < ActiveRecord::Base
   end
   
   def self.search(params)
-    entries = WufooContactUsForm.all
+    entries = WufooPartnerWithUsForm.all
 
      # all search params come in as strings from the url
     # clear out any invalid search params
@@ -50,14 +55,6 @@ class WufooContactUsForm < ActiveRecord::Base
     if !params[:name].blank?
       entries = entries.where(name: params[:name])
     end
-
-    if !params[:min_price].blank?
-      entries = entries.where("min_price >= ?", params[:min_price])
-    end
-
-    if !params[:max_price].blank?
-      entries = entries.where("max_price <= ?", params[:max_price])
-    end    
 
     if !params[:status].blank?
       status = (params[:status] == 'Active') ? false : true

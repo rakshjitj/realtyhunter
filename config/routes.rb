@@ -232,10 +232,21 @@ Rails.application.routes.draw do
         get 'download'
       end
     end
-    #resources :partner_with_us, only: [:index] do
-      # collection do
-      # end
-    #end
+
+    resources :partner_with_us, only: [:index] do
+      get :autocomplete_wufoo_partner_with_us_form_name, :on => :collection
+      member do
+        get 'delete_modal'
+        get 'unarchive_modal'
+        post 'unarchive'
+      end
+      collection do
+        get 'filter'
+        post 'send_message'
+        get 'download'
+      end
+    end
+
   end
     
 end

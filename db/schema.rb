@@ -112,12 +112,12 @@ ActiveRecord::Schema.define(version: 20151008201709) do
   end
 
   create_table "companies", force: :cascade do |t|
-    t.boolean  "archived",                                default: false
+    t.boolean  "archived",                       default: false
     t.string   "name"
     t.string   "logo_id"
     t.string   "string"
-    t.datetime "created_at",                                              null: false
-    t.datetime "updated_at",                                              null: false
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
     t.integer  "offices_id"
     t.integer  "users_id"
     t.integer  "buildings_id"
@@ -133,9 +133,7 @@ ActiveRecord::Schema.define(version: 20151008201709) do
     t.text     "terms_conditions"
     t.integer  "roommates_id"
     t.integer  "wufoo_contact_us_forms_id"
-    t.integer  "wufoo_rental_listings_forms_id"
-    t.integer  "wufoo_commercial_listings_forms_id"
-    t.integer  "wufoo_partner_with_myspace_nyc_forms_id"
+    t.integer  "wufoo_partner_with_us_forms_id"
   end
 
   add_index "companies", ["building_amenities_id"], name: "index_companies_on_building_amenities_id", using: :btree
@@ -150,10 +148,8 @@ ActiveRecord::Schema.define(version: 20151008201709) do
   add_index "companies", ["sales_amenities_id"], name: "index_companies_on_sales_amenities_id", using: :btree
   add_index "companies", ["users_id"], name: "index_companies_on_users_id", using: :btree
   add_index "companies", ["utilities_id"], name: "index_companies_on_utilities_id", using: :btree
-  add_index "companies", ["wufoo_commercial_listings_forms_id"], name: "index_companies_on_wufoo_commercial_listings_forms_id", using: :btree
   add_index "companies", ["wufoo_contact_us_forms_id"], name: "index_companies_on_wufoo_contact_us_forms_id", using: :btree
-  add_index "companies", ["wufoo_partner_with_myspace_nyc_forms_id"], name: "index_companies_on_wufoo_partner_with_myspace_nyc_forms_id", using: :btree
-  add_index "companies", ["wufoo_rental_listings_forms_id"], name: "index_companies_on_wufoo_rental_listings_forms_id", using: :btree
+  add_index "companies", ["wufoo_partner_with_us_forms_id"], name: "index_companies_on_wufoo_partner_with_us_forms_id", using: :btree
 
   create_table "employee_titles", force: :cascade do |t|
     t.string   "name"
@@ -467,33 +463,29 @@ ActiveRecord::Schema.define(version: 20151008201709) do
     t.datetime "updated_at",                                null: false
   end
 
-  create_table "wufoo_listings_forms", force: :cascade do |t|
-    t.string   "name"
-    t.string   "email"
-    t.string   "phone_number"
-    t.string   "message"
-    t.boolean  "is_residential"
-    t.boolean  "is_commercial"
-    t.boolean  "archived",       default: false
-    t.integer  "company_id"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-  end
-
-  create_table "wufoo_partner_with_myspace_nyc_forms", force: :cascade do |t|
+  create_table "wufoo_partner_with_us_forms", force: :cascade do |t|
     t.string   "name"
     t.string   "email"
     t.string   "phone_number"
     t.string   "how_did_you_hear_about_us"
-    t.string   "address"
+    t.string   "address_street_address"
+    t.string   "address_address_line_2"
+    t.integer  "address_city"
+    t.string   "address_state_province_region"
+    t.string   "address_postal_zip_code"
+    t.string   "address_country"
     t.integer  "number_of_bedrooms"
-    t.string   "renovated"
-    t.string   "utilities"
-    t.datetime "datetime"
-    t.boolean  "archived",                  default: false
+    t.boolean  "renovated"
+    t.boolean  "utilities_heat_included"
+    t.boolean  "utilities_hot_water_included"
+    t.boolean  "utilities_gas_included"
+    t.boolean  "utilities_electric_included"
+    t.boolean  "utilities_no_utilities_included"
+    t.datetime "move_in_date"
+    t.boolean  "archived",                        default: false
     t.integer  "company_id"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
   end
 
 end

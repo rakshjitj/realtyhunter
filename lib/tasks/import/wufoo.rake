@@ -9,14 +9,15 @@ namespace :import do
 			fields = {}
 			flattened_fields.each do |field|
 				field['Title'].strip!
-				db_column = field['Title'].gsub(/\s+/, '_').gsub(/\?/, '').gsub(/-/, '_').gsub(/___/, '_').downcase
+				db_column = field['Title'].gsub(/\s+/, '_').gsub(/\?/, '').gsub(/\//, '')
+					.gsub(/-/, '_').gsub(/___/, '_').gsub(/__/, '_').downcase
 				fields[field['ID']] = db_column
 			end
 			
 			fields
 		end
 
-		# roommates-web-form
+		# roommates-form
 		def import_roommates_web_form(wufoo, company)
 			form = wufoo.form('z15ov1by0w7n41d') 
 			fields = build_fields(form)
@@ -112,14 +113,57 @@ namespace :import do
 				query = {name: hash[:name],
 					email: hash[:email],
 					phone_number: hash[:phone_number],
-					#created_by: hash[:created_by],
+					how_did_you_hear_about_us: hash[:how_did_you_hear_about_us],
 					company_id: hash[:company_id]}
 
 				found = WufooContactUsForm.where(query).first
 				if !found
 					WufooContactUsForm.create!(hash)
 				end
-				#puts wu.errors.inspect
+			end
+		end
+
+		# partner-with-myspace-nyc
+		def import_partner_form(wufoo, company)
+			form = wufoo.form('rt5glur0xdke0a') 
+			fields = build_fields(form)
+			hash = {}
+			entries = form.entries
+			entries.each do |entry|
+
+				name = ''
+				entry.each do |entry_field, val|
+					db_column = fields[entry_field]
+					if !db_column.blank?
+						if db_column == 'name_first'
+							name = val + name
+						elsif db_column == 'name_last'
+							name = name + ' ' + val
+						elsif db_column == 'renovated'
+							hash[db_column.to_sym] = (val == 'Yes') ? true : false
+						elsif db_column =~ /included/
+							if !val.blank? # if blank, it was left as 'false'
+								hash[db_column.to_sym] = true
+							end
+						else
+							hash[db_column.to_sym] = val
+						end
+					end
+				end
+				hash[:name] = name # full name
+
+				hash[:company_id] = company.id
+
+				query = {name: hash[:name],
+					email: hash[:email],
+					phone_number: hash[:phone_number],
+					how_did_you_hear_about_us: hash[:how_did_you_hear_about_us],
+					company_id: hash[:company_id]}
+
+				found = WufooPartnerWithUsForm.where(query).first
+				if !found
+					WufooPartnerWithUsForm.create!(hash)
+				end
 			end
 		end
 
@@ -128,6 +172,7 @@ namespace :import do
 		#puts wufoo.forms
 		company = Company.find_by(name:'MyspaceNYC')
 		#import_roommates_web_form(wufoo, company);
-		import_contact_us_form(wufoo, company)
+		#import_contact_us_form(wufoo, company)
+		import_partner_form(wufoo, company)
 	end
 end

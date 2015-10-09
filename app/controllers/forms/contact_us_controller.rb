@@ -1,8 +1,7 @@
 module Forms
 	class ContactUsController < ApplicationController
-		#load_and_authorize_resource
-	  #skip_load_resource :only => :create
-		before_action :set_entry, except: [:index, :new, :create, :filter, 
+		skip_authorize_resource
+  	before_action :set_entry, except: [:index, :new, :create, :filter, 
 			:download, :send_update, :unarchive, :unarchive_modal]
 		autocomplete :wufoo_contact_us_form, :name, full: true
 
@@ -107,8 +106,8 @@ module Forms
 	  	end
 
 	  	def contact_us_params
-	  		data = params.permit(:sort_by, :filter, :name, :status, :min_price, :max_price, 
-	  			:entry_ids, :submitted_date,
+	  		data = params.permit(:sort_by, :direction, :filter, :name, :status, :min_price, :max_price, 
+	  			:entry_ids, :submitted_date, 
 	  			contact_us: [:title, :message, :recipients])
 	  	end
 	end
