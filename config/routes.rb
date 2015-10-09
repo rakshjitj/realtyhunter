@@ -208,8 +208,6 @@ Rails.application.routes.draw do
       get 'delete_modal'
       get 'unarchive_modal'
       post 'unarchive'
-      delete 'destroy_image'
-      post 'upload_image'
     end
     collection do 
       get 'filter'
@@ -219,4 +217,29 @@ Rails.application.routes.draw do
       get 'send_update'
     end
   end
+
+  namespace :forms do
+    resources :contact_us, only: [:index] do
+      member do
+        get 'delete_modal'
+        get 'unarchive_modal'
+        post 'unarchive'
+      end
+      collection do
+        #get :autocomplete_wufoo_contact_us_form_name, :on => :collection
+        #get 'partner_with_us'
+        #get 'commercial_listings'
+        #get 'residential_listings'
+
+        get 'filter'
+        post 'send_message'
+        get 'download'
+      end
+    end
+    #resources :partner_with_us, only: [:index] do
+      # collection do
+      # end
+    #end
+  end
+    
 end

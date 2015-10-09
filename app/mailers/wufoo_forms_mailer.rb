@@ -1,4 +1,4 @@
-class RoommateMailer < ApplicationMailer
+class WufooFormsMailer < ApplicationMailer
 	def send_message(source_agent, recipients, sub, msg)
     @source_agent = source_agent
     @message = msg

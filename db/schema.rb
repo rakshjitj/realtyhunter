@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151008191503) do
+ActiveRecord::Schema.define(version: 20151008201709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -112,12 +112,12 @@ ActiveRecord::Schema.define(version: 20151008191503) do
   end
 
   create_table "companies", force: :cascade do |t|
-    t.boolean  "archived",                 default: false
+    t.boolean  "archived",                                default: false
     t.string   "name"
     t.string   "logo_id"
     t.string   "string"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.integer  "offices_id"
     t.integer  "users_id"
     t.integer  "buildings_id"
@@ -132,6 +132,10 @@ ActiveRecord::Schema.define(version: 20151008191503) do
     t.text     "privacy_policy"
     t.text     "terms_conditions"
     t.integer  "roommates_id"
+    t.integer  "wufoo_contact_us_forms_id"
+    t.integer  "wufoo_rental_listings_forms_id"
+    t.integer  "wufoo_commercial_listings_forms_id"
+    t.integer  "wufoo_partner_with_myspace_nyc_forms_id"
   end
 
   add_index "companies", ["building_amenities_id"], name: "index_companies_on_building_amenities_id", using: :btree
@@ -146,6 +150,10 @@ ActiveRecord::Schema.define(version: 20151008191503) do
   add_index "companies", ["sales_amenities_id"], name: "index_companies_on_sales_amenities_id", using: :btree
   add_index "companies", ["users_id"], name: "index_companies_on_users_id", using: :btree
   add_index "companies", ["utilities_id"], name: "index_companies_on_utilities_id", using: :btree
+  add_index "companies", ["wufoo_commercial_listings_forms_id"], name: "index_companies_on_wufoo_commercial_listings_forms_id", using: :btree
+  add_index "companies", ["wufoo_contact_us_forms_id"], name: "index_companies_on_wufoo_contact_us_forms_id", using: :btree
+  add_index "companies", ["wufoo_partner_with_myspace_nyc_forms_id"], name: "index_companies_on_wufoo_partner_with_myspace_nyc_forms_id", using: :btree
+  add_index "companies", ["wufoo_rental_listings_forms_id"], name: "index_companies_on_wufoo_rental_listings_forms_id", using: :btree
 
   create_table "employee_titles", force: :cascade do |t|
     t.string   "name"
@@ -443,6 +451,58 @@ ActiveRecord::Schema.define(version: 20151008191503) do
     t.integer  "company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "wufoo_commercial_listings_forms", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "phone_number"
+    t.string   "message"
+    t.boolean  "archived",     default: false
+    t.integer  "company_id"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  create_table "wufoo_contact_us_forms", force: :cascade do |t|
+    t.string   "name"
+    t.string   "phone_number"
+    t.string   "email"
+    t.string   "how_did_you_hear_about_us"
+    t.string   "min_price"
+    t.string   "max_price"
+    t.string   "any_notes_for_us"
+    t.integer  "company_id"
+    t.boolean  "archived",                  default: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+  end
+
+  create_table "wufoo_partner_with_myspace_nyc_forms", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "phone_number"
+    t.string   "how_did_you_hear_about_us"
+    t.string   "address"
+    t.string   "number_of_bedrooms"
+    t.string   "renovated"
+    t.string   "utilities"
+    t.datetime "datetime"
+    t.boolean  "archived",                  default: false
+    t.integer  "company_id"
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+  end
+
+  create_table "wufoo_rental_listings_forms", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "phone_number"
+    t.string   "message"
+    t.boolean  "archived",     default: false
+    t.integer  "company_id"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
 end

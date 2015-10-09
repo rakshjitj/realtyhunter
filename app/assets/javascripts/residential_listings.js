@@ -83,7 +83,7 @@ ResidentialListings = {};
 	ResidentialListings.indexMenuActions = {
 		
 		'send': function() {
-			console.log('sending!');
+			//console.log('sending!');
 			var params = 'residential_listing_ids=' + ResidentialListings.selectedListings.join(",");
 			window.location.href = '/residential_listings/print_list?' + params;
 		},
@@ -445,6 +445,7 @@ ResidentialListings = {};
 
 		// index page - selecting listings menu dropdown
 		$('#residential #emailListings').click(function(e) {
+			ResidentialListings.hideSpinner();
 			$('#residential_listing_recipients').val('');
 			//$('#residential_listing_title').val('');
 			$('#residential_listing_message').val('');

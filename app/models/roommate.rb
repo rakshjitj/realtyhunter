@@ -11,7 +11,7 @@ class Roommate < ActiveRecord::Base
 
   validates :name, presence: true, length: {maximum: 200}
   validates :phone_number, presence: true, length: {maximum: 20}
-  validates :email, length: {maximum: 100}
+  validates :email, presence: true, length: {maximum: 100}
   validates :how_did_you_hear_about_us, length: {maximum: 1000}
   validates :describe_yourself, allow_blank: true, length: {maximum: 1000}
   validates :upload_picture_of_yourself, length: {maximum: 500}

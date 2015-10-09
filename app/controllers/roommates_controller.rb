@@ -126,32 +126,6 @@ class RoommatesController < ApplicationController
     end
   end
 
-  # POST /users/1
-  # def upload_image
-  #   image = Image.create(roommate_params[:roommate])
-  #   if image
-  #     # delete old image
-  #     # TODO verify this removes old image from S3!
-  #     @roommate.image = nil
-  #     # add new image
-  #     @roommate.image = image
-  #     flash[:success] = "Profile image updated!"
-  #     redirect_to @roommate
-  #   else
-  #     #puts "**** #{@roommate.errors.inspect}"
-  #     render 'edit'
-  #   end
-  # end
-
-  # def destroy_image
-  #   if @roommate.image
-  #     @roommate.image = nil
-  #   end
-  #   respond_to do |format|
-  #     format.js  
-  #   end
-  # end
-
   private
   	def set_roommate
       @roommate = Roommate.find_unarchived(params[:id])
@@ -174,15 +148,9 @@ class RoommatesController < ApplicationController
       @referrers = current_user.company.users.unarchived.map(&:name).to_a
       @referrers.insert(0, 'Website')
 
-      # if we are logged in as an agent, only let me view my own referrals
-      # if cannot? :manage, @roommate
-      #   params[:referred_by] = current_user.id
-      # end
-
       @roommates = Roommate.search(params)
       @roommates = custom_sort
       @roommates = @roommates.page params[:page]
-      @roommate_images = User.get_images(@roommates)
   	end
 
   	def custom_sort
@@ -190,15 +158,9 @@ class RoommatesController < ApplicationController
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      #puts "***** #{params[:sort_by]} #{params[:direction]}"
       @roommates = @roommates.order(sort_column + ' ' + sort_order)
       @roommates
   	end
-
-  	def set_roommates_csv
-      # @roommates = Roommate.search_csv(params)
-      # @roommates = custom_sort
-    end
 
     def roommate_params
     	data = params.permit(:sort_by, :filter, :name, :referred_by, :neighborhood_id,
@@ -208,7 +170,6 @@ class RoommatesController < ApplicationController
           :email, :how_did_you_hear_about_us, :upload_picture_of_yourself, :describe_yourself,
           :monthly_budget, :move_in_date, :neighborhood, :dogs_allowed, :cats_allowed,
           :user_id,])
-          #:avatar, :remove_avatar, :remote_avatar_url, :file])
 
       if data[:roommate]
         if !data[:roommate][:cats_allowed].blank?

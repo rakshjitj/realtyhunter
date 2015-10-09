@@ -1,0 +1,41 @@
+  <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= entry.id %>" data-email="<%= entry.email %>" >
+    
+    <!-- ****** checkboxes ****************************************** -->
+    <td>
+      <i data-action="selectUnit" class="fa fa-square-o"></i>
+    </td>
+
+    <!-- ****** NAME ****************************************** -->
+    <td>
+      <%= entry.name %><br />
+    </td>
+
+    <!-- ****** PHONE ****************************************** -->
+    <td><%= entry.phone_number %></td>
+
+    <!-- ****** EMAIL ****************************************** -->
+    <td><%= entry.email %></td>
+
+    <!-- ****** how_did_you_hear_about_us ****************************************** -->
+    <td><%= entry.how_did_you_hear_about_us %></td>
+
+    <td><%= entry.min_price %></td>
+
+    <td><%= entry.max_price %></td>
+
+    <td><%= entry.created_at %></td>
+
+    <!-- ****** LINKS ****************************************** -->
+    <% if current_user.is_management? || current_user.is_listings_manager? %>
+      <td>
+        <% if !entry.archived %>
+          <%= link_to 'Mark Inactive', delete_modal_forms_contact_u_path(entry), 
+            data: { toggle: "modal", target: "#entryDeleteModal"}, remote: true %>
+        <% else %>
+          <%= link_to 'Mark Active', unarchive_modal_forms_contact_u_path(entry), 
+            data: { toggle: "modal", target: "#entryUnarchiveModal"}, remote: true %>
+        <% end %>
+        <br />
+      </td>
+    <% end %>
+  </tr>

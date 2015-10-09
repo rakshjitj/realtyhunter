@@ -98,6 +98,10 @@
                   <li><%= link_to "Offices", company_offices_path(current_user.company) %></li>
                   <li><%= link_to "Managers", managers_company_path(current_user.company) %></li>
                   <li><%= link_to "Coworkers", employees_company_path(current_user.company) %></li>
+                  <li role="separator" class="divider"></li>
+                  <li class="dropdown-header">WuFoo Forms</li>
+                  <li><%= link_to "Contact Us", forms_contact_us_path %></li>
+                  
                 </ul>
               </li>
             <% end %>

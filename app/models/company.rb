@@ -17,7 +17,12 @@ class Company < ActiveRecord::Base
 	has_many :residential_amenities, dependent: :destroy
 	has_many :sales_amenities, dependent: :destroy
 	has_many :commercial_property_types
+	# the following are from wufoo
 	has_many :roommates, dependent: :destroy
+	has_many :wufoo_contact_us_forms, dependent: :destroy
+	has_many :wufoo_rental_listings_forms, dependent: :destroy
+	has_many :wufoo_commercial_listings_forms, dependent: :destroy
+	has_many :wufoo_partner_with_myspace_nyc_forms, dependent: :destroy
 	
 	#attr_accessor :agent_types, :employee_titles
 	#attr_access :building_amenities

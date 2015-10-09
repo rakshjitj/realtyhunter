@@ -75,7 +75,7 @@ Roommates = {};
 			//$(this).addClass('fa-square-o').removeClass('fa-check-square');
 			Roommates.uncheckTheBox($(this));
 			Roommates.selectedRoommates.splice(Roommates.selectedRoommates.indexOf(roommate_id), 1);
-			Roommates.selectedRoommates.splice(Roommates.selectedRoommateEmails.indexOf(roommate_email), 1);
+			Roommates.selectedRoommateEmails.splice(Roommates.selectedRoommateEmails.indexOf(roommate_email), 1);
 			Roommates.uncheckHeadToggle();
 		} else {
 			//$(this).addClass('fa-check-square').removeClass('fa-square-o');
@@ -88,6 +88,7 @@ Roommates = {};
 	};
 
 	Roommates.sendMessage = function (e) {
+		Roommates.hideSpinner();
 		$('#roommate_recipients').val(Roommates.selectedRoommateEmails.join(","));
 		$('#roommates_message').val('');
 		e.preventDefault();
@@ -145,15 +146,6 @@ Roommates = {};
 			}
 	  });
 	};
-
-	Roommates.removeNeighborhood = function (event) {
-  	event.preventDefault();
-	  var feature_id = $(this).attr('data-id');
-  	var idx = $('#roommates #neighborhood_ids').val().indexOf(feature_id);
-  	$('#roommates #neighborhood_ids').val( $('#roommates #neighborhood_ids').val().replace(feature_id, '') );
-  	$(this).remove();
-  	Roommates.throttledSearch();
-  };
 
 	// search as user types
 	Roommates.timer;
@@ -237,18 +229,13 @@ Roommates = {};
 	  $('#roommates #dogs_allowed').change(Roommates.throttledSearch);
 	  $('#roommates #cats_allowed').change(Roommates.throttledSearch);
 	  $('#roommates #status').change(Roommates.throttledSearch);
-	  
-	  // print pdf from the index page
-	  //  $('#roommates .btn-print-list').click( function(event) {
-		//   Roommates.showSpinner();
-		//   $(this).toggleClass('active');
-		// });
 
 		// index page - selecting listings menu dropdown
 		$('#roommates #emailListings').click(Roommates.sendMessage);
 		$('#roommates tbody').on('click', 'i', Roommates.toggleListingSelection);
 		$('#roommates .select-all-listings').click(Roommates.selectAllListings);
 		Roommates.selectedRoommates = [];
+		Roommates.selectedRoommateEmails = [];
 		$('#roommates .selected-listings-menu').on('click', 'a', function() {
 			var action = $(this).data('action');
 			if (action in Roommates.indexMenuActions) Roommates.indexMenuActions[action]();

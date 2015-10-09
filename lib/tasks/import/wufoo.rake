@@ -82,11 +82,51 @@ namespace :import do
 			end
 		end
 
+		def import_contact_us_form(wufoo, company)
+			form = wufoo.form('m13cggzo03ka4xv') 
+			fields = build_fields(form)
+			hash = {}
+			entries = form.entries
+			entries.each do |entry|
+				name = ''
+				entry.each do |entry_field, val|
+					db_column = fields[entry_field]
+					if !db_column.blank?
+						if db_column == 'name_first'
+							name = val + name
+						elsif db_column == 'name_last'
+							name = name + ' ' + val
+						else
+							hash[db_column.to_sym] = val
+						end
+					end
+				end
+				hash[:name] = name # full name
+
+				hash[:company_id] = company.id
+
+				puts hash.inspect
+				query = {name: hash[:name],
+					email: hash[:email],
+					phone_number: hash[:phone_number],
+					#created_by: hash[:created_by],
+					company_id: hash[:company_id]}
+
+				found = WufooContactUsForm.where(query).first
+				puts "FOUND IS #{found.inspect} #{query.inspect} \n #{hash.inspect}"
+				if !found
+					puts "CREATING"
+					WufooContactUsForm.create!(hash)
+				end
+				#puts wu.errors.inspect
+			end
+		end
+
 		###############################################################
 		wufoo = WuParty.new(ENV['RH_WUFOO_ACCT'], ENV['RH_WUFOO_API'])
 		#puts wufoo.forms
 		company = Company.find_by(name:'MyspaceNYC')
-		import_roommates_web_form(wufoo, company);
-
+		#import_roommates_web_form(wufoo, company);
+		import_contact_us_form(wufoo, company)
 	end
 end
