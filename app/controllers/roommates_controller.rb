@@ -1,7 +1,8 @@
 class RoommatesController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
-  before_action :set_roommate, except: [:index, :new, :create, :filter, :download, :send_update, :unarchive, :unarchive_modal]
+  before_action :set_roommate, except: [:index, :new, :create, :filter, 
+    :download, :send_update, :unarchive, :unarchive_modal]
   autocomplete :roommate, :name, full: true
 
   def index
