@@ -20,7 +20,7 @@ class RemainingWufooForms < ActiveRecord::Migration
 			t.string :how_did_you_hear_about_us
 			t.string :address_street_address
 			t.string :address_address_line_2
-			t.integer :address_city
+			t.string :address_city
 			t.string :address_state_province_region
 			t.string :address_postal_zip_code
 			t.string :address_country

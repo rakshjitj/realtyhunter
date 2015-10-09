@@ -40,6 +40,41 @@ class WufooPartnerForm < ActiveRecord::Base
       "No sender specified"
     end
   end
+
+  def full_address
+    ret = address_street_address 
+    if !address_address_line_2.blank?
+      ret = ret + ", " + address_address_line_2
+    end
+    ret = ret + "," + address_city + ", " + address_state_province_region + " " + 
+      address_postal_zip_code + " " + address_country
+    ret
+  end
+
+  def utilities
+    ret = []
+    if utilities_heat_included
+      ret << "Heat Included"
+    end
+
+    if utilities_hot_water_included
+      ret << "Hot Water Included"
+    end
+
+    if utilities_gas_included
+      ret << "Gas Included"
+    end
+
+    if utilities_electric_included
+      ret << "Electric Included"
+    end
+
+    if utilities_no_utilities_included
+      ret << "No Utilities Included"
+    end
+
+    ret.join(", ")
+  end
   
   def self.search(params)
     entries = WufooPartnerForm.all
