@@ -113,7 +113,18 @@ Forms = {};
 	  }
 	};
 
-	Forms.setupSortableColumns = function() {
+})();
+
+$(document).on('keyup',function(evt) {
+  if (evt.keyCode == 27) {
+  	Forms.hideSpinner();
+  }
+});
+
+////-------------------------------------------
+ContactUs = {};
+(function() {
+	ContactUs.setupSortableColumns = function() {
 		$('#contact-us .th-sortable').click(function(e) {
 			e.preventDefault();
 			
@@ -142,22 +153,11 @@ Forms = {};
 
 			var sort_by_col = $(this).attr('data-sort');
 			var sort_direction = $(this).attr('data-direction');
-			Forms.doSearch(sort_by_col, sort_direction);
+			ContactUs.doSearch(sort_by_col, sort_direction);
 		});
 	};
 
-})();
-
-$(document).on('keyup',function(evt) {
-  if (evt.keyCode == 27) {
-  	Forms.hideSpinner();
-  }
-});
-
-////-------------------------------------------
-ContactUs = {};
-(function() {
-		// for searching on the index page
+	// for searching on the index page
 	ContactUs.doSearch = function (sort_by_col, sort_direction) {
 		//console.log(sort_by_col, sort_direction);
 		var search_path = $('#contact-us-search-filters').attr('data-search-path');
@@ -204,7 +204,7 @@ ContactUs = {};
 		Forms.hideSpinner();
 
 		// main index table
-		Forms.setupSortableColumns();		
+		ContactUs.setupSortableColumns();		
 
 		$('.close').click(function() {
 			Forms.hideSpinner();

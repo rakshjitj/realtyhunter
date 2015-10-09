@@ -138,12 +138,12 @@
             <i data-action="selectAllUnits" class="select-all-listings fa fa-square-o"></i>
           </th>
           <th data-sort="name" class="th-sortable">Name</th>
-          <th data-sort="phone">Phone</th>
-          <th data-sort="email" class="th-sortable">Email</th>
-          <th data-sort="how_did_you_hear_about_us" class="th-sortable">How Did You Hear About Us?</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>How Did You Hear About Us?</th>
           <th data-sort="min_price" class="th-sortable">Min Price</th>
           <th data-sort="min_price" class="th-sortable">Max Price</th>
-          <th data-sort="submitted_date" class="th-sortable selected-sort">Submitted <i class="glyphicon glyphicon-triangle-bottom"></i></th>
+          <th data-sort="created_at" class="th-sortable selected-sort">Submitted <i class="glyphicon glyphicon-triangle-bottom"></i></th>
           <th data-sort="status">Status</th>
           <% if current_user.is_management? || current_user.is_listings_manager? %>
             <th colspan="1"></th>

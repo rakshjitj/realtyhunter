@@ -7,11 +7,7 @@ class RoommatesController < ApplicationController
 
   def index
     params[:status] = 'Active'
-    respond_to do |format|
-      format.html do
-        set_roommates
-      end
-    end
+    set_roommates
   end
 
   def filter

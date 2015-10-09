@@ -7,6 +7,7 @@ module Forms
 		autocomplete :wufoo_contact_us_form, :name, full: true
 
 		def index
+			params[:status] = 'Active'
 			set_entries
 		end
 
