@@ -22,9 +22,10 @@ namespace :import do
 			form = wufoo.form('z15ov1by0w7n41d') 
 			fields = build_fields(form)
 
-			hash = {}
+			
 			entries = form.entries
 			entries.each do |entry|
+				hash = {}
 				name = ''
 				entry.each do |entry_field, val|
 					db_column = fields[entry_field]
@@ -83,9 +84,10 @@ namespace :import do
 		def import_contact_us_form(wufoo, company)
 			form = wufoo.form('m13cggzo03ka4xv') 
 			fields = build_fields(form)
-			hash = {}
+			
 			entries = form.entries
 			entries.each do |entry|
+				hash = {}
 				name = ''
 				entry.each do |entry_field, val|
 					db_column = fields[entry_field]
@@ -128,10 +130,10 @@ namespace :import do
 		def import_partner_form(wufoo, company)
 			form = wufoo.form('rt5glur0xdke0a') 
 			fields = build_fields(form)
-			hash = {}
+			
 			entries = form.entries
 			entries.each do |entry|
-
+				hash = {}
 				name = ''
 				entry.each do |entry_field, val|
 					db_column = fields[entry_field]
@@ -173,10 +175,10 @@ namespace :import do
 
 		def _import_listings(wufoo, company, form, listing_type_id)
 			fields = build_fields(form)
-			hash = {}
+			
 			entries = form.entries
 			entries.each do |entry|
-
+				hash = {}
 				name = ''
 				entry.each do |entry_field, val|
 					db_column = fields[entry_field]
