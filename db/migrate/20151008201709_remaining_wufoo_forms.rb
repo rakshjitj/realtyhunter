@@ -52,7 +52,7 @@ class RemainingWufooForms < ActiveRecord::Migration
   	
   	change_table :companies do |t|
 		  t.references :wufoo_contact_us_forms, index: true
-		  t.references :wufoo_partner_with_us_forms, index: true
+		  t.references :wufoo_partner_forms, index: true
 		  #t.references :wufoo_listings_forms, index: true
 		end
 

@@ -30,9 +30,9 @@ module Forms
 	  end
 
 	  def send_message
-	    recipients = contact_us_params[:recipients].split(/\s, \,/)
-	    sub = contact_us_params[:title]
-	    msg = contact_us_params[:message]
+	    recipients = contact_us_params[:email_modal][:recipients].split(/\s, \,/)
+	    sub = contact_us_params[:email_modal][:title]
+	    msg = contact_us_params[:email_modal][:message]
 	    WufooContactUsForm.send_message(current_user, recipients, sub, msg)
 	    
 	    respond_to do |format|
@@ -114,7 +114,7 @@ module Forms
 	  	def contact_us_params
 	  		data = params.permit(:sort_by, :direction, :filter, :name, :status, :min_price, :max_price, 
 	  			:entry_ids, :submitted_date, 
-	  			contact_us: [:title, :message, :recipients])
+	  			email_modal: [:title, :message, :recipients])
 	  	end
 	end
 end

@@ -235,7 +235,7 @@ Rails.application.routes.draw do
     end
 
     resources :partner, only: [:index, :destroy] do
-      get :autocomplete_wufoo_partner_with_us_form_name, :on => :collection
+      get :autocomplete_wufoo_partner_form_name, :on => :collection
       member do
         get 'delete_modal'
         get 'unarchive_modal'

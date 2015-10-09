@@ -1,6 +1,7 @@
 <% provide(:title, 'Contact Us') %>
 
 <div id="contact-us">
+<div id="section-name" data-name="contact_us">
 
 <div class="page-header">
   <div class="row">
@@ -13,7 +14,7 @@
 <div class="row">
   <div class="col-xs-12 col-md-4">
 
-    <i class="fa fa-spinner fa-pulse fa-5x wufoo-spinner-desktop"></i>
+    <i class="fa fa-spinner fa-pulse fa-5x forms-spinner-desktop"></i>
 
     <div id="contact-us-search-filters" data-search-path="<%= filter_forms_contact_us_path %>">
       <%= form_tag forms_contact_us_path, :method => 'get' do %>
@@ -165,6 +166,55 @@
 <div class="row">
   <div class="col-md-12 form-label-responsive">
     <%= render partial: 'shared/pagination', locals: {models: @entries} %>
+  </div>
+</div>
+
+<!-- Email Modal -->
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" 
+  aria-labelledby="emailModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        
+        <%= form_tag(send_message_forms_contact_us_path, remote:true) do %>
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "contact_us[recipients]", "Recipients", class: 'required' %>
+            <i><small>Use commas to separate email addresses</small></i>
+            <%= text_field_tag "contact_us[recipients]", nil, class: 'form-control', required: true %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "contact_us[title]", "Title", class: 'required' %>
+            <%= text_field_tag "contact_us[title]", "Thank you for contacting us!", class: 'form-control', required: true %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "contact_us[message]", "Message" %>
+            <%= text_area_tag "contact_us[message]", nil, class: 'form-control', rows: 8 %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp; 
+        <%= submit_tag "Send Email", class:"btn btn-warning" %>
+      </div>
+
+      <% end %>
+
+    </div>
   </div>
 </div>
 

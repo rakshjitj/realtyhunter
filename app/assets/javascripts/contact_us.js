@@ -105,16 +105,6 @@ ContactUs = {};
 			if (action in Forms.indexMenuActions) Forms.indexMenuActions[action]();
 		});
 
-		// make sure datepicker is formatted before setting initial date below
-		// $('.datepicker').datetimepicker({
-		//   viewMode: 'days',
-		//   format: 'MM/DD/YYYY',
-		//   allowInputToggle: true
-		// });
-		var available_by = $('#contact-us .datepicker').attr('data-available-by');
-		if (available_by) {
-			$('#contact-us .datepicker').data("DateTimePicker").date(available_by);
-		}
 	};
 
 })();

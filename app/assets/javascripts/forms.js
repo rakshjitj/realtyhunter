@@ -82,28 +82,30 @@ Forms = {};
 	};
 
 	Forms.sendMessage = function (e) {
-		$('#contact_us_recipients').val(Forms.selectedRoommateEmails.join(","));
-		$('#contact_us_message').val('');
+		$('#email_modal_recipients').val(Forms.selectedRoommateEmails.join(","));
+		$('#email_modal_message').val('');
 		e.preventDefault();
 	};
 
 	Forms.indexMenuActions = {
 		'PDF': function() {
 			var params = 'entry_ids=' + Forms.selectedEntries.join(",");
-			window.location.href = '/forms/contact_us/download.pdf?' + params;
+			var section_name = $('#section-name').attr('data-name');
+			window.location.href = '/forms/' + section_name + '/download.pdf?' + params;
 		},
 		'CSV': function() {
 			var params = 'entry_ids=' + Forms.selectedEntries.join(",");
-			window.location.href = '/forms/contact_us/download.csv?' + params;
+			var section_name = $('#section-name').attr('data-name');
+			window.location.href = '/forms/' + section_name + '/download.csv?' + params;
 		}
 	};
 
 	Forms.showSpinner = function() {
-		$('.wufoo-spinner-desktop').show();
+		$('.forms-spinner-desktop').show();
 	};
 
 	Forms.hideSpinner = function() {
-		$('.wufoo-spinner-desktop').hide();
+		$('.forms-spinner-desktop').hide();
 	};
 
 	// change enter key to tab

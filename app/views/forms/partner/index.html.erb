@@ -1,6 +1,7 @@
 <% provide(:title, 'Partner With Us') %>
 
 <div id="partner">
+<div id="section-name" data-name="partner">
 
 <div class="page-header">
   <div class="row">
@@ -13,7 +14,7 @@
 <div class="row">
   <div class="col-xs-12 col-md-4">
 
-    <i class="fa fa-spinner fa-pulse fa-5x wufoo-spinner-desktop"></i>
+    <i class="fa fa-spinner fa-pulse fa-5x forms-spinner-desktop"></i>
 
     <div id="partner-search-filters" data-search-path="<%= filter_forms_partner_index_path %>">
       <%= form_tag filter_forms_partner_index_path, :method => 'get' do %>
@@ -23,7 +24,7 @@
           </div>
           <div class="col-xs-7 col-sm-left-padding">
             <%= autocomplete_field_tag :name, params[:name], 
-              autocomplete_wufoo_contact_us_form_name_forms_contact_us_path,
+              autocomplete_wufoo_partner_form_name_forms_partner_index_path,
               update_elements: {},
               placeholder: "Bob Smith", 
               class:'form-control' %>
@@ -84,7 +85,7 @@
   </div>
     
   <div class="col-xs-12 col-md-4">
-  
+
     <div class="row vertical-padding">
       <div class="col-xs-5 form-label-responsive">
         <%= label_tag(:renovated) %>
@@ -186,6 +187,55 @@
 <div class="row">
   <div class="col-md-12 form-label-responsive">
     <%= render partial: 'shared/pagination', locals: {models: @entries} %>
+  </div>
+</div>
+
+<!-- Email Modal -->
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" 
+  aria-labelledby="emailModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        
+        <%= form_tag(send_message_forms_partner_index_path, remote:true) do %>
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "email_modal[recipients]", "Recipients", class: 'required' %>
+            <i><small>Use commas to separate email addresses</small></i>
+            <%= text_field_tag "email_modal[recipients]", nil, class: 'form-control', required: true %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "email_modal[title]", "Title", class: 'required' %>
+            <%= text_field_tag "email_modal[title]", "Thank you for contacting us!", class: 'form-control', required: true %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "email_modal[message]", "Message" %>
+            <%= text_area_tag "email_modal[message]", nil, class: 'form-control', rows: 8 %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp; 
+        <%= submit_tag "Send Email", class:"btn btn-warning" %>
+      </div>
+
+      <% end %>
+
+    </div>
   </div>
 </div>
 
