@@ -1,8 +1,10 @@
 module Forms
 	class ContactUsController < ApplicationController
-		before_action :set_entry, except: [:index, :new, :create, :filter, :download, :send_update]
 		#load_and_authorize_resource
 	  #skip_load_resource :only => :create
+		before_action :set_entry, except: [:index, :new, :create, :filter, 
+			:download, :send_update, :unarchive, :unarchive_modal]
+		autocomplete :wufoo_contact_us_form, :name, full: true
 
 		def index
 			set_entries
@@ -38,6 +40,47 @@ module Forms
 	    end
 	  end
 
+	  def filter
+	    set_entries
+	    respond_to do |format|
+	      format.js  
+	    end
+	  end
+
+	  def delete_modal
+	    respond_to do |format|
+	      format.js  
+	    end
+	  end
+
+	  def destroy
+	    @entry.archive
+	    set_entries
+	    respond_to do |format|
+	      format.html { redirect_to forms_contact_u_url, notice: 'Entry was successfully inactivated.' }
+	      format.json { head :no_content }
+	      format.js
+	    end
+	  end
+
+	  def unarchive_modal
+	  	@entry = WufooContactUsForm.find(params[:id])
+	    respond_to do |format|
+	      format.js  
+	    end
+	  end
+
+	  def unarchive
+	  	@entry = WufooContactUsForm.find(params[:id])
+	  	@entry.unarchive
+	    set_entries
+	    respond_to do |format|
+	      format.html { redirect_to forms_contact_u_url, notice: 'Entry was successfully activated.' }
+	      format.json { head :no_content }
+	      format.js
+	    end
+	  end
+
 		private
 			def set_entry
 				@entry = WufooContactUsForm.find_unarchived(params[:id])
@@ -47,9 +90,10 @@ module Forms
 			end
 
 			def set_entries
-				@entries = WufooContactUsForm.all
+				@entries = WufooContactUsForm.search(contact_us_params)
 				@entries = custom_sort
 		    @entries = @entries.page params[:page]
+		    @entries
 			end
 
 			def custom_sort
@@ -62,7 +106,9 @@ module Forms
 	  	end
 
 	  	def contact_us_params
-	  		data = params.permit(:sort_by, :filter, :name, :status, :min_price, :max_price, :entry_ids)
+	  		data = params.permit(:sort_by, :filter, :name, :status, :min_price, :max_price, 
+	  			:entry_ids, :submitted_date,
+	  			contact_us: [:title, :message, :recipients])
 	  	end
 	end
 end

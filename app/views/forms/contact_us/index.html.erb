@@ -13,7 +13,7 @@
 <div class="row">
   <div class="col-xs-12 col-md-4">
 
-    <i class="fa fa-spinner fa-pulse fa-5x contact_us-spinner-desktop"></i>
+    <i class="fa fa-spinner fa-pulse fa-5x wufoo-spinner-desktop"></i>
 
     <div id="contact-us-search-filters" data-search-path="<%= filter_forms_contact_us_path %>">
       <%= form_tag forms_contact_us_path, :method => 'get' do %>
@@ -22,32 +22,34 @@
             <%= label_tag :name, 'Name' %>
           </div>
           <div class="col-xs-7 col-sm-left-padding">
-            <!--%= autocomplete_field_tag :name, params[:name], 
-              autocomplete_wufoo_contact_us_form_name_wufoo_contact_us_forms_path,
+            <%= autocomplete_field_tag :name, params[:name], 
+              autocomplete_wufoo_contact_us_form_name_forms_contact_us_path,
               update_elements: {},
               placeholder: "Bob Smith", 
-              class:'form-control' %-->
+              class:'form-control' %>
           </div>
         </div>
 
       <div class="row vertical-padding">
         <div class="col-xs-5 form-label-responsive">
-          <%= label_tag(:status) %>
+          <%= label_tag(:submitted_date) %>
         </div>
         <div class="col-xs-7 col-sm-left-padding">
-          <%= select_tag(:status, 
-            options_for_select(['Active', 'Inactive'], 
-              [params[:status].blank? ? 'Active' : params[:status]]),
-            {class: "form-control", 
-            prompt: "Any"}) %>
+          <div class='input-group date datepicker'>
+            <%= text_field_tag :submitted_date, params[:submitted_date], 
+              placeholder: "date", class:"form-control", size:30 %>
+            <label class="input-group-addon btn" for="date">
+              <span class="fa fa-calendar open-datepicker"></span>
+            </label>
+          </div>
         </div>
       </div>
 
-        <div class="row vertical-padding">
-          <div class="col-xs-5 form-label-responsive">
-            <%= link_to 'Clear filters', forms_contact_us_path, class: 'btn btn-xs btn-default' %>
-          </div>
+      <div class="row vertical-padding">
+        <div class="col-xs-5 form-label-responsive">
+          <%= link_to 'Clear filters', forms_contact_us_path, class: 'btn btn-xs btn-default' %>
         </div>
+      </div>
 
       <% end %>
     </div>
@@ -56,32 +58,39 @@
 
     <div class="row vertical-padding">
       <div class="col-xs-5 form-label-responsive">
-        <%= label_tag(:min_price) %>
+        <%= label_tag(:min_price, "Min Price >= ") %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
-        <div class='input-group date datepicker'>
-          <%= text_field_tag :min_price, params[:min_price], 
-            placeholder: "date", class:"form-control", size:30 %>
-        </div>
+        <%= text_field_tag :min_price, params[:min_price], 
+          placeholder: "date", class:"form-control", size:30 %>
       </div>
     </div>
 
     <div class="row vertical-padding">
       <div class="col-xs-5 form-label-responsive">
-        <%= label_tag(:max_price) %>
+        <%= label_tag(:max_price, "Max Price <=") %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
-        <div class='input-group date datepicker'>
-          <%= text_field_tag :max_price, params[:max_price], 
-            placeholder: "date", class:"form-control", size:30 %>
-        </div>
+        <%= text_field_tag :max_price, params[:max_price], 
+          placeholder: "date", class:"form-control", size:30 %>
       </div>
     </div>
     
   </div>
 
-  <div class="col-xs-12 col-md-4"><!-- hidden-sm hidden-xs -->
-    
+  <div class="col-xs-12 col-md-4">
+    <div class="row vertical-padding">
+      <div class="col-xs-5 form-label-responsive">
+        <%= label_tag(:status) %>
+      </div>
+      <div class="col-xs-7 col-sm-left-padding">
+        <%= select_tag(:status, 
+          options_for_select(['Active', 'Inactive'], 
+            [params[:status].blank? ? 'Active' : params[:status]]),
+          {class: "form-control", 
+          prompt: "Any"}) %>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -143,7 +152,7 @@
       </thead>
     
       <tbody class="contact_us_table_body">
-        <%= render partial: 'forms/contact_us/entry', 
+        <%= render partial: 'forms/contact_us/wufoo_contact_us_form', 
         :collection => @entries, as: :entry %>
       </tbody>
     </table>

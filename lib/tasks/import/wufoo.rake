@@ -96,6 +96,10 @@ namespace :import do
 							name = val + name
 						elsif db_column == 'name_last'
 							name = name + ' ' + val
+						elsif db_column == 'min_price' || db_column == 'max_price'
+							if !val.blank?
+								hash[db_column.to_sym] = val.to_i
+							end
 						else
 							hash[db_column.to_sym] = val
 						end
@@ -105,7 +109,6 @@ namespace :import do
 
 				hash[:company_id] = company.id
 
-				puts hash.inspect
 				query = {name: hash[:name],
 					email: hash[:email],
 					phone_number: hash[:phone_number],
@@ -113,9 +116,7 @@ namespace :import do
 					company_id: hash[:company_id]}
 
 				found = WufooContactUsForm.where(query).first
-				puts "FOUND IS #{found.inspect} #{query.inspect} \n #{hash.inspect}"
 				if !found
-					puts "CREATING"
 					WufooContactUsForm.create!(hash)
 				end
 				#puts wu.errors.inspect

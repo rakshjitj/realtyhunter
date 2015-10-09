@@ -1,161 +1,119 @@
-Wufoo = {};
+Forms = {};
 
 (function() {
-	Wufoo.selectedEntries = [];
-	Wufoo.selectedRoommateEmails = [];
-	// private
-	Wufoo.checkTheBox = function(item) {
+	Forms.selectedEntries = [];
+	Forms.selectedRoommateEmails = [];
+
+	Forms.checkTheBox = function(item) {
 		item.addClass('fa-check-square').removeClass('fa-square-o');
 	};
-	// private
-	Wufoo.uncheckTheBox = function(item) {
+
+	Forms.uncheckTheBox = function(item) {
 		item.addClass('fa-square-o').removeClass('fa-check-square');
 	};
-	// private
-	Wufoo.updateSelectedButton = function() {
-		$('#selected-listings-dropdown').html(Wufoo.selectedEntries.length + " Selected Wufoo <span class=\"caret\"></span>");
-		if (Wufoo.selectedEntries.length == 0) {
+
+	Forms.updateSelectedButton = function() {
+		$('#selected-listings-dropdown').html(Forms.selectedEntries.length + " Selected Wufoo <span class=\"caret\"></span>");
+		if (Forms.selectedEntries.length == 0) {
 			$('#selected-listings-dropdown').addClass("disabled");
 		} else {
 			$('#selected-listings-dropdown').removeClass("disabled");
 		}
-
-		// update the hidden tag with the latest list of ids
-		//$('#roommate_listing_ids').val(Wufoo.selectedEntries);
 	};
-	// private
+
 	// if any individual listings get unchecked, then uncheck
 	// the main toggle inside our th
-	Wufoo.uncheckHeadToggle = function() {
-		Wufoo.uncheckTheBox($('th > i'));
+	Forms.uncheckHeadToggle = function() {
+		Forms.uncheckTheBox($('th > i'));
 	};
 
-	Wufoo.selectAllListings = function() {
+	Forms.selectAllListings = function() {
 		var isChecked = $(this).hasClass('fa-check-square');
 		if (isChecked) {
 			// uncheck all boxes, clear our list
-			Wufoo.uncheckTheBox($(this));
-			Wufoo.selectedEntries = [];
-			Wufoo.selectedRoommateEmails = [];
+			Forms.uncheckTheBox($(this));
+			Forms.selectedEntries = [];
+			Forms.selectedRoommateEmails = [];
 
 			$('td > i').map(function() {
 				if ($(this).hasClass('fa-check-square')) {
-					Wufoo.uncheckTheBox($(this));
+					Forms.uncheckTheBox($(this));
 				}
 			});
 		} else {
 			// check all boxes, fill our list
-			Wufoo.checkTheBox($(this));
-			Wufoo.selectedEntries = $('tr').map(function() {
+			Forms.checkTheBox($(this));
+			Forms.selectedEntries = $('tr').map(function() {
 				return $(this).attr('data-id');
 			}).get();
 
-			Wufoo.selectedRoommateEmails = $('tr').map(function() {
+			Forms.selectedRoommateEmails = $('tr').map(function() {
 				return $(this).attr('data-email');
 			}).get();
 
 			$('td > i').map(function() {
 				if ($(this).hasClass('fa-square-o')) {
-					Wufoo.checkTheBox($(this));
+					Forms.checkTheBox($(this));
 				}
 			});
 		}
 
-		Wufoo.updateSelectedButton();
+		Forms.updateSelectedButton();
 	};
 
-	Wufoo.toggleListingSelection = function() {
+	Forms.toggleListingSelection = function() {
 		// TODO: cap the max # of listings you can select?
 		var isChecked = $(this).hasClass('fa-check-square');
 		var roommate_id = $(this).parent().parent().attr('data-id');
 		var roommate_email = $(this).parent().parent().attr('data-email');
 
 		if (isChecked) {
-			Wufoo.uncheckTheBox($(this));
-			Wufoo.selectedEntries.splice(Wufoo.selectedEntries.indexOf(roommate_id), 1);
-			Wufoo.selectedRoommateEmails.splice(Wufoo.selectedRoommateEmails.indexOf(roommate_email), 1);
-			Wufoo.uncheckHeadToggle();
+			Forms.uncheckTheBox($(this));
+			Forms.selectedEntries.splice(Forms.selectedEntries.indexOf(roommate_id), 1);
+			Forms.selectedRoommateEmails.splice(Forms.selectedRoommateEmails.indexOf(roommate_email), 1);
+			Forms.uncheckHeadToggle();
 		} else {
-			Wufoo.checkTheBox($(this));
-			Wufoo.selectedEntries.push(roommate_id);
-			Wufoo.selectedRoommateEmails.push(roommate_email);
+			Forms.checkTheBox($(this));
+			Forms.selectedEntries.push(roommate_id);
+			Forms.selectedRoommateEmails.push(roommate_email);
 		}
 
-		Wufoo.updateSelectedButton();
+		Forms.updateSelectedButton();
 	};
 
-	Wufoo.sendMessage = function (e) {
-		Wufoo.hideSpinner();
-		$('#contact_us_recipients').val(Wufoo.selectedRoommateEmails.join(","));
+	Forms.sendMessage = function (e) {
+		$('#contact_us_recipients').val(Forms.selectedRoommateEmails.join(","));
 		$('#contact_us_message').val('');
 		e.preventDefault();
 	};
 
-	Wufoo.indexMenuActions = {
+	Forms.indexMenuActions = {
 		'PDF': function() {
-			var params = 'entry_ids=' + Wufoo.selectedEntries.join(",");
+			var params = 'entry_ids=' + Forms.selectedEntries.join(",");
 			window.location.href = '/forms/contact_us/download.pdf?' + params;
 		},
 		'CSV': function() {
-			var params = 'entry_ids=' + Wufoo.selectedEntries.join(",");
+			var params = 'entry_ids=' + Forms.selectedEntries.join(",");
 			window.location.href = '/forms/contact_us/download.csv?' + params;
 		}
 	};
 
-	Wufoo.showSpinner = function() {
-		$('.contact_us-spinner-desktop').show();
+	Forms.showSpinner = function() {
+		$('.wufoo-spinner-desktop').show();
 	};
 
-	Wufoo.hideSpinner = function() {
-		$('.contact_us-spinner-desktop').hide();
-	};
-
-	// for searching on the index page
-	Wufoo.doSearch = function (sort_by_col, sort_direction) {
-		//console.log(sort_by_col, sort_direction);
-		var search_path = $('#contact-us-search-filters').attr('data-search-path');
-	  
-	  Wufoo.showSpinner();
-
-	  $.ajax({
-	    url: search_path,
-	    data: {
-        name: $('#contact-us #name').val(),
-        status: $('#contact-us #status').val(),
-        min_price: $('#contact-us #min_price').val(),
-        max_price: $('#contact-us #max_price').val(),
-        sort_by: sort_by_col,
-        direction: sort_direction,
-	    },
-	    dataType: 'script',
-	    success: function(data) {
-	    	Wufoo.hideSpinner();
-			},
-			error: function(data) {
-				Wufoo.hideSpinner();
-			}
-	  });
-	};
-
-	// search as user types
-	Wufoo.timer;
-
-	Wufoo.throttledSearch = function () {
-		//clear any interval on key up
-		if (Wufoo.timer) {
-		  clearTimeout(Wufoo.timer);
-		}
-	  Wufoo.timer = setTimeout(Wufoo.doSearch, 500);
+	Forms.hideSpinner = function() {
+		$('.wufoo-spinner-desktop').hide();
 	};
 
 	// change enter key to tab
-	Wufoo.preventEnter = function (event) {
+	Forms.preventEnter = function (event) {
 	  if (event.keyCode == 13) {
 	    return false;
 	  }
 	};
 
-	Wufoo.setupSortableColumns = function() {
+	Forms.setupSortableColumns = function() {
 		$('#contact-us .th-sortable').click(function(e) {
 			e.preventDefault();
 			
@@ -184,52 +142,104 @@ Wufoo = {};
 
 			var sort_by_col = $(this).attr('data-sort');
 			var sort_direction = $(this).attr('data-direction');
-			Wufoo.doSearch(sort_by_col, sort_direction);
+			Forms.doSearch(sort_by_col, sort_direction);
 		});
-	};
-
-	Wufoo.initialize = function() {
-		document.addEventListener("page:restore", function() {
-		  Wufoo.hideSpinner();
-		});
-		Wufoo.hideSpinner();
-		$('#contact-us a').click(function() {
-			Wufoo.showSpinner();
-		});
-
-		// main index table
-		Wufoo.setupSortableColumns();		
-
-		$('.close').click(function() {
-			Wufoo.hideSpinner();
-		});
-
-		// index filtering
-		$('#contact-us input').keydown(Wufoo.preventEnter);
-		$('#contact-us #name').bind('railsAutocomplete.select', Wufoo.throttledSearch);
-	  $('#contact-us #status').change(Wufoo.throttledSearch);
-	  $('#contact-us #min_price').change(Wufoo.throttledSearch);
-	  $('#contact-us #max_price').change(Wufoo.throttledSearch);
-	  
-		// index page - selecting listings menu dropdown
-		$('#contact-us #emailListings').click(Wufoo.sendMessage);
-		$('#contact-us tbody').on('click', 'i', Wufoo.toggleListingSelection);
-		$('#contact-us .select-all-listings').click(Wufoo.selectAllListings);
-		Wufoo.selectedEntries = [];
-		Wufoo.selectedRoommateEmails = [];
-		$('#contact-us .selected-listings-menu').on('click', 'a', function() {
-			var action = $(this).data('action');
-			if (action in Wufoo.indexMenuActions) Wufoo.indexMenuActions[action]();
-		});
-
 	};
 
 })();
 
 $(document).on('keyup',function(evt) {
   if (evt.keyCode == 27) {
-  	Wufoo.hideSpinner();
+  	Forms.hideSpinner();
   }
 });
 
-$(document).ready(Wufoo.initialize);
+////-------------------------------------------
+ContactUs = {};
+(function() {
+		// for searching on the index page
+	ContactUs.doSearch = function (sort_by_col, sort_direction) {
+		//console.log(sort_by_col, sort_direction);
+		var search_path = $('#contact-us-search-filters').attr('data-search-path');
+	  
+	  Forms.showSpinner();
+
+	  $.ajax({
+	    url: search_path,
+	    data: {
+        name: $('#contact-us #name').val(),
+        submitted_date: $('#contact-us #submitted_date').val(),
+        status: $('#contact-us #status').val(),
+        min_price: $('#contact-us #min_price').val(),
+        max_price: $('#contact-us #max_price').val(),
+        sort_by: sort_by_col,
+        direction: sort_direction,
+	    },
+	    dataType: 'script',
+	    success: function(data) {
+	    	Forms.hideSpinner();
+			},
+			error: function(data) {
+				Forms.hideSpinner();
+			}
+	  });
+	};
+
+	// search as user types
+	ContactUs.timer;
+
+	ContactUs.throttledSearch = function () {
+		//clear any interval on key up
+		if (ContactUs.timer) {
+		  clearTimeout(ContactUs.timer);
+		}
+	  ContactUs.timer = setTimeout(ContactUs.doSearch, 500);
+	};
+
+	ContactUs.initialize = function() {
+
+		document.addEventListener("page:restore", function() {
+		  Forms.hideSpinner();
+		});
+		Forms.hideSpinner();
+
+		// main index table
+		Forms.setupSortableColumns();		
+
+		$('.close').click(function() {
+			Forms.hideSpinner();
+		});
+
+		// index filtering
+		$('#contact-us input').keydown(Forms.preventEnter);
+		$('#contact-us #name').bind('railsAutocomplete.select', ContactUs.throttledSearch);
+		$('#contact-us #name').change(ContactUs.throttledSearch);
+	  $('#contact-us #status').change(ContactUs.throttledSearch);
+	  $('#contact-us #min_price').change(ContactUs.throttledSearch);
+	  $('#contact-us #max_price').change(ContactUs.throttledSearch);
+	  $('#contact-us #submitted_date').blur(ContactUs.throttledSearch);
+
+		// index page - selecting listings menu dropdown
+		$('#contact-us #emailListings').click(Forms.sendMessage);
+		$('#contact-us tbody').on('click', 'i', Forms.toggleListingSelection);
+		$('#contact-us .select-all-listings').click(Forms.selectAllListings);
+		$('#contact-us .selected-listings-menu').on('click', 'a', function() {
+			var action = $(this).data('action');
+			if (action in Forms.indexMenuActions) Forms.indexMenuActions[action]();
+		});
+
+		// make sure datepicker is formatted before setting initial date below
+		$('.datepicker').datetimepicker({
+		  viewMode: 'days',
+		  format: 'MM/DD/YYYY',
+		  allowInputToggle: true
+		});
+		var available_by = $('#roommates .datepicker').attr('data-available-by');
+		if (available_by) {
+			$('#roommates .datepicker').data("DateTimePicker").date(available_by);
+		}
+	};
+
+})();
+
+$(document).ready(ContactUs.initialize);

@@ -219,18 +219,14 @@ Rails.application.routes.draw do
   end
 
   namespace :forms do
-    resources :contact_us, only: [:index] do
+    resources :contact_us, only: [:index, :destroy] do
+      get :autocomplete_wufoo_contact_us_form_name, :on => :collection
       member do
         get 'delete_modal'
         get 'unarchive_modal'
         post 'unarchive'
       end
       collection do
-        #get :autocomplete_wufoo_contact_us_form_name, :on => :collection
-        #get 'partner_with_us'
-        #get 'commercial_listings'
-        #get 'residential_listings'
-
         get 'filter'
         post 'send_message'
         get 'download'

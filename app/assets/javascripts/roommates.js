@@ -88,7 +88,7 @@ Roommates = {};
 	};
 
 	Roommates.sendMessage = function (e) {
-		Roommates.hideSpinner();
+		//Roommates.hideSpinner();
 		$('#roommate_recipients').val(Roommates.selectedRoommateEmails.join(","));
 		$('#roommates_message').val('');
 		e.preventDefault();
@@ -98,10 +98,12 @@ Roommates = {};
 		'PDF': function() {
 			var params = 'roommate_ids=' + Roommates.selectedRoommates.join(",");
 			window.location.href = '/roommates/download.pdf?' + params;
+			//Roommates.hideSpinner();
 		},
 		'CSV': function() {
 			var params = 'roommate_ids=' + Roommates.selectedRoommates.join(",");
 			window.location.href = '/roommates/download.csv?' + params;
+			//Roommates.hideSpinner();
 		}
 	};
 
@@ -206,9 +208,9 @@ Roommates = {};
 		  Roommates.hideSpinner();
 		});
 		Roommates.hideSpinner();
-		$('#roommates a').click(function() {
-			Roommates.showSpinner();
-		});
+		// $('#roommates a').click(function() {
+		// 	//Roommates.showSpinner();
+		// });
 
 		// main index table
 		Roommates.setupSortableColumns();		
@@ -221,6 +223,7 @@ Roommates = {};
 		// index filtering
 		$('#roommates input').keydown(Roommates.preventEnter);
 		$('#roommates #name').bind('railsAutocomplete.select', Roommates.throttledSearch);
+		$('#roommates #name').change(Roommates.throttledSearch);
 	  $('#roommates #referred_by').change(Roommates.throttledSearch);
 	  $('#roommates #neighborhood_id').change(Roommates.throttledSearch);
 	  $('#roommates #submitted_date').blur(Roommates.throttledSearch);

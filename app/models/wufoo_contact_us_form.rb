@@ -36,4 +36,40 @@ class WufooContactUsForm < ActiveRecord::Base
     end
   end
   
+  def self.search(params)
+    entries = WufooContactUsForm
+
+     # all search params come in as strings from the url
+    # clear out any invalid search params
+    params.delete_if{ |k,v| (!v || v == 0 || v.empty?) }
+
+    if !params[:ids].blank?
+      entries = entries.where(id: params[:ids])
+    end
+
+    if !params[:name].blank?
+      entries = entries.where(name: params[:name])
+    end
+
+    if !params[:min_price].blank?
+      entries = entries.where("min_price >= ?", params[:min_price])
+    end
+
+    if !params[:max_price].blank?
+      entries = entries.where("max_price <= ?", params[:max_price])
+    end    
+
+    if !params[:status].blank?
+      status = (params[:status] == 'Active') ? false : true
+      entries = entries.where('archived = ?', status)
+    end
+
+    if !params[:submitted_date].blank?
+      entries = entries.where('created_at >= ?', params[:submitted_date])
+    end
+
+    
+    entries
+  end
+
 end
