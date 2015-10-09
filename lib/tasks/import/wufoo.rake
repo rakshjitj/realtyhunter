@@ -74,12 +74,9 @@ namespace :import do
 					company_id: hash[:company_id]}
 
 				found = Roommate.where(query).first
-				#puts "FOUND IS #{found.inspect} #{query.inspect} \n #{hash.inspect}"
 				if !found
-					#puts "CREATING"
 					Roommate.create!(hash)
 				end
-				#puts wu.errors.inspect
 			end
 		end
 
@@ -110,11 +107,15 @@ namespace :import do
 
 				hash[:company_id] = company.id
 
+				hash[:created_at] = hash['DateCreated']
+				hash[:created_by] = hash['CreatedBy']
+
 				query = {name: hash[:name],
 					email: hash[:email],
 					phone_number: hash[:phone_number],
 					how_did_you_hear_about_us: hash[:how_did_you_hear_about_us],
-					company_id: hash[:company_id]}
+					company_id: hash[:company_id],
+				}
 
 				found = WufooContactUsForm.where(query).first
 				if !found
@@ -154,6 +155,9 @@ namespace :import do
 
 				hash[:company_id] = company.id
 
+				hash[:created_at] = hash['DateCreated']
+				hash[:created_by] = hash['CreatedBy']
+
 				query = {name: hash[:name],
 					email: hash[:email],
 					phone_number: hash[:phone_number],
@@ -191,18 +195,31 @@ namespace :import do
 				hash[:company_id] = company.id
 
 				if listing_type_id == 'residential'
-					hash['is_residential'] = true
+					hash[:is_residential] = true
 				elsif listing_type_id == 'commercial'
-					hash['is_commercial'] = true
+					hash[:is_commercial] = true
 				end
 
-				query = {name: hash[:name],
+				hash[:created_at] = hash['DateCreated']
+				hash[:created_by] = hash['CreatedBy']
+
+				query = {
+					name: hash[:name],
 					email: hash[:email],
 					phone_number: hash[:phone_number],
-					is_residential: hash[:is_residential],
-					is_commercial: hash[:is_commercial],
-					company_id: hash[:company_id]}
+					message: hash[:message],
+					company_id: hash[:company_id]
+				}
 
+				if listing_type_id == 'residential'
+					query[:is_residential] = hash[:is_residential]
+				end
+
+				if listing_type_id == 'commercial'
+					query[:is_commercial] = hash[:is_commercial]
+				end
+
+				test = WufooListingsForm.where(query)
 				found = WufooListingsForm.where(query).first
 				if !found
 					WufooListingsForm.create!(hash)

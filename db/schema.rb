@@ -459,6 +459,7 @@ ActiveRecord::Schema.define(version: 20151008201709) do
     t.integer  "min_price"
     t.integer  "max_price"
     t.string   "any_notes_for_us"
+    t.string   "created_by"
     t.integer  "company_id"
     t.boolean  "archived",                  default: false
     t.datetime "created_at",                                null: false
@@ -472,6 +473,7 @@ ActiveRecord::Schema.define(version: 20151008201709) do
     t.string   "message"
     t.boolean  "is_residential"
     t.boolean  "is_commercial"
+    t.string   "created_by"
     t.boolean  "archived",       default: false
     t.integer  "company_id"
     t.datetime "created_at",                     null: false
@@ -497,6 +499,7 @@ ActiveRecord::Schema.define(version: 20151008201709) do
     t.boolean  "utilities_electric_included"
     t.boolean  "utilities_no_utilities_included"
     t.datetime "move_in_date"
+    t.string   "created_by"
     t.boolean  "archived",                        default: false
     t.integer  "company_id"
     t.datetime "created_at",                                      null: false

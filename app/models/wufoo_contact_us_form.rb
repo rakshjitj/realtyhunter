@@ -67,7 +67,6 @@ class WufooContactUsForm < ActiveRecord::Base
     if !params[:submitted_date].blank?
       entries = entries.where('created_at >= ?', params[:submitted_date])
     end
-
     
     entries
   end

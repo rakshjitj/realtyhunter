@@ -250,6 +250,22 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :residential_listings, only: [:index, :destroy] do
+      member do
+        get 'delete_modal'
+        get 'unarchive_modal'
+        post 'unarchive'
+        get 'detail_modal'
+      end
+      collection do
+        get 'filter'
+        post 'send_message'
+        get 'download'
+        get :autocomplete_wufoo_listings_form_name
+        get :autocomplete_wufoo_listings_form_email
+      end
+    end
+
   end
     
 end

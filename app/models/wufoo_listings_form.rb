@@ -50,6 +50,10 @@ class WufooListingsForm < ActiveRecord::Base
       entries = entries.where(name: params[:name])
     end
 
+    if !params[:email].blank?
+      entries = entries.where(email: params[:email])
+    end
+
     if !params[:status].blank?
       status = (params[:status] == 'Active') ? false : true
       entries = entries.where('archived = ?', status)

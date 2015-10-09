@@ -1,0 +1,10 @@
+$('#entryDeleteModal .modal-body').html(
+	"Are you sure you want to deactivate <%= j(@entry.name) %>? Deactivation will allow them to show up in searches again.");
+
+$('#entryDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Mark Inactive', forms_residential_listing_path(@entry), remote: true, method: :delete, class: 'btn btn-danger link-as-button', id: 'delete-link') %>");
+$('#entryDeleteModal #delete-link').click( function(event) {
+	$('#entryDeleteModal').modal('hide');
+	event.preventDefault();
+});
+
+$('#entryDeleteModal').modal('show');

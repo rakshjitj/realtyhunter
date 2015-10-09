@@ -8,6 +8,7 @@ class RemainingWufooForms < ActiveRecord::Migration
 			t.integer :min_price
 			t.integer :max_price
 			t.string :any_notes_for_us
+			t.string :created_by
 			t.belongs_to :company
 			t.boolean :archived, default: false
 			t.timestamps null: false
@@ -32,6 +33,7 @@ class RemainingWufooForms < ActiveRecord::Migration
 			t.boolean :utilities_electric_included
 			t.boolean :utilities_no_utilities_included
 			t.datetime :move_in_date
+			t.string :created_by
 			t.boolean :archived, default: false
 			t.belongs_to :company
 			t.timestamps null: false
@@ -45,6 +47,7 @@ class RemainingWufooForms < ActiveRecord::Migration
 			t.string :message
 			t.boolean :is_residential
 			t.boolean :is_commercial
+			t.string :created_by
 			t.boolean :archived, default: false
 			t.belongs_to :company
 			t.timestamps null: false

@@ -1,0 +1,19 @@
+<%- headers = [
+	'Name', 
+	'Phone Number', 
+	'Email',
+	'Message',
+  'Archived',
+	'Created At', 'Updated at'] -%>
+<%= CSV.generate_line headers %>
+<%- @entries.each do |entry| -%>
+  <%= [
+  	entry.name, 
+  	entry.phone_number, 
+  	entry.email,
+    entry.message,
+  	entry.archived,
+		entry.created_at, 
+  	entry.updated_at
+  	].to_csv.html_safe %>
+<%- end -%>

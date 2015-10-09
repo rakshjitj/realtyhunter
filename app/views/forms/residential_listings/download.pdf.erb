@@ -28,10 +28,7 @@
         <th>Name</th>
         <th>Phone</th>
         <th>Email</th>
-        <th>Source</th>
-        <th>Street Address</th>
-        <th>Bedrooms</th>
-        <th>Renovated</th>
+        <th>Message</th>
         <th>Submitted On</th>
       </tr>
       <% @entries.each do |entry| %>
@@ -39,10 +36,7 @@
           <td><%= entry.name %></td>
           <td><%= entry.phone_number %></td>
           <td><%= entry.email %></td>
-          <td><%= entry.how_did_you_hear_about_us %></td>
-          <td><%= entry.address_street_address %></td>
-          <td><%= entry.number_of_bedrooms %></td>
-          <td><%= entry.renovated %></td>
+          <td><%= entry.message %></td>
           <td><%= entry.created_at %></td>
         </tr>
       <% end %>
