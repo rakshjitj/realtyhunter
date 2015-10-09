@@ -49,13 +49,8 @@
 					  <div class="carousel-inner" role="listbox">
 					  	<% @building.images.each do |image| %>	
 					  		<div class="item">
-									<% if image.file.exists?(:large) %>
-							      <%= image_tag image.file.url(:large), :class => 'img-responsive center-block', 
-							      	alt: image.file.url(:large) %>
-							    <% else %>
-							    	<%= image_tag image.file.url(:medium), :class => 'img-responsive center-block', 
-							      	alt: image.file.url(:medium) %>
-							    <% end %>
+						    	<%= image_tag image.file.url(:original), :class => 'img-responsive center-block', 
+						      	alt: image.file.url(:original) %>
 						    </div>
 					  	<% end %>
 					  </div>
