@@ -36,7 +36,6 @@ Partner = {};
 
 	// for searching on the index page
 	Partner.doSearch = function (sort_by_col, sort_direction) {
-		//console.log(sort_by_col, sort_direction);
 		var search_path = $('#partner-search-filters').attr('data-search-path');
 	  
 	  Forms.showSpinner();
@@ -47,8 +46,10 @@ Partner = {};
         name: $('#partner #name').val(),
         submitted_date: $('#partner #submitted_date').val(),
         status: $('#partner #status').val(),
-        min_price: $('#partner #min_price').val(),
-        max_price: $('#partner #max_price').val(),
+        address_street_address: $('#partner #address_street_address').val(),
+        number_of_bedrooms: $('#partner #number_of_bedrooms').val(),
+        move_in_date: $('#partner #move_in_date').val(),
+        renovated: $('#partner #renovated').val(),
         sort_by: sort_by_col,
         direction: sort_direction,
 	    },
@@ -92,9 +93,13 @@ Partner = {};
 		$('#partner #name').bind('railsAutocomplete.select', Partner.throttledSearch);
 		$('#partner #name').change(Partner.throttledSearch);
 	  $('#partner #status').change(Partner.throttledSearch);
-	  $('#partner #min_price').change(Partner.throttledSearch);
-	  $('#partner #max_price').change(Partner.throttledSearch);
+	  $('#partner #address_street_address').change(Partner.throttledSearch);
+	  $('#partner #address_street_address').bind('railsAutocomplete.select', Partner.throttledSearch);
+	  $('#partner #number_of_bedrooms').change(Partner.throttledSearch);
+	  $('#partner #move_in_date').blur(Partner.throttledSearch);
 	  $('#partner #submitted_date').blur(Partner.throttledSearch);
+	  $('#partner #renovated').change(Partner.throttledSearch);
+	  $('#partner #status').change(Partner.throttledSearch);
 
 		// index page - selecting listings menu dropdown
 		$('#partner #emailListings').click(Forms.sendMessage);

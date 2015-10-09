@@ -4,6 +4,7 @@ module Forms
   	before_action :set_entry, except: [:index, :new, :create, :filter, 
 			:download, :send_update, :unarchive, :unarchive_modal]
 		autocomplete :wufoo_partner_form, :name, full: true
+		autocomplete :wufoo_partner_form, :address_street_address, full: true
 
 		def index
 			params[:status] = 'Active'
@@ -112,8 +113,9 @@ module Forms
 	  	end
 
 	  	def partner_params
-	  		data = params.permit(:sort_by, :direction, :filter, :name, :status, :min_price, :max_price, 
-	  			:entry_ids, :submitted_date, 
+	  		data = params.permit(:sort_by, :direction, :filter, :name, :status, 
+	  			:entry_ids, :submitted_date, :address_street_address,
+	  			:move_in_date, :renovated, :number_of_bedrooms,
 	  			email_modal: [:title, :message, :recipients])
 	  	end
 	end

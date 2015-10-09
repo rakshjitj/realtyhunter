@@ -24,7 +24,7 @@ class RemainingWufooForms < ActiveRecord::Migration
 			t.string :address_state_province_region
 			t.string :address_postal_zip_code
 			t.string :address_country
-			t.integer :number_of_bedrooms
+			t.string :number_of_bedrooms
 			t.boolean :renovated
 			t.boolean :utilities_heat_included
 			t.boolean :utilities_hot_water_included

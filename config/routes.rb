@@ -220,7 +220,6 @@ Rails.application.routes.draw do
 
   namespace :forms do
     resources :contact_us, only: [:index, :destroy] do
-      get :autocomplete_wufoo_contact_us_form_name, :on => :collection
       member do
         get 'delete_modal'
         get 'unarchive_modal'
@@ -231,11 +230,11 @@ Rails.application.routes.draw do
         get 'filter'
         post 'send_message'
         get 'download'
+        get :autocomplete_wufoo_contact_us_form_name
       end
     end
 
     resources :partner, only: [:index, :destroy] do
-      get :autocomplete_wufoo_partner_form_name, :on => :collection
       member do
         get 'delete_modal'
         get 'unarchive_modal'
@@ -246,6 +245,8 @@ Rails.application.routes.draw do
         get 'filter'
         post 'send_message'
         get 'download'
+        get :autocomplete_wufoo_partner_form_name
+        get :autocomplete_wufoo_partner_form_address_street_address
       end
     end
 

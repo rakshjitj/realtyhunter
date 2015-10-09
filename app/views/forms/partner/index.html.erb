@@ -36,8 +36,24 @@
             <%= label_tag(:address_street_address, "Street Address") %>
           </div>
           <div class="col-xs-7 col-sm-left-padding">
-            <%= text_field_tag :address_street_address, params[:address_street_address], 
-              placeholder: "date", class:"form-control" %>
+            <%= autocomplete_field_tag :address_street_address, params[:address_street_address], 
+              autocomplete_wufoo_partner_form_address_street_address_forms_partner_index_path,
+              update_elements: {},
+              placeholder: "Bob Smith", 
+              class:'form-control' %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-xs-5 form-label-responsive">
+            <%= label_tag(:number_of_bedrooms, 'Bedrooms') %>
+          </div>
+          <div class="col-xs-7 col-sm-left-padding">
+            <%= select_tag(:number_of_bedrooms, 
+              options_for_select(['Studio', '1 Bed', '2 Beds', '3 Beds', '4 Beds', '5 Beds', '6+ Beds'], 
+                [params[:number_of_bedrooms]]),
+              {class: "form-control", 
+              prompt: "Any"}) %>
           </div>
         </div>
 
@@ -160,10 +176,11 @@
           <th data-sort="name" class="th-sortable">Name</th>
           <th>Phone</th>
           <th>Email</th>
-          <th>How Did You Hear About Us?</th>
+          <th>Source</th>
           <th data-sort="address_street_address" class="th-sortable">Street Address</th>
           <th data-sort="number_of_bedrooms" class="th-sortable">Bedrooms</th>
           <th data-sort="renovated" class="th-sortable">Renovated</th>
+          <th data-sort="move_in_date" class="th-sortable">Move In Date</th>
 
           <th data-sort="created_at" class="th-sortable selected-sort">Submitted <i class="glyphicon glyphicon-triangle-bottom"></i></th>
           <th data-sort="status">Status</th>
