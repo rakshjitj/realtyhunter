@@ -1,0 +1,8 @@
+$('#entryDetailModal .modal-title').html(
+	"<%= j(@entry.name) %> - Additional Details");
+
+$('#entryDetailModal .modal-body').html(
+	"<p><b>Message</b></p>" + 
+	"<%= j(@entry.message) %>");
+
+$('#entryDetailModal').modal('show');
