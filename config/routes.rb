@@ -225,6 +225,7 @@ Rails.application.routes.draw do
         get 'delete_modal'
         get 'unarchive_modal'
         post 'unarchive'
+        get 'detail_modal'
       end
       collection do
         get 'filter'
@@ -233,12 +234,13 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :partner_with_us, only: [:index] do
+    resources :partner, only: [:index] do
       get :autocomplete_wufoo_partner_with_us_form_name, :on => :collection
       member do
         get 'delete_modal'
         get 'unarchive_modal'
         post 'unarchive'
+        get 'detail_modal'
       end
       collection do
         get 'filter'

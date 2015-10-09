@@ -1,11 +1,11 @@
-<% provide(:title, 'Contact Us') %>
+<% provide(:title, 'Partner With Us') %>
 
-<div id="contact-us">
+<div id="partner">
 
 <div class="page-header">
   <div class="row">
     <div class="col-md-6">
-      <h1>Contact Us Wufoo Form</h1>
+      <h1>Partner With Us Wufoo Form</h1>
     </div>
   </div>
 </div>
@@ -15,8 +15,8 @@
 
     <i class="fa fa-spinner fa-pulse fa-5x wufoo-spinner-desktop"></i>
 
-    <div id="contact-us-search-filters" data-search-path="<%= filter_forms_contact_us_path %>">
-      <%= form_tag forms_contact_us_path, :method => 'get' do %>
+    <div id="partner-search-filters" data-search-path="<%= filter_forms_partner_path %>">
+      <%= form_tag filter_forms_partner_path, :method => 'get' do %>
         <div class="row vertical-padding">
           <div class="col-xs-5 form-label-responsive">
             <%= label_tag :name, 'Name' %>
@@ -30,26 +30,41 @@
           </div>
         </div>
 
-      <div class="row vertical-padding">
-        <div class="col-xs-5 form-label-responsive">
-          <%= label_tag(:submitted_date) %>
-        </div>
-        <div class="col-xs-7 col-sm-left-padding">
-          <div class='input-group date datepicker'>
-            <%= text_field_tag :submitted_date, params[:submitted_date], 
-              placeholder: "date", class:"form-control", size:30 %>
-            <label class="input-group-addon btn" for="date">
-              <span class="fa fa-calendar open-datepicker"></span>
-            </label>
+        <div class="row vertical-padding">
+          <div class="col-xs-5 form-label-responsive">
+            <%= label_tag(:move_in_date) %>
+          </div>
+          <div class="col-xs-7 col-sm-left-padding">
+            <div class='input-group date datepicker'>
+              <%= text_field_tag :move_in_date, params[:move_in_date], 
+                placeholder: "date", class:"form-control", size:30 %>
+              <label class="input-group-addon btn" for="date">
+                <span class="fa fa-calendar open-datepicker"></span>
+              </label>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="row vertical-padding">
-        <div class="col-xs-5 form-label-responsive">
-          <%= link_to 'Clear filters', forms_contact_us_path, class: 'btn btn-xs btn-default' %>
+        <div class="row vertical-padding">
+          <div class="col-xs-5 form-label-responsive">
+            <%= label_tag(:submitted_date) %>
+          </div>
+          <div class="col-xs-7 col-sm-left-padding">
+            <div class='input-group date datepicker'>
+              <%= text_field_tag :submitted_date, params[:submitted_date], 
+                placeholder: "date", class:"form-control", size:30 %>
+              <label class="input-group-addon btn" for="date">
+                <span class="fa fa-calendar open-datepicker"></span>
+              </label>
+            </div>
+          </div>
         </div>
-      </div>
+
+        <div class="row vertical-padding">
+          <div class="col-xs-5 form-label-responsive">
+            <%= link_to 'Clear filters', forms_partner_path, class: 'btn btn-xs btn-default' %>
+          </div>
+        </div>
 
       <% end %>
     </div>
@@ -58,23 +73,28 @@
 
     <div class="row vertical-padding">
       <div class="col-xs-5 form-label-responsive">
-        <%= label_tag(:min_price, "Min Price >= ") %>
+        <%= label_tag(:address_street_address, "Street Address") %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
-        <%= text_field_tag :min_price, params[:min_price], 
-          placeholder: "date", class:"form-control", size:30 %>
+        <%= text_field_tag :address_street_address, params[:address_street_address], 
+          placeholder: "date", class:"form-control" %>
       </div>
     </div>
 
+    <div class="col-xs-12 col-md-4">
     <div class="row vertical-padding">
       <div class="col-xs-5 form-label-responsive">
-        <%= label_tag(:max_price, "Max Price <=") %>
+        <%= label_tag(:renovated) %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
-        <%= text_field_tag :max_price, params[:max_price], 
-          placeholder: "date", class:"form-control", size:30 %>
+        <%= select_tag(:renovated, 
+          options_for_select(['Yes', 'No'], 
+            [params[:renovated].blank? ? 'Active' : params[:renovated]]),
+          {class: "form-control", 
+          prompt: "Any"}) %>
       </div>
     </div>
+  </div>
     
   </div>
 
@@ -96,7 +116,7 @@
 </div>
 
 <hr />
-<%= form_tag forms_contact_us_path do %>
+<%= form_tag forms_partner_index_path do %>
 <br />
 <div class="row">
   <div class="col-md-6">
@@ -141,8 +161,10 @@
           <th>Phone</th>
           <th>Email</th>
           <th>How Did You Hear About Us?</th>
-          <th data-sort="min_price" class="th-sortable">Min Price</th>
-          <th data-sort="min_price" class="th-sortable">Max Price</th>
+          <th data-sort="address_street_address" class="th-sortable">Street Address</th>
+          <th data-sort="number_of_bedrooms" class="th-sortable">number_of_bedrooms</th>
+          <th data-sort="number_of_bedrooms" class="th-sortable">renovated</th>
+
           <th data-sort="created_at" class="th-sortable selected-sort">Submitted <i class="glyphicon glyphicon-triangle-bottom"></i></th>
           <th data-sort="status">Status</th>
           <% if current_user.is_management? || current_user.is_listings_manager? %>

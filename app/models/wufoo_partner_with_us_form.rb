@@ -56,6 +56,22 @@ class WufooPartnerWithUsForm < ActiveRecord::Base
       entries = entries.where(name: params[:name])
     end
 
+    if !params[:address_street_address].blank?
+      entries = entries.where(address_street_address: params[:address_street_address])
+    end
+
+    if !params[:number_of_bedrooms].blank?
+      entries = entries.where(number_of_bedrooms: params[:number_of_bedrooms])
+    end
+
+    if !params[:renovated].blank?
+      entries = entries.where(renovated: params[:renovated])
+    end
+
+    if !params[:move_in_date].blank?
+      entries = entries.where('move_in_date >= ?', params[:move_in_date])
+    end
+
     if !params[:status].blank?
       status = (params[:status] == 'Active') ? false : true
       entries = entries.where('archived = ?', status)
@@ -64,7 +80,6 @@ class WufooPartnerWithUsForm < ActiveRecord::Base
     if !params[:submitted_date].blank?
       entries = entries.where('created_at >= ?', params[:submitted_date])
     end
-
     
     entries
   end

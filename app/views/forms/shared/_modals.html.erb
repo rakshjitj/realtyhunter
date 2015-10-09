@@ -1,0 +1,117 @@
+<!-- Email Modal -->
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" 
+  aria-labelledby="emailModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        
+        <%= form_tag(send_message_forms_contact_us_path, remote:true) do %>
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "contact_us[recipients]", "Recipients", class: 'required' %>
+            <i><small>Use commas to separate email addresses</small></i>
+            <%= text_field_tag "contact_us[recipients]", nil, class: 'form-control', required: true %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "contact_us[title]", "Title", class: 'required' %>
+            <%= text_field_tag "contact_us[title]", "Thank you for contacting us!", class: 'form-control', required: true %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "contact_us[message]", "Message" %>
+            <%= text_area_tag "contact_us[message]", nil, class: 'form-control', rows: 8 %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp; 
+        <%= submit_tag "Send Email", class:"btn btn-warning" %>
+      </div>
+
+      <% end %>
+
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="entryDeleteModal" tabindex="-1" role="dialog" 
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Mark Entry Inactive</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          Are you sure you want to deactivate this entry? Deactivating them will prevent it from showing up in searches.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="delete-btn">Placeholder</button>
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Unarchive Modal -->
+<div class="modal fade" id="entryUnarchiveModal" tabindex="-1" role="dialog" 
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Mark Entry Active</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          Are you sure you want to activate this entry? Activating it will allow it to show up in 
+          searches again.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="delete-btn">Placeholder</button>
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal fade" id="entryDetailModal" tabindex="-1" role="dialog" 
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Additional Details</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          <!-- replace body with detailed info -->
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>

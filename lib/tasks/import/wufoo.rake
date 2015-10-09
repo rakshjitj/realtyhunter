@@ -74,9 +74,9 @@ namespace :import do
 					company_id: hash[:company_id]}
 
 				found = Roommate.where(query).first
-				puts "FOUND IS #{found.inspect} #{query.inspect} \n #{hash.inspect}"
+				#puts "FOUND IS #{found.inspect} #{query.inspect} \n #{hash.inspect}"
 				if !found
-					puts "CREATING"
+					#puts "CREATING"
 					Roommate.create!(hash)
 				end
 				#puts wu.errors.inspect
@@ -171,8 +171,8 @@ namespace :import do
 		wufoo = WuParty.new(ENV['RH_WUFOO_ACCT'], ENV['RH_WUFOO_API'])
 		#puts wufoo.forms
 		company = Company.find_by(name:'MyspaceNYC')
-		#import_roommates_web_form(wufoo, company);
-		#import_contact_us_form(wufoo, company)
+		import_roommates_web_form(wufoo, company);
+		import_contact_us_form(wufoo, company)
 		import_partner_form(wufoo, company)
 	end
 end

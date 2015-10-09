@@ -1,0 +1,7 @@
+$('#entryUnarchiveModal .delete-btn').replaceWith("<%= j(link_to 'Mark Active', unarchive_forms_contact_u_path(@entry), remote: true, method: :post, class: 'btn btn-danger link-as-button', id: 'delete-link') %>");
+$('#entryUnarchiveModal #delete-link').click( function(event) {
+	$('#entryUnarchiveModal').modal('hide');
+	event.preventDefault();
+});
+
+$('#entryUnarchiveModal').modal('show');
