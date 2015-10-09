@@ -38,22 +38,22 @@ class RemainingWufooForms < ActiveRecord::Migration
   	end
 
   	# # covers both commercial + residential
-  	# create_table :wufoo_listings_forms do |t|
-			# t.string :name
-			# t.string :email
-			# t.string :phone_number
-			# t.string :message
-			# t.boolean :is_residential
-			# t.boolean :is_commercial
-			# t.boolean :archived, default: false
-			# t.belongs_to :company
-			# t.timestamps null: false
-  	# end
+  	create_table :wufoo_listings_forms do |t|
+			t.string :name
+			t.string :email
+			t.string :phone_number
+			t.string :message
+			t.boolean :is_residential
+			t.boolean :is_commercial
+			t.boolean :archived, default: false
+			t.belongs_to :company
+			t.timestamps null: false
+  	end
   	
   	change_table :companies do |t|
 		  t.references :wufoo_contact_us_forms, index: true
 		  t.references :wufoo_partner_forms, index: true
-		  #t.references :wufoo_listings_forms, index: true
+		  t.references :wufoo_listings_forms, index: true
 		end
 
   end

@@ -167,6 +167,61 @@ namespace :import do
 			end
 		end
 
+		def _import_listings(wufoo, company, form, listing_type_id)
+			fields = build_fields(form)
+			hash = {}
+			entries = form.entries
+			entries.each do |entry|
+
+				name = ''
+				entry.each do |entry_field, val|
+					db_column = fields[entry_field]
+					if !db_column.blank?
+						if db_column == 'name_first'
+							name = val + name
+						elsif db_column == 'name_last'
+							name = name + ' ' + val
+						else
+							hash[db_column.to_sym] = val
+						end
+					end
+				end
+				hash[:name] = name # full name
+
+				hash[:company_id] = company.id
+
+				if listing_type_id == 'residential'
+					hash['is_residential'] = true
+				elsif listing_type_id == 'commercial'
+					hash['is_commercial'] = true
+				end
+
+				query = {name: hash[:name],
+					email: hash[:email],
+					phone_number: hash[:phone_number],
+					is_residential: hash[:is_residential],
+					is_commercial: hash[:is_commercial],
+					company_id: hash[:company_id]}
+
+				found = WufooListingsForm.where(query).first
+				if !found
+					WufooListingsForm.create!(hash)
+				end
+			end
+		end
+
+		# rental-listings-form
+		def import_residential_listing_form(wufoo, company)
+			form = wufoo.form('q1ky5fnq1l6p9ri') 
+			_import_listings(wufoo, company, form, 'residential')
+		end
+
+		# commercial-listings-form
+		def import_commercial_listing_form(wufoo, company)
+			form = wufoo.form('sewgb8508ansh2') 
+			_import_listings(wufoo, company, form, 'commercial')
+		end
+
 		###############################################################
 		wufoo = WuParty.new(ENV['RH_WUFOO_ACCT'], ENV['RH_WUFOO_API'])
 		#puts wufoo.forms
@@ -174,5 +229,8 @@ namespace :import do
 		import_roommates_web_form(wufoo, company);
 		import_contact_us_form(wufoo, company)
 		import_partner_form(wufoo, company)
+		import_residential_listing_form(wufoo, company)
+		import_commercial_listing_form(wufoo, company)
+
 	end
 end

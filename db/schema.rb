@@ -134,6 +134,7 @@ ActiveRecord::Schema.define(version: 20151008201709) do
     t.integer  "roommates_id"
     t.integer  "wufoo_contact_us_forms_id"
     t.integer  "wufoo_partner_forms_id"
+    t.integer  "wufoo_listings_forms_id"
   end
 
   add_index "companies", ["building_amenities_id"], name: "index_companies_on_building_amenities_id", using: :btree
@@ -149,6 +150,7 @@ ActiveRecord::Schema.define(version: 20151008201709) do
   add_index "companies", ["users_id"], name: "index_companies_on_users_id", using: :btree
   add_index "companies", ["utilities_id"], name: "index_companies_on_utilities_id", using: :btree
   add_index "companies", ["wufoo_contact_us_forms_id"], name: "index_companies_on_wufoo_contact_us_forms_id", using: :btree
+  add_index "companies", ["wufoo_listings_forms_id"], name: "index_companies_on_wufoo_listings_forms_id", using: :btree
   add_index "companies", ["wufoo_partner_forms_id"], name: "index_companies_on_wufoo_partner_forms_id", using: :btree
 
   create_table "employee_titles", force: :cascade do |t|
@@ -461,6 +463,19 @@ ActiveRecord::Schema.define(version: 20151008201709) do
     t.boolean  "archived",                  default: false
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
+  end
+
+  create_table "wufoo_listings_forms", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "phone_number"
+    t.string   "message"
+    t.boolean  "is_residential"
+    t.boolean  "is_commercial"
+    t.boolean  "archived",       default: false
+    t.integer  "company_id"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
 
   create_table "wufoo_partner_forms", force: :cascade do |t|
