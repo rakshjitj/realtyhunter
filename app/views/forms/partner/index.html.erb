@@ -15,8 +15,8 @@
 
     <i class="fa fa-spinner fa-pulse fa-5x wufoo-spinner-desktop"></i>
 
-    <div id="partner-search-filters" data-search-path="<%= filter_forms_partner_path %>">
-      <%= form_tag filter_forms_partner_path, :method => 'get' do %>
+    <div id="partner-search-filters" data-search-path="<%= filter_forms_partner_index_path %>">
+      <%= form_tag filter_forms_partner_index_path, :method => 'get' do %>
         <div class="row vertical-padding">
           <div class="col-xs-5 form-label-responsive">
             <%= label_tag :name, 'Name' %>
@@ -32,37 +32,17 @@
 
         <div class="row vertical-padding">
           <div class="col-xs-5 form-label-responsive">
-            <%= label_tag(:move_in_date) %>
+            <%= label_tag(:address_street_address, "Street Address") %>
           </div>
           <div class="col-xs-7 col-sm-left-padding">
-            <div class='input-group date datepicker'>
-              <%= text_field_tag :move_in_date, params[:move_in_date], 
-                placeholder: "date", class:"form-control", size:30 %>
-              <label class="input-group-addon btn" for="date">
-                <span class="fa fa-calendar open-datepicker"></span>
-              </label>
-            </div>
+            <%= text_field_tag :address_street_address, params[:address_street_address], 
+              placeholder: "date", class:"form-control" %>
           </div>
         </div>
 
         <div class="row vertical-padding">
           <div class="col-xs-5 form-label-responsive">
-            <%= label_tag(:submitted_date) %>
-          </div>
-          <div class="col-xs-7 col-sm-left-padding">
-            <div class='input-group date datepicker'>
-              <%= text_field_tag :submitted_date, params[:submitted_date], 
-                placeholder: "date", class:"form-control", size:30 %>
-              <label class="input-group-addon btn" for="date">
-                <span class="fa fa-calendar open-datepicker"></span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="row vertical-padding">
-          <div class="col-xs-5 form-label-responsive">
-            <%= link_to 'Clear filters', forms_partner_path, class: 'btn btn-xs btn-default' %>
+            <%= link_to 'Clear filters', forms_partner_index_path, class: 'btn btn-xs btn-default' %>
           </div>
         </div>
 
@@ -73,15 +53,38 @@
 
     <div class="row vertical-padding">
       <div class="col-xs-5 form-label-responsive">
-        <%= label_tag(:address_street_address, "Street Address") %>
+        <%= label_tag(:move_in_date) %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
-        <%= text_field_tag :address_street_address, params[:address_street_address], 
-          placeholder: "date", class:"form-control" %>
+        <div class='input-group date datepicker'>
+          <%= text_field_tag :move_in_date, params[:move_in_date], 
+            placeholder: "date", class:"form-control", size:30 %>
+          <label class="input-group-addon btn" for="date">
+            <span class="fa fa-calendar open-datepicker"></span>
+          </label>
+        </div>
       </div>
     </div>
 
-    <div class="col-xs-12 col-md-4">
+    <div class="row vertical-padding">
+      <div class="col-xs-5 form-label-responsive">
+        <%= label_tag(:submitted_date) %>
+      </div>
+      <div class="col-xs-7 col-sm-left-padding">
+        <div class='input-group date datepicker'>
+          <%= text_field_tag :submitted_date, params[:submitted_date], 
+            placeholder: "date", class:"form-control", size:30 %>
+          <label class="input-group-addon btn" for="date">
+            <span class="fa fa-calendar open-datepicker"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+    
+  <div class="col-xs-12 col-md-4">
+  
     <div class="row vertical-padding">
       <div class="col-xs-5 form-label-responsive">
         <%= label_tag(:renovated) %>
@@ -94,11 +97,7 @@
           prompt: "Any"}) %>
       </div>
     </div>
-  </div>
-    
-  </div>
 
-  <div class="col-xs-12 col-md-4">
     <div class="row vertical-padding">
       <div class="col-xs-5 form-label-responsive">
         <%= label_tag(:status) %>
@@ -162,8 +161,8 @@
           <th>Email</th>
           <th>How Did You Hear About Us?</th>
           <th data-sort="address_street_address" class="th-sortable">Street Address</th>
-          <th data-sort="number_of_bedrooms" class="th-sortable">number_of_bedrooms</th>
-          <th data-sort="number_of_bedrooms" class="th-sortable">renovated</th>
+          <th data-sort="number_of_bedrooms" class="th-sortable">Bedrooms</th>
+          <th data-sort="renovated" class="th-sortable">Renovated</th>
 
           <th data-sort="created_at" class="th-sortable selected-sort">Submitted <i class="glyphicon glyphicon-triangle-bottom"></i></th>
           <th data-sort="status">Status</th>
@@ -173,8 +172,8 @@
         </tr>
       </thead>
     
-      <tbody class="contact_us_table_body">
-        <%= render partial: 'forms/contact_us/wufoo_contact_us_form', 
+      <tbody class="partner_table_body">
+        <%= render partial: 'forms/partner/entry', 
         :collection => @entries, as: :entry %>
       </tbody>
     </table>

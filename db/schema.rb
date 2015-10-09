@@ -463,7 +463,7 @@ ActiveRecord::Schema.define(version: 20151008201709) do
     t.datetime "updated_at",                                null: false
   end
 
-  create_table "wufoo_partner_with_us_forms", force: :cascade do |t|
+  create_table "wufoo_partner_forms", force: :cascade do |t|
     t.string   "name"
     t.string   "email"
     t.string   "phone_number"

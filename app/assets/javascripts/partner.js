@@ -1,8 +1,8 @@
-ContactUs = {};
+Partner = {};
 
 (function() {
-	ContactUs.setupSortableColumns = function() {
-		$('#contact-us .th-sortable').click(function(e) {
+	Partner.setupSortableColumns = function() {
+		$('#partner .th-sortable').click(function(e) {
 			e.preventDefault();
 			
 			if ($(this).hasClass('selected-sort')) {
@@ -30,25 +30,25 @@ ContactUs = {};
 
 			var sort_by_col = $(this).attr('data-sort');
 			var sort_direction = $(this).attr('data-direction');
-			ContactUs.doSearch(sort_by_col, sort_direction);
+			Partner.doSearch(sort_by_col, sort_direction);
 		});
 	};
 
 	// for searching on the index page
-	ContactUs.doSearch = function (sort_by_col, sort_direction) {
+	Partner.doSearch = function (sort_by_col, sort_direction) {
 		//console.log(sort_by_col, sort_direction);
-		var search_path = $('#contact-us-search-filters').attr('data-search-path');
+		var search_path = $('#partner-search-filters').attr('data-search-path');
 	  
 	  Forms.showSpinner();
 
 	  $.ajax({
 	    url: search_path,
 	    data: {
-        name: $('#contact-us #name').val(),
-        submitted_date: $('#contact-us #submitted_date').val(),
-        status: $('#contact-us #status').val(),
-        min_price: $('#contact-us #min_price').val(),
-        max_price: $('#contact-us #max_price').val(),
+        name: $('#partner #name').val(),
+        submitted_date: $('#partner #submitted_date').val(),
+        status: $('#partner #status').val(),
+        min_price: $('#partner #min_price').val(),
+        max_price: $('#partner #max_price').val(),
         sort_by: sort_by_col,
         direction: sort_direction,
 	    },
@@ -63,17 +63,17 @@ ContactUs = {};
 	};
 
 	// search as user types
-	ContactUs.timer;
+	Partner.timer;
 
-	ContactUs.throttledSearch = function () {
+	Partner.throttledSearch = function () {
 		//clear any interval on key up
-		if (ContactUs.timer) {
-		  clearTimeout(ContactUs.timer);
+		if (Partner.timer) {
+		  clearTimeout(Partner.timer);
 		}
-	  ContactUs.timer = setTimeout(ContactUs.doSearch, 500);
+	  Partner.timer = setTimeout(Partner.doSearch, 500);
 	};
 
-	ContactUs.initialize = function() {
+	Partner.initialize = function() {
 
 		document.addEventListener("page:restore", function() {
 		  Forms.hideSpinner();
@@ -81,26 +81,26 @@ ContactUs = {};
 		Forms.hideSpinner();
 
 		// main index table
-		ContactUs.setupSortableColumns();		
+		Partner.setupSortableColumns();		
 
 		$('.close').click(function() {
 			Forms.hideSpinner();
 		});
 
 		// index filtering
-		$('#contact-us input').keydown(Forms.preventEnter);
-		$('#contact-us #name').bind('railsAutocomplete.select', ContactUs.throttledSearch);
-		$('#contact-us #name').change(ContactUs.throttledSearch);
-	  $('#contact-us #status').change(ContactUs.throttledSearch);
-	  $('#contact-us #min_price').change(ContactUs.throttledSearch);
-	  $('#contact-us #max_price').change(ContactUs.throttledSearch);
-	  $('#contact-us #submitted_date').blur(ContactUs.throttledSearch);
+		$('#partner input').keydown(Forms.preventEnter);
+		$('#partner #name').bind('railsAutocomplete.select', Partner.throttledSearch);
+		$('#partner #name').change(Partner.throttledSearch);
+	  $('#partner #status').change(Partner.throttledSearch);
+	  $('#partner #min_price').change(Partner.throttledSearch);
+	  $('#partner #max_price').change(Partner.throttledSearch);
+	  $('#partner #submitted_date').blur(Partner.throttledSearch);
 
 		// index page - selecting listings menu dropdown
-		$('#contact-us #emailListings').click(Forms.sendMessage);
-		$('#contact-us tbody').on('click', 'i', Forms.toggleListingSelection);
-		$('#contact-us .select-all-listings').click(Forms.selectAllListings);
-		$('#contact-us .selected-listings-menu').on('click', 'a', function() {
+		$('#partner #emailListings').click(Forms.sendMessage);
+		$('#partner tbody').on('click', 'i', Forms.toggleListingSelection);
+		$('#partner .select-all-listings').click(Forms.selectAllListings);
+		$('#partner .selected-listings-menu').on('click', 'a', function() {
 			var action = $(this).data('action');
 			if (action in Forms.indexMenuActions) Forms.indexMenuActions[action]();
 		});
@@ -111,12 +111,12 @@ ContactUs = {};
 		//   format: 'MM/DD/YYYY',
 		//   allowInputToggle: true
 		// });
-		var available_by = $('#contact-us .datepicker').attr('data-available-by');
+		var available_by = $('#partner .datepicker').attr('data-available-by');
 		if (available_by) {
-			$('#contact-us .datepicker').data("DateTimePicker").date(available_by);
+			$('#partner .datepicker').data("DateTimePicker").date(available_by);
 		}
 	};
 
 })();
 
-$(document).ready(ContactUs.initialize);
+$(document).ready(Partner.initialize);

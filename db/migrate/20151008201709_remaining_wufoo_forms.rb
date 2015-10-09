@@ -13,7 +13,7 @@ class RemainingWufooForms < ActiveRecord::Migration
 			t.timestamps null: false
   	end
 
-  	create_table :wufoo_partner_with_us_forms do |t|
+  	create_table :wufoo_partner_forms do |t|
 			t.string :name
 			t.string :email
 			t.string :phone_number

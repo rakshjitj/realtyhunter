@@ -1,7 +1,7 @@
 # 
 # Encapsulates data from Wufoo form
 #
-class WufooPartnerWithUsForm < ActiveRecord::Base
+class WufooPartnerForm < ActiveRecord::Base
 	belongs_to :company, touch: true
 	
   scope :unarchived, ->{where(archived: false)}
@@ -30,7 +30,7 @@ class WufooPartnerWithUsForm < ActiveRecord::Base
   end
 
   def self.find_unarchived(id)
-    WufooPartnerWithUsForm.where(id: id).where(archived:false).first
+    WufooPartnerForm.where(id: id).where(archived:false).first
   end 
 
   def self.send_message(source_agent, recipients, sub, msg)
@@ -42,7 +42,7 @@ class WufooPartnerWithUsForm < ActiveRecord::Base
   end
   
   def self.search(params)
-    entries = WufooPartnerWithUsForm.all
+    entries = WufooPartnerForm.all
 
      # all search params come in as strings from the url
     # clear out any invalid search params

@@ -20,7 +20,7 @@ class Company < ActiveRecord::Base
 	# the following are from wufoo
 	has_many :roommates, dependent: :destroy
 	has_many :wufoo_contact_us_forms, dependent: :destroy
-	has_many :wufoo_partner_with_us_forms, dependent: :destroy
+	has_many :wufoo_partner_forms, dependent: :destroy
 	# has_many :wufoo_rental_listings_forms, dependent: :destroy
 	# has_many :wufoo_commercial_listings_forms, dependent: :destroy
 	

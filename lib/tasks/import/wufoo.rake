@@ -160,9 +160,9 @@ namespace :import do
 					how_did_you_hear_about_us: hash[:how_did_you_hear_about_us],
 					company_id: hash[:company_id]}
 
-				found = WufooPartnerWithUsForm.where(query).first
+				found = WufooPartnerForm.where(query).first
 				if !found
-					WufooPartnerWithUsForm.create!(hash)
+					WufooPartnerForm.create!(hash)
 				end
 			end
 		end
