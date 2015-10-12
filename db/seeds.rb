@@ -132,7 +132,7 @@ end
   {name: "residential"},
   {name: "commercial"},
   {name: "sales"},
-  {name: "roomsharing"},
+  #{name: "roomsharing"},
   ])
 
 @employee_titles = EmployeeTitle.create!([

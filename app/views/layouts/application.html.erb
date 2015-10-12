@@ -66,7 +66,7 @@
               <li><%= link_to "Commercial", commercial_listings_path %></li>
             <% end %>
 
-            <% if current_user.is_management? %>
+            <% if current_user.has_role? :roomsharing %>
               
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">

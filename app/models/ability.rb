@@ -27,11 +27,24 @@ class Ability
     end
   end
 
+  # Nir, Michelle, Shawn, Dani, Cheryl, Ashleigh, me
+  def roomsharing_permissions(user)
+    if user.has_role? :roomsharing
+      can :manage, Roommate
+      can :manage, WufooContactUsForm
+      can :manage, WufooListingsForm
+      can :manage, WufooPartnerForm
+      can :manage, RoomsharingApplication
+    else
+      can [:new, :create, :show], Roommate
+    end
+  end
+
   # I seperated out these 2 groups so you can easily compare them side by side
   # managers v agents
 
   def common_managerial_permissions(user)
-      can :manage, Roommate, :company_id => user.company.id
+      #can :manage, Roommate, :company_id => user.company.id
       can :manage, Neighborhood
       can :manage, BuildingAmenity, :company_id => user.company.id
       can :manage, ResidentialAmenity, :company_id => user.company.id
@@ -40,7 +53,7 @@ class Ability
   end
 
   def agent_permissions(user)
-    can [:new, :create, :edit, :show, :destroy, :update, :upload_image, :destroy_image], Roommate, :user_id => user.id
+    #can [:new, :create, ], Roommate, :user_id => user.id
     #cannot :index, Roommate, :company_id => user.company.id
     can :read, :Neighborhood
     can :read, BuildingAmenity, :company_id => user.company.id
@@ -119,6 +132,7 @@ class Ability
 
       common_permissions(user)
       common_managerial_permissions(user)
+      roomsharing_permissions(user)
 
     elsif user.has_role?(:external_vendor)
       cannot :read, :all
@@ -142,6 +156,7 @@ class Ability
       end
       
       can :manage, User, :id => user.id
+      roomsharing_permissions(user)
     end
     
   end
