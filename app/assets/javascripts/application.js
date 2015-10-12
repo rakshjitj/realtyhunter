@@ -27,15 +27,14 @@
 //= require bootstrap-datetimepicker
 //= require jquery.mousewheel.min
 
-
-// change all date input fields to auto-open the calendar
-$('.datepicker').datetimepicker({
-  viewMode: 'days',
-  format: 'MM/DD/YYYY',
-  allowInputToggle: true
-});
-
 $(document).ready(function() {
+	// change all date input fields to auto-open the calendar
+	$('.datepicker').datetimepicker({
+	  viewMode: 'days',
+	  format: 'MM/DD/YYYY',
+	  allowInputToggle: true
+	});
+
 	$('input[type=number]').mousewheel(function(){
 		event.preventDefault();
 	});
