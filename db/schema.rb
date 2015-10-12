@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151011180549) do
+ActiveRecord::Schema.define(version: 20151012021617) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -390,7 +390,6 @@ ActiveRecord::Schema.define(version: 20151011180549) do
     t.string   "relative_address"
     t.string   "relative_phone"
     t.string   "listing_id"
-    t.string   "agent_name"
     t.boolean  "allow_background_authorization"
     t.boolean  "is_sight_unseen"
     t.boolean  "has_renters_insurace"
@@ -401,7 +400,10 @@ ActiveRecord::Schema.define(version: 20151011180549) do
     t.boolean  "approved"
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
+    t.integer  "user_id"
   end
+
+  add_index "roomsharing_applications", ["user_id"], name: "index_roomsharing_applications_on_user_id", using: :btree
 
   create_table "sales_amenities", force: :cascade do |t|
     t.string   "name"

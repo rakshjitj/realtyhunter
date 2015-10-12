@@ -13,12 +13,14 @@ class User < ActiveRecord::Base
   belongs_to :company, touch: true
   belongs_to :manager, :class_name => "User"#, : true
   belongs_to :employee_title
+  
   has_many   :subordinates, :class_name => "User", :foreign_key => "manager_id"
   
   has_many :primary_units, class_name: 'Unit', :foreign_key => 'primary_agent_id'
   has_many :listed_units,  class_name: 'Unit', :foreign_key => 'listing_agent_id'
   #has_many :roommates, dependent: :destroy
   has_many :roommates, class_name: 'WufooRoommatesWebForm' #, :foreign_key => 'roommate_referral_agent_id'
+  has_many :roomsharing_applications
 
   has_one :image, dependent: :destroy
 

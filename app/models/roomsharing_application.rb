@@ -1,5 +1,5 @@
 class RoomsharingApplication < ActiveRecord::Base
-	#has_one :user, dependent: :destroy
+	belongs_to :user, dependent: :destroy
 	#has_one :unit, dependent: :destroy
 
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
@@ -32,7 +32,7 @@ class RoomsharingApplication < ActiveRecord::Base
 
 	# current
 	validates :curr_street_address, presence: true, length: {maximum: 100}
-	validates :curr_apt_suite, presence: true, length: {maximum: 50}
+	validates :curr_apt_suite, allow_blank: true, length: {maximum: 50}
 	validates :curr_city, presence: true, length: {maximum: 100}
 	validates :curr_zip, presence: true, length: {maximum: 15}
 	validates :curr_landlord_name, presence: true, length: {maximum: 50}
