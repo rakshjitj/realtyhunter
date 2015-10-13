@@ -269,14 +269,14 @@
 				  	<%= @commercial_unit.lease_term_months %> Months
 				  </div>
 				  <div class="col-md-3">
-				    <strong>Primary Agent</strong>
+				    <strong>Landlord</strong>
 				  </div>
 				  <div class="col-md-3">
-				  	<% if @commercial_unit.unit.primary_agent %>
-	    				<%= link_to @commercial_unit.unit.primary_agent.name, @commercial_unit.unit.primary_agent %>
-	    			<% else %>
-	    				None
-	    			<% end %>
+				    <% if current_user.is_management? %>
+							<%= link_to @commercial_unit.unit.building.landlord.code, @commercial_unit.unit.building.landlord %>
+						<% else %>
+							<%= @commercial_unit.unit.building.landlord.code %>
+						<% end %>
 				  </div>
 				</div>
 
@@ -292,10 +292,14 @@
 				    <% end %>
 				  </div>
 				  <div class="col-md-3">
-				    <strong>Listing ID</strong>
+				    <strong>Primary Agent</strong>
 				  </div>
 				  <div class="col-md-3">
-				    <%= @commercial_unit.unit.listing_id %>
+				  	<% if @commercial_unit.unit.primary_agent %>
+	    				<%= link_to @commercial_unit.unit.primary_agent.name, @commercial_unit.unit.primary_agent %>
+	    			<% else %>
+	    				None
+	    			<% end %>
 				  </div>
 				</div>
 
@@ -310,7 +314,12 @@
 				    	No
 				    <% end %>
 				  </div>
-				  
+				  <div class="col-md-3">
+				    <strong>Listing ID</strong>
+				  </div>
+				  <div class="col-md-3">
+				    <%= @commercial_unit.unit.listing_id %>
+				  </div>
 				</div>
 
 				<div class="row">

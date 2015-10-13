@@ -61,12 +61,15 @@
         </div>
       <!-- ******************** second tabpanel - commercial ********************-->
         <div role="tabpanel" class="tab-pane fade" id="commercial-listings">
-          <!--%= render partial:'commercial_units/table', locals: { commercial_units: @building.commercial_units} %-->
+          <%= render partial:'commercial_listings/table', 
+            locals: { commercial_units: commercial_units, com_images: com_images } %>
         </div>
 
         <div class="row">
 				  <div class="col-md-12">
-				  	<!--%= render partial: 'shared/pagination', locals: {models: commercial_units} %-->
+            <div class="listing-pagination">
+  				  	<%= render partial: 'shared/pagination', locals: {models: commercial_units} %>
+            </div>
 				  </div>
 				</div>
     </div>

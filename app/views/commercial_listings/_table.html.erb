@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-md-12">
+    <br />
+    <table class="table table-striped table-hover table-condensed table-responsive">
+      <thead>
+        <tr>
+          <th><!-- first image --></th>
+          <th data-sort="formatted_street_address" class="th-sortable">Address</th>
+          <th data-sort="landlord_code" class="th-sortable">Landlord</th>
+          <th>Category</th>
+          <th data-sort="rent" class="th-sortable">Price</th>
+          <th data-sort="sq_footage" class="th-sortable">Sq Footage</th>
+          <th data-sort="available_by" class="th-sortable">Available</th>
+          <th data-sort="access_info" class="th-sortable">Access</th>
+          <th data-sort="status" class="th-sortable">Status</th>
+          <% if current_user.is_management? || current_user.is_listings_manager? %>
+            <th colspan="1"></th>
+          <% end %>
+        </tr>
+      </thead>
+
+      <tbody class="commercial_units_table_body">
+        <%= render commercial_units %>
+        <!--%= render partial: 'commercial_listings/commercial_listing', 
+        collection: @commercial_units, locals: {com_images: @com_images} %-->
+      </tbody>
+
+    </table>
+  </div>
+</div>

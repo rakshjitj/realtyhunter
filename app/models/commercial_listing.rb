@@ -259,7 +259,7 @@ class CommercialListing < ActiveRecord::Base
       .where('buildings.id in (?)', bldg_ids)
       .select('buildings.formatted_street_address', 
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
-        'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
+        'buildings.lat', 'buildings.lng', 'units.id AS unit_id','units.access_info',
         'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage', 
         'commercial_listings.id', 'commercial_listings.updated_at', 
         'neighborhoods.name AS neighborhood_name', 
@@ -283,7 +283,7 @@ class CommercialListing < ActiveRecord::Base
       .where('units.id in (?)', unit_ids)
       .select('buildings.formatted_street_address', 
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
-        'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
+        'buildings.lat', 'buildings.lng', 'units.id AS unit_id', 'units.access_info',
         'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage', 
         'commercial_listings.id', 'commercial_listings.updated_at', 
         'neighborhoods.name AS neighborhood_name', 
