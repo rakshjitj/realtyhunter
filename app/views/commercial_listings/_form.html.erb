@@ -130,6 +130,24 @@
           </div>
         </div>
 
+        <br />
+        <div class="row">
+          <div class="col-md-2 form-label-responsive">
+            <%= f.label :primary_agent_id, "Primary Agent" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.fields_for @commercial_unit.unit do |unit_form| %>
+              <%= unit_form.select(:primary_agent_id, 
+                options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
+                  [@commercial_unit.unit.primary_agent ? @commercial_unit.unit.primary_agent.id : '']), 
+                {prompt: "Choose one..."},
+                class: 'form-control',
+                :include_blank => true) %>
+            <% end %>
+          </div>
+        </div>
+
+
         <div class="row">
           <div class="col-md-12 form-section-header">
             <hr class="thin-line" />
@@ -171,7 +189,7 @@
 
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :floor, "Floor" %>
+            <%= f.label :floor %>
           </div>
           <div class="col-md-2">
             <div class="field">
@@ -291,6 +309,54 @@
         </div>
 
         <div class="row">
+          <div class="col-md-4 form-label-responsive">
+            <%= f.label :liquor_eligible %>
+          </div>
+          <div class="col-md-2">
+            <div class="field">
+              <%= f.check_box :liquor_eligible, checked: @commercial_unit.liquor_eligible %>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 form-label-responsive">
+            <%= f.label :has_ventilation %>
+          </div>
+          <div class="col-md-2">
+            <div class="field">
+              <%= f.check_box :has_ventilation, checked: @commercial_unit.has_ventilation %>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 form-label-responsive">
+            <%= f.label "Basement Details" %>
+          </div>
+          <div class="col-md-3">
+            <div class="field">
+              <%= f.check_box :has_basement, checked: @commercial_unit.has_basement %>
+              <%= f.label :has_basement %>
+              <%= f.text_field :basement_sq_footage, class: 'form-control', placeholder: 'Sq Footage' %>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 form-label-responsive">
+            <%= f.label "Key Money" %>
+          </div>
+          <div class="col-md-3">
+            <div class="field">
+              <%= f.check_box :key_money_required, checked: @commercial_unit.key_money_required %>
+              <%= f.label :key_money_required, "Required" %>
+              <%= f.text_field :key_money_amt, class: 'form-control', placeholder: 'Amount Required' %>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
           <div class="col-md-12 form-section-header">
             <hr class="thin-line" />
             <h4>Property Info</h4>
@@ -300,16 +366,43 @@
         <br />
 
         <div class="row">
+          <%= f.fields_for @commercial_unit.unit do |unit_form| %>
+          <div class="col-md-4 form-label-responsive">
+            <%= unit_form.label :access_info, class: 'required' %>
+          </div>
+          <div class="col-md-8">
+            <div class="field">
+              <%= unit_form.text_area :access_info, class: 'form-control', :required => true, rows: 5 %>
+            </div>
+          </div>
+          <% end %>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-4 form-label-responsive">
+            <%= f.label :listing_title %>
+          </div>
+          <div class="col-md-8">
+            <div class="field">
+              <%= f.text_field :listing_title, class: 'form-control' %>
+            </div>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
           <div class="col-md-4 form-label-responsive">
             <%= f.label :property_description, class: 'required' %>
           </div>
           <div class="col-md-8">
             <div class="field">
+              <small><em>Exclusive listings will display the full address when syndicated.
+              Must have a description AND assigned agent in order to be syndicated.</em></small><br />
               <%= f.fields_for @commercial_unit.unit do |unit_form| %>
                 <%= unit_form.check_box :exclusive, checked: @commercial_unit.unit.exclusive %>
                 <%= f.label :exclusive %>
               <% end %>
-              <br />Exclusive listings will display the full address when syndicated.<br />
 
               <%= f.text_area :property_description, class: 'form-control', :required => true, rows: 5 %>
             </div>

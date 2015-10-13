@@ -171,6 +171,7 @@ class Company < ActiveRecord::Base
 			{property_type: "Industrial", property_sub_type: "Industrial - Industrial (Other)", company: self},
 			{property_type: "Land", property_sub_type: "Land - Land (Other)", company: self},
 			{property_type: "Special Purpose", property_sub_type: "Special Purpose - Special Purpose (Other)", company: self},
+			{property_type: "Medical", property_sub_type: "Medical - Misc", company: self},
 		])
 	end
 end

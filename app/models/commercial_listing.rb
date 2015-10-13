@@ -2,8 +2,9 @@ class CommercialListing < ActiveRecord::Base
   scope :unarchived, ->{where(archived: false)}
   belongs_to :commercial_property_type
   belongs_to :unit, touch: true
-  
-  attr_accessor :property_type, :inaccuracy_description
+  #belongs_to :primary_agent2, :class_name => 'User', touch: true
+
+  attr_accessor :property_type, :inaccuracy_description, :sq_footage_min, :sq_footage_max
 
   enum construction_status: [ :existing, :under_construction ]
   validates :construction_status, presence: true, inclusion: { in: %w(existing under_construction) }
@@ -59,17 +60,7 @@ class CommercialListing < ActiveRecord::Base
 
   # TODO
   def summary
-    # 'Active', 'Offer Submitted', 'Offer Accepted', 'Binder Signed', 'Off Market for Lease Execution', 'Off'
-    status_str = ""
-    if status == 0
-      status_str = "Off"
-    elsif status == 1
-      status_str = "Pending"
-    elsif status == 2
-      status_str = "Active"
-    end 
-      
-  	summary = status_str + ' - ' + property_category
+  	summary = property_category
   	if property_sub_type
   		summary += ' (' + property_sub_type + ')'
   	end
@@ -169,10 +160,20 @@ class CommercialListing < ActiveRecord::Base
       .where("code ILIKE ?", "%#{params[:landlord]}%")
     end
 
-    # search features
-    # if params[:property_type]
-    #   @running_list = @running_list.joins(:commercial_property_type)
-    #   .where("commercial_property_type_id ILIKE ?", "%#{params[:landlord]}%")
+    # sq footage
+    if params[:sq_footage_min] && params[:sq_footage_max]
+      @running_list = @running_list.where("sq_footage >= ? AND sq_footage <= ?", params[:sq_footage_min], params[:sq_footage_max])
+    elsif params[:sq_footage_min] && !params[:sq_footage_max]
+      @running_list = @running_list.where("sq_footage >= ?", params[:sq_footage_min])
+    elsif !params[:sq_footage_min] && params[:sq_footage_max]
+      @running_list = @running_list.where("sq_footage <= ?", params[:sq_footage_max])
+    end
+
+    # search landlord code
+    if params[:commercial_property_type_id]
+      @running_list = @running_list
+      .where("commercial_property_type_id = ?", params[:commercial_property_type_id])
+    end
       
     return @running_list
   end
@@ -236,7 +237,7 @@ class CommercialListing < ActiveRecord::Base
         id: cunits[i].id,
         building_unit: cunits[i].building_unit,
         rent: cunits[i].rent,
-        property_type: cunits[i].commercial_property_type,
+        property_type: cunits[i].property_sub_type,
         sq_footage: cunits[i].sq_footage
        }
 

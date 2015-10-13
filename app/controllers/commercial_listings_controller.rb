@@ -324,13 +324,14 @@ class CommercialListingsController < ApplicationController
         params[:commercial_listing][:commercial_property_type_id] = params[:commercial_property_type_id]
       end
 
-      data = params[:commercial_listing].permit(#:building_unit, :rent, :status, :available_by, :building_id, 
-        :user_id, :include_photos,
+      data = params[:commercial_listing].permit(
+        :user_id, :include_photos, :sq_footage_min, :sq_footage_max,
         :sq_footage, :floor, :building_size, :build_to_suit, :minimum_divisible, :maximum_contiguous,
         :lease_type, :is_sublease, :property_description, :location_description,
         :construction_status, :lease_term_months,
         :rate_is_negotiable, :total_lot_size, :property_type, :commercial_property_type_id,
-        :commercial_unit_id, :inaccuracy_description,
+        :commercial_unit_id, :inaccuracy_description, :has_basement, :basement_sq_footage,
+        :has_ventilation, :key_money_required, :key_money_amt, :listing_title,
         :unit => [:building_unit, :rent, :available_by, :access_info, :status, :open_house, :oh_exclusive, 
           :building_id, :primary_agent_id, :listing_agent_id, :exclusive ],
         )

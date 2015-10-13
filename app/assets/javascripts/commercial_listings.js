@@ -37,9 +37,11 @@ CommercialUnits = {};
         address: $('#commercial #address').val(),
         rent_min: $('#commercial #rent_min').val(),
         rent_max: $('#commercial #rent_max').val(),
+        sq_footage_min: $('#commercial #sq_footage_min').val(),
+        sq_footage_max: $('#commercial #sq_footage_max').val(),
         landlord: $('#commercial #landlord').val(),
         status: $('#commercial #status').val(),
-        property_type: $('#commercial #property_type').val(),
+        commercial_property_type_id: $('#commercial #commercial_property_type_id').val(),
         listing_id: $('#commercial #listing_id').val(),
         neighborhood_ids: $('#commercial #neighborhood_ids').val(),
         sort_by: sort_by_col,
@@ -207,12 +209,14 @@ CommercialUnits = {};
     $('#commercial #address').bind('railsAutocomplete.select', CommercialUnits.throttledSearch);
     $('#commercial #address').change(CommercialUnits.throttledSearch);
     $('#commercial #rent_min').change(CommercialUnits.throttledSearch);
+    $('#commercial #sq_footage_min').change(CommercialUnits.throttledSearch);
+    $('#commercial #sq_footage_max').change(CommercialUnits.throttledSearch);
     $('#commercial #rent_max').change(CommercialUnits.throttledSearch);
     $('#commercial #landlord').bind('railsAutocomplete.select', CommercialUnits.throttledSearch);
     $('#commercial #landlord').change(CommercialUnits.throttledSearch);
     $('#commercial #status').change(CommercialUnits.throttledSearch);
     $('#commercial #neighborhood_ids').change(CommercialUnits.throttledSearch);
-    $('#commercial #property_type').change(CommercialUnits.throttledSearch);
+    $('#commercial #commercial_property_type_id').change(CommercialUnits.throttledSearch);
     $('#commercial #listing_id').change(CommercialUnits.throttledSearch);
 
     // for drag n dropping photos

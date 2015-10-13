@@ -212,10 +212,14 @@
 				  	<% end %>
 				  </div>
 				  <div class="col-md-3">
-				    
+				    <strong>Basement</strong>
 				  </div>
 				  <div class="col-md-3">
-				  	
+				    <% if @commercial_unit.has_basement? %>
+				    	<%= @commercial_unit.basement_sq_footage %> Sq Ft
+				    <% else %>
+				    	None
+				    <% end %>
 				  </div>
 				</div>
 
@@ -231,10 +235,14 @@
 				    <% end %>
 				  </div>
 				  <div class="col-md-3">
-				  
+				    <strong>Key Money</strong>
 				  </div>
 				  <div class="col-md-3">
-				  
+				    <% if @commercial_unit.key_money_required? %>
+				    	<%= money_formatted(@commercial_unit.key_money_amt) %>
+				    <% else %>
+				    	None
+				    <% end %>
 				  </div>
 				</div>
 
@@ -261,6 +269,29 @@
 				  	<%= @commercial_unit.lease_term_months %> Months
 				  </div>
 				  <div class="col-md-3">
+				    <strong>Primary Agent</strong>
+				  </div>
+				  <div class="col-md-3">
+				  	<% if @commercial_unit.unit.primary_agent %>
+	    				<%= link_to @commercial_unit.unit.primary_agent.name, @commercial_unit.unit.primary_agent %>
+	    			<% else %>
+	    				None
+	    			<% end %>
+				  </div>
+				</div>
+
+				<div class="row">
+				  <div class="col-md-3">
+				    <strong>Is Sublease?</strong>
+				  </div>
+				  <div class="col-md-3">
+				  	<% if @commercial_unit.is_sublease %>
+				    	Yes
+				    <% else %>
+				    	No
+				    <% end %>
+				  </div>
+				  <div class="col-md-3">
 				    <strong>Listing ID</strong>
 				  </div>
 				  <div class="col-md-3">
@@ -270,10 +301,24 @@
 
 				<div class="row">
 				  <div class="col-md-3">
-				    <strong>Is Sublease</strong>
+				    <strong>Liquor Eligible?</strong>
 				  </div>
 				  <div class="col-md-3">
-				  	<% if @commercial_unit.is_sublease %>
+				  	<% if @commercial_unit.liquor_eligible %>
+				    	Yes
+				    <% else %>
+				    	No
+				    <% end %>
+				  </div>
+				  
+				</div>
+
+				<div class="row">
+				  <div class="col-md-3">
+				    <strong>Has Ventilation?</strong>
+				  </div>
+				  <div class="col-md-3">
+				  	<% if @commercial_unit.has_ventilation %>
 				    	Yes
 				    <% else %>
 				    	No
@@ -284,8 +329,23 @@
 
 				<br />
 				<div class="row">
+					<div class="col-md-3">
+						<strong>Access Info</strong>
+					</div>
+					<div class="col-md-3">
+						<% if !@commercial_unit.unit.access_info.blank? %>
+							<%= @commercial_unit.unit.access_info %>
+						<% else %>
+							N/A
+						<% end %>
+					</div>
+				</div>
+
+				<br />
+				<div class="row">
 					<div class="col-md-12">
 						<h3>Property Description</h3>
+						<p><strong><%= @commercial_unit.listing_title %></strong></p>
 						<% if @commercial_unit.unit.exclusive? %>
 	    				<strong class="exclusive-listing">Myspace Exclusive!</strong>
 	    				<br />
