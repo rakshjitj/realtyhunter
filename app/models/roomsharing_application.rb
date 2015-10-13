@@ -6,7 +6,8 @@ class RoomsharingApplication < ActiveRecord::Base
 	
   VALID_TELEPHONE_REGEX = /(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/
 
-	validates :full_name, presence: true, length: {maximum: 200}
+	validates :f_name, presence: true, length: {maximum: 100}
+	validates :l_name, presence: true, length: {maximum: 100}
 	validates :ssn, presence: true, length: {maximum: 50}
 	validates :dob, presence: true, length: {maximum: 50}
 	validates :cell_phone, length: {maximum: 25}, presence: true,
@@ -28,7 +29,8 @@ class RoomsharingApplication < ActiveRecord::Base
 	validates :relative_name, length: {maximum: 200}
 	validates :relative_address, length: {maximum: 500}
 	validates :relative_phone, length: {maximum: 20}
-	validates :listing_id, presence: true, length: {maximum: 20}
+	validates :listing_address, presence: true, length: {maximum: 20}
+	validates :listing_unit, presence: true, length: {maximum: 20}
 
 	# current
 	validates :curr_street_address, presence: true, length: {maximum: 100}
@@ -75,7 +77,4 @@ class RoomsharingApplication < ActiveRecord::Base
 	validates_inclusion_of :received_disclosure, in: [true]
 	validates_inclusion_of :accepts_terms, in: [true]
 
-	def first_name
-		full_name.split(' ')[0]
-	end
 end
