@@ -1,6 +1,7 @@
 class Unit < ActiveRecord::Base
 	belongs_to :building, touch: true
   belongs_to :primary_agent, :class_name => 'User', touch: true
+  belongs_to :primary_agent2, :class_name => 'User', touch: true
   has_many :images, dependent: :destroy
   has_many :documents, dependent: :destroy
   has_one :residential_listing, dependent: :destroy
@@ -16,7 +17,7 @@ class Unit < ActiveRecord::Base
     :active, :pending, :off, #residential
     :offer_submitted, :offer_accepted, :binder_signed, :off_market_for_lease_execution #commercial
    ]
-  #scope :on_market, ->{where.not(status: Unit.statuses["off"])}
+  
 	validates :status, presence: true, inclusion: { 
     in: ['active', 'pending', 'off', 
          'offer_submitted', 'offer_accepted', 'binder_signed', 'off_market_for_lease_execution'] }

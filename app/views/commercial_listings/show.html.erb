@@ -292,7 +292,7 @@
 				    <% end %>
 				  </div>
 				  <div class="col-md-3">
-				    <strong>Primary Agent</strong>
+				    <strong>Primary Agent #1</strong>
 				  </div>
 				  <div class="col-md-3">
 				  	<% if @commercial_unit.unit.primary_agent %>
@@ -315,10 +315,14 @@
 				    <% end %>
 				  </div>
 				  <div class="col-md-3">
-				    <strong>Listing ID</strong>
+				    <strong>Primary Agent #2</strong>
 				  </div>
 				  <div class="col-md-3">
-				    <%= @commercial_unit.unit.listing_id %>
+				  	<% if @commercial_unit.unit.primary_agent2 %>
+	    				<%= link_to @commercial_unit.unit.primary_agent2.name, @commercial_unit.unit.primary_agent2 %>
+	    			<% else %>
+	    				None
+	    			<% end %>
 				  </div>
 				</div>
 
@@ -333,7 +337,12 @@
 				    	No
 				    <% end %>
 				  </div>
-				  <!-- blank column -->
+				  <div class="col-md-3">
+				    <strong>Listing ID</strong>
+				  </div>
+				  <div class="col-md-3">
+				    <%= @commercial_unit.unit.listing_id %>
+				  </div>
 				</div>
 
 				<br />

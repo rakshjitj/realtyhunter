@@ -163,26 +163,6 @@ class CommercialListingsController < ApplicationController
     end
   end
 
-  # GET
-  # handles ajax call. uses latest data in modal
-  # Modal collects info and prep unit to be taken off the market
-  # def print_modal
-  #   respond_to do |format|
-  #     format.js  
-  #   end
-  # end
-
-  #def print_private
-    #respond_to do |format|
-    #  format.pdf do
-        # render pdf: current_user.name + ' Commercial - Private',
-        #   template: "/commercial_units/print_private.pdf.erb",
-        #   #disposition: "attachment",
-        #   layout:   "/layouts/pdf_layout.html"
-    #  end
-    #end
-  #end
-
   # PATCH/PUT /commercial_units/1
   # PATCH/PUT /commercial_units/1.json
   def update
@@ -373,9 +353,9 @@ class CommercialListingsController < ApplicationController
         :construction_status, :lease_term_months,
         :rate_is_negotiable, :total_lot_size, :property_type, :commercial_property_type_id,
         :commercial_unit_id, :inaccuracy_description, :has_basement, :basement_sq_footage,
-        :has_ventilation, :key_money_required, :key_money_amt, :listing_title,
+        :has_ventilation, :key_money_required, :key_money_amt, :listing_title, :liquor_eligible,
         :unit => [:building_unit, :rent, :available_by, :access_info, :status, :open_house, :oh_exclusive, 
-          :building_id, :primary_agent_id, :listing_agent_id, :exclusive ],
+          :building_id, :primary_agent_id, :primary_agent2_id, :listing_agent_id, :exclusive ],
         )
 
       if data[:unit]

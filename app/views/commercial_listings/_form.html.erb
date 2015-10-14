@@ -172,13 +172,30 @@
         <br />
         <div class="row">
           <div class="col-md-4 form-label-responsive">
-            <%= f.label :primary_agent_id, "Primary Agent" %>
+            <%= f.label :primary_agent_id, "Primary Agent #1" %>
           </div>
           <div class="col-md-4">
             <%= f.fields_for @commercial_unit.unit do |unit_form| %>
               <%= unit_form.select(:primary_agent_id, 
                 options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
                   [@commercial_unit.unit.primary_agent ? @commercial_unit.unit.primary_agent.id : '']), 
+                {prompt: "Choose one..."},
+                class: 'form-control',
+                :include_blank => true) %>
+            <% end %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-4 form-label-responsive">
+            <%= f.label :primary_agent_id2, "Primary Agent #2" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.fields_for @commercial_unit.unit do |unit_form| %>
+              <%= unit_form.select(:primary_agent2_id, 
+                options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
+                  [@commercial_unit.unit.primary_agent2 ? @commercial_unit.unit.primary_agent2.id : '']), 
                 {prompt: "Choose one..."},
                 class: 'form-control',
                 :include_blank => true) %>
