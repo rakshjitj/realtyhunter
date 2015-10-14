@@ -169,9 +169,9 @@ xml.streeteasy :version => "1.6" do
 							xml.company @company.name
 							if @agent_images[agent.id]
 								if @agent_images[agent.id].file.exists?(:large)
-									xml.photo @agent_images[agent.id].file.url(:large)
+									xml.photo url:@agent_images[agent.id].file.url(:large)
 								else
-									xml.photo @agent_images[agent.id].file.url(:medium)
+									xml.photo url:@agent_images[agent.id].file.url(:medium)
 								end
 							end
 						  xml.url agent.public_url
@@ -190,7 +190,7 @@ xml.streeteasy :version => "1.6" do
 				xml.media do
 					if @images[listing.unit_id]
 						@images[listing.unit_id].each do |i|
-							xml.photo i.file.url(:large), position: i.priority
+							xml.photo url:i.file.url(:large), position: i.priority, desription:""
 						end
 					end
 				end
