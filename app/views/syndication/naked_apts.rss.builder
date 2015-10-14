@@ -184,6 +184,27 @@ xml.streeteasy :version => "1.6" do
 					  		xml.fax agent.office_fax
 					  	end
 						end
+						# @primary_agents[listing.primary_agent2_id].each do |agent| 
+						# 	xml.agent id: agent.id
+						# 	xml.name agent.name
+						# 	xml.company @company.name
+						# 	if @agent_images[agent.id]
+						# 		if @agent_images[agent.id].file.exists?(:large)
+						# 			xml.photo @agent_images[agent.id].file.url(:large)
+						# 		else
+						# 			xml.photo @agent_images[agent.id].file.url(:medium)
+						# 		end
+						# 	end
+						#   xml.url agent.public_url
+					 #  	xml.email agent.email
+					 #  	xml.lead_email agent.email
+					 #  	xml.phone_numbers do
+					 #  		xml.main agent.mobile_phone_number
+					 #  		xml.office agent.office_telephone
+					 #  		xml.cell agent.mobile_phone_number
+					 #  		xml.fax agent.office_fax
+					 #  	end
+						# end
 					end
 				end
 

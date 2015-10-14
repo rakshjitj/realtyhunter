@@ -78,7 +78,8 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'commercial_listings.floor',
 					'commercial_listings.sq_footage',
 					'units.id as unit_id',
-					'units.primary_agent_id'
+					'units.primary_agent_id',
+					'units.primary_agent2_id'
 				)
 				
 				listings
@@ -113,6 +114,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'residential_listings.baths', 'residential_listings.description',
 					'units.id as unit_id',
 					'units.primary_agent_id',
+					'units.primary_agent2_id',
 					'residential_listings.id AS r_id', 
 				)
 
@@ -152,6 +154,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'commercial_listings.floor',
 					'commercial_listings.sq_footage',
 					'units.primary_agent_id',
+					'units.primary_agent2_id',
 					'commercial_listings.id as c_id',
 				)
 
@@ -285,7 +288,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					# agents
 					if search_params[:agents] && !search_params[:agents].empty?
 						agent_ids = search_params[:agents].split(',')
-						listings = listings.where(primary_agent_id: agent_ids)
+						listings = listings.where('units.primary_agent_id in (?) OR units.primary_agent2_id in (?)', agent_ids, agent_ids)
 					end
 
 					# updated_at

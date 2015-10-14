@@ -116,7 +116,6 @@ module API
 				elsif search_params[:listing_type] == "30" #commercial
 					@listings = commercial_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
-					#@primary_agents = CommercialListing.get_primary_agents(@listings)
 
 				else
 					@listings = all_listings_search(@user.company_id, search_params)

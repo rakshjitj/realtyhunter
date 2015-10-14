@@ -29,7 +29,7 @@ xml.hotPadsItems version:"2.1" do
 			xml.longitude listing.lng
 			# must be full time 
 			xml.lastUpdated listing.updated_at.strftime('%FT%T%:z')
-			# TODO: only accepts 1 contact
+			# TODO: only accepts 1 contact on residential listings
 			if @primary_agents[listing.primary_agent_id]
 				agent = @primary_agents[listing.primary_agent_id][0]
 				xml.contactName agent.name
@@ -48,7 +48,7 @@ xml.hotPadsItems version:"2.1" do
 			# 		xml.appointmentRequired
 			# 	end
 			# end
-			xml.previewMessage listing.description[0..255]
+			xml.previewMessage listing.description ? listing.description[0..255] : listing.description
 			xml.description listing.description
 			xml.terms # TODO
 			# terms>One year lease, then month to month. Deposit equals first month's rent</terms>
@@ -144,11 +144,13 @@ xml.hotPadsItems version:"2.1" do
 			#xml.HOA-FEE
 			#xml.deposit 
 			xml.numBedrooms listing.beds
-			xml.numFullBaths listing.baths.to_i
+			if listing.baths
+				xml.numFullBaths listing.baths.to_i
 
-			decimal_idx = listing.baths.to_s.index('.')
-			if decimal_idx > -1
-				xml.numHalfBaths 1
+				decimal_idx = listing.baths.to_s.index('.')
+				if decimal_idx > -1
+					xml.numHalfBaths 1
+				end
 			end
 			#xml.squareFeet
 			if listing.available_by

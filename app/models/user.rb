@@ -65,9 +65,9 @@ class User < ActiveRecord::Base
   def residential_units(active_only=false)
     ids = []
     if active_only
-      ids = self.primary_units.active.map(&:id)
+      ids = self.primary_units.active.map(&:id) + self.primary2_units.active.map(&:id)
     else
-      ids = self.primary_units.map(&:id)
+      ids = self.primary_units.map(&:id) + self.primary2_units.active.map(&:id)
     end
     
     ResidentialListing.for_units(ids)
@@ -76,9 +76,9 @@ class User < ActiveRecord::Base
   # primary units only currently
   def commercial_units(active_only=false)
     if active_only
-      ids = self.primary_units.active.map(&:id)
+      ids = self.primary_units.active.map(&:id) + self.primary2_units.active.map(&:id)
     else
-      ids = self.primary_units.map(&:id)
+      ids = self.primary_units.map(&:id) + self.primary2_units.active.map(&:id)
     end
     CommercialListing.for_units(ids)
   end

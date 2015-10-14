@@ -45,7 +45,7 @@ class Unit < ActiveRecord::Base
 
   # Used by Nestio API
   def self.get_primary_agents(list)
-    agent_ids = list.map(&:primary_agent_id)
+    agent_ids = list.map(&:primary_agent_id) + list.map(&:primary_agent2_id)
     User.joins(:office).where(id: agent_ids)
       .select('id', 'name', 'email', 'mobile_phone_number', 'phone_number', 'public_url',
         'offices.telephone AS office_telephone', 'offices.fax AS office_fax')
@@ -54,7 +54,7 @@ class Unit < ActiveRecord::Base
 
   # Used by streeteasy API
   def self.get_primary_agents_and_images(list)
-    agent_ids = list.map(&:primary_agent_id)
+    agent_ids = list.map(&:primary_agent_id) + list.map(&:primary_agent2_id)
     users = User.joins(:office).where(id: agent_ids)
       .select('id', 'name', 'email', 'mobile_phone_number', 'phone_number', 'public_url',
         'offices.telephone AS office_telephone', 'offices.fax AS office_fax')

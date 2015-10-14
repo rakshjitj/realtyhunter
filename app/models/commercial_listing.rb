@@ -79,13 +79,14 @@ class CommercialListing < ActiveRecord::Base
   end
 
    def self.export_all(user)
-    CommercialListing.joins([:commercial_property_type, unit: [:primary_agent, building: [:company, :landlord, :neighborhood]]])
+    CommercialListing.joins([:commercial_property_type, unit: [building: [:company, :landlord, :neighborhood]]])
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address', 
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
 
         'buildings.lat', 'buildings.lng', 'units.listing_id', 'units.access_info', 'units.listing_id',
         'units.building_unit', 'units.status','units.rent', 'units.available_by','units.exclusive',
+        'units.primary_agent_id', 'units.primary_agent2_id',
         'commercial_listings.sq_footage', 'commercial_listings.floor', 'commercial_listings.building_size', 
         'commercial_listings.build_to_suit', 'commercial_listings.minimum_divisible', 'commercial_listings.maximum_contiguous', 
         'commercial_listings.lease_type', 'commercial_listings.is_sublease', 'commercial_listings.listing_title', 
@@ -98,7 +99,6 @@ class CommercialListing < ActiveRecord::Base
         'neighborhoods.name AS neighborhood_name', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
-        'users.name as primary_agent_name'
         )
     end
   
