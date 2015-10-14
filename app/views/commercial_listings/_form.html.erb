@@ -1,4 +1,6 @@
-<div id="commercial" data-runit-id="<%= @commercial_unit.id %>">
+<div id="commercial" 
+  data-cunit-id="<%= @commercial_unit.id %>" 
+  data-property-type="<%= @commercial_unit.commercial_property_type ? @commercial_unit.commercial_property_type.property_type: '' %>">
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
@@ -98,7 +100,8 @@
           <div class="col-md-5">
             <div class="field">
               <!-- gets updated when property_type changes -->
-              <%= render 'commercial_listings/sub_types_select' %>
+              <%= render partial: 'commercial_listings/sub_types_select', 
+                locals:{ commercial_unit:@commercial_unit, property_sub_types: @property_sub_types} %>
             </div>
           </div>
         </div>

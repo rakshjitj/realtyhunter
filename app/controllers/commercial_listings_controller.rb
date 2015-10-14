@@ -84,7 +84,7 @@ class CommercialListingsController < ApplicationController
   def update_subtype
     ptype = params[:property_type]
     @property_sub_types = CommercialPropertyType.subtypes_for(ptype, current_user.company)
-    puts "\n\n\n **** #{@property_sub_types.inspect}"
+    puts "\n\n\n **** #{@property_sub_types.inspect} #{@commercial_unit}"
     respond_to do |format|
       format.js  
     end

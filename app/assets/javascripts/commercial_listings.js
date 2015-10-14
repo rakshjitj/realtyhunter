@@ -3,12 +3,13 @@ CommercialUnits = {};
 (function() {
 
   CommercialUnits.updatePropertySubTypes = function (ptype) {
-    var url_path = $('#commercial_listing_property_type').attr('data-update-subtype-path');
-    //console.log('got path ', url_path);
+    var id = $('#commercial').attr('data-cunit-id');
+    console.log('got path ', id);
     $.ajax({
-      url: "/commercial_listings/update_subtype", //url_path,
+      url: "/commercial_listings/update_subtype",
       data: {
-          property_type: ptype
+          property_type: ptype,
+          id: id
       },
       dataType: "script",
     });
@@ -168,6 +169,7 @@ CommercialUnits = {};
       console.log(textSelected);
       CommercialUnits.updatePropertySubTypes(textSelected);
     });
+    CommercialUnits.updatePropertySubTypes($('#commercial').attr('data-property-type'));
   	
     // make sure datepicker is formatted before setting initial date below
     $('.datepicker').datetimepicker({
