@@ -87,7 +87,7 @@ class CommercialListingsController < ApplicationController
   def update_subtype
     ptype = params[:property_type]
     @property_sub_types = CommercialPropertyType.subtypes_for(ptype, current_user.company)
-    puts "\n\n\n **** #{@property_sub_types.inspect} #{@commercial_unit}"
+    #puts "\n\n\n **** #{@property_sub_types.inspect} #{@commercial_unit}"
     respond_to do |format|
       format.js  
     end
@@ -240,8 +240,14 @@ class CommercialListingsController < ApplicationController
   # GET /refresh_images
   # ajax call
   def refresh_images
-    # invalidate cache
-    #@commercial_unit.clear_cache
+    respond_to do |format|
+      format.js  
+    end
+  end
+
+  # GET 
+  # ajax call
+  def refresh_documents
     respond_to do |format|
       format.js  
     end

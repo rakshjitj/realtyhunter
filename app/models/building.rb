@@ -13,6 +13,7 @@ class Building < ActiveRecord::Base
 	has_many :units, dependent: :destroy
 
 	has_many :images, dependent: :destroy
+  has_many :documents, dependent: :destroy
   
 	has_and_belongs_to_many :building_amenities
 	has_and_belongs_to_many :utilities

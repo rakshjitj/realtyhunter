@@ -179,7 +179,7 @@ class SalesListing < ActiveRecord::Base
     if params[:neighborhood_ids]
       neighborhood_ids = params[:neighborhood_ids][0, 256]
       neighborhoods = neighborhood_ids.split(",").select{|i| !i.strip.empty?}
-      puts "**** #{neighborhoods.inspect}"
+      #puts "**** #{neighborhoods.inspect}"
       if neighborhoods.length > 0 # ignore empty selection
         @running_list = @running_list
          .where('neighborhood_id IN (?)', neighborhoods)

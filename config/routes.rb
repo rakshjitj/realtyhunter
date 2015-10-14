@@ -68,6 +68,14 @@ Rails.application.routes.draw do
     end
   end
 
+  concern :documents_uploadable do
+    resources :documents, only: [:create, :destroy] do
+      collection do
+        put 'sort'
+      end
+    end
+  end
+
   concern :unit_images_uploadable do
     resources :unit_images, only: [:create, :destroy] do
       collection do
@@ -76,13 +84,14 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :buildings, concerns: :images_uploadable do
+  resources :buildings, concerns: [:images_uploadable, :documents_uploadable] do
     get :autocomplete_building_formatted_street_address, :on => :collection
     member do
       get 'delete_modal'
       get 'inaccuracy_modal'
       patch 'send_inaccuracy'
       get 'refresh_images'
+      get 'refresh_documents'
       get 'filter_listings' 
     end
     collection do
@@ -93,7 +102,7 @@ Rails.application.routes.draw do
 
   #resources :residential_forms, only: [:new, :create, :edit, :update]
 
-  resources :residential_listings, concerns: :unit_images_uploadable do
+  resources :residential_listings, concerns: [:unit_images_uploadable, :documents_uploadable] do
     get :autocomplete_building_formatted_street_address, :on => :collection
     get :autocomplete_landlord_code, :on => :collection
     member do
@@ -105,6 +114,7 @@ Rails.application.routes.draw do
       get 'take_off_modal'
       patch 'take_off'
       get 'refresh_images'
+      get 'refresh_documents'
     end
     collection do
       get 'filter'
@@ -120,7 +130,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :sales_listings, concerns: :unit_images_uploadable do
+  resources :sales_listings, concerns: [:unit_images_uploadable, :documents_uploadable] do
     get :autocomplete_building_formatted_street_address, :on => :collection
     get :autocomplete_landlord_code, :on => :collection
     member do
@@ -132,6 +142,7 @@ Rails.application.routes.draw do
       get 'take_off_modal'
       patch 'take_off'
       get 'refresh_images'
+      get 'refresh_documents'
     end
     collection do
       get 'filter'
@@ -162,7 +173,7 @@ Rails.application.routes.draw do
 
   resources :building_amenities
 
-  resources :commercial_listings, concerns: :unit_images_uploadable do
+  resources :commercial_listings, concerns: [:unit_images_uploadable, :documents_uploadable] do
     get :autocomplete_building_formatted_street_address, :on => :collection
     get :autocomplete_landlord_code, :on => :collection
     member do
@@ -172,6 +183,7 @@ Rails.application.routes.draw do
       get 'inaccuracy_modal'
       patch 'send_inaccuracy'
       get 'refresh_images'
+      get 'refresh_documents'
     end
     collection do
       get 'filter'

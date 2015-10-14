@@ -6,12 +6,48 @@
 <ul class="nav nav-tabs" role="tablist">
   <li role="presentation" class="active"><a href="#basic-info" aria-controls="basic-info" role="tab" data-toggle="tab">Basic Info</a></li>
   <li role="photos"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+  <li role="photos"><a href="#documents" aria-controls="documents" role="tab" data-toggle="tab">Documents</a></li>
 </ul>
 
 <div class="panel panel-default">
   <div class="panel-body no-top-padding">
 
   <div class="tab-content">
+    <!-- ******************** third tabpanel - documents ******************** -->
+    <div role="tabpanel" class="tab-pane fade" id="documents">
+      
+      <% if @commercial_unit.id %>
+
+        <br />
+        <%= form_for(@commercial_unit, :url => commercial_listing_documents_path(@commercial_unit), 
+          html: {multipart: true, class: "dropzone", id: "cunit-dropzone-docs"}, method: :post) do |f| %>
+          <div class="fallback">
+            <%= f.file_field :file %><br>
+            <%= f.submit "Upload" %>
+          </div>
+        <% end %>
+      
+        <br />
+        <div class="row">
+          <div class="col-md-12">
+            <p><strong>Edit current documents (drag to reorder):</strong></p>
+            <div class="documents sortable">
+              <% if @commercial_unit.unit.documents.length > 0 %>
+                <%= render 'documents',  locals: { commercial_unit: @commercial_unit } %>
+              <% else %>
+                <p>(No files uploaded yet.)</p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+      <% else %>
+        <br />
+        <strong>Save the basic info first!</strong>
+      <% end %>
+      
+    </div><!-- end tabpanel photos -->
+
     <!-- ******************** second tabpanel - photos ******************** -->
     <div role="tabpanel" class="tab-pane fade" id="photos">
       
@@ -34,7 +70,7 @@
               <% if @commercial_unit.unit.images.length > 0 %>
                 <%= render 'images',  locals: { commercial_unit: @commercial_unit } %>
               <% else %>
-                <p>(No files uploaded yet.)</p>
+                <p>(No photos uploaded yet.)</p>
               <% end %>
             </div>
           </div>

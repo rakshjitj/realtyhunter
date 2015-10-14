@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151013173752) do
+ActiveRecord::Schema.define(version: 20151014182528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,8 +71,10 @@ ActiveRecord::Schema.define(version: 20151013173752) do
     t.integer  "images_id"
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
+    t.integer  "documents_id"
   end
 
+  add_index "buildings", ["documents_id"], name: "index_buildings_on_documents_id", using: :btree
   add_index "buildings", ["formatted_street_address"], name: "index_buildings_on_formatted_street_address", using: :btree
   add_index "buildings", ["images_id"], name: "index_buildings_on_images_id", using: :btree
   add_index "buildings", ["updated_at"], name: "index_buildings_on_updated_at", using: :btree
@@ -159,6 +161,17 @@ ActiveRecord::Schema.define(version: 20151013173752) do
   add_index "companies", ["wufoo_contact_us_forms_id"], name: "index_companies_on_wufoo_contact_us_forms_id", using: :btree
   add_index "companies", ["wufoo_listings_forms_id"], name: "index_companies_on_wufoo_listings_forms_id", using: :btree
   add_index "companies", ["wufoo_partner_forms_id"], name: "index_companies_on_wufoo_partner_forms_id", using: :btree
+
+  create_table "documents", force: :cascade do |t|
+    t.string   "file_file_name"
+    t.string   "file_content_type"
+    t.integer  "file_file_size"
+    t.datetime "file_updated_at"
+    t.boolean  "file_processing"
+    t.integer  "priority"
+    t.integer  "building_id"
+    t.integer  "unit_id"
+  end
 
   create_table "employee_titles", force: :cascade do |t|
     t.string   "name"
@@ -457,9 +470,11 @@ ActiveRecord::Schema.define(version: 20151013173752) do
     t.string   "public_url"
     t.integer  "sales_listing_id"
     t.boolean  "exclusive"
+    t.integer  "documents_id"
   end
 
   add_index "units", ["commercial_listing_id"], name: "index_units_on_commercial_listing_id", using: :btree
+  add_index "units", ["documents_id"], name: "index_units_on_documents_id", using: :btree
   add_index "units", ["images_id"], name: "index_units_on_images_id", using: :btree
   add_index "units", ["rent"], name: "index_units_on_rent", using: :btree
   add_index "units", ["residential_listing_id"], name: "index_units_on_residential_listing_id", using: :btree

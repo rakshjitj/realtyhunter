@@ -1,10 +1,82 @@
+DropZoneHelper = {};
+(function() {
+  //DropZoneHelper.sectionID; // #commercial
+  //DropZoneHelper.controlllerPath; // commercial_listings
+
+  DropZoneHelper.makeSortable = function(sectionID) {
+    // call sortable on our div with the sortable class
+    $('#' + sectionID + ' .sortable').sortable({
+      forcePlaceholderSize: true,
+      placeholderClass: 'col col-xs-2 border border-maroon',
+      dragImage: null
+    });
+  };
+
+  DropZoneHelper.removeImage = function (id, unit_id, controllerPath) {
+    // make a DELETE ajax request to delete the file
+    $.ajax({
+      type: 'DELETE',
+      url: '/' + controllerPath + '/' + unit_id + '/unit_images/' + id,
+      success: function(data){
+        //console.log(data.message);
+        $.getScript('/' + controllerPath + '/' + unit_id + '/refresh_images')
+      },
+      error: function(data) {
+        //console.log('ERROR:', data);
+      }
+    });
+  };
+
+  DropZoneHelper.removeDocument = function (id, unit_id, controllerPath) {
+    // make a DELETE ajax request to delete the file
+    $.ajax({
+      type: 'DELETE',
+      url: '/' + controllerPath + '/' + unit_id + '/documents/' + id,
+      success: function(data){
+        //console.log(data.message);
+        $.getScript('/' + controllerPath + '/' + unit_id + '/refresh_documents')
+      },
+      error: function(data) {
+        //console.log('ERROR:', data);
+      }
+    });
+  };
+
+  DropZoneHelper.setPositions = function(sectionID) {
+    // loop through and give each task a data-pos
+    // attribute that holds its position in the DOM
+    $('#' + sectionID + ' .img-thumbnail').each(function(i) {
+        $(this).attr("data-pos", i+1);
+    });
+  };
+
+  DropZoneHelper.updateRemoveImgLinks = function(sectionID, controllerPath) {
+    $('#' + sectionID + ' .delete-unit-img').click(function(event) {
+      event.preventDefault();
+      var id = $(this).attr('data-id');
+      var unit_id = $(this).attr('data-cunit-id');
+      DropZoneHelper.removeImage(id, unit_id, controllerPath);
+    });
+  };
+
+  DropZoneHelper.updateRemoveDocLinks = function(sectionID, controllerPath) {
+    $('#' + sectionID + ' .delete-unit-doc').click(function(event) {
+      event.preventDefault();
+      var id = $(this).attr('data-id');
+      var unit_id = $(this).attr('data-cunit-id');
+      DropZoneHelper.removeDocument(id, unit_id, controllerPath);
+    });
+  };
+
+})();
+
 CommercialUnits = {};
 
 (function() {
 
   CommercialUnits.updatePropertySubTypes = function (ptype) {
     var id = $('#commercial').attr('data-cunit-id');
-    console.log('got path ', id);
+    //console.log('got path ', id);
     $.ajax({
       url: "/commercial_listings/update_subtype",
       data: {
@@ -87,14 +159,6 @@ CommercialUnits = {};
   // search as user types
   CommercialUnits.timer;
   CommercialUnits.throttledSearch = function () {
-    // // only accept letter/number keys as search input
-    // var charTyped = String.fromCharCode(e.which);
-    // if (/[a-z\d]/i.test(charTyped)) {
-    //     console.log("Letter or number typed: " + charTyped);
-    // } else {
-    //   return;
-    // }
-    
     clearTimeout(CommercialUnits.timer);  //clear any interval on key up
     timer = setTimeout(CommercialUnits.doSearch, 500);
   };
@@ -107,45 +171,162 @@ CommercialUnits = {};
     }
   };
 
-  CommercialUnits.makeSortable = function() {
-    // call sortable on our div with the sortable class
-    $('#commercial .sortable').sortable({
-      forcePlaceholderSize: true,
-      placeholderClass: 'col col-xs-2 border border-maroon',
-      dragImage: null
-    });
-  };
+  // CommercialUnits.makeSortable = function() {
+  //   // call sortable on our div with the sortable class
+  //   $('#commercial .sortable').sortable({
+  //     forcePlaceholderSize: true,
+  //     placeholderClass: 'col col-xs-2 border border-maroon',
+  //     dragImage: null
+  //   });
+  // };
 
-  CommercialUnits.removeImage = function (id, unit_id) {
-    // make a DELETE ajax request to delete the file
-    $.ajax({
-      type: 'DELETE',
-      url: '/commercial_listings/' + unit_id + '/unit_images/' + id,
-      success: function(data){
-        //console.log(data.message);
-        $.getScript('/commercial_listings/' + unit_id + '/refresh_images')
+  // CommercialUnits.removeImage = function (id, unit_id) {
+  //   // make a DELETE ajax request to delete the file
+  //   $.ajax({
+  //     type: 'DELETE',
+  //     url: '/commercial_listings/' + unit_id + '/unit_images/' + id,
+  //     success: function(data){
+  //       //console.log(data.message);
+  //       $.getScript('/commercial_listings/' + unit_id + '/refresh_images')
+  //     },
+  //     error: function(data) {
+  //       //console.log('ERROR:', data);
+  //     }
+  //   });
+  // };
+
+  // CommercialUnits.setPositions = function() {
+  //   // loop through and give each task a data-pos
+  //   // attribute that holds its position in the DOM
+  //   $('#commercial .img-thumbnail').each(function(i) {
+  //       $(this).attr("data-pos", i+1);
+  //   });
+  // };
+
+  // CommercialUnits.updateRemoveImgLinks = function() {
+  //   $('#commercial .delete-unit-img').click(function(event) {
+  //     event.preventDefault();
+  //     var id = $(this).attr('data-id');
+  //     var unit_id = $(this).attr('data-cunit-id');
+  //     CommercialUnits.removeImage(id, unit_id);
+  //   });
+  // };
+
+  CommercialUnits.initializeDocumentsDropzone = function() {
+    // grap our upload form by its id
+    $("#cunit-dropzone-docs").dropzone({
+      // restrict image size to a maximum 1MB
+      //maxFilesize: 4,
+      //paramName: "upload[image]",
+      // show remove links on each image upload
+      addRemoveLinks: true,
+      // if the upload was successful
+      success: function(file, response){
+        // find the remove button link of the uploaded file and give it an id
+        // based of the fileID response from the server
+        $(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
+        $(file.previewTemplate).find('.dz-remove').attr('cunit_id', response.cunitID);
+        // add the dz-success class (the green tick sign)
+        $(file.previewElement).addClass("dz-success");
+        $.getScript('/commercial_listings/' + response.cunitID + '/refresh_documents')
+        file.previewElement.remove();
       },
-      error: function(data) {
-        //console.log('ERROR:', data);
+      //when the remove button is clicked
+      removedfile: function(file){
+        // grap the id of the uploaded file we set earlier
+        var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
+        var unit_id = $(file.previewTemplate).find('.dz-remove').attr('unit_id');
+        DropZoneHelper.removeDocument(id, unit_id, 'commercial_listings');
+        file.previewElement.remove();
       }
     });
-  };
 
-  CommercialUnits.setPositions = function() {
-    // loop through and give each task a data-pos
-    // attribute that holds its position in the DOM
-    $('#commercial .img-thumbnail').each(function(i) {
-        $(this).attr("data-pos", i+1);
+    DropZoneHelper.updateRemoveDocLinks('commercial', 'commercial_listings');
+
+    $('.carousel-indicators > li:first-child').addClass('active');
+    $('.carousel-inner > .item:first-child').addClass('active');
+
+    DropZoneHelper.setPositions('commercial');
+    DropZoneHelper.makeSortable('commercial');
+
+    // after the order changes
+    $('#commercial .sortable').sortable().bind('sortupdate', function(e, ui) {
+        // array to store new order
+        updated_order = []
+        // set the updated positions
+        DropZoneHelper.setPositions('commercial');
+        
+        // populate the updated_order array with the new task positions
+        $('.img-thumbnail').each(function(i){
+          updated_order.push({ id: $(this).data('id'), position: i+1 });
+        });
+        //console.log(updated_order);
+        // send the updated order via ajax
+        var cunit_id = $('#commercial').attr('data-cunit-id');
+        $.ajax({
+          type: "PUT",
+          url: '/commercial_listings/' + cunit_id + '/documents/sort',
+          data: { order: updated_order }
+        });
     });
   };
 
-  CommercialUnits.updateRemoveImgLinks = function() {
-    $('#commercial .delete-unit-img').click(function(event) {
-      event.preventDefault();
-      var id = $(this).attr('data-id');
-      var unit_id = $(this).attr('data-cunit-id');
-      //console.log('********', id, unit_id);
-      CommercialUnits.removeImage(id, unit_id);
+  CommercialUnits.initializeImageDropzone = function() {
+    // grap our upload form by its id
+    $("#cunit-dropzone").dropzone({
+      // restrict image size to a maximum 1MB
+      //maxFilesize: 4,
+      //paramName: "upload[image]",
+      // show remove links on each image upload
+      addRemoveLinks: true,
+      // if the upload was successful
+      success: function(file, response){
+        // find the remove button link of the uploaded file and give it an id
+        // based of the fileID response from the server
+        $(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
+        $(file.previewTemplate).find('.dz-remove').attr('cunit_id', response.cunitID);
+        // add the dz-success class (the green tick sign)
+        $(file.previewElement).addClass("dz-success");
+        $.getScript('/commercial_listings/' + response.cunitID + '/refresh_images')
+        file.previewElement.remove();
+      },
+      //when the remove button is clicked
+      removedfile: function(file){
+        // grap the id of the uploaded file we set earlier
+        var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
+        var unit_id = $(file.previewTemplate).find('.dz-remove').attr('unit_id');
+        DropZoneHelper.removeImage(id, unit_id, 'commercial_listings');
+        file.previewElement.remove();
+      }
+    });
+
+    DropZoneHelper.updateRemoveImgLinks('commercial', 'commercial_listings');
+
+    $('.carousel-indicators > li:first-child').addClass('active');
+    $('.carousel-inner > .item:first-child').addClass('active');
+
+    DropZoneHelper.setPositions('commercial');
+    DropZoneHelper.makeSortable('commercial');
+
+    // after the order changes
+    $('#commercial .sortable').sortable().bind('sortupdate', function(e, ui) {
+        // array to store new order
+        updated_order = []
+        // set the updated positions
+        DropZoneHelper.setPositions('commercial');
+        
+        // populate the updated_order array with the new task positions
+        $('.img-thumbnail').each(function(i){
+          updated_order.push({ id: $(this).data('id'), position: i+1 });
+        });
+        //console.log(updated_order);
+        // send the updated order via ajax
+        var cunit_id = $('#commercial').attr('data-cunit-id');
+        $.ajax({
+          type: "PUT",
+          url: '/commercial_listings/' + cunit_id + '/unit_images/sort',
+          data: { order: updated_order }
+        });
     });
   };
 
@@ -163,20 +344,24 @@ CommercialUnits = {};
     // main index table
     CommercialUnits.setupSortableColumns();
 
+    // edit/new form
     $('#commercial_listing_property_type').change(function(e) {
       var optionSelected = $("option:selected", this);
       var textSelected   = optionSelected.text();
       console.log(textSelected);
       CommercialUnits.updatePropertySubTypes(textSelected);
     });
-    CommercialUnits.updatePropertySubTypes($('#commercial').attr('data-property-type'));
-  	
+
+    var ptype = $('#commercial').attr('data-property-type');
+    if (ptype) {
+      CommercialUnits.updatePropertySubTypes(ptype);
+    }	
     // make sure datepicker is formatted before setting initial date below
-    $('.datepicker').datetimepicker({
-      viewMode: 'days',
-      format: 'MM/DD/YYYY',
-      allowInputToggle: true
-    });
+    // $('.datepicker').datetimepicker({
+    //   viewMode: 'days',
+    //   format: 'MM/DD/YYYY',
+    //   allowInputToggle: true
+    // });
     var available_by = $('#commercial .datepicker').attr('data-available-by');
     if (available_by) {
       $('#commercial .datepicker').data("DateTimePicker").date(available_by);
@@ -194,11 +379,11 @@ CommercialUnits = {};
       //console.log("[ERROR]: " + result);
     });
 
-    $('#commercial .btn-print-list').click( function(event) {
-      // show spinner
-      $(this).toggleClass('active');
-      timer2 = setTimeout(clearSpinner, 15000);
-    });
+    // $('#commercial .btn-print-list').click( function(event) {
+    //   // show spinner
+    //   $(this).toggleClass('active');
+    //   timer2 = setTimeout(clearSpinner, 15000);
+    // });
 
     $('#commercial input').keydown(CommercialUnits.preventEnter);
     $('#commercial #address').bind('railsAutocomplete.select', CommercialUnits.throttledSearch);
@@ -223,67 +408,11 @@ CommercialUnits = {};
       if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();
     });
 
-    // for drag n dropping photos
-
+    // for drag n dropping photos/documents
     // disable auto discover
     Dropzone.autoDiscover = false;
-   
-    // grap our upload form by its id
-    $("#cunit-dropzone").dropzone({
-      // restrict image size to a maximum 1MB
-      //maxFilesize: 4,
-      //paramName: "upload[image]",
-      // show remove links on each image upload
-      addRemoveLinks: true,
-      // if the upload was successful
-      success: function(file, response){
-        // find the remove button link of the uploaded file and give it an id
-        // based of the fileID response from the server
-        $(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
-        $(file.previewTemplate).find('.dz-remove').attr('cunit_id', response.cunitID);
-        // add the dz-success class (the green tick sign)
-        $(file.previewElement).addClass("dz-success");
-        $.getScript('/commercial_listings/' + response.cunitID + '/refresh_images')
-        file.previewElement.remove();
-      },
-      //when the remove button is clicked
-      removedfile: function(file){
-        // grap the id of the uploaded file we set earlier
-        var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
-        var unit_id = $(file.previewTemplate).find('.dz-remove').attr('unit_id');
-        CommercialUnits.removeImage(id, unit_id);
-        file.previewElement.remove();
-      }
-    });
-
-    CommercialUnits.updateRemoveImgLinks();
-
-    $('.carousel-indicators > li:first-child').addClass('active');
-    $('.carousel-inner > .item:first-child').addClass('active');
-
-    CommercialUnits.setPositions();
-    CommercialUnits.makeSortable();
-
-    // after the order changes
-    $('#commercial .sortable').sortable().bind('sortupdate', function(e, ui) {
-        // array to store new order
-        updated_order = []
-        // set the updated positions
-        CommercialUnits.setPositions();
-        
-        // populate the updated_order array with the new task positions
-        $('.img-thumbnail').each(function(i){
-          updated_order.push({ id: $(this).data('id'), position: i+1 });
-        });
-        console.log(updated_order);
-        // send the updated order via ajax
-        var cunit_id = $('#commercial').attr('data-cunit-id');
-        $.ajax({
-          type: "PUT",
-          url: '/commercial_listings/' + cunit_id + '/unit_images/sort',
-          data: { order: updated_order }
-        });
-    });
+    CommercialUnits.initializeImageDropzone();
+    CommercialUnits.initializeDocumentsDropzone();
   };
 
 })();

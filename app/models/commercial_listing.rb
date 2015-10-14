@@ -2,6 +2,7 @@ class CommercialListing < ActiveRecord::Base
   scope :unarchived, ->{where(archived: false)}
   belongs_to :commercial_property_type
   belongs_to :unit, touch: true
+  has_many :documents, dependent: :destroy
   #belongs_to :primary_agent2, :class_name => 'User', touch: true
 
   attr_accessor :property_type, :inaccuracy_description, :sq_footage_min, :sq_footage_max
