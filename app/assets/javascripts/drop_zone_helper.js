@@ -1,0 +1,87 @@
+// 
+// Used to manage the dropzone uploaders on the edit pages for: 
+// sales, residential, commercial, buildings
+//
+DropZoneHelper = {};
+(function() {
+
+  // sectionID is something like "#commercial" or "#residential"
+  // It is marked near the top of the html file.
+
+  // controllerPath is something like "commercial_listings" or "residential_listings"
+  // It helps build the URL path we need to for calling ajax functions.
+
+  // subsection is something like 'images' or 'documents'. It specifies what type of
+  // data we're working with, so we don't accidentally update the wrong dropzone object
+  DropZoneHelper.makeSortable = function(sectionID, subsection) {
+    // call sortable on our div with the sortable class
+    $('#' + sectionID + ' ' + '.' + subsection + '.sortable').sortable({
+      forcePlaceholderSize: true,
+      placeholderClass: 'col col-xs-2 border border-maroon',
+      dragImage: null
+    });
+  };
+
+  DropZoneHelper.removeImage = function (id, unit_id, controllerPath) {
+    // make a DELETE ajax request to delete the file
+    $.ajax({
+      type: 'DELETE',
+      url: '/' + controllerPath + '/' + unit_id + '/unit_images/' + id,
+      success: function(data){
+        //console.log(data.message);
+        $.getScript('/' + controllerPath + '/' + unit_id + '/refresh_images')
+      },
+      error: function(data) {
+        //console.log('ERROR:', data);
+      }
+    });
+  };
+
+  DropZoneHelper.removeDocument = function (id, unit_id, controllerPath) {
+    // make a DELETE ajax request to delete the file
+    $.ajax({
+      type: 'DELETE',
+      url: '/' + controllerPath + '/' + unit_id + '/documents/' + id,
+      success: function(data){
+        //console.log(data.message);
+        $.getScript('/' + controllerPath + '/' + unit_id + '/refresh_documents')
+      },
+      error: function(data) {
+        //console.log('ERROR:', data);
+      }
+    });
+  };
+
+  DropZoneHelper.setPositions = function(sectionID, subsection) {
+    // loop through and give each task a data-pos
+    // attribute that holds its position in the DOM
+    if (subsection == 'images') {
+      $('#' + sectionID + ' .img').each(function(i) {
+        $(this).attr("data-pos", i+1);
+      });
+    } else if (subsection == 'documents') {
+      $('#' + sectionID + ' .doc').each(function(i) {
+        $(this).attr("data-pos", i+1);
+      });
+    }
+  };
+
+  DropZoneHelper.updateRemoveImgLinks = function(sectionID, controllerPath) {
+    $('#' + sectionID + ' .delete-unit-img').click(function(event) {
+      event.preventDefault();
+      var id = $(this).attr('data-id');
+      var unit_id = $(this).attr('data-cunit-id');
+      DropZoneHelper.removeImage(id, unit_id, controllerPath);
+    });
+  };
+
+  DropZoneHelper.updateRemoveDocLinks = function(sectionID, controllerPath) {
+    $('#' + sectionID + ' .delete-unit-doc').click(function(event) {
+      event.preventDefault();
+      var id = $(this).attr('data-id');
+      var unit_id = $(this).attr('data-cunit-id');
+      DropZoneHelper.removeDocument(id, unit_id, controllerPath);
+    });
+  };
+
+})();

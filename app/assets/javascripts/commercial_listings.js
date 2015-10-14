@@ -1,75 +1,3 @@
-DropZoneHelper = {};
-(function() {
-  //DropZoneHelper.sectionID; // #commercial
-  //DropZoneHelper.controlllerPath; // commercial_listings
-
-  DropZoneHelper.makeSortable = function(sectionID) {
-    // call sortable on our div with the sortable class
-    $('#' + sectionID + ' .sortable').sortable({
-      forcePlaceholderSize: true,
-      placeholderClass: 'col col-xs-2 border border-maroon',
-      dragImage: null
-    });
-  };
-
-  DropZoneHelper.removeImage = function (id, unit_id, controllerPath) {
-    // make a DELETE ajax request to delete the file
-    $.ajax({
-      type: 'DELETE',
-      url: '/' + controllerPath + '/' + unit_id + '/unit_images/' + id,
-      success: function(data){
-        //console.log(data.message);
-        $.getScript('/' + controllerPath + '/' + unit_id + '/refresh_images')
-      },
-      error: function(data) {
-        //console.log('ERROR:', data);
-      }
-    });
-  };
-
-  DropZoneHelper.removeDocument = function (id, unit_id, controllerPath) {
-    // make a DELETE ajax request to delete the file
-    $.ajax({
-      type: 'DELETE',
-      url: '/' + controllerPath + '/' + unit_id + '/documents/' + id,
-      success: function(data){
-        //console.log(data.message);
-        $.getScript('/' + controllerPath + '/' + unit_id + '/refresh_documents')
-      },
-      error: function(data) {
-        //console.log('ERROR:', data);
-      }
-    });
-  };
-
-  DropZoneHelper.setPositions = function(sectionID) {
-    // loop through and give each task a data-pos
-    // attribute that holds its position in the DOM
-    $('#' + sectionID + ' .img-thumbnail').each(function(i) {
-        $(this).attr("data-pos", i+1);
-    });
-  };
-
-  DropZoneHelper.updateRemoveImgLinks = function(sectionID, controllerPath) {
-    $('#' + sectionID + ' .delete-unit-img').click(function(event) {
-      event.preventDefault();
-      var id = $(this).attr('data-id');
-      var unit_id = $(this).attr('data-cunit-id');
-      DropZoneHelper.removeImage(id, unit_id, controllerPath);
-    });
-  };
-
-  DropZoneHelper.updateRemoveDocLinks = function(sectionID, controllerPath) {
-    $('#' + sectionID + ' .delete-unit-doc').click(function(event) {
-      event.preventDefault();
-      var id = $(this).attr('data-id');
-      var unit_id = $(this).attr('data-cunit-id');
-      DropZoneHelper.removeDocument(id, unit_id, controllerPath);
-    });
-  };
-
-})();
-
 CommercialUnits = {};
 
 (function() {
@@ -166,58 +94,13 @@ CommercialUnits = {};
   // change enter key to tab
   CommercialUnits.preventEnter = function(event) {
     if (event.keyCode == 13) {
-      //$('#checkbox_active').focus();
       return false;
     }
   };
 
-  // CommercialUnits.makeSortable = function() {
-  //   // call sortable on our div with the sortable class
-  //   $('#commercial .sortable').sortable({
-  //     forcePlaceholderSize: true,
-  //     placeholderClass: 'col col-xs-2 border border-maroon',
-  //     dragImage: null
-  //   });
-  // };
-
-  // CommercialUnits.removeImage = function (id, unit_id) {
-  //   // make a DELETE ajax request to delete the file
-  //   $.ajax({
-  //     type: 'DELETE',
-  //     url: '/commercial_listings/' + unit_id + '/unit_images/' + id,
-  //     success: function(data){
-  //       //console.log(data.message);
-  //       $.getScript('/commercial_listings/' + unit_id + '/refresh_images')
-  //     },
-  //     error: function(data) {
-  //       //console.log('ERROR:', data);
-  //     }
-  //   });
-  // };
-
-  // CommercialUnits.setPositions = function() {
-  //   // loop through and give each task a data-pos
-  //   // attribute that holds its position in the DOM
-  //   $('#commercial .img-thumbnail').each(function(i) {
-  //       $(this).attr("data-pos", i+1);
-  //   });
-  // };
-
-  // CommercialUnits.updateRemoveImgLinks = function() {
-  //   $('#commercial .delete-unit-img').click(function(event) {
-  //     event.preventDefault();
-  //     var id = $(this).attr('data-id');
-  //     var unit_id = $(this).attr('data-cunit-id');
-  //     CommercialUnits.removeImage(id, unit_id);
-  //   });
-  // };
-
   CommercialUnits.initializeDocumentsDropzone = function() {
     // grap our upload form by its id
     $("#cunit-dropzone-docs").dropzone({
-      // restrict image size to a maximum 1MB
-      //maxFilesize: 4,
-      //paramName: "upload[image]",
       // show remove links on each image upload
       addRemoveLinks: true,
       // if the upload was successful
@@ -243,24 +126,23 @@ CommercialUnits = {};
 
     DropZoneHelper.updateRemoveDocLinks('commercial', 'commercial_listings');
 
-    $('.carousel-indicators > li:first-child').addClass('active');
-    $('.carousel-inner > .item:first-child').addClass('active');
+    // $('.carousel-indicators > li:first-child').addClass('active');
+    // $('.carousel-inner > .item:first-child').addClass('active');
 
-    DropZoneHelper.setPositions('commercial');
-    DropZoneHelper.makeSortable('commercial');
+    DropZoneHelper.setPositions('commercial', 'documents');
+    DropZoneHelper.makeSortable('commercial', 'documents');
 
     // after the order changes
-    $('#commercial .sortable').sortable().bind('sortupdate', function(e, ui) {
+    $('#commercial .documents.sortable').sortable().bind('sortupdate', function(e, ui) {
         // array to store new order
         updated_order = []
         // set the updated positions
-        DropZoneHelper.setPositions('commercial');
+        DropZoneHelper.setPositions('commercial', 'documents');
         
         // populate the updated_order array with the new task positions
-        $('.img-thumbnail').each(function(i){
+        $('.doc').each(function(i){
           updated_order.push({ id: $(this).data('id'), position: i+1 });
         });
-        //console.log(updated_order);
         // send the updated order via ajax
         var cunit_id = $('#commercial').attr('data-cunit-id');
         $.ajax({
@@ -305,18 +187,18 @@ CommercialUnits = {};
     $('.carousel-indicators > li:first-child').addClass('active');
     $('.carousel-inner > .item:first-child').addClass('active');
 
-    DropZoneHelper.setPositions('commercial');
-    DropZoneHelper.makeSortable('commercial');
+    DropZoneHelper.setPositions('commercial', 'images');
+    DropZoneHelper.makeSortable('commercial', 'images');
 
     // after the order changes
     $('#commercial .sortable').sortable().bind('sortupdate', function(e, ui) {
         // array to store new order
         updated_order = []
         // set the updated positions
-        DropZoneHelper.setPositions('commercial');
+        DropZoneHelper.setPositions('commercial', 'images');
         
         // populate the updated_order array with the new task positions
-        $('.img-thumbnail').each(function(i){
+        $('.img').each(function(i) {
           updated_order.push({ id: $(this).data('id'), position: i+1 });
         });
         //console.log(updated_order);

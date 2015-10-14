@@ -7,13 +7,9 @@ class Document < ActiveRecord::Base
 	# This method associates the attribute ":file" with a file attachment
   has_attached_file :file, styles: {
       original: {convert_options: '-auto-orient'},
-      #thumb:  '100x100>',
-      #square: '200x200#',
-      #large:  '500x500>'
     }, 
     convert_options: { :all => '-auto-orient' }, 
     source_file_options: { :all => '-auto-orient' }
-    #default_url: "/documents/:style/missing.png"
   process_in_background :file
 
   # Validate filename
@@ -24,7 +20,6 @@ class Document < ActiveRecord::Base
 	# Validate the attached document content is image/jpg, image/png, etc
   validates_attachment :file,
 		:presence => true,
-		#:content_type => { :content_type => /\Aimage\/.*\Z/ },
 		:size => { :less_than => 4.megabyte }
 
   def to_builder

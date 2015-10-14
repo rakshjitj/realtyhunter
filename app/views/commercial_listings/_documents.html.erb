@@ -1,5 +1,5 @@
 <% @commercial_unit.unit.documents.each do |document| %>
-	  <div class="col-xs-2" data-id="<%= document.id %>" data-cunit-id="<%= @commercial_unit.id %>">
+	  <div class="doc img-thumbnail" data-id="<%= document.id %>" data-cunit-id="<%= @commercial_unit.id %>">
 	  	<%= link_to document.file_file_name, document.file.url %>
 	  	<%= link_to "Remove", "", 
 	  		class: 'btn btn-xs btn-link center-block delete-unit-img', 
