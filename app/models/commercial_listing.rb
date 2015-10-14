@@ -95,7 +95,7 @@ class CommercialListing < ActiveRecord::Base
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address', 
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
-        'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
+        'buildings.lat', 'buildings.lng', 'units.id AS unit_id', 'units.access_info', 'units.listing_id',
         'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage', 
         'commercial_listings.id', 'commercial_listings.updated_at', 
         'neighborhoods.name AS neighborhood_name', 
@@ -214,6 +214,14 @@ class CommercialListing < ActiveRecord::Base
     end
   end
 
+  def self.send_listings(source_agent, listings, images, recipients, sub, msg)
+    if source_agent
+      UnitMailer.send_commercial_listings(source_agent, listings, images, recipients, sub, msg).deliver_now
+    else
+      "No sender specified"
+    end
+  end
+
   def send_inaccuracy_report(reporter)
     if reporter
       UnitMailer.commercial_inaccuracy_reported(self, reporter).deliver_now
@@ -254,7 +262,7 @@ class CommercialListing < ActiveRecord::Base
   end
 
   def self.for_buildings(bldg_ids, is_active=nil)
-    listings = CommercialListing.joins([:commercial_property_type, unit: {building: [:landlord, :neighborhood]}])
+    listings = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord, :neighborhood]}])
       .where('units.archived = false')
       .where('buildings.id in (?)', bldg_ids)
       .select('buildings.formatted_street_address', 
@@ -277,8 +285,25 @@ class CommercialListing < ActiveRecord::Base
     return listings, images
   end
 
+  def self.listings_by_neighborhood(user, listing_ids)
+    running_list = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord, :neighborhood]}])
+      .where('companies.id = ?', user.company_id)
+      .where('units.listing_id IN (?)', listing_ids)
+      .select('buildings.formatted_street_address', 
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+        'buildings.lat', 'buildings.lng', 'units.id AS unit_id', 'units.access_info',
+        'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage', 
+        'commercial_listings.id', 'commercial_listings.updated_at', 
+        'neighborhoods.name AS neighborhood_name', 
+        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
+        'units.available_by')
+      .to_a.group_by(&:neighborhood_name)
+    running_list
+  end
+
   def self.for_units(unit_ids, is_active=nil)
-    listings = CommercialListing.joins([:commercial_property_type, unit: {building: [:landlord, :neighborhood]}])
+    listings = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord, :neighborhood]}])
       .where('units.archived = false')
       .where('units.id in (?)', unit_ids)
       .select('buildings.formatted_street_address', 
@@ -299,6 +324,23 @@ class CommercialListing < ActiveRecord::Base
     images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
       
     return listings, images
+  end
+
+  def self.listings_by_id(user, listing_ids)
+    running_list = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord, :neighborhood]}])
+      .where('companies.id = ?', user.company_id)
+      .where('units.listing_id IN (?)', listing_ids)
+      .where('units.archived = false')
+      .select('buildings.formatted_street_address', 
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+        'buildings.lat', 'buildings.lng', 'units.id AS unit_id', 'units.access_info',
+        'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage', 
+        'commercial_listings.id', 'commercial_listings.updated_at', 
+        'neighborhoods.name AS neighborhood_name', 
+        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
+        'units.available_by')
+    running_list
   end
 
 end

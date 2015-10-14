@@ -355,7 +355,7 @@ class ResidentialListing < ActiveRecord::Base
 
   def self.send_listings(source_agent, listings, images, recipients, sub, msg)
     if source_agent
-      UnitMailer.send_listings(source_agent, listings, images, recipients, sub, msg).deliver_now
+      UnitMailer.send_residential_listings(source_agent, listings, images, recipients, sub, msg).deliver_now
     else
       "No sender specified"
     end

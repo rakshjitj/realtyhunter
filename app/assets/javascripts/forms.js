@@ -1,3 +1,7 @@
+// Factors out common functionality across all forms pages: 
+// "Parter With Us", "Contact Us", ... others will be added
+//
+
 Forms = {};
 
 (function() {

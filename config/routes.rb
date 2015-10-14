@@ -131,17 +131,19 @@ Rails.application.routes.draw do
       patch 'send_inaccuracy'
       get 'take_off_modal'
       patch 'take_off'
-      get 'print_modal'
-      get 'print_public'
-      get 'print_private'
       get 'refresh_images'
     end
     collection do
       get 'filter'
-      get 'print_list'
       get 'neighborhoods_modal'
       get 'features_modal'
       get 'fee_options'
+
+      get 'print_list'
+      get 'print_modal'
+      get 'print_public'
+      get 'print_private'
+      post 'send_listings'
     end
   end
 
@@ -169,18 +171,18 @@ Rails.application.routes.draw do
       post 'duplicate'
       get 'inaccuracy_modal'
       patch 'send_inaccuracy'
-    #   get 'take_off_modal'
-    #   patch 'take_off'
-      get 'print_modal'
-      get 'print_public'
-    #  get 'print_private'
       get 'refresh_images'
     end
     collection do
       get 'filter'
-      get 'print_list'
       get 'update_subtype'
       get 'neighborhoods_modal'
+
+      get 'print_list'
+      get 'print_modal'
+      get 'print_public'
+      get 'print_private'
+      post 'send_listings'
     end
   end
 

@@ -2,7 +2,7 @@ class CommercialListingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource only: :create
   before_action :set_commercial_listing, except: [:new, :create, :index, :filter, 
-    :neighborhoods_modal, :features_modal ] #:update_subtype, :refresh_images
+    :neighborhoods_modal, :features_modal, :print_public, :print_private, :send_message]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
   etag { current_user.id }
@@ -59,16 +59,6 @@ class CommercialListingsController < ApplicationController
   # GET /commercial_units/1
   # GET /commercial_units/1.json
   def show
-    #fresh_when([@commercial_unit, @commercial_unit.images])
-    #respond_to do |format|
-      #format.html
-      #format.js
-    #   format.pdf do
-    #     render pdf: current_user.name + ' Commercial - Private',
-    #       template: "/commercial_units/print_private.pdf.erb",
-    #       layout:   "/layouts/pdf_layout.html"
-    #   end
-    # end
   end
 
   # GET /commercial_units/new
@@ -173,11 +163,11 @@ class CommercialListingsController < ApplicationController
   # GET
   # handles ajax call. uses latest data in modal
   # Modal collects info and prep unit to be taken off the market
-  def print_modal
-    respond_to do |format|
-      format.js  
-    end
-  end
+  # def print_modal
+  #   respond_to do |format|
+  #     format.js  
+  #   end
+  # end
 
   #def print_private
     #respond_to do |format|
@@ -254,6 +244,43 @@ class CommercialListingsController < ApplicationController
     end
   end
 
+  def print_private
+    ids = params[:listing_ids].split(',')
+    @neighborhood_group = CommercialListing.listings_by_neighborhood(current_user, ids)
+
+    render pdf: current_user.company.name + ' - Private Listings - ' + Date.today.strftime("%b%d%Y"),
+      template: "/commercial_listings/print_private.pdf.erb",
+      orientation: 'Landscape',
+      layout:   "/layouts/pdf_layout.html"
+  end
+
+  # PATCH ajax
+  # Takes a unit off the market
+  def print_public
+    ids = params[:listing_ids].split(',')
+    @neighborhood_group = CommercialListing.listings_by_neighborhood(current_user, ids)
+
+    render pdf: current_user.company.name + ' - Public Listings - ' + Date.today.strftime("%b%d%Y"),
+      template: "/commercial_listings/print_public.pdf.erb",
+      orientation: 'Landscape',
+      layout:   "/layouts/pdf_layout.html"
+  end
+
+  # sends listings info to clients
+  def send_listings
+    recipients = commercial_listing_params[:recipients].split(/[\,,\s]/)
+    sub = commercial_listing_params[:title]
+    msg = commercial_listing_params[:message]
+    ids = commercial_listing_params[:listing_ids].split(',')
+    listings = CommercialListing.listings_by_id(current_user, ids)
+    images = CommercialListing.get_images(listings)
+    CommercialListing.send_listings(current_user, listings, images, recipients, sub, msg)
+    
+    respond_to do |format|
+      format.js { flash[:success] = "Listings sent!"  }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_commercial_listing
@@ -267,7 +294,10 @@ class CommercialListingsController < ApplicationController
       do_search
       @commercial_units = custom_sort
 
-      @count_all = CommercialListing.joins(:unit).where('units.archived = false').count
+      @count_all = CommercialListing.joins(:unit)
+        .where('units.archived = false')
+        .where('units.status = ?', Unit.statuses["active"])
+        .count
       @map_infos = CommercialListing.set_location_data(@commercial_units.to_a)
       @commercial_units = @commercial_units.page params[:page]
       @com_images = CommercialListing.get_images(@commercial_units)
@@ -325,6 +355,7 @@ class CommercialListingsController < ApplicationController
       end
 
       data = params[:commercial_listing].permit(
+        :recipients, :title, :message, :listing_ids,
         :user_id, :include_photos, :sq_footage_min, :sq_footage_max,
         :sq_footage, :floor, :building_size, :build_to_suit, :minimum_divisible, :maximum_contiguous,
         :lease_type, :is_sublease, :property_description, :location_description,
@@ -336,19 +367,21 @@ class CommercialListingsController < ApplicationController
           :building_id, :primary_agent_id, :listing_agent_id, :exclusive ],
         )
 
-      if data[:unit][:oh_exclusive] == "1"
-        data[:unit][:oh_exclusive] = true
-      else
-        data[:unit][:oh_exclusive] = false
-      end
+      if data[:unit]
+        if data[:unit][:oh_exclusive] == "1"
+          data[:unit][:oh_exclusive] = true
+        else
+          data[:unit][:oh_exclusive] = false
+        end
 
-      if data[:unit][:status]
-        data[:unit][:status] = data[:unit][:status].downcase.gsub(/ /, '_')
-      end
-      
-      # convert into a datetime obj
-      if data[:unit][:available_by] && !data[:unit][:available_by].empty?
-        data[:unit][:available_by] = Date::strptime(data[:unit][:available_by], "%m/%d/%Y")
+        if data[:unit][:status]
+          data[:unit][:status] = data[:unit][:status].downcase.gsub(/ /, '_')
+        end
+        
+        # convert into a datetime obj
+        if data[:unit][:available_by] && !data[:unit][:available_by].empty?
+          data[:unit][:available_by] = Date::strptime(data[:unit][:available_by], "%m/%d/%Y")
+        end
       end
 
       data

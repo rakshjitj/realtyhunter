@@ -1,13 +1,6 @@
 CommercialUnits = {};
 
 (function() {
-  CommercialUnits.showSpinner = function() {
-    $('#commercial .res-spinner-desktop').show();
-  };
-
-  CommercialUnits.hideSpinner = function() {
-    $('#commercial .res-spinner-desktop').hide();
-  };
 
   CommercialUnits.updatePropertySubTypes = function (ptype) {
     var url_path = $('#commercial_listing_property_type').attr('data-update-subtype-path');
@@ -22,7 +15,7 @@ CommercialUnits = {};
   };
 
   CommercialUnits.doSearch = function(sort_by_col, sort_direction) {
-    CommercialUnits.showSpinner();
+    Listings.showSpinner();
 
     // sanitize invalid input before submitting
     if ($('#commercial #neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
@@ -49,10 +42,10 @@ CommercialUnits = {};
       },
       dataType: "script",
       success: function(data) {
-        CommercialUnits.hideSpinner();
+        Listings.hideSpinner();
       },
       error: function(data) {
-        CommercialUnits.hideSpinner();
+        Listings.hideSpinner();
       }
     });
   };
@@ -159,11 +152,11 @@ CommercialUnits = {};
   CommercialUnits.initialize = function () {
 
     document.addEventListener("page:restore", function() {
-      CommercialUnits.hideSpinner();
+      Listings.hideSpinner();
     });
-    CommercialUnits.hideSpinner();
+    Listings.hideSpinner();
     $('#commercial a').click(function() {
-      CommercialUnits.showSpinner();
+      Listings.showSpinner();
     });
 
     // main index table
@@ -218,6 +211,15 @@ CommercialUnits = {};
     $('#commercial #neighborhood_ids').change(CommercialUnits.throttledSearch);
     $('#commercial #commercial_property_type_id').change(CommercialUnits.throttledSearch);
     $('#commercial #listing_id').change(CommercialUnits.throttledSearch);
+
+    // index page - selecting listings menu dropdown
+    $('#commercial #emailListings').click(Listings.sendMessage);
+    $('#commercial tbody').on('click', 'i', Listings.toggleListingSelection);
+    $('#commercial .select-all-listings').click(Listings.selectAllListings);
+    $('#commercial .selected-listings-menu').on('click', 'a', function() {
+      var action = $(this).data('action');
+      if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();
+    });
 
     // for drag n dropping photos
 
@@ -286,7 +288,7 @@ CommercialUnits = {};
 
 $(document).on('keyup',function(evt) {
   if (evt.keyCode == 27) {
-    CommercialUnits.hideSpinner();
+    Listings.hideSpinner();
   }
 });
 

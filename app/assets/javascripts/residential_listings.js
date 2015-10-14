@@ -3,109 +3,6 @@ ResidentialListings = {};
 // TODO: break this up by controller action
 
 (function() {
-	ResidentialListings.selectedListings = [];
-
-	// private
-	ResidentialListings.checkTheBox = function(item) {
-		item.addClass('fa-check-square').removeClass('fa-square-o');
-	};
-	// private
-	ResidentialListings.uncheckTheBox = function(item) {
-		item.addClass('fa-square-o').removeClass('fa-check-square');
-	};
-	// private
-	ResidentialListings.updateSelectedButton = function() {
-		$('#selected-listings-dropdown').html(ResidentialListings.selectedListings.length + " Selected Listings <span class=\"caret\"></span>");
-		if (ResidentialListings.selectedListings.length == 0) {
-			$('#selected-listings-dropdown').addClass("disabled");
-		} else {
-			$('#selected-listings-dropdown').removeClass("disabled");
-		}
-
-		// update the hidden tag with the latest list of ids
-		$('#residential_listing_listing_ids').val(ResidentialListings.selectedListings);
-	};
-	// private
-	// if any individual listings get unchecked, then uncheck
-	// the main toggle inside our th
-	ResidentialListings.uncheckHeadToggle = function() {
-		ResidentialListings.uncheckTheBox($('th > i'));
-	};
-
-	ResidentialListings.selectAllListings = function() {
-		var isChecked = $(this).hasClass('fa-check-square');
-		if (isChecked) {
-			// uncheck all boxes, clear our list
-			ResidentialListings.uncheckTheBox($(this));
-			ResidentialListings.selectedListings = [];
-
-			$('td > i').map(function() {
-				if ($(this).hasClass('fa-check-square')) {
-					ResidentialListings.uncheckTheBox($(this));
-				}
-			});
-		} else {
-			// check all boxes, fill our list
-			ResidentialListings.checkTheBox($(this));
-			ResidentialListings.selectedListings = $('tr').map(function() {
-				return $(this).attr('data-id');
-			}).get();
-
-			$('td > i').map(function() {
-				if ($(this).hasClass('fa-square-o')) {
-					ResidentialListings.checkTheBox($(this));
-				}
-			});
-		}
-
-		ResidentialListings.updateSelectedButton();
-	};
-
-	ResidentialListings.toggleListingSelection = function() {
-		// TODO: cap the max # of listings you can select?
-		var isChecked = $(this).hasClass('fa-check-square');
-		var listing_id = $(this).parent().parent().attr('data-id');
-		
-		if (isChecked) {
-			//$(this).addClass('fa-square-o').removeClass('fa-check-square');
-			ResidentialListings.uncheckTheBox($(this));
-			ResidentialListings.selectedListings.splice(ResidentialListings.selectedListings.indexOf(listing_id), 1);
-			ResidentialListings.uncheckHeadToggle();
-		} else {
-			//$(this).addClass('fa-check-square').removeClass('fa-square-o');
-			ResidentialListings.checkTheBox($(this));
-			ResidentialListings.selectedListings.push(listing_id);
-		}
-
-		ResidentialListings.updateSelectedButton();
-	};
-
-	ResidentialListings.indexMenuActions = {
-		
-		'send': function() {
-			//console.log('sending!');
-			var params = 'residential_listing_ids=' + ResidentialListings.selectedListings.join(",");
-			window.location.href = '/residential_listings/print_list?' + params;
-		},
-		'listingsSheet': function() {
-			//console.log('sheet!');
-			var params = 'residential_listing_ids=' + ResidentialListings.selectedListings.join(",");
-			window.location.href = '/residential_listings/print_public?' + params;
-		},
-		'internalListingsSheet': function() {
-			var params = 'residential_listing_ids=' + ResidentialListings.selectedListings.join(",");
-			window.location.href = '/residential_listings/print_private?' + params;
-		}
-	};
-
-	ResidentialListings.showSpinner = function() {
-		$('.res-spinner-desktop').show();
-	};
-
-	ResidentialListings.hideSpinner = function() {
-		$('.res-spinner-desktop').hide();
-	};
-
 	// for searching on the index page
 	ResidentialListings.doSearch = function (sort_by_col, sort_direction) {
 		//console.log(sort_by_col, sort_direction);
@@ -122,7 +19,7 @@ ResidentialListings = {};
 
 	  var search_path = $('#res-search-filters').attr('data-search-path');
 	  
-	  ResidentialListings.showSpinner();
+	  Listings.showSpinner();
 
 	  $.ajax({
 	    url: search_path,
@@ -151,11 +48,11 @@ ResidentialListings = {};
 	    dataType: 'script',
 	    success: function(data) {
 	    	//console.log('SUCCESS:', data.responseText);
-	    	ResidentialListings.hideSpinner();
+	    	Listings.hideSpinner();
 			},
 			error: function(data) {
 				//console.log('ERROR:', data.responseText);
-				ResidentialListings.hideSpinner();
+				Listings.hideSpinner();
 			}
 	  });
 	};
@@ -387,13 +284,40 @@ ResidentialListings = {};
 		});
 	};
 
+	// any phone #'s listed in 'access info' on main index pg should 
+  // be automatically detected
+	ResidentialListings.detectPhoneNumbers = function () {
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+
+			var countrycodes = "1"
+			var delimiters = "-|\\.|—|–|&nbsp;"
+			var phonedef = "\\+?(?:(?:(?:" + countrycodes + ")(?:\\s|" + delimiters + ")?)?\\(?[2-9]\\d{2}\\)?(?:\\s|" + delimiters + ")?[2-9]\\d{2}(?:" + delimiters + ")?[0-9a-z]{4})"
+			var spechars = new RegExp("([- \(\)\.:]|\\s|" + delimiters + ")","gi") //Special characters to be removed from the link
+			var phonereg = new RegExp("((^|[^0-9])(href=[\"']tel:)?((?:" + phonedef + ")[\"'][^>]*?>)?(" + phonedef + ")($|[^0-9]))","gi")
+
+			function ReplacePhoneNumbers(oldhtml) {
+				//Created by Jon Meck at LunaMetrics.com - Version 1.0
+				var newhtml = oldhtml.replace(/href=['"]callto:/gi,'href="tel:')
+				newhtml = newhtml.replace(phonereg, function ($0, $1, $2, $3, $4, $5, $6) {
+				    if ($3) return $1;
+				    else if ($4) return $2+$4+$5+$6;
+				    else return $2+"<a href='tel:"+$5.replace(spechars,"")+"'>"+$5+"</a>"+$6; });
+				return newhtml;
+			}
+
+			$('.access-info').map(function() {
+				$(this).html(ReplacePhoneNumbers($(this).html()))
+			});
+		}
+	};
+
 	ResidentialListings.initialize = function() {
 		document.addEventListener("page:restore", function() {
-		  ResidentialListings.hideSpinner();
+		  Listings.hideSpinner();
 		});
-		ResidentialListings.hideSpinner();
+		Listings.hideSpinner();
 		$('#residential a').click(function() {
-			ResidentialListings.showSpinner();
+			Listings.showSpinner();
 		});
 
 		// main index table
@@ -401,7 +325,7 @@ ResidentialListings = {};
 
 		$('.close').click(function() {
 			//console.log('detected click');
-			ResidentialListings.hideSpinner();
+			Listings.hideSpinner();
 		});
 
 		$('#residential .has-fee').click(ResidentialListings.toggleFeeOptions);
@@ -439,24 +363,17 @@ ResidentialListings = {};
 
 	  // print pdf from the index page
 	 //  $('#residential .btn-print-list').click( function(event) {
-		//   ResidentialListings.showSpinner();
+		//   showSpinner.showSpinner();
 		//   $(this).toggleClass('active');
 		// });
 
 		// index page - selecting listings menu dropdown
-		$('#residential #emailListings').click(function(e) {
-			ResidentialListings.hideSpinner();
-			$('#residential_listing_recipients').val('');
-			//$('#residential_listing_title').val('');
-			$('#residential_listing_message').val('');
-			e.preventDefault();
-		});
-		$('#residential tbody').on('click', 'i', ResidentialListings.toggleListingSelection);
-		$('#residential .select-all-listings').click(ResidentialListings.selectAllListings);
-		ResidentialListings.selectedListings = [];
+		$('#residential #emailListings').click(Listings.sendMessage);
+		$('#residential tbody').on('click', 'i', Listings.toggleListingSelection);
+		$('#residential .select-all-listings').click(Listings.selectAllListings);
 		$('#residential .selected-listings-menu').on('click', 'a', function() {
 			var action = $(this).data('action');
-			if (action in ResidentialListings.indexMenuActions) ResidentialListings.indexMenuActions[action]();
+			if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();
 		});
 
 		// make sure datepicker is formatted before setting initial date below
@@ -564,38 +481,11 @@ ResidentialListings = {};
 		ResidentialListings.detectPhoneNumbers();
 	};
 
-	// any phone #'s listed in 'access info' on main index pg should 
-  // be automatically detected
-	ResidentialListings.detectPhoneNumbers = function () {
-    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-
-			var countrycodes = "1"
-			var delimiters = "-|\\.|—|–|&nbsp;"
-			var phonedef = "\\+?(?:(?:(?:" + countrycodes + ")(?:\\s|" + delimiters + ")?)?\\(?[2-9]\\d{2}\\)?(?:\\s|" + delimiters + ")?[2-9]\\d{2}(?:" + delimiters + ")?[0-9a-z]{4})"
-			var spechars = new RegExp("([- \(\)\.:]|\\s|" + delimiters + ")","gi") //Special characters to be removed from the link
-			var phonereg = new RegExp("((^|[^0-9])(href=[\"']tel:)?((?:" + phonedef + ")[\"'][^>]*?>)?(" + phonedef + ")($|[^0-9]))","gi")
-
-			function ReplacePhoneNumbers(oldhtml) {
-				//Created by Jon Meck at LunaMetrics.com - Version 1.0
-				var newhtml = oldhtml.replace(/href=['"]callto:/gi,'href="tel:')
-				newhtml = newhtml.replace(phonereg, function ($0, $1, $2, $3, $4, $5, $6) {
-				    if ($3) return $1;
-				    else if ($4) return $2+$4+$5+$6;
-				    else return $2+"<a href='tel:"+$5.replace(spechars,"")+"'>"+$5+"</a>"+$6; });
-				return newhtml;
-			}
-
-			$('.access-info').map(function() {
-				$(this).html(ReplacePhoneNumbers($(this).html()))
-			});
-		}
-	};
-
 })();
 
 $(document).on('keyup',function(evt) {
   if (evt.keyCode == 27) {
-  	ResidentialListings.hideSpinner();
+  	Listings.hideSpinner();
   }
 });
 

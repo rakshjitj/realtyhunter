@@ -1,6 +1,8 @@
 <% provide(:title, 'Commercial Listings') %>
 
 <div id="commercial">
+<div id="section-name" data-name="commercial_listings">
+
 
 <div class="page-header">
   <div class="row">
@@ -18,7 +20,7 @@
 
 <div class="row">
   <div class="col-md-3">
-    <i class="fa fa-spinner fa-pulse fa-5x res-spinner-desktop"></i>
+    <i class="fa fa-spinner fa-pulse fa-5x listings-spinner-desktop"></i>
 
     <div id="com-search-filters" data-search-path="<%= filter_commercial_listings_path %>">
 
@@ -171,9 +173,27 @@
   </div>
 </div>
 
+<hr />
+<%= form_tag print_list_commercial_listings_path do %>
+<br />
 <div class="row">
   <div class="col-md-6">
-    <br />
+    <!-- will be a dropdown of either print pdf or email -->
+    <div class="dropdown selected-listings">
+      <button class="btn btn-warning btn-sm dropdown-toggle disabled" id="selected-listings-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="menu">
+        0 Selected Listings
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu selected-listings-menu" aria-labelledby="selected-listings-dropdown">
+        <li role="presentation"><a class="list-item-sm-padding" id="emailListings" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#emailModal">
+          <i class="fa fa-fw fa-envelope"></i> Email</a></li>
+        <li role="presentation"><a class="list-item-sm-padding" data-action="listingsSheet" role="menuitem" tabindex="-1">
+          <i class="fa fa-fw fa-file-text"></i> Show Sheet</a></li>
+        <li role="presentation"><a class="list-item-sm-padding" data-action="internalListingsSheet" role="menuitem" tabindex="-1">
+          <i class="fa fa-fw fa-list"></i> Internal Listings Sheet</a></li>
+      </ul>
+    </div>
+
     <p class="totals">
       <%= @commercial_units.total_count %> Units found
     </p>
@@ -191,6 +211,10 @@
     <table class="table table-striped table-hover table-condensed table-responsive">
       <thead>
         <tr>
+          <th style="min-width: 30px;">
+            <!-- checkboxes -->
+            <i data-action="selectAllUnits" class="select-all-listings fa fa-square-o"></i>
+          </th>
           <th><!-- first image --></th>
           <th data-sort="formatted_street_address" class="th-sortable">Address</th>
           <th data-sort="landlord_code" class="th-sortable">Landlord</th>
@@ -214,6 +238,7 @@
     </table>
   </div>
 </div>
+<% end %><!-- form -->
 
 
 <div class="row">
@@ -222,6 +247,57 @@
   </div>
 </div>
 
+<!-- Email Modal -->
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" 
+  aria-labelledby="emailModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        
+        <%= form_tag(send_listings_commercial_listings_path, remote:true) do %>
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "commercial_listing[recipients]", "Recipients", class: 'required' %>
+            <i><small>Use commas to separate email addresses</small></i>
+            <%= text_field_tag "commercial_listing[recipients]", nil, class: 'form-control', required: true %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "commercial_listing[title]", "Title", class: 'required' %>
+            <%= text_field_tag "commercial_listing[title]", "Check out these great listings!", class: 'form-control', required: true %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "commercial_listing[message]", "Message" %>
+            <%= text_area_tag "commercial_listing[message]", nil, class: 'form-control' %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            
+          </div>
+        </div>
+
+        <%= hidden_field_tag "commercial_listing[listing_ids]" %>
+        
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp; 
+        <%= submit_tag "Send Email", class:"btn btn-warning" %>
+      </div>
+
+      <% end %>
+
+    </div>
+  </div>
+</div>
 
 <!-- Delete Modal -->
 <div class="modal fade" id="unitDeleteModal" tabindex="-1" role="dialog" 

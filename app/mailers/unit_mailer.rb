@@ -24,7 +24,15 @@ class UnitMailer < ApplicationMailer
     	from: @reporter.email
   end
 
-  def send_listings(source_agent, listings, images, recipients, sub, msg)
+  def send_residential_listings(source_agent, listings, images, recipients, sub, msg)
+    @listings = listings
+    @source_agent = source_agent
+    @message = msg
+    @images = images
+    mail to: recipients, subject: sub, from: @source_agent.email
+  end
+
+  def send_commercial_listings(source_agent, listings, images, recipients, sub, msg)
     @listings = listings
     @source_agent = source_agent
     @message = msg

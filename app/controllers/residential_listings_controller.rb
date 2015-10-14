@@ -4,9 +4,6 @@ class ResidentialListingsController < ApplicationController
   before_action :set_residential_listing, only: [:show, :edit, :duplicate_modal, :duplicate, 
     :take_off_modal, :take_off, :update, :delete_modal, :destroy, 
     :inaccuracy_modal, :send_inaccuracy, :refresh_images]
-    # except: [:new, :create, :index, :filter, 
-    # :print_list, :print_private, :neighborhoods_modal, :features_modal, 
-    # :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood, :fee_options]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
   etag { current_user.id }
@@ -195,7 +192,7 @@ class ResidentialListingsController < ApplicationController
   #end
 
   def print_private
-    ids = params[:residential_listing_ids].split(',')
+    ids = params[:listing_ids].split(',')
     @neighborhood_group = ResidentialListing.listings_by_neighborhood(current_user, ids)
 
     #respond_to do |format|
@@ -211,7 +208,7 @@ class ResidentialListingsController < ApplicationController
   # PATCH ajax
   # Takes a unit off the market
   def print_public
-    ids = params[:residential_listing_ids].split(',')
+    ids = params[:listing_ids].split(',')
     @neighborhood_group = ResidentialListing.listings_by_neighborhood(current_user, ids)
 
     #respond_to do |format|
@@ -311,7 +308,10 @@ class ResidentialListingsController < ApplicationController
       do_search
       @residential_units = custom_sort
 
-      @count_all = ResidentialListing.joins(:unit).where('units.archived = false').count
+      @count_all = ResidentialListing.joins(:unit)
+        .where('units.archived = false')
+        .where('units.status = ?', Unit.statuses["active"])
+        .count
       @map_infos = ResidentialListing.set_location_data(@residential_units.to_a)
       @residential_units = @residential_units.page params[:page]
       @res_images = ResidentialListing.get_images(@residential_units)

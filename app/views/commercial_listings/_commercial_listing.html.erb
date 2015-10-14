@@ -1,4 +1,9 @@
-  <tr class="<%= cycle('even', 'odd') -%>">
+  <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= commercial_listing.listing_id %>" >
+    <!-- ****** checkboxes ****************************************** -->
+    <td>
+      <i data-action="selectUnit" class="fa fa-square-o"></i>
+    </td>
+
     <td>
       <% if @com_images[commercial_listing.unit_id] %>
         <%= link_to(image_tag(@com_images[commercial_listing.unit_id].file.url(:thumb), :class => 'img-responsive', 
@@ -29,11 +34,16 @@
     <td><%= commercial_listing.access_info %></td>
 
     <td>
-      <% if commercial_listing.status == Unit.statuses["active"] %>
+      <% if commercial_listing.status == Unit.statuses["active"]
+       %>
         <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
-      <% elsif commercial_listing.status == Unit.statuses["pending"] %>
+      <% elsif commercial_listing.status == Unit.statuses["pending"] ||
+          commercial_listing.status == Unit.statuses["offer_submitted"] ||
+          commercial_listing.status == Unit.statuses["offer_accepted"] ||
+          commercial_listing.status == Unit.statuses["binder_signed"] %>
         <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
-      <% elsif commercial_listing.status == Unit.statuses["off"] %>
+      <% elsif commercial_listing.status == Unit.statuses["off"] ||
+          commercial_listing.status == Unit.statuses["off_market_for_lease_execution"] %>
         <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
       <% end %>
     </td>
