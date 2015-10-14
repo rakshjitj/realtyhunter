@@ -54,12 +54,6 @@ class CommercialListing < ActiveRecord::Base
     output
   end
 
-	# used as a sorting condition
-  # def landlord_by_code
-  #   building.landlord.code
-  # end
-
-  # TODO
   def summary
   	summary = property_category
   	if property_sub_type

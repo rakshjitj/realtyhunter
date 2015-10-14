@@ -60,14 +60,14 @@
             <%= label_tag(:unit, "Sq Footage") %>
           </div>
           <div class="col-xs-4 col-sm-left-padding">
-            <%= number_field_tag :rent_min, params[:sq_footage_min], placeholder: "min", 
+            <%= number_field_tag :sq_footage_min, params[:sq_footage_min], placeholder: "min", 
               min: 0, max: 1000000, class:"form-control" %>
           </div>
           <div class="col-xs-1 col-no-padding">
             &nbsp; to 
           </div>
           <div class="col-xs-4 col-no-padding">
-            <%= number_field_tag :rent_max, params[:sq_footage_min], placeholder: "max", 
+            <%= number_field_tag :sq_footage_max, params[:sq_footage_max], placeholder: "max", 
               min: 0, max: 1000000, class:"form-control" %>
           </div>
         </div>
