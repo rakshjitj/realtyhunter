@@ -1,0 +1,19 @@
+<%- headers = [
+  'Full Address', 'Unit', 'Neighborhood', 'Is Exclusive?',
+  'Beds', 'Baths', 'Notes', 'Description', 'Lease Start', 'Lease End',
+  'Has Fee?', 'OP Fee Percentage', 'TP Fee Percentage', 'Tenant Occupied',
+  'Primary Agent', 'Listing ID', 'Landlord', 'Price', 'Available', 'Access', 
+  'Status', 'Created At', 'Updated At', 'Archived',
+	] -%>
+
+<%= CSV.generate_line headers %>
+<%- @residential_units.each do |listing| -%>
+	
+  <%= [listing.formatted_street_address, listing.building_unit, listing.neighborhood_name, listing.exclusive,
+      listing.beds, listing.baths, listing.notes, listing.description, listing.lease_start, listing.lease_end,
+      listing.has_fee, listing.op_fee_percentage, listing.tp_fee_percentage, listing.tenant_occupied,
+      listing.primary_agent_name,
+      listing.listing_id, listing.landlord_code, listing.rent, 
+      listing.available_by, listing.access_info, listing.status, listing.created_at, listing.updated_at, listing.archived
+    ].to_csv.html_safe %>
+<%- end -%>

@@ -83,11 +83,29 @@ class CommercialListing < ActiveRecord::Base
     Image.where(unit_id: unit_ids, priority: 0).index_by(&:unit_id)
   end
 
-  # returns all images for each unit
-  # def self.get_all_images(list)
-  #   unit_ids = list.map(&:unit_id)
-  #   Image.where(unit_id: unit_ids).to_a.group_by(&:unit_id)
-  # end
+   def self.export_all(user)
+    CommercialListing.joins([:commercial_property_type, unit: [:primary_agent, building: [:company, :landlord, :neighborhood]]])
+      .where('companies.id = ?', user.company_id)
+      .select('buildings.formatted_street_address', 
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+
+        'buildings.lat', 'buildings.lng', 'units.listing_id', 'units.access_info', 'units.listing_id',
+        'units.building_unit', 'units.status','units.rent', 'units.available_by','units.exclusive',
+        'commercial_listings.sq_footage', 'commercial_listings.floor', 'commercial_listings.building_size', 
+        'commercial_listings.build_to_suit', 'commercial_listings.minimum_divisible', 'commercial_listings.maximum_contiguous', 
+        'commercial_listings.lease_type', 'commercial_listings.is_sublease', 'commercial_listings.listing_title', 
+        'commercial_listings.property_description', 'commercial_listings.location_description', 
+        'commercial_listings.construction_status', 'commercial_listings.lease_term_months', 'commercial_listings.rate_is_negotiable', 
+        'commercial_listings.total_lot_size', 
+        'commercial_listings.liquor_eligible', 'commercial_listings.has_basement', 'commercial_listings.basement_sq_footage', 
+        'commercial_listings.has_ventilation', 'commercial_listings.key_money_required', 'commercial_listings.key_money_amt',
+        'commercial_listings.created_at','commercial_listings.updated_at', 'units.archived', 
+        'neighborhoods.name AS neighborhood_name', 
+        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
+        'users.name as primary_agent_name'
+        )
+    end
   
   def self.search(params, user, building_id=nil)
     @running_list = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord, :neighborhood]}])

@@ -256,6 +256,11 @@
         </ul>
       </div>
     
+    <% if current_user.is_management? %>
+      <%= link_to 'Export to CSV', residential_listings_path(format: 'csv'),
+        class:"btn btn-sm btn-warning link-as-button" %>
+    <% end %>
+
     <span class="totals">
       &nbsp;&nbsp;<%= @residential_units.total_count %> Units found
     </span>

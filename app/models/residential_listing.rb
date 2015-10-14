@@ -136,6 +136,26 @@ class ResidentialListing < ActiveRecord::Base
     running_list
   end
 
+  def self.export_all(user)
+    ResidentialListing.joins(unit: [:primary_agent, building: [:company, :landlord, :neighborhood]])
+      .where('companies.id = ?', user.company_id)
+      .select('buildings.formatted_street_address', 
+        'units.listing_id', 'units.building_unit', 'units.status','units.rent', 'units.archived',
+        'units.available_by', 'units.public_url', 'units.access_info', 'units.exclusive',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+        'buildings.lat', 'buildings.lng', 
+        'residential_listings.beds', 'residential_listings.baths', 'residential_listings.notes',
+        'residential_listings.description', 'residential_listings.lease_start',
+        'residential_listings.lease_end', 'residential_listings.has_fee', 
+        'residential_listings.op_fee_percentage','residential_listings.tp_fee_percentage',
+        'residential_listings.tenant_occupied', 'residential_listings.created_at',
+        'residential_listings.updated_at', 
+        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
+        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        'users.name as primary_agent_name'
+        )
+  end
+
   # takes in a hash of search options
   # can be formatted_street_address, landlord
   # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 

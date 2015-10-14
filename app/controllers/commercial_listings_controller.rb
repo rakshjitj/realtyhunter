@@ -10,10 +10,13 @@ class CommercialListingsController < ApplicationController
   # GET /commercial_units
   # GET /commercial_units.json
   def index
-    set_commercial_listings
+    
     respond_to do |format|
-      format.html
+      format.html do
+        set_commercial_listings
+      end
       format.csv do
+        set_commercial_listings_csv
         headers['Content-Disposition'] = "attachment; filename=\"" + 
           current_user.name + " - Commercial Listings.csv\""
         headers['Content-Type'] ||= 'text/csv'
@@ -303,8 +306,10 @@ class CommercialListingsController < ApplicationController
       @com_images = CommercialListing.get_images(@commercial_units)
     end
 
-    def commercial_units_no_pagination
-      do_search
+    # returns all data for export
+    def set_commercial_listings_csv
+      @commercial_units = CommercialListing.export_all(current_user)
+      @commercial_units = custom_sort
     end
 
     def do_search

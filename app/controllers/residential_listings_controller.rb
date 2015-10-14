@@ -11,10 +11,13 @@ class ResidentialListingsController < ApplicationController
   # GET /residential_units
   # GET /residential_units.json
   def index
-    set_residential_listings
+    
     respond_to do |format|
-      format.html
+      format.html do
+        set_residential_listings
+      end
       format.csv do
+        set_residential_listings_csv
         headers['Content-Disposition'] = "attachment; filename=\"" + 
           current_user.name + " - Residential Listings.csv\""
         headers['Content-Type'] ||= 'text/csv'
@@ -317,8 +320,10 @@ class ResidentialListingsController < ApplicationController
       @res_images = ResidentialListing.get_images(@residential_units)
     end
 
-    def residential_listings_no_pagination
-      do_search
+    # returns all data for export
+    def set_residential_listings_csv
+      @residential_units = ResidentialListing.export_all(current_user)
+      @residential_units = custom_sort
     end
 
     def do_search

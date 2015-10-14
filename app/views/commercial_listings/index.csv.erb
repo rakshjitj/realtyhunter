@@ -1,0 +1,26 @@
+<%- headers = [
+  'Full Address', 'Unit', 'Neighborhood', 'Is Exclusive?',
+
+  'Sq Footage', 'Floor', 'Building Size', 'Build to Suit', 'Min Divisible', 'Max Contiguous', 
+  'Lease Type', 'Is Sublease', 'Listing Title', 'Property Description', 'Location Description', 'Construction Status', 
+  'Lease Term (Months)', 'Is Rate Negotiable?', 'Total Lot Size', 'Category', 
+  'Liquor Eligible?', 'Has Basement?', 'Basement Sq Ft', 'Has Ventilation?', 'Key Money Required?',
+  'Key Money Amount', 
+  'Primary Agent', 'Listing ID', 'Landlord', 'Price', 'Available', 'Access', 'Status', 'Created At', 'Updated At', 'Archived',
+	] -%>
+
+<%= CSV.generate_line headers %>
+<%- @commercial_units.each do |listing| -%>
+	
+  <%= [listing.formatted_street_address, listing.building_unit, listing.neighborhood_name, listing.exclusive,
+      listing.sq_footage, listing.floor, listing.building_size, listing.build_to_suit, listing.minimum_divisible, 
+      listing.maximum_contiguous, listing.lease_type, listing.is_sublease, listing.listing_title, listing.property_description, 
+      listing.location_description, listing.construction_status, listing.lease_term_months, listing.rate_is_negotiable, 
+      listing.total_lot_size, listing.property_sub_type,
+      listing.liquor_eligible, listing.has_basement, listing.basement_sq_footage, listing.has_ventilation, 
+      listing.key_money_required, listing.key_money_amt, listing.primary_agent_name, listing.listing_id, listing.landlord_code, listing.rent, 
+      listing.available_by, listing.access_info, listing.status, listing.created_at, listing.updated_at, listing.archived
+    ].to_csv.html_safe %>
+<%- end -%>
+
+<!-- ,  -->
