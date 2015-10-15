@@ -217,6 +217,7 @@ class User < ActiveRecord::Base
     if self.employee_title != EmployeeTitle.external_vendor
       self.add_role :residential
       self.add_role :commercial
+      #self.add_role :sales
     end
     
     # if you're an agent, add in specific roles for the type of
@@ -230,6 +231,7 @@ class User < ActiveRecord::Base
       if !self.agent_types || !self.agent_types.any?
         self.add_role :residential
         self.add_role :commercial
+        #self.add_role :sales
       else
         # otherwise, note the specialities they indicated
         self.agent_types.each do |role|

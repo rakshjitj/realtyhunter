@@ -66,10 +66,7 @@
               <li><%= link_to "Commercial", commercial_listings_path %></li>
             <% end %>
 
-            <% if current_user.handles_sales? || current_user.is_management? %>
-              <li><%= link_to "Sales", sales_listings_path %></li>
-            <% end %>
-
+            
             <% if current_user.has_role? :roomsharing %>
               
               <li class="dropdown">
