@@ -11,7 +11,6 @@ class NeighborhoodsController < ApplicationController
   # GET /neighborhoods/1
   # GET /neighborhoods/1.json
   def show
-    fresh_when(@neighborhood)
   end
 
   # GET /neighborhoods/new

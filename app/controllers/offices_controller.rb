@@ -31,14 +31,14 @@ class OfficesController < ApplicationController
   def managers
     @users = @office.managers
     @users = @users.page params[:page]
+    @user_images = User.get_images(@users)
     @title = "Managers"
-    #fresh_when(@users)
   end
 
   def agents
     @users = @office.agents
     @users = @users.page params[:page]
-    #fresh_when(@users)
+    @user_images = User.get_images(@users)
     @title = "Agents"
     render 'users/index'
   end
@@ -95,7 +95,7 @@ class OfficesController < ApplicationController
     end
 
     def set_offices
-      @offices = Office.unarchived.includes(:company).where(company: @company)
+      @offices = Office.unarchived.where(company: @company)
     end
 
     def set_company

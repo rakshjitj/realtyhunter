@@ -17,7 +17,7 @@
         <tr>
           <td><%= link_to user.name, user_subordinates_path(user) %></td>
           <td>
-            <%= link_to user.office.name.titleize, company_office_path(user.office.company, user.office) %>
+            <%= link_to user.office_name.titleize, company_office_path(current_user.company, user.office_id) %>
           </td>
           <td><%= user.subordinates.length %></td>
         </tr>

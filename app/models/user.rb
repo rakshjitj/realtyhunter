@@ -260,10 +260,6 @@ class User < ActiveRecord::Base
     self.has_role? :company_admin
   end
 
-  # def is_data_entry?
-  #   self.has_role? :data_entry
-  # end
-
   def is_external_vendor?
     self.has_role? :external_vendor
   end
@@ -327,6 +323,15 @@ class User < ActiveRecord::Base
   def coworkers
     company.users
   end
+
+  def self.get_all_agent_specialties(lists)
+    user_ids = list.map(&:id)
+  end
+
+  # def self.get_images(list)
+  #   user_ids = list.map(&:id)
+  #   Image.where(user_id: user_ids).index_by(&:user_id)
+  # end
 
   # keep a running list of my specialties so we 
   # don't always have to recalculate

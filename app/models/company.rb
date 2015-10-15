@@ -47,11 +47,34 @@ class Company < ActiveRecord::Base
 
 	# should we limit this to 1 per company?
 	def admins
-		User.joins(:roles).where('roles.name = ?', 'company_admin').includes(:employee_title, :office, :image, :manager).unarchived
+		self.users.unarchived
+			.joins(:roles)
+			.where('roles.name = ?', 'company_admin')
+			.includes(:employee_title, :office, :image, :manager)
 	end
 
 	def managers
-		User.joins(:roles).where('roles.name = ?', 'manager').includes(:employee_title, :office, :image, :manager).unarchived
+		 self.users.unarchived
+			.joins(:roles, :office, :employee_title)
+			.where('roles.name = ?', 'manager')
+			.includes( :manager, )
+			.select('users.company_id', 'users.archived', 'users.id', 
+        'users.name', 'users.email', 'users.activated', 'users.approved', 'users.last_login_at',
+        'employee_titles.id AS employee_title_id',
+        'employee_titles.name AS employee_title_name',
+        'offices.name AS office_name', 'offices.id as office_id',
+        'users.manager_id')
+	end
+
+	def employees
+		self.users.unarchived
+      .joins(:office, :employee_title)
+      .includes(:manager, :roles)
+      .select('users.company_id', 'users.archived', 'users.id', 
+        'users.name', 'users.email', 'users.activated', 'users.approved', 'users.last_login_at',
+        'employee_titles.name AS employee_title_name', 'employee_titles.id AS employee_title_id',
+        'offices.name AS office_name', 'offices.id as office_id',
+        'users.manager_id')
 	end
 
 	# def data_enterers

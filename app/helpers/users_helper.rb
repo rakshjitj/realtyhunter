@@ -23,9 +23,9 @@ module UsersHelper
 			html = html + ' <span class="glyphicon glyphicon-star dark-orange" aria-hidden="true"></span>'
 		end
 		
-		if title == 'agent'
-			html = html + ' | ' + user.agent_specialties.join(", ")#.titleize
-		end
+		# if title == 'agent'
+		# 	html = html + ' | ' + user.agent_specialties.join(", ")
+		# end
 
 		html.html_safe
 	end

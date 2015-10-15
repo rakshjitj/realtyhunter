@@ -44,19 +44,29 @@ class Office < ActiveRecord::Base
   end
 
 	def managers
-		# User.joins(:office).merge(Office.where(id: self.id)).joins(:employee_title)
-		# 	.merge(EmployeeTitle.where(name: 'manager')).map{|u| {name: u.name, id: u.id} }
-		User.joins([:office, :employee_title]).merge(Office.where(id: self.id))#.joins(:employee_title)
+		User.joins([:office, :employee_title]).merge(Office.where(id: self.id))
+			.includes(:subordinates)
 			.merge(EmployeeTitle.where(name: 'manager'))
 			.order(:name)
+			.select('users.company_id', 'users.archived', 'users.id', 
+        'users.name', 'users.email', 'users.activated', 'users.approved', 'users.last_login_at',
+        'employee_titles.id AS employee_title_id',
+        'employee_titles.name AS employee_title_name',
+        'offices.name AS office_name', 'offices.id as office_id',
+        'users.manager_id')
 	end
 
 	def agents
-		# User.joins(:office).merge(Office.where(id: self.id)).joins(:employee_title)
-		# 	.merge(EmployeeTitle.where(name: 'agent')).map{|u| {name: u.name, id: u.id} }
-
-		User.joins([:office, :employee_title]).merge(Office.where(id: self.id))#.joins(:employee_title)
+		User.joins(:office, :employee_title)
+			.includes(:manager, :roles)
+			.merge(Office.where(id: self.id))
 			.merge(EmployeeTitle.where(name: 'agent'))
 			.order(:name)
+			.select('users.company_id', 'users.archived', 'users.id', 
+        'users.name', 'users.email', 'users.activated', 'users.approved', 'users.last_login_at',
+        'employee_titles.id AS employee_title_id',
+        'employee_titles.name AS employee_title_name',
+        'offices.name AS office_name', 'offices.id as office_id',
+        'users.manager_id')
 	end
 end
