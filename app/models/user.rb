@@ -178,13 +178,12 @@ class User < ActiveRecord::Base
 
   def self.search(query_params, current_user)
     @running_list = User.unarchived
-    .joins(
-      :employee_title)
-    .where(company: current_user.company)
-    .select('users.company_id', 'users.archived', 'users.id', 
-      'users.name', 'users.email', 'users.activated', 'users.approved', 'users.last_login_at',
-      'employee_titles.name AS employee_title_name', 'employee_titles.id AS employee_title_id',
-      )
+      .joins(:office, :employee_title)
+      .where(company: current_user.company)
+      .select('users.company_id', 'users.archived', 'users.id', 
+        'users.name', 'users.email', 'users.activated', 'users.approved', 'users.last_login_at',
+        'employee_titles.name AS employee_title_name', 'employee_titles.id AS employee_title_id',
+        'offices.name AS office_name', 'offices.id as office_id')
 
     if !query_params || !query_params[:name_email]
       return @running_list 
@@ -197,7 +196,8 @@ class User < ActiveRecord::Base
       @running_list = @running_list.where('users.name ILIKE ? or users.email ILIKE ?', "%#{term}%", "%#{term}%").all
     end
 
-    @running_list.uniq
+    puts "^^^^^^^"
+    @running_list#.uniq
   end
 
   # copies in new roles from 
@@ -302,7 +302,8 @@ class User < ActiveRecord::Base
   end
 
   def is_management?
-    if (has_role? :company_admin) || 
+    if (has_role? :super_admin) ||
+      (has_role? :company_admin) || 
       (has_role? :operations) ||
       (has_role? :data_entry) ||
       (has_role? :broker) || 

@@ -49,8 +49,10 @@ class CompaniesController < ApplicationController
 
   def employees
     @title = 'Employees'
-    @users = @company.users.unarchived.includes(
-      :office, :employee_title, :image, :company, :manager, :roles).page params[:page]
+    @users = @company.users.unarchived
+      .joins(:office, :employee_title)
+      .includes(:company, :manager, :roles)
+      .page params[:page]
     @user_images = User.get_images(@users)
     render 'users/index'
   end

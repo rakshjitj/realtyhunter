@@ -18,11 +18,7 @@
     <%= employee_title_and_specialty(user) %>
   </td>
   <td>
-    <% if user.office %>
-      <%= link_to user.office.name, company_office_path(user.office.company, user.office) %>
-    <% else %>
-      None
-    <% end %>
+    <%= link_to user.office.name, company_office_path(current_user.company_id, user.office.id) %>
   </td>
   <td>
     <%= last_login(user) %>
