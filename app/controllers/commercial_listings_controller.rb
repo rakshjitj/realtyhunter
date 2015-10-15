@@ -1,8 +1,8 @@
 class CommercialListingsController < ApplicationController
   load_and_authorize_resource
-  skip_load_resource only: :create
+  skip_load_resource only: [:create, :update_subtype]
   before_action :set_commercial_listing, except: [:new, :create, :index, :filter, 
-    :neighborhoods_modal, :features_modal, :print_public, :print_private, :send_message]
+    :neighborhoods_modal, :features_modal, :print_public, :print_private, :send_message, :update_subtype]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
   etag { current_user.id }
@@ -85,9 +85,9 @@ class CommercialListingsController < ApplicationController
   end
 
   def update_subtype
+    @commercial_unit = CommercialListing.find_unarchived(params[:id])
     ptype = params[:property_type]
     @property_sub_types = CommercialPropertyType.subtypes_for(ptype, current_user.company)
-    #puts "\n\n\n **** #{@property_sub_types.inspect} #{@commercial_unit}"
     respond_to do |format|
       format.js  
     end
