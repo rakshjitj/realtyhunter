@@ -424,11 +424,11 @@
         <div class="row">
           <%= f.fields_for @commercial_unit.unit do |unit_form| %>
           <div class="col-md-4 form-label-responsive">
-            <%= unit_form.label :access_info, class: 'required' %>
+            <%= unit_form.label :access_info %>
           </div>
           <div class="col-md-8">
             <div class="field">
-              <%= unit_form.text_area :access_info, class: 'form-control', :required => true, rows: 5 %>
+              <%= unit_form.text_area :access_info, class: 'form-control', rows: 5 %>
             </div>
           </div>
           <% end %>
