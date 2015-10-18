@@ -1,0 +1,97 @@
+<!-- company header -->
+<table>
+	<tr>
+		<td>
+			<%= image_tag @source_agent.company.image.file.url(:thumb), 
+      	alt: @source_agent.company.image.file.url(:thumb), align:"left" %>
+		</td>
+		<td style="min-width:200px;">
+			<%= @source_agent.name %>
+	    <% if !@source_agent.email.blank? %>
+	      <br /><%= mail_to @source_agent.email, @source_agent.email, subject: 'Responding to Your Sent Listings' %>
+	    <% end %>
+	    <% if !@source_agent.mobile_phone_number.blank? %>
+	      <br /><%= link_to @source_agent.mobile_phone_number, "tel:" + @source_agent.mobile_phone_number %>
+	    <% end %>
+		</td>
+		<td>
+			<%= image_tag @source_agent.image.file.url(:thumb), 
+  	    alt: @source_agent.image.file.url(:thumb) %>
+		</td>
+	</tr>
+</table>
+
+<hr />
+
+<% if @message %>
+	<p><%= @message %></p>
+<% end %>
+
+<!-- listings -->
+<table style="background-color:#F8F8F8">
+	<tr>
+		<% idx = 0 %>
+		<% @listings.each do |listing| %>
+
+		<% if idx > 0 && idx % 2 == 0 %>
+			</tr>
+			<tr>
+		<% end %>
+
+		<td style="max-width: 200px; vertical-align: top;">
+			<% if @images[listing.unit_id] %>
+	      <a href="<%= listing.public_url %>"><%= image_tag(@images[listing.unit_id].file.url(:thumb), 
+	        alt: @images[listing.unit_id].file.url(:medium)) %></a>
+	    <% else %>
+	      <!-- placeholder image -->
+	      <a href="<%= listing.public_url %>"><%= image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100") %></a>
+	    <% end %>
+	  	<br />
+	    <%= rent_formatted(listing.rent) %><br />
+	    <%= listing.beds %> BR / <%= trim_zeros(listing.baths) %> Bath<br />
+	    <%= listing.route %>, <% listing.neighborhood_name %><br />
+
+	    <hr />
+
+	    <% if !listing.all_amenities_to_s.blank? %>
+	      <%= listing.all_amenities_to_s %>
+	    <% end %>
+	    <% if !listing.all_amenities_to_s.blank? && !listing.unit.building.utilities_to_s.blank? %>
+	     ,
+	    <% end %>
+	    <% if !listing.unit.building.utilities_to_s.blank? %>
+	      <%= listing.unit.building.utilities_to_s %>
+	    <% end %>
+
+	    <br />
+	    <br />
+	    <a style="padding: 5px 10px; font-size: 12px;line-height: 1.5; border-radius: 3px;color: #fff;
+    background-color: #f0ad4e;border-color: #eea236;" 
+	    	href="<%= listing.public_url %>">View More Details</a>
+	    <br />
+	    <br />
+    </td>
+
+    <% idx = idx + 1 %>
+		<% end %>
+	</tr>
+</table>
+
+
+<!-- footer -->
+<hr />
+<table>
+	<tr>
+		<td>
+			<%= image_tag @source_agent.company.image.file.url(:thumb), 
+		    alt: @source_agent.company.image.file.url(:thumb), align:"left" %>
+		</th>
+		<td style="vertical-align: middle;">
+			<b><%= @source_agent.company.name %></b>
+			<br />
+			<% if @source_agent.company.website %>
+				<%= link_to @source_agent.company.website, @source_agent.company.website %>
+			<% end %>
+		</th>
+	</tr>
+</table>

@@ -137,11 +137,12 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self.export_all(user)
-    ResidentialListing.joins(unit: [:primary_agent, building: [:company, :landlord, :neighborhood]])
+    ResidentialListing.joins(unit: [building: [:company, :landlord, :neighborhood]])
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address', 
         'units.listing_id', 'units.building_unit', 'units.status','units.rent', 'units.archived',
         'units.available_by', 'units.public_url', 'units.access_info', 'units.exclusive',
+        'units.primary_agent_id', 'units.primary_agent2_id',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
         'buildings.lat', 'buildings.lng', 
         'residential_listings.beds', 'residential_listings.baths', 'residential_listings.notes',
@@ -151,9 +152,7 @@ class ResidentialListing < ActiveRecord::Base
         'residential_listings.tenant_occupied', 'residential_listings.created_at',
         'residential_listings.updated_at', 
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
-        'landlords.code AS landlord_code','landlords.id AS landlord_id',
-        'users.name as primary_agent_name'
-        )
+        'landlords.code AS landlord_code','landlords.id AS landlord_id')
   end
 
   # takes in a hash of search options

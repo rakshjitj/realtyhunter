@@ -449,8 +449,17 @@ SalesListings = {};
 	    //console.log("[ERROR]: " + result);
 	  });
 
-	  // for drag n dropping photos
+	  // index page - selecting listings menu dropdown
+    $('#sales #emailListings').click(Listings.sendMessage);
+    $('#sales tbody').on('click', 'i', Listings.toggleListingSelection);
+    $('#sales .select-all-listings').click(Listings.selectAllListings);
+    $('#sales .selected-listings-menu').on('click', 'a', function() {
+      var action = $(this).data('action');
+      if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();
+    });
 
+
+	  // for drag n dropping photos
 		// disable auto discover
 		Dropzone.autoDiscover = false;
 	 	SalesListings.initializeImageDropzone();

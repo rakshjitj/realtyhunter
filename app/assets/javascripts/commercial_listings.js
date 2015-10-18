@@ -214,7 +214,6 @@ CommercialUnits = {};
 
   //call when typing or enter or focus leaving
   CommercialUnits.initialize = function () {
-
     document.addEventListener("page:restore", function() {
       Listings.hideSpinner();
     });
@@ -238,12 +237,7 @@ CommercialUnits = {};
     if (ptype) {
       CommercialUnits.updatePropertySubTypes(ptype);
     }	
-    // make sure datepicker is formatted before setting initial date below
-    // $('.datepicker').datetimepicker({
-    //   viewMode: 'days',
-    //   format: 'MM/DD/YYYY',
-    //   allowInputToggle: true
-    // });
+
     var available_by = $('#commercial .datepicker').attr('data-available-by');
     if (available_by) {
       $('#commercial .datepicker').data("DateTimePicker").date(available_by);

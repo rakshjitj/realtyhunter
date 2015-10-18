@@ -11,10 +11,12 @@ class SalesListingsController < ApplicationController
   # GET /sales_units
   # GET /sales_units.json
   def index
-    set_sales_listings
     respond_to do |format|
-      format.html
+      format.html do
+        set_sales_listings
+      end
       format.csv do
+        set_sales_listings_csv
         headers['Content-Disposition'] = "attachment; filename=\"" + 
           current_user.name + " - Sales Listings.csv\""
         headers['Content-Type'] ||= 'text/csv'
@@ -172,25 +174,28 @@ class SalesListingsController < ApplicationController
     end
   end
 
-  def print_list
-    sales_listings_no_pagination
-    render pdf: current_user.name + ' sales_listing Listings',
-      template: "/sales_listings/print_list.pdf.erb",
-      #disposition: "attachment",
-      layout:   "/layouts/pdf_layout.html",
-      orientation: 'Landscape',
-      title: current_user.name + 'sales_listing Listings',
-      default_header: false,
-      header:  { right: '[page] of [topage]' },
-      margin: { top: 0, bottom: 0, left: 0, right: 0}
-  end
+  # def print_list
+  #   sales_listings_no_pagination
+  #   render pdf: current_user.name + ' sales_listing Listings',
+  #     template: "/sales_listings/print_list.pdf.erb",
+  #     #disposition: "attachment",
+  #     layout:   "/layouts/pdf_layout.html",
+  #     orientation: 'Landscape',
+  #     title: current_user.name + 'sales_listing Listings',
+  #     default_header: false,
+  #     header:  { right: '[page] of [topage]' },
+  #     margin: { top: 0, bottom: 0, left: 0, right: 0}
+  # end
 
   def print_private
+    ids = params[:listing_ids].split(',')
+    @neighborhood_group = SalesListing.listings_by_neighborhood(current_user, ids)
+
     #respond_to do |format|
     #  format.pdf do
-        render pdf: current_user.name + ' - sales_listing - Private',
+        render pdf: current_user.company.name + ' - Private Sales Listings - ' + Date.today.strftime("%b%d%Y"),
           template: "/sales_listings/print_private.pdf.erb",
-          #disposition: "attachment",
+          orientation: 'Landscape',
           layout:   "/layouts/pdf_layout.html"
     #  end
     #end
@@ -199,15 +204,42 @@ class SalesListingsController < ApplicationController
   # PATCH ajax
   # Takes a unit off the market
   def print_public
+    ids = params[:listing_ids].split(',')
+    @neighborhood_group = SalesListing.listings_by_neighborhood(current_user, ids)
+
     #respond_to do |format|
     #  format.pdf do
-        render pdf: current_user.name + ' - sales_listing',
+        render pdf: current_user.company.name + ' - Public Sales Listings - ' + Date.today.strftime("%b%d%Y"),
           template: "/sales_listings/print_public.pdf.erb",
-          #disposition: "attachment",
+          orientation: 'Landscape',
           layout:   "/layouts/pdf_layout.html"
     #  end
     #end
   end
+
+  # def print_private
+  #   #respond_to do |format|
+  #   #  format.pdf do
+  #       render pdf: current_user.name + ' - sales_listing - Private',
+  #         template: "/sales_listings/print_private.pdf.erb",
+  #         #disposition: "attachment",
+  #         layout:   "/layouts/pdf_layout.html"
+  #   #  end
+  #   #end
+  # end
+
+  # # PATCH ajax
+  # # Takes a unit off the market
+  # def print_public
+  #   #respond_to do |format|
+  #   #  format.pdf do
+  #       render pdf: current_user.name + ' - sales_listing',
+  #         template: "/sales_listings/print_public.pdf.erb",
+  #         #disposition: "attachment",
+  #         layout:   "/layouts/pdf_layout.html"
+  #   #  end
+  #   #end
+  # end
 
   # PATCH/PUT /sales_units/1
   # PATCH/PUT /sales_units/1.json
@@ -251,6 +283,21 @@ class SalesListingsController < ApplicationController
   def inaccuracy_modal
     respond_to do |format|
       format.js  
+    end
+  end
+
+  # sends listings info to clients
+  def send_listings
+    recipients = sales_listing_params[:recipients].split(/[\,,\s]/)
+    sub = sales_listing_params[:title]
+    msg = sales_listing_params[:message]
+    ids = sales_listing_params[:listing_ids].split(',')
+    listings = SalesListing.listings_by_id(current_user, ids)
+    images = SalesListing.get_images(listings)
+    SalesListing.send_listings(current_user, listings, images, recipients, sub, msg)
+    
+    respond_to do |format|
+      format.js { flash[:success] = "Listings sent!"  }
     end
   end
 
@@ -306,15 +353,20 @@ class SalesListingsController < ApplicationController
     def set_sales_listings
       do_search
       @sales_units = custom_sort
-
-      @count_all = SalesListing.joins(:unit).where('units.archived = false').count
+      @count_all = SalesListing.joins(:unit)
+        .where('units.archived = false')
+        .where('units.status = ?', Unit.statuses["active"])
+        .count
       @map_infos = SalesListing.set_location_data(@sales_units.to_a)
       @sales_units = @sales_units.page params[:page]
       @res_images = SalesListing.get_images(@sales_units)
     end
 
-    def sales_listings_no_pagination
-      do_search
+    # returns all data for export
+    def set_sales_listings_csv
+      @sales_units = SalesListing.export_all(current_user)
+      @sales_units = custom_sort
+      @agents = Unit.get_primary_agents(@sales_units)
     end
 
     def do_search
@@ -343,7 +395,7 @@ class SalesListingsController < ApplicationController
         @bldg_features = BuildingAmenity.where(id: building_feature_ids)
       end
 
-      @sales_unit = SalesListing.search(params, current_user, params[:building_id])
+      @sales_units = SalesListing.search(params, current_user, params[:building_id])
     end
 
     def custom_sort
@@ -354,8 +406,8 @@ class SalesListingsController < ApplicationController
       params[:sort_by] = sort_column
       params[:direction] = sort_order
       # if sorting by an actual db column, use order
-      @sales_unit = @sales_unit.order(sort_column + ' ' + sort_order)
-      @sales_unit
+      @sales_units = @sales_units.order(sort_column + ' ' + sort_order)
+      @sales_units
     end
 
     # pull only the building params out of our general params list

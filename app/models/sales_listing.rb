@@ -64,13 +64,13 @@ class SalesListing < ActiveRecord::Base
   def street_address
     output = ""
      # calling from 'show', for example with full objects loaded
-    if !self.respond_to? :street_number
+    if !self.respond_to? :street_number2
       if unit.building.street_number
         output = unit.building.street_number + ' ' + unit.building.route
       end
 
     else # otherwise, we used a select statement to cherry pick fields
-      if street_number
+      if street_number2
         output = street_number2 + ' ' + route2
       end
     end
@@ -108,6 +108,73 @@ class SalesListing < ActiveRecord::Base
     SalesAmenity.where(sales_listing_id: ids).select('name').to_a.group_by(&:sales_listing_id)
   end
 
+  def self.listings_by_neighborhood(user, listing_ids)
+    running_list = SalesListing.joins(unit: {building: [:company, :neighborhood]})
+      .where('companies.id = ?', user.company_id)
+      .where('units.listing_id IN (?)', listing_ids)
+      .select('buildings.formatted_street_address', 
+        'units.listing_id',
+        'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2', 
+        'buildings.lat as lat2', 'buildings.lng as lng2', 'units.id AS unit_id',
+        'units.building_unit', 'units.status','units.rent',
+        'sales_listings.beds || \'/\' || sales_listings.baths as bed_and_baths',
+        'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
+        'units.access_info',
+        'sales_listings.id', 'sales_listings.baths', 'sales_listings.beds', 'units.access_info',
+        'sales_listings.seller_name', 'sales_listings.updated_at', 
+        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
+        'units.available_by', 'units.public_url')
+      .to_a.group_by(&:neighborhood_name)
+    running_list
+  end
+
+  def self.listings_by_id(user, listing_ids)
+    running_list = SalesListing.joins(unit: {building: [:company, :neighborhood]})
+      .where('companies.id = ?', user.company_id)
+      .where('units.listing_id IN (?)', listing_ids)
+      .select('buildings.formatted_street_address', 
+        'units.listing_id',
+        'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2', 
+        'buildings.lat as lat2', 'buildings.lng as lng2', 'units.id AS unit_id',
+        'units.building_unit', 'units.status','units.rent',
+        'sales_listings.beds || \'/\' || sales_listings.baths as bed_and_baths',
+        'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
+        'units.access_info',
+        'sales_listings.id', 'sales_listings.baths', 'sales_listings.beds', 'units.access_info',
+        'sales_listings.seller_name', 'sales_listings.updated_at', 
+        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
+        'units.available_by', 'units.public_url',
+        'users.name as primary_agent_name')
+
+    running_list
+  end
+
+  def self.export_all(user)
+    SalesListing.joins(unit: [building: [:company, :neighborhood]])
+      .where('units.archived = false')
+      .where('companies.id = ?', user.company_id)
+      .select('buildings.formatted_street_address', 
+        'units.listing_id',
+        'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2', 
+        'buildings.lat as lat2', 'buildings.lng as lng2', 'units.id AS unit_id',
+        'units.building_unit', 'units.status', 'units.rent', 'units.exclusive',
+        'units.primary_agent_id', 'units.primary_agent2_id',
+        'sales_listings.beds || \'/\' || sales_listings.baths as bed_and_baths',
+        'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
+        'units.access_info', 'sales_listings.internal_notes', 'sales_listings.public_description',
+        'sales_listings.tenant_occupied', 'sales_listings.listing_type', 'sales_listings.percent_commission',
+        'sales_listings.outside_broker_commission', 'sales_listings.seller_phone', 'sales_listings.seller_address',
+        'sales_listings.id', 'sales_listings.baths', 'sales_listings.beds', 'sales_listings.year_built',
+        'sales_listings.building_type', 'sales_listings.lot_size', 'sales_listings.building_size',
+        'sales_listings.block_taxes', 'sales_listings.lot_taxes', 'sales_listings.water_sewer','sales_listings.insurance',
+        'sales_listings.school_district', 'sales_listings.certificate_of_occupancy', 'sales_listings.violation_search',
+        'units.access_info',
+        'sales_listings.seller_name', 'sales_listings.created_at', 'sales_listings.updated_at', 
+        'units.archived', 
+        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
+        'units.available_by', 'units.public_url')
+  end
+
   # takes in a hash of search options
   def self.search(params, user, building_id=nil)
     # TODO: add amenities back in
@@ -122,7 +189,7 @@ class SalesListing < ActiveRecord::Base
         'units.building_unit', 'units.status','units.rent',
         'sales_listings.beds || \'/\' || sales_listings.baths as bed_and_baths',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
-        'units.access_info',
+        'units.access_info', 'sales_listings.lot_size',
         'sales_listings.id', 'sales_listings.baths', 'sales_listings.beds', 'units.access_info',
         'sales_listings.seller_name', 'sales_listings.updated_at', 
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
@@ -275,6 +342,14 @@ class SalesListing < ActiveRecord::Base
       sales_unit_dup
     else
       raise "No unit number, invalid unit number, or unit number already taken specified"
+    end
+  end
+
+  def self.send_listings(source_agent, listings, images, recipients, sub, msg)
+    if source_agent
+      UnitMailer.send_sales_listings(source_agent, listings, images, recipients, sub, msg).deliver_now
+    else
+      "No sender specified"
     end
   end
 

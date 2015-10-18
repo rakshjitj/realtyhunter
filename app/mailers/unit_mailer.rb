@@ -39,4 +39,12 @@ class UnitMailer < ApplicationMailer
     @images = images
     mail to: recipients, subject: sub, from: @source_agent.email
   end
+
+  def send_sales_listings(source_agent, listings, images, recipients, sub, msg)
+    @listings = listings
+    @source_agent = source_agent
+    @message = msg
+    @images = images
+    mail to: recipients, subject: sub, from: @source_agent.email
+  end
 end

@@ -1,171 +1,71 @@
+<!-- display company info -->
 <div class="row">
   <div class="col-xs-12">
+    <%= image_tag current_user.company.image.file.url(:thumb), :class => 'photo-inline pdf-company-logo', 
+      alt: current_user.company.image.file.url(:thumb), align:"left" %>
+    
+    <h3>
+      <%= current_user.company.name %> Sales Listings<br />
+      <small><%= Time.now.strftime("%B %d, %Y") %></small><br />
+      <small>FOR INTERNAL USE ONLY</small>
+    </h3>
+    
+  </div>
+</div>
 
-  	<div class="row">
-  		<div class="col-xs-12">
-  			<div class="page-header">
-
-		  		<div class="row">
-			  		<div class="col-xs-8">
-							<h1><%= current_user.company.name %></h1>
-			  		</div>
-			  		<div class="col-xs-4 text-right">
-			  			<br />
-			  			<address>
-				  			<strong><%= current_user.name %></strong><br />
-				  			<abbr title="Phone">P:</abbr><%= current_user.mobile_phone_number %><br />
-				  			<a href="mailto:#"><%= current_user.email %></a>
-				  		</address>
-		  			</div>
-	  			</div>
-
-	  		</div><!-- page-header -->
-
-		    <div class="row">
-	        <div class="col-xs-5">
-            <% if @sales_unit.unit.images.length > 0 %>
-  	          <%= image_tag @sales_unit.unit.images[0].file.url(:medium), :class => 'photo-inline', 
-                alt: @sales_unit.unit.images[0].file.url(:medium), size:"100%" %>
-              <br />
-            <% else %>
-              <!-- placeholder image -->
-              <%= wicked_pdf_image_tag "listing_soon.png", alt: "Image coming soon",
-                :class => 'img-responsive center-block' %>
-            <% end %>
-	        </div>
-	        <div class="col-xs-7">
-	        		<div class="row">
-                <div class="col-xs-5 text-right">
-                  <strong>Address</strong>
-                </div>
-                <div class="col-xs-7">
-                  <%= @sales_unit.street_address_and_unit %>
-                </div>
-	            </div>
-	            <div class="row">
-                <div class="col-xs-5 text-right">
-                  <strong>Price</strong>
-                </div>
-                <div class="col-xs-7">
-              		<%= rent_formatted(@sales_unit.unit.price) %>
-                </div>
-	            </div>
-	            <div class="row">
-                <div class="col-xs-5 text-right">
-                  <strong>Beds / Baths</strong>
-                </div>
-                <div class="col-xs-7">
-                  <%= @sales_unit.beds %> / <%= @sales_unit.baths %>
-                </div>
-	            </div>
-	            <div class="row">
-                <div class="col-xs-5 text-right">
-                  <strong>Neighborhood</strong>
-                </div>
-                <div class="col-xs-7">
-                  <%= @sales_unit.unit.building.neighborhood.name %>
-                </div>
-	            </div>
-
-	            <div class="row">
-                <div class="col-xs-5 text-right">
-                  <strong>Access</strong>
-                </div>
-                <div class="col-xs-7">
-                  <%= @sales_unit.unit.access_info %>
-                </div>
-	            </div>
-	            
-              <div class="row">
-                <div class="col-xs-5 text-right">
-                  <strong>LL Pays %</strong>
-                </div>
-                <div class="col-xs-7">
-                  <%= @sales_unit.op_fee_percentage %>
-                </div>
-	            </div>
-              
-              <div class="row">
-                <div class="col-xs-5 text-right">
-                  <strong>Tenant Pays %</strong>
-                </div>
-                <div class="col-xs-7">
-                  <%= @sales_unit.tp_fee_percentage %>
-                </div>
-              </div>
-
-	            <div class="row">
-                <div class="col-xs-5 text-right">
-                    <strong>Available</strong>
-                </div>
-                <div class="col-xs-7">
-                  <% if @sales_unit.unit.available_by < Date.today %>
-                    Now
-                  <% else %>
-                    <%= @sales_unit.unit.available_by %>
-                  <% end %>
-                </div>
-	            </div>
-	            <div class="row">
-                <div class="col-xs-5 text-right">
-                  <strong>Features</strong>
-                </div>
-                <div class="col-xs-7">
-                  <%= @sales_unit.all_amenities_to_s %>
-                </div>
-	            </div>
-	            <div class="row">
-                <div class="col-xs-5 text-right">
-                  <strong>Utilities</strong>
-                </div>
-                <div class="col-xs-7">
-                  <%= @sales_unit.unit.building.utilities_to_s %>
-                </div>
-	            </div>
-
-              <% if @sales_unit.unit.building.pet_policy %>
-  	            <div class="row">
-                  <div class="col-xs-5 text-right">
-                    <strong>Pet policy</strong>
-                  </div>
-                  <div class="col-xs-7">
-                    <%= pet_policy(@sales_unit) %>
-                  </div>
-  	            </div>
+<% @neighborhood_group.each do |neighborhood_name, listings| %>
+  <% reset_cycle() %>
+  <div class="row">
+    <div class="col-xs-12">
+      <table class="table pdf-table splitForPrint new_section">
+        <tr class="neighborhood-row">
+          <th colspan="9"><%= neighborhood_name %></th>
+        </tr>
+        <tr class="heading-row">
+          <th>Address</th>
+          <th>Unit</th>
+          <th>Beds / Baths</th>
+          <th>Price</th>
+          <th>Available</th>
+          <th></th>
+          <th style="width: 20%;">Access</th>
+          <th style="width: 20%;">Features</th>
+          <th></th>
+        </tr>
+        <% listings.each do |listing| %>
+          <tr class="<%= cycle('even', 'odd') -%>">
+            <td><%= listing.street_address %></td>
+            <td><%= listing.unit.building_unit %></td>
+            <td><%= listing.beds %> / <%= trim_zeros(listing.baths) %></td>
+            <td><%= rent_formatted(listing.unit.rent) %></td>
+            <td>
+              <% if !listing.unit.available_by.blank? && listing.unit.available_by <= Date.today %>
+                Now
+              <% else %>
+                <%= listing.unit.available_by %>
               <% end %>
+            </td>
+            <td></td>
+            <td><%= listing.unit.access_info %></td>
+            <td>
+              <% if !listing.all_amenities_to_s.blank? %>
+                <%= listing.all_amenities_to_s %>
+              <% end %>
+              <% if !listing.all_amenities_to_s.blank? && !listing.unit.building.utilities_to_s.blank? %>
+               ,
+              <% end %>
+              <% if !listing.unit.building.utilities_to_s.blank? %>
+                <%= listing.unit.building.utilities_to_s %>
+              <% end %>
+            </td>
+            <td>
+              
+            </td>
+          </tr>
+        <% end %>
+      </table>  
 
-	            <div class="row">
-                <div class="col-xs-5 text-right">
-                  <strong>Listing ID</strong>
-                </div>
-                <div class="col-xs-7">
-                  <%= @sales_unit.unit.listing_id %>
-                </div>
-	            </div>
-	        </div><!-- body -->
+    </div>
+  </div>
 
-		  		<div class="row"><!-- footer -->
-			  		<div class="col-xs-12">
-			  			<hr >
-
-			  			<div class="row">
-			  				<div class="col-xs-6">
-			  					<%= current_user.company.name %><br />
-									<abbr title="Phone">P:</abbr><%= current_user.office.telephone %>
-			  				</div>
-			  				<div class="col-xs-6 text-right">
-			  					<address>
-						  			<%= current_user.name %><br />
-						  			<abbr title="Phone">P:</abbr><%= current_user.mobile_phone_number %><br />
-						  			<a href="mailto:#"><%= current_user.email %></a>
-						  		</address>
-			  				</div>
-			  			</div>
-		  			</div>
-	  			</div><!-- end footer -->
-
-	  	</div>
-	  </div><!-- row -->
-
-	</div><!-- end col-xs-12 -->
-</div><!-- end row -->
+<% end %>

@@ -360,17 +360,19 @@
 	    		</div>
 	    	</div>
 
-	    	<br />
-	    	<div class="row">
-	    		<div class="col-xs-12 col-md-3">
-	    			<strong>Seller info:</strong>
-	    		</div>
-	    		<div class="col-xs-12 col-md-9">
-	    			<%= @sales_unit.seller_name %><br />
-	    			<%= link_to @sales_unit.seller_phone, 'tel:' + @sales_unit.seller_phone %><br />
-	    			<%= @sales_unit.seller_address %>
-	    		</div>
-	    	</div>
+	    	<% if current_user.is_management? %>
+		    	<br />
+		    	<div class="row">
+		    		<div class="col-xs-12 col-md-3">
+		    			<strong>Seller info:</strong>
+		    		</div>
+		    		<div class="col-xs-12 col-md-9">
+		    			<%= @sales_unit.seller_name %><br />
+		    			<%= link_to @sales_unit.seller_phone, 'tel:' + @sales_unit.seller_phone %><br />
+		    			<%= @sales_unit.seller_address %>
+		    		</div>
+		    	</div>
+		    <% end %>
 
 	    	<br />
 	    	<div class="row">

@@ -1,6 +1,7 @@
 <% provide(:title, 'Sales Listings') %>
 
 <div id="sales">
+<div id="section-name" data-name="sales_listings">
 
 <div class="page-header">
   <div class="row">
@@ -92,28 +93,16 @@
         </div>
         <div class="row vertical-padding">
           <div class="col-xs-3">
-            <%= label_tag :seller_name, "Seller" %>
-          </div>
-          <div class="col-xs-9 col-sm-left-padding">
-            <%= autocomplete_field_tag :sales_listing, params[:seller_name], 
-              autocomplete_seller_name_sales_listings_path,
-              update_elements: {},
-              placeholder: "Joe Smith", 
-              size: 30, class:'form-control' %>
-          </div>
-        </div>
-        <div class="row vertical-padding">
-          <div class="col-xs-3">
             <%= label_tag :status, "Status" %>
           </div>
           <div class="col-xs-9 col-sm-left-padding">
             <% if current_user.is_management? %>
               <%= select_tag(:status, 
-                options_for_select(['Any', 'Active + Pending', 'Active', 'Pending', 'Off'], 
+                options_for_select(['Any', 'Active', 'On Market', 'Contract Out', 'In Escrow', 'Closed'], 
                 params[:status] ? params[:status].titleize : "Active"), class: 'form-control') %>
             <% else %>
               <%= select_tag(:status, 
-                options_for_select(['Any', 'Active + Pending', 'Active', 'Pending'], 
+                options_for_select(['Any', 'Active', 'On Market', 'Contract Out', 'In Escrow'], 
                 params[:status] ? params[:status].titleize : "Active"), class: 'form-control') %>
             <% end %>
           </div>
@@ -209,12 +198,35 @@
   </div>
 </div>
 
+<hr />
+<%= form_tag print_list_sales_listings_path do %>
+<br />
 <div class="row">
   <div class="col-md-6">
-    <br />
-    <p class="totals">
-      <%= @count %> Units
-    </p>
+    <!-- will be a dropdown of either print pdf or email -->
+      <div class="dropdown selected-listings">
+        <button class="btn btn-warning btn-sm dropdown-toggle disabled" id="selected-listings-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="menu">
+          0 Selected Listings
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu selected-listings-menu" aria-labelledby="selected-listings-dropdown">
+          <li role="presentation"><a class="list-item-sm-padding" id="emailListings" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#emailModal">
+            <i class="fa fa-fw fa-envelope"></i> Email</a></li>
+          <li role="presentation"><a class="list-item-sm-padding" data-action="listingsSheet" role="menuitem" tabindex="-1">
+            <i class="fa fa-fw fa-file-text"></i> Show Sheet</a></li>
+          <li role="presentation"><a class="list-item-sm-padding" data-action="internalListingsSheet" role="menuitem" tabindex="-1">
+            <i class="fa fa-fw fa-list"></i> Internal Listings Sheet</a></li>
+        </ul>
+      </div>
+    
+    <% if current_user.is_management? %>
+      <%= link_to 'Export to CSV', sales_listings_path(format: 'csv'),
+        class:"btn btn-sm btn-warning link-as-button" %>
+    <% end %>
+
+    <span class="totals">
+      &nbsp;&nbsp;<%= @sales_units.total_count %> Units found
+    </span>
   </div>
   <div class="col-md-6">
     <div class="form-label-responsive">
@@ -237,7 +249,7 @@
           <th><!-- first image --></th>
           <th data-sort="formatted_street_address" class="th-sortable">Address</th>
           <th data-sort="building_unit" class="th-sortable">Unit</th>
-          <th data-sort="seller_name" class="th-sortable">Seller Name</th>
+          <th data-sort="lot_size" class="th-sortable">Lot Size</th>
           <th style="min-width: 20%;">Access</th>
           <th data-sort="bed_and_baths" class="th-sortable">Beds/Baths</th>
           <th data-sort="available_by" class="th-sortable">Available</th>
@@ -258,6 +270,8 @@
 
   </div>
 </div>
+
+<% end %><!-- form -->
 
 <div class="row">
   <div class="col-md-12 form-label-responsive">

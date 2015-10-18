@@ -11,7 +11,6 @@ class ResidentialListingsController < ApplicationController
   # GET /residential_units
   # GET /residential_units.json
   def index
-    
     respond_to do |format|
       format.html do
         set_residential_listings
@@ -323,6 +322,7 @@ class ResidentialListingsController < ApplicationController
     def set_residential_listings_csv
       @residential_units = ResidentialListing.export_all(current_user)
       @residential_units = custom_sort
+      @agents = Unit.get_primary_agents(@residential_units)
     end
 
     def do_search
