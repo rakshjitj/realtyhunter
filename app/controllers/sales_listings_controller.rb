@@ -112,6 +112,9 @@ class SalesListingsController < ApplicationController
       puts new_bldg.errors.messages
       puts new_unit.errors.messages
       puts @sales_unit.errors.messages
+      new_bldg.delete if new_bldg.id
+      new_unit.delete if new_unit.id
+
       render 'new'
     end
   end
@@ -314,7 +317,14 @@ class SalesListingsController < ApplicationController
   # GET /refresh_images
   # ajax call
   def refresh_images
-    #puts "\n\n\n **** HELLO------- REFRESHING IMAGE #{@sales_unit} -- #{params.inspect}"
+    respond_to do |format|
+      format.js  
+    end
+  end
+
+  # GET 
+  # ajax call
+  def refresh_documents
     respond_to do |format|
       format.js  
     end

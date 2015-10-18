@@ -1,4 +1,4 @@
-<div id="sales" data-sunit-id="<%= @sales_unit ? @sales_unit.id : '' %>">
+<div id="sales" data-unit-id="<%= @sales_unit ? @sales_unit.id : '' %>">
 
 <div class="panel panel-default">
   <div class="panel-heading">
@@ -10,9 +10,46 @@
     <ul class="nav nav-tabs" role="tablist">
       <li role="presentation" class="active"><a href="#basic-info" aria-controls="basic-info" role="tab" data-toggle="tab">Basic Info</a></li>
       <li role="photos"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+      <li role="photos"><a href="#documents" aria-controls="documents" role="tab" data-toggle="tab">Documents</a></li>
     </ul>
 
     <div class="tab-content">
+      <!-- ******************** third tabpanel - documents ******************** -->
+    <div role="tabpanel" class="tab-pane fade" id="documents">
+      
+      <% if @sales_unit && @sales_unit.id %>
+
+        <br />
+        <%= form_for(@sales_unit, :url => sales_listing_documents_path(@sales_unit), 
+          html: {multipart: true, class: "dropzone", id: "sunit-dropzone-docs"}, method: :post) do |f| %>
+          <div class="fallback">
+            <%= f.file_field :file %><br>
+            <%= f.submit "Upload" %>
+          </div>
+        <% end %>
+      
+        <br />
+        <div class="row">
+          <div class="col-md-12">
+            <p><strong>Edit current documents (drag to reorder):</strong></p>
+            <div class="documents sortable">
+              <% if @sales_unit.unit.documents.length > 0 %>
+                <%= render 'documents',  locals: { sales_unit: @sales_unit } %>
+              <% else %>
+                <p>(No files uploaded yet.)</p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+      <% else %>
+        <br />
+        <strong>Save the basic info first!</strong>
+      <% end %>
+      
+    </div><!-- end tabpanel docs -->
+
+
       <!-- ******************** second tabpanel - photos ******************** -->
       <div role="tabpanel" class="tab-pane fade" id="photos">
         

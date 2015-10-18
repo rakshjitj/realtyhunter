@@ -39,6 +39,7 @@ DropZoneHelper = {};
 
   DropZoneHelper.removeDocument = function (id, unit_id, controllerPath) {
     // make a DELETE ajax request to delete the file
+    //console.log(id, unit_id, controllerPath);
     $.ajax({
       type: 'DELETE',
       url: '/' + controllerPath + '/' + unit_id + '/documents/' + id,
@@ -70,7 +71,7 @@ DropZoneHelper = {};
     $('#' + sectionID + ' .delete-unit-img').click(function(event) {
       event.preventDefault();
       var id = $(this).attr('data-id');
-      var unit_id = $(this).attr('data-cunit-id');
+      var unit_id = $(this).attr('data-unit-id');
       DropZoneHelper.removeImage(id, unit_id, controllerPath);
     });
   };
@@ -79,7 +80,7 @@ DropZoneHelper = {};
     $('#' + sectionID + ' .delete-unit-doc').click(function(event) {
       event.preventDefault();
       var id = $(this).attr('data-id');
-      var unit_id = $(this).attr('data-cunit-id');
+      var unit_id = $(this).attr('data-unit-id');
       DropZoneHelper.removeDocument(id, unit_id, controllerPath);
     });
   };

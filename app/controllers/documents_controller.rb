@@ -17,6 +17,9 @@ class DocumentsController < ApplicationController
       elsif params[:commercial_listing_id] && !params[:commercial_listing_id].empty?
         render json: { message: "success", fileID: @document.id, unitID: @unit.id, cunitID: @unit.commercial_listing.id },
           :status => 200
+      elsif params[:sales_listing_id] && !params[:sales_listing_id].empty?
+        render json: { message: "success", fileID: @document.id, unitID: @unit.id, sunitID: @unit.sales_listing.id },
+          :status => 200
       end
     else 
       #  you need to send an error header, otherwise Dropzone
@@ -57,13 +60,12 @@ class DocumentsController < ApplicationController
 
     def set_unit
       if params[:residential_listing_id]
-        #puts "WE GOT R-ID #{params[:residential_listing_id]}"
         @unit = ResidentialListing.find(params[:residential_listing_id]).unit
       elsif params[:commercial_listing_id]
-        #puts "WE GOT C-ID #{params[:commercial_listing_id]}"
         @unit = CommercialListing.find(params[:commercial_listing_id]).unit
+      elsif params[:sales_listing_id]
+        @unit = SalesListing.find(params[:sales_listing_id]).unit
       end
-      #@unit = Unit.find(params[:unit_id])
     end
 
     def document_params

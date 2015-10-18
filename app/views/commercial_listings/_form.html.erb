@@ -16,7 +16,7 @@
     <!-- ******************** third tabpanel - documents ******************** -->
     <div role="tabpanel" class="tab-pane fade" id="documents">
       
-      <% if @commercial_unit.id %>
+      <% if @commercial_unit && @commercial_unit.id %>
 
         <br />
         <%= form_for(@commercial_unit, :url => commercial_listing_documents_path(@commercial_unit), 
@@ -46,12 +46,12 @@
         <strong>Save the basic info first!</strong>
       <% end %>
       
-    </div><!-- end tabpanel photos -->
+    </div><!-- end tabpanel docs -->
 
     <!-- ******************** second tabpanel - photos ******************** -->
     <div role="tabpanel" class="tab-pane fade" id="photos">
       
-      <% if @commercial_unit.id %>
+      <% if @commercial_unit && @commercial_unit.id %>
 
         <br />
         <%= form_for(@commercial_unit, :url => commercial_listing_unit_images_path(@commercial_unit), 

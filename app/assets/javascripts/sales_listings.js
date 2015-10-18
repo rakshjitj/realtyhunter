@@ -118,10 +118,10 @@ SalesListings = {};
         // find the remove button link of the uploaded file and give it an id
         // based of the fileID response from the server
         $(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
-        $(file.previewTemplate).find('.dz-remove').attr('sunit_id', response.cunitID);
+        $(file.previewTemplate).find('.dz-remove').attr('unit_id', response.unitID);
         // add the dz-success class (the green tick sign)
         $(file.previewElement).addClass("dz-success");
-        $.getScript('/sales_listings/' + response.cunitID + '/refresh_documents')
+        $.getScript('/sales_listings/' + response.sunitID + '/refresh_documents')
         file.previewElement.remove();
       },
       //when the remove button is clicked
@@ -154,10 +154,10 @@ SalesListings = {};
           updated_order.push({ id: $(this).data('id'), position: i+1 });
         });
         // send the updated order via ajax
-        var cunit_id = $('#sales').attr('data-sunit-id');
+        var unit_id = $('#sales').attr('data-unit-id');
         $.ajax({
           type: "PUT",
-          url: '/sales_listings/' + cunit_id + '/documents/sort',
+          url: '/sales_listings/' + unit_id + '/documents/sort',
           data: { order: updated_order }
         });
     });
@@ -176,10 +176,10 @@ SalesListings = {};
         // find the remove button link of the uploaded file and give it an id
         // based of the fileID response from the server
         $(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
-        $(file.previewTemplate).find('.dz-remove').attr('sunit_id', response.cunitID);
+        $(file.previewTemplate).find('.dz-remove').attr('unit_id', response.unitID);
         // add the dz-success class (the green tick sign)
         $(file.previewElement).addClass("dz-success");
-        $.getScript('/sales_listings/' + response.cunitID + '/refresh_images')
+        $.getScript('/sales_listings/' + response.sunitID + '/refresh_images')
         file.previewElement.remove();
       },
       //when the remove button is clicked
@@ -213,10 +213,10 @@ SalesListings = {};
         });
         //console.log(updated_order);
         // send the updated order via ajax
-        var cunit_id = $('#sales').attr('data-sunit-id');
+        var unit_id = $('#sales').attr('data-unit-id');
         $.ajax({
           type: "PUT",
-          url: '/sales_listings/' + cunit_id + '/unit_images/sort',
+          url: '/sales_listings/' + unit_id + '/unit_images/sort',
           data: { order: updated_order }
         });
     });
@@ -265,96 +265,6 @@ SalesListings = {};
 	  return contentString;
 	};
 
-	// SalesListings.map;
-	// SalesListings.overlays;
-
-	// SalesListings.updateOverviewMap = function(in_data) {
-	// 	SalesListings.overlays.clearLayers();
- //    var markers = new L.MarkerClusterGroup({
- //    	maxClusterRadius: 30 // lean towards showing more individual markers
- //    }).addTo(SalesListings.overlays);//{ showCoverageOnHover: false });
-		
- //    var dataPoints;
-	//   // if updating from an ajax call, in_data will hava content.
-	//   // we load data from a data attribute on page load, but that remains cached forever -
-	//   // it will not update with subsequent ajax calls.
-	//   if (in_data) {
-	//   	dataPoints = JSON.parse(in_data);
-	//   } else {
-	//   	dataPoints = JSON.parse($('#big-map').attr('data-map-points'));
-	//   }
-
-	//   var features = [];
-	//   Object.keys(dataPoints).forEach(function(key, index) {
-	//     // draw each marker + load with data
-	//     var info = dataPoints[key];
-
-	//     var content = SalesListings.buildContentString(key, info);
-	//     var marker = L.marker(new L.LatLng(info.lat, info.lng), {
-	//       icon: L.mapbox.marker.icon({
-	//       	'marker-size': 'small', 
-	//       	'marker-color': '#f86767'
-	//       }),
-	//       'title': key,
-	//     });
-	//     marker.bindPopup(content);
- //      markers.addLayer(marker);
-	//     // var feature = {
- //     //    type: 'Feature',
- //     //    properties: {
- //     //        title: key,
- //     //        'marker-color': '#f86767',
- //     //        'description': SalesListings.buildContentString(key, info),
- //     //        'marker-size': 'small'
- //     //    },
- //     //    geometry: {
- //     //        type: 'Point',
- //     //        coordinates: [info.lng, info.lat]
- //     //    }
- //    	// };
-    	
- //    	// features.push(feature);
-	// 	});
-
-	// 	var geojson = {
-	// 		'type': 'FeatureCollection',
-	// 		'features': features
-	// 	};
-
- //    //markerLayer.setGeoJSON(geojson);
- //    var geoJsonLayer = L.geoJson(geojson);
- //    //geoJsonLayer.clearLayers();
- //    markers.addLayer(geoJsonLayer);
- // 		SalesListings.map.addLayer(markers);
- //    SalesListings.map.fitBounds(markers.getBounds());
-	// };
-
-	SalesListings.toggleFeeOptions = function(event) {
-		var isChecked = $('#sales .has-fee').prop('checked');
-		if (isChecked) {
-			$('#sales .show-op').addClass('hide');
-			$('#sales .show-tp').removeClass('hide');
-		} else {
-			$('#sales .show-op').removeClass('hide');
-			$('#sales .show-tp').addClass('hide');
-		}
-	};
-
-	SalesListings.inheritFeeOptions = function() {
-		bldg_id = $('#sales #sales_listing_unit_building_id').val();
-		//console.log('got new ids', bldg_id);
-		
-		$.ajax({
-			type: 'GET',
-			url: '/sales_listings/fee_options/',
-			data: {
-				building_id: bldg_id,
-			},
-			//success: function(data) {},
-			//error: function(data) {}
-		});
-	};
-
 	SalesListings.setPositions = function() {
 	  // loop through and give each task a data-pos
 	  // attribute that holds its position in the DOM
@@ -379,12 +289,6 @@ SalesListings = {};
 			//console.log('detected click');
 			Listings.hideSpinner();
 		});
-
-		$('#sales .has-fee').click(SalesListings.toggleFeeOptions);
-		// when editing form
-		SalesListings.toggleFeeOptions();
-		// when creating a new listing, inherit TP/OP from building's landlord
-		$('#sales #sales_listing_unit_building_id').change(SalesListings.inheritFeeOptions);
 
 		// index filtering
 		$('#sales input').keydown(SalesListings.preventEnter);
