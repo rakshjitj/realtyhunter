@@ -29,7 +29,6 @@ class CreateSalesListings < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    # note: common prefix "sales" gets factored out
     create_table :sales_amenities_units, id: false do |t|
       t.belongs_to :sales_listing
       t.belongs_to :sales_amenity

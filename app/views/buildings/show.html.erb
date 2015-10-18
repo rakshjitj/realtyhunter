@@ -102,6 +102,7 @@
 				  <%= @building.notes %>
 				</p>
 
+				<% if @building.landlord %>
 				<p>
 				  <strong>Landlord Code:</strong>
 				  <% if current_user.is_management? %>
@@ -110,6 +111,7 @@
 						<%= @building.landlord.code %>
 					<% end %>
 				</p>
+				<% end %>
 
 				<p>
 				  <strong>Building-Level Amenities:</strong>
@@ -134,26 +136,28 @@
 				  <%= @building.utilities_to_s %>
 				</p>
 
-				<!-- Broker's Fee -->
-        <p>
-    		<% if @building.landlord.has_fee %>
-    			<strong>Tenant Pays:</strong> 
-    			<% if @building.landlord.tp_fee_percentage %>
-	    			<%= @building.landlord.tp_fee_percentage %>%
+				<% if @building.landlord%>
+					<!-- Broker's Fee -->
+	        <p>
+	    		<% if @building.landlord.has_fee %>
+	    			<strong>Tenant Pays:</strong> 
+	    			<% if @building.landlord.tp_fee_percentage %>
+		    			<%= @building.landlord.tp_fee_percentage %>%
+		    		<% else %>
+		    			(no amount specified)
+		    		<% end %>
+	    			
+	    		<!-- No Broker's Fee -->
 	    		<% else %>
-	    			(no amount specified)
+	    			<strong>OP Pays:</strong> 
+	    			<% if @building.landlord.op_fee_percentage %>
+		    			<%= @building.landlord.op_fee_percentage %>%
+		    		<% else %>
+		    			(no amount specified)
+		    		<% end %>
+		    		
 	    		<% end %>
-    			
-    		<!-- No Broker's Fee -->
-    		<% else %>
-    			<strong>OP Pays:</strong> 
-    			<% if @building.landlord.op_fee_percentage %>
-	    			<%= @building.landlord.op_fee_percentage %>%
-	    		<% else %>
-	    			(no amount specified)
-	    		<% end %>
-	    		
-    		<% end %>
+	    	<% end %>
     		</p>
 
 				<p>

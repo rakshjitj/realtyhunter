@@ -11,8 +11,12 @@
 		    <div class="panel-title">
 		    	<div class="row">
 			  		<div class="col-xs-12 col-md-7">
-				  		<h2><%= @sales_unit.street_address_and_unit %></h2>
-				  		<h3><%= rent_formatted(@sales_unit.unit.price) %> &nbsp;&nbsp;&nbsp; <%= @sales_unit.beds %> Beds / <%= trim_zeros(@sales_unit.baths) %> Baths</h3>
+				  		<h2>
+				  			<%= @sales_unit.unit.building.street_number + ' ' + @sales_unit.unit.building.route %>
+				  		</h2>
+				  		<h3>
+				  			<%= rent_formatted(@sales_unit.unit.rent) %> &nbsp;&nbsp;&nbsp; <%= @sales_unit.beds %> Beds / <%= trim_zeros(@sales_unit.baths) %> Baths
+				  		</h3>
 				  		<p>
 			  				<%= small_header(@sales_unit) %><br />
 			  				<%= render 'market_status' %>
@@ -28,14 +32,14 @@
 		    	<div class="row">
 			  		<div class="col-xs-12 col-md-7">
 				  		<h1>
-				  			<%= @sales_unit.street_address_and_unit %>
+				  			<%= @sales_unit.unit.building.street_number + ' ' + @sales_unit.unit.building.route %>
 				  		</h1>
 				  		<p>
 			  				<%= small_header(@sales_unit) %>
 			  			</p>
 			  		</div>
 			  		<div class="col-xs-12 col-md-5 form-label-responsive">
-			  			<h1><%= rent_formatted(@sales_unit.unit.price) %></h1>
+			  			<h1><%= rent_formatted(@sales_unit.unit.rent) %></h1>
 			  			<p><%= @sales_unit.beds %> Beds / <%= trim_zeros(@sales_unit.baths) %> Baths</p>
 			  			
 			  		</div>
@@ -55,8 +59,6 @@
 		  	<div class="row">
 			  	<div class="col-md-9 vertical-padding">
 			  		<%= link_to 'View all', sales_listings_path %>
-			  		| <%= link_to 'Print', print_modal_sales_listing_path(@sales_unit), 
-			      		data: {toggle: "modal", target: "#printModal"}, remote: true %>
 			  		<% if current_user.is_management? %>
 		  				| <%= link_to 'Edit', edit_sales_listing_path(@sales_unit.id) %>
 			        | <%= link_to 'Duplicate', duplicate_modal_sales_listing_path(@sales_unit), 
@@ -165,7 +167,7 @@
 			    			<strong>Unit:</strong>
 			    		</div>
 			    		<div class="col-xs-7">
-			    			<%= @sales_unit.unit.building_unit %>
+			    			<%= @sales_unit.unit.building_unit ? @sales_unit.unit.building_unit : '-' %>
 			    		</div>
 	    			</div>
 	    			<div class="row">
@@ -181,7 +183,7 @@
 			    			<strong>Price:</strong>
 			    		</div>
 			    		<div class="col-xs-7">
-			    			<%= rent_formatted(@sales_unit.unit.price) %>
+			    			<%= rent_formatted(@sales_unit.unit.rent) %>
 			    		</div>
 	    			</div>
 	    			<div class="row">
@@ -198,95 +200,89 @@
 	    			</div>
 	    			<div class="row">
 	    				<div class="col-xs-5">
-			    			<strong>Rental Term:</strong>
+			    			<strong>Year Built:</strong>
 			    		</div>
 			    		<div class="col-xs-7">
-			    			<% if @sales_unit.unit.building.rental_term %>
-				    			<%= @sales_unit.unit.building.rental_term.name.titleize %>
-				    		<% else %>
-				    			-
-				    		<% end %>
+			    			<%= @sales_unit.year_built %>
 			    		</div>
 	    			</div>
 	    			<div class="row">
-			    		<div class="col-xs-5">
-			    			<strong>Utilities:</strong>
+	    				<div class="col-xs-5">
+			    			<strong>Building Type:</strong>
 			    		</div>
 			    		<div class="col-xs-7">
-			    			<% if !@sales_unit.unit.building.utilities_to_s.empty? %>
-				    			<%= @sales_unit.unit.building.utilities_to_s.titleize %>
-				    		<% else %>
-				    			- 
-				    		<% end %>
+			    			<%= @sales_unit.building_type %>
 			    		</div>
-			    	</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Lot Size:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @sales_unit.lot_size %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Building Size:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @sales_unit.building_size %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>School District:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @sales_unit.school_district %>
+			    		</div>
+	    			</div>
+	    			
 	    		</div>
 
 	    		<div class="col-md-6">
 	    			<div class="row">
-	    				<div class="col-xs-5">
-			    			<strong>Pet Policy:</strong>
+	    				<div class="col-xs-6">
+			    			<strong>Block Taxes</strong>
 			    		</div>
-			    		<div class="col-xs-7">
-			    			<%= pet_policy(@sales_unit) %>
-			    		</div>
-	    			</div>
-	    			<div class="row">
-	    				<div class="col-xs-5">
-			    			<strong>Landlord:</strong>
-			    		</div>
-			    		<div class="col-xs-7">
-			    			<% if current_user.is_management? %>
-									<%= link_to @sales_unit.unit.building.landlord.code, @sales_unit.unit.building.landlord %>
-								<% else %>
-									<%= @sales_unit.unit.building.landlord.code %>
-								<% end %>
+			    		<div class="col-xs-6">
+			    			<%= @sales_unit.block_taxes %>
 			    		</div>
 	    			</div>
+
 	    			<div class="row">
-	    				<div class="col-xs-5">
-			    			<strong>Lease duration:</strong>
+	    				<div class="col-xs-6">
+			    			<strong>Lot Taxes</strong>
 			    		</div>
-			    		<div class="col-xs-7">
-			    			<%= lease_duration(@sales_unit) %>
+			    		<div class="col-xs-6">
+			    			<%= @sales_unit.lot_taxes %>
 			    		</div>
 	    			</div>
+
 	    			<div class="row">
-	    				<!-- Broker's Fee -->
-			    		<% if @sales_unit.has_fee %>
-			    			<div class="col-xs-5">
-				    			<strong>Tenant Pays:</strong>
-				    		</div>
-				    		<div class="col-xs-7">
-			    			<% if @sales_unit.tp_fee_percentage %>
-				    			<%= @sales_unit.tp_fee_percentage %>%
-				    		<% else %>
-				    			<% if @sales_unit.unit.building.landlord.tp_fee_percentage %>
-				    				<%= @sales_unit.unit.building.landlord.tp_fee_percentage %>%
-				    			<% end %>
-				    		<% end %>
-			    			</div>
-			    		<!-- No Broker's Fee -->
-			    		<% else %>
-			    			<div class="col-xs-5">
-				    			<strong>OP Pays:</strong>
-				    		</div>
-				    		<div class="col-xs-7">
-			    			<% if @sales_unit.op_fee_percentage %>
-				    			<%= @sales_unit.op_fee_percentage %>%
-				    		<% else %>
-				    			<% if @sales_unit.unit.building.landlord.op_fee_percentage %>
-				    				<%= @sales_unit.unit.building.landlord.op_fee_percentage %>%
-				    			<% end %>
-				    		<% end %>
-				    		</div>
-			    		<% end %>
+	    				<div class="col-xs-6">
+			    			<strong>Water/Sewer</strong>
+			    		</div>
+			    		<div class="col-xs-6">
+			    			<%= @sales_unit.water_sewer %>
+			    		</div>
 	    			</div>
+
 	    			<div class="row">
-	    				<div class="col-xs-5">
+	    				<div class="col-xs-6">
+			    			<strong>Insurance</strong>
+			    		</div>
+			    		<div class="col-xs-6">
+			    			<%= @sales_unit.insurance %>
+			    		</div>
+	    			</div>
+
+	    			<div class="row">
+	    				<div class="col-xs-6">
 			    			<strong>Primary agent:</strong>
 			    		</div>
-			    		<div class="col-xs-7">
+			    		<div class="col-xs-6">
 			    			<% if @sales_unit.unit.primary_agent %>
 			    				<%= link_to @sales_unit.unit.primary_agent.name, @sales_unit.unit.primary_agent %>
 			    			<% else %>
@@ -295,10 +291,35 @@
 			    		</div>
 	    			</div>
 	    			<div class="row">
-	    				<div class="col-xs-5">
+	    				<div class="col-xs-6">
+			    			<strong>Listing Type:</strong>
+			    		</div>
+			    		<div class="col-xs-6">
+			    			<%= @sales_unit.listing_type %>
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-6">
+			    			<strong>Commission:</strong>
+			    		</div>
+			    		<div class="col-xs-6">
+			    			<%= @sales_unit.percent_commission %> %
+			    		</div>
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-6">
+			    			<strong>Outside Broker Comm:</strong>
+			    		</div>
+			    		<div class="col-xs-6">
+			    			<%= @sales_unit.outside_broker_commission %> %
+			    		</div>
+	    			</div>
+	    			
+	    			<div class="row">
+	    				<div class="col-xs-6">
 			    			<strong>Listing ID:</strong>
 			    		</div>
-			    		<div class="col-xs-7">
+			    		<div class="col-xs-6">
 			    			<%= @sales_unit.unit.listing_id %>
 			    		</div>
 	    			</div>
@@ -307,9 +328,26 @@
 
 	    	<!-- TODO: integrate with dept of buildings to get
 						DOM, total floors, total units, year built, lot, block, community district, school district -->
-					<!-- Landlord info -->
-	    
-	    	
+
+				<br />
+	    	<div class="row">
+	    		<div class="col-xs-12 col-md-3">
+	    			<strong>Certificate of Occupancy:</strong>
+	    		</div>
+	    		<div class="col-xs-12 col-md-9">
+	    			<%= @sales_unit.certificate_of_occupancy %>
+	    		</div>
+	    	</div>
+
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-xs-12 col-md-3">
+	    			<strong>Violation Search:</strong>
+	    		</div>
+	    		<div class="col-xs-12 col-md-9">
+	    			<%= @sales_unit.violation_search %>
+	    		</div>
+	    	</div>
 
 	    	<br />
 	    	<div class="row">
@@ -319,6 +357,18 @@
 	    		<div class="col-xs-12 col-md-9">
 	    			<%= occupancy_status(@sales_unit) %>
 	    			<%= @sales_unit.unit.access_info %>
+	    		</div>
+	    	</div>
+
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-xs-12 col-md-3">
+	    			<strong>Seller info:</strong>
+	    		</div>
+	    		<div class="col-xs-12 col-md-9">
+	    			<%= @sales_unit.seller_name %><br />
+	    			<%= link_to @sales_unit.seller_phone, 'tel:' + @sales_unit.seller_phone %><br />
+	    			<%= @sales_unit.seller_address %>
 	    		</div>
 	    	</div>
 
@@ -347,36 +397,13 @@
 	    	<br />
 	    	<div class="row">
 	    		<div class="col-xs-12 col-md-3">
-	    			<strong>Unit Amenities:</strong>
+	    			<strong>Listing Amenities:</strong>
 	    		</div>
 	    		<div class="col-xs-12 col-md-9">
 	    			<%= @sales_unit.amenities_to_s %>
 	    		</div>
 	    	</div>
 
-	    	<br />
-	    	<div class="row">
-	    		<div class="col-xs-12 col-md-12">
-	    			<strong>Landlord Notes:</strong>
-	    		</div>
-	    	</div>
-	    	<div class="row">
-	    		<div class="col-xs-12 col-md-12">
-	    			<%= @sales_unit.unit.building.landlord.notes %>
-	    		</div>
-	    	</div>
-
-	    	<br />
-	    	<div class="row">
-	    		<div class="col-xs-12 col-md-12">
-	    			<strong>Building Notes:</strong>
-	    		</div>
-	    	</div>
-	    	<div class="row">
-	    		<div class="col-xs-12 col-md-12">
-	    			<%= @sales_unit.unit.building.notes %>
-	    		</div>
-	    	</div>
 
 	    	<br />
 	    	<div class="row">
@@ -386,7 +413,7 @@
 	    	</div>
 	    	<div class="row">
 	    		<div class="col-xs-12 col-md-12">
-	    			<%= @sales_unit.notes %>
+	    			<%= @sales_unit.internal_notes %>
 	    		</div>
 	    	</div>
 
@@ -398,7 +425,7 @@
 	    	</div>
 	    	<div class="row">
 	    		<div class="col-xs-12 col-md-12">
-	    			<%= @sales_unit.description %>
+	    			<%= @sales_unit.public_description %>
 	    		</div>
 	    	</div>
 
@@ -446,57 +473,5 @@
 <%# Template Dependency: layouts/modals %>
 <%= render 'layouts/modals' %>
 
-<!-- Print Modal: only on the show page -->
-<div class="modal fade" id="printModal" tabindex="-1" role="dialog" 
-  aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Generating Printable PDF</h4>
-      </div>
-      <div class="modal-body">
-      	<div class="row">
-        	<div class="col-md-12">
-        		<p>Please be patient, generating pdfs can take a few moments. </p>
-        		<br />
-        	</div>
-        </div>
-        <div class="row">
-          <div class="col-xs-3 form-label-responsive">
-            <%= link_to print_private_sales_listing_path(@sales_unit, :format => :pdf), 
-            	class:"btn btn-warning link-as-button print-private-btn has-spinner" do %>
-              <span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Private
-            <% end %>
-          </div>
-          <div class="col-xs-9">
-            <p>
-              For <strong>internal</strong> use only. Includes sensitive data about listings such as the 
-              address, landlord info, current tenant info, etc
-            </p>
-          </div>
-        </div>
-
-        <br />
-        <div class="row">
-          <div class="col-xs-3 form-label-responsive">
-            <%= link_to print_public_sales_listing_path(@sales_unit, :format => :pdf), 
-            	class:"btn btn-warning link-as-button print-public-btn has-spinner" do %>
-            	<span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Public
-            <% end %>
-          </div>
-          <div class="col-xs-9">
-            <p>For <strong>external</strong> use</p>
-          </div>
-        </div>
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-
-    </div>
-  </div>
-</div>
 
 </style>

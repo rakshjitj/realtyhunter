@@ -1,19 +1,10 @@
 SalesListings = {};
 
-// TODO: break this up by controller action
-
 (function() {
-
-	SalesListings.showSpinner = function() {
-		$('.sales-spinner-desktop').show();
-	};
-
-	SalesListings.hideSpinner = function() {
-		$('.sales-spinner-desktop').hide();
-	};
-
 	// for searching on the index page
 	SalesListings.doSearch = function (sort_by_col, sort_direction) {
+		Listings.showSpinner();
+
 		//console.log(sort_by_col, sort_direction);
 		// sanitize invalid input before submitting
 	  if ($('#sales #neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
@@ -27,8 +18,6 @@ SalesListings = {};
 	  }
 
 	  var search_path = $('#sales-search-filters').attr('data-search-path');
-	  
-	  SalesListings.showSpinner();
 
 	  $.ajax({
 	    url: search_path,
@@ -57,14 +46,181 @@ SalesListings = {};
 	    dataType: 'script',
 	    success: function(data) {
 	    	//console.log('SUCCESS:', data.responseText);
-	    	SalesListings.hideSpinner();
+	    	Listings.hideSpinner();
 			},
 			error: function(data) {
 				//console.log('ERROR:', data.responseText);
-				SalesListings.hideSpinner();
+				Listings.hideSpinner();
 			}
 	  });
 	};
+
+	SalesListings.setupSortableColumns = function() {
+		$('#sales .th-sortable').click(function(e) {
+			e.preventDefault();
+			
+			if ($(this).hasClass('selected-sort')) {
+				// switch sort order
+				var i = $('.selected-sort i');
+				if (i) {
+					if (i.hasClass('glyphicon glyphicon-triangle-bottom')) {
+						i.removeClass('glyphicon glyphicon-triangle-bottom').addClass('glyphicon glyphicon-triangle-top');
+						$(this).attr('data-direction', 'desc');
+					}
+					else if (i.hasClass('glyphicon glyphicon-triangle-top')) {
+						i.removeClass('glyphicon glyphicon-triangle-top').addClass('glyphicon glyphicon-triangle-bottom');
+						$(this).attr('data-direction', 'asc');
+					}
+				}
+			} else {
+				// remove selection from old row
+				$('.selected-sort').attr('data-direction', '');
+				$('th i').remove(); // remove arrows
+				$('.selected-sort').removeClass('selected-sort');
+				// select new column
+				$(this).addClass('selected-sort').append(' <i class="glyphicon glyphicon-triangle-bottom"></i>');
+				$(this).attr('data-direction', 'asc');
+			}
+
+			var sort_by_col = $(this).attr('data-sort');
+			var sort_direction = $(this).attr('data-direction');
+			SalesListings.doSearch(sort_by_col, sort_direction);
+		});
+	};
+
+	// search as user types
+	SalesListings.timer;
+	SalesListings.throttledSearch = function () {
+		//console.log('throttling?');
+		//clear any interval on key up
+		if (SalesListings.timer) {
+			//console.log('yes, clearing');
+		  clearTimeout(SalesListings.timer);
+		}
+	  SalesListings.timer = setTimeout(SalesListings.doSearch, 500);
+	};
+
+	// change enter key to tab
+	SalesListings.preventEnter = function (event) {
+	  if (event.keyCode == 13) {
+	    //$('#checkbox_active').focus();
+	    return false;
+	  }
+	};
+
+	SalesListings.initializeDocumentsDropzone = function() {
+    // grap our upload form by its id
+    $("#sunit-dropzone-docs").dropzone({
+      // show remove links on each image upload
+      addRemoveLinks: true,
+      // if the upload was successful
+      success: function(file, response){
+        // find the remove button link of the uploaded file and give it an id
+        // based of the fileID response from the server
+        $(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
+        $(file.previewTemplate).find('.dz-remove').attr('sunit_id', response.cunitID);
+        // add the dz-success class (the green tick sign)
+        $(file.previewElement).addClass("dz-success");
+        $.getScript('/sales_listings/' + response.cunitID + '/refresh_documents')
+        file.previewElement.remove();
+      },
+      //when the remove button is clicked
+      removedfile: function(file){
+        // grap the id of the uploaded file we set earlier
+        var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
+        var unit_id = $(file.previewTemplate).find('.dz-remove').attr('unit_id');
+        DropZoneHelper.removeDocument(id, unit_id, 'sales_listings');
+        file.previewElement.remove();
+      }
+    });
+
+    DropZoneHelper.updateRemoveDocLinks('sales', 'sales_listings');
+
+    // $('.carousel-indicators > li:first-child').addClass('active');
+    // $('.carousel-inner > .item:first-child').addClass('active');
+
+    DropZoneHelper.setPositions('sales', 'documents');
+    DropZoneHelper.makeSortable('sales', 'documents');
+
+    // after the order changes
+    $('#sales .documents.sortable').sortable().bind('sortupdate', function(e, ui) {
+        // array to store new order
+        updated_order = []
+        // set the updated positions
+        DropZoneHelper.setPositions('sales', 'documents');
+        
+        // populate the updated_order array with the new task positions
+        $('.doc').each(function(i){
+          updated_order.push({ id: $(this).data('id'), position: i+1 });
+        });
+        // send the updated order via ajax
+        var cunit_id = $('#sales').attr('data-sunit-id');
+        $.ajax({
+          type: "PUT",
+          url: '/sales_listings/' + cunit_id + '/documents/sort',
+          data: { order: updated_order }
+        });
+    });
+  };
+
+  SalesListings.initializeImageDropzone = function() {
+    // grap our upload form by its id
+    $("#sunit-dropzone").dropzone({
+      // restrict image size to a maximum 1MB
+      //maxFilesize: 4,
+      //paramName: "upload[image]",
+      // show remove links on each image upload
+      addRemoveLinks: true,
+      // if the upload was successful
+      success: function(file, response){
+        // find the remove button link of the uploaded file and give it an id
+        // based of the fileID response from the server
+        $(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
+        $(file.previewTemplate).find('.dz-remove').attr('sunit_id', response.cunitID);
+        // add the dz-success class (the green tick sign)
+        $(file.previewElement).addClass("dz-success");
+        $.getScript('/sales_listings/' + response.cunitID + '/refresh_images')
+        file.previewElement.remove();
+      },
+      //when the remove button is clicked
+      removedfile: function(file){
+        // grap the id of the uploaded file we set earlier
+        var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
+        var unit_id = $(file.previewTemplate).find('.dz-remove').attr('unit_id');
+        DropZoneHelper.removeImage(id, unit_id, 'sales_listings');
+        file.previewElement.remove();
+      }
+    });
+
+    DropZoneHelper.updateRemoveImgLinks('sales', 'sales_listings');
+
+    $('.carousel-indicators > li:first-child').addClass('active');
+    $('.carousel-inner > .item:first-child').addClass('active');
+
+    DropZoneHelper.setPositions('sales', 'images');
+    DropZoneHelper.makeSortable('sales', 'images');
+
+    // after the order changes
+    $('#sales .sortable').sortable().bind('sortupdate', function(e, ui) {
+        // array to store new order
+        updated_order = []
+        // set the updated positions
+        DropZoneHelper.setPositions('sales', 'images');
+        
+        // populate the updated_order array with the new task positions
+        $('.img').each(function(i) {
+          updated_order.push({ id: $(this).data('id'), position: i+1 });
+        });
+        //console.log(updated_order);
+        // send the updated order via ajax
+        var cunit_id = $('#sales').attr('data-sunit-id');
+        $.ajax({
+          type: "PUT",
+          url: '/sales_listings/' + cunit_id + '/unit_images/sort',
+          data: { order: updated_order }
+        });
+    });
+  };
 
 	SalesListings.removeUnitFeature = function (event) {
   	event.preventDefault();
@@ -94,42 +250,6 @@ SalesListings = {};
   	$(this).remove();
   	SalesListings.throttledSearch();
   };
-
-	// search as user types
-	SalesListings.timer;
-
-	SalesListings.throttledSearch = function () {
-		//console.log('throttling?');
-		//clear any interval on key up
-		if (SalesListings.timer) {
-			//console.log('yes, clearing');
-		  clearTimeout(SalesListings.timer);
-		}
-	  SalesListings.timer = setTimeout(SalesListings.doSearch, 500);
-	};
-
-	// change enter key to tab
-	SalesListings.preventEnter = function (event) {
-	  if (event.keyCode == 13) {
-	    //$('#checkbox_active').focus();
-	    return false;
-	  }
-	};
-
-	SalesListings.removeImage = function (id, sunit_id) {
-		// make a DELETE ajax request to delete the file
-		$.ajax({
-			type: 'DELETE',
-			url: '/sales_listings/' + sunit_id + '/unit_images/' + id,
-			success: function(data){
-				//console.log(data.message);
-				$.getScript('/sales_listings/' + sunit_id + '/refresh_images')
-			},
-			error: function(data) {
-				//console.log('ERROR:', data);
-			}
-		});
-	};
 
 	// for giant google map
 	SalesListings.buildContentString = function (key, info) {
@@ -242,66 +362,14 @@ SalesListings = {};
 	    $(this).attr("data-pos", i+1);
 	  });
 	};
-
-	SalesListings.makeSortable = function() {
-		// call sortable on our div with the sortable class
-	  $('#sales .sortable').sortable({
-			forcePlaceholderSize: true,
-			placeholderClass: 'col col-xs-2 border border-maroon',
-			dragImage: null
-	  });
-	};
-
-	SalesListings.updateRemoveImgLinks = function() {
-		$('#sales .delete-unit-img').click(function(event) {
-			event.preventDefault();
-			var id = $(this).attr('data-id'); 
-			var sunit_id = $(this).attr('data-sunit-id');
-			//console.log(id, sunit_id);
-			SalesListings.removeImage(id, sunit_id);
-		});
-	};
 	
-	SalesListings.setupSortableColumns = function() {
-		$('#sales .th-sortable').click(function(e) {
-			e.preventDefault();
-			
-			if ($(this).hasClass('selected-sort')) {
-				// switch sort order
-				var i = $('.selected-sort i');
-				if (i) {
-					if (i.hasClass('glyphicon glyphicon-triangle-bottom')) {
-						i.removeClass('glyphicon glyphicon-triangle-bottom').addClass('glyphicon glyphicon-triangle-top');
-						$(this).attr('data-direction', 'desc');
-					}
-					else if (i.hasClass('glyphicon glyphicon-triangle-top')) {
-						i.removeClass('glyphicon glyphicon-triangle-top').addClass('glyphicon glyphicon-triangle-bottom');
-						$(this).attr('data-direction', 'asc');
-					}
-				}
-			} else {
-				// remove selection from old row
-				$('.selected-sort').attr('data-direction', '');
-				$('th i').remove(); // remove arrows
-				$('.selected-sort').removeClass('selected-sort');
-				// select new column
-				$(this).addClass('selected-sort').append(' <i class="glyphicon glyphicon-triangle-bottom"></i>');
-				$(this).attr('data-direction', 'asc');
-			}
-
-			var sort_by_col = $(this).attr('data-sort');
-			var sort_direction = $(this).attr('data-direction');
-			SalesListings.doSearch(sort_by_col, sort_direction);
-		});
-	};
-
 	SalesListings.initialize = function() {
 		document.addEventListener("page:restore", function() {
-		  SalesListings.hideSpinner();
+		  Listings.hideSpinner();
 		});
-		SalesListings.hideSpinner();
+		Listings.hideSpinner();
 		$('#sales a').click(function() {
-			SalesListings.showSpinner();
+			Listings.showSpinner();
 		});
 
 		// main index table
@@ -309,7 +377,7 @@ SalesListings = {};
 
 		$('.close').click(function() {
 			//console.log('detected click');
-			SalesListings.hideSpinner();
+			Listings.hideSpinner();
 		});
 
 		$('#sales .has-fee').click(SalesListings.toggleFeeOptions);
@@ -346,17 +414,11 @@ SalesListings = {};
 	  $('#sales .remove-neighborhood').click(SalesListings.removeNeighborhood);
 
 	  // print pdf from the index page
-	  $('#sales .btn-print-list').click( function(event) {
-		  SalesListings.showSpinner();
-		  $(this).toggleClass('active');
-		});
+	 //  $('#sales .btn-print-list').click( function(event) {
+		//   Listings.showSpinner();
+		//   $(this).toggleClass('active');
+		// });
 
-		// make sure datepicker is formatted before setting initial date below
-		$('.datepicker').datetimepicker({
-		  viewMode: 'days',
-		  format: 'MM/DD/YYYY',
-		  allowInputToggle: true
-		});
 		var available_by = $('#sales .datepicker').attr('data-available-by');
 		if (available_by) {
 			$('#sales .datepicker').data("DateTimePicker").date(available_by);
@@ -391,75 +453,15 @@ SalesListings = {};
 
 		// disable auto discover
 		Dropzone.autoDiscover = false;
-	 
-		// grap our upload form by its id
-		$("#sunit-dropzone").dropzone({
-			// restrict image size to a maximum 1MB
-			//maxFilesize: 4,
-			//paramName: "upload[image]",
-			// show remove links on each image upload
-			addRemoveLinks: true,
-			// if the upload was successful
-			success: function(file, response){
-				// find the remove button link of the uploaded file and give it an id
-				// based of the fileID response from the server
-				//console.log(response);
-				$(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
-				$(file.previewTemplate).find('.dz-remove').attr('sunit_id', response.sunitID);
-				// add the dz-success class (the green tick sign)
-				$(file.previewElement).addClass("dz-success");
-				//console.log('/sales_listings/' + response.sunitID + '/refresh_images');
-				$.getScript('/sales_listings/' + response.sunitID + '/refresh_images')
-				file.previewElement.remove();
-			},
-			//when the remove button is clicked
-			removedfile: function(file){
-				// grap the id of the uploaded file we set earlier
-				var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
-				var unit_id = $(file.previewTemplate).find('.dz-remove').attr('sunit_id');
-				SalesListings.removeImage(id, unit_id);
-				file.previewElement.remove();
-			}
-		});
-
-		SalesListings.updateRemoveImgLinks();
-
-		$('.carousel-indicators > li:first-child').addClass('active');
-		$('.carousel-inner > .item:first-child').addClass('active');
-
-    SalesListings.setPositions();
-    SalesListings.makeSortable();
-	  // after the order changes
-    $('#sales .sortable').sortable().bind('sortupdate', function(e, ui) {
-        // array to store new order
-        updated_order = []
-        // set the updated positions
-        SalesListings.setPositions();
- 				
-        // populate the updated_order array with the new task positions
-        $('.img-thumbnail').each(function(i){
-          updated_order.push({ id: $(this).data('id'), position: i });
-        });
- 				//console.log(updated_order);
-        // send the updated order via ajax
-        var sunit_id = $('#sales').attr('data-sunit-id');
-        $.ajax({
-          type: "PUT",
-          url: '/sales_listings/' + sunit_id + '/unit_images/sort',
-          data: { order: updated_order }
-        });
-    });
-
-    // activate tooltips
-    $('[data-toggle="tooltip"]').tooltip();
-
-	};
+	 	SalesListings.initializeImageDropzone();
+    SalesListings.initializeDocumentsDropzone();
+  };
 
 })();
 
 $(document).on('keyup',function(evt) {
   if (evt.keyCode == 27) {
-  	SalesListings.hideSpinner();
+  	Listings.hideSpinner();
   }
 });
 

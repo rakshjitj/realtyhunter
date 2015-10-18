@@ -252,6 +252,10 @@ class User < ActiveRecord::Base
     self.has_role? :commercial
   end
 
+  def handles_sales?
+    self.has_role? :sales
+  end
+
   def is_manager?
     self.has_role? :manager
   end

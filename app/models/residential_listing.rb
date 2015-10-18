@@ -534,5 +534,4 @@ class ResidentialListing < ActiveRecord::Base
       end
     end
 
-
 end

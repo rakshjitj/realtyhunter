@@ -20,7 +20,7 @@ class Ability
       !residential_listing.unit || user.is_management? || (residential_listing.unit.building.company_id == user.company_id && user.handles_residential?)
     end
     can :manage, SalesListing do |sales_listing|
-      !sales_listing.unit || user.is_management? || (sales_listing.unit.building.company_id == user.company_id && user.handles_residential?)
+      !sales_listing.unit || user.is_management? || (sales_listing.unit.building.company_id == user.company_id && user.handles_sales?)
     end
     can :manage, CommercialListing do |commercial_listing|
       !commercial_listing.unit || user.is_management? || (commercial_listing.unit.building.company_id == user.company_id && user.handles_commercial?)
@@ -62,13 +62,13 @@ class Ability
     can :read, Building, :company_id => user.company_id
 
     can :read, ResidentialListing do |residential_listing|
-      residential_listing.unit.building.company_id == user.company_id && user.handles_residential?
+      residential_listing.unit.building.company_id == user.company_id #&& user.handles_residential?
     end
     can :read, SalesListing do |sales_listing|
-        !sales_listing.unit || user.is_management? || (sales_listing.unit.building.company_id == user.company_id && user.handles_residential?)
+        !sales_listing.unit || user.is_management? || (sales_listing.unit.building.company_id == user.company_id) #&& user.handles_residential?)
       end
     can :read, CommercialListing do |commercial_listing|
-      commercial_listing.unit.building.company_id == user.company_id && user.handles_commercial?
+      commercial_listing.unit.building.company_id == user.company_id #&& user.handles_commercial?
     end
     can :filter, CommercialListing, :company_id => user.company_id
   end

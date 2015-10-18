@@ -39,7 +39,8 @@ class Building < ActiveRecord::Base
 	validates :place_id, presence: true, length: {maximum: 100}
 
 	validates :company, presence: true
-	validates :landlord, presence: true
+  # don't validate landlord presence here - if this building has sales listings instead of rentals,
+  # for example, then there will be a seller instead of a landlord. only rentals have landlord info.
 
   def archive
     self.archived = true

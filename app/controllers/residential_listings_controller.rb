@@ -91,15 +91,14 @@ class ResidentialListingsController < ApplicationController
     ret1 = Unit.new(residential_listing_params[:unit])
     r_params = residential_listing_params
     r_params.delete('unit')
-    ret2 = ResidentialListing.new(r_params)
-    ret2.unit = ret1
+    @residential_unit = ResidentialListing.new(r_params)
+    @residential_unit.unit = ret1
     
     if !ret1.available_by?
       ret1.available_by = Date.today
     end
 
-    if ret1.save && ret2.save
-      @residential_unit = ret2
+    if ret1.save && @residential_unit.save
       redirect_to @residential_unit
     else
       render 'new'

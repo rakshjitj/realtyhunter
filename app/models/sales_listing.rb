@@ -1,30 +1,40 @@
 class SalesListing < ActiveRecord::Base
-	 scope :unarchived, ->{where(archived: false)}
+	scope :unarchived, ->{where(archived: false)}
   has_and_belongs_to_many :sales_amenities
   belongs_to :unit, touch: true
+  before_save :process_custom_amenities
 
+  # NOTE: because our accessors clobber the names of some of our 
+  # building's fields, we reference the intended names here, but change
+  # the names in our search method defined below.
   attr_accessor :include_photos, :inaccuracy_description, 
-    :pet_policy_shorthand, :available_starting, :available_before
+    :available_starting, :available_before, :custom_amenities, 
+    :street_number, :route, :intersection, 
+    :neighborhood, :lat, :lng,
+    :sublocality, :administrative_area_level_2_short, 
+    :administrative_area_level_1_short, 
+    :postal_code, :country_short, 
+    :place_id, :formatted_street_address
 
-	validates :lease_start, presence: true, length: {maximum: 5}
-  validates :lease_end, presence: true, length: {maximum: 5}
+  VALID_TELEPHONE_REGEX = /(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/
+
+  validates :seller_name, presence: true, length: {maximum: 500}
+  validates :seller_phone, allow_blank: true, length: {maximum: 25}, 
+    format: { with: VALID_TELEPHONE_REGEX }
+
+	validates :seller_address, presence: true, length: {maximum: 500}
+  validates :listing_type, presence: true, length: {maximum: 100}
   
 	validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }
 	validates :baths, presence: true, :numericality => { :less_than_or_equal_to => 11 }
   
-  validates :op_fee_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
-  validates_inclusion_of :op_fee_percentage, :in => 0..100, allow_blank: true
-
-  validates :tp_fee_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
-  validates_inclusion_of :tp_fee_percentage, :in => 0..100, allow_blank: true
-
   def archive
     self.unit.archived = true
     self.unit.save
   end
   
   def self.find_unarchived(id)
-    SalesListing.joins(unit: [building: [:landlord, :neighborhood]])
+    SalesListing.joins(:unit)
       .where(id: id)
       .where('units.archived = false')
       .first
@@ -34,7 +44,7 @@ class SalesListing < ActiveRecord::Base
   def street_address_and_unit
     output = ""
      # calling from 'show', for example with full objects loaded
-    if !self.respond_to? :street_number
+    if !self.respond_to? :street_number2
       if unit.building.street_number
         output = unit.building.street_number + ' ' + unit.building.route
       end
@@ -43,8 +53,8 @@ class SalesListing < ActiveRecord::Base
         output = output + ' #' + unit.building_unit
       end
     else # otherwise, we used a select statement to cherry pick fields
-      if street_number
-        output = street_number + ' ' + route
+      if street_number2
+        output = street_number2 + ' ' + route2
       end
     end
 
@@ -61,7 +71,7 @@ class SalesListing < ActiveRecord::Base
 
     else # otherwise, we used a select statement to cherry pick fields
       if street_number
-        output = street_number + ' ' + route
+        output = street_number2 + ' ' + route2
       end
     end
 
@@ -95,37 +105,34 @@ class SalesListing < ActiveRecord::Base
 
   def self.get_amenities(list)
     ids = list.map(&:id)
-    ResidentialAmenity.where(residential_listing_id: ids).select('name').to_a.group_by(&:residential_listing_id)
+    SalesAmenity.where(sales_listing_id: ids).select('name').to_a.group_by(&:sales_listing_id)
   end
 
   # takes in a hash of search options
-  # can be formatted_street_address, landlord
-  # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 
-  # neighborhoods, has_outdoor_space, features, pet_policy, ...
   def self.search(params, user, building_id=nil)
     # TODO: add amenities back in
     # 'building_amenities.name AS bldg_amenity_name',
-    @running_list = SalesListing.joins(unit: {building: [:landlord, :neighborhood]})
+    @running_list = SalesListing.joins(unit: [building: [:company, :neighborhood]])
       .where('units.archived = false')
+      .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address', 
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
-        'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
-        'units.building_unit', 'units.status','units.rent', 'sales_listings.beds', 
-        'beds || \'/\' || baths as bed_and_baths',
+        'units.listing_id',
+        'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2', 
+        'buildings.lat as lat2', 'buildings.lng as lng2', 'units.id AS unit_id',
+        'units.building_unit', 'units.status','units.rent',
+        'sales_listings.beds || \'/\' || sales_listings.baths as bed_and_baths',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
-        'sales_listings.id', 'sales_listings.baths','units.access_info',
-        'sales_listings.has_fee', 'sales_listings.updated_at', 
+        'units.access_info',
+        'sales_listings.id', 'sales_listings.baths', 'sales_listings.beds', 'units.access_info',
+        'sales_listings.seller_name', 'sales_listings.updated_at', 
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
-        'landlords.code AS landlord_code','landlords.id AS landlord_id',
-        'units.available_by')
-      # unit.building.street_number + ' ' + unit.building.route
+        'units.available_by', 'units.public_url')
 
     if !params && !building_id
       return @running_list
     elsif !params && building_id
-      # TODO
-      #@running_list = @running_list.where(building_id: building_id)
-      #return @running_list
+      @running_list = @running_list.where(building_id: building_id)
+      return @running_list
     end
 
     # only admins are allowed to view off-market units
@@ -142,7 +149,7 @@ class SalesListing < ActiveRecord::Base
       # cap query string length for security reasons
       address = params[:address][0, 500]
       @running_list = 
-       @running_list.where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
+        @running_list.where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
     end
 
     # search by unit
@@ -193,30 +200,6 @@ class SalesListing < ActiveRecord::Base
         @running_list = @running_list.where("building_id IN (?)", bldg_ids)
     end
 
-    # search landlord code
-    if params[:landlord]
-      @running_list = @running_list
-      .where("code ILIKE ?", "%#{params[:landlord]}%")
-    end
-
-    # search pet policy
-    if params[:pet_policy_shorthand]
-      pp = params[:pet_policy_shorthand].downcase
-      policies = nil
-      if pp == "none"
-        policies = PetPolicy.where(name: "no pets", company: user.company)
-      elsif pp == "cats only"
-        policies = PetPolicy.policies_that_allow_cats(user.company, true)
-      elsif pp == "dogs only"
-        policies = PetPolicy.policies_that_allow_dogs(user.company, true)
-      end
-
-      if policies
-        @running_list = @running_list.joins(building: :pet_policy)
-          .where('pet_policy_id IN (?)', policies.ids)
-      end
-    end
-
     if params[:available_starting] || params[:available_before]
       if params[:available_starting] && !params[:available_starting].empty?
         @running_list = @running_list.where('available_by > ?', params[:available_starting]);
@@ -242,24 +225,6 @@ class SalesListing < ActiveRecord::Base
       @running_list = @running_list.where("baths >= ?", params[:bath_min])
     elsif !params[:bath_min] && params[:bath_max]
       @running_list = @running_list.where("baths <= ?", params[:bath_max])
-    end
-
-    # search by brokers fee
-    if params[:has_fee]
-      has_fee = params[:has_fee].downcase
-      included = %w[yes no].include?(has_fee)
-      if included
-        @running_list = @running_list.where(has_fee: has_fee == "yes")
-      end
-    end
-
-    # search features
-    if params[:unit_feature_ids]
-      # sanitize input
-      features = params[:unit_feature_ids][0, 256]
-      features = features.split(",").select{|i| !i.empty?}
-      @running_list = @running_list.joins(:sales_amenities)
-        .where('residential_amenity_id IN (?)', features)
     end
 
     @running_list
@@ -290,24 +255,24 @@ class SalesListing < ActiveRecord::Base
       unit_dup.listing_id = nil
       if unit_dup.save!
 
-        residential_unit_dup = self.dup
-        residential_unit_dup.update(unit_id: unit_dup.id)
+        sales_unit_dup = self.dup
+        sales_unit_dup.update(unit_id: unit_dup.id)
 
         self.sales_amenities.each {|a| 
-          residential_unit_dup.sales_amenities << a
+          sales_unit_dup.sales_amenities << a
         }
       else
         raise "Error saving unit"
       end    
 
-      #Image.async_copy_residential_unit_images(self.id, residential_unit_dup.id)
+      #Image.async_copy_sales_unit_images(self.id, sales_unit_dup.id)
       if include_photos
-        self.deep_copy_imgs(residential_unit_dup.id)
+        self.deep_copy_imgs(sales_unit_dup.id)
       end
 
       #building.increment_memcache_iterator
-      #puts "NEW UNIT NUM #{residential_unit_dup.unit.building_unit}"
-      residential_unit_dup
+      #puts "NEW UNIT NUM #{sales_unit_dup.unit.building_unit}"
+      sales_unit_dup
     else
       raise "No unit number, invalid unit number, or unit number already taken specified"
     end
@@ -330,49 +295,22 @@ class SalesListing < ActiveRecord::Base
     end
   end
 
-  def calc_lease_end_date
-    end_date = Date.today
-    end_date = Date.today >> 12
-    # case(lease_duration)
-    # when "year"
-    #   end_date = Date.today >> 12
-    # when "thirteen_months"
-    #   end_date = Date.today >> 13
-    # when "fourteen_months"
-    #   end_date = Date.today >> 14
-    # when "fifteen_months"
-    #   end_date = Date.today >> 15
-    # when "sixteen_months"
-    #   end_date = Date.today >> 16
-    # when "seventeen_months"
-    #   end_date = Date.today >> 17
-    # when "eighteen_months"
-    #   end_date = Date.today >> 18
-    # when "two_years"
-    #   end_date = Date.today >> 24
-    # else
-    #   end_date = Date.today >> 12
-    # end
-    
-    end_date
-  end
-
   # collect the data we will need to access from our giant map view
   def self.set_location_data(runits)
     map_infos = {}
     for i in 0..runits.length-1
       runit = runits[i]
       
-      if runit.street_number
-        street_address = runit.street_number + ' ' + runit.route
+      if runit.street_number2
+        street_address = runit.street_number2 + ' ' + runit.route2
       else
-        street_address = runit.route
+        street_address = runit.route2
       end
 
       bldg_info = {
         building_id: runit.building_id,
-        lat: runit.lat, 
-        lng: runit.lng }
+        lat: runit.lat2, 
+        lng: runit.lng2 }
       unit_info = {
         id: runits[i].id,
         building_unit: runit.building_unit,
@@ -393,7 +331,7 @@ class SalesListing < ActiveRecord::Base
   end
 
   def self.for_buildings(bldg_ids, is_active=nil)
-    listings = SalesListing.joins(unit: {building: [:landlord, :neighborhood]})
+    listings = SalesListing.joins(unit: {building: [:neighborhood]})
       .where('buildings.id in (?)', bldg_ids)
       .where('units.archived = false')
       .select('buildings.formatted_street_address', 
@@ -402,9 +340,8 @@ class SalesListing < ActiveRecord::Base
         'beds || \'/\' || baths as bed_and_baths',
         'sales_listings.beds', 'sales_listings.id', 
         'sales_listings.baths','units.access_info',
-        'sales_listings.has_fee', 'sales_listings.updated_at', 
+        'sales_listings.updated_at', 
         'neighborhoods.name AS neighborhood_name', 
-        'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by')
       
     if is_active
@@ -418,7 +355,7 @@ class SalesListing < ActiveRecord::Base
   end
 
   def self.for_units(unit_ids, is_active=nil)
-    listings = SalesListing.joins(unit: {building: [:landlord, :neighborhood]})
+    listings = SalesListing.joins(unit: {building: [:neighborhood]})
       .where('units.id in (?)', unit_ids)
       .where('units.archived = false')
       .select('buildings.formatted_street_address', 
@@ -427,9 +364,8 @@ class SalesListing < ActiveRecord::Base
         'beds || \'/\' || baths as bed_and_baths',
         'sales_listings.beds', 'sales_listings.id', 
         'sales_listings.baths','units.access_info',
-        'sales_listings.has_fee', 'sales_listings.updated_at', 
+        'sales_listings.updated_at', 
         'neighborhoods.name AS neighborhood_name', 
-        'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by')
       
     if is_active
@@ -449,5 +385,21 @@ class SalesListing < ActiveRecord::Base
       .where(unit_id: unit_ids).select('name', 'unit_id', 'id')
       .to_a.group_by(&:unit_id)
   end
+
+  private
+    def process_custom_amenities
+      if custom_amenities
+        amenities = custom_amenities.split(',')
+        amenities.each{|a|
+          if !a.empty?
+            a = a.downcase.strip
+            found = SalesAmenity.find_by(name: a, company: self.unit.building.company)
+            if !found
+              self.sales_amenities << SalesAmenity.create!(name: a, company: self.unit.building.company)
+            end
+          end
+        }
+      end
+    end
 
 end

@@ -51,7 +51,7 @@ class SalesListingsController < ApplicationController
   # handles ajax call. uses latest data in modal
   def features_modal
     @building_amenities = BuildingAmenity.where(company: current_user.company)
-    @unit_amenities = ResidentialAmenity.where(company: current_user.company)
+    @unit_amenities = SalesAmenity.where(company: current_user.company)
 
     respond_to do |format|
       format.js  
@@ -61,17 +61,16 @@ class SalesListingsController < ApplicationController
   # GET /sales_units/1
   # GET /sales_units/1.json
   def show
-    #fresh_when([@sales_unit, @sales_unit.images])
-    #@sales_unit
   end
 
   # GET /sales_units/new
   def new
     @sales_unit = SalesListing.new
     @sales_unit.unit = Unit.new
+    @sales_unit.unit.building = Building.new
     if params[:building_id]
       building = Building.find(params[:building_id])
-      @sales_unit.unit.building_id = building.id
+      @sales_unit.unit.building = building
     end
     
     @panel_title = "Add a listing"
@@ -85,20 +84,32 @@ class SalesListingsController < ApplicationController
   # POST /sales_units
   # POST /sales_units.json
   def create
-    ret1 = Unit.new(sales_listing_params[:unit])
-    r_params = sales_listing_params
-    r_params.delete('unit')
-    ret2 = SalesListing.new(r_params)
-    ret2.unit = ret1
+    s_params = sales_listing_params[:sales_listing]
+    u_params = s_params[:unit]
     
-    if !ret1.available_by?
-      ret1.available_by = Date.today
+    # find or create building
+    new_bldg = Building.find_or_create_by(
+      get_bldg_params.merge(
+        company_id: current_user.company.id))
+
+    # create unit
+    new_unit = Unit.new(u_params)
+    new_unit.building = new_bldg
+    s_params.delete('unit')
+    if !new_unit.available_by?
+      new_unit.available_by = Date.today
     end
 
-    if ret1.save && ret2.save
-      @sales_unit = ret2
+    # create new listing
+    @sales_unit = SalesListing.new(s_params)
+    @sales_unit.unit = new_unit
+    
+    if new_bldg.save && new_unit.save && @sales_unit.save
       redirect_to @sales_unit
     else
+      puts new_bldg.errors.messages
+      puts new_unit.errors.messages
+      puts @sales_unit.errors.messages
       render 'new'
     end
   end
@@ -201,8 +212,8 @@ class SalesListingsController < ApplicationController
   # PATCH/PUT /sales_units/1
   # PATCH/PUT /sales_units/1.json
   def update
-    ret1 = @sales_unit.unit.update(sales_listing_params[:unit].merge({updated_at: Time.now}))
-    r_params = sales_listing_params
+    ret1 = @sales_unit.unit.update(sales_listing_params[:sales_listing][:unit].merge({updated_at: Time.now}))
+    r_params = sales_listing_params[:sales_listing]
     r_params.delete('unit')
     ret2 = @sales_unit.update(r_params.merge({updated_at: Time.now}))
 
@@ -271,6 +282,17 @@ class SalesListingsController < ApplicationController
       format.js  
     end
   end
+
+  def neighborhood_options
+    @sales_unit = SalesListing.new
+    @sales_unit.unit = Unit.new
+    @sales_unit.unit.building = Building.new
+    @sales_unit.unit.building.sublocality = params[:sublocality]
+
+    respond_to do |format|
+      format.js  
+    end
+  end
   
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -287,8 +309,8 @@ class SalesListingsController < ApplicationController
 
       @count_all = SalesListing.joins(:unit).where('units.archived = false').count
       @map_infos = SalesListing.set_location_data(@sales_units.to_a)
-      @sales_unit = @sales_unit.page params[:page]
-      @res_images = SalesListing.get_images(@sales_unit)
+      @sales_units = @sales_units.page params[:page]
+      @res_images = SalesListing.get_images(@sales_units)
     end
 
     def sales_listings_no_pagination
@@ -312,7 +334,7 @@ class SalesListingsController < ApplicationController
       @unit_features = []
       if params[:unit_feature_ids]
         feature_ids = params[:unit_feature_ids].split(",").select{|i| !i.empty?}
-        @unit_features = ResidentialAmenity.where(id: feature_ids)
+        @unit_features = SalesAmenity.where(id: feature_ids)
       end
 
       @bldg_features = []
@@ -336,40 +358,63 @@ class SalesListingsController < ApplicationController
       @sales_unit
     end
 
+    # pull only the building params out of our general params list
+    def get_bldg_params
+      param_names_list = [:street_number, :route, :intersection, :neighborhood, 
+        :sublocality, :administrative_area_level_2_short, 
+        :administrative_area_level_1_short, :postal_code, :country_short, 
+        :lat, :lng, :place_id, :neighborhood]
+
+      bldg_params = {}
+      param_names_list.each do |n|
+        bldg_params[n] = sales_listing_params[n]
+      end
+
+      bldg_params[:formatted_street_address] = sales_listing_params[:sales_listing][:formatted_street_address]
+
+      bldg_params
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def sales_listing_params
-      data = params[:sales_listing].permit(:tenant_occupied,
-        :beds, :baths, :notes, :description, :lease_start, :lease_end,
-        :include_photos, :inaccuracy_description, 
-        :has_fee, :op_fee_percentage, :tp_fee_percentage, 
-        :available_starting, :available_before,   
-        :unit => [:building_unit, :rent, :available_by, :access_info, :status, 
-          :open_house, :oh_exclusive, 
-          :building_id, :primary_agent_id, :listing_agent_id ],
-        :sales_amenity_ids => [])
+      data = params.permit(
+        :sort_by, :direction, :filter, 
+        :beds, :baths, :include_photos, :inaccuracy_description, 
+        :available_starting, :available_before, 
+        :street_number, :route, :intersection, 
+        :neighborhood, :formatted_street_address,
+        :sublocality, :administrative_area_level_2_short, 
+        :administrative_area_level_1_short, 
+        :postal_code, :country_short, :lat, :lng, :place_id,
 
-      if data[:unit]
-        if data[:unit][:oh_exclusive] == "1"
-          data[:unit][:oh_exclusive] = true
+        sales_listing: [
+          :beds, :baths, :custom_amenities, :formatted_street_address,
+          :listing_type, :percent_commission, :outside_broker_commission, :seller_name,
+          :seller_phone, :seller_address, :year_built, :building_type, :lot_size,
+          :building_size, :block_taxes, :lot_taxes, :water_sewer, :insurance,
+          :school_district, :certificate_of_occupancy, :violation_search, :tenant_occupied, 
+          :internal_notes, :public_description, 
+
+          :unit => [:building_unit, :rent, :available_by, :access_info, :status, 
+            :open_house, :oh_exclusive, 
+            :building_id, :primary_agent_id, :listing_agent_id],
+          :sales_amenity_ids => []
+          ])
+
+      if data[:sales_listing][:unit]
+        if data[:sales_listing][:unit][:oh_exclusive] == "1"
+          data[:sales_listing][:unit][:oh_exclusive] = true
         else
-          data[:unit][:oh_exclusive] = false
+          data[:sales_listing][:unit][:oh_exclusive] = false
         end
 
-        if data[:unit][:status]
-          data[:unit][:status] = data[:unit][:status].downcase
+        if data[:sales_listing][:unit][:status]
+          data[:sales_listing][:unit][:status] = data[:sales_listing][:unit][:status].downcase
         end
 
         # convert into a datetime obj
-        if data[:unit][:available_by] && !data[:unit][:available_by].empty?
-          data[:unit][:available_by] = Date::strptime(data[:unit][:available_by], "%m/%d/%Y")
-        end
-      end
-
-      if !data[:has_fee].nil? 
-        if data[:has_fee] == "1"
-          data[:has_fee] = true
-        else
-          data[:has_fee] = false
+        if data[:sales_listing][:unit][:available_by] && !data[:sales_listing][:unit][:available_by].empty?
+          data[:sales_listing][:unit][:available_by] = Date::strptime(data[:sales_listing][:unit][:available_by], "%m/%d/%Y")
         end
       end
 
@@ -380,6 +425,9 @@ class SalesListingsController < ApplicationController
           data[:include_photos] = false
         end
       end
+
+      neighborhood_name = data[:neighborhood]
+      data[:neighborhood] = Neighborhood.find_or_create_by(name: neighborhood_name)
 
       data
     end

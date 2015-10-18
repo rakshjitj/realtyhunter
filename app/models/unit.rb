@@ -15,14 +15,18 @@ class Unit < ActiveRecord::Base
   
 	enum status: [ 
     :active, :pending, :off, #residential
-    :offer_submitted, :offer_accepted, :binder_signed, :off_market_for_lease_execution #commercial
+    :offer_submitted, :offer_accepted, :binder_signed, :off_market_for_lease_execution, #additional for commercial
+    :on_market, :contract_out, :in_escrow, :closed # additional for sales
    ]
   
 	validates :status, presence: true, inclusion: { 
     in: ['active', 'pending', 'off', 
-         'offer_submitted', 'offer_accepted', 'binder_signed', 'off_market_for_lease_execution'] }
+         'offer_submitted', 'offer_accepted', 'binder_signed', 'off_market_for_lease_execution',
+         'on_market', 'contract_out', 'in_escrow', 'closed'] }
 	
+  # this should really been called "price", as its used across both rentals and sales
 	validates :rent, presence: true, numericality: { only_integer: true }
+  
 	validates :listing_id, presence: true, uniqueness: true
 	
   validates :building_id, presence: true

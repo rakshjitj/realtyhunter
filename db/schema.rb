@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151014213312) do
+ActiveRecord::Schema.define(version: 20151015192916) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -428,26 +428,37 @@ ActiveRecord::Schema.define(version: 20151014213312) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "sales_amenities_units", id: false, force: :cascade do |t|
+  create_table "sales_amenities_listings", id: false, force: :cascade do |t|
     t.integer "sales_listing_id"
     t.integer "sales_amenity_id"
   end
 
   create_table "sales_listings", force: :cascade do |t|
-    t.integer  "price"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.integer  "unit_id"
     t.integer  "beds"
     t.float    "baths"
-    t.string   "notes"
-    t.string   "description"
-    t.string   "lease_start"
-    t.string   "lease_end"
-    t.boolean  "has_fee"
-    t.integer  "op_fee_percentage"
-    t.integer  "tp_fee_percentage"
-    t.boolean  "tenant_occupied",   default: false
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
-    t.integer  "unit_id"
+    t.boolean  "tenant_occupied"
+    t.string   "internal_notes"
+    t.string   "public_description"
+    t.string   "listing_type"
+    t.float    "percent_commission"
+    t.float    "outside_broker_commission"
+    t.string   "seller_name"
+    t.string   "seller_phone"
+    t.string   "seller_address"
+    t.string   "year_built"
+    t.string   "building_type"
+    t.integer  "lot_size"
+    t.integer  "building_size"
+    t.integer  "block_taxes"
+    t.integer  "lot_taxes"
+    t.integer  "water_sewer"
+    t.integer  "insurance"
+    t.string   "school_district"
+    t.string   "certificate_of_occupancy"
+    t.string   "violation_search"
   end
 
   create_table "units", force: :cascade do |t|

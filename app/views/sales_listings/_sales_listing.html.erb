@@ -1,70 +1,69 @@
-<!--% cache sales_listing do %-->
-  <tr class="<%= cycle('even', 'odd') -%>">
-    <td>
-      <% if @res_images[sales_listing.unit_id] %>
-        <%= link_to(image_tag(@res_images[sales_listing.unit_id].file.url(:thumb), :class => 'img-responsive', 
-          alt: @res_images[sales_listing.unit_id].file.url(:medium)), sales_listing) %>
-      <% else %>
-        <!-- placeholder image -->
-        <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), sales_listing) %>
-      <% end %>
-    </td>
-    
-    <td>
-      <%= link_to "#{sales_listing.street_address}", sales_listing_path(sales_listing.id) %><br />
-      <% if sales_listing.neighborhood_name %>
-        <small><%= sales_listing.neighborhood_name %></small>
-      <% end %>
-    </td>
+<tr class="<%= cycle('even', 'odd') -%>" data-id="<%= sales_listing.listing_id %>" >
+  <!-- ****** checkboxes ****************************************** -->
+  <td>
+    <i data-action="selectUnit" class="fa fa-square-o"></i>
+  </td>
 
-    <td>
-      <%= sales_listing.building_unit %>
-    </td>
-
-    <td>
-      <% if current_user.is_management? %>
-        <%= link_to sales_listing.landlord_code, landlord_path(sales_listing.landlord_id) %>
-      <% else %>
-        <%= sales_listing.landlord_code %>
-      <% end %>
-    </td>
-
-    <td data-toggle="tooltip" data-placement="top" title="<%= sales_listing.access_info %>"
-      data-delay="1500">
-      <%= trim_access sales_listing.access_info %></td>
-    <td><%= sales_listing.bed_and_baths %></td>
-    <td>
-      <% if sales_listing.available_by %>
-        <%= sales_listing.available_by.strftime("%b %d") %>
-      <% else %>
-        -
-      <% end %>
-    </td>
-    <td><%= rent_formatted(sales_listing.price) %></td>
-    <td><%= time_ago_in_words(sales_listing.updated_at) %></td>
-    <td>
-      <% if sales_listing.status == Unit.statuses["active"] %>
-        <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
-      <% elsif sales_listing.status == Unit.statuses["pending"] %>
-        <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
-      <% elsif sales_listing.status == Unit.statuses["off"] %>
-        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-      <% end %>
-    </td>
-    <% if current_user.is_management? %>
-      <td>
-        <%= link_to 'Edit', edit_sales_listing_path(sales_listing) %> 
-        <br /><%= link_to 'Delete', delete_modal_sales_listing_path(sales_listing), 
-          data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
-        <br />
-        <%= link_to 'Duplicate', duplicate_modal_sales_listing_path(sales_listing), 
-          data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
-        <!--% if sales_listing.status == "active" %-->
-          <!--br /-->
-          <!--%= link_to 'Take off', take_off_modal_sales_listing_path(sales_listing), 
-            data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %-->
-        <!--% end %-->
-      </td>
+  <td>
+    <% if @res_images[sales_listing.unit_id] %>
+      <%= link_to(image_tag(@res_images[sales_listing.unit_id].file.url(:thumb), :class => 'img-responsive', 
+        alt: @res_images[sales_listing.unit_id].file.url(:medium)), sales_listing) %>
+    <% else %>
+      <!-- placeholder image -->
+      <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), sales_listing) %>
     <% end %>
-  </tr>
-<!--% end %--> <!-- end cache -->
+  </td>
+  
+  <td>
+    <%= link_to "#{sales_listing.street_address_and_unit}", sales_listing_path(sales_listing.id) %><br />
+    <% if sales_listing.neighborhood_name %>
+      <small><%= sales_listing.neighborhood_name %></small>
+    <% end %>
+  </td>
+
+  <td>
+    <%= sales_listing.building_unit %>
+  </td>
+
+  <td>
+    <%= sales_listing.seller_name %>
+  </td>
+
+  <td data-toggle="tooltip" data-placement="top" title="<%= sales_listing.access_info %>"
+    data-delay="1500">
+    <%= trim_access sales_listing.access_info %></td>
+  <td><%= sales_listing.bed_and_baths %></td>
+  <td>
+    <% if sales_listing.available_by %>
+      <%= sales_listing.available_by.strftime("%b %d") %>
+    <% else %>
+      -
+    <% end %>
+  </td>
+  <td><%= rent_formatted(sales_listing.rent) %></td>
+  <td><%= time_ago_in_words(sales_listing.updated_at) %></td>
+  <td>
+    <% if sales_listing.status == Unit.statuses["active"] %>
+      <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
+    <% elsif sales_listing.status == Unit.statuses["pending"] %>
+      <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
+    <% elsif sales_listing.status == Unit.statuses["off"] %>
+      <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+    <% end %>
+  </td>
+  <% if current_user.is_management? %>
+    <td>
+      <%= link_to 'Edit', edit_sales_listing_path(sales_listing) %> 
+      <br /><%= link_to 'Delete', delete_modal_sales_listing_path(sales_listing), 
+        data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
+      <br />
+      <%= link_to 'Duplicate', duplicate_modal_sales_listing_path(sales_listing), 
+        data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
+      <!--% if sales_listing.status == "active" %-->
+        <!--br /-->
+        <!--%= link_to 'Take off', take_off_modal_sales_listing_path(sales_listing), 
+          data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %-->
+      <!--% end %-->
+    </td>
+  <% end %>
+</tr>
