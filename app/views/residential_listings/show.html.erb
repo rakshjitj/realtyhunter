@@ -401,6 +401,7 @@
 	    		</div>
 	    	</div>
 
+	    	<% if @residential_unit.unit.documents.count %>
 	    	<br />
 	    	<div class="row">
 	    		<div class="col-md-12">
@@ -417,7 +418,8 @@
 	    			</ul>
 	    		</div>
 	    	</div>
-
+	    	<% end %>
+	    	
 	    	<br />
 	    	<div class="row">
 	    		<div class="col-md-12">

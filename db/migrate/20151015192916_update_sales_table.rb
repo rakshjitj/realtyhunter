@@ -1,24 +1,6 @@
 class UpdateSalesTable < ActiveRecord::Migration
   def change
-  	# old definition
-  	# t.integer "price" # used instead of rent
-	  # t.integer  "beds"
-   #  t.float    "baths"
-   #  t.string   "notes"
-   #  t.string   "description"
-   #  t.string   "lease_start"
-   #  t.string   "lease_end"
-   #  t.boolean  "has_fee"
-   #  t.integer  "op_fee_percentage"
-   #  t.integer  "tp_fee_percentage"
-   #  t.boolean  "tenant_occupied", default: false
-   #  t.datetime "created_at", null: false
-   #  t.datetime "updated_at", null: false
-   #  t.belongs_to :unit
-
-  	#add_column :sales_listings, :beds, :integer
-  	#add_column :sales_listings, :baths, :float
-  	#add_column :sales_listings, :tenant_occupied, :boolean
+  
   	add_column :sales_listings, :internal_notes, :string
   	add_column :sales_listings, :public_description, :string
 

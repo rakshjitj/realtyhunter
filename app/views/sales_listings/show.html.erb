@@ -438,15 +438,17 @@
 	    		</div>
 	    	</div>
 
+	    	<% if @sales_unit.unit.documents.count %>
 	    	<div class="row">
 	    		<div class="col-md-12">
-	    			<ul>
-	    				<% @sales_unit.unit.documents.each do |document| %>
-							  <li><%= link_to document.file_file_name, document.file.url %></li>
-							<% end %>
-	    			</ul>
+		    			<ul>
+		    				<% @sales_unit.unit.documents.each do |document| %>
+								  <li><%= link_to document.file_file_name, document.file.url %></li>
+								<% end %>
+		    			</ul>
 	    		</div>
 	    	</div>
+	    	<% end %>
 
 	    	<br />
 	    	<div class="row">
