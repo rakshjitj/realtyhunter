@@ -108,7 +108,7 @@ CommercialUnits = {};
         // find the remove button link of the uploaded file and give it an id
         // based of the fileID response from the server
         $(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
-        $(file.previewTemplate).find('.dz-remove').attr('cunit_id', response.cunitID);
+        $(file.previewTemplate).find('.dz-remove').attr('unit_id', response.cunitID);
         // add the dz-success class (the green tick sign)
         $(file.previewElement).addClass("dz-success");
         $.getScript('/commercial_listings/' + response.cunitID + '/refresh_documents')
@@ -144,10 +144,10 @@ CommercialUnits = {};
           updated_order.push({ id: $(this).data('id'), position: i+1 });
         });
         // send the updated order via ajax
-        var cunit_id = $('#commercial').attr('data-cunit-id');
+        var unit_id = $('#commercial').attr('data-unit-id');
         $.ajax({
           type: "PUT",
-          url: '/commercial_listings/' + cunit_id + '/documents/sort',
+          url: '/commercial_listings/' + unit_id + '/documents/sort',
           data: { order: updated_order }
         });
     });
@@ -166,7 +166,7 @@ CommercialUnits = {};
         // find the remove button link of the uploaded file and give it an id
         // based of the fileID response from the server
         $(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
-        $(file.previewTemplate).find('.dz-remove').attr('cunit_id', response.cunitID);
+        $(file.previewTemplate).find('.dz-remove').attr('unit_id', response.cunitID);
         // add the dz-success class (the green tick sign)
         $(file.previewElement).addClass("dz-success");
         $.getScript('/commercial_listings/' + response.cunitID + '/refresh_images')
@@ -203,10 +203,11 @@ CommercialUnits = {};
         });
         //console.log(updated_order);
         // send the updated order via ajax
-        var cunit_id = $('#commercial').attr('data-cunit-id');
+        var unit_id = $('#commercial').attr('data-unit-id');
+        console.log(unit_id);
         $.ajax({
           type: "PUT",
-          url: '/commercial_listings/' + cunit_id + '/unit_images/sort',
+          url: '/commercial_listings/' + unit_id + '/unit_images/sort',
           data: { order: updated_order }
         });
     });

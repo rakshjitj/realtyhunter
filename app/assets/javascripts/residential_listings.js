@@ -107,21 +107,6 @@ ResidentialListings = {};
 	  }
 	};
 
-	ResidentialListings.removeImage = function (id, runit_id) {
-		// make a DELETE ajax request to delete the file
-		$.ajax({
-			type: 'DELETE',
-			url: '/residential_listings/' + runit_id + '/unit_images/' + id,
-			success: function(data){
-				//console.log(data.message);
-				$.getScript('/residential_listings/' + runit_id + '/refresh_images')
-			},
-			error: function(data) {
-				//console.log('ERROR:', data);
-			}
-		});
-	};
-
 	// for giant google map
 	ResidentialListings.buildContentString = function (key, info) {
 	  var contentString = '<strong>' + key + '</strong><br />'; //<hr />';
@@ -231,25 +216,6 @@ ResidentialListings = {};
 	    $(this).attr("data-pos", i+1);
 	  });
 	};
-
-	ResidentialListings.makeSortable = function() {
-		// call sortable on our div with the sortable class
-	  $('#residential .sortable').sortable({
-			forcePlaceholderSize: true,
-			placeholderClass: 'col col-xs-2 border border-maroon',
-			dragImage: null
-	  });
-	};
-
-	ResidentialListings.updateRemoveImgLinks = function() {
-		$('#residential .delete-unit-img').click(function(event) {
-			event.preventDefault();
-			var id = $(this).attr('data-id'); 
-			var runit_id = $(this).attr('data-runit-id');
-			//console.log(id, runit_id);
-			ResidentialListings.removeImage(id, runit_id);
-		});
-	};
 	
 	ResidentialListings.setupSortableColumns = function() {
 		$('#residential .th-sortable').click(function(e) {
@@ -310,6 +276,118 @@ ResidentialListings = {};
 			});
 		}
 	};
+
+	ResidentialListings.initializeImageDropzone = function() {
+    // grap our upload form by its id
+    $("#runit-dropzone").dropzone({
+      // restrict image size to a maximum 1MB
+      // show remove links on each image upload
+      addRemoveLinks: true,
+      // if the upload was successful
+      success: function(file, response){
+        // find the remove button link of the uploaded file and give it an id
+        // based of the fileID response from the server
+        $(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
+        $(file.previewTemplate).find('.dz-remove').attr('unit_id', response.unitID);
+        // add the dz-success class (the green tick sign)
+        $(file.previewElement).addClass("dz-success");
+        $.getScript('/residential_listings/' + response.runitID + '/refresh_images')
+        file.previewElement.remove();
+      },
+      //when the remove button is clicked
+      removedfile: function(file){
+        // grap the id of the uploaded file we set earlier
+        var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
+        var unit_id = $(file.previewTemplate).find('.dz-remove').attr('unit_id');
+        DropZoneHelper.removeImage(id, unit_id, 'residential_listings');
+        file.previewElement.remove();
+      }
+    });
+
+    DropZoneHelper.updateRemoveImgLinks('residential', 'residential_listings');
+
+    $('.carousel-indicators > li:first-child').addClass('active');
+    $('.carousel-inner > .item:first-child').addClass('active');
+
+    DropZoneHelper.setPositions('residential', 'images');
+    DropZoneHelper.makeSortable('residential', 'images');
+
+    // after the order changes
+    $('#residential .sortable').sortable().bind('sortupdate', function(e, ui) {
+        // array to store new order
+        updated_order = []
+        // set the updated positions
+        DropZoneHelper.setPositions('residential', 'images');
+        
+        // populate the updated_order array with the new task positions
+        $('.img').each(function(i) {
+          updated_order.push({ id: $(this).data('id'), position: i+1 });
+        });
+        //console.log(updated_order);
+        // send the updated order via ajax
+        var unit_id = $('#residential').attr('data-unit-id');
+        $.ajax({
+          type: "PUT",
+          url: '/residential_listings/' + unit_id + '/unit_images/sort',
+          data: { order: updated_order }
+        });
+    });
+  };
+
+  ResidentialListings.initializeDocumentsDropzone = function() {
+    // grap our upload form by its id
+    $("#runit-dropzone-docs").dropzone({
+      // show remove links on each image upload
+      addRemoveLinks: true,
+      // if the upload was successful
+      success: function(file, response){
+        // find the remove button link of the uploaded file and give it an id
+        // based of the fileID response from the server
+        $(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
+        $(file.previewTemplate).find('.dz-remove').attr('unit_id', response.runitID);
+        // add the dz-success class (the green tick sign)
+        $(file.previewElement).addClass("dz-success");
+        $.getScript('/residential_listings/' + response.runitID + '/refresh_documents')
+        file.previewElement.remove();
+      },
+      //when the remove button is clicked
+      removedfile: function(file){
+        // grap the id of the uploaded file we set earlier
+        var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
+        var unit_id = $(file.previewTemplate).find('.dz-remove').attr('unit_id');
+        DropZoneHelper.removeDocument(id, unit_id, 'residential_listings');
+        file.previewElement.remove();
+      }
+    });
+
+    DropZoneHelper.updateRemoveDocLinks('residential', 'residential_listings');
+
+    // $('.carousel-indicators > li:first-child').addClass('active');
+    // $('.carousel-inner > .item:first-child').addClass('active');
+
+    DropZoneHelper.setPositions('residential', 'documents');
+    DropZoneHelper.makeSortable('residential', 'documents');
+
+    // after the order changes
+    $('#residential .documents.sortable').sortable().bind('sortupdate', function(e, ui) {
+        // array to store new order
+        updated_order = []
+        // set the updated positions
+        DropZoneHelper.setPositions('residential', 'documents');
+        
+        // populate the updated_order array with the new task positions
+        $('.doc').each(function(i){
+          updated_order.push({ id: $(this).data('id'), position: i+1 });
+        });
+        // send the updated order via ajax
+        var unit_id = $('#residential').attr('data-unit-id');
+        $.ajax({
+          type: "PUT",
+          url: '/residential_listings/' + unit_id + '/documents/sort',
+          data: { order: updated_order }
+        });
+    });
+  };
 
 	ResidentialListings.initialize = function() {
 		document.addEventListener("page:restore", function() {
@@ -412,68 +490,11 @@ ResidentialListings = {};
 	    //console.log("[ERROR]: " + result);
 	  });
 
-	  // for drag n dropping photos
-
+	  // for drag n dropping photos/docs
 		// disable auto discover
 		Dropzone.autoDiscover = false;
-	 
-		// grap our upload form by its id
-		$("#runit-dropzone").dropzone({
-			// restrict image size to a maximum 1MB
-			//maxFilesize: 4,
-			//paramName: "upload[image]",
-			// show remove links on each image upload
-			addRemoveLinks: true,
-			// if the upload was successful
-			success: function(file, response){
-				// find the remove button link of the uploaded file and give it an id
-				// based of the fileID response from the server
-				//console.log(response);
-				$(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
-				$(file.previewTemplate).find('.dz-remove').attr('runit_id', response.runitID);
-				// add the dz-success class (the green tick sign)
-				$(file.previewElement).addClass("dz-success");
-				//console.log('/residential_listings/' + response.runitID + '/refresh_images');
-				$.getScript('/residential_listings/' + response.runitID + '/refresh_images')
-				file.previewElement.remove();
-			},
-			//when the remove button is clicked
-			removedfile: function(file){
-				// grap the id of the uploaded file we set earlier
-				var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
-				var unit_id = $(file.previewTemplate).find('.dz-remove').attr('runit_id');
-				ResidentialListings.removeImage(id, unit_id);
-				file.previewElement.remove();
-			}
-		});
-
-		ResidentialListings.updateRemoveImgLinks();
-
-		$('.carousel-indicators > li:first-child').addClass('active');
-		$('.carousel-inner > .item:first-child').addClass('active');
-
-    ResidentialListings.setPositions();
-    ResidentialListings.makeSortable();
-	  // after the order changes
-    $('#residential .sortable').sortable().bind('sortupdate', function(e, ui) {
-        // array to store new order
-        updated_order = []
-        // set the updated positions
-        ResidentialListings.setPositions();
- 				
-        // populate the updated_order array with the new task positions
-        $('.img-thumbnail').each(function(i){
-          updated_order.push({ id: $(this).data('id'), position: i });
-        });
- 				//console.log(updated_order);
-        // send the updated order via ajax
-        var runit_id = $('#residential').attr('data-runit-id');
-        $.ajax({
-          type: "PUT",
-          url: '/residential_listings/' + runit_id + '/unit_images/sort',
-          data: { order: updated_order }
-        });
-    });
+	 	ResidentialListings.initializeImageDropzone();
+	 	ResidentialListings.initializeDocumentsDropzone();
 
     // activate tooltips
     $('[data-toggle="tooltip"]').tooltip();

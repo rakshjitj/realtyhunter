@@ -10,12 +10,12 @@
     <ul class="nav nav-tabs" role="tablist">
       <li role="presentation" class="active"><a href="#basic-info" aria-controls="basic-info" role="tab" data-toggle="tab">Basic Info</a></li>
       <li role="photos"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
-      <li role="photos"><a href="#documents" aria-controls="documents" role="tab" data-toggle="tab">Documents</a></li>
+      <li role="documents"><a href="#documents" aria-controls="documents" role="tab" data-toggle="tab">Documents</a></li>
     </ul>
 
     <div class="tab-content">
       <!-- ******************** third tabpanel - documents ******************** -->
-    <div role="tabpanel" class="tab-pane fade" id="documents">
+      <div role="tabpanel" class="tab-pane fade" id="documents">
       
       <% if @sales_unit && @sales_unit.id %>
 
@@ -48,7 +48,6 @@
       <% end %>
       
     </div><!-- end tabpanel docs -->
-
 
       <!-- ******************** second tabpanel - photos ******************** -->
       <div role="tabpanel" class="tab-pane fade" id="photos">

@@ -3,7 +3,7 @@ class ResidentialListingsController < ApplicationController
   skip_load_resource only: :create
   before_action :set_residential_listing, only: [:show, :edit, :duplicate_modal, :duplicate, 
     :take_off_modal, :take_off, :update, :delete_modal, :destroy, 
-    :inaccuracy_modal, :send_inaccuracy, :refresh_images]
+    :inaccuracy_modal, :send_inaccuracy, :refresh_images, :refresh_documents]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
   etag { current_user.id }
@@ -277,10 +277,17 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
+  # GET 
+  # ajax call
+  def refresh_documents
+    respond_to do |format|
+      format.js  
+    end
+  end
+
   # GET /refresh_images
   # ajax call
   def refresh_images
-    #puts "\n\n\n **** HELLO------- REFRESHING IMAGE #{@residential_unit} -- #{params.inspect}"
     respond_to do |format|
       format.js  
     end

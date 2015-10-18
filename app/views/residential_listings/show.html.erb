@@ -404,6 +404,23 @@
 	    	<br />
 	    	<div class="row">
 	    		<div class="col-md-12">
+	    			<h3>Documents</h3>
+	    		</div>
+	    	</div>
+
+	    	<div class="row">
+	    		<div class="col-md-12">
+	    			<ul>
+	    				<% @residential_unit.unit.documents.each do |document| %>
+							  <li><%= link_to document.file_file_name, document.file.url %></li>
+							<% end %>
+	    			</ul>
+	    		</div>
+	    	</div>
+
+	    	<br />
+	    	<div class="row">
+	    		<div class="col-md-12">
 	    			<!-- Nav tabs -->
 				    <ul class="nav nav-tabs" role="tablist">
 				      <li role="google-map-tab" class="active"><a href="#google-map-tab" aria-controls="google-map-tab" 
