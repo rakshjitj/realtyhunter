@@ -16,8 +16,8 @@ class UpdateSalesTable < ActiveRecord::Migration
    #  t.datetime "updated_at", null: false
    #  t.belongs_to :unit
 
-  	add_column :sales_listings, :beds, :integer
-  	add_column :sales_listings, :baths, :float
+  	#add_column :sales_listings, :beds, :integer
+  	#add_column :sales_listings, :baths, :float
   	add_column :sales_listings, :tenant_occupied, :boolean
   	add_column :sales_listings, :internal_notes, :string
   	add_column :sales_listings, :public_description, :string
