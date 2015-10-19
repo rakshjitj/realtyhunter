@@ -164,21 +164,22 @@ xml.streeteasy :version => "1.6" do
 				if @primary_agents[listing.primary_agent_id]
 					xml.agents do
 						@primary_agents[listing.primary_agent_id].each do |agent| 
-							xml.agent id: agent.id
-							xml.name agent.name
-							xml.company @company.name
-							if @agent_images[agent.id]
-								xml.photo url:@agent_images[agent.id].file.url(:original)
-							end
-						  xml.url agent.public_url
-					  	xml.email agent.email
-					  	xml.lead_email agent.email
-					  	xml.phone_numbers do
-					  		xml.main agent.mobile_phone_number
-					  		xml.office agent.office_telephone
-					  		xml.cell agent.mobile_phone_number
-					  		xml.fax agent.office_fax
-					  	end
+							xml.agent id: agent.id do
+								xml.name agent.name
+								xml.company @company.name
+								if @agent_images[agent.id]
+									xml.photo url:@agent_images[agent.id].file.url(:original)
+								end
+							  xml.url agent.public_url
+						  	xml.email agent.email
+						  	xml.lead_email agent.email
+						  	xml.phone_numbers do
+						  		xml.main agent.mobile_phone_number
+						  		xml.office agent.office_telephone
+						  		xml.cell agent.mobile_phone_number
+						  		xml.fax agent.office_fax
+						  	end
+						  end
 						end
 					end
 				end
