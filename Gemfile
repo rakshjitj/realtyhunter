@@ -89,6 +89,7 @@ group :production do
 	gem 'wkhtmltopdf-heroku', '~> 2.12.2.1'
   gem 'connection_pool'
   gem 'newrelic_rpm'
+  gem "lograge"
 end
 
 group :development, :test do

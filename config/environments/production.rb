@@ -46,7 +46,7 @@
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :debug #:warn
+  config.log_level = :warn
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
@@ -118,4 +118,6 @@
       :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'],
     }
   }
+
+  config.lograge.enabled = true
 end
