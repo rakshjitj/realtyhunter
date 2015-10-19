@@ -11,7 +11,7 @@ class Unit < ActiveRecord::Base
 
   scope :unarchived, ->{ where(archived: false) }
   scope :active, ->{ where(status: Unit.statuses["active"]) }
-  scope :on_market, ->{ where(status: [Unit.statuses["active"], Unit.statuses["pending"]]) }
+  scope :available_on_market, ->{ where("status = ? OR status = ?", Unit.statuses["active"], Unit.statuses["pending"]) }
   
 	enum status: [ 
     :active, :pending, :off, #residential

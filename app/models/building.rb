@@ -60,7 +60,7 @@ class Building < ActiveRecord::Base
 	end
 
 	def active_units
-    units.unarchived.on_market.order('updated_at DESC')
+    units.unarchived.available_on_market.order('updated_at DESC')
 	end
 
 	def total_units_count
@@ -68,7 +68,7 @@ class Building < ActiveRecord::Base
 	end
 
 	def active_units_count
-    units.unarchived.on_market.count
+    units.unarchived.available_on_market.count
 	end
 
 	def last_unit_updated
