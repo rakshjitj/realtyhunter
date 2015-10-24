@@ -21,7 +21,9 @@ class Landlord < ActiveRecord::Base
 	validates :fax, allow_blank: true, length: {maximum: 25}, 
 		format: { with: VALID_TELEPHONE_REGEX }
 
-	before_save :downcase_email
+	#before_save :downcase_email
+	before_save :clean_up_important_fields
+
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
 	validates :email, allow_blank: true, length: {maximum: 100}, 
 		format: { with: VALID_EMAIL_REGEX }, 
@@ -101,10 +103,19 @@ class Landlord < ActiveRecord::Base
 
 	private
     # Converts email to all lower-case.
-    def downcase_email
+    # def downcase_email
+    # 	if email
+    #   	self.email = email.downcase
+    #  	end
+    # end
+
+    def clean_up_important_fields
     	if email
-      	self.email = email.downcase
+      	self.email = email.gsub(/\A\p{Space}*|\p{Space}*\z/, '').downcase
      	end
+     	
+			self.name = name.gsub(/\A\p{Space}*|\p{Space}*\z/, '')
+			self.code = code.gsub(/\A\p{Space}*|\p{Space}*\z/, '')
     end
 	
 end

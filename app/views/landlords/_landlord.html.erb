@@ -1,4 +1,3 @@
-<% cache landlord do %>
 <tr class="<%= cycle('even', 'odd') -%>">
   <td><%= link_to landlord.code, landlord %></td>
   <td><%= landlord.name %></td>
@@ -18,4 +17,3 @@
     data: {toggle: "modal", target: "#landlordDeleteModal"}, remote: true %>
   </td>
 </tr>
-<% end %><!-- end cachce -->
