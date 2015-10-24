@@ -321,7 +321,7 @@ ResidentialListings = {};
         
         // populate the updated_order array with the new task positions
         $('.img').each(function(i) {
-          updated_order.push({ id: $(this).data('id'), position: i+1 });
+          updated_order.push({ id: $(this).data('id'), position: i});
         });
         //console.log(updated_order);
         // send the updated order via ajax
@@ -377,7 +377,7 @@ ResidentialListings = {};
         
         // populate the updated_order array with the new task positions
         $('.doc').each(function(i){
-          updated_order.push({ id: $(this).data('id'), position: i+1 });
+          updated_order.push({ id: $(this).data('id'), position: i });
         });
         // send the updated order via ajax
         var unit_id = $('#residential').attr('data-unit-id');

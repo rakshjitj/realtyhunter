@@ -58,9 +58,12 @@ class Image < ActiveRecord::Base
     images = Image.where(unit_id: unit_id).order("priority ASC")
     pos = 0
     images.each{ |x|
+      #puts "pos: #{pos}"
       if x.priority != pos
+        #puts "x.priority= #{x.priority}\n"
         x.update_columns(priority: pos)
       end
+
       pos = pos + 1
     }
   end

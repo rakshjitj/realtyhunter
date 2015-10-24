@@ -58,11 +58,11 @@ DropZoneHelper = {};
     // attribute that holds its position in the DOM
     if (subsection == 'images') {
       $('#' + sectionID + ' .img').each(function(i) {
-        $(this).attr("data-pos", i+1);
+        $(this).attr("data-pos", i);
       });
     } else if (subsection == 'documents') {
       $('#' + sectionID + ' .doc').each(function(i) {
-        $(this).attr("data-pos", i+1);
+        $(this).attr("data-pos", i);
       });
     }
   };
