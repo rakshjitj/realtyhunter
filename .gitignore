@@ -20,3 +20,6 @@
 /tmp
 .env
 *~
+
+# database dumps
+*.dump
