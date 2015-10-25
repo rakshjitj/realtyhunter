@@ -83,6 +83,8 @@ gem 'bootsy'
 # wufoo
 gem 'wuparty'
 
+gem 'twilio-ruby'
+
 group :production do
 	gem 'rails_12factor' # related to serving static assets
 	gem 'puma'

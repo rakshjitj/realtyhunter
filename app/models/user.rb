@@ -27,6 +27,8 @@ class User < ActiveRecord::Base
   has_many :roommates, class_name: 'WufooRoommatesWebForm'
   has_many :roomsharing_applications
 
+  has_many :user_waterfalls, class_name: 'UserWatefall', foreign_key: 'parent_agent_id'
+
   has_one :image, dependent: :destroy
 
 	attr_accessor :remember_token, :activation_token, :reset_token, :approval_token, :agent_types, :batch

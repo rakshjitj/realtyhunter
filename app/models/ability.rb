@@ -50,6 +50,7 @@ class Ability
       can :manage, ResidentialAmenity, :company_id => user.company.id
       can :manage, Utility, :company_id => user.company.id
       posting_permissions(user)
+      can :manage, UserWaterfall
   end
 
   def agent_permissions(user)

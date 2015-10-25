@@ -1,0 +1,2 @@
+module UserWaterfallsControllerHelper
+end

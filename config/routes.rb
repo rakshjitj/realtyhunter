@@ -264,53 +264,62 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :residential_listings, only: [:index, :destroy] do
-      member do
-        get 'delete_modal'
-        get 'unarchive_modal'
-        post 'unarchive'
-        get 'detail_modal'
-      end
-      collection do
-        get 'filter'
-        post 'send_message'
-        get 'download'
-        get :autocomplete_wufoo_listings_form_name
-        get :autocomplete_wufoo_listings_form_email
-      end
-    end
+  # NOTE: we have decided to not use these 2 forms:
 
-    resources :commercial_listings, only: [:index, :destroy] do
-      member do
-        get 'delete_modal'
-        get 'unarchive_modal'
-        post 'unarchive'
-        get 'detail_modal'
-      end
-      collection do
-        get 'filter'
-        post 'send_message'
-        get 'download'
-        get :autocomplete_wufoo_listings_form_name
-        get :autocomplete_wufoo_listings_form_email
-      end
-    end
+  #   resources :residential_listings, only: [:index, :destroy] do
+  #     member do
+  #       get 'delete_modal'
+  #       get 'unarchive_modal'
+  #       post 'unarchive'
+  #       get 'detail_modal'
+  #     end
+  #     collection do
+  #       get 'filter'
+  #       post 'send_message'
+  #       get 'download'
+  #       get :autocomplete_wufoo_listings_form_name
+  #       get :autocomplete_wufoo_listings_form_email
+  #     end
+  #   end
+
+  #   resources :commercial_listings, only: [:index, :destroy] do
+  #     member do
+  #       get 'delete_modal'
+  #       get 'unarchive_modal'
+  #       post 'unarchive'
+  #       get 'detail_modal'
+  #     end
+  #     collection do
+  #       get 'filter'
+  #       post 'send_message'
+  #       get 'download'
+  #       get :autocomplete_wufoo_listings_form_name
+  #       get :autocomplete_wufoo_listings_form_email
+  #     end
+  #   end
   end
 
   resources :roomsharing_applications do
-      member do
-        get 'delete_modal'
-        get 'unarchive_modal'
-        post 'unarchive'
-        #get 'detail_modal'
-      end
-      collection do
-        get 'filter'
-        post 'send_message'
-        get 'download'
-        #get :autocomplete_wufoo_listings_form_name
-        #get :autocomplete_wufoo_listings_form_email
-      end
+    member do
+      get 'delete_modal'
+      get 'unarchive_modal'
+      post 'unarchive'
+      #get 'detail_modal'
     end
+    collection do
+      get 'filter'
+      post 'send_message'
+      get 'download'
+      #get :autocomplete_wufoo_listings_form_name
+      #get :autocomplete_wufoo_listings_form_email
+    end
+  end
+
+  resources :user_waterfalls do
+    collection do
+      get 'filter'
+      get 'get_rate'
+    end
+  end
     
 end

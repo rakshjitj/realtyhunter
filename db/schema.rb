@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151015192916) do
+ActiveRecord::Schema.define(version: 20151025144527) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -494,6 +494,16 @@ ActiveRecord::Schema.define(version: 20151015192916) do
   add_index "units", ["sales_listing_id"], name: "index_units_on_sales_listing_id", using: :btree
   add_index "units", ["status"], name: "index_units_on_status", using: :btree
   add_index "units", ["updated_at"], name: "index_units_on_updated_at", using: :btree
+
+  create_table "user_waterfalls", force: :cascade do |t|
+    t.integer  "parent_agent_id"
+    t.integer  "child_agent_id"
+    t.integer  "level"
+    t.float    "rate"
+    t.boolean  "archived",        default: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.boolean  "archived",            default: false

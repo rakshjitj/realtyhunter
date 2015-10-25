@@ -1,0 +1,18 @@
+<tr class="<%= cycle('even', 'odd') -%>" data-id="<%= entry.id %>" >
+  <td>
+    <%= entry.parent_agent.name %>
+  </td>
+
+  <td>
+    <%= entry.child_agent.name %>
+  </td>
+
+  <td>
+    <%= entry.level %>
+  </td>
+
+  <td>
+    <%= entry.rate %>
+  </td>
+
+</tr>

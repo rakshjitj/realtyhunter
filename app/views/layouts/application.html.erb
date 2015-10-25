@@ -92,7 +92,9 @@
                   <li><%= link_to "Offices", company_offices_path(current_user.company) %></li>
                   <li><%= link_to "Managers", managers_company_path(current_user.company) %></li>
                   <li><%= link_to "Coworkers", employees_company_path(current_user.company) %></li>
+
                   <% if current_user.is_management? %>
+                    <li><%= link_to "Waterfall", user_waterfalls_path %></li>
                     <li role="separator" class="divider"></li>
                     <li class="dropdown-header">WuFoo Forms</li>
                     <li><%= link_to "Contact Us", forms_contact_us_path %></li>
@@ -124,6 +126,7 @@
                 <ul class="dropdown-menu">
                   
                   <li><%= link_to "Profile", current_user %></li>
+                  <!--li>< % = link_to "My Waterfall", user_waterfall_path(current_user) % ></li-->
                   <!--li><%= link_to "Settings", edit_user_path(current_user) %></li-->
                   <% if current_user.is_manager? %>
                     <li><%= link_to "My Team Members", subordinates_user_path(current_user) %></li>

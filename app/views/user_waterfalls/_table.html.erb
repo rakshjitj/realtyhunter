@@ -1,0 +1,56 @@
+<table class="table table-striped table-hover table-condensed table-responsive">
+      <thead>
+        <tr>
+          <th data-sort="parent_agent_id" class="th-sortable">Parent Agent</th>
+          <th data-sort="child_agent_id" class="th-sortable">Child Agent</th>
+          <th data-sort="level" class="th-sortable">Level</th>
+          <th data-sort="rate" class="th-sortable">Rate</th>
+          <th colspan="1"></th>
+        </tr>
+      </thead>
+
+      <tbody class="user_waterfall_table_body">
+        <!-- row for adding new entries -->
+        <%= form_for(@new_entry, remote: true) do |f| %>
+        <%= render :partial => 'shared/error_messages', :locals => {:model => @new_entry} %>
+        <tr class="form-row">
+          <td>
+            <%= f.select(:parent_agent_id, 
+              options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
+                []), 
+              {prompt: "Choose Parent..."},
+              class: 'form-control',
+              include_blank: true, required: true) %>
+          </td>
+          <td>
+            <%= f.select(:child_agent_id, 
+              options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
+                []), 
+              {prompt: "Choose Child..."},
+              class: 'form-control',
+              include_blank: true, required: true) %>
+          </td>
+          <td>
+            <%= f.select(:level, 
+              options_for_select(['1', '2', '3']), 
+              {prompt: "Choose Level..."},
+              class:"form-control", 
+              include_blank: true, required: true) %>
+          </td>
+          <td>
+            <%= f.text_field :rate, class: "form-control", required: true %>
+          </td>
+          <td>
+            <%= f.submit "Add", class: "form-control" %>
+          </td>
+          <td>
+            
+          </td>
+        </tr>
+        <% end %>
+
+        <!-- draw rows for existing entries -->
+        <%= render partial: 'user_waterfalls/user_waterfall', collection: @entries, as: :entry %>
+      </tbody>
+
+    </table>
