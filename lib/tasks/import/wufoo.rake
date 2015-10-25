@@ -22,8 +22,14 @@ namespace :import do
 			form = wufoo.form('z15ov1by0w7n41d') 
 			fields = build_fields(form)
 
-			
-			entries = form.entries
+			# only pull new information
+			last_roommate = Roommate.order('created_at desc').limit(1).first;
+			if last_roommate
+				entries = form.entries(filters: [['DateCreated', 'Is_after', (last_roommate.created_at - 1.day)]])
+			else
+				entries = form.entries
+			end
+
 			entries.each do |entry|
 				hash = {}
 				name = ''
@@ -66,6 +72,11 @@ namespace :import do
 
 				hash[:company_id] = company.id
 
+				# truncate length so we don't fail validation and lose all the info
+				if hash[:describe_yourself] && hash[:describe_yourself].length > 1000
+					hash[:describe_yourself] = hash[:describe_yourself][0..996] + '...'
+				end
+
 				#puts hash.inspect
 				query = {name: hash[:name],
 					email: hash[:email],
@@ -85,7 +96,13 @@ namespace :import do
 			form = wufoo.form('m13cggzo03ka4xv') 
 			fields = build_fields(form)
 			
-			entries = form.entries
+			last_entry = WufooContactUsForm.order('created_at desc').limit(1).first;
+			if last_entry
+				entries = form.entries(filters: [['DateCreated', 'Is_after', (last_entry.created_at - 1.day)]])
+			else
+				entries = form.entries
+			end
+
 			entries.each do |entry|
 				hash = {}
 				name = ''
@@ -109,8 +126,9 @@ namespace :import do
 
 				hash[:company_id] = company.id
 
-				hash[:created_at] = hash['DateCreated']
-				hash[:created_by] = hash['CreatedBy']
+				hash[:created_at] = entry['DateCreated']
+				#puts hash[:created_at]
+				hash[:created_by] = entry['CreatedBy']
 
 				query = {name: hash[:name],
 					email: hash[:email],
@@ -119,9 +137,15 @@ namespace :import do
 					company_id: hash[:company_id],
 				}
 
+				# truncate length so we don't fail validation and lose all the info
+				if hash[:any_notes_for_us] && hash[:any_notes_for_us].length > 1000
+					hash[:any_notes_for_us] = hash[:any_notes_for_us][0..996] + '...'
+				end
+
 				found = WufooContactUsForm.where(query).first
 				if !found
-					WufooContactUsForm.create!(hash)
+					entry = WufooContactUsForm.create!(hash)
+					#entry.update(created_at: hash[:created_at])
 				end
 			end
 		end
@@ -131,7 +155,13 @@ namespace :import do
 			form = wufoo.form('rt5glur0xdke0a') 
 			fields = build_fields(form)
 			
-			entries = form.entries
+			last_entry = WufooPartnerForm.order('created_at desc').limit(1).first;
+			if last_entry
+				entries = form.entries(filters: [['DateCreated', 'Is_after', (last_entry.created_at - 1.day)]])
+			else
+				entries = form.entries
+			end
+
 			entries.each do |entry|
 				hash = {}
 				name = ''
@@ -157,8 +187,8 @@ namespace :import do
 
 				hash[:company_id] = company.id
 
-				hash[:created_at] = hash['DateCreated']
-				hash[:created_by] = hash['CreatedBy']
+				hash[:created_at] = entry['DateCreated']
+				hash[:created_by] = entry['CreatedBy']
 
 				query = {name: hash[:name],
 					email: hash[:email],
@@ -173,73 +203,73 @@ namespace :import do
 			end
 		end
 
-		def _import_listings(wufoo, company, form, listing_type_id)
-			fields = build_fields(form)
+		# def _import_listings(wufoo, company, form, listing_type_id)
+		# 	fields = build_fields(form)
 			
-			entries = form.entries
-			entries.each do |entry|
-				hash = {}
-				name = ''
-				entry.each do |entry_field, val|
-					db_column = fields[entry_field]
-					if !db_column.blank?
-						if db_column == 'name_first'
-							name = val + name
-						elsif db_column == 'name_last'
-							name = name + ' ' + val
-						else
-							hash[db_column.to_sym] = val
-						end
-					end
-				end
-				hash[:name] = name # full name
+		# 	entries = form.entries
+		# 	entries.each do |entry|
+		# 		hash = {}
+		# 		name = ''
+		# 		entry.each do |entry_field, val|
+		# 			db_column = fields[entry_field]
+		# 			if !db_column.blank?
+		# 				if db_column == 'name_first'
+		# 					name = val + name
+		# 				elsif db_column == 'name_last'
+		# 					name = name + ' ' + val
+		# 				else
+		# 					hash[db_column.to_sym] = val
+		# 				end
+		# 			end
+		# 		end
+		# 		hash[:name] = name # full name
 
-				hash[:company_id] = company.id
+		# 		hash[:company_id] = company.id
 
-				if listing_type_id == 'residential'
-					hash[:is_residential] = true
-				elsif listing_type_id == 'commercial'
-					hash[:is_commercial] = true
-				end
+		# 		if listing_type_id == 'residential'
+		# 			hash[:is_residential] = true
+		# 		elsif listing_type_id == 'commercial'
+		# 			hash[:is_commercial] = true
+		# 		end
 
-				hash[:created_at] = hash['DateCreated']
-				hash[:created_by] = hash['CreatedBy']
+		# 		hash[:created_at] = entry['DateCreated']
+		# 		hash[:created_by] = entry['CreatedBy']
 
-				query = {
-					name: hash[:name],
-					email: hash[:email],
-					phone_number: hash[:phone_number],
-					message: hash[:message],
-					company_id: hash[:company_id]
-				}
+		# 		query = {
+		# 			name: hash[:name],
+		# 			email: hash[:email],
+		# 			phone_number: hash[:phone_number],
+		# 			message: hash[:message],
+		# 			company_id: hash[:company_id]
+		# 		}
 
-				if listing_type_id == 'residential'
-					query[:is_residential] = hash[:is_residential]
-				end
+		# 		if listing_type_id == 'residential'
+		# 			query[:is_residential] = hash[:is_residential]
+		# 		end
 
-				if listing_type_id == 'commercial'
-					query[:is_commercial] = hash[:is_commercial]
-				end
+		# 		if listing_type_id == 'commercial'
+		# 			query[:is_commercial] = hash[:is_commercial]
+		# 		end
 
-				test = WufooListingsForm.where(query)
-				found = WufooListingsForm.where(query).first
-				if !found
-					WufooListingsForm.create!(hash)
-				end
-			end
-		end
+		# 		test = WufooListingsForm.where(query)
+		# 		found = WufooListingsForm.where(query).first
+		# 		if !found
+		# 			WufooListingsForm.create!(hash)
+		# 		end
+		# 	end
+		# end
 
 		# rental-listings-form
-		def import_residential_listing_form(wufoo, company)
-			form = wufoo.form('q1ky5fnq1l6p9ri') 
-			_import_listings(wufoo, company, form, 'residential')
-		end
+		# def import_residential_listing_form(wufoo, company)
+		# 	form = wufoo.form('q1ky5fnq1l6p9ri') 
+		# 	_import_listings(wufoo, company, form, 'residential')
+		# end
 
-		# commercial-listings-form
-		def import_commercial_listing_form(wufoo, company)
-			form = wufoo.form('sewgb8508ansh2') 
-			_import_listings(wufoo, company, form, 'commercial')
-		end
+		# # commercial-listings-form
+		# def import_commercial_listing_form(wufoo, company)
+		# 	form = wufoo.form('sewgb8508ansh2') 
+		# 	_import_listings(wufoo, company, form, 'commercial')
+		# end
 
 		###############################################################
 		wufoo = WuParty.new(ENV['RH_WUFOO_ACCT'], ENV['RH_WUFOO_API'])
@@ -248,8 +278,8 @@ namespace :import do
 		import_roommates_web_form(wufoo, company);
 		import_contact_us_form(wufoo, company)
 		import_partner_form(wufoo, company)
-		import_residential_listing_form(wufoo, company)
-		import_commercial_listing_form(wufoo, company)
+		# import_residential_listing_form(wufoo, company)
+		# import_commercial_listing_form(wufoo, company)
 
 	end
 end
