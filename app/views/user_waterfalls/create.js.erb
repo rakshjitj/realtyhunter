@@ -1,3 +1,8 @@
-$('.user_waterfall_table_body').html("<%= escape_javascript (render partial: 'user_waterfalls/user_waterfall', collection: @entries, as: :entry) %>");
-$('.pagination').html("<%= escape_javascript (render :partial => 'shared/pagination', :locals => {:models => @entries}) %>");
-UserWaterfalls.clearNewEntry();
+<% if @entry.errors.blank? %>
+  $('.user_waterfall_table_body').html("<%= escape_javascript (render partial: 'user_waterfalls/user_waterfall', collection: @entries, as: :entry) %>");
+	$('.pagination').html("<%= escape_javascript (render :partial => 'shared/pagination', :locals => {:models => @entries}) %>");
+	UserWaterfalls.clearNewEntry();
+<% else %>
+  $('.ajax-errors').html("<%= j(render :partial => 'shared/error_messages', :locals => {:model => @entry}) %>");
+<% end %>
+

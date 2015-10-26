@@ -22,9 +22,6 @@ class UserWaterfallsController < ApplicationController
     @entries = UserWaterfall.search(params).to_a.group_by(&:level)
   end
 
-  # def edit
-  # end
-
   def create
   	@entry = UserWaterfall.new(user_waterfall_params[:user_waterfall])
   	respond_to do |format|
