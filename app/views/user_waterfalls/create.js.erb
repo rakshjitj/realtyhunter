@@ -1,8 +1,12 @@
-<% if @entry.errors.blank? %>
+<% if @entry.errors.messages.blank? && !@duplication_error %>
   $('.user_waterfall_table_body').html("<%= escape_javascript (render partial: 'user_waterfalls/user_waterfall', collection: @entries, as: :entry) %>");
 	$('.pagination').html("<%= escape_javascript (render :partial => 'shared/pagination', :locals => {:models => @entries}) %>");
 	UserWaterfalls.clearNewEntry();
+	$('.ajax-errors').html("");
 <% else %>
-  $('.ajax-errors').html("<%= j(render :partial => 'shared/error_messages', :locals => {:model => @entry}) %>");
+  <% if @duplication_error %>
+	  $('.ajax-errors').html("<div id='error_explanation'><div class='alert alert-danger'>This connection already exists.</div></div>");
+	<% else %>
+		$('.ajax-errors').html("<%= j(render :partial => 'shared/error_messages', :locals => {:model => @entry}) %>");
+	<% end %>
 <% end %>
-

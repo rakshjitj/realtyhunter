@@ -12,55 +12,8 @@
   </div>
 </div>
 
-<%= form_for(@new_entry, remote: true) do |f| %>
-<div class="row">
-  <div class="col-md-12">
-    <h4>Enter a new waterfall connection:</h4>
-    <div class="ajax-errors">
-      <%= render :partial => 'shared/error_messages', :locals => {:model => @new_entry} %>
-    </div>
-  </div>
-</div>
-<div class="row row-sm-padding">
-  <div class="col-md-2">
-    <%= f.select(:parent_agent_id, 
-      options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
-        []), 
-      {prompt: "Agent..."},
-      class: 'form-control',
-      include_blank: true, required: true) %>
-  </div>
-  <div class="col-md-2">
-    <%= f.select(:agent_seniority_rate,
-      options_for_select([['Senior - 50%', 50], ['Junior - 45%', 45], ['Associate - 40%', 40], ['Shower - 35%', 35]]), 
-      {prompt: "Agent Seniority..."},
-      class: 'form-control',
-      include_blank: true, required: true) %>
-  </div>
-  <div class="col-md-3">
-    <%= f.select(:child_agent_id, 
-      options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
-        []), 
-      {prompt: "Waterfall Agent..."},
-      class: 'form-control',
-      include_blank: true, required: true) %>
-  </div>
-  <div class="col-md-2">
-    <%= f.select(:level, 
-      options_for_select([['Level 1', 1], ['Level 2',2], ['Level 3',3], ['Special Agreement', 4]]), 
-      {prompt: "Tier..."},
-      class:"form-control", 
-      include_blank: true, required: true) %>
-  </div>
-  <div class="col-md-1">
-    <%= f.number_field :rate, placeholder: "%", class: "form-control", 
-      required: true, step: 0.1 %>
-  </div>
-  <div class="col-md-1">
-    <%= f.submit "Add", class: "form-control" %>
-  </div>
-</div>
-<% end %>
+<%= render partial: 'user_waterfalls/form', 
+  locals:{ entry: @new_entry, title: "Enter a new waterfall connection"} %>
 
 <hr />
 <div class="row row-sm-padding">
@@ -164,6 +117,26 @@
       </div>
       <div class="modal-footer">
         <button class="delete-link">Delete</button>
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="waterfallEditModal" tabindex="-1" role="dialog" 
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit Waterfall Entry</h4>
+      </div>
+      <div class="modal-body">
+        <!-- placeholder -->
+      </div>
+      <div class="modal-footer">
         <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
       </div>
 

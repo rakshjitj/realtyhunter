@@ -40,8 +40,6 @@ class UnitImagesController < ApplicationController
   end
 
   def sort
-    # TODO
-
     params[:order].each do |key,value|
       img = Image.find(value[:id])
       if img.priority != value[:position]

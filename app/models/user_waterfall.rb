@@ -10,15 +10,15 @@ class UserWaterfall < ActiveRecord::Base
   # The first number in the array below represents what you earn if you are still active.
   # Second number is for when you're inactive.
 	
-	validates :parent_agent_id, uniqueness: {scope: :child_agent_id}
+	validates :parent_agent_id, presence: true
+  # agents collect different commission rates depending on 
+  # their seniority
+  validates :agent_seniority_rate, presence: true, numericality: { only_integer: false }
 	validates :level, presence: true, numericality: { only_integer: true }, 
 		inclusion: { in: [1,2,3,4] }
 	validates :rate, presence: true, numericality: { only_integer: false }
 
-  # agents collect different commission rates depending on 
-  # their seniority
-  validates :agent_seniority_rate, presence: true, numericality: { only_integer: false }
-
+  
 	def archive
     self.update(archived: true)
   end

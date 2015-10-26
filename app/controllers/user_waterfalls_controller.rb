@@ -1,7 +1,7 @@
 class UserWaterfallsController < ApplicationController
 	load_and_authorize_resource
   skip_load_resource only: [:create, :show]
-	before_action :set_user_waterfall, only: [:edit, :update, :destroy, :delete_modal]
+	before_action :set_user_waterfall, only: [:edit, :update, :destroy, :delete_modal, :edit_modal]
 	autocomplete :user, :name, full: true
 
 	def index
@@ -25,19 +25,22 @@ class UserWaterfallsController < ApplicationController
   end
 
   def create
-  	@entry = UserWaterfall.new(user_waterfall_params[:user_waterfall])
+    existing_entry = UserWaterfall.unarchived.where(
+      parent_agent_id: user_waterfall_params[:user_waterfall][:parent_agent_id],
+      child_agent_id: user_waterfall_params[:user_waterfall][:child_agent_id]).first
+    @entry = UserWaterfall.new(user_waterfall_params[:user_waterfall])
+
+    if existing_entry
+      @duplication_error ="This connection has already been added."
+    end
+
   	respond_to do |format|
-  		if @entry.save
+  		if !existing_entry && @entry.save
   			@new_entry = UserWaterfall.new
   			set_user_waterfalls
-  			#format.html { redirect_to @entry, notice: 'Entry was successfully created.' }
-        #format.json { render action: 'show', status: :created, location: @entry }
-        format.js #  { render action: 'show', status: :created, location: @entry }
+        format.js
       else
-      	puts @entry.errors.messages
-      	#format.html { render action: 'index' }
-        #format.json { render json: @entry.errors, status: :unprocessable_entity }
-        format.js  # { render json: @entry.errors, status: :unprocessable_entity }
+        format.js
       end
   	end
   end
@@ -61,6 +64,24 @@ class UserWaterfallsController < ApplicationController
     @new_entry = UserWaterfall.new
     respond_to do |format|
       format.html { redirect_to user_waterfall_url, notice: 'Waterfall connection was successfully removed.' }
+      format.json { head :no_content }
+      format.js
+    end
+  end
+
+  def edit_modal
+    respond_to do |format|
+      format.js  
+    end
+  end
+
+  def update
+    if @entry.update(user_waterfall_params[:user_waterfall].merge({updated_at: Time.now}))
+      set_user_waterfalls
+      #flash[:success] = "Waterfall connection updated!"
+    end
+    respond_to do |format|
+      format.html { redirect_to user_waterfall_url, notice: 'Waterfall connection updated.' }
       format.json { head :no_content }
       format.js
     end
@@ -90,7 +111,6 @@ class UserWaterfallsController < ApplicationController
     end
 
   	def user_waterfall_params
-      puts params
   		params.permit(:direction, :sort_by, :rate, :level, :agent_seniority_rate,
   			:parent_agent, :child_agent, :parent_agent_id, :child_agent_id, :id,
   			user_waterfall: [
