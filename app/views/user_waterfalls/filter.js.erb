@@ -1,1 +1,2 @@
 $('.table_partial').html("<%= escape_javascript (render partial: 'user_waterfalls/table', locals: {entries: @entries, new_entry: @new_entry}) %>");
+$('.pagination').html("<%= escape_javascript (render :partial => 'shared/pagination', :locals => {:models => @entries}) %>");

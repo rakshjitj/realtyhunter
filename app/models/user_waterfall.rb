@@ -52,11 +52,30 @@ class UserWaterfall < ActiveRecord::Base
   end
 
   def self.search(params)
-  	# if params[:parent_name]
-   #    @running_list = 
-   #     @running_list.where('parent_name ILIKE ?', "%#{name}%")
-   #  end
-  	UserWaterfall.unarchived
+  	puts params.inspect
+  	@running_list = UserWaterfall.unarchived
+  		.joins('LEFT JOIN users AS parent_agents ON parent_agents.id = user_waterfalls.parent_agent_id
+LEFT JOIN users AS child_agents ON child_agents.id = user_waterfalls.child_agent_id')
+  		.select('rate', 'level', 'user_waterfalls.updated_at',
+  			'parent_agents.name as parent_agent_name', 
+  			'child_agents.name as child_agent_name')
+
+  	if !params[:parent_agent].blank?
+      @running_list = 
+      	@running_list.where('parent_agents.name ILIKE ?', "%#{params[:parent_agent]}%")
+    end
+
+    if !params[:child_agent].blank?
+      @running_list = 
+      	@running_list.where('child_agents.name ILIKE ?', "%#{params[:child_agent]}%")
+    end
+
+    if !params[:level].blank? && ['1', '2', '3'].include?(params[:level])
+      @running_list = 
+      	@running_list.where('level = ?', params[:level])
+    end
+
+  	@running_list
   end
 	
 end

@@ -437,6 +437,13 @@ vertical-padding-lg {
   padding: 4px 2px 4px 2px;
 }
 
+.forms-spinner-desktop {
+  position: absolute;
+  left: 25%;
+  top: 20%;
+  z-index: 1;
+}
+
 .res-spinner-desktop {
   position: absolute;
   left: 25%;
@@ -527,4 +534,9 @@ label.required:after {
   .odd {
     background-color: rgb(242, 240, 240);
   }
+}
+
+.vertical-align {
+  display: flex;
+  align-items: center;
 }

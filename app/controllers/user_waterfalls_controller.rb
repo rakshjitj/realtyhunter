@@ -2,6 +2,9 @@ class UserWaterfallsController < ApplicationController
 	load_and_authorize_resource
   skip_load_resource :only => :create
 	before_action :set_user_waterfall, only: [:show, :edit, :update, :destroy]
+	#autocomplete :user_waterfall, :parent_agent, full: true
+	#autocomplete :user_waterfall, :child_agent, full: true
+	autocomplete :user, :name, full: true
 
 	def index
     set_user_waterfalls
@@ -9,16 +12,21 @@ class UserWaterfallsController < ApplicationController
   end
 
   def filter
-
+  	puts "FILTERING ****"
+  	set_user_waterfalls
+  	@new_entry = UserWaterfall.new
+    respond_to do |format|
+      format.js
+    end
   end
 
-  def show
+  # def show
     
-  end
+  # end
 
-  def edit
+  # def edit
 
-  end
+  # end
 
   def create
   	@entry = UserWaterfall.new(user_waterfall_params[:user_waterfall])
@@ -79,7 +87,7 @@ class UserWaterfallsController < ApplicationController
 
   	def user_waterfall_params
   		params.permit(:direction, :sort_by, :rate, :level, 
-  			:parent_agent_id, :child_agent_id, :id,
+  			:parent_agent, :child_agent, :parent_agent_id, :child_agent_id, :id,
   			user_waterfall: [:rate, :level, :parent_agent_id, :child_agent_id, :id])
   	end
 
