@@ -46,7 +46,7 @@
           include_blank: true, required: true) %>
       </td>
       <td>
-        <%= f.text_field :rate, class: "form-control", required: true %>
+        <%= f.text_field :rate, placeholder: "Rate %", class: "form-control", required: true %>
       </td>
       <td>
         <%= f.submit "Add", class: "form-control" %>
@@ -126,7 +126,7 @@
             <th data-sort="parent_agent_name" class="th-sortable">Parent Agent</th>
             <th data-sort="child_agent_name" class="th-sortable">Child Agent</th>
             <th data-sort="level" class="th-sortable">Level</th>
-            <th data-sort="rate" class="th-sortable">Rate</th>
+            <th data-sort="rate" class="th-sortable">Rate %</th>
             <th colspan="1"></th>
           </tr>
         </thead>
