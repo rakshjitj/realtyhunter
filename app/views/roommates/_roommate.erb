@@ -23,10 +23,10 @@
     </td>
 
     <!-- ****** PHONE ****************************************** -->
-    <td><%= roommate.phone_number %></td>
+    <td class="phone"><%= roommate.phone_number %></td>
 
     <!-- ****** EMAIL ****************************************** -->
-    <td><%= roommate.email %></td>
+    <td><%= mail_to roommate.email, roommate.email %></td>
 
     <!-- ****** BUDGET ****************************************** -->
     <td>

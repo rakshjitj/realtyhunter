@@ -16,7 +16,7 @@
 <div class="row">
   <div class="col-xs-12 col-md-4"><!-- hidden-sm hidden-xs -->
 
-    <i class="fa fa-spinner fa-pulse fa-5x res-spinner-desktop"></i>
+    <i class="fa fa-spinner fa-pulse fa-5x room-spinner-desktop"></i>
 
     <div id="room-search-filters" data-search-path="<%= filter_roommates_path %>">
       <%= form_tag roommates_path, :method => 'get' do %>
@@ -104,7 +104,7 @@
       </div>
       <div class="col-xs-7 col-sm-left-padding">
         <%= select_tag(:monthly_budget, 
-          options_for_select(['$500 - $749', '$750 - $999', '$1,000 - $1,249', '$1,250 - $1,499', '$1,500+'], 
+          options_for_select(['$750 - $999', '$1,000 - $1,249', '$1,250 - $1,499', '$1,500+'], 
           ),
           {class: "form-control", 
           prompt: "Any"}) %>

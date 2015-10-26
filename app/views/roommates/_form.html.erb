@@ -42,7 +42,7 @@
 
           <div class="field">
             <%= f.label :monthly_budget %><br>
-            <%= f.select(:monthly_budget, options_for_select(['$500 - $749', '$750 - $999', '$1,000 - $1,249', '$1,250 - $1,499', '$1,500+'], [@roommate.monthly_budget ? @roommate.monthly_budget : '']), 
+            <%= f.select(:monthly_budget, options_for_select(['$750 - $999', '$1,000 - $1,249', '$1,250 - $1,499', '$1,500+'], [@roommate.monthly_budget ? @roommate.monthly_budget : '']), 
               {prompt: "Choose one..."},
               class: 'form-control',
               :include_blank => true) %>
