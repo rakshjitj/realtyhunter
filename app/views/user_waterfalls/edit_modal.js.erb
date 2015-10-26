@@ -1,0 +1,9 @@
+$('#waterfallEditModal .modal-body').html("<%= j(render :partial => "edit_modal_helper", locals: { entry: @entry }) %>");
+
+//$('#waterfallEditModal .save-link').replaceWith("<%= j(link_to 'Save', @entry, remote: true, method: :patch, class: 'btn btn-danger link-as-button edit-link', id: 'save-link') %>");
+$('#waterfallEditModal .save-btn').click( function(event) {
+	$('#waterfallEditModal').modal('hide');
+	//event.preventDefault();
+});
+
+$('#waterfallEditModal').modal('show');
