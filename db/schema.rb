@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151025144527) do
+ActiveRecord::Schema.define(version: 20151026180058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -500,9 +500,10 @@ ActiveRecord::Schema.define(version: 20151025144527) do
     t.integer  "child_agent_id"
     t.integer  "level"
     t.float    "rate"
-    t.boolean  "archived",        default: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.boolean  "archived",             default: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.float    "agent_seniority_rate"
   end
 
   create_table "users", force: :cascade do |t|

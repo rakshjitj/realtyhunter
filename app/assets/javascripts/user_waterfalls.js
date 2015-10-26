@@ -71,6 +71,7 @@ UserWaterfalls = {};
 
 	UserWaterfalls.clearNewEntry = function() {
 		$('#waterfall #user_waterfall_parent_agent_id').val("");
+		$('#waterfall #user_waterfall_agent_seniority_rate').val("");
 		$('#waterfall #user_waterfall_child_agent_id').val("");
 		$('#waterfall #user_waterfall_level').val("");
 		$('#waterfall #user_waterfall_rate').val("");

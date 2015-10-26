@@ -19,7 +19,9 @@ class UserWaterfallsController < ApplicationController
 
   def show
   	params[:parent_agent_id] = params[:id]
-    @entries = UserWaterfall.search(params).to_a.group_by(&:level)
+    @entries = UserWaterfall.search(params)
+      .order('level asc')
+      .to_a.group_by(&:level)
   end
 
   def create
@@ -89,9 +91,11 @@ class UserWaterfallsController < ApplicationController
 
   	def user_waterfall_params
       puts params
-  		params.permit(:direction, :sort_by, :rate, :level, 
+  		params.permit(:direction, :sort_by, :rate, :level, :agent_seniority_rate,
   			:parent_agent, :child_agent, :parent_agent_id, :child_agent_id, :id,
-  			user_waterfall: [:rate, :level, :parent_agent_id, :child_agent_id, :id])
+  			user_waterfall: [
+          :rate, :level, :parent_agent_id, :child_agent_id, 
+          :agent_seniority_rate, :id])
   	end
 
 end

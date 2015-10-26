@@ -14,26 +14,35 @@
       </div>
     </div><!-- page header -->
 
-    <% @entries.each do |level, list| %>
-    <div class="row">
-      <div class="col-md-12">
-        <h2>Level <%= level %></h2>
-        <div class="row">
-          <div class="col-md-3"><strong>Name</strong></div>
-          <div class="col-md-3"><strong>Rate</strong></div>
-        </div>
-        <% list.each do |entry| %>
+    <% if @entries.blank? %>
+      You have no waterfall agents underneath you.
+    <% else %>
+      <% @entries.each do |level, list| %>
+      <div class="row">
+        <div class="col-md-12">
+          <% if level < 3 %>
+            <h2>Level <%= level %></h2>
+          <% else %>
+            <h2>Special Agreement</h2>
+          <% end %>
+
           <div class="row">
-            <div class="col-md-3">
-              <%= entry.child_agent_name %>
-            </div>
-            <div class="col-md-3">
-              <%= entry.rate %>
-            </div>
+            <div class="col-md-3"><strong>Name</strong></div>
+            <div class="col-md-3"><strong>Percentage</strong></div>
           </div>
-        <% end %>
+          <% list.each do |entry| %>
+            <div class="row">
+              <div class="col-md-3">
+                <%= entry.child_agent_name %>
+              </div>
+              <div class="col-md-3">
+                <%= entry.rate %> %
+              </div>
+            </div>
+          <% end %>
+        </div>
       </div>
-    </div>
+      <% end %>
     <% end %>
 
   </div><!-- main centering col -->

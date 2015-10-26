@@ -3,8 +3,6 @@ class AddWaterfall < ActiveRecord::Migration
   	create_table :user_waterfalls do |t|
       t.belongs_to :parent_agent
       t.belongs_to :child_agent
-      #t.references :users, index: true
-      #t.boolean :is_senior
       # employees who still have their license parked with our company
       # (even if not actively working, on vacation, etc) earn a higher rate
       # than those who don't

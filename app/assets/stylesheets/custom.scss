@@ -94,6 +94,13 @@ a:hover.btn-danger {
   }
 }
 
+.row-sm-padding {
+  [class*="col-"] {
+    padding-left: 5 !important;
+    padding-right: 0 !important;
+  }
+}
+
 .col-no-padding {
   padding-left: 0 !important;
   padding-right: 0 !important;

@@ -15,52 +15,57 @@
 
 <div class="row">
   <div class="col-md-12">
-    <strong>Enter a new waterfall connection:</strong>
-    <table class="table-hover table-condensed table-responsive">
+    <h4>Enter a new waterfall connection:</h4>
+    
     <%= form_for(@new_entry, remote: true) do |f| %>
     <div class="ajax-errors">
       <%= render :partial => 'shared/error_messages', :locals => {:model => @new_entry} %>
     </div>
-    <tr>
-      <td>
-        <%= f.select(:parent_agent_id, 
-          options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
-            []), 
-          {prompt: "Choose Agent..."},
-          class: 'form-control',
-          include_blank: true, required: true) %>
-      </td>
-      <td>
-        <%= f.select(:child_agent_id, 
-          options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
-            []), 
-          {prompt: "Choose Waterfall Agent..."},
-          class: 'form-control',
-          include_blank: true, required: true) %>
-      </td>
-      <td>
-        <%= f.select(:level, 
-          options_for_select([['Level 1', 1], ['Level 2',2], ['Level 3',3]]), 
-          {prompt: "Choose Level..."},
-          class:"form-control", 
-          include_blank: true, required: true) %>
-      </td>
-      <td>
-        <%= f.number_field :rate, placeholder: "Percentage", class: "form-control", 
-          required: true, step: 0.1 %>
-      </td>
-      <td>
-        <%= f.submit "Add", class: "form-control" %>
-      </td>
-      
-    </tr>
-    </table>
-    <% end %>
   </div>
 </div>
+<div class="row row-sm-padding">
+  <div class="col-md-2">
+    <%= f.select(:parent_agent_id, 
+      options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
+        []), 
+      {prompt: "Agent..."},
+      class: 'form-control',
+      include_blank: true, required: true) %>
+  </div>
+  <div class="col-md-2">
+    <%= f.select(:agent_seniority_rate,
+      options_for_select([['Senior - 50%', 50], ['Junior - 45%', 45], ['Associate - 40%', 40], ['Shower - 35%', 35]]), 
+      {prompt: "Agent Seniority..."},
+      class: 'form-control',
+      include_blank: true, required: true) %>
+  </div>
+  <div class="col-md-3">
+    <%= f.select(:child_agent_id, 
+      options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
+        []), 
+      {prompt: "Waterfall Agent..."},
+      class: 'form-control',
+      include_blank: true, required: true) %>
+  </div>
+  <div class="col-md-2">
+    <%= f.select(:level, 
+      options_for_select([['Level 1', 1], ['Level 2',2], ['Level 3',3], ['Special Agreement', 4]]), 
+      {prompt: "Tier..."},
+      class:"form-control", 
+      include_blank: true, required: true) %>
+  </div>
+  <div class="col-md-1">
+    <%= f.number_field :rate, placeholder: "%", class: "form-control", 
+      required: true, step: 0.1 %>
+  </div>
+  <div class="col-md-1">
+    <%= f.submit "Add", class: "form-control" %>
+  </div>
+</div>
+<% end %>
 
 <hr />
-<div class="row">
+<div class="row row-sm-padding">
   <div class="col-md-12">
     <i class="fa fa-spinner fa-pulse fa-5x forms-spinner-desktop"></i>
 
@@ -86,11 +91,11 @@
             size: 25, class:'form-control' %>
         </div>
         <div class="col-xs-1">
-          <%= label_tag :level, "Level:", class: 'pull-right' %>
+          <%= label_tag :level, "Tier:", class: 'pull-right' %>
         </div>
         <div class="col-xs-1 col-sm-left-padding">
           <%= select_tag(:level, 
-            options_for_select([['Any',0], ['Level 1',1], ['Level 2',2], ['Level 3',3]], 
+            options_for_select([['Any',0], ['Level 1',1], ['Level 2',2], ['Level 3',3], ['Special Agreement', 4]], 
             params[:level] ? params[:level] : "Any"),
             class:"form-control") %>
         </div>
@@ -123,8 +128,9 @@
         <thead>
           <tr>
             <th data-sort="parent_agent_name" class="th-sortable">Agent</th>
+            <th data-sort="agent_seniority_rate" class="th-sortable">Agent Seniority</th>
             <th data-sort="child_agent_name" class="th-sortable">Waterfall Agent</th>
-            <th data-sort="level" class="th-sortable">Level</th>
+            <th data-sort="level" class="th-sortable">Tier</th>
             <th data-sort="rate" class="th-sortable">Percentage</th>
             <th colspan="1"></th>
           </tr>

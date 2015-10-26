@@ -4,15 +4,23 @@
   </td>
 
   <td>
+    <%= trim_zeros entry.agent_seniority_rate %> %  
+  </td>
+
+  <td>
     <%= entry.child_agent_name %>
   </td>
 
   <td>
-    Level <%= entry.level %>
+    <% if entry.level < 4 %>
+      Level <%= entry.level %>
+    <% else %>
+      Special Agreement
+    <% end %>
   </td>
 
   <td>
-    <%= entry.rate %> %
+    <%= trim_zeros entry.rate %> %
   </td>
 
   <td>

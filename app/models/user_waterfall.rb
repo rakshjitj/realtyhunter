@@ -11,11 +11,13 @@ class UserWaterfall < ActiveRecord::Base
   # Second number is for when you're inactive.
 	
 	validates :parent_agent_id, uniqueness: {scope: :child_agent_id}
-	#validates_inclusion_of :is_senior, in: [true, false]
-	#validates_inclusion_of :is_here, in: [true, false]
 	validates :level, presence: true, numericality: { only_integer: true }, 
-		inclusion: { in: [1,2,3] }
+		inclusion: { in: [1,2,3,4] }
 	validates :rate, presence: true, numericality: { only_integer: false }
+
+  # agents collect different commission rates depending on 
+  # their seniority
+  validates :agent_seniority_rate, presence: true, numericality: { only_integer: false }
 
 	def archive
     self.update(archived: true)
@@ -45,8 +47,6 @@ class UserWaterfall < ActiveRecord::Base
 
 		parent = User.find(params[:parent_agent_id])
 		idx = parent.archived ? 1 : 0
-		# TODO: is_senior flag on User
-		#puts "****** #{params[:level]} #{idx}"
 		rates[:senior][params[:level].to_sym][idx]
   end
 
@@ -55,6 +55,7 @@ class UserWaterfall < ActiveRecord::Base
   		.joins('LEFT JOIN users AS parent_agents ON parent_agents.id = user_waterfalls.parent_agent_id
 LEFT JOIN users AS child_agents ON child_agents.id = user_waterfalls.child_agent_id')
   		.select('user_waterfalls.id', 'rate', 'level', 'user_waterfalls.updated_at',
+        'agent_seniority_rate',
   			'parent_agents.name as parent_agent_name', 
   			'child_agents.name as child_agent_name')
 
@@ -73,7 +74,7 @@ LEFT JOIN users AS child_agents ON child_agents.id = user_waterfalls.child_agent
       	@running_list.where('child_agents.name ILIKE ?', "%#{params[:child_agent]}%")
     end
 
-    if !params[:level].blank? && ['1', '2', '3'].include?(params[:level])
+    if !params[:level].blank? && ['1', '2', '3' '4'].include?(params[:level])
       @running_list = 
       	@running_list.where('level = ?', params[:level])
     end
