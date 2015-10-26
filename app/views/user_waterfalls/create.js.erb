@@ -1,5 +1,3 @@
-$('#waterfall_table_partial').html("<%= escape_javascript (render partial: 'user_waterfalls/table', locals: {entries: @entries, new_entry: @new_entry}) %>");
-
-UserWaterfalls.setupSortableColumns();
-$('#waterfall #user_waterfall_parent_agent_id').change(UserWaterfalls.getRate);
-$('#waterfall #user_waterfall_level').change(UserWaterfalls.getRate);
+$('.user_waterfall_table_body').html("<%= escape_javascript (render partial: 'user_waterfalls/user_waterfall', collection: @entries, as: :entry) %>");
+$('.pagination').html("<%= escape_javascript (render :partial => 'shared/pagination', :locals => {:models => @entries}) %>");
+UserWaterfalls.clearNewEntry();
