@@ -318,6 +318,7 @@ Rails.application.routes.draw do
   resources :user_waterfalls do
     member do
       get 'delete_modal'
+      get 'edit_modal'
     end
     collection do
       get 'filter'
@@ -325,5 +326,7 @@ Rails.application.routes.draw do
       get :autocomplete_user_name
     end
   end
-    
+   
+  post 'notifications/notify' => 'notifications#notify'
+   
 end
