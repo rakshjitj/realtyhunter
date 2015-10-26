@@ -152,7 +152,7 @@ class RoommatesController < ApplicationController
 
   	def custom_sort
       sort_column = params[:sort_by] || "submitted_date"
-      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
       params[:sort_by] = sort_column
       params[:direction] = sort_order
       @roommates = @roommates.order(sort_column + ' ' + sort_order)
