@@ -1,7 +1,7 @@
 class UserWaterfallsController < ApplicationController
 	load_and_authorize_resource
   skip_load_resource :only => :create
-	before_action :set_user_waterfall, only: [:show, :edit, :update, :destroy, :delete_modal]
+	before_action :set_user_waterfall, only: [:edit, :update, :destroy, :delete_modal]
 	#autocomplete :user_waterfall, :parent_agent, full: true
 	#autocomplete :user_waterfall, :child_agent, full: true
 	autocomplete :user, :name, full: true
@@ -19,12 +19,12 @@ class UserWaterfallsController < ApplicationController
     end
   end
 
-  # def show
-    
-  # end
+  def show
+  	params[:parent_agent_id] = params[:id]
+	  @entries = UserWaterfall.search(params).to_a.group_by(&:level)
+  end
 
   # def edit
-
   # end
 
   def create

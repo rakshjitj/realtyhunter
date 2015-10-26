@@ -126,8 +126,7 @@
                 <ul class="dropdown-menu">
                   
                   <li><%= link_to "Profile", current_user %></li>
-                  <!--li>< % = link_to "My Waterfall", user_waterfall_path(current_user) % ></li-->
-                  <!--li><%= link_to "Settings", edit_user_path(current_user) %></li-->
+                  <li><%= link_to "My Waterfall", user_waterfall_path(current_user) %></li>
                   <% if current_user.is_manager? %>
                     <li><%= link_to "My Team Members", subordinates_user_path(current_user) %></li>
                   <% end %>

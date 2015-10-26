@@ -52,7 +52,6 @@ class UserWaterfall < ActiveRecord::Base
   end
 
   def self.search(params)
-  	puts params.inspect
   	@running_list = UserWaterfall.unarchived
   		.joins('LEFT JOIN users AS parent_agents ON parent_agents.id = user_waterfalls.parent_agent_id
 LEFT JOIN users AS child_agents ON child_agents.id = user_waterfalls.child_agent_id')
@@ -63,6 +62,11 @@ LEFT JOIN users AS child_agents ON child_agents.id = user_waterfalls.child_agent
   	if !params[:parent_agent].blank?
       @running_list = 
       	@running_list.where('parent_agents.name ILIKE ?', "%#{params[:parent_agent]}%")
+    end
+
+    if !params[:parent_agent_id].blank?
+      @running_list = 
+      	@running_list.where('parent_agent_id = ?', params[:parent_agent_id])
     end
 
     if !params[:child_agent].blank?

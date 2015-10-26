@@ -1,0 +1,43 @@
+<% provide(:title, "My Waterfall") %>
+<div id="waterfall">
+
+<div class="row">
+  <div class="col-md-offset-2 col-md-8">
+    <div class="page-header">
+      
+      <div class="row">
+        <div class="col-md-6">
+          <h1>My Waterfall</h1>
+        </div>
+        <div class="col-md-6 form-label-responsive">
+        </div>
+      </div>
+    </div><!-- page header -->
+
+    <% @entries.each do |level, list| %>
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Level <%= level %></h2>
+        <div class="row">
+          <div class="col-md-3"><strong>Name</strong></div>
+          <div class="col-md-3"><strong>Rate</strong></div>
+        </div>
+        <% list.each do |entry| %>
+          <div class="row">
+            <div class="col-md-3">
+              <%= entry.child_agent_name %>
+            </div>
+            <div class="col-md-3">
+              <%= entry.rate %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <% end %>
+
+  </div><!-- main centering col -->
+</div><!-- overall row -->
+
+
+</div>
