@@ -12,12 +12,10 @@
   </div>
 </div>
 
-
+<%= form_for(@new_entry, remote: true) do |f| %>
 <div class="row">
   <div class="col-md-12">
     <h4>Enter a new waterfall connection:</h4>
-    
-    <%= form_for(@new_entry, remote: true) do |f| %>
     <div class="ajax-errors">
       <%= render :partial => 'shared/error_messages', :locals => {:model => @new_entry} %>
     </div>

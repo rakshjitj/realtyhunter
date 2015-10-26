@@ -117,7 +117,6 @@ UserWaterfalls = {};
 		Forms.hideSpinner();
 
 		$('.close').click(function() {
-			//console.log('detected click');
 			Forms.hideSpinner();
 		});
 
