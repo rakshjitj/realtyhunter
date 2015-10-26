@@ -56,7 +56,7 @@ class UserWaterfall < ActiveRecord::Base
   	@running_list = UserWaterfall.unarchived
   		.joins('LEFT JOIN users AS parent_agents ON parent_agents.id = user_waterfalls.parent_agent_id
 LEFT JOIN users AS child_agents ON child_agents.id = user_waterfalls.child_agent_id')
-  		.select('rate', 'level', 'user_waterfalls.updated_at',
+  		.select('user_waterfalls.id', 'rate', 'level', 'user_waterfalls.updated_at',
   			'parent_agents.name as parent_agent_name', 
   			'child_agents.name as child_agent_name')
 

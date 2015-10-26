@@ -316,11 +316,13 @@ Rails.application.routes.draw do
   end
 
   resources :user_waterfalls do
+    member do
+      get 'delete_modal'
+    end
     collection do
       get 'filter'
       get 'get_rate'
       get :autocomplete_user_name
-      #get :autocomplete_child_agent_name
     end
   end
     

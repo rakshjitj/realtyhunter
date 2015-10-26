@@ -25,7 +25,6 @@ UserWaterfalls = {};
 	UserWaterfalls.doSearch = function (sort_by_col, sort_direction) {
 		//console.log(sort_by_col, sort_direction);
 		var search_path = $('#waterfall-search-filters').attr('data-search-path');
-	  console.log(search_path);
 	  Forms.showSpinner();
 
 	  $.ajax({

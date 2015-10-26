@@ -15,4 +15,9 @@
     <%= entry.rate %>
   </td>
 
+  <td>
+    <%= link_to 'Delete', delete_modal_user_waterfall_path(entry), 
+      data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
+  </td>
+
 </tr>

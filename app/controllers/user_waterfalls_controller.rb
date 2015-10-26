@@ -1,7 +1,7 @@
 class UserWaterfallsController < ApplicationController
 	load_and_authorize_resource
   skip_load_resource :only => :create
-	before_action :set_user_waterfall, only: [:show, :edit, :update, :destroy]
+	before_action :set_user_waterfall, only: [:show, :edit, :update, :destroy, :delete_modal]
 	#autocomplete :user_waterfall, :parent_agent, full: true
 	#autocomplete :user_waterfall, :child_agent, full: true
 	autocomplete :user, :name, full: true
@@ -12,7 +12,6 @@ class UserWaterfallsController < ApplicationController
   end
 
   def filter
-  	puts "FILTERING ****"
   	set_user_waterfalls
   	@new_entry = UserWaterfall.new
     respond_to do |format|
@@ -53,8 +52,21 @@ class UserWaterfallsController < ApplicationController
     end
   end
 
-  def destroy
+  def delete_modal
+    respond_to do |format|
+      format.js  
+    end
+  end
 
+  def destroy
+  	@entry.archive
+    set_user_waterfalls
+    @new_entry = UserWaterfall.new
+    respond_to do |format|
+      format.html { redirect_to user_waterfall_url, notice: 'Waterfall connection was successfully removed.' }
+      format.json { head :no_content }
+      format.js
+    end
   end
 
   private
