@@ -57,10 +57,10 @@ class Ability
     #can [:new, :create, ], Roommate, :user_id => user.id
     #cannot :index, Roommate, :company_id => user.company.id
     can :read, :Neighborhood
-    can :read, BuildingAmenity, :company_id => user.company.id
-    can :read, ResidentialAmenity, :company_id => user.company.id
-    can :read, Utility, :company_id => user.company.id
-    can :read, Building, :company_id => user.company_id
+    can :read, BuildingAmenity, company_id: user.company.id
+    can :read, ResidentialAmenity, company_id: user.company.id
+    can :read, Utility, company_id: user.company.id
+    can :read, Building, company_id: user.company_id
 
     can :read, ResidentialListing do |residential_listing|
       residential_listing.unit.building.company_id == user.company_id #&& user.handles_residential?
@@ -71,7 +71,9 @@ class Ability
     can :read, CommercialListing do |commercial_listing|
       commercial_listing.unit.building.company_id == user.company_id #&& user.handles_commercial?
     end
-    can :filter, CommercialListing, :company_id => user.company_id
+    can :filter, CommercialListing, company_id: user.company_id
+
+    can :show, UserWaterfall, parent_agent_id: user.id
   end
 
   def initialize(user)

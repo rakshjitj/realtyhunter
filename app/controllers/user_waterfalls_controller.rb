@@ -1,9 +1,7 @@
 class UserWaterfallsController < ApplicationController
 	load_and_authorize_resource
-  skip_load_resource :only => :create
+  skip_load_resource only: [:create, :show]
 	before_action :set_user_waterfall, only: [:edit, :update, :destroy, :delete_modal]
-	#autocomplete :user_waterfall, :parent_agent, full: true
-	#autocomplete :user_waterfall, :child_agent, full: true
 	autocomplete :user, :name, full: true
 
 	def index
@@ -21,7 +19,7 @@ class UserWaterfallsController < ApplicationController
 
   def show
   	params[:parent_agent_id] = params[:id]
-	  @entries = UserWaterfall.search(params).to_a.group_by(&:level)
+    @entries = UserWaterfall.search(params).to_a.group_by(&:level)
   end
 
   # def edit
@@ -76,11 +74,6 @@ class UserWaterfallsController < ApplicationController
   	end
 
   	def set_user_waterfalls
-  		# default to searching for active units
-      # if !params[:level]
-      #   params[:level] = "any"
-      # end
-
   		@entries = UserWaterfall.search(user_waterfall_params)
   		@entries = @entries.page params[:page]
   		custom_sort
@@ -98,6 +91,7 @@ class UserWaterfallsController < ApplicationController
     end
 
   	def user_waterfall_params
+      puts params
   		params.permit(:direction, :sort_by, :rate, :level, 
   			:parent_agent, :child_agent, :parent_agent_id, :child_agent_id, :id,
   			user_waterfall: [:rate, :level, :parent_agent_id, :child_agent_id, :id])

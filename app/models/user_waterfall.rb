@@ -10,7 +10,6 @@ class UserWaterfall < ActiveRecord::Base
   # The first number in the array below represents what you earn if you are still active.
   # Second number is for when you're inactive.
 	
-
 	validates :parent_agent_id, uniqueness: {scope: :child_agent_id}
 	#validates_inclusion_of :is_senior, in: [true, false]
 	#validates_inclusion_of :is_here, in: [true, false]

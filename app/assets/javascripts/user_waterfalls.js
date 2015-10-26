@@ -23,7 +23,7 @@ UserWaterfalls = {};
 
 	// for searching on the index page
 	UserWaterfalls.doSearch = function (sort_by_col, sort_direction) {
-		//console.log(sort_by_col, sort_direction);
+		console.log(sort_by_col, sort_direction);
 		var search_path = $('#waterfall-search-filters').attr('data-search-path');
 	  Forms.showSpinner();
 
@@ -70,10 +70,13 @@ UserWaterfalls = {};
 	};
 
 	UserWaterfalls.setupSortableColumns = function() {
-		$('#waterfall .th-sortable').click(function(e) {
+		//console.log("IN");
+		//$('#waterfall_table_partial > table > thead > tr > th:nth-child(1)').attr('data-direction', 'asc');
+		$('#waterfall_table_partial .th-sortable').click(function(e) {
 			e.preventDefault();
 			
 			if ($(this).hasClass('selected-sort')) {
+				console.log("HERE 2222");
 				// switch sort order
 				var i = $('.selected-sort i');
 				if (i) {
@@ -94,6 +97,7 @@ UserWaterfalls = {};
 				// select new column
 				$(this).addClass('selected-sort').append(' <i class="glyphicon glyphicon-triangle-bottom"></i>');
 				$(this).attr('data-direction', 'asc');
+				//console.log("OTHER", this);				
 			}
 
 			var sort_by_col = $(this).attr('data-sort');
@@ -108,8 +112,6 @@ UserWaterfalls = {};
 		});
 		Forms.hideSpinner();
 
-		UserWaterfalls.setupSortableColumns();		
-
 		$('.close').click(function() {
 			//console.log('detected click');
 			Forms.hideSpinner();
@@ -123,7 +125,8 @@ UserWaterfalls = {};
 		$('#waterfall #child_agent').bind('railsAutocomplete.select', UserWaterfalls.throttledSearch);
 		$('#waterfall #level').change(UserWaterfalls.throttledSearch);
 
-		// adding a ne entry
+		UserWaterfalls.setupSortableColumns();
+		// adding a new entry
 		$('#waterfall #user_waterfall_parent_agent_id').change(UserWaterfalls.getRate);
 		$('#waterfall #user_waterfall_level').change(UserWaterfalls.getRate);
 	};
