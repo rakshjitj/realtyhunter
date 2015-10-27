@@ -1,7 +1,11 @@
 Weekly Unassigned Listings Report
 
 Here is the current list of unassigned units:
-<%= @data %>
+<% if @data.count > 0 %>
+	<%= @data.to_a.join("\n") %>
+<% else %>
+	There are currently no unassigned units.
+<% end %>
 
 Thanks,
 The Team at Myspace

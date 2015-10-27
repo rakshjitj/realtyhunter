@@ -1,8 +1,11 @@
 <h1>Weekly Unassigned Listings Report</h1>
 
 <p>Here is the current list of unassigned units:</p>
-<p><%= @data.count %></p>
-<p><%= @data.to_a.join("<br />").html_safe %></p>
+<% if @data.count > 0 %>
+	<p><%= @data.to_a.join("<br />").html_safe %></p>
+<% else %>
+	<p>There are currently no unassigned units.</p>
+<% end %>
 
 <p>Thanks,<br />
 The Team at Myspace<p>
