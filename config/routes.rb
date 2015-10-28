@@ -81,6 +81,9 @@ Rails.application.routes.draw do
       collection do
         put 'sort'
       end
+      member do
+        patch 'rotate'
+      end
     end
   end
 
@@ -310,8 +313,6 @@ Rails.application.routes.draw do
       get 'filter'
       post 'send_message'
       get 'download'
-      #get :autocomplete_wufoo_listings_form_name
-      #get :autocomplete_wufoo_listings_form_email
     end
   end
 
@@ -327,6 +328,13 @@ Rails.application.routes.draw do
     end
   end
    
-  post 'notifications/notify' => 'notifications#notify'
+  #post 'notifications/notify' => 'notifications#notify'
+  # resources :announcements do
+  #   collection do
+  #     get :autocomplete_building_formatted_street_address
+  #     get :get_units
+  #   end
+  # end
+  
    
 end
