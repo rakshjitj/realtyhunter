@@ -22,9 +22,9 @@
 					
 					<small><em><%= time_ago_in_words(announcement.updated_at) %></em></small><br />
 
-					<%= announcement.unit.building.street_number %> <%= announcement.unit.building.route %>
-					<% if announcement.unit.building_unit %>
-						#<%= announcement.unit.building_unit %>
+					<%= announcement.street_number %> <%= announcement.route %>
+					<% if announcement.building_unit %>
+						#<%= announcement.building_unit %>
 					<% end %>
 
 					<p><%= announcement.note %></p>

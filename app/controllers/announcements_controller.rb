@@ -21,7 +21,11 @@ class AnnouncementsController < ApplicationController
 	end
 
 	def index
-		@announcements = Announcement.where("updated_at > ?", (Time.now - 2.days))
+		@announcements = Announcement.joins(unit: :building)
+      .where("announcements.updated_at > ?", (Time.now - 2.days))
+      .select('announcements.updated_at', 'canned_response', 'note', 
+        'buildings.street_number', 'buildings.route', 
+        'units.building_unit')
 	end
 
 	def get_units
