@@ -1,6 +1,7 @@
 class SyndicationController < ApplicationController
   skip_authorize_resource
   skip_before_action :logged_in_user
+  protect_from_forgery with: :null_session
   include SyndicationInterface
   
   def naked_apts

@@ -9,7 +9,8 @@ class Image < ActiveRecord::Base
     styles: lambda { |a| {
       thumb: {
         geometry: '100x100>',
-        rotation: a.instance.rotation
+        rotation: a.instance.rotation,
+        #processors: [:rotator]
       },
       # square: {
       #   geometry: '200x200#',
@@ -22,6 +23,7 @@ class Image < ActiveRecord::Base
       large: {
         geometry: '2500x2500>',
         rotation: a.instance.rotation,
+        #processors: [:rotator]
       },
       original: { 
         convert_options: '-auto-orient'
@@ -29,8 +31,7 @@ class Image < ActiveRecord::Base
     }},
     default_url: "/images/:style/missing.png",
     convert_options: { all: '-auto-orient' }, 
-    source_file_options: { all: '-auto-orient' },
-    processors: [:rotator]
+    source_file_options: { all: '-auto-orient' }, processors: [:rotator]
 
     # styles: {
     #   original: {convert_options: '-auto-orient'},
@@ -80,9 +81,11 @@ class Image < ActiveRecord::Base
   end
 
   def rotate
-    self.update_attribute(:rotation, rotation + 90)
+    self.rotation += 90
+    puts "**** NEW rotation is #{rotation}"
     self.rotation = self.rotation % 360 if (self.rotation >= 360 || self.rotation <= -360)
-    self.file.reprocess!(:original, :thumb)
+    self.update_attribute(:rotation, rotation)
+    self.file.reprocess! :large
   end
 
   private

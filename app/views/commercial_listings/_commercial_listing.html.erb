@@ -33,6 +33,9 @@
     <td><%= commercial_listing.available_by %></td>
     <td><%= commercial_listing.access_info %></td>
 
+    <!-- ****** UPDATED_AT ****************************************** -->
+    <td><%= time_ago_in_words(commercial_listing.updated_at) %></td>
+
     <td>
       <% if commercial_listing.status == Unit.statuses["active"]
        %>

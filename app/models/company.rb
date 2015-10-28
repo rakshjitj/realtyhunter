@@ -23,7 +23,6 @@ class Company < ActiveRecord::Base
 	has_many :wufoo_partner_forms, dependent: :destroy
 	has_many :wufoo_listings_forms, dependent: :destroy
 	
-	
 	#attr_accessor :agent_types, :employee_titles
 	#attr_access :building_amenities
 
@@ -60,6 +59,20 @@ class Company < ActiveRecord::Base
 			.includes( :manager, )
 			.select('users.company_id', 'users.archived', 'users.id', 
         'users.name', 'users.email', 'users.activated', 'users.approved', 'users.last_login_at',
+        'users.mobile_phone_number',
+        'employee_titles.id AS employee_title_id',
+        'employee_titles.name AS employee_title_name',
+        'offices.name AS office_name', 'offices.id as office_id',
+        'users.manager_id')
+	end
+
+	def agents
+		self.users.unarchived
+			.joins(:office, :employee_title)
+			.order(:name)
+			.select('users.company_id', 'users.archived', 'users.id', 
+        'users.name', 'users.email', 'users.activated', 'users.approved', 'users.last_login_at',
+        'users.mobile_phone_number',
         'employee_titles.id AS employee_title_id',
         'employee_titles.name AS employee_title_name',
         'offices.name AS office_name', 'offices.id as office_id',

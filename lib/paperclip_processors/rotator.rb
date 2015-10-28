@@ -1,7 +1,7 @@
 module Paperclip
   class Rotator < Thumbnail
     def initialize(file, options = {}, attachment = nil)
-      #options[:auto_orient] = false
+      options[:auto_orient] = false
       super
     end
 

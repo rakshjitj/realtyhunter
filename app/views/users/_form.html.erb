@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="avatar">
-            <%= render 'image', :locals => {:user => @user} %>
+            <%= render 'image', locals: {user: @user} %>
           </div>
         </div>
       </div>
@@ -15,29 +15,29 @@
   <div class="col-md-6">
     <!-- All other fields form -->
     <%= form_for(@user) do |f| %>
-      <%= render :partial => 'shared/error_messages', 
-        :locals => {:model => @user} %>
+      <%= render partial: 'shared/error_messages', 
+        locals: {model: @user} %>
 
       <div class="field">
         <%= f.label :email, "Email (Will be your username)", class: 'required' %><br>
         <%= f.email_field :email, class: 'form-control', 
-            :required => true %>
+            required: true %>
       </div>
       
       <div class="field">
         <%= f.label :name, "Name", class: 'required' %><br>
         <%= f.text_field :name, class: 'form-control', 
-            :required => true %>
+            required: true %>
       </div>
       <div class="field">
         <%= f.label :mobile_phone_number, "Mobile", class: 'required' %><br>
         <%= f.telephone_field :mobile_phone_number, placeholder: "(XXX)XXX-XXXX",
-            class: 'form-control' %>
+            class: 'form-control', required: true %>
       </div>
       <% if current_user.is_management? %>
         <div class="field">
           <%= f.label :bio, "Short Bio (Max 500 chars)" %><br>
-          <%= f.text_area :bio, class: 'form-control', :size => "20x10" %>
+          <%= f.text_area :bio, class: 'form-control', size: "20x10" %>
         </div>
       <% end %>
 
@@ -45,9 +45,9 @@
         <%= f.label :office_id, "Office", class: 'required' %><br>
         <%= f.select(:office_id, options_for_select(@user.company.offices.collect {|t| [t.name.titleize, t.id]}, [@user.office.id]), 
           {prompt: "Choose one..."},
-          :required => true, 
+          required: true, 
           class: 'form-control',
-          :include_blank => true) %>
+          include_blank: true) %>
       </div>
 
       <div class="row">
@@ -60,9 +60,9 @@
               options_for_select(EmployeeTitle.all.collect {|t| [t.name.titleize, t.id]}, 
               [@user.employee_title.id]), 
               {prompt: "Choose one..."},
-              :required => true, 
+              required: true, 
               class: 'form-control',
-              :include_blank => true,
+              include_blank: true,
               data: { 
                 agent_title_name: @agent_title.name,
                 user_title_name: @user.employee_title.name

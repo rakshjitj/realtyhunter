@@ -1,0 +1,117 @@
+<div id="announcements">
+
+<%= form_for(@announcement) do |f| %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-body no-vertical-padding">
+        <%= render partial: 'shared/error_messages', 
+          locals: {model: @announcement} %>
+
+        <div class="row">
+          <div class="col-md-12 form-section-header">
+            <hr class="thin-line" />
+            <h4>Broadcast Announcement</h4>
+            <hr class="thin-line" />
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-3 form-label-responsive">
+            <%= f.label :audience, class: 'required' %>
+          </div>
+          <div class="col-md-3">
+            <%= f.select :audience, 
+              options_for_select(%w(Everyone Agents Managers), 
+                [params[:audience] ? params[:audience] : 'Everyone']), 
+              {prompt: "Choose one..."},
+              :required => true,
+              class: "form-control" %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-3 form-label-responsive">
+            <%= f.label :address, class: 'required' %>
+          </div>
+          <div class="col-md-9">
+            <%= autocomplete_field_tag :address, params[:address],  
+              autocomplete_building_formatted_street_address_announcements_path,
+              update_elements: {},
+              placeholder: "123 Main St", 
+              required: 'true',
+              class:'form-control' %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-3 form-label-responsive">
+            <%= f.label :unit_id %>
+          </div>
+          <div class="col-md-3">
+            <%= f.select(:unit_id, 
+              options_for_select([]),
+                {prompt: "Choose one..."},
+                class: 'form-control',
+                required: true,
+                include_blank: true) %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-3 form-label-responsive">
+            <%= f.label :canned_response, class: 'required' %>
+          </div>
+          <div class="col-md-3">
+              <%= f.select(:canned_response, 
+              options_for_select([
+                'Available Now',
+                'Price Drop',
+                'Take Off',
+                'Application Pending',
+                'Back on Market'
+                ]), 
+              {prompt: "Choose one..."},
+              class: 'form-control',
+              required: true,
+              include_blank: true) %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="form-group">
+            <div class="col-md-3 form-label-responsive">
+              <%= f.label :note, 'Short note' %>
+            </div>
+            <div class="col-md-9">
+                <small><em>140 character limit</em></small>
+                <%= f.text_area :note, class: 'form-control', 
+                  rows: 3, maxlength: 140 %>
+            </div>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="form-group">
+            <div class="col-md-9 col-md-offset-3">
+              <%= f.submit "Send", class: "btn btn-warning" %>
+            </div>
+          </div>
+        </div>
+
+        <br />
+              
+      </div>
+    </div>
+
+  </div>
+</div>
+<% end %>
+
+</div>

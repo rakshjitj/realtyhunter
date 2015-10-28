@@ -4,6 +4,13 @@ xml.streeteasy :version => "1.6" do
 
 	  @listings.each do |listing|
 
+	  	# NOTE: this is super hacky. We should filter this out before sending 
+	  	# to the view.
+	  	if @primary_agents[listing.primary_agent_id][0].name == @company.name
+	  		# skip our generic catch-all account
+	  		next
+	  	end
+
 	  	# translate status
 	  	@status = 'active'
 			if listing.status == "active"

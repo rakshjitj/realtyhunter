@@ -329,12 +329,12 @@ Rails.application.routes.draw do
   end
    
   #post 'notifications/notify' => 'notifications#notify'
-  # resources :announcements do
-  #   collection do
-  #     get :autocomplete_building_formatted_street_address
-  #     get :get_units
-  #   end
-  # end
+  resources :announcements do
+    collection do
+      get :autocomplete_building_formatted_street_address
+      get :get_units
+    end
+  end
   
    
 end

@@ -7,6 +7,8 @@ class Unit < ActiveRecord::Base
   has_one :residential_listing, dependent: :destroy
   has_one :commercial_listing, dependent: :destroy
   has_one :sales_listing, dependent: :destroy
+  has_many :announcements, dependent: :destroy
+
   before_validation :generate_unique_id
 
   scope :unarchived, ->{ where(archived: false) }

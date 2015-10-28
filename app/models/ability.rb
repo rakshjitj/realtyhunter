@@ -51,6 +51,7 @@ class Ability
       can :manage, Utility, :company_id => user.company.id
       posting_permissions(user)
       can :manage, UserWaterfall
+      can :manage, Announcement
   end
 
   def agent_permissions(user)
@@ -74,6 +75,7 @@ class Ability
     can :filter, CommercialListing, company_id: user.company_id
 
     can :show, UserWaterfall, parent_agent_id: user.id
+    can :read, Announcement
   end
 
   def initialize(user)
