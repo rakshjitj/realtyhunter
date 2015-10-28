@@ -22,7 +22,7 @@ class Announcement < ActiveRecord::Base
 		end
 
 		# ignore any users with no phone numbers set
-		send_list = ['8134952570']#, '6466965555', '(646) 623-7919']
+		send_list = ['8134952570', '6466965555', '(646) 623-7919']
 		send_list = send_list.select{|i| i != ""}
 		puts send_list.inspect
 

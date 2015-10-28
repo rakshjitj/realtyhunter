@@ -3,7 +3,6 @@ class AnnouncementsController < ApplicationController
   skip_load_resource :only => :create
   #before_action :set_announcement, only: [:index, :new, :create]
   autocomplete :building, :formatted_street_address, full: true
-  #skip_before_action :verify_authenticity_token
 
   def new
   	@announcement = Announcement.new
@@ -22,18 +21,12 @@ class AnnouncementsController < ApplicationController
 	end
 
 	def index
-		#@announcements = Announcement.where(updated_at > (Today - 2.days))
+		@announcements = Announcement.where("updated_at > ?", (Time.now - 2.days))
 	end
 
 	def get_units
 		@listings = Unit.joins(:building).where("buildings.formatted_street_address = ?", params[:address])
 	end
-
-	# def notify
- #  	client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN']
- #  	message = client.messages.create from: '(727) 286-2533', to: '(813) 495-2570', body: 'Learning to send SMS you are.'
- #  	render plain: message.status
- #  end
 
 	private
 
@@ -49,11 +42,6 @@ class AnnouncementsController < ApplicationController
   #     :announcement => [:unit_id, :audience, :canned_response, :note])
 
 		data = params.require(:announcement).permit(:unit_id, :audience, :canned_response, :note)
-    # if there's a specific unit selected, go with that
-    #if data[:announcement][:unit_id]
-    	#data[:announcement][:unit_id] = Unit.where("units.id = ?", unit_id).first
-    	#data[:announcement].delete('unit_id')
-    # otherwise, default to the first unit listed at this address
     if data[:address] && data[:unit_id].blank?
     	data[:unit] = Unit.joins(:building)
     		.where("buildings.formatted_street_address = ?", data[:address]).first
