@@ -1,7 +1,6 @@
 class UnitImagesController < ApplicationController
-  before_action :set_image, only: [:destroy]
-  before_action :set_unit, except: [:destroy]
-  etag { current_user.id }
+  before_action :set_image, only: [:destroy, :rotate]
+  before_action :set_unit, except: [:destroy, :rotate]
   
   # POST /images
   # POST /images.json
@@ -48,6 +47,14 @@ class UnitImagesController < ApplicationController
     end
 
     render :nothing => true
+  end
+
+  def rotate
+    if @image.rotate
+      render json: { message: "File has been rotated +90 degrees" }
+    else
+      render json: { message: @image.errors.full_messages.join(',') }
+    end
   end
 
   private

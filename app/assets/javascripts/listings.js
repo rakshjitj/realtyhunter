@@ -1,6 +1,8 @@
-// Factors out common functionality across all listings pages: 
-// Residential, Commercial, Sales
-//
+/*
+* Factors out common functionality across all listings pages: 
+* Residential, Commercial, Sales
+*/
+
 Listings = {};
 (function() {
 		Listings.selectedListings = [];

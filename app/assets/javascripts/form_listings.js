@@ -1,3 +1,9 @@
+/*
+* NOTE: This code is currently not being used.
+* It was designed to be used in conjunction with
+* forms/residential_listings and forms/commercial_listings
+*/
+
 FormListings = {};
 
 (function() {

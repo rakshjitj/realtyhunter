@@ -305,6 +305,7 @@ ResidentialListings = {};
     });
 
     DropZoneHelper.updateRemoveImgLinks('residential', 'residential_listings');
+    DropZoneHelper.updateRotateImgLinks('residential', 'residential_listings');
 
     $('.carousel-indicators > li:first-child').addClass('active');
     $('.carousel-inner > .item:first-child').addClass('active');
@@ -390,10 +391,16 @@ ResidentialListings = {};
   };
 
 	ResidentialListings.initialize = function() {
+		// hide spinner on main index when first pulling up the page
 		document.addEventListener("page:restore", function() {
 		  Listings.hideSpinner();
 		});
 		Listings.hideSpinner();
+		// // hide the spinner when we are editing, but switch to a new tab
+		// $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+		//   Listings.hideSpinner();
+		// });
+
 		$('#residential a').click(function() {
 			Listings.showSpinner();
 		});

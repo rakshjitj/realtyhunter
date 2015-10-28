@@ -24,14 +24,34 @@ DropZoneHelper = {};
 
   DropZoneHelper.removeImage = function (id, unit_id, controllerPath) {
     // make a DELETE ajax request to delete the file
+    Listings.showSpinner();
     $.ajax({
       type: 'DELETE',
       url: '/' + controllerPath + '/' + unit_id + '/unit_images/' + id,
       success: function(data){
         //console.log(data.message);
-        $.getScript('/' + controllerPath + '/' + unit_id + '/refresh_images')
+        $.getScript('/' + controllerPath + '/' + unit_id + '/refresh_images');
+        Listings.hideSpinner();
       },
       error: function(data) {
+        Listings.hideSpinner();
+        //console.log('ERROR:', data);
+      }
+    });
+  };
+
+  DropZoneHelper.rotateImage = function (id, unit_id, controllerPath) {
+    Listings.showSpinner();
+    // make a DELETE ajax request to delete the file
+    $.ajax({
+      type: 'PATCH',
+      url: '/' + controllerPath + '/' + unit_id + '/unit_images/' + id + '/rotate',
+      success: function(data){
+        $.getScript('/' + controllerPath + '/' + unit_id + '/refresh_images');
+        Listings.hideSpinner();
+      },
+      error: function(data) {
+        Listings.hideSpinner();
         //console.log('ERROR:', data);
       }
     });
@@ -73,6 +93,15 @@ DropZoneHelper = {};
       var id = $(this).attr('data-id');
       var unit_id = $(this).attr('data-unit-id');
       DropZoneHelper.removeImage(id, unit_id, controllerPath);
+    });
+  };
+
+  DropZoneHelper.updateRotateImgLinks = function(sectionID, controllerPath) {
+    $('#' + sectionID + ' .rotate-unit-img').click(function(event) {
+      event.preventDefault();
+      var id = $(this).attr('data-id');
+      var unit_id = $(this).attr('data-unit-id');
+      DropZoneHelper.rotateImage(id, unit_id, controllerPath);
     });
   };
 
