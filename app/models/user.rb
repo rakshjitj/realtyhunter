@@ -198,8 +198,7 @@ class User < ActiveRecord::Base
       @running_list = @running_list.where('users.name ILIKE ? or users.email ILIKE ?', "%#{term}%", "%#{term}%").all
     end
 
-    puts "^^^^^^^"
-    @running_list#.uniq
+    @running_list
   end
 
   # copies in new roles from 
@@ -217,9 +216,10 @@ class User < ActiveRecord::Base
 
     # (almost) everyone should always be able to see residential stuff
     if self.employee_title != EmployeeTitle.external_vendor
+      # note: this isn't really used anymore... 
+      # we decided that everyone should be able to view residential/commercial/sales listings
       self.add_role :residential
       self.add_role :commercial
-      #self.add_role :sales
     end
     
     # if you're an agent, add in specific roles for the type of
@@ -231,9 +231,10 @@ class User < ActiveRecord::Base
       end
       # always make sure they at least have one specialty area selected
       if !self.agent_types || !self.agent_types.any?
+        # note: this isn't really used anymore... 
+        # we decided that everyone should be able to view residential/commercial/sales listings
         self.add_role :residential
         self.add_role :commercial
-        #self.add_role :sales
       else
         # otherwise, note the specialities they indicated
         self.agent_types.each do |role|
@@ -443,6 +444,6 @@ class User < ActiveRecord::Base
         end
 
       end
-      puts "done"
+      #puts "done"
     end
 end

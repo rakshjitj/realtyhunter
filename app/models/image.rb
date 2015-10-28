@@ -5,16 +5,41 @@ class Image < ActiveRecord::Base
   after_save :check_priority
 
 	# This method associates the attribute ":file" with a file attachment
-  has_attached_file :file, styles: {
-      original: {convert_options: '-auto-orient'},
-      thumb:  '100x100>',
-      square: '200x200#',
-      medium: '300x300>',
-      large:  '500x500>'
-    }, 
-    convert_options: { :all => '-auto-orient' }, 
-    source_file_options: { :all => '-auto-orient' }, 
-    default_url: "/images/:style/missing.png"
+  has_attached_file :file, 
+    styles: lambda { |a| {
+      thumb: {
+        geometry: '100x100>',
+        rotation: a.instance.rotation
+      },
+      # square: {
+      #   geometry: '200x200#',
+      #   rotation: a.instance.rotation,
+      # },
+      # medium: {
+      #   geometry: '300x300>',
+      #   rotation: a.instance.rotation,
+      # },
+      large: {
+        geometry: '2500x2500>',
+        rotation: a.instance.rotation,
+      },
+      original: { 
+        convert_options: '-auto-orient'
+      }
+    }},
+    default_url: "/images/:style/missing.png",
+    convert_options: { all: '-auto-orient' }, 
+    source_file_options: { all: '-auto-orient' },
+    processors: [:rotator]
+
+    # styles: {
+    #   original: {convert_options: '-auto-orient'},
+    #   thumb:  '100x100>',
+    #   square: '200x200#',
+    #   medium: '300x300>',
+    #   large:  '500x500>'
+    # }, 
+
   process_in_background :file
 
   # Validate filename
@@ -26,29 +51,6 @@ class Image < ActiveRecord::Base
 		:content_type => { :content_type => /\Aimage\/.*\Z/ },
 		:size => { :less_than => 4.megabyte }
 
-  # class CopyResidentialUnitImages
-  #   @queue = :copy_images
-
-  #   def self.perform(src_id, dst_id)
-  #     #puts "YEAAAAAA MAN #{src_id} #{dst_id}"
-  #     @src = ResidentialUnit.find(src_id)
-  #     @dst = ResidentialUnit.find(dst_id)
-
-  #     # deep copy photos
-  #     @src.images.each {|i| 
-  #       img_copy = Image.new
-  #       img_copy.file = i.file
-  #       img_copy.save
-  #       @dst.images << img_copy
-  #     }
-  #     @dst.save
-  #   end
-  # end
-
-  # def self.async_copy_residential_unit_images(src_id, dst_id)
-  #   #Resque.enqueue(CopyResidentialUnitImages, src_id, dst_id)
-  # end
-
   def to_builder
     Jbuilder.new do |i|
     end
@@ -58,9 +60,7 @@ class Image < ActiveRecord::Base
     images = Image.where(unit_id: unit_id).order("priority ASC")
     pos = 0
     images.each{ |x|
-      #puts "pos: #{pos}"
       if x.priority != pos
-        #puts "x.priority= #{x.priority}\n"
         x.update_columns(priority: pos)
       end
 
@@ -79,8 +79,13 @@ class Image < ActiveRecord::Base
     }
   end
 
-  private
+  def rotate
+    self.update_attribute(:rotation, rotation + 90)
+    self.rotation = self.rotation % 360 if (self.rotation >= 360 || self.rotation <= -360)
+    self.file.reprocess!(:original, :thumb)
+  end
 
+  private
     # preserve order. keep numbers starting at 0
     def check_priority
       images = []
