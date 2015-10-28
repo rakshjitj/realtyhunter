@@ -33,11 +33,12 @@ class Announcement < ActiveRecord::Base
 		end
 		body += ' - ' + note
 
-  	message = client.messages.create(
-  		from: ENV['TWILIO_SRC_TELEPHONE'], 
-  		to: send_list.join(','), 
-  		body: body
-  	)
+		send_list.each do |recipient|
+	  	message = client.messages.create(
+	  		from: ENV['TWILIO_SRC_TELEPHONE'], 
+	  		to: recipient, 
+	  		body: body)
+	  end
 
 	  self.update_attribute(:was_broadcast, true)
 	end
