@@ -473,6 +473,7 @@ class ResidentialListing < ActiveRecord::Base
         'neighborhoods.name AS neighborhood_name', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by', 'units.listing_id')
+      .order('residential_listings.updated_at desc')
       
     if is_active
       listings = listings.where.not("status = ?", Unit.statuses["off"])

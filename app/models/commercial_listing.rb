@@ -287,7 +287,8 @@ class CommercialListing < ActiveRecord::Base
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
         'units.available_by')
-      
+      .order('commercial_listings.updated_at desc')
+
     if is_active
       listings = listings.where.not("status = ?", Unit.statuses["off"])
     end

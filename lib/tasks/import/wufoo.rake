@@ -54,7 +54,7 @@ namespace :import do
 							hash[:neighborhood] = Neighborhood.find_by(name: val)
 
 						elsif db_column == 'move_in_date'
-							hash[db_column.to_sym] = Date.parse(val) #	Tuesday, October 6, 2015
+							hash[db_column.to_sym] = !val.blank? ? Date.parse(val) : val #	Tuesday, October 6, 2015
 
 						else
 							hash[db_column.to_sym] = val
