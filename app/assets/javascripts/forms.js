@@ -86,6 +86,7 @@ Forms = {};
 	};
 
 	Forms.sendMessage = function (e) {
+		console.log(Forms.selectedRoommateEmails);
 		$('#email_modal_recipients').val(Forms.selectedRoommateEmails.join(","));
 		$('#email_modal_message').val('');
 		e.preventDefault();

@@ -158,23 +158,23 @@
         <%= form_tag(send_message_forms_careers_path, remote:true) do %>
         <div class="row vertical-padding">
           <div class="col-md-12">
-            <%= label_tag "careers[recipients]", "Recipients", class: 'required' %>
+            <%= label_tag "email_modal[recipients]", "Recipients", class: 'required' %>
             <i><small>Use commas to separate email addresses</small></i>
-            <%= text_field_tag "careers[recipients]", nil, class: 'form-control', required: true %>
+            <%= text_field_tag "email_modal[recipients]", nil, class: 'form-control', required: true %>
           </div>
         </div>
 
         <div class="row vertical-padding">
           <div class="col-md-12">
-            <%= label_tag "careers[title]", "Title", class: 'required' %>
-            <%= text_field_tag "careers[title]", "Thank you for contacting us!", class: 'form-control', required: true %>
+            <%= label_tag "email_modal[title]", "Title", class: 'required' %>
+            <%= text_field_tag "email_modal[title]", "Thank you for contacting us!", class: 'form-control', required: true %>
           </div>
         </div>
 
         <div class="row vertical-padding">
           <div class="col-md-12">
-            <%= label_tag "careers[message]", "Message" %>
-            <%= text_area_tag "careers[message]", nil, class: 'form-control', rows: 8 %>
+            <%= label_tag "email_modal[message]", "Message" %>
+            <%= text_area_tag "email_modal[message]", nil, class: 'form-control', rows: 8 %>
           </div>
         </div>
 

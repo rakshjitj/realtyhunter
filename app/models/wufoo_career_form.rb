@@ -25,6 +25,14 @@ class WufooCareerForm < ActiveRecord::Base
     WufooCareerForm.where(id: id).where(archived:false).first
   end 
 
+  def self.send_message(source_agent, recipients, sub, msg)
+    if source_agent
+      WufooFormsMailer.send_message(source_agent, recipients, sub, msg).deliver_now
+    else
+      "No sender specified"
+    end
+  end
+  
   def self.search(params)
     entries = WufooCareerForm.all
 
@@ -45,6 +53,7 @@ class WufooCareerForm < ActiveRecord::Base
     end
 
     if !params[:status].blank?
+      puts "******* STATUS #{params[:status]}"
       status = (params[:status] == 'Active') ? false : true
       entries = entries.where('archived = ?', status)
     end
