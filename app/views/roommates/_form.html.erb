@@ -1,6 +1,7 @@
 <div id="roommates">
 
 <%= form_for(@roommate) do |f| %>
+<%= f.hidden_field :lock_version %>
   <div class="row">
     <div class="col-md-12">
       <div class="panel panel-default">

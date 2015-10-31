@@ -96,14 +96,18 @@ class CommercialListingsController < ApplicationController
   # POST /commercial_units
   # POST /commercial_units.json
   def create
-    ret1 = Unit.new(commercial_listing_params[:unit])
-    c_params= commercial_listing_params
-    c_params.delete('unit')
-    ret2 = CommercialListing.new(c_params)
-    ret2.unit = ret1
-
-    if !ret1.available_by?
-      ret1.available_by = Date.today
+    ret1 = nil
+    ret2 = nil
+    CommercialListing.transaction do
+      ret1 = Unit.new(commercial_listing_params[:unit])
+      c_params= commercial_listing_params
+      c_params.delete('unit')
+      ret2 = CommercialListing.new(c_params)
+      ret2.unit = ret1
+    
+      if !ret1.available_by?
+        ret1.available_by = Date.today
+      end
     end
 
     if ret1.save! && ret2.save!
@@ -166,10 +170,15 @@ class CommercialListingsController < ApplicationController
   # PATCH/PUT /commercial_units/1
   # PATCH/PUT /commercial_units/1.json
   def update
-    ret1 = @commercial_unit.unit.update(commercial_listing_params[:unit].merge({updated_at: Time.now}))
-    c_params = commercial_listing_params
-    c_params.delete('unit')
-    ret2 = @commercial_unit.update(c_params.merge({updated_at: Time.now}))
+    ret1 = nil
+    ret2 = nil
+    CommercialListing.transaction do
+      ret1 = @commercial_unit.unit.update(commercial_listing_params[:unit].merge({updated_at: Time.now}))
+      c_params = commercial_listing_params
+      c_params.delete('unit')
+      ret2 = @commercial_unit.update(c_params.merge({updated_at: Time.now}))
+    end
+
     if ret1 && ret2
       flash[:success] = "Unit successfully updated!"
       redirect_to @commercial_unit
@@ -270,6 +279,14 @@ class CommercialListingsController < ApplicationController
     end
   end
 
+  protected
+
+   def correct_stale_record_version
+    @commercial_unit.reload
+    params[:commercial_listing].delete('lock_version')
+    set_property_types
+   end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_commercial_listing
@@ -347,6 +364,7 @@ class CommercialListingsController < ApplicationController
       end
 
       data = params[:commercial_listing].permit(
+        :lock_version, 
         :recipients, :title, :message, :listing_ids,
         :user_id, :include_photos, :sq_footage_min, :sq_footage_max,
         :sq_footage, :floor, :building_size, :build_to_suit, :minimum_divisible, :maximum_contiguous,

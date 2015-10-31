@@ -86,35 +86,45 @@ class SalesListingsController < ApplicationController
   # POST /sales_units
   # POST /sales_units.json
   def create
-    s_params = sales_listing_params[:sales_listing]
-    u_params = s_params[:unit]
-    
-    # find or create building
-    new_bldg = Building.find_or_create_by(
-      get_bldg_params.merge(
-        company_id: current_user.company.id))
+    new_unit = nil
+    new_bldg = nil
+    @sales_unit = nil
 
-    # create unit
-    new_unit = Unit.new(u_params)
-    new_unit.building = new_bldg
-    s_params.delete('unit')
-    if !new_unit.available_by?
-      new_unit.available_by = Date.today
+    SalesListing.transaction do
+      s_params = sales_listing_params[:sales_listing]
+      u_params = s_params[:unit]
+      #puts "BEFORE #{u_params.inspect}"
+      u_params.delete('lock_version')
+      #puts "AFTER #{u_params.inspect}"
+      # find or create building
+      new_bldg = Building.find_by(
+        street_number: get_bldg_params[:street_number],
+        route: get_bldg_params[:route])
+      if !new_bldg
+        new_bldg = Building.create(
+          get_bldg_params.merge(
+            company_id: current_user.company.id))
+      end
+      
+      # create unit
+      new_unit = Unit.new(u_params)
+      new_unit.building = new_bldg
+      s_params.delete('unit')
+      if !new_unit.available_by?
+        new_unit.available_by = Date.today
+      end
+    
+      # create new listing
+      @sales_unit = SalesListing.new(s_params)
+      @sales_unit.unit = new_unit
     end
 
-    # create new listing
-    @sales_unit = SalesListing.new(s_params)
-    @sales_unit.unit = new_unit
-    
     if new_bldg.save && new_unit.save && @sales_unit.save
       redirect_to @sales_unit
     else
       puts new_bldg.errors.messages
       puts new_unit.errors.messages
       puts @sales_unit.errors.messages
-      new_bldg.delete if new_bldg.id
-      new_unit.delete if new_unit.id
-
       render 'new'
     end
   end
@@ -177,19 +187,6 @@ class SalesListingsController < ApplicationController
     end
   end
 
-  # def print_list
-  #   sales_listings_no_pagination
-  #   render pdf: current_user.name + ' sales_listing Listings',
-  #     template: "/sales_listings/print_list.pdf.erb",
-  #     #disposition: "attachment",
-  #     layout:   "/layouts/pdf_layout.html",
-  #     orientation: 'Landscape',
-  #     title: current_user.name + 'sales_listing Listings',
-  #     default_header: false,
-  #     header:  { right: '[page] of [topage]' },
-  #     margin: { top: 0, bottom: 0, left: 0, right: 0}
-  # end
-
   def print_private
     ids = params[:listing_ids].split(',')
     @neighborhood_group = SalesListing.listings_by_neighborhood(current_user, ids)
@@ -220,37 +217,17 @@ class SalesListingsController < ApplicationController
     #end
   end
 
-  # def print_private
-  #   #respond_to do |format|
-  #   #  format.pdf do
-  #       render pdf: current_user.name + ' - sales_listing - Private',
-  #         template: "/sales_listings/print_private.pdf.erb",
-  #         #disposition: "attachment",
-  #         layout:   "/layouts/pdf_layout.html"
-  #   #  end
-  #   #end
-  # end
-
-  # # PATCH ajax
-  # # Takes a unit off the market
-  # def print_public
-  #   #respond_to do |format|
-  #   #  format.pdf do
-  #       render pdf: current_user.name + ' - sales_listing',
-  #         template: "/sales_listings/print_public.pdf.erb",
-  #         #disposition: "attachment",
-  #         layout:   "/layouts/pdf_layout.html"
-  #   #  end
-  #   #end
-  # end
-
   # PATCH/PUT /sales_units/1
   # PATCH/PUT /sales_units/1.json
   def update
-    ret1 = @sales_unit.unit.update(sales_listing_params[:sales_listing][:unit].merge({updated_at: Time.now}))
-    r_params = sales_listing_params[:sales_listing]
-    r_params.delete('unit')
-    ret2 = @sales_unit.update(r_params.merge({updated_at: Time.now}))
+    ret1 = nil
+    ret2 = nil
+    SalesListing.transaction do
+      ret1 = @sales_unit.unit.update(sales_listing_params[:sales_listing][:unit].merge({updated_at: Time.now}))
+      r_params = sales_listing_params[:sales_listing]
+      r_params.delete('unit')
+      ret2 = @sales_unit.update(r_params.merge({updated_at: Time.now}))
+    end
 
     # update res
     if ret1 && ret2
@@ -351,6 +328,13 @@ class SalesListingsController < ApplicationController
     end
   end
   
+  protected
+
+   def correct_stale_record_version
+    @sales_unit.reload
+    params[:sales_listing].delete('lock_version')
+   end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_sales_listing
@@ -450,6 +434,7 @@ class SalesListingsController < ApplicationController
         :postal_code, :country_short, :lat, :lng, :place_id,
 
         sales_listing: [
+          :lock_version, 
           :beds, :baths, :custom_amenities, :formatted_street_address,
           :listing_type, :percent_commission, :outside_broker_commission, :seller_name,
           :seller_phone, :seller_address, :year_built, :building_type, :lot_size,
@@ -470,8 +455,8 @@ class SalesListingsController < ApplicationController
           data[:sales_listing][:unit][:oh_exclusive] = false
         end
 
-        if data[:sales_listing][:unit][:status]
-          data[:sales_listing][:unit][:status] = data[:sales_listing][:unit][:status].downcase
+        if !data[:sales_listing][:unit][:status].blank?
+          data[:sales_listing][:unit][:status] = data[:sales_listing][:unit][:status].gsub(/\s+/, '_').downcase
         end
 
         # convert into a datetime obj

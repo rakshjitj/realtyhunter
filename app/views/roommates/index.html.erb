@@ -14,7 +14,7 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-12 col-md-4"><!-- hidden-sm hidden-xs -->
+  <div class="col-xs-12 col-md-4">
 
     <i class="fa fa-spinner fa-pulse fa-5x room-spinner-desktop"></i>
 
@@ -54,12 +54,6 @@
               options_for_select(@neighborhoods.collect {|u| [u.name, u.id]}),
               {class: "form-control", 
               prompt: "Any"}) %>
-          </div>
-        </div>
-
-        <div class="row vertical-padding">
-          <div class="col-xs-5 form-label-responsive">
-            <%= link_to 'Clear filters', roommates_path, class: 'btn btn-xs btn-default' %>
           </div>
         </div>
 
@@ -113,7 +107,7 @@
 
   </div>
 
-  <div class="col-xs-12 col-md-4"><!-- hidden-sm hidden-xs -->
+  <div class="col-xs-12 col-md-4">
     <div class="row vertical-padding">
       <div class="col-xs-5 form-label-responsive">
         <%= label_tag :dogs_allowed %>
@@ -155,7 +149,16 @@
       </div>
     </div>
   </div>
+</div>
 
+<div class="row">
+  <div class="col-md-4">
+    <div class="row vertical-padding">
+      <div class="col-xs-5 form-label-responsive">
+        <%= link_to 'Clear filters', roommates_path, class: 'btn btn-xs btn-default' %>
+      </div>
+    </div>
+  </div> 
 </div>
 
 <hr />

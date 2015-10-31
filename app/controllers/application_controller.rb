@@ -23,6 +23,26 @@ class ApplicationController < ActionController::Base
       flash.discard
     end
   end
+
+  rescue_from ActiveRecord::StaleObjectError do |exception|
+    respond_to do |format|
+      format.html {
+        correct_stale_record_version
+        stale_record_recovery_action
+      }
+      format.xml  { head :conflict }
+      format.json { head :conflict }
+    end
+  end
+
+  protected   
+
+    def stale_record_recovery_action
+      flash.now[:danger] = "Another user has made a change to that record "+
+        "since you accessed the edit form. Try again."
+      render :edit, :status => :conflict
+    end
+
   private
 
     # Confirms a logged-in user.
@@ -33,7 +53,6 @@ class ApplicationController < ActionController::Base
         redirect_to login_url
       end
     end
-
 
 	  def expire_hsts
   	  response.headers["Strict-Transport-Security"] = 'max-age=0'

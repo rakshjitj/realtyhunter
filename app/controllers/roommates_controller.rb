@@ -123,6 +123,13 @@ class RoommatesController < ApplicationController
     end
   end
 
+  protected
+
+    def correct_stale_record_version
+      @roommate.reload
+      params[:roommate].delete('lock_version')
+    end
+
   private
   	def set_roommate
       @roommate = Roommate.find_unarchived(params[:id])
@@ -163,7 +170,7 @@ class RoommatesController < ApplicationController
     	data = params.permit(:sort_by, :filter, :direction, :name, :referred_by, :neighborhood_id,
         :submitted_date, :move_in_date, :monthly_budget, :status,
         :dogs_allowed, :cats_allowed,
-        roommate: [:name, :phone_number, 
+        roommate: [:lock_version, :name, :phone_number, 
           :email, :how_did_you_hear_about_us, :upload_picture_of_yourself, :describe_yourself,
           :monthly_budget, :move_in_date, :neighborhood, :dogs_allowed, :cats_allowed,
           :user_id, :title, :m])

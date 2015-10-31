@@ -41,6 +41,7 @@
     <!-- ******************** first tabpanel - basic info ********************-->
     <div role="tabpanel" class="tab-pane fade in active" id="basic-info">
       <%= form_for(@building) do |f| %>
+        <%= f.hidden_field :lock_version %>
         <%= render :partial => 'shared/error_messages', :locals => {:model => @building} %>
 
         <br />

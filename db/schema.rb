@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151028163203) do
+ActiveRecord::Schema.define(version: 20151030033603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 20151028163203) do
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
     t.integer  "documents_id"
+    t.integer  "lock_version",                      default: 0,     null: false
   end
 
   add_index "buildings", ["documents_id"], name: "index_buildings_on_documents_id", using: :btree
@@ -120,6 +121,7 @@ ActiveRecord::Schema.define(version: 20151028163203) do
     t.boolean  "key_money_required"
     t.integer  "key_money_amt"
     t.string   "listing_title"
+    t.integer  "lock_version",                default: 0,     null: false
   end
 
   create_table "commercial_property_types", force: :cascade do |t|
@@ -243,6 +245,7 @@ ActiveRecord::Schema.define(version: 20151028163203) do
     t.integer  "op_fee_percentage"
     t.boolean  "has_fee"
     t.integer  "tp_fee_percentage"
+    t.integer  "lock_version",                      default: 0,     null: false
   end
 
   add_index "landlords", ["buildings_id"], name: "index_landlords_on_buildings_id", using: :btree
@@ -340,6 +343,7 @@ ActiveRecord::Schema.define(version: 20151028163203) do
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
     t.integer  "unit_id"
+    t.integer  "lock_version",      default: 0,     null: false
   end
 
   create_table "roles", force: :cascade do |t|
@@ -371,6 +375,7 @@ ActiveRecord::Schema.define(version: 20151028163203) do
     t.integer  "user_id"
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
+    t.integer  "lock_version",               default: 0,     null: false
   end
 
   create_table "roomsharing_applications", force: :cascade do |t|
@@ -445,8 +450,8 @@ ActiveRecord::Schema.define(version: 20151028163203) do
   end
 
   create_table "sales_listings", force: :cascade do |t|
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.integer  "unit_id"
     t.integer  "beds"
     t.float    "baths"
@@ -470,6 +475,7 @@ ActiveRecord::Schema.define(version: 20151028163203) do
     t.string   "school_district"
     t.string   "certificate_of_occupancy"
     t.string   "violation_search"
+    t.integer  "lock_version",              default: 0, null: false
   end
 
   create_table "units", force: :cascade do |t|
@@ -516,7 +522,7 @@ ActiveRecord::Schema.define(version: 20151028163203) do
     t.boolean  "archived",             default: false
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
-    t.float    "agent_seniority_rate"
+    t.integer  "agent_seniority_rate"
   end
 
   create_table "users", force: :cascade do |t|
@@ -546,6 +552,7 @@ ActiveRecord::Schema.define(version: 20151028163203) do
     t.datetime "updated_at",                          null: false
     t.string   "public_url"
     t.integer  "roommates_id"
+    t.integer  "lock_version",        default: 0,     null: false
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", using: :btree

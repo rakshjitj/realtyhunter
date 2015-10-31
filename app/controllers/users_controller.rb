@@ -240,6 +240,13 @@ class UsersController < ApplicationController
     end
   end
 
+  protected
+
+    def correct_stale_record_version
+      @user.reload
+      params[:user].delete('lock_version')
+    end
+
   private
     def set_company
       @agent_title = EmployeeTitle.agent
@@ -271,7 +278,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:email, :name, :mobile_phone_number, :bio, :password, 
+      params.require(:user).permit(:lock_version, :email, :name, :mobile_phone_number, :bio, :password, 
         :password_confirmation, :avatar, :remove_avatar, :remote_avatar_url, :phone_number, 
         :mobile_phone_number, :employee_title_id, :company_id, :office_id, :file, agent_types: [])
     end

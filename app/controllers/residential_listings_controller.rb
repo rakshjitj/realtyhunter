@@ -14,6 +14,7 @@ class ResidentialListingsController < ApplicationController
     respond_to do |format|
       format.html do
         set_residential_listings
+        #render stream: true
       end
       format.csv do
         set_residential_listings_csv
@@ -87,12 +88,15 @@ class ResidentialListingsController < ApplicationController
   # POST /residential_units
   # POST /residential_units.json
   def create
-    ret1 = Unit.new(residential_listing_params[:unit])
-    r_params = residential_listing_params
-    r_params.delete('unit')
-    @residential_unit = ResidentialListing.new(r_params)
-    @residential_unit.unit = ret1
-    
+    ret1 = nil
+    ResidentialListing.transaction do
+      ret1 = Unit.new(residential_listing_params[:unit])
+      r_params = residential_listing_params
+      r_params.delete('unit')
+      @residential_unit = ResidentialListing.new(r_params)
+      @residential_unit.unit = ret1
+    end
+
     if !ret1.available_by?
       ret1.available_by = Date.today
     end
@@ -225,11 +229,14 @@ class ResidentialListingsController < ApplicationController
   # PATCH/PUT /residential_units/1
   # PATCH/PUT /residential_units/1.json
   def update
-    ret1 = @residential_unit.unit.update(residential_listing_params[:unit].merge({updated_at: Time.now}))
-    r_params = residential_listing_params
-    r_params.delete('unit')
-    ret2 = @residential_unit.update(r_params.merge({updated_at: Time.now}))
-
+    ret1 = nil
+    ret2 = nil
+    ResidentialListing.transaction do
+      ret1 = @residential_unit.unit.update(residential_listing_params[:unit].merge({updated_at: Time.now}))
+      r_params = residential_listing_params
+      r_params.delete('unit')
+      ret2 = @residential_unit.update(r_params.merge({updated_at: Time.now}))
+    end
     # update res
     if ret1 && ret2
       flash[:success] = "Unit successfully updated!"
@@ -303,6 +310,13 @@ class ResidentialListingsController < ApplicationController
     end
   end
   
+  protected
+
+   def correct_stale_record_version
+    @residential_unit.reload
+    params[:residential_listing].delete('lock_version')
+   end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_residential_listing
@@ -376,6 +390,7 @@ class ResidentialListingsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def residential_listing_params
       data = params[:residential_listing].permit(
+        :lock_version,
         :recipients, :title, :message, :listing_ids,
         :tenant_occupied,
         :beds, :baths, :notes, :description, :lease_start, :lease_end,

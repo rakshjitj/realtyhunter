@@ -59,20 +59,23 @@ class BuildingsController < ApplicationController
   # POST /buildings
   # POST /buildings.json
   def create
-    @formatted_street_address = building_params[:building][:formatted_street_address]
-    bldg_params = format_params_before_save(true)
-    if @building.save(bldg_params)
-      redirect_to @building
-    else
-      #puts "**** #{@user.errors.inspect}"
       # if this building has already been entered, redirect to that page
-      @bldg = Building.find_by(formatted_street_address: @formatted_street_address)
+      #puts building_params[:building]
+      @bldg = Building.where(
+        street_number: building_params[:street_number],
+        route: building_params[:route]).first
+      #puts "FOUND BLDG #{@bldg.inspect} #{building_params[:street_number]} #{building_params[:route]}"
       if @bldg
         flash[:info] = "Building already exists!"
         redirect_to @bldg
       else 
-        # error
-        render 'new'
+        @formatted_street_address = building_params[:building][:formatted_street_address]
+        bldg_params = format_params_before_save(true)
+        if @building.save(bldg_params)
+          redirect_to @building
+        else
+          # error
+          render 'new'
       end
     end
   end
@@ -141,6 +144,16 @@ class BuildingsController < ApplicationController
       format.js  
     end
   end
+
+  protected
+
+   def correct_stale_record_version
+      # @building.reload.attributes = building_params[:building].reject do |attrb, value|
+      #  attrb.to_sym == :lock_version
+      # end
+      @building.reload
+      params[:building].delete('lock_version')
+   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -211,10 +224,10 @@ class BuildingsController < ApplicationController
         :sublocality, :administrative_area_level_2_short, 
         :administrative_area_level_1_short, 
         :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id, :file,
-        :building => [:formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description, 
+        building: [:lock_version, :formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description, 
           :pet_policy_id, :rental_term_id, :custom_rental_term, :file, :custom_amenities,
           :custom_utilities, 
           :neighborhood_id, :neighborhood,
-          :building_amenity_ids => [], images_files: [], :utility_ids => [] ])
+          building_amenity_ids: [], images_files: [], utility_ids: [] ])
     end
 end

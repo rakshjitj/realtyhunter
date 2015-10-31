@@ -98,6 +98,13 @@ class LandlordsController < ApplicationController
     end
   end
 
+  protected
+
+   def correct_stale_record_version
+      @landlord.reload
+      params[:landlord].delete('lock_version')
+   end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_landlord
@@ -158,7 +165,7 @@ class LandlordsController < ApplicationController
       params.permit(:sort_by, :filter, :agent_filter, :active_only, :street_number, :route, 
         :neighborhood, :sublocality, :administrative_area_level_2_short, 
         :administrative_area_level_1_short, :postal_code, :country_short, :lat, :lng, :place_id, 
-        :landlord => [:code, :name, :contact_name, :mobile, :office_phone, :fax, 
+        :landlord => [:lock_version, :code, :name, :contact_name, :mobile, :office_phone, :fax, 
           :email, :website, :formatted_street_address, :notes, 
           :listing_agent_percentage, :listing_agent_id,
           :has_fee, :op_fee_percentage, :tp_fee_percentage, 
