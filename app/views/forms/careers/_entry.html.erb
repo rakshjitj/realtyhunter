@@ -1,0 +1,48 @@
+  <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= entry.id %>" data-email="<%= entry.email %>" >
+    
+    <!-- ****** checkboxes ****************************************** -->
+    <td>
+      <i data-action="selectUnit" class="fa fa-square-o"></i>
+    </td>
+
+    <!-- ****** NAME ****************************************** -->
+    <td>
+      <%= link_to entry.name, detail_modal_forms_career_path(entry), 
+        data: { toggle: "modal", target: "#entryDetailModal"}, remote: true %>
+    </td>
+
+    <!-- ****** PHONE ****************************************** -->
+    <td class="phone"><%= entry.phone_number %></td>
+
+    <!-- ****** EMAIL ****************************************** -->
+    <td><%= mail_to entry.email, entry.email %></td>
+
+    <!-- ****** how_did_you_hear_about_us ****************************************** -->
+    <td><%= entry.how_did_you_hear_about_us %></td>
+
+    <td><%= entry.licensed_agent %></td>
+
+    <td>
+      <% if entry.what_neighborhood_do_you_live_in.length > 200 %>
+        <%= entry.what_neighborhood_do_you_live_in[0..196] %>...
+      <% else %>
+        <%= entry.what_neighborhood_do_you_live_in %>
+      <% end %>
+    </td>
+
+    <td><%= entry.created_at %></td>
+
+    <!-- ****** LINKS ****************************************** -->
+    <% if current_user.is_management? || current_user.is_listings_manager? %>
+      <td>
+        <% if !entry.archived %>
+          <%= link_to 'Mark Inactive', delete_modal_forms_career_path(entry), 
+            data: { toggle: "modal", target: "#entryDeleteModal"}, remote: true %>
+        <% else %>
+          <%= link_to 'Mark Active', unarchive_modal_forms_career_path(entry), 
+            data: { toggle: "modal", target: "#entryUnarchiveModal"}, remote: true %>
+        <% end %>
+        <br />
+      </td>
+    <% end %>
+  </tr>

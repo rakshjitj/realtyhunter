@@ -99,7 +99,6 @@ Partner = {};
 	  $('#partner #move_in_date').blur(Partner.throttledSearch);
 	  $('#partner #submitted_date').blur(Partner.throttledSearch);
 	  $('#partner #renovated').change(Partner.throttledSearch);
-	  $('#partner #status').change(Partner.throttledSearch);
 
 		// index page - selecting listings menu dropdown
 		$('#partner #emailListings').click(Forms.sendMessage);

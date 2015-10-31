@@ -31,9 +31,6 @@ class Ability
   def roomsharing_permissions(user)
     if user.has_role? :roomsharing
       can :manage, Roommate
-      can :manage, WufooContactUsForm
-      can :manage, WufooListingsForm
-      can :manage, WufooPartnerForm
       can :manage, RoomsharingApplication
     else
       can [:new, :create, :show], Roommate
@@ -44,14 +41,18 @@ class Ability
   # managers v agents
 
   def common_managerial_permissions(user)
-      #can :manage, Roommate, :company_id => user.company.id
-      can :manage, Neighborhood
-      can :manage, BuildingAmenity, :company_id => user.company.id
-      can :manage, ResidentialAmenity, :company_id => user.company.id
-      can :manage, Utility, :company_id => user.company.id
-      posting_permissions(user)
-      can :manage, UserWaterfall
-      can :manage, Announcement
+    #can :manage, Roommate, :company_id => user.company.id
+    can :manage, Neighborhood
+    can :manage, BuildingAmenity, :company_id => user.company.id
+    can :manage, ResidentialAmenity, :company_id => user.company.id
+    can :manage, Utility, :company_id => user.company.id
+    posting_permissions(user)
+    can :manage, UserWaterfall
+    can :manage, Announcement
+    can :manage, WufooContactUsForm
+    can :manage, WufooListingsForm
+    can :manage, WufooPartnerForm
+    can :manage, WufooCareerForm
   end
 
   def agent_permissions(user)

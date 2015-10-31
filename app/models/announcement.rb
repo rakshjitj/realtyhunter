@@ -32,6 +32,7 @@ class Announcement < ActiveRecord::Base
 			body += ' #' + unit.building_unit
 		end
 		body += ' - ' + note
+		body += ' - ' + current_user.name.split(' ')[0]
 
 		send_list.each do |recipient|
 	  	message = client.messages.create(

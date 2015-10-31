@@ -2,6 +2,7 @@ $('#entryDetailModal .modal-title').html(
 	"<%= j(@entry.name) %> - Additional Details");
 
 $('#entryDetailModal .modal-body').html(
-	"<p><b>Any notes for us?</b></p><%= j(@entry.any_notes_for_us) %>");
+	"<p><b>Where do you live?</b></p><%= j(@entry.what_neighborhood_do_you_live_in) %><br /><br /><%= j(link_to 'Resume', @entry.resume_upload) %>");
+
 
 $('#entryDetailModal').modal('show');

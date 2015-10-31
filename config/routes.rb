@@ -267,6 +267,21 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :careers, only: [:index, :destroy] do
+      member do
+        get 'delete_modal'
+        get 'unarchive_modal'
+        post 'unarchive'
+        get 'detail_modal'
+      end
+      collection do
+        get 'filter'
+        post 'send_message'
+        get 'download'
+        get :autocomplete_wufoo_career_form_name
+      end
+    end
+
   # NOTE: we have decided to not use these 2 forms:
 
   #   resources :residential_listings, only: [:index, :destroy] do

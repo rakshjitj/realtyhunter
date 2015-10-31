@@ -66,10 +66,10 @@
               
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                Roommates <b class="caret"></b></a>
+                Roommates List <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><%= link_to "Roommates List", roommates_path %></li>
-                  <li><%= link_to "Add a Referral", new_roommate_path %></li>
+                  <li><%= link_to "Roommates", new_roommate_path %></li>
                 </ul>
               </li>
             <% else %>
@@ -100,6 +100,7 @@
                     <li class="dropdown-header">WuFoo Forms</li>
                     <li><%= link_to "Contact Us", forms_contact_us_path %></li>
                     <li><%= link_to "Partner With Us", forms_partner_index_path %></li>
+                    <li><%= link_to "Careers", forms_careers_path %></li>
                     <!--li>< % = link_to "Residential Listing", forms_residential_listings_path % ></li-->
                     <!--li>< % = link_to "Commercial Listing", forms_commercial_listings_path % ></li-->
                   <% end %>

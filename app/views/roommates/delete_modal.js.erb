@@ -1,4 +1,4 @@
-$('#roommateDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Mark Inactive', @roommate, remote: true, method: :delete, class: 'btn btn-danger link-as-button', id: 'delete-link') %>");
+$('#roommateDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Mark Matched', @roommate, remote: true, method: :delete, class: 'btn btn-danger link-as-button', id: 'delete-link') %>");
 $('#roommateDeleteModal #delete-link').click( function(event) {
 	$('#roommateDeleteModal').modal('hide');
 	event.preventDefault();

@@ -17,6 +17,72 @@ namespace :import do
 			fields
 		end
 
+		def import_careers_form(wufoo, company)
+			form = wufoo.form('x1n6jklx0nhtyom') 
+			fields = build_fields(form)
+
+			# only pull new information
+			last_entry = WufooCareerForm.order('created_at desc').limit(1).first;
+			if last_entry
+				entries = form.entries(filters: [['DateCreated', 'Is_after', (last_entry.created_at - 1.day)]])
+			else
+				entries = form.entries
+			end
+
+			entries.each do |entry|
+				hash = {}
+				name = ''
+				entry.each do |entry_field, val|
+					db_column = fields[entry_field]
+					if !db_column.blank?
+						if db_column == 'name_first'
+							name = val + name
+						elsif db_column == 'name_last'
+							name = name + ' ' + val
+
+						elsif db_column == 'resume_upload'
+							# take the url from between the parentheses
+							open_par = val.index('(')
+							close_par = val.index(')')
+							if open_par && close_par
+								hash[db_column.to_sym] = val.slice(open_par + 1, close_par - open_par - 1)
+							end
+
+						else
+							hash[db_column.to_sym] = val
+						end
+					end
+				end
+				hash[:name] = name # full name
+
+				hash[:created_at] = entry["DateCreated"]
+				hash[:created_by] = entry["CreatedBy"]
+				
+				if !entry["DateUpdated"].blank?
+					hash[:updated_at] = entry["DateUpdated"]
+				end
+
+				hash[:company_id] = company.id
+
+				# truncate length so we don't fail validation and lose all the info
+				if hash[:what_neighborhood_do_you_live_in] && hash[:what_neighborhood_do_you_live_in].length > 1000
+					hash[:what_neighborhood_do_you_live_in] = hash[:what_neighborhood_do_you_live_in][0..996] + '...'
+				end
+
+				#puts hash.inspect
+				query = {name: hash[:name],
+					email: hash[:email],
+					phone_number: hash[:phone_number],
+					created_by: hash[:created_by],
+					company_id: hash[:company_id]}
+
+				found = WufooCareerForm.where(query).first
+				if !found
+					WufooCareerForm.create!(hash)
+				end
+			end
+		end
+
 		# roommates-form
 		def import_roommates_web_form(wufoo, company)
 			form = wufoo.form('z15ov1by0w7n41d') 
@@ -113,10 +179,10 @@ namespace :import do
 							name = val + name
 						elsif db_column == 'name_last'
 							name = name + ' ' + val
-						elsif db_column == 'min_price' || db_column == 'max_price'
-							if !val.blank?
-								hash[db_column.to_sym] = val.to_i
-							end
+						# elsif db_column == 'min_price' || db_column == 'max_price'
+						# 	if !val.blank?
+						# 		hash[db_column.to_sym] = val.to_i
+						# 	end
 						else
 							hash[db_column.to_sym] = val
 						end
@@ -280,6 +346,7 @@ namespace :import do
 		import_partner_form(wufoo, company)
 		# import_residential_listing_form(wufoo, company)
 		# import_commercial_listing_form(wufoo, company)
+		import_careers_form(wufoo, company)
 
 	end
 end

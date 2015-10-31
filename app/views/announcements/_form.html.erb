@@ -75,7 +75,8 @@
                 'Application Pending',
                 'Back on Market',
                 'Open House',
-                'Bonus/Commission'
+                'Bonus/Commission',
+                'Events'
                 ]), 
               {prompt: "Choose one..."},
               class: 'form-control',
@@ -91,9 +92,8 @@
               <%= f.label :note, 'Short note' %>
             </div>
             <div class="col-md-9">
-                <small><em>140 character limit</em></small>
-                <%= f.text_area :note, class: 'form-control', 
-                  rows: 3, maxlength: 140 %>
+                <small><em>Keep it short!</em></small>
+                <%= f.text_area :note, class: 'form-control', rows: 3 %>
             </div>
           </div>
         </div>

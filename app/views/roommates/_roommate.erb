@@ -74,13 +74,22 @@
       <% end %>
     </td>
 
+    <!-- ****** STATUS ****************************************** -->
+    <td>
+      <% if roommate.archived %>
+        Matched
+      <% else %>
+        Unmatched
+      <% end %>
+    </td>
+
     <!-- ****** LINKS ****************************************** -->
     <% if current_user.is_management? || current_user.is_listings_manager? %>
       <td>
         <%= link_to 'Edit', edit_roommate_path(roommate) %> 
         <br />
         <% if !roommate.archived %>
-          <%= link_to 'Mark Inactive', delete_modal_roommate_path(roommate), 
+          <%= link_to 'Mark Matched', delete_modal_roommate_path(roommate), 
             data: { toggle: "modal", target: "#roommateDeleteModal"}, remote: true %>
         <% else %>
           <%= link_to 'Mark Active', unarchive_modal_roommate_path(roommate), 

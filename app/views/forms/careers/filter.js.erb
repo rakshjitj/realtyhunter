@@ -1,0 +1,5 @@
+$('.careers_table_body').html("<%= escape_javascript (render partial: 'forms/careers/entry', :collection => @entries, as: :entry) %>");
+
+$('.pagination').html("<%= escape_javascript (render partial: 'shared/pagination', locals: {:models => @entries}) %>");
+
+$('.totals').html("<%= @entries.count %> Entries");

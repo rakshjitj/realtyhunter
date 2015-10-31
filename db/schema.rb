@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151030033603) do
+ActiveRecord::Schema.define(version: 20151031174854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -156,6 +156,7 @@ ActiveRecord::Schema.define(version: 20151030033603) do
     t.integer  "wufoo_contact_us_forms_id"
     t.integer  "wufoo_partner_forms_id"
     t.integer  "wufoo_listings_forms_id"
+    t.integer  "wufoo_career_forms_id"
   end
 
   add_index "companies", ["building_amenities_id"], name: "index_companies_on_building_amenities_id", using: :btree
@@ -170,6 +171,7 @@ ActiveRecord::Schema.define(version: 20151030033603) do
   add_index "companies", ["sales_amenities_id"], name: "index_companies_on_sales_amenities_id", using: :btree
   add_index "companies", ["users_id"], name: "index_companies_on_users_id", using: :btree
   add_index "companies", ["utilities_id"], name: "index_companies_on_utilities_id", using: :btree
+  add_index "companies", ["wufoo_career_forms_id"], name: "index_companies_on_wufoo_career_forms_id", using: :btree
   add_index "companies", ["wufoo_contact_us_forms_id"], name: "index_companies_on_wufoo_contact_us_forms_id", using: :btree
   add_index "companies", ["wufoo_listings_forms_id"], name: "index_companies_on_wufoo_listings_forms_id", using: :btree
   add_index "companies", ["wufoo_partner_forms_id"], name: "index_companies_on_wufoo_partner_forms_id", using: :btree
@@ -574,6 +576,22 @@ ActiveRecord::Schema.define(version: 20151030033603) do
     t.integer  "company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "wufoo_career_forms", force: :cascade do |t|
+    t.string   "name"
+    t.string   "phone_number"
+    t.string   "email"
+    t.string   "how_did_you_hear_about_us"
+    t.string   "what_neighborhood_do_you_live_in"
+    t.string   "licensed_agent"
+    t.string   "resume_upload"
+    t.string   "created_by"
+    t.string   "internal_notes"
+    t.integer  "company_id"
+    t.boolean  "archived",                         default: false
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
   end
 
   create_table "wufoo_contact_us_forms", force: :cascade do |t|

@@ -110,7 +110,7 @@ class Roommate < ActiveRecord::Base
     end
 
     if !params[:status].blank?
-      status = (params[:status] == 'Active') ? false : true
+      status = (params[:status] == 'Unmatched') ? false : true
       roommates = roommates.where('roommates.archived = ?', status)
     end
     
