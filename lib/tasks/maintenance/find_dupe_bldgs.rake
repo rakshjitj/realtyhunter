@@ -4,11 +4,21 @@ namespace :maintenance do
 		log = ActiveSupport::Logger.new('log/find_dupe_bldgs.log')
 		start_time = Time.now
 
+		results = []
 		Building.all.each do |b|
-			records = Building.where(route: b.route, street_number: b.street_number)
+			records = Building.where(street_number: b.street_number)
+				.where("route ilike ?", "%#{b.route}%")
 			if (records.length > 1)
-				puts "ID: #{b.id} #{b.street_number} #{b.route}"
+				records.each do |r|
+					if !results.include?(r)
+						results << r
+					end
+				end
 			end
+		end
+
+		results.each do |r|
+			puts "ID: #{r.id} #{r.street_number} #{r.route}"
 		end
 
 	end
