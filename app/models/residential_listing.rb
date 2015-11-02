@@ -111,6 +111,7 @@ class ResidentialListing < ActiveRecord::Base
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at', 
+        'residential_listings.for_roomsharing',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by')
@@ -130,6 +131,7 @@ class ResidentialListing < ActiveRecord::Base
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at', 
+        'residential_listings.for_roomsharing',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by', 'units.public_url')
@@ -150,7 +152,7 @@ class ResidentialListing < ActiveRecord::Base
         'residential_listings.lease_end', 'residential_listings.has_fee', 
         'residential_listings.op_fee_percentage','residential_listings.tp_fee_percentage',
         'residential_listings.tenant_occupied', 'residential_listings.created_at',
-        'residential_listings.updated_at', 
+        'residential_listings.updated_at', 'residential_listings.for_roomsharing',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id')
   end
@@ -166,7 +168,6 @@ class ResidentialListing < ActiveRecord::Base
       .where('units.archived = false')
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address', 
-        'units.listing_id',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent', 'residential_listings.beds', 
@@ -174,9 +175,10 @@ class ResidentialListing < ActiveRecord::Base
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at', 
+        'residential_listings.for_roomsharing',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
-        'units.available_by', 'units.public_url')
+        'units.listing_id', 'units.available_by', 'units.public_url')
       # unit.building.street_number + ' ' + unit.building.route
 
     if !params && !building_id

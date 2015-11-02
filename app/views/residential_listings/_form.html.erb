@@ -299,6 +299,17 @@
         <br />
         <div class="row">
           <div class="col-md-2 form-label-responsive">
+            <strong>Roomshares</strong>
+          </div>
+          <div class="col-md-4">
+            <%= f.check_box :for_roomsharing, checked: @residential_unit.for_roomsharing %>
+            <strong>Roomsharing OK</strong>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-2 form-label-responsive">
             <strong>Broker Fee</strong>
           </div>
           <div class="col-md-4">

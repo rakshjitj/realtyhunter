@@ -1,0 +1,10 @@
+$('#roommateUnmatchModal .modal-body').html(
+	"Are you sure you want to unmatch <%= j(@roommate.name) %>? Unmatching will allow them to show up in roommate searches again.");
+
+$('#roommateUnmatchModal .delete-btn').replaceWith("<%= j(link_to 'Mark Unmatched', unmatch_roommate_path(@roommate), remote: true, method: :post, class: 'btn btn-danger delete-btn link-as-button', id: 'delete-link') %>");
+$('#roommateUnmatchModal #delete-link').click( function(event) {
+	$('#roommateUnmatchModal').modal('hide');
+	event.preventDefault();
+});
+
+$('#roommateUnmatchModal').modal('show');

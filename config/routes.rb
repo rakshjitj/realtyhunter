@@ -222,10 +222,10 @@ Rails.application.routes.draw do
   resources :roommates do
     member do
       get 'delete_modal'
-      get 'unarchive_modal'
-      post 'unarchive'
-      get 'archive_modal'
-      post 'archive'
+      get 'match_modal'
+      post 'match'
+      get 'unmatch_modal'
+      post 'unmatch'
     end
     collection do 
       get 'filter'

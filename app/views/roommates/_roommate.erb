@@ -93,11 +93,11 @@
         <%= link_to 'Edit', edit_roommate_path(roommate) %> 
         <br />
         <% if !roommate.archived %>
-          <%= link_to 'Match', archive_modal_roommate_path(roommate), 
-            data: { toggle: "modal", target: "#roommateArchiveModal"}, remote: true %>
+          <%= link_to 'Match', match_modal_roommate_path(roommate), 
+            data: { toggle: "modal", target: "#roommateMatchModal"}, remote: true %>
         <% else %>
-          <%= link_to 'Unmatch', unarchive_modal_roommate_path(roommate), 
-            data: { toggle: "modal", target: "#roommateUnarchiveModal"}, remote: true %>
+          <%= link_to 'Unmatch', unmatch_modal_roommate_path(roommate), 
+            data: { toggle: "modal", target: "#roommateUnmatchModal"}, remote: true %>
         <% end %>
           <%= link_to 'Delete', delete_modal_roommate_path(roommate), 
             data: { toggle: "modal", target: "#roommateDeleteModal"}, remote: true %>

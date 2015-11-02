@@ -104,7 +104,7 @@ class RoommatesController < ApplicationController
     end
   end
 
-  def archive_modal
+  def match_modal
     respond_to do |format|
       format.js  
     end
@@ -112,30 +112,30 @@ class RoommatesController < ApplicationController
 
   # DELETE /residential_units/1
   # DELETE /residential_units/1.json
-  def archive
+  def match
     @roommate.archive
     set_roommates
     respond_to do |format|
-      format.html { redirect_to roommates_url, notice: 'Roommate was successfully inactivated.' }
+      format.html { redirect_to roommates_url, notice: 'Roommate was successfully matched.' }
       format.json { head :no_content }
       format.js
     end
   end
 
-  def unarchive_modal
+  def unmatch_modal
     @roommate = Roommate.find(params[:id])
     respond_to do |format|
       format.js  
     end
   end
 
-  def unarchive
+  def unmatch
     @roommate = Roommate.find(params[:id])
     @roommate.unarchive
     params[:status] = 'Matched'
     set_roommates
     respond_to do |format|
-      format.html { redirect_to roommates_url, notice: 'Roommate was successfully activated.' }
+      format.html { redirect_to roommates_url, notice: 'Roommate was successfully unmatched.' }
       format.json { head :no_content }
       format.js
     end

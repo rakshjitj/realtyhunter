@@ -159,6 +159,9 @@
 			    		</div>
 			    		<div class="col-xs-7">
 			    			<%= @residential_unit.unit.building_unit %>
+			    			<% if @residential_unit.for_roomsharing %>
+			    				<strong>(RS)</strong>
+			    			<% end %>
 			    		</div>
 	    			</div>
 	    			<div class="row">

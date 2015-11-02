@@ -392,7 +392,7 @@ class ResidentialListingsController < ApplicationController
       data = params[:residential_listing].permit(
         :lock_version,
         :recipients, :title, :message, :listing_ids,
-        :tenant_occupied,
+        :tenant_occupied, :for_roomsharing,
         :beds, :baths, :notes, :description, :lease_start, :lease_end,
         :include_photos, :inaccuracy_description, 
         :has_fee, :op_fee_percentage, :tp_fee_percentage, 

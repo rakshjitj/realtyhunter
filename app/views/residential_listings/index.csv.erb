@@ -1,5 +1,5 @@
 <%- headers = [
-  'Full Address', 'Unit', 'Neighborhood', 'Is Exclusive?',
+  'Full Address', 'Unit', 'Neighborhood', 'Is Exclusive?', 'Roomsharing OK?',
   'Beds', 'Baths', 'Notes', 'Description', 'Lease Start', 'Lease End',
   'Has Fee?', 'OP Fee Percentage', 'TP Fee Percentage', 'Tenant Occupied',
   'Primary Agent', 'Listing ID', 'Landlord', 'Price', 'Available', 'Access', 
@@ -10,6 +10,7 @@
 <%- @residential_units.each do |listing| -%>
 	
   <%= [listing.formatted_street_address, listing.building_unit, listing.neighborhood_name, listing.exclusive,
+      listing.for_roomsharing,
       listing.beds, listing.baths, listing.notes, listing.description, listing.lease_start, listing.lease_end,
       listing.has_fee, listing.op_fee_percentage, listing.tp_fee_percentage, listing.tenant_occupied,
       listing.primary_agent_id ? @agents[listing.primary_agent_id][0].name : '', 

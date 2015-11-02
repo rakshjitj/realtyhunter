@@ -25,7 +25,12 @@
     </td>
 
     <!-- ****** UNIT ****************************************** -->
-    <td><%= residential_listing.building_unit %></td>
+    <td>
+      <%= residential_listing.building_unit %>
+      <% if residential_listing.for_roomsharing %>
+        <br /><strong>(RS)</strong>
+      <% end %>
+    </td>
 
     <!-- ****** BEDS/BATHS ****************************************** -->
     <td><%= residential_listing.bed_and_baths %></td>
