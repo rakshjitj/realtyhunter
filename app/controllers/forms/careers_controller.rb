@@ -97,7 +97,7 @@ module Forms
 			end
 
 			def set_entries
-				if !params[:status].blank?
+				if params[:status].blank?
 					params[:status] = 'Active'
 				end
 

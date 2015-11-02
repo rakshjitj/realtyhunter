@@ -32,6 +32,14 @@
 
     <td><%= entry.created_at %></td>
 
+    <td>
+      <% if !entry.archived %>
+        Active
+      <% else %>
+        Inactive
+      <% end %>
+    </td>
+
     <!-- ****** LINKS ****************************************** -->
     <% if current_user.is_management? || current_user.is_listings_manager? %>
       <td>

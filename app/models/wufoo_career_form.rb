@@ -36,7 +36,7 @@ class WufooCareerForm < ActiveRecord::Base
   def self.search(params)
     entries = WufooCareerForm.all
 
-     # all search params come in as strings from the url
+    # all search params come in as strings from the url
     # clear out any invalid search params
     params.delete_if{ |k,v| (!v || v == 0 || v.empty?) }
 
@@ -53,7 +53,6 @@ class WufooCareerForm < ActiveRecord::Base
     end
 
     if !params[:status].blank? && params[:status] != 'Any'
-      puts "******* STATUS #{params[:status]}"
       archived = (params[:status] == 'Active') ? false : true
       entries = entries.where('archived = ?', archived)
     end
