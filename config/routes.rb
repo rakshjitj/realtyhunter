@@ -224,6 +224,8 @@ Rails.application.routes.draw do
       get 'delete_modal'
       get 'unarchive_modal'
       post 'unarchive'
+      get 'archive_modal'
+      post 'archive'
     end
     collection do 
       get 'filter'

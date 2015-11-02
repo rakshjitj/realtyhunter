@@ -1,7 +1,7 @@
 $('#roommateDeleteModal .modal-body').html(
-	"Are you sure you want to match <%= j(@roommate.name) %>? Matching will prevent them from showing up in roommate searches.");
+	"Are you sure you want to delete this <%= j(@roommate.name) %>? Deleting them is permanent and will completely erase their info!");
 
-$('#roommateDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Mark Matched', @roommate, remote: true, method: :delete, class: 'btn btn-danger delete-btn link-as-button', id: 'delete-link') %>");
+$('#roommateDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', @roommate, remote: true, method: :delete, class: 'btn btn-danger delete-btn link-as-button', id: 'delete-link') %>");
 
 $('#roommateDeleteModal #delete-link').click( function(event) {
 	$('#roommateDeleteModal').modal('hide');

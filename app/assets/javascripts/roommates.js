@@ -232,9 +232,6 @@ Roommates = {};
 		  Roommates.hideSpinner();
 		});
 		Roommates.hideSpinner();
-		// $('#roommates a').click(function() {
-		// 	//Roommates.showSpinner();
-		// });
 
 		// main index table
 		Roommates.setupSortableColumns();		
@@ -268,12 +265,6 @@ Roommates = {};
 			if (action in Roommates.indexMenuActions) Roommates.indexMenuActions[action]();
 		});
 
-		// make sure datepicker is formatted before setting initial date below
-		// $('.datepicker').datetimepicker({
-		//   viewMode: 'days',
-		//   format: 'MM/DD/YYYY',
-		//   allowInputToggle: true
-		// });
 		var available_by = $('#roommates .datepicker').attr('data-available-by');
 		if (available_by) {
 			$('#roommates .datepicker').data("DateTimePicker").date(available_by);

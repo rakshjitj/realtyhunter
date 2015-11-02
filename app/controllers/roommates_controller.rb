@@ -2,7 +2,8 @@ class RoommatesController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
   before_action :set_roommate, except: [:index, :new, :create, :filter, 
-    :download, :send_update, :unarchive, :unarchive_modal, :send_message, 
+    :download, :send_update, :unarchive, :unarchive_modal, 
+    :send_message, :delete_modal, :destroy,
     :autocomplete_user_email, :autocomplete_roommate_name]
   autocomplete :roommate, :name, full: true
   autocomplete :user, :email, full: true
@@ -91,6 +92,24 @@ class RoommatesController < ApplicationController
   # DELETE /residential_units/1
   # DELETE /residential_units/1.json
   def destroy
+    Roommate.delete(@roommate.id)
+    set_roommates
+    respond_to do |format|
+      format.html { redirect_to roommates_url, notice: 'Roommate was successfully inactivated.' }
+      format.json { head :no_content }
+      format.js
+    end
+  end
+
+  def archive_modal
+    respond_to do |format|
+      format.js  
+    end
+  end
+
+  # DELETE /residential_units/1
+  # DELETE /residential_units/1.json
+  def archive
     @roommate.archive
     set_roommates
     respond_to do |format|
