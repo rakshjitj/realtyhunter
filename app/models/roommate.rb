@@ -56,7 +56,7 @@ class Roommate < ActiveRecord::Base
     roommates = Roommate
       .joins('left join neighborhoods on roommates.neighborhood_id = neighborhoods.id')
       .select(
-    	  'roommates.id',
+    	  'roommates.id', 'roommates.read',
     	  'roommates.upload_picture_of_yourself',
     	  'roommates.name', 'roommates.phone_number', 'roommates.email', 
     	  'neighborhoods.name as neighborhood_name',
@@ -123,6 +123,12 @@ class Roommate < ActiveRecord::Base
       RoommateMailer.send_message(source_agent, recipients, sub, msg, roommate_ids).deliver_now
     else
       "No sender specified"
+    end
+  end
+
+  def mark_read
+    if !read
+      self.update_attribute(:read, true)
     end
   end
 

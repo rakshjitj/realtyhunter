@@ -39,4 +39,8 @@ module ApplicationHelper
   def url_with_protocol(url)
     /^http/i.match(url) ? url : "http://#{url}"
   end
+
+  def unread_roommates_count
+    Roommate.where(read: false).count
+  end
 end

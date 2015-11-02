@@ -19,7 +19,11 @@
     
     <!-- ****** NAME ****************************************** -->
     <td>
-      <%= link_to "#{roommate.name}", roommate_path(roommate.id) %><br />
+      <% if !roommate.read %>
+        <strong><%= link_to "#{roommate.name}", roommate_path(roommate.id) %></strong><br />
+      <% else %>
+        <%= link_to "#{roommate.name}", roommate_path(roommate.id) %><br />
+      <% end %>
     </td>
 
     <!-- ****** PHONE ****************************************** -->

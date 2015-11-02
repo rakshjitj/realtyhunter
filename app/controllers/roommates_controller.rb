@@ -71,6 +71,9 @@ class RoommatesController < ApplicationController
 
   def show
     @roommate = Roommate.find_unarchived(params[:id])
+    # once someone views this roomie, mark the record as 'read'
+    @roommate.mark_read
+    
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that roommate is no longer available."
       redirect_to :action => 'index'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151102191110) do
+ActiveRecord::Schema.define(version: 20151102210155) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -346,6 +346,7 @@ ActiveRecord::Schema.define(version: 20151102191110) do
     t.datetime "updated_at",                        null: false
     t.integer  "unit_id"
     t.integer  "lock_version",      default: 0,     null: false
+    t.boolean  "for_roomsharing",   default: false
   end
 
   create_table "roles", force: :cascade do |t|
@@ -379,6 +380,7 @@ ActiveRecord::Schema.define(version: 20151102191110) do
     t.datetime "updated_at",                                 null: false
     t.integer  "lock_version",               default: 0,     null: false
     t.string   "internal_notes"
+    t.boolean  "read",                       default: false
   end
 
   create_table "roomsharing_applications", force: :cascade do |t|
