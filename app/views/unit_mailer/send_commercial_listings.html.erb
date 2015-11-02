@@ -15,8 +15,10 @@
 	    <% end %>
 		</td>
 		<td>
-			<%= image_tag @source_agent.image.file.url(:thumb), 
-  	    alt: @source_agent.image.file.url(:thumb) %>
+			<% if @source_agent.image %>
+				<%= image_tag @source_agent.image.file.url(:thumb), 
+  		    alt: @source_agent.image.file.url(:thumb) %>
+  		<% end %>
 		</td>
 	</tr>
 </table>
