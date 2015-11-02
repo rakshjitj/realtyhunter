@@ -2,8 +2,10 @@ class RoommatesController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
   before_action :set_roommate, except: [:index, :new, :create, :filter, 
-    :download, :send_update, :unarchive, :unarchive_modal, :send_message]
+    :download, :send_update, :unarchive, :unarchive_modal, :send_message, 
+    :autocomplete_user_email, :autocomplete_roommate_name]
   autocomplete :roommate, :name, full: true
+  autocomplete :user, :email, full: true
 
   def index
     set_roommates
@@ -179,7 +181,7 @@ class RoommatesController < ApplicationController
     	data = params.permit(:sort_by, :filter, :direction, :name, :referred_by, :neighborhood_id,
         :submitted_date, :move_in_date, :monthly_budget, :status,
         :dogs_allowed, :cats_allowed,
-        roommate: [:lock_version, :name, :phone_number, 
+        roommate: [:lock_version, :name, :phone_number, :internal_notes,
           :email, :how_did_you_hear_about_us, :upload_picture_of_yourself, :describe_yourself,
           :monthly_budget, :move_in_date, :neighborhood, :dogs_allowed, :cats_allowed,
           :user_id, :recipients, :title, :message, :ids])

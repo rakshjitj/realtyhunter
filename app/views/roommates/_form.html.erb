@@ -11,6 +11,7 @@
             :locals => {:model => @roommate} %>
 
           <div class="field">
+            <br />
             <%= f.label :name, class: 'required' %><br>
             <%= f.text_field :name, class: 'form-control', 
                 :required => true %>
@@ -95,6 +96,11 @@
               {prompt: "Choose one..."},
               class: 'form-control',
               :include_blank => true) %>
+          </div>
+
+          <div class="field">
+            <%= f.label :internal_notes %><br>
+            <%= f.text_area :internal_notes, class: 'form-control', :size => "20x10" %>
           </div>
 
           <div class="actions">

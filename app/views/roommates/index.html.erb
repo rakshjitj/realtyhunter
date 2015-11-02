@@ -247,9 +247,15 @@
         <%= form_tag(send_message_roommates_path, remote:true) do %>
         <div class="row vertical-padding">
           <div class="col-md-12">
-            <%= label_tag "roommate[recipients]", "Recipients", class: 'required' %>
-            <i><small>Use commas to separate email addresses</small></i>
-            <%= text_field_tag "roommate[recipients]", nil, class: 'form-control', required: true %>
+            <div class="form-group ui-front">
+              <%= label_tag "roommate[recipients]", "Recipients", class: 'required' %>
+              <i><small>Use commas to separate email addresses</small></i>
+              <%= autocomplete_field_tag "roommate[recipients]", "",
+                autocomplete_user_email_roommates_path, 'data-delimiter' => ',', :multiple => true,
+                update_elements: {},
+                placeholder: "bob@myspacenyc.com, ...", 
+                class:'form-control', required: true %>
+            </div>
           </div>
         </div>
 

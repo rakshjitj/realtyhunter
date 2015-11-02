@@ -19,6 +19,7 @@ class Roommate < ActiveRecord::Base
   validates :move_in_date, length: {maximum: 50}
   validates :dogs_allowed, length: {maximum: 50}
   validates :cats_allowed, length: {maximum: 50}
+  validates :internal_notes, length: {maximum: 1000}
 
   def archive
     self.archived = true

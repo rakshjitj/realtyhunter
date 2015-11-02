@@ -220,7 +220,6 @@ Rails.application.routes.draw do
   end
 
   resources :roommates do
-    get :autocomplete_roommate_name, :on => :collection
     member do
       get 'delete_modal'
       get 'unarchive_modal'
@@ -232,6 +231,8 @@ Rails.application.routes.draw do
       post 'send_message'
       get 'download'
       get 'send_update'
+      get :autocomplete_roommate_name
+      get :autocomplete_user_email
     end
   end
 
@@ -343,13 +344,11 @@ Rails.application.routes.draw do
     end
   end
    
-  #post 'notifications/notify' => 'notifications#notify'
   resources :announcements do
     collection do
       get :autocomplete_building_formatted_street_address
       get :get_units
     end
   end
-  
    
 end
