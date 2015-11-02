@@ -88,9 +88,8 @@ Roommates = {};
 	};
 
 	Roommates.sendMessage = function (e) {
-		//Roommates.hideSpinner();
-		$('#roommate_recipients').val(Roommates.selectedRoommateEmails.join(","));
-		$('#roommates_message').val('');
+		$('#roommate_ids').val(Roommates.selectedRoommates.join(","));
+		$('#roommate_message').val('');
 		e.preventDefault();
 	};
 
@@ -98,12 +97,10 @@ Roommates = {};
 		'PDF': function() {
 			var params = 'roommate_ids=' + Roommates.selectedRoommates.join(",");
 			window.location.href = '/roommates/download.pdf?' + params;
-			//Roommates.hideSpinner();
 		},
 		'CSV': function() {
 			var params = 'roommate_ids=' + Roommates.selectedRoommates.join(",");
 			window.location.href = '/roommates/download.csv?' + params;
-			//Roommates.hideSpinner();
 		}
 	};
 

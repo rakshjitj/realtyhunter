@@ -256,7 +256,7 @@
         <div class="row vertical-padding">
           <div class="col-md-12">
             <%= label_tag "roommate[title]", "Title", class: 'required' %>
-            <%= text_field_tag "roommate[title]", "Roomsharing Updates", class: 'form-control', required: true %>
+            <%= text_field_tag "roommate[title]", "Check out these roommates", class: 'form-control', required: true %>
           </div>
         </div>
 
@@ -274,9 +274,8 @@
           </div>
         </div>
 
-        <%= hidden_field_tag "roommate[listing_ids]" %>
+        <%= hidden_field_tag "roommate[ids]" %>
         
-
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp; 

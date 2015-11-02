@@ -2,7 +2,7 @@ class RoommatesController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
   before_action :set_roommate, except: [:index, :new, :create, :filter, 
-    :download, :send_update, :unarchive, :unarchive_modal]
+    :download, :send_update, :unarchive, :unarchive_modal, :send_message]
   autocomplete :roommate, :name, full: true
 
   def index
@@ -55,10 +55,11 @@ class RoommatesController < ApplicationController
   end
 
   def send_message
-    recipients = roommate_params[:recipients].split(/\s, \,/)
-    sub = roommate_params[:title]
-    msg = roommate_params[:message]
-    Roommate.send_message(current_user, recipients, sub, msg)
+    recipients = roommate_params[:roommate][:recipients].split(/\s, \,/)
+    sub = roommate_params[:roommate][:title]
+    msg = roommate_params[:roommate][:message]
+    roommate_ids = roommate_params[:roommate][:ids]
+    Roommate.send_message(current_user, recipients, sub, msg, roommate_ids)
     
     respond_to do |format|
       format.js { flash[:success] = "Message sent!"  }
@@ -181,7 +182,7 @@ class RoommatesController < ApplicationController
         roommate: [:lock_version, :name, :phone_number, 
           :email, :how_did_you_hear_about_us, :upload_picture_of_yourself, :describe_yourself,
           :monthly_budget, :move_in_date, :neighborhood, :dogs_allowed, :cats_allowed,
-          :user_id, :title, :m])
+          :user_id, :recipients, :title, :message, :ids])
 
       if data[:roommate]
         if !data[:roommate][:cats_allowed].blank?

@@ -117,9 +117,9 @@ class Roommate < ActiveRecord::Base
     roommates
   end
 
-  def self.send_message(source_agent, recipients, sub, msg)
+  def self.send_message(source_agent, recipients, sub, msg, roommate_ids)
     if source_agent
-      RoommateMailer.send_message(source_agent, recipients, sub, msg).deliver_now
+      RoommateMailer.send_message(source_agent, recipients, sub, msg, roommate_ids).deliver_now
     else
       "No sender specified"
     end
