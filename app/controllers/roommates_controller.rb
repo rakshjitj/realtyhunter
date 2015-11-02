@@ -6,7 +6,6 @@ class RoommatesController < ApplicationController
   autocomplete :roommate, :name, full: true
 
   def index
-    params[:status] = 'Active'
     set_roommates
   end
 
@@ -99,13 +98,16 @@ class RoommatesController < ApplicationController
   end
 
   def unarchive_modal
+    @roommate = Roommate.find(params[:id])
     respond_to do |format|
       format.js  
     end
   end
 
   def unarchive
+    @roommate = Roommate.find(params[:id])
     @roommate.unarchive
+    params[:status] = 'Matched'
     set_roommates
     respond_to do |format|
       format.html { redirect_to roommates_url, notice: 'Roommate was successfully activated.' }
@@ -133,6 +135,7 @@ class RoommatesController < ApplicationController
   private
   	def set_roommate
       @roommate = Roommate.find_unarchived(params[:id])
+      puts "SETTING ROOMMATE #{@roommate.inspect}"
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that roommate is not active."
       redirect_to :action => 'index'
@@ -151,6 +154,11 @@ class RoommatesController < ApplicationController
         'Flatbush Ditmas Park'])
       @referrers = current_user.company.users.unarchived.map(&:name).to_a
       @referrers.insert(0, 'Website')
+
+      # set a default status if none otherwise specified
+      if params[:status].blank?
+        params[:status] = 'Unmatched'
+      end
 
       @roommates = Roommate.search(params)
       @roommates = custom_sort

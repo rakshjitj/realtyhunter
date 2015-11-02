@@ -92,7 +92,7 @@
           <%= link_to 'Mark Matched', delete_modal_roommate_path(roommate), 
             data: { toggle: "modal", target: "#roommateDeleteModal"}, remote: true %>
         <% else %>
-          <%= link_to 'Mark Active', unarchive_modal_roommate_path(roommate), 
+          <%= link_to 'Mark Unmatched', unarchive_modal_roommate_path(roommate), 
             data: { toggle: "modal", target: "#roommateUnarchiveModal"}, remote: true %>
         <% end %>
         <br />

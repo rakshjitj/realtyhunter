@@ -6,7 +6,6 @@ module Forms
 		autocomplete :wufoo_career_form, :name, full: true
 
 		def index
-			params[:status] = 'Active'
 			set_entries
 		end
 
@@ -80,6 +79,7 @@ module Forms
 	  def unarchive
 	  	@entry = WufooCareerForm.find(params[:id])
 	  	@entry.unarchive
+	  	params[:status] = 'Inactive'
 	    set_entries
 	    respond_to do |format|
 	      format.html { redirect_to forms_careers_url, notice: 'Entry was successfully activated.' }
@@ -97,6 +97,10 @@ module Forms
 			end
 
 			def set_entries
+				if !params[:status].blank?
+					params[:status] = 'Active'
+				end
+
 				@entries = WufooCareerForm.search(careers_params)
 				@entries = custom_sort
 		    @entries = @entries.page params[:page]

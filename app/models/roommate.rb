@@ -109,9 +109,9 @@ class Roommate < ActiveRecord::Base
       roommates = roommates.where('roommates.cats_allowed = ?', params[:cats_allowed])
     end
 
-    if !params[:status].blank?
-      status = (params[:status] == 'Unmatched') ? false : true
-      roommates = roommates.where('roommates.archived = ?', status)
+    if !params[:status].blank? && params[:status] != 'Any'
+      archived = (params[:status] == 'Matched') ? true : false
+      roommates = roommates.where('roommates.archived = ?', archived)
     end
     
     roommates

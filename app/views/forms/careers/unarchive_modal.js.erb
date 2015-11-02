@@ -1,7 +1,7 @@
 $('#entryUnarchiveModal .modal-body').html(
 	"Are you sure you want to activate <%= j(@entry.name) %>? Activation will allow them to show up in searches again.");
 
-$('#entryUnarchiveModal .delete-btn').replaceWith("<%= j(link_to 'Mark Active', unarchive_forms_career_path(@entry), remote: true, method: :post, class: 'btn btn-danger link-as-button', id: 'delete-link') %>");
+$('#entryUnarchiveModal .delete-btn').replaceWith("<%= j(link_to 'Mark Active', unarchive_forms_career_path(@entry), remote: true, method: :post, class: 'btn btn-danger delete-btn link-as-button', id: 'delete-link') %>");
 $('#entryUnarchiveModal #delete-link').click( function(event) {
 	$('#entryUnarchiveModal').modal('hide');
 	event.preventDefault();

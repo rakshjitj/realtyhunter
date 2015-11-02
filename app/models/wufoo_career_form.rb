@@ -52,10 +52,10 @@ class WufooCareerForm < ActiveRecord::Base
       entries = entries.where(email: params[:email])
     end
 
-    if !params[:status].blank?
+    if !params[:status].blank? && params[:status] != 'Any'
       puts "******* STATUS #{params[:status]}"
-      status = (params[:status] == 'Active') ? false : true
-      entries = entries.where('archived = ?', status)
+      archived = (params[:status] == 'Active') ? false : true
+      entries = entries.where('archived = ?', archived)
     end
 
     if !params[:submitted_date].blank?
