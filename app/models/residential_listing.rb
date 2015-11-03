@@ -473,7 +473,7 @@ class ResidentialListing < ActiveRecord::Base
         'residential_listings.beds', 'residential_listings.id', 
         'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at', 
-        'neighborhoods.name AS neighborhood_name', 
+        'neighborhoods.name AS neighborhood_name', 'residential_listings.for_roomsharing',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by', 'units.listing_id')
       .order('residential_listings.updated_at desc')
@@ -499,7 +499,7 @@ class ResidentialListing < ActiveRecord::Base
         'residential_listings.beds', 'residential_listings.id', 
         'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at', 
-        'neighborhoods.name AS neighborhood_name', 
+        'neighborhoods.name AS neighborhood_name', 'residential_listings.for_roomsharing',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by', 'units.listing_id')
       
