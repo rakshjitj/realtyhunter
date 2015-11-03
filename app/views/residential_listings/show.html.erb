@@ -17,7 +17,7 @@
 				  		<h3><%= rent_formatted(@residential_unit.unit.rent) %> &nbsp;&nbsp;&nbsp; <%= @residential_unit.beds %> Beds / <%= trim_zeros(@residential_unit.baths) %> Baths</h3>
 				  		<p>
 			  				<%= small_header(@residential_unit) %><br />
-			  				<%= render 'market_status' %>
+			  				<%= render 'market_status' %> <br />Available <%= @residential_unit.unit.available_by %>
 			  			</p>
 			  		</div>
 			  		

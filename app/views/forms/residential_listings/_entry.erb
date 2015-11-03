@@ -25,10 +25,10 @@
     <% if current_user.is_management? || current_user.is_listings_manager? %>
       <td>
         <% if !entry.archived %>
-          <%= link_to 'Mark Inactive', delete_modal_forms_residential_listing_path(entry), 
+          <%= link_to 'Inactivate', delete_modal_forms_residential_listing_path(entry), 
             data: { toggle: "modal", target: "#entryDeleteModal"}, remote: true %>
         <% else %>
-          <%= link_to 'Mark Active', unarchive_modal_forms_residential_listing_path(entry), 
+          <%= link_to 'Activate', unarchive_modal_forms_residential_listing_path(entry), 
             data: { toggle: "modal", target: "#entryUnarchiveModal"}, remote: true %>
         <% end %>
         <br />

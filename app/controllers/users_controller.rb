@@ -4,8 +4,7 @@ class UsersController < ApplicationController
   before_action :set_user, except: [:index, :filter, :filter_listings, :teams, :new, :create, :admin_new, 
     :admin_create, :update_offices, :autocomplete_user_name]
   before_action :set_company, except: [:update_offices]
-  autocomplete :user, :name, full: true
-  etag { current_user.id }
+  autocomplete :user, :name, where: {archived: false}, full: true
   
   # GET /users
   # GET /users.json
