@@ -96,24 +96,35 @@ Roommates = {};
 
 	// match modal triggered
 	Roommates.matchMultiple = function(e) {
-		//var params = 'ids=' + Roommates.selectedRoommates.join(",");
 		$.ajax({
 	    url: 'roommates/match_multiple_modal',
 	    data: {
         ids: Roommates.selectedRoommates,
 	    },
-	    dataType: 'script',
-	  //   success: function(data) {
-			// },
-			// error: function(data) {
-			// }
+	    dataType: 'script'
 	  });
 	};
 
+	// Roommates.markRead = function(e) {
+	// 	$.ajax({
+	//     url: 'roommates/mark_read',
+	//     data: {
+ //        ids: Roommates.selectedRoommates,
+	//     },
+	//     dataType: 'script'
+	//   });
+	//   //e.preventDefault();
+	// };
+
 	Roommates.indexMenuActions = {
 		'mark-read': function() {
-			var params = 'roommate_ids=' + Roommates.selectedRoommates.join(",");
-			e.preventDefault();
+			$.ajax({
+		    url: 'roommates/mark_read',
+		    data: {
+	        ids: Roommates.selectedRoommates,
+		    },
+		    dataType: 'script'
+		  });
 		},
 		'PDF': function() {
 			var params = 'roommate_ids=' + Roommates.selectedRoommates.join(",");
@@ -302,6 +313,8 @@ Roommates = {};
 		// index page - selecting listings menu dropdown
 		$('#roommates #emailListings').click(Roommates.sendMessage);
 		$('#roommates #matchMultiple').click(Roommates.matchMultiple);
+		//$('#roommates #mark-read').click(Roommates.markRead);
+
 		$('#roommates tbody').on('click', 'i', Roommates.toggleListingSelection);
 		$('#roommates .select-all-listings').click(Roommates.selectAllListings);
 		Roommates.selectedRoommates = [];

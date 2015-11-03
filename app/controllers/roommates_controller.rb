@@ -6,7 +6,8 @@ class RoommatesController < ApplicationController
     :send_message, :delete_modal, :destroy, :get_units,
     :match_multiple, :match_multiple_modal,
     :autocomplete_user_email, :autocomplete_roommate_name, 
-    :autocomplete_building_formatted_street_address, :check_availability]
+    :autocomplete_building_formatted_street_address, :check_availability,
+    :mark_read]
   autocomplete :roommate, :name, full: true
   autocomplete :user, :email, full: true
   autocomplete :building, :formatted_street_address, full: true
@@ -133,6 +134,22 @@ class RoommatesController < ApplicationController
     set_roommates
     respond_to do |format|
       format.js  
+    end
+  end
+
+  def mark_read
+    if Roommate.mark_read(params[:ids])
+      params.delete('ids')
+      set_roommates
+      flash[:success] = 'Roommates marked as read.'
+      respond_to do |format|
+        format.html { redirect_to roommates_url }
+        format.json { head :no_content }
+        format.js
+      end
+    else
+      set_roommates
+      flash[:danger] = 'Roommates could not marked read.'
     end
   end
 

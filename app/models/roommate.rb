@@ -133,6 +133,11 @@ class Roommate < ActiveRecord::Base
     end
   end
 
+  def self.mark_read(ids)
+    roommates = Roommate.where(id: ids)
+    roommates.each{ |r| r.mark_read }
+  end
+
   def is_matched?
     !self.residential_listing_id.blank?
   end
@@ -180,5 +185,6 @@ class Roommate < ActiveRecord::Base
       return false
     end
   end
+
 
 end

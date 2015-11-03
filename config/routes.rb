@@ -236,6 +236,7 @@ Rails.application.routes.draw do
       get 'match_multiple_modal'
       post 'match_multiple'
       get 'check_availability'
+      get 'mark_read'
       get :autocomplete_roommate_name
       get :autocomplete_user_email
       get :autocomplete_building_formatted_street_address
