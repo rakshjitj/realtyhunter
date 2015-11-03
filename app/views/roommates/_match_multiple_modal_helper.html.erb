@@ -3,11 +3,11 @@
   <h4 class="modal-title" id="myModalLabel">Match a Roomate</h4>
 </div>
 
-<%= form_tag match_roommate_path(@roommate), method: :post do %>
+<%= form_tag match_multiple_roommates_path, method: :post do %>
 <div class="modal-body">
 
   <p class="disclaimer-text">
-    Pick an apartment for <%= j(@roommate.name) %>:
+    Pick an apartment for <%= @roommates.map(&:name).map{ |n| n.titleize }.join(", ") %>:
   </p>
   
   <br />
@@ -53,6 +53,8 @@
       </div>
     </div>
   </div>
+
+  <%= hidden_field_tag "ids", params[:ids] %>
 
 </div>
       

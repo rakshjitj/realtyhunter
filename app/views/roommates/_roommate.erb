@@ -81,7 +81,10 @@
     <!-- ****** STATUS ****************************************** -->
     <td>
       <% if roommate.archived %>
-        Matched
+        Matched<br />
+        <% if roommate.residential_listing_id %>
+          <%= link_to roommate.residential_listing.street_address_and_unit, roommate.residential_listing %>
+        <% end %>
       <% else %>
         Unmatched
       <% end %>

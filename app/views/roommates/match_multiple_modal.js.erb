@@ -1,0 +1,11 @@
+$('#roommateMatchModal .modal-content').html("<%= j( render 'match_multiple_modal_helper', locals: { roommates: @roommates }) %>");
+
+// assigning roommates popup
+$('#roommateMatchModal #address').bind('railsAutocomplete.select', Roommates.updateUnits);
+
+$('#roommateMatchModal #submit-link').click( function(event) {
+	$('#roommateMatchModal').modal('hide');
+	event.preventDefault();
+});
+
+$('#roommateMatchModal').modal('show');

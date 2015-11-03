@@ -4,7 +4,9 @@ class RoommatesController < ApplicationController
   before_action :set_roommate, except: [:index, :new, :create, :filter, 
     :download, :send_update, :unarchive, :unarchive_modal, 
     :send_message, :delete_modal, :destroy, :get_units,
-    :autocomplete_user_email, :autocomplete_roommate_name, :autocomplete_building_formatted_street_address]
+    :match_multiple, :match_multiple_modal,
+    :autocomplete_user_email, :autocomplete_roommate_name, 
+    :autocomplete_building_formatted_street_address, :check_availability]
   autocomplete :roommate, :name, full: true
   autocomplete :user, :email, full: true
   autocomplete :building, :formatted_street_address, full: true
@@ -127,6 +129,29 @@ class RoommatesController < ApplicationController
     end
   end
 
+  def match_multiple_modal
+    set_roommates
+    respond_to do |format|
+      format.js  
+    end
+  end
+
+  # DELETE /residential_units/1
+  # DELETE /residential_units/1.json
+  def match_multiple
+    if Roommate.match(params)
+      set_roommates
+      flash[:success] = 'Roommates were successfully matched!'
+      respond_to do |format|
+        format.html { redirect_to roommates_url }
+        format.json { head :no_content }
+        format.js
+      end
+    else
+     flash[:danger] = 'Roommates could not be matched.'
+    end
+  end
+
   def unmatch_modal
     @roommate = Roommate.find(params[:id])
     respond_to do |format|
@@ -156,10 +181,17 @@ class RoommatesController < ApplicationController
   end
 
   def get_units
-    @listings = Unit.joins(:building)
+    @listings = Unit.joins(:residential_listing, :building)
       .where("buildings.formatted_street_address = ?", params[:address])
-      .where("status = ?", Unit.statuses["active"])
-    puts "************* #{@listings.count}"
+      .where("units.status = ?", Unit.statuses["active"])
+      .where("residential_listings.for_roomsharing = true")
+    @can_proceed = @listings.count > 0
+  end
+
+  def check_availability
+    listing = ResidentialListing.where(unit_id: params[:unit_id]).limit(1).first
+    num_roommates = params[:ids].count + listing.roommates.count
+    @can_proceed = num_roommates <= listing.beds
   end
 
   protected
@@ -172,7 +204,6 @@ class RoommatesController < ApplicationController
   private
   	def set_roommate
       @roommate = Roommate.find(params[:id])
-      #puts "SETTING ROOMMATE #{@roommate.inspect}"
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that roommate is not active."
       redirect_to :action => 'index'

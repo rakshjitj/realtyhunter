@@ -11,7 +11,9 @@
 		    <div class="panel-title">
 		    	<div class="row">
 			  		<div class="col-xs-12 col-md-7">
-				  		<h2><%= @residential_unit.street_address_and_unit %></h2>
+				  		<h2><%= @residential_unit.street_address_and_unit %>
+				  		<% if @residential_unit.for_roomsharing %> (RS)<% end %>
+				  		</h2>
 				  		<h3><%= rent_formatted(@residential_unit.unit.rent) %> &nbsp;&nbsp;&nbsp; <%= @residential_unit.beds %> Beds / <%= trim_zeros(@residential_unit.baths) %> Baths</h3>
 				  		<p>
 			  				<%= small_header(@residential_unit) %><br />
@@ -29,6 +31,7 @@
 			  		<div class="col-xs-12 col-md-7">
 				  		<h1>
 				  			<%= @residential_unit.street_address_and_unit %>
+				  			<% if @residential_unit.for_roomsharing %> (RS)<% end %>
 				  		</h1>
 				  		<p>
 			  				<%= small_header(@residential_unit) %>
@@ -422,6 +425,43 @@
 	    		</div>
 	    	</div>
 	    	<% end %>
+
+	    	<!-- draw icons representing roommates -->
+	    	<% if @residential_unit.for_roomsharing %>
+		    	<br />
+		    	<div class="row">
+		    		<div class="col-md-12">
+		    			<h3>Assigned Roomates</h3>
+		    		</div>
+		    	</div>
+		    	<div class="row">
+		    		<div class="col-md-12">
+			    		<% for idx in 0..@residential_unit.beds-1 %>
+			    			<div class="img img-thumbnail col-xs-2">
+			    				<!-- if the roommate exists -->
+				    			<% if idx < @residential_unit.roommates.count && @residential_unit.roommates[idx] %>
+				    				<% roommate = @residential_unit.roommates[idx] %>
+				    				<!-- if the roommate has a picture -->
+				    				<% if roommate.upload_picture_of_yourself %>
+					    				<%= image_tag roommate.upload_picture_of_yourself, class: 'img-responsive', 
+				      					alt: roommate.upload_picture_of_yourself %>
+				      			<% else %>
+				      				<!-- otherwise the roommate is valid but has no photo -->
+				      				<i class="fa fa-neuter fa-2x"></i>
+				      			<% end %>
+			      				<br /><%= roommate.name %>
+				    			<% else %>
+				    				<!-- if there's no roommate -->
+				    				<i class="fa fa-neuter fa-2x"></i><br />
+				    				Unassigned<br />&nbsp;
+				    			<% end %>
+
+				    		</div>
+			    		<% end %>
+			    		<br />
+			    	</div>
+			    </div>
+			  <% end %>
 
 	    	<br />
 	    	<div class="row">

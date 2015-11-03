@@ -1,0 +1,2 @@
+$('#roommateMatchModal .error-too-many-roommates').html("<%= j( render 'check_availability_helper', locals: { can_proceed: @can_proceed }) %>");
+$('#roommateMatchModal .submit-btn').html("<%= j( render 'get_units_helper3', locals: { can_proceed: @can_proceed }) %>");

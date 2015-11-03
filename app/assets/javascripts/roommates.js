@@ -87,13 +87,34 @@ Roommates = {};
 		Roommates.updateSelectedButton();
 	};
 
+	// email modal triggered
 	Roommates.sendMessage = function (e) {
 		$('#roommate_ids').val(Roommates.selectedRoommates.join(","));
 		$('#roommate_message').val('');
 		e.preventDefault();
 	};
 
+	// match modal triggered
+	Roommates.matchMultiple = function(e) {
+		//var params = 'ids=' + Roommates.selectedRoommates.join(",");
+		$.ajax({
+	    url: 'roommates/match_multiple_modal',
+	    data: {
+        ids: Roommates.selectedRoommates,
+	    },
+	    dataType: 'script',
+	  //   success: function(data) {
+			// },
+			// error: function(data) {
+			// }
+	  });
+	};
+
 	Roommates.indexMenuActions = {
+		'mark-read': function() {
+			var params = 'roommate_ids=' + Roommates.selectedRoommates.join(",");
+			e.preventDefault();
+		},
 		'PDF': function() {
 			var params = 'roommate_ids=' + Roommates.selectedRoommates.join(",");
 			window.location.href = '/roommates/download.pdf?' + params;
@@ -231,7 +252,21 @@ Roommates = {};
 		$.ajax({
       url: "/roommates/get_units",
       data: {
-        address: $('#roommates #address').val()
+      	//ids: $('#roommateMatchModal #ids').val(),
+      	ids: Roommates.selectedRoommates,
+        address: $('#roommateMatchModal #address').val()
+      },
+      dataType: "script",
+    });
+	};
+
+	Roommates.checkUnitForAvailability = function() {
+		$.ajax({
+      url: "/roommates/check_availability",
+      data: {
+      	//ids: $('#roommateMatchModal #ids').val(),
+      	ids: Roommates.selectedRoommates,
+        unit_id: $('#roommateMatchModal #unit_id').val()
       },
       dataType: "script",
     });
@@ -266,6 +301,7 @@ Roommates = {};
 
 		// index page - selecting listings menu dropdown
 		$('#roommates #emailListings').click(Roommates.sendMessage);
+		$('#roommates #matchMultiple').click(Roommates.matchMultiple);
 		$('#roommates tbody').on('click', 'i', Roommates.toggleListingSelection);
 		$('#roommates .select-all-listings').click(Roommates.selectAllListings);
 		Roommates.selectedRoommates = [];
@@ -274,6 +310,9 @@ Roommates = {};
 			var action = $(this).data('action');
 			if (action in Roommates.indexMenuActions) Roommates.indexMenuActions[action]();
 		});
+
+		// when a unit is selected, check to see if there's enough space for all these roommates
+		$('#roommateMatchModal').on('change', '#unit_id', Roommates.checkUnitForAvailability);
 
 		var available_by = $('#roommates .datepicker').attr('data-available-by');
 		if (available_by) {

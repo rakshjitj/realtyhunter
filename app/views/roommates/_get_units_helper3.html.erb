@@ -1,5 +1,5 @@
-<% if @listings.count > 0 %>
-	<%= submit_tag "Assign Roommate", class: 'btn btn-danger' %>
+<% if @can_proceed %>
+	<%= submit_tag "Assign", class: 'btn btn-danger' %>
 <% else %>
-	<%= submit_tag "Assign Roommate", class: 'btn btn-danger disabled' %>
+	<%= submit_tag "Assign", class: 'btn btn-danger disabled', disabled:true %>
 <% end %>

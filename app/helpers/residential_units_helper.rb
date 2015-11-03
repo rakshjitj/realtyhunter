@@ -34,7 +34,10 @@ module ResidentialUnitsHelper
 		else
 			text
 		end
+	end
 
+	def roommate_has_icon(roommates, idx)
+		return idx < roommates.count && roommates[idx] && roommates[idx].upload_picture_of_yourself
 	end
 
 end

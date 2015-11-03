@@ -1,3 +1,4 @@
-$('#roommateMatchModal .found_units').html("<%= j( render 'get_units_helper', locals: { listings: @listings }) %>");
-$('#roommateMatchModal .no_units_found').html("<%= j( render 'get_units_helper2', locals: { listings: @listings }) %>");
-$('#roommateMatchModal .submit-btn').html("<%= j( render 'get_units_helper3', locals: { listings: @listings }) %>");
+$('#roommateMatchModal .found_units').html("<%= j( render 'get_units_helper', locals: { listings: @listings, can_proceed: @can_proceed }) %>");
+$('#roommateMatchModal .error-no-units-found').html("<%= j( render 'get_units_helper2', locals: { listings: @listings, can_proceed: @can_proceed }) %>");
+$('#roommateMatchModal .error-too-many-roommates').html();
+$('#roommateMatchModal .submit-btn').html("<%= j( render 'get_units_helper3', locals: { can_proceed: @can_proceed }) %>");

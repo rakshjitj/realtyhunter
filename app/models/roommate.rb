@@ -63,7 +63,7 @@ class Roommate < ActiveRecord::Base
     	  'neighborhoods.name as neighborhood_name',
     	  'roommates.monthly_budget', 'roommates.move_in_date', 'roommates.dogs_allowed', 
     	  'roommates.cats_allowed', 'roommates.created_at as submitted_date',
-    	  'roommates.archived')
+    	  'roommates.archived', 'roommates.residential_listing_id')
 
 	   # all search params come in as strings from the url
     # clear out any invalid search params
@@ -151,6 +151,30 @@ class Roommate < ActiveRecord::Base
     if listing && listing.roommates.count < listing.beds
       listing.roommates << self
       self.archive
+      return true
+    else
+      return false
+    end
+  end
+
+  # returns true if the roommates can be matched with the target apartment
+  # if the apartment does not have enough space for all the roommates,
+  # or was not found then return false
+  def self.match(params)
+    if params[:address].blank? || params[:unit_id].blank?
+      return false
+    end
+
+    listing = ResidentialListing.joins(:unit)
+      .where(unit_id: params[:unit_id]).limit(1).first
+    if !listing
+      return false
+    end
+
+    new_roommates = Roommate.where(id: params[:ids].split(' '))
+    if listing.roommates.count + new_roommates.count <= listing.beds
+      listing.roommates << new_roommates
+      new_roommates.each{ |r| r.archive }
       return true
     else
       return false

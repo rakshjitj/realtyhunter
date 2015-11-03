@@ -233,6 +233,9 @@ Rails.application.routes.draw do
       post 'send_message'
       get 'download'
       get 'send_update'
+      get 'match_multiple_modal'
+      post 'match_multiple'
+      get 'check_availability'
       get :autocomplete_roommate_name
       get :autocomplete_user_email
       get :autocomplete_building_formatted_street_address

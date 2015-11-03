@@ -1,3 +1,6 @@
-<% if @listings.count == 0 %>
-	<em>No active units at this address currently.</em>
+<% if !@can_proceed %>
+	<em>
+		No active roomsharing units at this address currently.
+		If you feel that's in error, contact <%= mail_to 'info@myspacenyc.com' %>.
+	</em>
 <% end %>
