@@ -437,22 +437,20 @@
 		    	<div class="row">
 		    		<div class="col-md-12">
 			    		<% for idx in 0..@residential_unit.beds-1 %>
-			    			<div class="img img-thumbnail col-xs-2 center">
+			    			<div class="roommate_no_photo_icon col-xs-2 center">
 			    				<!-- if the roommate exists -->
 				    			<% if idx < @residential_unit.roommates.count && @residential_unit.roommates[idx] %>
 				    				<% roommate = @residential_unit.roommates[idx] %>
 				    				<!-- if the roommate has a picture -->
 				    				<% if roommate.upload_picture_of_yourself %>
-					    				<%= image_tag roommate.upload_picture_of_yourself, class: 'img-responsive', 
-				      					alt: roommate.upload_picture_of_yourself %>
+					    				<%= link_to image_tag(roommate.upload_picture_of_yourself, class: 'img-responsive', 
+				      					alt: roommate.upload_picture_of_yourself), roommate %>
 				      			<% else %>
 				      				<!-- otherwise the roommate is valid but has no photo -->
-				      				<i class="fa fa-neuter fa-4x"></i><br />
 				      			<% end %>
-			      				<%= roommate.name.titleize %>
+			      				<%= link_to roommate.name.titleize, roommate %>
 				    			<% else %>
 				    				<!-- if there's no roommate -->
-				    				<i class="fa fa-neuter fa-4x"></i><br />
 				    				Unassigned<br />&nbsp;
 				    			<% end %>
 				    		</div>

@@ -8,7 +8,7 @@
     <!-- ****** IMAGE ****************************************** -->
     <td>
       <% if @res_images[residential_listing.unit_id] %>
-        <%= link_to(image_tag(@res_images[residential_listing.unit_id].file.url(:thumb), :class => 'img-responsive', 
+        <%= link_to(image_tag(@res_images[residential_listing.unit_id].file.url(:thumb), :class => 'img-responsive',
           alt: @res_images[residential_listing.unit_id].file.url(:medium)), residential_listing) %>
       <% else %>
         <!-- placeholder image -->
@@ -50,7 +50,42 @@
     <!-- ****** ACCESS ****************************************** -->
     <td class="access-info" data-toggle="tooltip" data-placement="top" title="<%= residential_listing.access_info %>"
       data-delay="1500">
-      <%= trim_access residential_listing.access_info %></td>
+      <div class="row">
+        <div class="col-md-12">
+          <%= trim_access residential_listing.access_info %>
+        </div>
+      </div>
+
+      <!-- if roomsharing, draw indicators for each roommate slot here -->
+      <% if residential_listing.for_roomsharing %>
+        <div class="row">
+          <div class="col-md-12 margin-vertical">
+            <% for idx in 0..residential_listing.beds-1 %>
+              
+              <!-- if the roommate exists -->
+              <% if idx < residential_listing.roommates.count && residential_listing.roommates[idx] %>
+                <% roommate = residential_listing.roommates[idx] %>
+                <% if roommate.upload_picture_of_yourself %>
+                  <%= image_tag roommate.upload_picture_of_yourself, class: 'roommate_icon', 
+                    alt: roommate.upload_picture_of_yourself, size:'26x26' %>
+                <% else %>
+                  <!-- otherwise the roommate is valid but has no photo -->
+                  <div class="roommate_no_photo_icon">
+                    <%= roommate.initials %>
+                  </div>
+                <% end %>
+
+              <% else %>
+                <!-- if there's no roommate -->
+                <div class="roommate_no_photo_icon">&nbsp;&nbsp;&nbsp;</div>
+              <% end %>
+            
+            <% end %>
+            <br />
+          </div>
+        </div>
+      <% end %><!-- roomsharing icons -->
+    </td>
     
     <!-- ****** LANDLORD ****************************************** -->
     <td>

@@ -186,5 +186,8 @@ class Roommate < ActiveRecord::Base
     end
   end
 
+  def initials
+    name.split(' ').map { |w| w[0].upcase }.join('')
+  end
 
 end
