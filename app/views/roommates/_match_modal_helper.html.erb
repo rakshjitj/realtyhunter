@@ -1,0 +1,62 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <h4 class="modal-title" id="myModalLabel">Match a Roomate</h4>
+</div>
+
+<%= form_tag match_roommate_path(@roommate), method: :post do %>
+<div class="modal-body">
+
+  <p class="disclaimer-text">
+    Pick an apartment for <%= j(@roommate.name) %>:
+  </p>
+  
+  <br />
+  <div class="row">
+    <div class="col-md-2 form-label-responsive">
+      <%= label_tag :address, "Address", class: 'required vertical-align' %>
+    </div>
+    <div class="col-md-8">
+      <div class="form-group ui-front">
+        <%= autocomplete_field_tag :address, "",  
+          autocomplete_building_formatted_street_address_roommates_path,
+          update_elements: {},
+          placeholder: "123 Main St", 
+          required: 'true',
+          class:'form-control' %>
+      </div>
+    </div>
+  </div>
+
+  <br />
+  <div class="row">
+    <div class="col-md-2 form-label-responsive">
+      <%= label_tag :unit_id, "Unit", class: 'required vertical-align' %>
+    </div>
+    <div class="col-md-3">
+      <div class="found_units">
+        <%= select_tag(:unit_id, 
+          options_for_select([]),
+            {prompt: "Choose one...",
+            class: 'form-control',
+            required: true }) %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-10 col-md-offset-2">
+      <div class="no_units_found">
+        <!-- placeholder -->
+      </div>
+    </div>
+  </div>
+
+</div>
+      
+<div class="modal-footer">
+  <span class="submit-btn">
+    <%= submit_tag "Assign Roommate", class: 'btn btn-danger' %>
+  </span>
+  <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+</div>
+<% end %>

@@ -347,7 +347,10 @@ ActiveRecord::Schema.define(version: 20151102210155) do
     t.integer  "unit_id"
     t.integer  "lock_version",      default: 0,     null: false
     t.boolean  "for_roomsharing",   default: false
+    t.integer  "roommates_id"
   end
+
+  add_index "residential_listings", ["roommates_id"], name: "index_residential_listings_on_roommates_id", using: :btree
 
   create_table "roles", force: :cascade do |t|
     t.string   "name"
@@ -381,6 +384,7 @@ ActiveRecord::Schema.define(version: 20151102210155) do
     t.integer  "lock_version",               default: 0,     null: false
     t.string   "internal_notes"
     t.boolean  "read",                       default: false
+    t.integer  "residential_listing_id"
   end
 
   create_table "roomsharing_applications", force: :cascade do |t|

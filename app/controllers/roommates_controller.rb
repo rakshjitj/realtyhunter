@@ -3,10 +3,11 @@ class RoommatesController < ApplicationController
   skip_load_resource :only => :create
   before_action :set_roommate, except: [:index, :new, :create, :filter, 
     :download, :send_update, :unarchive, :unarchive_modal, 
-    :send_message, :delete_modal, :destroy,
-    :autocomplete_user_email, :autocomplete_roommate_name]
+    :send_message, :delete_modal, :destroy, :get_units,
+    :autocomplete_user_email, :autocomplete_roommate_name, :autocomplete_building_formatted_street_address]
   autocomplete :roommate, :name, full: true
   autocomplete :user, :email, full: true
+  autocomplete :building, :formatted_street_address, full: true
 
   def index
     set_roommates
@@ -70,7 +71,7 @@ class RoommatesController < ApplicationController
   end
 
   def show
-    @roommate = Roommate.find_unarchived(params[:id])
+    @roommate = Roommate.find(params[:id])
     # once someone views this roomie, mark the record as 'read'
     @roommate.mark_read
     
@@ -80,7 +81,7 @@ class RoommatesController < ApplicationController
   end
 
   def edit
-    @roommate = Roommate.find_unarchived(params[:id])
+    @roommate = Roommate.find(params[:id])
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that roommate is no longer available."
       redirect_to :action => 'index'
@@ -113,12 +114,16 @@ class RoommatesController < ApplicationController
   # DELETE /residential_units/1
   # DELETE /residential_units/1.json
   def match
-    @roommate.archive
-    set_roommates
-    respond_to do |format|
-      format.html { redirect_to roommates_url, notice: 'Roommate was successfully matched.' }
-      format.json { head :no_content }
-      format.js
+    if @roommate.match(params)
+      set_roommates
+      flash[:success] = @roommate.name + ' was successfully matched!'
+      respond_to do |format|
+        format.html { redirect_to roommates_url }
+        format.json { head :no_content }
+        format.js
+      end
+    else
+      flash[:danger] = @roommate.name + ' could not be matched.'
     end
   end
 
@@ -150,6 +155,13 @@ class RoommatesController < ApplicationController
     end
   end
 
+  def get_units
+    @listings = Unit.joins(:building)
+      .where("buildings.formatted_street_address = ?", params[:address])
+      .where("status = ?", Unit.statuses["active"])
+    puts "************* #{@listings.count}"
+  end
+
   protected
 
     def correct_stale_record_version
@@ -159,8 +171,8 @@ class RoommatesController < ApplicationController
 
   private
   	def set_roommate
-      @roommate = Roommate.find_unarchived(params[:id])
-      puts "SETTING ROOMMATE #{@roommate.inspect}"
+      @roommate = Roommate.find(params[:id])
+      #puts "SETTING ROOMMATE #{@roommate.inspect}"
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that roommate is not active."
       redirect_to :action => 'index'
@@ -202,7 +214,7 @@ class RoommatesController < ApplicationController
     def roommate_params
     	data = params.permit(:sort_by, :filter, :direction, :name, :referred_by, :neighborhood_id,
         :submitted_date, :move_in_date, :monthly_budget, :status,
-        :dogs_allowed, :cats_allowed,
+        :dogs_allowed, :cats_allowed, :address,
         roommate: [:lock_version, :name, :phone_number, :internal_notes,
           :email, :how_did_you_hear_about_us, :upload_picture_of_yourself, :describe_yourself,
           :monthly_budget, :move_in_date, :neighborhood, :dogs_allowed, :cats_allowed,

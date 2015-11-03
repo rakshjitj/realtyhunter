@@ -6,7 +6,8 @@ class Roommate < ActiveRecord::Base
   belongs_to :user, touch: true
   belongs_to :neighborhood, touch: true
   belongs_to :company, touch: true
-	
+	belongs_to :residential_listing
+
   scope :unarchived, ->{where(archived: false)}
 
   validates :name, presence: true, length: {maximum: 200}
@@ -129,6 +130,30 @@ class Roommate < ActiveRecord::Base
   def mark_read
     if !read
       self.update_attribute(:read, true)
+    end
+  end
+
+  def is_matched?
+    !self.residential_listing_id.blank?
+  end
+
+  # returns true if the roommate can be matched with the target apartment
+  # if the apartment already has enough roommates, or was not found
+  # then return false
+  def match(params)
+    if params[:address].blank? || params[:unit_id].blank?
+      return false
+    end
+
+    listing = ResidentialListing.joins(:unit)
+      .where(unit_id: params[:unit_id]).limit(1).first
+    
+    if listing && listing.roommates.count < listing.beds
+      listing.roommates << self
+      self.archive
+      return true
+    else
+      return false
     end
   end
 

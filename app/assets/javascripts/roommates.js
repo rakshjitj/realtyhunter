@@ -227,6 +227,16 @@ Roommates = {};
 		}
 	};
 
+	Roommates.updateUnits = function() {
+		$.ajax({
+      url: "/roommates/get_units",
+      data: {
+        address: $('#roommates #address').val()
+      },
+      dataType: "script",
+    });
+	};
+
 	Roommates.initialize = function() {
 		document.addEventListener("page:restore", function() {
 		  Roommates.hideSpinner();

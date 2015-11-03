@@ -1,0 +1,3 @@
+$('#roommateMatchModal .found_units').html("<%= j( render 'get_units_helper', locals: { listings: @listings }) %>");
+$('#roommateMatchModal .no_units_found').html("<%= j( render 'get_units_helper2', locals: { listings: @listings }) %>");
+$('#roommateMatchModal .submit-btn').html("<%= j( render 'get_units_helper3', locals: { listings: @listings }) %>");

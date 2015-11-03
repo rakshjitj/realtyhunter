@@ -1,6 +1,7 @@
 class ResidentialListing < ActiveRecord::Base
   scope :unarchived, ->{where(archived: false)}
   has_and_belongs_to_many :residential_amenities
+  has_many :roommates
   belongs_to :unit, touch: true
   before_save :process_custom_amenities
 

@@ -7,7 +7,7 @@
       
       <div class="row">
         <div class="col-md-6">
-          <h1>Roommate referral<br/><%= @roommate.name %></h1>
+          <h1>Roommate Referral<br/><%= @roommate.name %></h1>
         </div>
         <div class="col-md-6 form-label-responsive">
 
@@ -83,56 +83,70 @@
 
         <br />
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-3">
             <strong>Monthly Budget:</strong>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-9">
             <%= @roommate.monthly_budget %>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-3">
             <strong>Move In Date:</strong>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-9">
             <%= @roommate.move_in_date %>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-3">
             <strong>Target Neighborhood:</strong>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-9">
             <%= @roommate.neighborhood ? @roommate.neighborhood.name : 'None Specified' %>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-3">
             <strong>Dogs allowed:</strong>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-9">
             <%= @roommate.dogs_allowed ? 'Yes' : 'No' %>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-3">
             <strong>Cats allowed:</strong>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-9">
             <%= @roommate.cats_allowed ? 'Yes' : 'No' %>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-3">
             <strong>Referred By:</strong>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-9">
             <%= @roommate.user.blank? ? 'Website' : @roommate.user.name %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-3 exclusive-listing">
+            <strong>Matched to:</strong>
+          </div>
+          <div class="col-md-9 exclusive-listing">
+            <% if @roommate.is_matched? %>
+              <%= link_to @roommate.residential_listing.street_address_and_unit, @roommate.residential_listing %>
+            <% else %>
+              - Unmatched -
+            <% end %>
           </div>
         </div>
 

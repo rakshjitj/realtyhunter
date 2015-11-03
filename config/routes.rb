@@ -235,6 +235,8 @@ Rails.application.routes.draw do
       get 'send_update'
       get :autocomplete_roommate_name
       get :autocomplete_user_email
+      get :autocomplete_building_formatted_street_address
+      get :get_units
     end
   end
 
