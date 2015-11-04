@@ -49,6 +49,8 @@ CommercialUnits = {};
         Listings.hideSpinner();
       }
     });
+
+    CommercialUnits.passiveRealTimeUpdate();
   };
 
   CommercialUnits.setupSortableColumns = function() {
@@ -86,6 +88,19 @@ CommercialUnits = {};
 
   // search as user types
   CommercialUnits.timer;
+
+  // if a user remains on this page for an extended amount of time,
+  // refresh the page every so often. We want to make sure they are
+  // always viewing the latest data.
+  CommercialUnits.passiveRealTimeUpdate = function() {
+    if (CommercialUnits.timer) {
+      clearTimeout(CommercialUnits.timer);
+    }
+    // update every few minutes
+    CommercialUnits.timer = setTimeout(CommercialUnits.doSearch, 60 * 3 * 1000);
+  };
+
+  // search as user types
   CommercialUnits.throttledSearch = function () {
     clearTimeout(CommercialUnits.timer);  //clear any interval on key up
     timer = setTimeout(CommercialUnits.doSearch, 500);
@@ -216,6 +231,7 @@ CommercialUnits = {};
   //call when typing or enter or focus leaving
   CommercialUnits.initialize = function () {
     document.addEventListener("page:restore", function() {
+      CommercialUnits.passiveRealTimeUpdate();
       Listings.hideSpinner();
     });
     Listings.hideSpinner();
@@ -290,6 +306,8 @@ CommercialUnits = {};
     Dropzone.autoDiscover = false;
     CommercialUnits.initializeImageDropzone();
     CommercialUnits.initializeDocumentsDropzone();
+
+    CommercialUnits.passiveRealTimeUpdate();
   };
 
 })();

@@ -55,6 +55,8 @@ ResidentialListings = {};
 				Listings.hideSpinner();
 			}
 	  });
+
+		ResidentialListings.passiveRealTimeUpdate();
 	};
 
 	ResidentialListings.removeUnitFeature = function (event) {
@@ -86,14 +88,25 @@ ResidentialListings = {};
   	ResidentialListings.throttledSearch();
   };
 
-	// search as user types
+	
 	ResidentialListings.timer;
 
+
+	// if a user remains on this page for an extended amount of time,
+	// refresh the page every so often. We want to make sure they are
+	// always viewing the latest data.
+	ResidentialListings.passiveRealTimeUpdate = function() {
+		if (ResidentialListings.timer) {
+		  clearTimeout(ResidentialListings.timer);
+		}
+		// update every few minutes
+	  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 60 * 3 * 1000);
+	};
+
+	// search as user types
 	ResidentialListings.throttledSearch = function () {
-		//console.log('throttling?');
 		//clear any interval on key up
 		if (ResidentialListings.timer) {
-			//console.log('yes, clearing');
 		  clearTimeout(ResidentialListings.timer);
 		}
 	  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 500);
@@ -102,7 +115,6 @@ ResidentialListings = {};
 	// change enter key to tab
 	ResidentialListings.preventEnter = function (event) {
 	  if (event.keyCode == 13) {
-	    //$('#checkbox_active').focus();
 	    return false;
 	  }
 	};
@@ -394,6 +406,7 @@ ResidentialListings = {};
 		// hide spinner on main index when first pulling up the page
 		document.addEventListener("page:restore", function() {
 		  Listings.hideSpinner();
+		  ResidentialListings.passiveRealTimeUpdate();
 		});
 		Listings.hideSpinner();
 		// // hide the spinner when we are editing, but switch to a new tab
@@ -445,12 +458,6 @@ ResidentialListings = {};
 	  $('#residential .remove-unit-feature').click(ResidentialListings.removeUnitFeature);
 	  $('#residential .remove-building-feature').click(ResidentialListings.removeBuildingFeature);
 	  $('#residential .remove-neighborhood').click(ResidentialListings.removeNeighborhood);
-
-	  // print pdf from the index page
-	 //  $('#residential .btn-print-list').click( function(event) {
-		//   showSpinner.showSpinner();
-		//   $(this).toggleClass('active');
-		// });
 
 		// index page - selecting listings menu dropdown
 		$('#residential #emailListings').click(Listings.sendMessage);
@@ -507,6 +514,8 @@ ResidentialListings = {};
     $('[data-toggle="tooltip"]').tooltip();
 
 		ResidentialListings.detectPhoneNumbers();
+
+		ResidentialListings.passiveRealTimeUpdate();
 	};
 
 })();

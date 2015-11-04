@@ -53,6 +53,8 @@ SalesListings = {};
 				Listings.hideSpinner();
 			}
 	  });
+
+		SalesListings.passiveRealTimeUpdate();
 	};
 
 	SalesListings.setupSortableColumns = function() {
@@ -88,13 +90,23 @@ SalesListings = {};
 		});
 	};
 
-	// search as user types
 	SalesListings.timer;
+
+	// if a user remains on this page for an extended amount of time,
+  // refresh the page every so often. We want to make sure they are
+  // always viewing the latest data.
+  SalesListings.passiveRealTimeUpdate = function() {
+    if (SalesListings.timer) {
+      clearTimeout(SalesListings.timer);
+    }
+    // update every few minutes
+    SalesListings.timer = setTimeout(SalesListings.doSearch, 60 * 3 * 1000);
+  };
+
+  // search as user types
 	SalesListings.throttledSearch = function () {
-		//console.log('throttling?');
 		//clear any interval on key up
 		if (SalesListings.timer) {
-			//console.log('yes, clearing');
 		  clearTimeout(SalesListings.timer);
 		}
 	  SalesListings.timer = setTimeout(SalesListings.doSearch, 500);
@@ -275,6 +287,7 @@ SalesListings = {};
 	
 	SalesListings.initialize = function() {
 		document.addEventListener("page:restore", function() {
+			SalesListings.passiveRealTimeUpdate();
 		  Listings.hideSpinner();
 		});
 		Listings.hideSpinner();
@@ -368,6 +381,8 @@ SalesListings = {};
 		Dropzone.autoDiscover = false;
 	 	SalesListings.initializeImageDropzone();
     SalesListings.initializeDocumentsDropzone();
+
+    SalesListings.passiveRealTimeUpdate();
   };
 
 })();
