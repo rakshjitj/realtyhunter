@@ -31,7 +31,9 @@ class AnnouncementsController < ApplicationController
   end
 
 	def index
-    set_announcements
+    #set_announcements
+    params[:limit] = 12 unless !params[:limit].blank?
+    @announcements = Announcement.search(announcement_params)
 	end
 
 	def get_units
@@ -42,32 +44,27 @@ class AnnouncementsController < ApplicationController
 	private
 
     def set_announcements
-      if !params[:res_limit]
-        params[:res_limit] = 10
-      end
-      if !params[:com_limit]
-        params[:com_limit] = 10
-      end
-      if !params[:sales_limit]
-        params[:sales_limit] = 10
-      end
-      if !params[:event_limit]
-        params[:event_limit] = 10
-      end
+      # params[:res_limit] = 10 unless !params[:res_limit].blank?
+      # params[:com_limit] = 10 unless !params[:com_limit].blank?
+      # params[:sales_limit] = 10 unless !params[:sales_limit].blank?
+      # params[:event_limit] = 10 unless !params[:event_limit].blank?
 
-      # exclude events from all categories, except the last
-      @res_announcements = Announcement.search_residential(announcement_params)
-      @com_announcements = Announcement.search_commercial(announcement_params)
-      @sales_announcements = Announcement.search_sales(announcement_params)
+      # # exclude events from all categories, except the last
+      # @res_announcements = Announcement.search_residential(announcement_params)
+      # @com_announcements = Announcement.search_commercial(announcement_params)
+      # @sales_announcements = Announcement.search_sales(announcement_params)
 
-      # include events, even if they do not have a unit defined
-      @event_announcements = Announcement.search_events(announcement_params)
+      # # include events, even if they do not have a unit defined
+      # @event_announcements = Announcement.search_events(announcement_params)
+      
+      params[:limit] = 12 unless !params[:limit].blank?
+      @announcements = Announcement.search(announcement_params)
     end
 
   	def announcement_params
       
   		data = params.permit(
-        :address, :res_limit, :com_limit, :sales_limit, :event_limit,
+        :address, :limit, :res_limit, :com_limit, :sales_limit, :event_limit,
         :filter_address, :created_start, :created_end,
         announcement: [
           :audience, :unit, :unit_id, :canned_response, :note, :user])

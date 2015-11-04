@@ -11,6 +11,35 @@ class Announcement < ActiveRecord::Base
 
 	validates :note, allow_blank: true, length: {maximum: 140}
 
+  def self.search(params)
+    entries = Announcement.joins(:user)
+      .joins('left join units on units.id = announcements.unit_id')
+      .joins('left join buildings on units.building_id = buildings.id')
+      .joins('left join residential_listings on units.id = residential_listings.unit_id
+left join commercial_listings on units.id = commercial_listings.unit_id
+left join sales_listings on units.id = sales_listings.unit_id')
+      .select('announcements.updated_at', 'canned_response', 'note', 'users.name AS sender_name',
+        'buildings.street_number', 'buildings.route', 'units.building_unit', 
+        'residential_listings.id as residential_listing_id',
+        'commercial_listings.id as commercial_listing_id',
+        'sales_listings.id as sales_listing_id', 'units.id as unit_id')
+      .limit(params[:limit]).uniq
+
+    if !params[:filter_address].blank?
+      entries = entries.where("buildings.formatted_street_address = ?", params[:filter_address])
+    end
+
+    if !params[:created_start].blank?
+      entries = entries.where('announcements.created_at > ?', params[:created_start]);
+    end
+
+    if !params[:created_end].blank?
+      entries = entries.where('announcements.created_at < ?', params[:created_end]);
+    end
+    
+    entries
+  end
+
 	def self.search_residential(params)
 		entries = Announcement.joins(:user, unit: [:residential_listing, :building])
       .where('canned_response NOT ILIKE ? AND canned_response NOT ILIKE ?', '%event%', '%open house%')

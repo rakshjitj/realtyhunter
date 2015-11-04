@@ -13,12 +13,10 @@
       <% if current_user.is_management? %>
         <%= link_to 'Make an Announcement', new_announcement_path %><br />
       <% end %>
+      <!-- loading more should add another 2 rows of data -->
       <%= link_to 'Load more', announcements_path(
         params.merge({
-        res_limit: params[:res_limit] ? params[:res_limit].to_i + 10 : 10,
-    		com_limit: params[:com_limit] ? params[:com_limit].to_i + 10 : 10,
-        sales_limit: params[:sales_limit] ? params[:sales_limit].to_i + 10 : 10,
-        event_limit: params[:event_limit] ? params[:event_limit].to_i + 10 : 10
+        limit: params[:limit] ? params[:limit].to_i + 8 : 12,
         }).symbolize_keys)
         %>
     </div>
@@ -88,42 +86,6 @@
 
 <hr />
 
-<div class="row">
-  <div class="col-md-3">
-  	<h3>Residential</h3> 
-    <% if @res_announcements.length > 0 %>
-    	<%= link_to 'Load more', announcements_path(
-        params.merge({res_limit: params[:res_limit] ? params[:res_limit].to_i + 10 : 10 }).symbolize_keys) %>
-    <% end %>
-  </div>
-  <div class="col-md-3">
-  	<h3>Commercial</h3>
-    <% if @com_announcements.length > 0 %>
-    	<%= link_to 'Load more', announcements_path(
-        params.merge({com_limit: params[:com_limit] ? params[:com_limit].to_i + 10 : 10 }).symbolize_keys) %>
-      <% end %>
-  </div>
-  <div class="col-md-3">
-  	<h3>Sales</h3>
-    <% if @sales_announcements.length > 0 %>
-    	<%= link_to 'Load more', announcements_path(
-        params.merge({sales_limit: params[:sales_limit] ? params[:sales_limit].to_i + 10 : 10 }).symbolize_keys) %>
-      <% end %>
-  </div>
-  <div class="col-md-3">
-  	<h3>Events</h3>
-    <% if @event_announcements.length > 0 %>
-    	<%= link_to 'Load more', announcements_path(
-        params.merge({event_limit: params[:event_limit] ? params[:event_limit].to_i + 10 : 10 }).symbolize_keys) %>
-      <% end %>
-  </div>
-</div>
-
 <div class="items">
-  <%= render partial: 'announcements/items_list', locals: {
-    com_announcements: @com_announcements,
-    res_announcements: @res_announcements,
-    sales_announcements: @sales_announcements,
-    event_announcements: @event_announcements
-    } %>
+  <%= render partial: "announcements/items_list", locals: { announcements: @announcements } %>
 </div>

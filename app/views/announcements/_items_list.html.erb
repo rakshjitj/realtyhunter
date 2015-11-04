@@ -1,41 +1,14 @@
-<% keep_going = true; idx = 0; %>
-<% while keep_going %>
-	<!-- if we find nothing on this row, don't continue iterating -->
-	<% if !@res_announcements[idx] && !@com_announcements[idx] && !@sales_announcements[idx] && !@event_announcements[idx] %>
-		<% keep_going = false; break %>
-	<% end %>
+<div class="row">
+  <% @announcements.each_index do |idx| %>
+    <% if idx % 4 == 0 && idx > 0 %>
+      </div>
+      <div class="row">
+    <% end %>
 
-	<div class="row">
-		<!-- residential -->
-		<div class="col-md-3">
-			<% if @res_announcements[idx] %>
-				<%= render partial: 'announcements/announcement', 
-					locals: { announcement: @res_announcements[idx], css_class: 'residential-announcement' } %>
-			<% end %>
-		</div>
-
-		<!-- commercial -->
-		<div class="col-md-3">
-			<% if @com_announcements[idx] %>
-				<%= render partial: 'announcements/announcement', 
-					locals: { announcement: @com_announcements[idx], css_class: 'commercial-announcement' } %>
-			<% end %>
-		</div>
-		<!-- sales -->
-		<div class="col-md-3">
-			<% if @sales_announcements[idx] %>
-				<%= render partial: 'announcements/announcement', 
-					locals: { announcement: @sales_announcements[idx], css_class: 'sales-announcement' } %>
-			<% end %>
-		</div>
-		<!-- events -->
-		<div class="col-md-3">
-			<% if @event_announcements[idx] %>
-				<%= render partial: 'announcements/announcement', 
-					locals: { announcement: @event_announcements[idx], css_class: 'event-announcement' } %>
-			<% end %>
-		</div>
-	
-	</div>
-	<% idx = idx + 1 %>
-<% end %>
+    <div class="col-md-3">
+      <%= render partial: 'announcements/announcement', 
+        locals: { announcement: @announcements[idx] } %>
+    </div>  
+      
+  <% end %>
+</div>
