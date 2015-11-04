@@ -354,6 +354,7 @@ Rails.application.routes.draw do
    
   resources :announcements do
     collection do
+      get :filter
       get :autocomplete_building_formatted_street_address
       get :get_units
     end

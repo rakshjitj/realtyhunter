@@ -11,8 +11,8 @@ class AnnouncementsController < ApplicationController
 	def create
     # NOTE: for now, we've decided to just email myspaceupdates google group.
     # This means 'everyone' will be getting all updates, all the time.
-    announcment_params[:announcement][:audience] = 'everyone'
-		@announcement = Announcement.new(announcment_params[:announcement])
+    announcement_params[:announcement][:audience] = 'everyone'
+		@announcement = Announcement.new(announcement_params[:announcement])
     if @announcement.save
     	@announcement.broadcast(current_user)
     	flash[:info] = "Announcement sent!"
@@ -23,60 +23,15 @@ class AnnouncementsController < ApplicationController
     end
 	end
 
+  def filter
+    set_announcements
+    respond_to do |format|
+      format.js
+    end
+  end
+
 	def index
-    if !params[:res_limit]
-      params[:res_limit] = 10
-    end
-    if !params[:com_limit]
-      params[:com_limit] = 10
-    end
-    if !params[:sales_limit]
-      params[:sales_limit] = 10
-    end
-    if !params[:event_limit]
-      params[:event_limit] = 10
-    end
-
-    # exclude events from all categories, except the last
-
-		@res_announcements = Announcement.joins(:user, unit: [:residential_listing, :building])
-      .where('canned_response NOT ILIKE ? AND canned_response NOT ILIKE ?', '%event%', '%open house%')
-      .select('announcements.updated_at', 'canned_response', 'note', 'units.id as unit_id',
-        'buildings.street_number', 'buildings.route', 'users.name AS sender_name', 
-        'units.building_unit', 'residential_listings.id as residential_listing_id')
-      .limit(announcment_params[:res_limit])
-
-    @com_announcements = Announcement.joins(:user, unit: [:commercial_listing, :building])
-      .where('canned_response NOT ILIKE ? AND canned_response NOT ILIKE ?', '%event%', '%open house%')
-      .select('announcements.updated_at', 'canned_response', 'note', 'units.id as unit_id',
-        'buildings.street_number', 'buildings.route', 'users.name AS sender_name', 
-        'units.building_unit', 'commercial_listings.id as commercial_listing_id')
-      .limit(announcment_params[:com_limit])
-
-    @sales_announcements = Announcement.joins(:user, unit: [:sales_listing, :building])
-      .where('canned_response NOT ILIKE ? AND canned_response NOT ILIKE ?', '%event%', '%open house%')
-      .select('announcements.updated_at', 'canned_response', 'note', 'units.id as unit_id',
-        'buildings.street_number', 'buildings.route',  'users.name AS sender_name',
-        'units.building_unit', 'sales_listings.id as sales_listing_id')
-      .limit(announcment_params[:sales_limit])
-
-    # include events, even if they do not have a unit defined
-    @event_announcements = Announcement
-      .joins(:user)
-      .joins('left join units on units.id = announcements.unit_id')
-      .joins('left join buildings on units.building_id = buildings.id')
-      .joins('left join residential_listings on units.id = residential_listings.unit_id
-left join commercial_listings on units.id = commercial_listings.unit_id
-left join sales_listings on units.id = sales_listings.unit_id')
-      .where('canned_response ILIKE ? or canned_response ILIKE ?', '%event%', '%open house%')
-      .select('announcements.updated_at', 'canned_response', 'note', 'users.name AS sender_name',
-        'buildings.street_number', 'buildings.route', 'units.building_unit', 
-        'residential_listings.id as residential_listing_id',
-        'commercial_listings.id as commercial_listing_id',
-        'sales_listings.id as sales_listing_id', 'units.id as unit_id')
-      .limit(announcment_params[:event_limit]).uniq
-
-      #.where("announcements.updated_at > ?", (Time.now - 2.days))
+    set_announcements
 	end
 
 	def get_units
@@ -86,32 +41,56 @@ left join sales_listings on units.id = sales_listings.unit_id')
 
 	private
 
-	def announcment_params
-    
-		data = params.permit(
-      :address, :res_limit, :com_limit, :sales_limit, :event_limit,
-      announcement: [
-        :audience, :unit, :unit_id, :canned_response, :note, :user])
-
-    if !data[:address].blank? && data[:announcement] && data[:announcement][:unit_id].blank?
-    	data[:announcement][:unit] = Unit.joins(:building)
-        .where(building_unit: '')
-    		.where("buildings.formatted_street_address = ?", data[:address]).first
-
-    	data.delete('unit_id')
-    end
-
-    if data[:announcement]
-      if data[:announcement][:audience]
-        data[:announcement][:audience] = data[:announcement][:audience].downcase
+    def set_announcements
+      if !params[:res_limit]
+        params[:res_limit] = 10
+      end
+      if !params[:com_limit]
+        params[:com_limit] = 10
+      end
+      if !params[:sales_limit]
+        params[:sales_limit] = 10
+      end
+      if !params[:event_limit]
+        params[:event_limit] = 10
       end
 
-      if !data[:announcement][:user]
-        data[:announcement][:user] = current_user
-      end
+      # exclude events from all categories, except the last
+      @res_announcements = Announcement.search_residential(announcement_params)
+      @com_announcements = Announcement.search_commercial(announcement_params)
+      @sales_announcements = Announcement.search_sales(announcement_params)
+
+      # include events, even if they do not have a unit defined
+      @event_announcements = Announcement.search_events(announcement_params)
     end
-		
-    data
-  end
+
+  	def announcement_params
+      
+  		data = params.permit(
+        :address, :res_limit, :com_limit, :sales_limit, :event_limit,
+        :filter_address, :created_start, :created_end,
+        announcement: [
+          :audience, :unit, :unit_id, :canned_response, :note, :user])
+
+      if !data[:address].blank? && data[:announcement] && data[:announcement][:unit_id].blank?
+      	data[:announcement][:unit] = Unit.joins(:building)
+          .where(building_unit: '')
+      		.where("buildings.formatted_street_address = ?", data[:address]).first
+
+      	data.delete('unit_id')
+      end
+
+      if data[:announcement]
+        if data[:announcement][:audience]
+          data[:announcement][:audience] = data[:announcement][:audience].downcase
+        end
+
+        if !data[:announcement][:user]
+          data[:announcement][:user] = current_user
+        end
+      end
+  		
+      data
+    end
 
 end

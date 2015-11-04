@@ -46,6 +46,7 @@ class Office < ActiveRecord::Base
 	def managers
 		User.joins([:office, :employee_title]).merge(Office.where(id: self.id))
 			.includes(:subordinates)
+			.unarchived
 			.merge(EmployeeTitle.where(name: 'manager'))
 			.order(:name)
 			.select('users.company_id', 'users.archived', 'users.id', 
@@ -59,6 +60,7 @@ class Office < ActiveRecord::Base
 	def agents
 		User.joins(:office, :employee_title)
 			.includes(:manager, :roles)
+			.unarchived
 			.merge(Office.where(id: self.id))
 			.merge(EmployeeTitle.where(name: 'agent'))
 			.order(:name)

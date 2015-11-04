@@ -279,13 +279,11 @@ class ResidentialListing < ActiveRecord::Base
       end
     end
 
-    if params[:available_starting] || params[:available_before]
-      if params[:available_starting] && !params[:available_starting].empty?
-        @running_list = @running_list.where('available_by > ?', params[:available_starting]);
-      end
-      if params[:available_before] && !params[:available_before].empty?
-        @running_list = @running_list.where('available_by < ?', params[:available_before]);
-      end
+    if !params[:available_starting].blank?
+      @running_list = @running_list.where('available_by > ?', params[:available_starting]);
+    end
+    if !params[:available_before].blank?
+      @running_list = @running_list.where('available_by < ?', params[:available_before]);
     end
 
     # search beds

@@ -43,4 +43,12 @@ module ApplicationHelper
   def unread_roommates_count
     Roommate.where(read: false).count
   end
+
+  def symbolize_params_without_controller(params_obj)
+    params_obj.delete('action')
+    params_obj.delete('controller')
+    puts "******** #{params_obj.to_h.inspect}"
+    params_obj.to_h
+  end
+
 end

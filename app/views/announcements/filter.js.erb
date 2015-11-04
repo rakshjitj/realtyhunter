@@ -1,0 +1,1 @@
+$('.items').html("<%= escape_javascript (render partial: 'announcements/items_list', locals: { com_announcements: @com_announcements, res_announcements: @res_announcements, sales_announcements: @sales_announcements, event_announcements: @event_announcements } ) %>");

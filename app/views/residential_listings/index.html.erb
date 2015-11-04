@@ -23,17 +23,17 @@
 </div>
 
 <div class="row vertical-align">
-  <div class="col-xs-12 col-md-3"><!-- hidden-sm hidden-xs -->
+  <div class="col-md-3">
 
     <i class="fa fa-spinner fa-pulse fa-5x res-spinner-desktop listings-spinner-desktop"></i>
 
     <div id="res-search-filters" data-search-path="<%= filter_residential_listings_path %>">
       <%= form_tag residential_listings_path, :method => 'get' do %>
         <div class="row vertical-padding">
-          <div class="col-xs-3">
+          <div class="col-md-3">
             <%= label_tag(:address, "Address") %>
           </div>
-          <div class="col-xs-9 col-sm-left-padding">
+          <div class="col-md-9 col-sm-left-padding">
           <%= autocomplete_field_tag :address, params[:address], 
               autocomplete_building_formatted_street_address_residential_listings_path,
               update_elements: {},
@@ -42,64 +42,57 @@
           </div>
         </div>
         <div class="row vertical-padding">
-          <div class="col-xs-3">
+          <div class="col-md-3">
             <%= label_tag(:unit, "Unit") %>
           </div>
-          <div class="col-xs-4 col-sm-left-padding">
+          <div class="col-md-4 col-sm-left-padding">
             <%= text_field_tag :unit, params[:unit], size: 5, class:"form-control" %>
           </div>
         </div>
         <div class="row vertical-padding">
-          <div class="col-xs-3">
+          <div class="col-md-3">
             <%= label_tag(:unit, "Rent") %>
           </div>
-          <div class="col-xs-4 col-sm-left-padding">
+          <div class="col-md-4 col-sm-left-padding">
             <%= number_field_tag :rent_min, params[:rent_min], placeholder: "$ min", 
               min: 0, max: 1000000, class:"form-control" %>
           </div>
-          <div class="col-xs-1 col-no-padding">
-            &nbsp; to 
-          </div>
-          <div class="col-xs-4 col-no-padding">
+          <div class="col-md-4 col-sm-left-padding">
             <%= number_field_tag :rent_max, params[:rent_max], placeholder: "$ max", 
               min: 0, max: 1000000, class:"form-control" %>
           </div>
         </div>
         <div class="row vertical-padding">
-          <div class="col-xs-3">
+          <div class="col-md-3">
             <%= label_tag(:unit, "Beds") %>
           </div>
-          <div class="col-xs-4 col-sm-left-padding">
-            <%= number_field_tag :bed_min, params[:bed_min], min: 0, max: 10, 
+          <div class="col-md-4 col-sm-left-padding">
+            <%= number_field_tag :bed_min, params[:bed_min], min: 0, max: 10, interval: 1,
               placeholder: " min", class:"form-control" %>
           </div>
-          <div class="col-xs-1 col-no-padding">
-            &nbsp; to 
-          </div>
-          <div class="col-xs-4 col-no-padding">
-            <%= number_field_tag :bed_max, params[:bed_max], min: 0, max: 10, 
+          <div class="col-md-4 col-sm-left-padding">
+            <%= number_field_tag :bed_max, params[:bed_max], min: 0, max: 10, interval: 1,
               placeholder: " max", class:"form-control" %>
           </div>
         </div>
         <div class="row vertical-padding">
-          <div class="col-xs-3">
+          <div class="col-md-3">
             <%= label_tag(:unit, "Baths") %>
           </div>
-          <div class="col-xs-4 col-sm-left-padding">
-            <%= number_field_tag :bath_min, params[:bath_min], min: 0, max: 10, class:"form-control" %>
+          <div class="col-md-4 col-sm-left-padding">
+            <%= number_field_tag :bath_min, params[:bath_min], min: 0, max: 10, interval: 0.5,
+              placeholder: " min", class:"form-control" %>
           </div>
-          <div class="col-xs-1 col-no-padding">
-            &nbsp; to 
-          </div>
-          <div class="col-xs-4 col-no-padding">
-            <%= number_field_tag :bath_max, params[:bath_max], min: 0, max: 10, class:"form-control" %>
+          <div class="col-md-4 col-sm-left-padding">
+            <%= number_field_tag :bath_max, params[:bath_max], min: 0, max: 10, interval: 0.5,
+              placeholder: " max", class:"form-control" %>
           </div>
         </div>
         <div class="row vertical-padding">
-          <div class="col-xs-3">
+          <div class="col-md-5">
             <%= label_tag(:landlord, "Landlord ") %>
           </div>
-          <div class="col-xs-9 col-sm-left-padding">
+          <div class="col-md-7">
             <%= autocomplete_field_tag :landlord, params[:landlord], 
               autocomplete_landlord_code_residential_listings_path,
               update_elements: {},
@@ -108,10 +101,10 @@
           </div>
         </div>
         <div class="row vertical-padding">
-          <div class="col-xs-5">
+          <div class="col-md-5">
             <%= label_tag :status, "Status" %>
           </div>
-          <div class="col-xs-7">
+          <div class="col-md-7">
             <% if current_user.is_management? || current_user.is_listings_manager? %>
               <%= select_tag(:status, 
                 options_for_select(['Any', 'Active + Pending', 'Active', 'Pending', 'Off'], 
@@ -124,19 +117,19 @@
           </div>
         </div>
         <div class="row vertical-padding">
-          <div class="col-xs-5">
+          <div class="col-md-5">
             <%= label_tag :has_fee, "Broker's Fee" %>
           </div>
-          <div class="col-xs-7">
+          <div class="col-md-7">
             <%= select_tag(:has_fee, 
               options_for_select(%w(Any Yes No), params[:has_fee]), class: 'form-control') %>
           </div>
         </div>
         <div class="row vertical-padding">
-          <div class="col-xs-5">
+          <div class="col-md-5">
             <%= label_tag :pet_policy_shorthand, "Pet policy" %>
           </div>
-          <div class="col-xs-7">
+          <div class="col-md-7">
             <%= select_tag(:pet_policy_shorthand, 
               options_for_select(["Any", "Cats Only", "Dogs Only", "None"], 
               [params[:pet_policy_shorthand] ? params[:pet_policy_shorthand].titleize : "Any"]),
@@ -145,24 +138,21 @@
         </div>
 
         <div class="row vertical-padding">
-          <div class="col-xs-12">
+          <div class="col-md-12">
             <strong>Available</strong>
           </div>
         </div>
         <div class="row vertical-padding">
-          <div class="col-xs-6 col-sm-left-padding">
+          <div class="col-md-6 col-sm-left-padding">
             <div class='input-group date datepicker'>
               <%= text_field_tag :available_starting, params[:available_starting], 
-                placeholder: "starting", class:"form-control", size:30 %>
+                placeholder: "start", class:"form-control", size:30 %>
               <label class="input-group-addon btn" for="date">
                 <span class="fa fa-calendar open-datepicker"></span>
               </label>
             </div>
           </div>
-          <div class="col-xs-1 col-no-padding">
-            &nbsp; to &nbsp;
-          </div>
-          <div class="col-xs-5 col-no-padding">
+          <div class="col-md-5 col-sm-left-padding">
             <div class='input-group date datepicker'>
               <%= text_field_tag :available_before, params[:available_before], 
                 placeholder: "by", class:"form-control" %>
@@ -175,7 +165,7 @@
         
         <br />
         <div class="row vertical-padding">
-          <div class="col-xs-12">
+          <div class="col-md-12">
             <%= link_to 'Neighborhoods', neighborhoods_modal_residential_listings_path, 
               data: {toggle: "modal", target: "#neighborhoodsModal"}, remote: true, 
               class: "link-as-button btn btn-xs btn-warning" %>
@@ -192,7 +182,7 @@
           </div>
         </div>
         <div class="row vertical-padding">
-          <div class="col-xs-12">
+          <div class="col-md-12">
             <%= link_to 'Features', features_modal_residential_listings_path, 
               data: {toggle: "modal", target: "#featuresModal"}, remote: true, 
               class: "link-as-button btn btn-xs btn-warning" %>
@@ -220,7 +210,7 @@
           </div>
         </div>
         <div class="row vertical-padding">
-          <div class="col-xs-12">
+          <div class="col-md-12">
             <%= link_to 'Clear filters', residential_listings_path, class: 'btn btn-xs btn-default' %>
           </div>
         </div>
@@ -229,7 +219,7 @@
     </div>
   </div>
 
-  <div class="col-xs-12 col-md-9">
+  <div class="col-md-9">
     <%= render 'map_overall_view' %>
   </div>
 </div>
