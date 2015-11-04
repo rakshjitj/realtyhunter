@@ -49,12 +49,16 @@ class SalesListing < ActiveRecord::Base
         output = unit.building.street_number + ' ' + unit.building.route
       end
 
-      if unit.building_unit && !unit.building_unit.empty?
+      if !unit.building_unit.blank?
         output = output + ' #' + unit.building_unit
       end
     else # otherwise, we used a select statement to cherry pick fields
       if street_number2
         output = street_number2 + ' ' + route2
+      end
+
+      if !building_unit.blank?
+        output = output + " #" + building_unit
       end
     end
 

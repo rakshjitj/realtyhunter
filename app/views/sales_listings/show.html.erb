@@ -12,7 +12,7 @@
 		    	<div class="row">
 			  		<div class="col-xs-12 col-md-7">
 				  		<h2>
-				  			<%= @sales_unit.unit.building.street_number + ' ' + @sales_unit.unit.building.route %>
+				  			<%= @sales_unit.street_address_and_unit %>
 				  		</h2>
 				  		<h3>
 				  			<%= rent_formatted(@sales_unit.unit.rent) %> &nbsp;&nbsp;&nbsp; <%= @sales_unit.beds %> Beds / <%= trim_zeros(@sales_unit.baths) %> Baths
@@ -32,7 +32,7 @@
 		    	<div class="row">
 			  		<div class="col-xs-12 col-md-7">
 				  		<h1>
-				  			<%= @sales_unit.unit.building.street_number + ' ' + @sales_unit.unit.building.route %>
+				  			<%= @sales_unit.street_address_and_unit %>
 				  		</h1>
 				  		<p>
 			  				<%= small_header(@sales_unit) %>
