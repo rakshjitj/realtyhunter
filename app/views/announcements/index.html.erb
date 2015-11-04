@@ -91,23 +91,31 @@
 <div class="row">
   <div class="col-md-3">
   	<h3>Residential</h3> 
-  	<%= link_to 'Load more', announcements_path(
-      params.merge({res_limit: params[:res_limit] ? params[:res_limit].to_i + 10 : 10 }).symbolize_keys) %>
+    <% if @res_announcements.length > 0 %>
+    	<%= link_to 'Load more', announcements_path(
+        params.merge({res_limit: params[:res_limit] ? params[:res_limit].to_i + 10 : 10 }).symbolize_keys) %>
+    <% end %>
   </div>
   <div class="col-md-3">
   	<h3>Commercial</h3>
-  	<%= link_to 'Load more', announcements_path(
-      params.merge({com_limit: params[:com_limit] ? params[:com_limit].to_i + 10 : 10 }).symbolize_keys) %>
+    <% if @com_announcements.length > 0 %>
+    	<%= link_to 'Load more', announcements_path(
+        params.merge({com_limit: params[:com_limit] ? params[:com_limit].to_i + 10 : 10 }).symbolize_keys) %>
+      <% end %>
   </div>
   <div class="col-md-3">
   	<h3>Sales</h3>
-  	<%= link_to 'Load more', announcements_path(
-      params.merge({sales_limit: params[:sales_limit] ? params[:sales_limit].to_i + 10 : 10 }).symbolize_keys) %>
+    <% if @sales_announcements.length > 0 %>
+    	<%= link_to 'Load more', announcements_path(
+        params.merge({sales_limit: params[:sales_limit] ? params[:sales_limit].to_i + 10 : 10 }).symbolize_keys) %>
+      <% end %>
   </div>
   <div class="col-md-3">
   	<h3>Events</h3>
-  	<%= link_to 'Load more', announcements_path(
-      params.merge({event_limit: params[:event_limit] ? params[:event_limit].to_i + 10 : 10 }).symbolize_keys) %>
+    <% if @event_announcements.length > 0 %>
+    	<%= link_to 'Load more', announcements_path(
+        params.merge({event_limit: params[:event_limit] ? params[:event_limit].to_i + 10 : 10 }).symbolize_keys) %>
+      <% end %>
   </div>
 </div>
 
