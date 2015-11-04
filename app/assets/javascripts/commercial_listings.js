@@ -89,20 +89,29 @@ CommercialUnits = {};
   // search as user types
   CommercialUnits.timer;
 
+  CommercialUnits.clearTimer = function() {
+    if (CommercialUnits.timer) {
+      clearTimeout(CommercialUnits.timer);
+    }
+  };
+
   // if a user remains on this page for an extended amount of time,
   // refresh the page every so often. We want to make sure they are
   // always viewing the latest data.
   CommercialUnits.passiveRealTimeUpdate = function() {
-    if (CommercialUnits.timer) {
-      clearTimeout(CommercialUnits.timer);
-    }
+    SalesListings.clearTimer();
+    ResidentialListings.clearTimer();
+    CommercialUnits.clearTimer();
     // update every few minutes
     CommercialUnits.timer = setTimeout(CommercialUnits.doSearch, 60 * 3 * 1000);
   };
 
   // search as user types
   CommercialUnits.throttledSearch = function () {
-    clearTimeout(CommercialUnits.timer);  //clear any interval on key up
+    SalesListings.clearTimer();
+    ResidentialListings.clearTimer();
+    CommercialUnits.clearTimer();
+    //clear any interval on key up
     timer = setTimeout(CommercialUnits.doSearch, 500);
   };
   

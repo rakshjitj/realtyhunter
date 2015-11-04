@@ -92,13 +92,19 @@ SalesListings = {};
 
 	SalesListings.timer;
 
+	SalesListings.clearTimer = function() {
+		if (SalesListings.timer) {
+      clearTimeout(SalesListings.timer);
+    }
+	};
+
 	// if a user remains on this page for an extended amount of time,
   // refresh the page every so often. We want to make sure they are
   // always viewing the latest data.
   SalesListings.passiveRealTimeUpdate = function() {
-    if (SalesListings.timer) {
-      clearTimeout(SalesListings.timer);
-    }
+    SalesListings.clearTimer();
+		CommercialUnits.clearTimer();
+		ResidentialListings.clearTimer();
     // update every few minutes
     SalesListings.timer = setTimeout(SalesListings.doSearch, 60 * 3 * 1000);
   };
@@ -106,9 +112,9 @@ SalesListings = {};
   // search as user types
 	SalesListings.throttledSearch = function () {
 		//clear any interval on key up
-		if (SalesListings.timer) {
-		  clearTimeout(SalesListings.timer);
-		}
+		SalesListings.clearTimer();
+		CommercialUnits.clearTimer();
+		ResidentialListings.clearTimer();
 	  SalesListings.timer = setTimeout(SalesListings.doSearch, 500);
 	};
 

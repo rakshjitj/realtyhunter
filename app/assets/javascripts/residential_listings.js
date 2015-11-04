@@ -88,17 +88,21 @@ ResidentialListings = {};
   	ResidentialListings.throttledSearch();
   };
 
-	
 	ResidentialListings.timer;
 
+	ResidentialListings.clearTimer = function() {
+		if (ResidentialListings.timer) {
+		  clearTimeout(ResidentialListings.timer);
+		}
+	};
 
 	// if a user remains on this page for an extended amount of time,
 	// refresh the page every so often. We want to make sure they are
 	// always viewing the latest data.
 	ResidentialListings.passiveRealTimeUpdate = function() {
-		if (ResidentialListings.timer) {
-		  clearTimeout(ResidentialListings.timer);
-		}
+		CommercialUnits.clearTimer();
+		SalesListings.clearTimer();
+		ResidentialListings.clearTimer();
 		// update every few minutes
 	  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 60 * 3 * 1000);
 	};
@@ -106,9 +110,9 @@ ResidentialListings = {};
 	// search as user types
 	ResidentialListings.throttledSearch = function () {
 		//clear any interval on key up
-		if (ResidentialListings.timer) {
-		  clearTimeout(ResidentialListings.timer);
-		}
+		CommercialUnits.clearTimer();
+		SalesListings.clearTimer();
+		ResidentialListings.clearTimer();
 	  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 500);
 	};
 
