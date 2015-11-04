@@ -47,12 +47,16 @@ class Ability
     can :manage, ResidentialAmenity, :company_id => user.company.id
     can :manage, Utility, :company_id => user.company.id
     posting_permissions(user)
-    can :manage, UserWaterfall
     can :manage, Announcement
     can :manage, WufooContactUsForm
     can :manage, WufooListingsForm
     can :manage, WufooPartnerForm
     can :manage, WufooCareerForm
+
+    if user.has_role?(:company_admin)
+      can :manage, UserWaterfall
+    end
+    
   end
 
   def agent_permissions(user)

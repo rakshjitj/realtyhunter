@@ -97,8 +97,10 @@
                   <li><%= link_to "Managers", managers_company_path(current_user.company) %></li>
                   <li><%= link_to "Coworkers", employees_company_path(current_user.company) %></li>
 
-                  <% if current_user.is_management? %>
+                  <% if current_user.is_company_admin? %>
                     <li><%= link_to "Waterfall", user_waterfalls_path %></li>
+                  <% end %>
+                  <% if current_user.is_management? %>
                     <li><%= link_to "Announcements", new_announcement_path %></li>
                     <li role="separator" class="divider"></li>
                     <li class="dropdown-header">WuFoo Forms</li>
