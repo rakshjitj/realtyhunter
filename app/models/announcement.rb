@@ -1,6 +1,7 @@
 class Announcement < ActiveRecord::Base
 	default_scope { order("updated_at DESC") }
 	belongs_to :unit
+	belongs_to :user
 
 	enum audience: [:everyone, :managers, :agents]
 	validates :audience, presence: true, inclusion: { 
@@ -27,7 +28,7 @@ class Announcement < ActiveRecord::Base
 
 		#recipients = ['myspaceupdates@myspacenyc.com']
 		# NOTE: Disable company-wide emailing until fully debugged
-		recipients = ['rbujans@myspacenyc.com', current_user.email]
+		recipients = ['rbujans@myspacenyc.com'] #, current_user.email]
 		
 		# body = ''
 		# #body = 'RealtyHunter: testing out sending SMS. Please disregard! '

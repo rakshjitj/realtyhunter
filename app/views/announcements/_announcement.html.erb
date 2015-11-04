@@ -1,0 +1,15 @@
+<div class="well <%= css_class %>">
+	<h4><%= announcement.canned_response %></h4>
+	
+	<small><em><%= time_ago_in_words(announcement.updated_at) %></em></small><br />
+
+	<%= announcement.street_number %> <%= announcement.route %>
+	<% if !announcement.building_unit.blank? %>
+		#<%= announcement.building_unit %>
+	<% end %>
+
+	<br /><br />
+	<p><%= announcement.note %></p>
+
+	<div class="pull-right">- <%= announcement.sender_name %></div>
+</div>

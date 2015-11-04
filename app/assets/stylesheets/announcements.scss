@@ -1,23 +1,15 @@
-.take_off {
-	color: black;
+.residential-announcement { 
+	background-color: #FFF8C6 !important; // yellow
 }
 
-.application_pending {
-	color: #000066 !important;
+.commercial-announcement {
+	background-color: #C6DEFF !important; // blue
 }
 
-.open_house {
-	color: #993300 !important;
+.sales-announcement {
+	background-color: #FEFCFF !important; // white
 }
 
-.available_now{
-	color: #009900 !important;
-}
-
-.price_drop {
-	color: #009900 !important;
-}
-
-.back_on_market {
-	color: #009900 !important;
+.event-announcement {
+	background-color: #FFF8C6 !important; // red
 }

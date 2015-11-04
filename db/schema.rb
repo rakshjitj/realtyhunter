@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151102210155) do
+ActiveRecord::Schema.define(version: 20151104165230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20151102210155) do
     t.boolean  "was_broadcast",   default: false
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+    t.integer  "user_id"
   end
 
   create_table "bootsy_image_galleries", force: :cascade do |t|
@@ -562,8 +563,10 @@ ActiveRecord::Schema.define(version: 20151102210155) do
     t.string   "public_url"
     t.integer  "roommates_id"
     t.integer  "lock_version",        default: 0,     null: false
+    t.integer  "announcements_id"
   end
 
+  add_index "users", ["announcements_id"], name: "index_users_on_announcements_id", using: :btree
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["employee_title_id"], name: "index_users_on_employee_title_id", using: :btree

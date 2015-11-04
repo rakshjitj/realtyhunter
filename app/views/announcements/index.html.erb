@@ -1,37 +1,74 @@
-<div class="row">
-	<div class="col-md-8 col-md-offset-2">
+<% provide(:title, 'Recent Announcements') %>
 
-		<div class="page-header">
-		  <div class="row">
-		    <div class="col-md-6">
-		      <h1>Recent Announcements</h1>
-		    </div>
-		    <% if current_user.is_management? %>
-			    <div class="col-md-6 form-label-responsive">
-			      <%= link_to 'New announcement', new_announcement_path %>
-			    </div>
-			  <% end %>
-		  </div>
-		</div>
+<div id="announcements">
+<div id="section-name" data-name="announcements">
 
-		<% @announcements.each do |announcement| %>
-		<div class="row">
-			<div class="col-md-6">
-				<div class="well">
-					<h4 class="<%= announcement.canned_response.gsub(/\s+/, '_').downcase %>"><%= announcement.canned_response %></h4>
-					
-					<small><em><%= time_ago_in_words(announcement.updated_at) %></em></small><br />
+<div class="page-header">
+  <div class="row">
+    <div class="col-md-6">
+      <h1>Recent Announcements</h1>
+    </div>
+    <div class="col-md-6 form-label-responsive">
+      
+      <% if current_user.is_management? %>
+        <%= link_to 'New announcement', new_announcement_path %>
+      <% end %>
 
-					<%= announcement.street_number %> <%= announcement.route %>
-					<% if announcement.building_unit %>
-						#<%= announcement.building_unit %>
-					<% end %>
-
-					<p><%= announcement.note %></p>
-				</div>
-			</div>
-		</div>
-		<% end %>
-
-	</div>
+    </div>
+  </div>
 </div>
+
+<div class="row">
+  <div class="col-md-3"><h3>Residential</h3>
+  </div>
+  <div class="col-md-3"><h3>Commercial</h3>
+  </div>
+  <div class="col-md-3"><h3>Sales</h3>
+  </div>
+  <div class="col-md-3"><h3>Events</h3>
+  </div>
+</div>
+
+<% keep_going = true; idx = 0; %>
+<% while keep_going %>
+	<!-- if we find nothing on this row, don't continue iterating -->
+	<% if !@res_announcements[idx] && !@com_announcements[idx] && !@sales_announcements[idx] && !@event_announcements[idx] %>
+		<% keep_going = false; break %>
+	<% end %>
+
+	<div class="row">
+		<!-- residential -->
+		<div class="col-md-3">
+			<% if @res_announcements[idx] %>
+				<%= render partial: 'announcements/announcement', 
+					locals: { announcement: @res_announcements[idx], css_class: 'residential-announcement' } %>
+			<% end %>
+		</div>
+
+		<!-- commercial -->
+		<div class="col-md-3">
+			<% if @com_announcements[idx] %>
+				<%= render partial: 'announcements/announcement', 
+					locals: { announcement: @com_announcements[idx], css_class: 'commercial-announcement' } %>
+			<% end %>
+		</div>
+		<!-- sales -->
+		<div class="col-md-3">
+			<% if @sales_announcements[idx] %>
+				<%= render partial: 'announcements/announcement', 
+					locals: { announcement: @sales_announcements[idx], css_class: 'sales-announcement' } %>
+			<% end %>
+		</div>
+		<!-- events -->
+		<div class="col-md-3">
+			<% if @event_announcements[idx] %>
+				<%= render partial: 'announcements/announcement', 
+					locals: { announcement: @event_announcements[idx], css_class: 'event-announcement' } %>
+			<% end %>
+		</div>
+	
+	</div>
+	<% idx = idx + 1 %>
+<% end %>
+
+
