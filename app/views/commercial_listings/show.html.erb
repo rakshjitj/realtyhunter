@@ -12,7 +12,7 @@
 		    	<div class="row">
 			  		<div class="col-md-6">
 			  			<h1>
-				  			<%= @commercial_unit.unit.building.street_address %>
+				  			<%= @commercial_unit.street_address_and_unit %>
 				  		</h1>
 				  		<p>
 			  				<%= @commercial_unit.unit.building.neighborhood.name %>, <%= @commercial_unit.unit.building.sublocality %>, <%= @commercial_unit.unit.building.administrative_area_level_2_short %> <%= @commercial_unit.unit.building.postal_code %>
@@ -269,6 +269,25 @@
 				  	<%= @commercial_unit.lease_term_months %> Months
 				  </div>
 				  <div class="col-md-3">
+				    <strong>Building</strong>
+				  </div>
+				  <div class="col-md-3">
+				    <%= link_to @commercial_unit.unit.building.street_address, @commercial_unit.unit.building %>
+				  </div>
+				</div>
+
+				<div class="row">
+				  <div class="col-md-3">
+				    <strong>Is Sublease?</strong>
+				  </div>
+				  <div class="col-md-3">
+				  	<% if @commercial_unit.is_sublease %>
+				    	Yes
+				    <% else %>
+				    	No
+				    <% end %>
+				  </div>
+				  <div class="col-md-3">
 				    <strong>Landlord</strong>
 				  </div>
 				  <div class="col-md-3">
@@ -282,10 +301,10 @@
 
 				<div class="row">
 				  <div class="col-md-3">
-				    <strong>Is Sublease?</strong>
+				    <strong>Liquor Eligible?</strong>
 				  </div>
 				  <div class="col-md-3">
-				  	<% if @commercial_unit.is_sublease %>
+				  	<% if @commercial_unit.liquor_eligible %>
 				    	Yes
 				    <% else %>
 				    	No
@@ -305,10 +324,10 @@
 
 				<div class="row">
 				  <div class="col-md-3">
-				    <strong>Liquor Eligible?</strong>
+				    <strong>Has Ventilation?</strong>
 				  </div>
 				  <div class="col-md-3">
-				  	<% if @commercial_unit.liquor_eligible %>
+				  	<% if @commercial_unit.has_ventilation %>
 				    	Yes
 				    <% else %>
 				    	No
@@ -328,14 +347,10 @@
 
 				<div class="row">
 				  <div class="col-md-3">
-				    <strong>Has Ventilation?</strong>
+				    
 				  </div>
 				  <div class="col-md-3">
-				  	<% if @commercial_unit.has_ventilation %>
-				    	Yes
-				    <% else %>
-				    	No
-				    <% end %>
+				  	
 				  </div>
 				  <div class="col-md-3">
 				    <strong>Listing ID</strong>
