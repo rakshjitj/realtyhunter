@@ -11,6 +11,8 @@ class Ability
     can [:autocomplete_user_name, :filter, :filter_listings, :coworkers, :subordinates], [User]
 
     can [:send_listings], [ResidentialListing, CommercialListing]
+    # every employee should be able to see their waterfall info
+    can :show, UserWaterfall, parent_agent_id: user.id
   end
 
   def posting_permissions(user)
@@ -79,7 +81,6 @@ class Ability
     end
     can :filter, CommercialListing, company_id: user.company_id
 
-    can :show, UserWaterfall, parent_agent_id: user.id
     can :read, Announcement
   end
 
