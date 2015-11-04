@@ -9,9 +9,12 @@ class AnnouncementsController < ApplicationController
   end
 
 	def create
+    # NOTE: for now, we've decided to just email myspaceupdates google group.
+    # This means 'everyone' will be getting all updates, all the time.
+    announcment_params[:audience] = 'everyone'
 		@announcement = Announcement.new(announcment_params)
     if @announcement.save
-    	@announcement.broadcast(current_user.company)
+    	@announcement.broadcast(current_user)
     	flash[:info] = "Announcement sent!"
       redirect_to action: 'new'
     else
@@ -34,17 +37,8 @@ class AnnouncementsController < ApplicationController
 
 	private
 
-		# def set_announcement
-		# 	@announcement = Announcement.find(params[:id])
-  #   rescue ActiveRecord::RecordNotFound
-  #     flash[:warning] = "Sorry, that announcment was not found"
-  #     redirect_to :action => 'index'
-		# end
-
 	def announcment_params
-		# params.permit(:sort_by, :filter, :address, 
-  #     :announcement => [:unit_id, :audience, :canned_response, :note])
-
+    
 		data = params.require(:announcement).permit(:unit_id, :audience, :canned_response, :note)
     if data[:address] && data[:unit_id].blank?
     	data[:unit] = Unit.joins(:building)

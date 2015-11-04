@@ -1,0 +1,11 @@
+<p>
+	[<%= @canned_response %>] <%= @unit.building.street_number %> <%= @unit.building.route %> 
+	<% if !@unit.building_unit.blank? %>
+		# <%= @unit.building_unit %>
+	<% end %>
+</p>
+	
+<p><%= @note %></p>
+
+
+<p>- <%= @sender.name %></p>

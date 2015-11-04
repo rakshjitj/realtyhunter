@@ -10,37 +10,42 @@ class Announcement < ActiveRecord::Base
 
 	validates :note, allow_blank: true, length: {maximum: 140}
 
-	def broadcast(company)
-		client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN']
+	def broadcast(current_user)
+		# NOTE: We've decided to go with email instead of texting for now, to save on costs.
+		#client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN']
 
-		if Announcement.audiences[audience] == 'everyone'
-			send_list = (company.managers + company.agents).map(&:mobile_phone_number)
-		elsif Announcement.audiences[audience] == 'managers'
-			send_list = company.managers.map(&:mobile_phone_number)
-		elsif Announcement.audiences[audience] == 'agents'
-			send_list = company.agents.map(&:mobile_phone_number)
-		end
-
+		# if Announcement.audiences[audience] == 'everyone'
+		# 	recipients = (company.managers + company.agents).map(&:email)
+		# elsif Announcement.audiences[audience] == 'managers'
+		# 	recipients = company.managers.map(&:email)
+		# elsif Announcement.audiences[audience] == 'agents'
+		# 	recipients = company.agents.map(&:email)
+		# end
 		# ignore any users with no phone numbers set
-		send_list = ['8134952570', '6466965555', '(646) 623-7919']
-		send_list = send_list.select{|i| i != ""}
-		puts send_list.inspect
+		#recipients = recipients.select{|i| i != ""}
+		#puts recipients.inspect
 
-		body = 'RealtyHunter: testing out sending SMS. Please disregard! '
-		body += '[' + canned_response + '] ' + unit.building.street_number + ' ' + unit.building.route
-		if unit.building_unit
-			body += ' #' + unit.building_unit
-		end
-		body += ' - ' + note
-		body += ' - ' + current_user.name.split(' ')[0]
+		#recipients = ['myspaceupdates@myspacenyc.com']
+		# NOTE: Disable company-wide emailing until fully debugged
+		recipients = ['rbujans@myspacenyc.com', current_user.email]
+		
+		# body = ''
+		# #body = 'RealtyHunter: testing out sending SMS. Please disregard! '
+		# body += '[' + canned_response + '] ' + unit.building.street_number + ' ' + unit.building.route
+		# if unit.building_unit
+		# 	body += ' #' + unit.building_unit
+		# end
+		# body += ' - ' + note
+		# body += ' - ' + current_user.name.split(' ')[0]
 
-		send_list.each do |recipient|
-	  	message = client.messages.create(
-	  		from: ENV['TWILIO_SRC_TELEPHONE'], 
-	  		to: recipient, 
-	  		body: body)
-	  end
+		#recipients.each do |recipient|
+	  	# message = client.messages.create(
+	  	# 	from: ENV['TWILIO_SRC_TELEPHONE'], 
+	  	# 	to: recipient, 
+	  	# 	body: body)
+	  #end
 
+	  AnnouncementMailer.send_broadcast(current_user, recipients, note, canned_response, unit).deliver_now
 	  self.update_attribute(:was_broadcast, true)
 	end
 
