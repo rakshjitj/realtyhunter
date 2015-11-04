@@ -123,8 +123,7 @@ class User < ActiveRecord::Base
   end
 
   def archive
-    self.archived = true
-    self.save
+    self.update_attribute(:archived, true)
   end
 
   def self.find_unarchived(id)
@@ -179,7 +178,7 @@ class User < ActiveRecord::Base
   end
 
   def self.search(query_params, current_user)
-    @running_list = User.unarchived
+    running_list = User.unarchived
       .joins(:office, :employee_title)
       .where(company: current_user.company)
       .select('users.company_id', 'users.archived', 'users.id', 
@@ -188,17 +187,17 @@ class User < ActiveRecord::Base
         'offices.name AS office_name', 'offices.id as office_id')
 
     if !query_params || !query_params[:name_email]
-      return @running_list 
+      return running_list 
     end
     
     query_string = query_params[:name_email]
     query_string = query_string[0..500] # truncate for security reasons
-    @terms = query_string.split(" ")
-    @terms.each do |term|
-      @running_list = @running_list.where('users.name ILIKE ? or users.email ILIKE ?', "%#{term}%", "%#{term}%").all
+    terms = query_string.split(" ")
+    terms.each do |term|
+      running_list = running_list.where('users.name ILIKE ? or users.email ILIKE ?', "%#{term}%", "%#{term}%").all
     end
 
-    @running_list
+    running_list
   end
 
   # copies in new roles from 

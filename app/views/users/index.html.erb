@@ -9,23 +9,26 @@
 </div>
 
 <div class="row">
-    <div class="col-xs-12 col-md-6 vertical-padding">
-      <div id="user-search-filters" data-search-path="<%= filter_users_path %>">
+  <div class="col-md-6 vertical-padding">
+    <div id="user-search-filters" data-search-path="<%= filter_users_path %>">
 
-        <%= form_tag users_path, :method => 'get' do %>
-          <%= autocomplete_field_tag :name_email, params[:search], 
-            autocomplete_user_name_users_path,
-            update_elements: {},
-            placeholder: "Filter by name", 
-            size: 30, class:'form-control' %>
-        <% end %>
-      </div>
-
+      <%= form_tag users_path, :method => 'get' do %>
+        <%= autocomplete_field_tag :name_email, params[:search], 
+          autocomplete_user_name_users_path,
+          update_elements: {},
+          placeholder: "Filter by name", 
+          size: 30, class:'form-control' %>
+      <% end %>
+    </div>
   </div>
   <div class="col-md-6">
     <div class="form-label-responsive">
+      <div class="vertical-align2 totals">
+        <%= @users.total_count %> Users found &nbsp;&nbsp;
+      </div>
       <%= render partial: 'shared/pagination', locals: {models: @users} %>
     </div>
+  </div>
 </div>
 
 <div class="row">
