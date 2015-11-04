@@ -24,28 +24,32 @@ class AnnouncementsController < ApplicationController
 	end
 
 	def index
+    # exclude events from all categories, except the last
+
 		@res_announcements = Announcement.joins(:user, unit: [:residential_listing, :building])
-      .select('announcements.updated_at', 'canned_response', 'note', 
+      .where('canned_response NOT ILIKE ? AND canned_response NOT ILIKE ?', '%event%', '%open house%')
+      .select('announcements.updated_at', 'canned_response', 'note', 'units.id as unit_id',
         'buildings.street_number', 'buildings.route', 'users.name AS sender_name',
         'units.building_unit').limit(10)
 
     @com_announcements = Announcement.joins(:user, unit: [:commercial_listing, :building])
-      .select('announcements.updated_at', 'canned_response', 'note', 
+      .where('canned_response NOT ILIKE ? AND canned_response NOT ILIKE ?', '%event%', '%open house%')
+      .select('announcements.updated_at', 'canned_response', 'note', 'units.id as unit_id',
         'buildings.street_number', 'buildings.route', 'users.name AS sender_name', 
         'units.building_unit').limit(10)
 
     @sales_announcements = Announcement.joins(:user, unit: [:sales_listing, :building])
-      .select('announcements.updated_at', 'canned_response', 'note', 
+      .where('canned_response NOT ILIKE ? AND canned_response NOT ILIKE ?', '%event%', '%open house%')
+      .select('announcements.updated_at', 'canned_response', 'note', 'units.id as unit_id',
         'buildings.street_number', 'buildings.route',  'users.name AS sender_name',
         'units.building_unit').limit(10)
 
-    # include events that do not have a unit defined
-    @event_announcements = Announcement.where(canned_response: 'Event')
-      .joins('left join units on units.id = announcements.unit_id')
+    # include events, even if they do not have a unit defined
+    @event_announcements = Announcement
       .joins(:user)
+      .where('canned_response ILIKE ? or canned_response ILIKE ?', '%event%', '%open house%')
       .select('announcements.updated_at', 'canned_response', 'note', 'users.name AS sender_name')
       .limit(10)
-
       #.where("announcements.updated_at > ?", (Time.now - 2.days))
 	end
 
@@ -63,7 +67,7 @@ class AnnouncementsController < ApplicationController
       announcement: [
         :audience, :unit, :unit_id, :canned_response, :note, :user])
 
-    if data[:announcement][:unit_id].blank?
+    if !data[:address].blank? && data[:announcement][:unit_id].blank?
     	data[:announcement][:unit] = Unit.joins(:building)
         .where(building_unit: '')
     		.where("buildings.formatted_street_address = ?", data[:address]).first

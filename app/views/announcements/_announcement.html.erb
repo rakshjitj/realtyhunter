@@ -3,9 +3,11 @@
 	
 	<small><em><%= time_ago_in_words(announcement.updated_at) %></em></small><br />
 
-	<%= announcement.street_number %> <%= announcement.route %>
-	<% if !announcement.building_unit.blank? %>
-		#<%= announcement.building_unit %>
+	<% if announcement.respond_to? :unit_id %>
+		<%= announcement.street_number %> <%= announcement.route %>
+		<% if !announcement.building_unit.blank? %>
+			#<%= announcement.building_unit %>
+		<% end %>
 	<% end %>
 
 	<br /><br />
