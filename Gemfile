@@ -72,7 +72,7 @@ gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
 gem 'rollbar', '~> 1.2.7'
 
 #gem 'yajl-ruby', :require => "yajl"
-gem "oj"
+#gem "oj"
 # timeout requests, note error in logs
 #gem "rack-timeout"
 

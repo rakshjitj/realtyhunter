@@ -1,76 +1,94 @@
+<% is_event = announcement.canned_response == 'Event' || announcement.canned_response == 'Open House' %>
 <% is_residential = (announcement.respond_to? :residential_listing_id) && (announcement.residential_listing_id) %>
 <% is_commercial = (announcement.respond_to? :commercial_listing_id) && (announcement.commercial_listing_id) %>
 <% is_sales = (announcement.respond_to? :sales_listing_id) && (announcement.sales_listing_id) %>
 
-
-<% if is_residential %>
+<% if is_event || (!is_residential && !is_commercial && !is_sales) %>
+	<div class="well announcement event-announcement">
+<% elsif is_residential %>
 	<div class="well announcement residential-announcement">
 <% elsif is_commercial %>
 	<div class="well announcement commercial-announcement">
 <% elsif is_sales %>
 	<div class="well announcement sales-announcement">
-<% else %>
-	<div class="well announcement event-announcement">
 <% end %>
 
+	<!-- if we are on any other page, this announcement should turn into a 
+		link that takes you to announcements/index -->
+	<% if params[:controller] != 'announcements' %>
+		<a href="/announcements">
+	<% end %>
 	<div class="row">
-		<div class="col-xs-7">
-			<!-- if we are on any other page, this announcement should turn into a 
-				link that takes you to announcements/index -->
-			<% if params[:controller] != 'announcements' %>
-				<a href="/announcements">
-			<% end %>
-
+		<div class="col-xs-8">
 			<h4><%= announcement.canned_response %></h4>
-
-			<!-- end link_to -->
-			<% if params[:controller] != 'announcements' %>
-				</a>
-			<% end %>
 		</div>
-
-		<div class="col-xs-5 text-right"><small><em><%= time_ago_in_words(announcement.updated_at) %></em></small><br /></div>
+		<div class="col-xs-4 text-right">
+			<small><em><%= time_ago_in_words(announcement.updated_at) %></em></small>
+		</div>
 	</div>
-
-	<% if announcement.respond_to? :unit_id %>
-
-		<!-- RESIDENTIAL -->
-		<% if is_residential %>
-			<%= link_to residential_listing_path(announcement.residential_listing_id) do %>
-				<%= announcement.street_number %> <%= announcement.route %>
-				<% if !announcement.building_unit.blank? %>
-					#<%= announcement.building_unit %>
-				<% end %>
-			<% end %>
-			<!-- COMMERCIAL -->
-		<% elsif is_commercial %>
-			<%= link_to commercial_listing_path(announcement.commercial_listing_id) do %>
-				<%= announcement.street_number %> <%= announcement.route %>
-				<% if !announcement.building_unit.blank? %>
-					#<%= announcement.building_unit %>
-				<% end %>
-			<% end %>
-			<!-- SALES -->
-		<% elsif is_sales %>
-			<%= link_to sales_listing_path(announcement.sales_listing_id) do %>
-				<%= announcement.street_number %> <%= announcement.route %>
-				<% if !announcement.building_unit.blank? %>
-					#<%= announcement.building_unit %>
-				<% end %>
-			<% end %>
-		<% else %>
-		<!-- NO ADDRESS SPECIFIED -->
-			<% if !announcement.route.blank? %>
-				<%= announcement.street_number %> <%= announcement.route %>
-				<% if !announcement.building_unit.blank? %>
-					#<%= announcement.building_unit %>
-				<% end %>
-			<% end %>
-		<% end %>
-		
+	<!-- end link_to -->
+	<% if params[:controller] != 'announcements' %>
+		</a>
 	<% end %>
 
-	<p><%= announcement.note %></p>
+	<div class="row">
+		<div class="col-xs-12">
 
-	<div class="text-right">- <%= announcement.sender_name %></div>
+			<% if announcement.respond_to? :unit_id %>
+				
+				<!-- RESIDENTIAL -->
+				<% if is_residential %>
+					<%= link_to residential_listing_path(announcement.residential_listing_id) do %>
+						<%= announcement.street_number %> <%= announcement.route %>
+						<% if !announcement.building_unit.blank? %>
+							#<%= announcement.building_unit %>
+						<% end %>
+					<% end %>
+					<!-- COMMERCIAL -->
+				<% elsif is_commercial %>
+					<%= link_to commercial_listing_path(announcement.commercial_listing_id) do %>
+						<%= announcement.street_number %> <%= announcement.route %>
+						<% if !announcement.building_unit.blank? %>
+							#<%= announcement.building_unit %>
+						<% end %>
+					<% end %>
+					<!-- SALES -->
+				<% elsif is_sales %>
+					<%= link_to sales_listing_path(announcement.sales_listing_id) do %>
+						<%= announcement.street_number %> <%= announcement.route %>
+						<% if !announcement.building_unit.blank? %>
+							#<%= announcement.building_unit %>
+						<% end %>
+					<% end %>
+				<% else %>
+				<!-- NO ADDRESS SPECIFIED -->
+					<% if !announcement.route.blank? %>
+						<%= announcement.street_number %> <%= announcement.route %>
+						<% if !announcement.building_unit.blank? %>
+							#<%= announcement.building_unit %>
+						<% end %>
+					<% end %>
+				<% end %>
+				</div>
+
+			<% end %>
+		
+	</div>
+
+	<!-- if we are on any other page, this announcement should turn into a 
+		link that takes you to announcements/index -->
+	<% if params[:controller] != 'announcements' %>
+		<a href="/announcements">
+	<% end %>
+	<div class="row">
+		<div class="col-xs-12">
+			<p><%= announcement.note %> - <%= announcement.sender_name %></p>
+		</div>
+	</div>
+
+	<!-- if we are on any other page, this announcement should turn into a 
+		link that takes you to announcements/index -->
+	<% if params[:controller] != 'announcements' %>
+		</a>
+	<% end %>
 </div>

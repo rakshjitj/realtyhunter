@@ -4,12 +4,12 @@
 <div class="row">
   <div class="col-md-12 hidden-xs hidden-sm">
     <div class="announcements">
-      <%= render partial: "announcements/items_list", locals: { announcements: @announcement_items } %>
+      <%= render partial: "announcements/top_row", locals: { announcements: @announcement_items } %>
     </div>
   </div>
   <div class="col-md-12 hidden-md hidden-lg">
     <div class="announcements">
-      <%= render partial: "announcements/items_list", locals: { announcements: [@announcement_items[0] ]} %>
+      <%= render partial: "announcements/top_row", locals: { announcements: [@announcement_items[0] ]} %>
     </div>
   </div>
 </div>

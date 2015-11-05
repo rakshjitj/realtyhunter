@@ -74,6 +74,7 @@ Announcements = {};
 		document.addEventListener("page:restore", function() {
 		  Forms.hideSpinner();
 		  Announcements.passiveRealTimeUpdate();
+		  
 		});
 
 		$('#announcements #address').bind('railsAutocomplete.select', Announcements.updateUnits);

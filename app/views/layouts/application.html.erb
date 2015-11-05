@@ -13,7 +13,7 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track': true %>
   <%= csrf_meta_tags %>
   <!-- used for geocoding -->
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&key=" + ENV['GOOGLE_MAPS_KEY']></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key=<%= ENV['GOOGLE_MAPS_KEY'] %>"></script>
 
   <!-- favicons generated from http://realfavicongenerator.net/ -->
   <%= favicon_link_tag "apple-touch-icon-57x57.png", rel:"apple-touch-icon", sizes:"57x57" %>

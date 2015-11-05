@@ -6,6 +6,7 @@ class AnnouncementsController < ApplicationController
 
   def new
   	@announcement = Announcement.new
+    get_units
   end
 
 	def create
@@ -31,14 +32,16 @@ class AnnouncementsController < ApplicationController
   end
 
 	def index
-    #set_announcements
-    params[:limit] = 12 unless !params[:limit].blank?
-    @announcements = Announcement.search(announcement_params)
+    set_announcements
 	end
 
 	def get_units
-		@listings = Unit.joins(:building).where("buildings.formatted_street_address = ?", params[:address])
-    @listings = @listings.select{|l| !l.building_unit.blank? }
+    if !params[:address].blank?
+  		@listings = Unit.joins(:building).where("buildings.formatted_street_address = ?", params[:address])
+      @listings = @listings.select{|l| !l.building_unit.blank? }
+    else
+      @listings = []
+    end
 	end
 
 	private
@@ -64,17 +67,26 @@ class AnnouncementsController < ApplicationController
   	def announcement_params
       
   		data = params.permit(
-        :address, :limit, :res_limit, :com_limit, :sales_limit, :event_limit,
+        :address, :unit_id, :limit, :res_limit, :com_limit, :sales_limit, :event_limit,
         :filter_address, :created_start, :created_end,
         announcement: [
           :audience, :unit, :unit_id, :canned_response, :note, :user])
+
+      # clicked on 'make announcement' link from residential_listings/show for example
+      # if !data[:unit_id].blank?
+      #   if !data[:announcement]
+      #     data[:announcement] = {}
+      #   end
+
+      #   data[:announcement][:unit] = Unit.where(id: params[:unit_id])
+      # end
 
       if !data[:address].blank? && data[:announcement] && data[:announcement][:unit_id].blank?
       	data[:announcement][:unit] = Unit.joins(:building)
           .where(building_unit: '')
       		.where("buildings.formatted_street_address = ?", data[:address]).first
-
-      	data.delete('unit_id')
+        data.delete('unit_id')
+        #data.delete('address')
       end
 
       if data[:announcement]
@@ -87,6 +99,7 @@ class AnnouncementsController < ApplicationController
         end
       end
   		
+      #puts data
       data
     end
 

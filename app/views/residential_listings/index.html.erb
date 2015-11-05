@@ -13,6 +13,9 @@
     <div class="col-md-6 form-label-responsive">
       
       <% if current_user.is_management? || current_user.is_listings_manager? %>
+        <%= link_to 'Make Announcement', new_announcement_path, 
+          class: "btn btn-warning btn-sm link-as-button" %>
+
         <%= link_to 'Add a unit', new_residential_listing_path, class: 'btn btn-warning btn-sm link-as-button' %>
       <% end %>
 

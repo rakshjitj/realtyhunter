@@ -103,10 +103,7 @@ SalesListings = {};
   // always viewing the latest data.
   SalesListings.passiveRealTimeUpdate = function() {
     SalesListings.clearTimer();
-		CommercialUnits.clearTimer();
-		ResidentialListings.clearTimer();
-		Announcements.clearTimer();
-    // update every few minutes
+		// update every few minutes
     SalesListings.timer = setTimeout(SalesListings.doSearch, 60 * 3 * 1000);
   };
 
@@ -114,10 +111,7 @@ SalesListings = {};
 	SalesListings.throttledSearch = function () {
 		//clear any interval on key up
 		SalesListings.clearTimer();
-		CommercialUnits.clearTimer();
-		ResidentialListings.clearTimer();
-		Announcements.clearTimer();
-	  SalesListings.timer = setTimeout(SalesListings.doSearch, 500);
+		SalesListings.timer = setTimeout(SalesListings.doSearch, 500);
 	};
 
 	// change enter key to tab

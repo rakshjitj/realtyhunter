@@ -37,10 +37,10 @@
           </div>
           <div class="col-md-3">
             <%= f.select(:unit_id, 
-              options_for_select([]),
-                {prompt: "Choose one..."},
+                options_for_select(@listings.collect {|l| [l.building_unit, l.id]}), 
+                { prompt: "Choose one..."},
                 class: 'form-control',
-                include_blank: true) %>
+                required: true ) %>
           </div>
         </div>
 

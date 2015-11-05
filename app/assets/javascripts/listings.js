@@ -5,7 +5,8 @@
 
 Listings = {};
 (function() {
-		Listings.selectedListings = [];
+
+	Listings.selectedListings = [];
 
 	// private
 	Listings.checkTheBox = function(item) {

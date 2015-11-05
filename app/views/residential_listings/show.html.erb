@@ -56,7 +56,7 @@
 
 			<div class="panel-body">
 		  	<div class="row">
-			  	<div class="col-md-9 vertical-padding">
+			  	<div class="col-md-6 vertical-padding">
 			  		<%= link_to 'View all', residential_listings_path %>
 			  		<!--%= link_to 'Print', print_modal_residential_listing_path(@residential_unit), 
 			      		data: {toggle: "modal", target: "#printModal"}, remote: true %-->
@@ -68,7 +68,11 @@
 			      			data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %-->
 			      <% end %>
 			  	</div>
-			  	<div class="col-md-3 form-label-responsive vertical-padding">
+			  	<div class="col-md-6 form-label-responsive vertical-padding">
+			  		<%= link_to 'Make Announcement', new_announcement_path(
+			  			{ address: @residential_unit.unit.building.formatted_street_address }), 
+			  			class: "btn btn-warning btn-sm link-as-button" %>
+
 			  		<%= link_to 'Report Inaccuracy', inaccuracy_modal_residential_listing_path(@residential_unit), 
 		  				class: "btn btn-danger btn-sm",
 		  				data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>

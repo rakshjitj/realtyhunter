@@ -116,7 +116,7 @@ class SalesListing < ActiveRecord::Base
     running_list = SalesListing.joins(unit: {building: [:company, :neighborhood]})
       .where('companies.id = ?', user.company_id)
       .where('units.listing_id IN (?)', listing_ids)
-      .select('buildings.formatted_street_address', 
+      .select('buildings.formatted_street_address AS formatted_street_address2', 
         'units.listing_id',
         'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2', 
         'buildings.lat as lat2', 'buildings.lng as lng2', 'units.id AS unit_id',
@@ -136,7 +136,7 @@ class SalesListing < ActiveRecord::Base
     running_list = SalesListing.joins(unit: {building: [:company, :neighborhood]})
       .where('companies.id = ?', user.company_id)
       .where('units.listing_id IN (?)', listing_ids)
-      .select('buildings.formatted_street_address', 
+      .select('buildings.formatted_street_address AS formatted_street_address2', 
         'units.listing_id',
         'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2', 
         'buildings.lat as lat2', 'buildings.lng as lng2', 'units.id AS unit_id',
@@ -157,7 +157,7 @@ class SalesListing < ActiveRecord::Base
     SalesListing.joins(unit: [building: [:company, :neighborhood]])
       .where('units.archived = false')
       .where('companies.id = ?', user.company_id)
-      .select('buildings.formatted_street_address', 
+      .select('buildings.formatted_street_address AS formatted_street_address2', 
         'units.listing_id',
         'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2', 
         'buildings.lat as lat2', 'buildings.lng as lng2', 'units.id AS unit_id',
@@ -186,8 +186,7 @@ class SalesListing < ActiveRecord::Base
     @running_list = SalesListing.joins(unit: [building: [:company, :neighborhood]])
       .where('units.archived = false')
       .where('companies.id = ?', user.company_id)
-      .select('buildings.formatted_street_address', 
-        'units.listing_id',
+      .select('units.listing_id', 'buildings.formatted_street_address AS formatted_street_address2', 
         'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2', 
         'buildings.lat as lat2', 'buildings.lng as lng2', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent',
@@ -413,7 +412,7 @@ class SalesListing < ActiveRecord::Base
     listings = SalesListing.joins(unit: {building: [:neighborhood]})
       .where('buildings.id in (?)', bldg_ids)
       .where('units.archived = false')
-      .select('buildings.formatted_street_address', 
+      .select('buildings.formatted_street_address AS formatted_street_address2', 
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
         'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id', 
         'beds || \'/\' || baths as bed_and_baths',
@@ -437,7 +436,7 @@ class SalesListing < ActiveRecord::Base
     listings = SalesListing.joins(unit: {building: [:neighborhood]})
       .where('units.id in (?)', unit_ids)
       .where('units.archived = false')
-      .select('buildings.formatted_street_address', 
+      .select('buildings.formatted_street_address AS formatted_street_address2', 
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
         'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id', 
         'beds || \'/\' || baths as bed_and_baths',

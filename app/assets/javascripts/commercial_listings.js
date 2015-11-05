@@ -99,20 +99,14 @@ CommercialUnits = {};
   // refresh the page every so often. We want to make sure they are
   // always viewing the latest data.
   CommercialUnits.passiveRealTimeUpdate = function() {
-    SalesListings.clearTimer();
-    ResidentialListings.clearTimer();
     CommercialUnits.clearTimer();
-    Announcements.clearTimer();
     // update every few minutes
     CommercialUnits.timer = setTimeout(CommercialUnits.doSearch, 60 * 3 * 1000);
   };
 
   // search as user types
   CommercialUnits.throttledSearch = function () {
-    SalesListings.clearTimer();
-    ResidentialListings.clearTimer();
     CommercialUnits.clearTimer();
-    Announcements.clearTimer();
     //clear any interval on key up
     timer = setTimeout(CommercialUnits.doSearch, 500);
   };

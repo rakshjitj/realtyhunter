@@ -91,7 +91,11 @@ ResidentialListings = {};
 	ResidentialListings.timer;
 	ResidentialListings.announcementsTimer;
 
-	//ResidentialListings.clearAnnouncementsTimer = function() {};
+	ResidentialListings.clearAnnouncementsTimer = function() {
+		if (ResidentialListings.announcementsTimer) {
+		  clearTimeout(ResidentialListings.announcementsTimer);
+		}
+	};
 
 	ResidentialListings.clearTimer = function() {
 		if (ResidentialListings.timer) {
@@ -101,22 +105,21 @@ ResidentialListings = {};
 
 	// update the announcements every 30 seconds
 	ResidentialListings.updateAnnouncements = function() {
-		console.log('updating ann');
-		$.ajax({
-      url: '/residential_listings/update_announcements',
-    });
+		if ($('#residential').length > 0) {
+			console.log('updating ann');
+			$.ajax({
+	      url: '/residential_listings/update_announcements',
+	    });
 
-		ResidentialListings.announcementsTimer = setTimeout(ResidentialListings.updateAnnouncements, 30 * 1000);
+			ResidentialListings.announcementsTimer = setTimeout(ResidentialListings.updateAnnouncements, 30 * 1000);
+		}
 	};
 
 	// if a user remains on this page for an extended amount of time,
 	// refresh the page every so often. We want to make sure they are
 	// always viewing the latest data.
 	ResidentialListings.passiveRealTimeUpdate = function() {
-		CommercialUnits.clearTimer();
-		SalesListings.clearTimer();
 		ResidentialListings.clearTimer();
-		Announcements.clearTimer();
 		// update every few minutes
 	  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 60 * 3 * 1000);
 	};
@@ -124,11 +127,8 @@ ResidentialListings = {};
 	// search as user types
 	ResidentialListings.throttledSearch = function () {
 		//clear any interval on key up
-		CommercialUnits.clearTimer();
-		SalesListings.clearTimer();
 		ResidentialListings.clearTimer();
-		Announcements.clearTimer();
-	  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 500);
+		ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 500);
 	};
 
 	// change enter key to tab
@@ -422,10 +422,14 @@ ResidentialListings = {};
   };
 
 	ResidentialListings.initialize = function() {
+		ResidentialListings.passiveRealTimeUpdate();
+		ResidentialListings.updateAnnouncements();
+
 		// hide spinner on main index when first pulling up the page
 		document.addEventListener("page:restore", function() {
 		  Listings.hideSpinner();
 		  ResidentialListings.passiveRealTimeUpdate();
+		  ResidentialListings.updateAnnouncements();
 		});
 		Listings.hideSpinner();
 		// // hide the spinner when we are editing, but switch to a new tab
@@ -533,9 +537,6 @@ ResidentialListings = {};
     $('[data-toggle="tooltip"]').tooltip();
 
 		ResidentialListings.detectPhoneNumbers();
-
-		ResidentialListings.passiveRealTimeUpdate();
-		ResidentialListings.updateAnnouncements();
 	};
 
 })();

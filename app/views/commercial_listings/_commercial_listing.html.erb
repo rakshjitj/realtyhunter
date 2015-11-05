@@ -56,6 +56,8 @@
         <%= link_to 'Edit', edit_commercial_listing_path(commercial_listing) %><br />
         <%= link_to 'Delete', delete_modal_commercial_listing_path(commercial_listing), 
           data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
+        <%= link_to 'Announcement', new_announcement_path(
+          { address: commercial_listing.formatted_street_address }) %>
       </td>
     <% end %>
   </tr>
