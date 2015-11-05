@@ -50,6 +50,8 @@ $(document).ready(function() {
 
 $(window).unload(function() {
 	Careers.clearTimer();
+	ContactUs.clearTimer();
+	Partner.clearTimer();
 	Announcements.clearTimer();
   ResidentialListings.clearAnnouncementsTimer();
   ResidentialListings.clearTimer();

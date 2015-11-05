@@ -22,9 +22,6 @@ Announcements = {};
 
 	Announcements.throttledSearch = function () {
 		//clear any interval on key up
-		CommercialUnits.clearTimer();
-		SalesListings.clearTimer();
-		ResidentialListings.clearTimer();
 		Announcements.clearTimer();
 	  Announcements.timer = setTimeout(Announcements.doSearch, 500);
 	};
@@ -33,9 +30,6 @@ Announcements = {};
 	// refresh the page every so often. We want to make sure they are
 	// always viewing the latest data.
 	Announcements.passiveRealTimeUpdate = function() {
-		CommercialUnits.clearTimer();
-		SalesListings.clearTimer();
-		ResidentialListings.clearTimer();
 		Announcements.clearTimer();
 		// update every few minutes
 	  Announcements.timer = setTimeout(Announcements.doSearch, 60 * 1 * 1000);

@@ -2,10 +2,11 @@ module Forms
 	class CareersController < ApplicationController
 		skip_authorize_resource
   	before_action :set_entry, except: [:index, :new, :create, :filter, 
-			:download, :send_update, :unarchive, :unarchive_modal]
+			:download, :send_update, :unarchive, :unarchive_modal, :destroy, :delete_modal]
 		autocomplete :wufoo_career_form, :name, full: true
 
 		def index
+			params[:status] = 'Active'
 			set_entries
 		end
 
@@ -54,6 +55,7 @@ module Forms
 	  end
 	  
 	  def delete_modal
+	  	@entry = WufooCareerForm.find(params[:id])
 	    respond_to do |format|
 	      format.js  
 	    end
@@ -66,7 +68,7 @@ module Forms
 	  end
 
 	  def hide
-			@entry.archive
+	  	@entry.archive
 	    set_entries
 	    respond_to do |format|
 	      format.html { redirect_to forms_careers_url, notice: 'Entry was successfully inactivated.' }
@@ -76,6 +78,7 @@ module Forms
 	  end
 
 	  def destroy
+	  	@entry = WufooCareerForm.find(params[:id])
 	    @entry.delete
 	    set_entries
 	    respond_to do |format|

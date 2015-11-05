@@ -2,7 +2,7 @@ module Forms
 	class ContactUsController < ApplicationController
 		skip_authorize_resource
   	before_action :set_entry, except: [:index, :new, :create, :filter, 
-			:download, :send_update, :unarchive, :unarchive_modal]
+			:download, :send_update, :unarchive, :unarchive_modal, :destroy, :delete_modal]
 		autocomplete :wufoo_contact_us_form, :name, full: true
 
 		def index
@@ -54,14 +54,32 @@ module Forms
 	  end
 	  
 	  def delete_modal
+	  	@entry = WufooContactUsForm.find(params[:id])
 	    respond_to do |format|
 	      format.js  
 	    end
 	  end
 
 	  def destroy
-	    @entry.archive
+	  	@entry = WufooContactUsForm.find(params[:id])
+	    @entry.delete
 	    set_entries
+	    respond_to do |format|
+	      format.html { redirect_to forms_contact_u_url, notice: 'Entry was successfully inactivated.' }
+	      format.json { head :no_content }
+	      format.js
+	    end
+	  end
+
+	  def hide_modal
+	    respond_to do |format|
+	      format.js  
+	    end
+	  end
+
+	  def hide
+			@entry.archive
+			set_entries
 	    respond_to do |format|
 	      format.html { redirect_to forms_contact_u_url, notice: 'Entry was successfully inactivated.' }
 	      format.json { head :no_content }
@@ -79,6 +97,7 @@ module Forms
 	  def unarchive
 	  	@entry = WufooContactUsForm.find(params[:id])
 	  	@entry.unarchive
+	  	params[:status] = 'Hidden'
 	    set_entries
 	    respond_to do |format|
 	      format.html { redirect_to forms_contact_u_url, notice: 'Entry was successfully activated.' }
@@ -96,6 +115,10 @@ module Forms
 			end
 
 			def set_entries
+				if params[:status].blank?
+					params[:status] = 'Active'
+				end
+
 				@entries = WufooContactUsForm.search(contact_us_params)
 				@entries = custom_sort
 		    @entries = @entries.page params[:page]

@@ -1,7 +1,7 @@
 $('#entryDeleteModal .modal-body').html(
-	"Are you sure you want to deactivate <%= j(@entry.name) %>? Deactivation will allow them to show up in searches again.");
+	"Are you sure you want to delete <%= j(@entry.name) %>? Deletion is permanent. There is no undo!");
 
-$('#entryDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Mark Inactive', forms_partner_path(@entry), remote: true, method: :delete, class: 'btn btn-danger delete-btn link-as-button', id: 'delete-link') %>");
+$('#entryDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', forms_partner_path(@entry), remote: true, method: :delete, class: 'btn btn-danger delete-btn link-as-button', id: 'delete-link') %>");
 $('#entryDeleteModal #delete-link').click( function(event) {
 	$('#entryDeleteModal').modal('hide');
 	event.preventDefault();

@@ -2,7 +2,7 @@ module Forms
 	class PartnerController < ApplicationController
 		skip_authorize_resource
   	before_action :set_entry, except: [:index, :new, :create, :filter, 
-			:download, :send_update, :unarchive, :unarchive_modal]
+			:download, :send_update, :unarchive, :unarchive_modal, :destroy, :delete_modal]
 		autocomplete :wufoo_partner_form, :name, full: true
 		autocomplete :wufoo_partner_form, :address_street_address, full: true
 
@@ -55,13 +55,31 @@ module Forms
 	  end
 	  
 	  def delete_modal
+	  	@entry = WufooPartnerForm.find(params[:id])
 	    respond_to do |format|
 	      format.js  
 	    end
 	  end
 
 	  def destroy
-	    @entry.archive
+	  	@entry = WufooPartnerForm.find(params[:id])
+	    @entry.delete
+	    set_entries
+	    respond_to do |format|
+	      format.html { redirect_to forms_partner_index_url, notice: 'Entry was successfully inactivated.' }
+	      format.json { head :no_content }
+	      format.js
+	    end
+	  end
+
+	  def hide_modal
+	    respond_to do |format|
+	      format.js  
+	    end
+	  end
+
+	  def hide
+			@entry.archive
 	    set_entries
 	    respond_to do |format|
 	      format.html { redirect_to forms_partner_index_url, notice: 'Entry was successfully inactivated.' }
@@ -80,6 +98,7 @@ module Forms
 	  def unarchive
 	  	@entry = WufooPartnerForm.find(params[:id])
 	  	@entry.unarchive
+	  	params[:status] = 'Hidden'
 	    set_entries
 	    respond_to do |format|
 	      format.html { redirect_to forms_partner_index_url, notice: 'Entry was successfully activated.' }
@@ -97,6 +116,10 @@ module Forms
 			end
 
 			def set_entries
+				if params[:status].blank?
+					params[:status] = 'Active'
+				end
+				
 				@entries = WufooPartnerForm.search(partner_params)
 				@entries = custom_sort
 		    @entries = @entries.page params[:page]

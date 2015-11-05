@@ -1,1 +1,3 @@
-$('.careers_table_body').html("<%= escape_javascript (render partial: 'forms/careers/entry', :collection => @entries, as: :entry) %>");
+$('.contact_us_table_body').html("<%= escape_javascript (render partial: 'forms/contact_us/entry', :collection => @entries, as: :entry) %>");
+
+$('.totals').html("<%= @entries.count %> Entries");

@@ -33,7 +33,7 @@
           <%= link_to 'Hide', hide_modal_forms_contact_u_path(entry), 
             data: { toggle: "modal", target: "#entryArchiveModal"}, remote: true %>
         <% else %>
-          <%= link_to 'Activate', unarchive_modal_forms_contact_u_path(entry), 
+          <%= link_to 'Activate', unarchive_modal_forms_contact_u_path(entry),
             data: { toggle: "modal", target: "#entryUnarchiveModal"}, remote: true %>
         <% end %>
         <%= link_to 'Delete', delete_modal_forms_contact_u_path(entry), 

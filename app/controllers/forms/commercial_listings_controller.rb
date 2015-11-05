@@ -2,7 +2,7 @@ module Forms
 	class CommercialListingsController < ApplicationController
 		skip_authorize_resource
   	before_action :set_entry, except: [:index, :new, :create, :filter, 
-			:download, :send_update, :unarchive, :unarchive_modal]
+			:download, :send_update, :unarchive, :unarchive_modal, :destroy, :delete_modal]
 		autocomplete :wufoo_listings_form, :name, where: {is_commercial: true}, full: true
 		autocomplete :wufoo_listings_form, :email, where: {is_commercial: true}, full: true
 
@@ -34,7 +34,7 @@ module Forms
 	    recipients = commercial_listings_params[:email_modal][:recipients].split(/\s, \,/)
 	    sub = commercial_listings_params[:email_modal][:title]
 	    msg = commercial_listings_params[:email_modal][:message]
-	    WufooPartnerForm.send_message(current_user, recipients, sub, msg)
+	    WufooListingsForm.send_message(current_user, recipients, sub, msg)
 	    
 	    respond_to do |format|
 	      format.js { flash[:success] = "Message sent!"  }
@@ -55,13 +55,31 @@ module Forms
 	  end
 	  
 	  def delete_modal
+	  	@entry = WufooListingsForm.find(params[:id])
 	    respond_to do |format|
 	      format.js  
 	    end
 	  end
 
 	  def destroy
-	    @entry.archive
+	  	@entry = WufooListingsForm.find(params[:id])
+	    @entry.delete
+	    set_entries
+	    respond_to do |format|
+	      format.html { redirect_to forms_commercial_listings_url, notice: 'Entry was successfully inactivated.' }
+	      format.json { head :no_content }
+	      format.js
+	    end
+	  end
+
+	  def hide_modal
+	    respond_to do |format|
+	      format.js  
+	    end
+	  end
+
+	  def hide
+			@entry.archive
 	    set_entries
 	    respond_to do |format|
 	      format.html { redirect_to forms_commercial_listings_url, notice: 'Entry was successfully inactivated.' }
@@ -80,6 +98,7 @@ module Forms
 	  def unarchive
 	  	@entry = WufooListingsForm.commercial.find(params[:id])
 	  	@entry.unarchive
+	  	params[:status] = 'Hidden'
 	    set_entries
 	    respond_to do |format|
 	      format.html { redirect_to forms_commercial_listings_url, notice: 'Entry was successfully activated.' }
@@ -97,6 +116,10 @@ module Forms
 			end
 
 			def set_entries
+				if params[:status].blank?
+					params[:status] = 'Active'
+				end
+				
 				@entries = WufooListingsForm.commercial.search(commercial_listings_params)
 				@entries = custom_sort
 		    @entries = @entries.page params[:page]

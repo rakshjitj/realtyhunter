@@ -65,6 +65,10 @@ ContactUs = {};
 	// search as user types
 	ContactUs.timer;
 
+	ContactUs.clearTimer = function() {
+		clearTimeout(ContactUs.timer);
+	};
+
 	ContactUs.throttledSearch = function () {
 		//clear any interval on key up
 		if (ContactUs.timer) {

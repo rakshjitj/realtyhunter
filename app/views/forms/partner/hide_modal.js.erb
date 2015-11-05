@@ -1,0 +1,10 @@
+$('#entryArchiveModal .modal-body').html(
+	"Are you sure you want to deactivate <%= j(@entry.name) %>? Deactivation will prevent them from appearing in searches.");
+
+$('#entryArchiveModal .delete-btn').replaceWith("<%= j(link_to 'Hide', hide_forms_partner_path(@entry), remote: true, method: :patch, class: 'btn btn-danger delete-btn link-as-button', id: 'delete-link') %>");
+$('#entryArchiveModal #delete-link').click( function(event) {
+	$('#entryArchiveModal').modal('hide');
+	event.preventDefault();
+});
+
+$('#entryArchiveModal').modal('show');

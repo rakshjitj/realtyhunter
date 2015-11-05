@@ -66,6 +66,10 @@ Partner = {};
 	// search as user types
 	Partner.timer;
 
+	Partner.clearTimer = function() {
+		clearTimeout(Partner.timer);
+	};
+
 	Partner.throttledSearch = function () {
 		//clear any interval on key up
 		if (Partner.timer) {
