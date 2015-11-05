@@ -78,8 +78,9 @@ a:hover.btn-danger {
 }
 
 .container-fluid {
-  width: 80% !important;
+  width: 80%; // !important;
   max-width: 1200px !important;
+  min-width: 400px !important;
 }
 
 .datepicker {
