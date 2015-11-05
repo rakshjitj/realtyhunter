@@ -63,6 +63,7 @@ Careers = {};
 
 	// for searching on the index page
 	Careers.doSearch = function (sort_by_col, sort_direction) {
+		console.log('careers search');
 		var search_path = $('#careers-search-filters').attr('data-search-path');
 	  
 	  Forms.showSpinner();
@@ -88,6 +89,10 @@ Careers = {};
 
 	// search as user types
 	Careers.timer;
+
+	Careers.clearTimer = function() {
+		clearTimeout(Careers.timer);
+	};
 
 	Careers.throttledSearch = function () {
 		//clear any interval on key up

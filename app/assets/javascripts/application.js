@@ -49,6 +49,7 @@ $(document).ready(function() {
 });
 
 $(window).unload(function() {
+	Careers.clearTimer();
 	Announcements.clearTimer();
   ResidentialListings.clearAnnouncementsTimer();
   ResidentialListings.clearTimer();

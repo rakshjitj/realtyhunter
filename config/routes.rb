@@ -248,6 +248,8 @@ Rails.application.routes.draw do
     resources :contact_us, only: [:index, :destroy] do
       member do
         get 'delete_modal'
+        get 'hide_modal'
+        patch 'hide'
         get 'unarchive_modal'
         post 'unarchive'
         get 'detail_modal'
@@ -263,6 +265,8 @@ Rails.application.routes.draw do
     resources :partner, only: [:index, :destroy] do
       member do
         get 'delete_modal'
+        get 'hide_modal'
+        patch 'hide'
         get 'unarchive_modal'
         post 'unarchive'
         get 'detail_modal'
@@ -280,6 +284,7 @@ Rails.application.routes.draw do
       member do
         get 'delete_modal'
         get 'hide_modal'
+        patch 'hide'
         get 'unarchive_modal' # unhide
         post 'unarchive' # unhide
         get 'detail_modal'
@@ -297,6 +302,8 @@ Rails.application.routes.draw do
   #   resources :residential_listings, only: [:index, :destroy] do
   #     member do
   #       get 'delete_modal'
+  #       get 'hide_modal'
+  #       patch 'hide'
   #       get 'unarchive_modal'
   #       post 'unarchive'
   #       get 'detail_modal'
@@ -313,6 +320,8 @@ Rails.application.routes.draw do
   #   resources :commercial_listings, only: [:index, :destroy] do
   #     member do
   #       get 'delete_modal'
+  #       get 'hide_modal'
+  #       patch 'hide'
   #       get 'unarchive_modal'
   #       post 'unarchive'
   #       get 'detail_modal'
