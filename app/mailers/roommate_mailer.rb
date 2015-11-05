@@ -13,6 +13,6 @@ class RoommateMailer < ApplicationMailer
     	  'roommates.cats_allowed', 'roommates.created_at as submitted_date',
     	  'roommates.archived')
       .where(id: roommate_ids)
-    mail to: recipients, subject: sub, from: @source_agent.email
+    mail to: recipients, subject: sub
   end
 end
