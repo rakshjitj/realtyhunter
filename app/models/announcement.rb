@@ -165,7 +165,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 
 		#recipients = ['myspaceupdates@myspacenyc.com']
 		# NOTE: Disable company-wide emailing until fully debugged
-		recipients = ['rbujans@myspacenyc.com'] #, current_user.email]
+		recipients = ['rbujans@myspacenyc.com', current_user.email]
 		
 		# body = ''
 		# #body = 'RealtyHunter: testing out sending SMS. Please disregard! '

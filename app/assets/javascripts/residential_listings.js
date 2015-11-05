@@ -91,6 +91,8 @@ ResidentialListings = {};
 	ResidentialListings.timer;
 	ResidentialListings.announcementsTimer;
 
+	//ResidentialListings.clearAnnouncementsTimer = function() {};
+
 	ResidentialListings.clearTimer = function() {
 		if (ResidentialListings.timer) {
 		  clearTimeout(ResidentialListings.timer);
