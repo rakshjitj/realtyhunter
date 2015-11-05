@@ -59,8 +59,24 @@ module Forms
 	    end
 	  end
 
+	  def hide_modal
+	    respond_to do |format|
+	      format.js  
+	    end
+	  end
+
+	  def hide
+			@entry.archive
+	    set_entries
+	    respond_to do |format|
+	      format.html { redirect_to forms_careers_url, notice: 'Entry was successfully inactivated.' }
+	      format.json { head :no_content }
+	      format.js
+	    end
+	  end
+
 	  def destroy
-	    @entry.archive
+	    @entry.delete
 	    set_entries
 	    respond_to do |format|
 	      format.html { redirect_to forms_careers_url, notice: 'Entry was successfully inactivated.' }
@@ -79,7 +95,7 @@ module Forms
 	  def unarchive
 	  	@entry = WufooCareerForm.find(params[:id])
 	  	@entry.unarchive
-	  	params[:status] = 'Inactive'
+	  	params[:status] = 'Hidden'
 	    set_entries
 	    respond_to do |format|
 	      format.html { redirect_to forms_careers_url, notice: 'Entry was successfully activated.' }

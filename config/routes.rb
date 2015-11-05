@@ -103,8 +103,6 @@ Rails.application.routes.draw do
     end
   end
 
-  #resources :residential_forms, only: [:new, :create, :edit, :update]
-
   resources :residential_listings, concerns: [:unit_images_uploadable, :documents_uploadable] do
     get :autocomplete_building_formatted_street_address, :on => :collection
     get :autocomplete_landlord_code, :on => :collection
@@ -281,8 +279,9 @@ Rails.application.routes.draw do
     resources :careers, only: [:index, :destroy] do
       member do
         get 'delete_modal'
-        get 'unarchive_modal'
-        post 'unarchive'
+        get 'hide_modal'
+        get 'unarchive_modal' # unhide
+        post 'unarchive' # unhide
         get 'detail_modal'
       end
       collection do

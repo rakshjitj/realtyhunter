@@ -64,7 +64,7 @@
       </div>
       <div class="col-md-7 col-sm-left-padding">
         <%= select_tag(:status, 
-          options_for_select(['Active', 'Inactive'], 
+          options_for_select(['Active', 'Hidden'], 
             [params[:status].blank? ? 'Active' : params[:status]]),
           {class: "form-control", 
           prompt: "Any"}) %>
