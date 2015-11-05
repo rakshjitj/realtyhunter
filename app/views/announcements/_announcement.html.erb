@@ -3,13 +3,13 @@
 <% is_sales = (announcement.respond_to? :sales_listing_id) && (announcement.sales_listing_id) %>
 
 <% if is_residential %>
-	<div class="well residential-announcement">
+	<div class="well announcement residential-announcement">
 <% elsif is_commercial %>
-	<div class="well commercial-announcement">
+	<div class="well announcement commercial-announcement">
 <% elsif is_sales %>
-	<div class="well sales-announcement">
+	<div class="well announcement sales-announcement">
 <% else %>
-	<div class="well event-announcement">
+	<div class="well announcement event-announcement">
 <% end %>
 
 	<h4><%= announcement.canned_response %></h4>
@@ -44,16 +44,17 @@
 			<% end %>
 		<% else %>
 		<!-- NO ADDRESS SPECIFIED -->
-			<%= announcement.street_number %> <%= announcement.route %>
-			<% if !announcement.building_unit.blank? %>
-				#<%= announcement.building_unit %>
+			<% if !announcement.route.blank? %>
+				<%= announcement.street_number %> <%= announcement.route %>
+				<% if !announcement.building_unit.blank? %>
+					#<%= announcement.building_unit %>
+				<% end %>
 			<% end %>
 		<% end %>
 		
 	<% end %>
 
-	<br /><br />
 	<p><%= announcement.note %></p>
 
-	<div class="pull-right">- <%= announcement.sender_name %></div>
+	<div class="text-right">- <%= announcement.sender_name %></div>
 </div>
