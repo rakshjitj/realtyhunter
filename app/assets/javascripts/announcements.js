@@ -30,9 +30,12 @@ Announcements = {};
 	// refresh the page every so often. We want to make sure they are
 	// always viewing the latest data.
 	Announcements.passiveRealTimeUpdate = function() {
-		Announcements.clearTimer();
-		// update every few minutes
-	  Announcements.timer = setTimeout(Announcements.doSearch, 60 * 1 * 1000);
+		if ($('#announcements').length > 0 ) {
+			Announcements.clearTimer();
+			// update every few minutes
+			console.log('minute timer');
+		  Announcements.timer = setTimeout(Announcements.doSearch, 60 * 1 * 1000);
+		}
 	};
 
 	Announcements.doSearch = function(res_limit, com_limit, sales_limit, event_limit) {

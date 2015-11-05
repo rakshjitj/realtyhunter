@@ -119,9 +119,11 @@ ResidentialListings = {};
 	// refresh the page every so often. We want to make sure they are
 	// always viewing the latest data.
 	ResidentialListings.passiveRealTimeUpdate = function() {
-		ResidentialListings.clearTimer();
-		// update every few minutes
-	  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 60 * 3 * 1000);
+		if ($('#residential').length > 0) {
+			ResidentialListings.clearTimer();
+			// update every few minutes
+		  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 60 * 3 * 1000);
+		}
 	};
 
 	// search as user types

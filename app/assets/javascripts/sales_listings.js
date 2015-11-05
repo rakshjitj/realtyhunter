@@ -102,9 +102,11 @@ SalesListings = {};
   // refresh the page every so often. We want to make sure they are
   // always viewing the latest data.
   SalesListings.passiveRealTimeUpdate = function() {
-    SalesListings.clearTimer();
-		// update every few minutes
-    SalesListings.timer = setTimeout(SalesListings.doSearch, 60 * 3 * 1000);
+  	if ($('#sales').length > 0) {
+	    SalesListings.clearTimer();
+			// update every few minutes
+	    SalesListings.timer = setTimeout(SalesListings.doSearch, 60 * 3 * 1000);
+	  }
   };
 
   // search as user types

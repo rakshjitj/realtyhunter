@@ -99,9 +99,11 @@ CommercialUnits = {};
   // refresh the page every so often. We want to make sure they are
   // always viewing the latest data.
   CommercialUnits.passiveRealTimeUpdate = function() {
-    CommercialUnits.clearTimer();
-    // update every few minutes
-    CommercialUnits.timer = setTimeout(CommercialUnits.doSearch, 60 * 3 * 1000);
+    if ($('#commercial').length > 0) {
+      CommercialUnits.clearTimer();
+      // update every few minutes
+      CommercialUnits.timer = setTimeout(CommercialUnits.doSearch, 60 * 3 * 1000);
+    }
   };
 
   // search as user types
