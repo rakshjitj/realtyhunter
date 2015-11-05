@@ -8,11 +8,13 @@ class Ability
     can [:inaccuracy_modal, :send_inaccuracy, :print_modal, :print_public, :print_private], [ResidentialListing, CommercialListing]
     can [:autocomplete_building_formatted_street_address], [ResidentialListing, CommercialListing, Building]
     can [:autocomplete_landlord_code], [ResidentialListing, Landlord]
+    can [:update_announcements], [ResidentialListing]
     can [:autocomplete_user_name, :filter, :filter_listings, :coworkers, :subordinates], [User]
 
     can [:send_listings], [ResidentialListing, CommercialListing]
     # every employee should be able to see their waterfall info
     can :show, UserWaterfall, parent_agent_id: user.id
+    can :read, Announcement
   end
 
   def posting_permissions(user)
@@ -81,7 +83,6 @@ class Ability
     end
     can :filter, CommercialListing, company_id: user.company_id
 
-    can :read, Announcement
   end
 
   def initialize(user)

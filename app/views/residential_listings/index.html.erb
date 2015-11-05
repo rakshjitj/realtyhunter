@@ -3,7 +3,9 @@
 <div id="residential">
 <div id="section-name" data-name="residential_listings">
 
-<div class="page-header">
+<%= render partial: "residential_listings/announcements", locals: { announcements: @announcement_items } %>
+
+<div class="">
   <div class="row">
     <div class="col-md-6">
       <h1>Rental Listings</h1>
@@ -14,10 +16,6 @@
         <%= link_to 'Add a unit', new_residential_listing_path, class: 'btn btn-warning btn-sm link-as-button' %>
       <% end %>
 
-      <!--%= link_to print_list_residential_listings_path, 
-        class:"btn btn-sm btn-warning link-as-button btn-print-list has-spinner" do %-->
-        <!--span class="spinner active"><i class="fa fa-refresh fa-spin"></i></span> Print -->
-      <!--% end %-->
     </div>
   </div>
 </div>

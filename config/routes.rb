@@ -130,6 +130,8 @@ Rails.application.routes.draw do
       get 'print_public'
       get 'print_private'
       post 'send_listings'
+
+      get 'update_announcements'
     end
   end
 

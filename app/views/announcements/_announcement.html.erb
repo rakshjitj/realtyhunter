@@ -2,6 +2,7 @@
 <% is_commercial = (announcement.respond_to? :commercial_listing_id) && (announcement.commercial_listing_id) %>
 <% is_sales = (announcement.respond_to? :sales_listing_id) && (announcement.sales_listing_id) %>
 
+
 <% if is_residential %>
 	<div class="well announcement residential-announcement">
 <% elsif is_commercial %>
@@ -12,9 +13,24 @@
 	<div class="well announcement event-announcement">
 <% end %>
 
-	<h4><%= announcement.canned_response %></h4>
-	
-	<small><em><%= time_ago_in_words(announcement.updated_at) %></em></small><br />
+	<div class="row">
+		<div class="col-xs-7">
+			<!-- if we are on any other page, this announcement should turn into a 
+				link that takes you to announcements/index -->
+			<% if params[:controller] != 'announcements' %>
+				<a href="/announcements">
+			<% end %>
+
+			<h4><%= announcement.canned_response %></h4>
+
+			<!-- end link_to -->
+			<% if params[:controller] != 'announcements' %>
+				</a>
+			<% end %>
+		</div>
+
+		<div class="col-xs-5 text-right"><small><em><%= time_ago_in_words(announcement.updated_at) %></em></small><br /></div>
+	</div>
 
 	<% if announcement.respond_to? :unit_id %>
 

@@ -89,11 +89,22 @@ ResidentialListings = {};
   };
 
 	ResidentialListings.timer;
+	ResidentialListings.announcementsTimer;
 
 	ResidentialListings.clearTimer = function() {
 		if (ResidentialListings.timer) {
 		  clearTimeout(ResidentialListings.timer);
 		}
+	};
+
+	// update the announcements every 30 seconds
+	ResidentialListings.updateAnnouncements = function() {
+		console.log('updating ann');
+		$.ajax({
+      url: '/residential_listings/update_announcements',
+    });
+
+		ResidentialListings.announcementsTimer = setTimeout(ResidentialListings.updateAnnouncements, 30 * 1000);
 	};
 
 	// if a user remains on this page for an extended amount of time,
@@ -103,6 +114,7 @@ ResidentialListings = {};
 		CommercialUnits.clearTimer();
 		SalesListings.clearTimer();
 		ResidentialListings.clearTimer();
+		Announcements.clearTimer();
 		// update every few minutes
 	  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 60 * 3 * 1000);
 	};
@@ -113,6 +125,7 @@ ResidentialListings = {};
 		CommercialUnits.clearTimer();
 		SalesListings.clearTimer();
 		ResidentialListings.clearTimer();
+		Announcements.clearTimer();
 	  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 500);
 	};
 
@@ -212,7 +225,7 @@ ResidentialListings = {};
 
 	ResidentialListings.inheritFeeOptions = function() {
 		bldg_id = $('#residential #residential_listing_unit_building_id').val();
-		console.log('got new ids', bldg_id);
+		//console.log('got new ids', bldg_id);
 		
 		$.ajax({
 			type: 'GET',
@@ -520,6 +533,7 @@ ResidentialListings = {};
 		ResidentialListings.detectPhoneNumbers();
 
 		ResidentialListings.passiveRealTimeUpdate();
+		ResidentialListings.updateAnnouncements();
 	};
 
 })();

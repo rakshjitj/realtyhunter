@@ -310,6 +310,10 @@ class ResidentialListingsController < ApplicationController
     end
   end
   
+  def update_announcements
+    @announcement_items = Announcement.search({limit: 4})
+  end
+
   protected
 
    def correct_stale_record_version
@@ -337,6 +341,7 @@ class ResidentialListingsController < ApplicationController
       @map_infos = ResidentialListing.set_location_data(@residential_units.to_a)
       @residential_units = @residential_units.page params[:page]
       @res_images = ResidentialListing.get_images(@residential_units)
+      @announcement_items = Announcement.search({limit: 4})
     end
 
     # returns all data for export

@@ -1,5 +1,5 @@
 <div class="row">
-  <% @announcements.each_index do |idx| %>
+  <% announcements.each_index do |idx| %>
     <% if idx % 4 == 0 && idx > 0 %>
       </div>
       <div class="row">
@@ -7,7 +7,7 @@
 
     <div class="col-md-3">
       <%= render partial: 'announcements/announcement', 
-        locals: { announcement: @announcements[idx] } %>
+        locals: { announcement: announcements[idx] } %>
     </div>  
       
   <% end %>

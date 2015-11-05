@@ -105,6 +105,7 @@ SalesListings = {};
     SalesListings.clearTimer();
 		CommercialUnits.clearTimer();
 		ResidentialListings.clearTimer();
+		Announcements.clearTimer();
     // update every few minutes
     SalesListings.timer = setTimeout(SalesListings.doSearch, 60 * 3 * 1000);
   };
@@ -115,6 +116,7 @@ SalesListings = {};
 		SalesListings.clearTimer();
 		CommercialUnits.clearTimer();
 		ResidentialListings.clearTimer();
+		Announcements.clearTimer();
 	  SalesListings.timer = setTimeout(SalesListings.doSearch, 500);
 	};
 

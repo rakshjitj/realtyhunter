@@ -102,6 +102,7 @@ CommercialUnits = {};
     SalesListings.clearTimer();
     ResidentialListings.clearTimer();
     CommercialUnits.clearTimer();
+    Announcements.clearTimer();
     // update every few minutes
     CommercialUnits.timer = setTimeout(CommercialUnits.doSearch, 60 * 3 * 1000);
   };
@@ -111,6 +112,7 @@ CommercialUnits = {};
     SalesListings.clearTimer();
     ResidentialListings.clearTimer();
     CommercialUnits.clearTimer();
+    Announcements.clearTimer();
     //clear any interval on key up
     timer = setTimeout(CommercialUnits.doSearch, 500);
   };
