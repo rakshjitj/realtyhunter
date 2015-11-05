@@ -361,5 +361,6 @@ Rails.application.routes.draw do
       get :get_units
     end
   end
-   
+  get 'announce' => 'announcements#new'
+
 end
