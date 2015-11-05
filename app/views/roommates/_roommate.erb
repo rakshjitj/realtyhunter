@@ -91,7 +91,7 @@
     </td>
 
     <!-- ****** LINKS ****************************************** -->
-    <% if current_user.is_management? || current_user.is_listings_manager? %>
+    
       <td>
         <%= link_to 'Edit', edit_roommate_path(roommate) %> 
         <br />
@@ -106,5 +106,5 @@
             data: { toggle: "modal", target: "#roommateDeleteModal"}, remote: true %>
         <br />
       </td>
-    <% end %>
+    
   </tr>
