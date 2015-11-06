@@ -236,7 +236,7 @@ Rails.application.routes.draw do
       get 'match_multiple_modal'
       post 'match_multiple'
       get 'check_availability'
-      get 'mark_read'
+      patch 'mark_read'
       get :autocomplete_roommate_name
       get :autocomplete_user_email
       get :autocomplete_building_formatted_street_address
@@ -258,7 +258,7 @@ Rails.application.routes.draw do
         get 'filter'
         post 'send_message'
         get 'download'
-        get 'mark_read'
+        patch 'mark_read'
         get :autocomplete_wufoo_contact_us_form_name
       end
     end
@@ -276,7 +276,7 @@ Rails.application.routes.draw do
         get 'filter'
         post 'send_message'
         get 'download'
-        get 'mark_read'
+        patch 'mark_read'
         get :autocomplete_wufoo_partner_form_name
         get :autocomplete_wufoo_partner_form_address_street_address
       end
@@ -295,7 +295,7 @@ Rails.application.routes.draw do
         get 'filter'
         post 'send_message'
         get 'download'
-        get 'mark_read'
+        patch 'mark_read'
         get :autocomplete_wufoo_career_form_name
       end
     end
@@ -315,7 +315,7 @@ Rails.application.routes.draw do
   #       get 'filter'
   #       post 'send_message'
   #       get 'download'
-  #       get 'mark_read'
+  #       patch 'mark_read'
   #       get :autocomplete_wufoo_listings_form_name
   #       get :autocomplete_wufoo_listings_form_email
   #     end
@@ -334,7 +334,7 @@ Rails.application.routes.draw do
   #       get 'filter'
   #       post 'send_message'
   #       get 'download'
-  #       get 'mark_read'
+  #       patch 'mark_read'
   #       get :autocomplete_wufoo_listings_form_name
   #       get :autocomplete_wufoo_listings_form_email
   #     end

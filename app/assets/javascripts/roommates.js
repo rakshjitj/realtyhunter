@@ -108,6 +108,7 @@ Roommates = {};
 	Roommates.indexMenuActions = {
 		'mark-read': function() {
 			$.ajax({
+				type: 'PATCH',
 		    url: 'roommates/mark_read',
 		    data: {
 	        ids: Roommates.selectedRoommates,

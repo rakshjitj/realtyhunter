@@ -95,6 +95,7 @@ Forms = {};
 	Forms.indexMenuActions = {
 		'mark-read': function() {
 			$.ajax({
+				type: 'PATCH',
 		    url: $('#section-name').attr('data-name') + '/mark_read',
 		    data: {
 	        ids: Forms.selectedEntries,

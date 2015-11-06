@@ -37,7 +37,7 @@ class WufooListingsForm < ActiveRecord::Base
 
   def mark_read
     if !read
-      self.update_attribute(:read, true)
+      self.update!(read: true)
     end
   end
 

@@ -156,7 +156,7 @@ module Forms
 
 	  	def contact_us_params
 	  		data = params.permit(:sort_by, :direction, :filter, :name, :status, :min_price, :max_price, 
-	  			:entry_ids, :submitted_date, 
+	  			:entry_ids, :submitted_date, :id,
 	  			email_modal: [:title, :message, :recipients])
 	  	end
 	end

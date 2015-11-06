@@ -43,12 +43,13 @@ class WufooPartnerForm < ActiveRecord::Base
 
   def mark_read
     if !read
-      self.update_attribute(:read, true)
+      self.update!(read: true)
+      puts "UPDATED #{self.inspect}"
     end
   end
 
   def self.mark_read(ids)
-    entries = WufooCareerForm.where(id: ids)
+    entries = WufooPartnerForm.where(id: ids)
     entries.each{ |e| e.mark_read }
   end
 
