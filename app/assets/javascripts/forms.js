@@ -93,6 +93,15 @@ Forms = {};
 	};
 
 	Forms.indexMenuActions = {
+		'mark-read': function() {
+			$.ajax({
+		    url: $('#section-name').attr('data-name') + '/mark_read',
+		    data: {
+	        ids: Forms.selectedEntries,
+		    },
+		    dataType: 'script'
+		  });
+		},
 		'PDF': function() {
 			var params = 'entry_ids=' + Forms.selectedEntries.join(",");
 			var section_name = $('#section-name').attr('data-name');

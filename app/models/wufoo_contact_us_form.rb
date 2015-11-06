@@ -35,6 +35,17 @@ class WufooContactUsForm < ActiveRecord::Base
       "No sender specified"
     end
   end
+
+  def mark_read
+    if !read
+      self.update_attribute(:read, true)
+    end
+  end
+
+  def self.mark_read(ids)
+    entries = WufooCareerForm.where(id: ids)
+    entries.each{ |e| e.mark_read }
+  end
   
   def self.search(params)
     entries = WufooContactUsForm.all

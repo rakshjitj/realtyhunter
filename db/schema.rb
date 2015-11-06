@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151104165230) do
+ActiveRecord::Schema.define(version: 20151105231212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -602,6 +602,7 @@ ActiveRecord::Schema.define(version: 20151104165230) do
     t.boolean  "archived",                         default: false
     t.datetime "created_at",                                       null: false
     t.datetime "updated_at",                                       null: false
+    t.boolean  "read",                             default: false
   end
 
   create_table "wufoo_contact_us_forms", force: :cascade do |t|
@@ -617,6 +618,7 @@ ActiveRecord::Schema.define(version: 20151104165230) do
     t.boolean  "archived",                  default: false
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
+    t.boolean  "read",                      default: false
   end
 
   create_table "wufoo_listings_forms", force: :cascade do |t|
@@ -657,6 +659,7 @@ ActiveRecord::Schema.define(version: 20151104165230) do
     t.integer  "company_id"
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
+    t.boolean  "read",                            default: false
   end
 
 end

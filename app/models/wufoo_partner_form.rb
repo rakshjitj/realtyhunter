@@ -41,6 +41,17 @@ class WufooPartnerForm < ActiveRecord::Base
     end
   end
 
+  def mark_read
+    if !read
+      self.update_attribute(:read, true)
+    end
+  end
+
+  def self.mark_read(ids)
+    entries = WufooCareerForm.where(id: ids)
+    entries.each{ |e| e.mark_read }
+  end
+
   def full_address
     ret = address_street_address 
     if !address_address_line_2.blank?

@@ -2,7 +2,7 @@ module Forms
 	class PartnerController < ApplicationController
 		skip_authorize_resource
   	before_action :set_entry, except: [:index, :new, :create, :filter, 
-			:download, :send_update, :unarchive, :unarchive_modal, :destroy, :delete_modal]
+			:download, :send_update, :unarchive, :unarchive_modal, :detail_modal, :destroy, :delete_modal]
 		autocomplete :wufoo_partner_form, :name, full: true
 		autocomplete :wufoo_partner_form, :address_street_address, full: true
 
@@ -41,6 +41,22 @@ module Forms
 	    end
 	  end
 
+	  def mark_read
+	    if WufooPartnerForm.mark_read(params[:ids])
+	      params.delete('ids')
+	      set_entries
+	      flash[:success] = 'Entries marked as read.'
+	      respond_to do |format|
+	        format.html { redirect_to forms_partner_index_url }
+	        format.json { head :no_content }
+	        format.js
+	      end
+	    else
+	      set_entries
+	      flash[:danger] = 'Entries could not marked read.'
+	    end
+	  end
+
 	  def filter
 	    set_entries
 	    respond_to do |format|
@@ -49,6 +65,10 @@ module Forms
 	  end
 
 	  def detail_modal
+	  	#@entry.mark_read
+	  	@entry = WufooPartnerForm.find(params[:id])
+	  	WufooPartnerForm.mark_read(params[:id])
+	  	set_entries
 	  	respond_to do |format|
 	      format.js  
 	    end

@@ -105,17 +105,6 @@ Roommates = {};
 	  });
 	};
 
-	// Roommates.markRead = function(e) {
-	// 	$.ajax({
-	//     url: 'roommates/mark_read',
-	//     data: {
- //        ids: Roommates.selectedRoommates,
-	//     },
-	//     dataType: 'script'
-	//   });
-	//   //e.preventDefault();
-	// };
-
 	Roommates.indexMenuActions = {
 		'mark-read': function() {
 			$.ajax({

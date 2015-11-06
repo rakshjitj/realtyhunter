@@ -63,7 +63,6 @@ Careers = {};
 
 	// for searching on the index page
 	Careers.doSearch = function (sort_by_col, sort_direction) {
-		console.log('careers search');
 		var search_path = $('#careers-search-filters').attr('data-search-path');
 	  
 	  Forms.showSpinner();

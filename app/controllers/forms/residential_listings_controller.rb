@@ -2,7 +2,7 @@ module Forms
 	class ResidentialListingsController < ApplicationController
 		skip_authorize_resource
   	before_action :set_entry, except: [:index, :new, :create, :filter, 
-			:download, :send_update, :unarchive, :unarchive_modal, :destroy, :delete_modal]
+			:download, :send_update, :unarchive, :unarchive_modal, :detail_modal, :destroy, :delete_modal]
 		autocomplete :wufoo_listings_form, :name, where: {is_residential: true}, full: true
 		autocomplete :wufoo_listings_form, :email, where: {is_residential: true}, full: true
 
@@ -41,6 +41,22 @@ module Forms
 	    end
 	  end
 
+	  def mark_read
+	    if WufooListingsForm.mark_read(params[:ids])
+	      params.delete('ids')
+	      set_entries
+	      flash[:success] = 'Entries marked as read.'
+	      respond_to do |format|
+	        format.html { redirect_to forms_residential_listings_url }
+	        format.json { head :no_content }
+	        format.js
+	      end
+	    else
+	      set_entries
+	      flash[:danger] = 'Entries could not marked read.'
+	    end
+	  end
+
 	  def filter
 	    set_entries
 	    respond_to do |format|
@@ -49,6 +65,7 @@ module Forms
 	  end
 
 	  def detail_modal
+	  	@entry.mark_read
 	  	respond_to do |format|
 	      format.js  
 	    end

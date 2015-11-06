@@ -68,7 +68,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 Roommates List 
                 <% if unread_roommates_count > 0 %>
-                  <span class="badge"><%= unread_roommates_count %></span>
+                  <span class="roommates_badge badge"><%= unread_roommates_count %></span>
                 <% end %>
                 <b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -90,7 +90,12 @@
             <% if !current_user.is_external_vendor? %>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <%= current_user.company.name %> <b class="caret"></b></a>
+                  <%= current_user.company.name %> 
+                  <% if total_unread_forms_count > 0 %>
+                    <span class="total_forms_badge badge"><%= total_unread_forms_count %></span>
+                  <% end %>
+                  <b class="caret"></b>
+                </a>
                 <ul class="dropdown-menu">
                   <li><%= link_to "Company", company_path(current_user.company) %></li>
                   <li><%= link_to "Offices", company_offices_path(current_user.company) %></li>
@@ -103,12 +108,32 @@
                   <% if current_user.is_management? %>
                     <li><%= link_to "Announcements", new_announcement_path %></li>
                     <li role="separator" class="divider"></li>
+                    
                     <li class="dropdown-header">WuFoo Forms</li>
-                    <li><%= link_to "Careers", forms_careers_path %></li>
-                    <li><%= link_to "Contact Us", forms_contact_us_path %></li>
-                    <li><%= link_to "Partner With Us", forms_partner_index_path %></li>
+                    <li>
+                      <%= link_to forms_careers_path do %>
+                        Careers <% if unread_careers_count > 0 %>
+                          <span class="careers_badge badge"><%= unread_careers_count %></span>
+                        <% end %>
+                      <% end %>
+                    </li>
+                    <li>
+                      <%= link_to forms_contact_us_path do %>
+                        Contact Us <% if unread_contact_us_count > 0 %>
+                          <span class="contact_us_badge badge"><%= unread_contact_us_count %></span>
+                        <% end %>
+                      <% end %>
+                    </li>
+                    <li>
+                      <%= link_to forms_partner_index_path do %>
+                        Partner With Us <% if unread_partner_count > 0 %>
+                          <span class="partner_badge badge"><%= unread_partner_count %></span>
+                        <% end %>
+                      <% end %>
+                    </li>
                     <!--li>< % = link_to "Residential Listing", forms_residential_listings_path % ></li-->
                     <!--li>< % = link_to "Commercial Listing", forms_commercial_listings_path % ></li-->
+                    
                   <% end %>
                 </ul>
               </li>

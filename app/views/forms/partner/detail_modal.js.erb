@@ -8,3 +8,8 @@ $('#entryDetailModal .modal-body').html(
 	"<%= j(@entry.utilities) %>");
 
 $('#entryDetailModal').modal('show');
+
+$('.partner_table_body').html("<%= escape_javascript (render partial: 'forms/partner/entry', :collection => @entries, as: :entry) %>");
+$('.totals').html("<%= @entries.count %> Entries");
+$('.partner_badge').html("<%= unread_partner_count %>");
+$('.total_forms_badge').html("<%= total_unread_forms_count %>");
