@@ -42,6 +42,8 @@ ResidentialListings = {};
         neighborhood_ids: $('#residential #neighborhood_ids').val(),
         unit_feature_ids: $('#residential #unit_feature_ids').val(),
         building_feature_ids: $('#residential #building_feature_ids').val(),
+        roomsharing_filter: $('#residential #roomsharing_filter').prop('checked'),
+        unassigned_filter: $('#residential #unassigned_filter').prop('checked'),
         sort_by: sort_by_col,
         direction: sort_direction,
 	    },
@@ -106,7 +108,7 @@ ResidentialListings = {};
 	// update the announcements every 30 seconds
 	ResidentialListings.updateAnnouncements = function() {
 		if ($('#residential').length > 0) {
-			console.log('updating ann');
+			//console.log('updating ann');
 			$.ajax({
 	      url: '/residential_listings/update_announcements',
 	    });
@@ -479,6 +481,8 @@ ResidentialListings = {};
 	  $('#residential #neighborhood_ids').change(ResidentialListings.throttledSearch);
 	  $('#residential #unit_feature_ids').change(ResidentialListings.throttledSearch);
 	  $('#residential #building_feature_ids').change(ResidentialListings.throttledSearch);
+	  $('#residential #roomsharing_filter').change(ResidentialListings.throttledSearch);
+	  $('#residential #unassigned_filter').change(ResidentialListings.throttledSearch);
 	  // remove individual features by clicking on 'x' button
 	  $('#residential .remove-unit-feature').click(ResidentialListings.removeUnitFeature);
 	  $('#residential .remove-building-feature').click(ResidentialListings.removeBuildingFeature);
@@ -486,6 +490,7 @@ ResidentialListings = {};
 
 		// index page - selecting listings menu dropdown
 		$('#residential #emailListings').click(Listings.sendMessage);
+		$('#residential #assignListings').click(Listings.assign);
 		$('#residential tbody').on('click', 'i', Listings.toggleListingSelection);
 		$('#residential .select-all-listings').click(Listings.selectAllListings);
 		$('#residential .selected-listings-menu').on('click', 'a', function() {

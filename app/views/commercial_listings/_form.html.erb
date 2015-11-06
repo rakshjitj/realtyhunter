@@ -178,7 +178,7 @@
           <div class="col-md-4">
             <%= f.fields_for @commercial_unit.unit do |unit_form| %>
               <%= unit_form.select(:primary_agent_id, 
-                options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
+                options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
                   [@commercial_unit.unit.primary_agent ? @commercial_unit.unit.primary_agent.id : '']), 
                 {prompt: "Choose one..."},
                 class: 'form-control',
@@ -195,7 +195,7 @@
           <div class="col-md-4">
             <%= f.fields_for @commercial_unit.unit do |unit_form| %>
               <%= unit_form.select(:primary_agent2_id, 
-                options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
+                options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
                   [@commercial_unit.unit.primary_agent2 ? @commercial_unit.unit.primary_agent2.id : '']), 
                 {prompt: "Choose one..."},
                 class: 'form-control',

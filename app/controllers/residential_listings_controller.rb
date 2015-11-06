@@ -172,30 +172,6 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
-  # GET
-  # handles ajax call. uses latest data in modal
-  # Modal collects info and prep unit to be taken off the market
-  # def print_modal
-  #   respond_to do |format|
-  #     format.js  
-  #   end
-  # end
-
-  #def print_list
-    #listings = ResidentialListing.find(params[:residential_listing_ids])
-    
-    #residential_listings_no_pagination
-    # render pdf: current_user.name + ' Residential Listings',
-    #   template: "/residential_listings/print_list.pdf.erb",
-    #   #disposition: "attachment",
-    #   layout:   "/layouts/pdf_layout.html",
-    #   orientation: 'Landscape',
-    #   title: current_user.name + 'Residential Listings',
-    #   default_header: false,
-    #   header:  { right: '[page] of [topage]' },
-    #   margin: { top: 0, bottom: 0, left: 0, right: 0}
-  #end
-
   def print_private
     ids = params[:listing_ids].split(',')
     @neighborhood_group = ResidentialListing.listings_by_neighborhood(current_user, ids)
@@ -314,6 +290,52 @@ class ResidentialListingsController < ApplicationController
     @announcement_items = Announcement.search({limit: 4})
   end
 
+  def assign_modal
+    @listings = ResidentialListing.joins(:unit)
+      .where("units.listing_id IN (?)", params[:listing_ids])
+    respond_to do |format|
+      format.js  
+    end
+
+  end
+
+  def assign
+    @listings = ResidentialListing.joins(:unit)
+      .where("units.listing_id IN (?)", params[:listing_ids].split(" "))
+    @agent = User.find(params[:primary_agent_id])
+
+    if @agent && @listings.length > 0 
+      @listings.each do |l|
+        l.unit.update_attribute(:primary_agent_id, @agent.id)
+      end
+      flash[:success] = "Primary agent successfully assigned!"
+      set_residential_listings
+    end
+  end
+
+  def unassign_modal
+    @listings = ResidentialListing.joins(:unit)
+      .where("units.listing_id IN (?)", params[:listing_ids])
+    respond_to do |format|
+      format.js  
+    end
+
+  end
+
+  def unassign
+    @listings = ResidentialListing.joins(:unit)
+      .where("units.listing_id IN (?)", params[:listing_ids].split(" "))
+
+    if @listings.length > 0 
+      @listings.each do |l|
+        l.unit.update_attribute(:primary_agent_id, nil)
+        l.unit.update_attribute(:primary_agent2_id, nil)
+      end
+      flash[:success] = "Primary agent successfully removed!"
+      set_residential_listings
+    end
+  end
+
   protected
 
    def correct_stale_record_version
@@ -402,6 +424,7 @@ class ResidentialListingsController < ApplicationController
         :include_photos, :inaccuracy_description, 
         :has_fee, :op_fee_percentage, :tp_fee_percentage, 
         :available_starting, :available_before, :custom_amenities,
+        :roomsharing_filter, :unassigned_filter, :primary_agent_id, 
         :unit => [:building_unit, :rent, :available_by, :access_info, :status, 
           :open_house, :oh_exclusive, :exclusive,
           :building_id, :primary_agent_id, :listing_agent_id ],

@@ -91,8 +91,17 @@ Listings = {};
 		e.preventDefault();
 	};
 
+	Listings.assign = function(e) {
+		$.ajax({
+			url: $('#section-name').attr('data-name') + '/assign_modal',
+	    data: {
+        listing_ids: Listings.selectedListings,
+	    },
+	    dataType: 'script'
+	  });
+	};
+
 	Listings.indexMenuActions = {
-		
 		'send': function() {
 			//console.log('sending!');
 			var params = 'listing_ids=' + Listings.selectedListings.join(",");

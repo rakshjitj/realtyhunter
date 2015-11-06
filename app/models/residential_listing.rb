@@ -322,6 +322,17 @@ class ResidentialListing < ActiveRecord::Base
         .where('residential_amenity_id IN (?)', features)
     end
 
+    # roomsharing only
+    if params[:roomsharing_filter] == 'true'
+      @running_list = @running_list.where(for_roomsharing: true)
+    end
+
+    # unassigned listings only
+    if params[:unassigned_filter] == 'true'
+      @running_list = @running_list.where(
+        'units.primary_agent_id IS NULL AND units.primary_agent2_id IS NULL')
+    end
+
     @running_list
   end
 

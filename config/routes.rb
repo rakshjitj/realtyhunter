@@ -122,14 +122,14 @@ Rails.application.routes.draw do
       get 'neighborhoods_modal'
       get 'features_modal'
       get 'fee_options'
-
       get 'print_list'
       get 'print_modal'
       get 'print_public'
       get 'print_private'
       post 'send_listings'
-
       get 'update_announcements'
+      get 'assign_modal'
+      post 'assign'
     end
   end
 
@@ -158,6 +158,8 @@ Rails.application.routes.draw do
       get 'print_public'
       get 'print_private'
       post 'send_listings'
+      get 'assign_modal'
+      post 'assign'
     end
   end
 
@@ -198,6 +200,8 @@ Rails.application.routes.draw do
       get 'print_public'
       get 'print_private'
       post 'send_listings'
+      get 'assign_modal'
+      post 'assign'
     end
   end
 

@@ -68,9 +68,11 @@
 			      <% end %>
 			  	</div>
 			  	<div class="col-md-6 form-label-responsive vertical-padding">
-			  		<%= link_to 'Make Announcement', new_announcement_path(
-			  			{ address: @sales_unit.unit.building.formatted_street_address }), 
-			  			class: "btn btn-warning btn-sm link-as-button" %>
+			  		<% if current_user.is_management? %>
+				  		<%= link_to 'Make Announcement', new_announcement_path(
+				  			{ address: @sales_unit.unit.building.formatted_street_address }), 
+				  			class: "btn btn-warning btn-sm link-as-button" %>
+				  	<% end %>
 			  		<%= link_to 'Report Inaccuracy', inaccuracy_modal_sales_listing_path(@sales_unit), 
 		  				class: "btn btn-danger btn-sm",
 		  				data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>

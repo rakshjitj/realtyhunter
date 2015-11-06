@@ -472,7 +472,7 @@
           <div class="col-md-4">
             <%= f.fields_for @sales_unit.unit do |unit_form| %>
               <%= unit_form.select(:primary_agent_id, 
-                options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
+                options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
                   [@sales_unit.unit.primary_agent ? @sales_unit.unit.primary_agent.id : '']), 
                 {prompt: "Choose one..."},
                 class: 'form-control',

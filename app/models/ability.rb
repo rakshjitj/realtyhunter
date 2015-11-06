@@ -41,7 +41,7 @@ class Ability
     end
   end
 
-  # I seperated out these 2 groups so you can easily compare them side by side
+  # I separated out these 2 groups so you can easily compare them side by side
   # managers v agents
 
   def common_managerial_permissions(user)

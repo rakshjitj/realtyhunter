@@ -164,6 +164,40 @@
           </div>
         </div>
         
+
+        <div class="row vertical-padding">
+          <div class="col-md-5">
+            <%= label_tag :pet_policy_shorthand, "Pet policy" %>
+          </div>
+          <div class="col-md-7">
+            <%= select_tag(:pet_policy_shorthand, 
+              options_for_select(["Any", "Cats Only", "Dogs Only", "None"], 
+              [params[:pet_policy_shorthand] ? params[:pet_policy_shorthand].titleize : "Any"]),
+              class: 'form-control') %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-md-6">
+            <label>
+              <%= check_box_tag(:roomsharing_filter, "", params[:roomsharing_filter] == "true" ? true : false) %>
+              Roomshares
+            </label>
+          </div>
+          <% if current_user.is_management? %>
+            <div class="col-md-6">
+              <label>
+                <%= check_box_tag(:unassigned_filter, "", params[:unassigned_filter] == "true" ? true : false) %>
+                Unassigned
+              </label>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="row vertical-padding">
+          
+        </div>
+        
         <br />
         <div class="row vertical-padding">
           <div class="col-md-12">
@@ -237,10 +271,17 @@
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu selected-listings-menu" aria-labelledby="selected-listings-dropdown">
+          <% if current_user.is_management? %>
+            <li role="presentation"><a class="list-item-sm-padding" id="assignListings" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#unitAssignModal">
+            <i class="fa fa-fw fa-child"></i> Assign</a></li>
+          <% end %>
+
           <li role="presentation"><a class="list-item-sm-padding" id="emailListings" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#emailModal">
             <i class="fa fa-fw fa-envelope"></i> Email</a></li>
+
           <li role="presentation"><a class="list-item-sm-padding" data-action="listingsSheet" role="menuitem" tabindex="-1">
             <i class="fa fa-fw fa-file-text"></i> Show Sheet</a></li>
+
           <li role="presentation"><a class="list-item-sm-padding" data-action="internalListingsSheet" role="menuitem" tabindex="-1">
             <i class="fa fa-fw fa-list"></i> Internal Listings Sheet</a></li>
         </ul>
@@ -306,78 +347,7 @@
   </div>
 </div>
 
-<!-- Email Modal -->
-<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" 
-  aria-labelledby="emailModal" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body">
-        
-        <%= form_tag(send_listings_residential_listings_path, remote:true) do %>
-        <div class="row vertical-padding">
-          <div class="col-md-12">
-            <%= label_tag "residential_listing[recipients]", "Recipients", class: 'required' %>
-            <i><small>Use commas to separate email addresses</small></i>
-            <%= text_field_tag "residential_listing[recipients]", nil, class: 'form-control', required: true %>
-          </div>
-        </div>
 
-        <div class="row vertical-padding">
-          <div class="col-md-12">
-            <%= label_tag "residential_listing[title]", "Title", class: 'required' %>
-            <%= text_field_tag "residential_listing[title]", "Check out these great listings!", class: 'form-control', required: true %>
-          </div>
-        </div>
-
-        <div class="row vertical-padding">
-          <div class="col-md-12">
-            <%= label_tag "residential_listing[message]", "Message" %>
-            <%= text_area_tag "residential_listing[message]", nil, class: 'form-control' %>
-          </div>
-        </div>
-
-        <br />
-        <div class="row vertical-padding">
-          <div class="col-md-12">
-            
-          </div>
-        </div>
-
-        <%= hidden_field_tag "residential_listing[listing_ids]" %>
-        
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp; 
-        <%= submit_tag "Send Email", class:"btn btn-warning" %>
-      </div>
-
-      <% end %>
-
-    </div>
-  </div>
-</div>
-
-<!-- Delete Modal -->
-<div class="modal fade" id="unitDeleteModal" tabindex="-1" role="dialog" 
-  aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Delete Unit</h4>
-      </div>
-      <div class="modal-body">
-        Placeholder
-      </div>
-      <div class="modal-footer">
-        <button class="delete-btn">Placeholder</button>
-        <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
-      </div>
-
-    </div>
-  </div>
-</div>
 
 <%# Template Dependency: residential_listings/modals %>
 <%= render 'modals' %>

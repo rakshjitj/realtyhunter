@@ -34,14 +34,17 @@ class WufooCareerForm < ActiveRecord::Base
   end
 
   def mark_read
-    if !read
-      self.update!(read: true)
-    end
+    #if !read
+    self.update!(read: true)
+    #end
   end
 
   def self.mark_read(ids)
     entries = WufooCareerForm.where(id: ids)
-    entries.each{ |e| e.mark_read }
+    success = true
+    entries.each do |e|
+     success = success && e.mark_read
+    end
   end
   
   def self.search(params)

@@ -1,0 +1,10 @@
+$('#unitAssignModal .modal-body').html("<%= j(render :partial => "assign_modal_helper", locals: { listings: @listings }) %>");
+
+//$('#unitAssignModal .delete-btn').replaceWith("<%= j(link_to 'Assign', assign_residential_listings_path, remote: true, method: :patch, class: 'btn btn-warning delete-btn link-as-button', id: 'delete-link') %>");
+$('#unitAssignModal .btn-submit').click( function(event) {
+	//$('#unitAssignModal').modal('hide');
+	//event.preventDefault();
+	$('#unitAssignModal').modal('hide');
+});
+
+$('#unitAssignModal').modal('show');

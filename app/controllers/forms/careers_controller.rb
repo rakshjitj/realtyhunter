@@ -12,8 +12,7 @@ module Forms
 
 		def download
 	  	ids = params[:entry_ids].split(',')
-	  	@entries = WufooCareerForm
-      	.where(id: ids)
+	  	@entries = WufooCareerForm.where(id: ids)
 	    
 	  	respond_to do |format|
 	      format.csv do
