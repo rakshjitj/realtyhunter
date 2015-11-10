@@ -1,10 +1,21 @@
 <tr class="<%= cycle('even', 'odd') -%>">
-  <td><%= link_to deal.address, deal %></td>
-  <td><%= deal.client %></td>
-  <td><%= deal.price %></td>
+  <td><%= link_to deal.street_address_and_unit, deal %></td>
+  <td>
+    <!-- currently we have the Client model created, but no saved data -->
+    <!-- %= deal.client % -->
+    - None specified - 
+  </td>
+  <td><%= rent_formatted deal.price %></td>
+  
+  <td>
+    <% if !deal.commission.blank? %>
+      <%= deal.commission %>
+    <% else %>
+      - None specified - 
+    <% end %>
+  </td>
+
   <td><%= deal.closed_date %></td>
-  <td><%= deal.commission %></td>
-  <td><%= deal.created_at %></td>
   
   <td>
     <%= link_to 'Edit', edit_deal_path(deal) %> |

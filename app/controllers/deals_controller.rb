@@ -1,4 +1,9 @@
 class DealsController < ApplicationController
+  load_and_authorize_resource
+  skip_load_resource :only => :create
+  before_action :set_deal, except: [:index, :new, :create, :filter, 
+    :autocomplete_building_formatted_street_address]
+  autocomplete :building, :formatted_street_address, full: true
 
 	def index
 		respond_to do |format|
@@ -75,7 +80,9 @@ class DealsController < ApplicationController
   	end
 
 		def set_deals
+      puts deals_params
 			@deals = Deal.search(deals_params)
+			@deals = @deals.page params[:page]
 		end
 
 		def set_deals_csv
@@ -95,7 +102,7 @@ class DealsController < ApplicationController
     end
 
     def deals_params
-    	params.permit(:sort_by, :filter, :address, :agent,
+    	params.permit(:sort_by, :address, :agent, :closed_date_start, :closed_date_end,
     		deal: [:price, :client, :lease_term, :lease_start_date, :lease_expiration_date,
     			:closed_date, :move_in_date, :commission, :deal_notes, :listing_type, :is_sale_deal, 
     			:unit_id, :agent_id])

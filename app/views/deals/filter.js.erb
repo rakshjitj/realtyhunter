@@ -1,0 +1,5 @@
+$('.deals_table_body').html("<%= escape_javascript (render partial: 'deals/deal', :collection => @deals, as: :deal) %>");
+
+$('.pagination').html("<%= escape_javascript (render partial: 'shared/pagination', locals: {:models => @deals}) %>");
+
+$('.totals').html("<%= @deals.count %> Deals");

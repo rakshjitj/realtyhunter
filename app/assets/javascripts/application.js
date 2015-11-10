@@ -49,6 +49,7 @@ $(document).ready(function() {
 });
 
 $(window).unload(function() {
+	Deals.clearTimer();
 	Careers.clearTimer();
 	ContactUs.clearTimer();
 	Partner.clearTimer();
