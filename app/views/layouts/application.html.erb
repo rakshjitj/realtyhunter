@@ -92,7 +92,7 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <%= current_user.company.name %> 
-                  <% if total_unread_forms_count > 0 %>
+                  <% if total_unread_forms_count > 0 && current_user.is_management? %>
                     <span class="total_forms_badge badge"><%= total_unread_forms_count %></span>
                   <% end %>
                   <b class="caret"></b>
