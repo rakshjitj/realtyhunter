@@ -82,6 +82,7 @@ class DealsController < ApplicationController
 		def set_deals
       puts deals_params
 			@deals = Deal.search(deals_params)
+      @deals = custom_sort
 			@deals = @deals.page params[:page]
 		end
 
@@ -91,18 +92,18 @@ class DealsController < ApplicationController
 		end
 
 		def custom_sort
-      sort_column = params[:sort_by] || "name"
-      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+      sort_column = params[:sort_by] || "closed_date"
+      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      if Deal.column_names.include?(params[:sort_by])
-         @deals = @deals.order(sort_column + ' ' + sort_order)
-      end
+      #if Deal.column_names.include?(params[:sort_by])
+      @deals = @deals.order(sort_column + ' ' + sort_order)
+      #end
       @deals
     end
 
     def deals_params
-    	params.permit(:sort_by, :address, :agent, :closed_date_start, :closed_date_end,
+    	params.permit(:sort_by, :direction, :address, :agent, :closed_date_start, :closed_date_end,
     		deal: [:price, :client, :lease_term, :lease_start_date, :lease_expiration_date,
     			:closed_date, :move_in_date, :commission, :deal_notes, :listing_type, :is_sale_deal, 
     			:unit_id, :agent_id])

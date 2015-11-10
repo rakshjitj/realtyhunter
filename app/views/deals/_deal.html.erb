@@ -1,10 +1,14 @@
 <tr class="<%= cycle('even', 'odd') -%>">
-  <td><%= link_to deal.street_address_and_unit, deal %></td>
+  <td><%= link_to deal.street_address2, deal %></td>
+
+  <td><%= deal.building_unit %></td>
+
   <td>
     <!-- currently we have the Client model created, but no saved data -->
     <!-- %= deal.client % -->
     - None specified - 
   </td>
+
   <td><%= rent_formatted deal.price %></td>
   
   <td>

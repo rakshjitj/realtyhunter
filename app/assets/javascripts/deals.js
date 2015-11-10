@@ -2,7 +2,7 @@ Deals = {};
 
 (function() {
 	Deals.setupSortableColumns = function() {
-		$('#careers .th-sortable').click(function(e) {
+		$('#deals .th-sortable').click(function(e) {
 			e.preventDefault();
 			
 			if ($(this).hasClass('selected-sort')) {
