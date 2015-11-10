@@ -6,10 +6,10 @@ class AnnouncementMailer < ApplicationMailer
 		@canned_response = canned_response
 		if unit
 			@unit = unit
-	    mail to: recipients, title: "[#{@canned_response}] #{@unit.building.street_number} #{@unit.building.route}" #, from: sender
+	    mail to: recipients, subject: "[#{@canned_response}] #{@unit.building.street_number} #{@unit.building.route}"
 	  else
 	  	# event, with no location defined
-	  	mail to: recipients, title: "[#{@canned_response}]"#, from: sender
+	  	mail to: recipients, subject: "[#{@canned_response}]"
 	  end
 	end
 
