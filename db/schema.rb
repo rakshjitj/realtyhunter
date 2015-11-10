@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151105231212) do
+ActiveRecord::Schema.define(version: 20151106182929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,6 +96,17 @@ ActiveRecord::Schema.define(version: 20151105231212) do
     t.integer "utility_id"
   end
 
+  create_table "clients", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "date_of_birth"
+    t.string   "phone"
+    t.string   "email"
+    t.boolean  "archived",      default: false
+    t.integer  "deal_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "commercial_listings", force: :cascade do |t|
     t.integer  "sq_footage"
     t.integer  "floor"
@@ -176,6 +187,26 @@ ActiveRecord::Schema.define(version: 20151105231212) do
   add_index "companies", ["wufoo_contact_us_forms_id"], name: "index_companies_on_wufoo_contact_us_forms_id", using: :btree
   add_index "companies", ["wufoo_listings_forms_id"], name: "index_companies_on_wufoo_listings_forms_id", using: :btree
   add_index "companies", ["wufoo_partner_forms_id"], name: "index_companies_on_wufoo_partner_forms_id", using: :btree
+
+  create_table "deals", force: :cascade do |t|
+    t.string   "price"
+    t.string   "client"
+    t.string   "lease_term"
+    t.datetime "lease_start_date"
+    t.datetime "lease_expiration_date"
+    t.datetime "closed_date"
+    t.datetime "move_in_date"
+    t.string   "commission"
+    t.string   "deal_notes"
+    t.string   "listing_type"
+    t.boolean  "is_sale_deal"
+    t.boolean  "archived",              default: false
+    t.integer  "unit_id"
+    t.integer  "user_id"
+    t.integer  "clients_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "documents", force: :cascade do |t|
     t.string   "file_file_name"
@@ -511,6 +542,7 @@ ActiveRecord::Schema.define(version: 20151105231212) do
     t.integer  "documents_id"
     t.integer  "primary_agent2_id"
     t.integer  "announcement_id"
+    t.integer  "deals_id"
   end
 
   add_index "units", ["announcement_id"], name: "index_units_on_announcement_id", using: :btree
@@ -564,6 +596,7 @@ ActiveRecord::Schema.define(version: 20151105231212) do
     t.integer  "roommates_id"
     t.integer  "lock_version",        default: 0,     null: false
     t.integer  "announcements_id"
+    t.integer  "deals_id"
   end
 
   add_index "users", ["announcements_id"], name: "index_users_on_announcements_id", using: :btree

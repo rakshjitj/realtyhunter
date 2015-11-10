@@ -31,6 +31,7 @@ class User < ActiveRecord::Base
 
   has_one :image, dependent: :destroy
   has_many :announcements
+  has_many :deals
   
 	attr_accessor :remember_token, :activation_token, :reset_token, :approval_token, :agent_types, :batch
   before_create :create_activation_digest

@@ -61,6 +61,7 @@ class Ability
       can :manage, UserWaterfall
     end
     
+    can :manage, Deals
   end
 
   def agent_permissions(user)

@@ -380,4 +380,12 @@ Rails.application.routes.draw do
   end
   get 'announce' => 'announcements#new'
 
+  resources :deals do
+    member do
+      get 'delete_modal'
+    end
+    collection do
+      get :filter
+    end
+  end
 end
