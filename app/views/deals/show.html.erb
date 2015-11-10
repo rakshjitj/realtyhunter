@@ -1,0 +1,211 @@
+<% provide(:title, "Deal") %>
+<div id="deals">
+
+<div class="row">
+  <div class="col-md-offset-2 col-md-8">
+    <div class="page-header">
+      
+      <div class="row">
+        <div class="col-md-6">
+          <h1>Deal 
+            <small><%= @deal.street_address_and_unit %> </small>
+          </h1>
+        </div>
+        <div class="col-md-6 form-label-responsive">
+
+          <% if can? :edit, @deal %>
+            <%= link_to 'Edit', edit_deal_path(@deal) %>
+                
+            <% if !@deal.archived %>
+              | &nbsp;<%= link_to 'Delete', @deal, method: :delete, 
+                data: { confirm: "Are you sure you want to delete #{@deal.street_address_and_unit}?" } %>
+              <% @prev_link = true %>
+            <!-- TODO: un-archive -->
+            <% end %>
+            <% if can? :manage, @deal %>
+              | <%= link_to 'All deals', deals_path %>
+            <% end %>
+          <% end %>
+
+      </div>
+
+    </div><!-- page header -->
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-12">
+            
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-xs-5">
+                <strong>Unit:</strong>
+              </div>
+              <div class="col-xs-7">
+                <% if @deal.unit.residential_listing %>
+                  <%= link_to @deal.street_address_and_unit, residential_listing_path(@deal.unit.residential_listing.id) %>
+                <% elsif @deal.unit.commercial_listing %>
+                  <%= link_to @deal.street_address_and_unit, residential_listing_path(@deal.unit.commercial_listing.id) %>
+                <% elsif @deal.unit.sales_listing %>
+                  <%= link_to @deal.street_address_and_unit, residential_listing_path(@deal.unit.sales_listing.id) %>
+                <% end %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-5">
+                <strong>Landlord:</strong>
+              </div>
+              <div class="col-xs-7">
+                <% if @deal.landlord_code.blank? %>
+                  <%= @deal.landlord_code %>
+                <% else %>
+                  - None Specified -
+                <% end %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-5">
+                <strong>Price:</strong>
+              </div>
+              <div class="col-xs-7">
+                <%= rent_formatted @deal.price %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-5">
+                <strong>Commission:</strong>
+              </div>
+              <div class="col-xs-7">
+                <% if !@deal.commission.blank? %>
+                  <%= @deal.commission %>
+                <% else %>
+                  - None Specified -
+                <% end %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-5">
+                
+              </div>
+              <div class="col-xs-7">
+                
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-xs-5">
+                <strong>Lease Term:</strong>
+              </div>
+              <div class="col-xs-7">
+                <% if !@deal.lease_term.blank? %>
+                  <%= @deal.lease_term %>
+                <% else %>
+                  - None Specified -
+                <% end %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-5">
+                <strong>Lease Start:</strong>
+              </div>
+              <div class="col-xs-7">
+                <% if !@deal.lease_start_date.blank? %>
+                  <%= @deal.lease_start_date %>
+                <% else %>
+                  - None Specified -
+                <% end %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-5">
+                <strong>Lease Expiration:</strong>
+              </div>
+              <div class="col-xs-7">
+                <% if !@deal.lease_expiration_date.blank? %>
+                  <%= @deal.lease_expiration_date %>
+                <% else %>
+                  - None Specified -
+                <% end %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-5">
+                <strong>Closed Date</strong>
+              </div>
+              <div class="col-xs-7">
+                <% if !@deal.closed_date.blank? %>
+                  <%= @deal.closed_date %>
+                <% else %>
+                  - None Specified -
+                <% end %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-5">
+                <strong>Move In Date</strong>
+              </div>
+              <div class="col-xs-7">
+                <% if !@deal.move_in_date.blank? %>
+                  <%= @deal.move_in_date %>
+                <% else %>
+                  - None Specified -
+                <% end %>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-6">
+            <h3>Clients</h3>
+          </div>
+        </div>
+
+        <% if @deal.clients.length > 0 %>
+          <%= @deal.clients.each do |client| %>
+            <div class="row">
+              <div class="col-md-12">
+                <p><%= client.name %></p>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          No clients specified.
+        <% end %>
+
+        <br />
+        <div class="row">
+          <div class="col-md-6">
+            <h3>Notes</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p>
+              <% if !@deal.deal_notes.blank? %>
+                <%= @deal.deal_notes %>
+              <% else %>
+                - None Specified - 
+              <% end %>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- end top half -->
+
+  </div><!-- main centering col -->
+</div><!-- overall row -->
+
+
+</div>

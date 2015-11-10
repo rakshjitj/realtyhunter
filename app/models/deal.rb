@@ -16,29 +16,29 @@ class Deal < ActiveRecord::Base
     find_by!(id: id, archived: false)
   end
 
-  # def street_address_and_unit
-  #   output = ""
-  #    # calling from 'show', for example with full objects loaded
-  #   if !self.respond_to? :street_number
-  #     if unit.building.street_number
-  #       output = unit.building.street_number + ' ' + unit.building.route
-  #     end
+  def street_address_and_unit
+    output = ""
+     # calling from 'show', for example with full objects loaded
+    if !self.respond_to? :street_number
+      if unit.building.street_number
+        output = unit.building.street_number + ' ' + unit.building.route
+      end
 
-  #     if unit.building_unit && !unit.building_unit.empty?
-  #       output = output + ' #' + unit.building_unit
-  #     end
-  #   else # otherwise, we used a select statement to cherry pick fields
-  #     if street_number
-  #       output = street_number + ' ' + route
-  #     end
+      if unit.building_unit && !unit.building_unit.empty?
+        output = output + ' #' + unit.building_unit
+      end
+    else # otherwise, we used a select statement to cherry pick fields
+      if street_number
+        output = street_number + ' ' + route
+      end
 
-  #     if !building_unit.blank?
-  #       output = output + ' #' + building_unit
-  #     end
-  #   end
+      if !building_unit.blank?
+        output = output + ' #' + building_unit
+      end
+    end
 
-  #   output
-  # end
+    output
+  end
 
   def self.search(params)
     puts params

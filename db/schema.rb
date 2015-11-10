@@ -199,6 +199,7 @@ ActiveRecord::Schema.define(version: 20151106182929) do
     t.string   "commission"
     t.string   "deal_notes"
     t.string   "listing_type"
+    t.string   "landlord_code"
     t.boolean  "is_sale_deal"
     t.boolean  "archived",              default: false
     t.integer  "unit_id"

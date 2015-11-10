@@ -11,6 +11,7 @@ class CreateDeals < ActiveRecord::Migration
     	t.string :commission
     	t.string :deal_notes
     	t.string :listing_type
+        t.string :landlord_code # landlord at the time might not be current landlord
     	t.boolean :is_sale_deal
         t.boolean :archived, default: false
     	t.belongs_to :unit
