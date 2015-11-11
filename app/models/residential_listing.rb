@@ -48,6 +48,10 @@ class ResidentialListing < ActiveRecord::Base
       if street_number
         output = street_number + ' ' + route
       end
+
+      if !building_unit.blank?
+        output = output + ' #' + building_unit
+      end
     end
 
     output
@@ -165,7 +169,7 @@ class ResidentialListing < ActiveRecord::Base
   def self.search(params, user, building_id=nil)
     # TODO: add amenities back in
     # 'building_amenities.name AS bldg_amenity_name',
-    @running_list = ResidentialListing.joins(unit: {building: [:company, :landlord, :neighborhood]})
+    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord, :neighborhood]})
       .where('units.archived = false')
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address', 
@@ -183,16 +187,16 @@ class ResidentialListing < ActiveRecord::Base
       # unit.building.street_number + ' ' + unit.building.route
 
     if !params && !building_id
-      return @running_list
+      return running_list
     elsif !params && building_id
       # TODO
-      #@running_list = @running_list.where(building_id: building_id)
-      #return @running_list
+      #running_list = running_list.where(building_id: building_id)
+      #return running_list
     end
 
     # only admins are allowed to view off-market units
     if !user.is_management?
-     @running_list = @running_list.where.not('status = ?', Unit.statuses['off'])
+     running_list = running_list.where.not('status = ?', Unit.statuses['off'])
     end
 
     # all search params come in as strings from the url
@@ -203,15 +207,15 @@ class ResidentialListing < ActiveRecord::Base
     if params[:address]
       # cap query string length for security reasons
       address = params[:address][0, 500]
-      @running_list = 
-       @running_list.where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
+      running_list = 
+       running_list.where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
     end
 
     # search by unit
     if params[:unit]
       # cap query string length for security reasons
       address = params[:unit][0, 50]
-      @running_list = @running_list.where("building_unit ILIKE ?", "%#{params[:unit]}%")
+      running_list = running_list.where("building_unit ILIKE ?", "%#{params[:unit]}%")
     end
 
     # search by status
@@ -220,21 +224,21 @@ class ResidentialListing < ActiveRecord::Base
       included = ['active + pending', 'active', 'pending', 'off'].include?(status)
       if included
         if status == 'active + pending'
-          @running_list = @running_list.where("status = ? or status = ?", 
+          running_list = running_list.where("status = ? or status = ?", 
             Unit.statuses["active"], Unit.statuses["pending"])
         else
-          @running_list = @running_list.where("status = ?", Unit.statuses[status])
+          running_list = running_list.where("status = ?", Unit.statuses[status])
         end
       end
     end
 
     # search by rent
     if params[:rent_min] && params[:rent_max]
-      @running_list = @running_list.where("rent >= ? AND rent <= ?", params[:rent_min], params[:rent_max])
+      running_list = running_list.where("rent >= ? AND rent <= ?", params[:rent_min], params[:rent_max])
     elsif params[:rent_min] && !params[:rent_max]
-      @running_list = @running_list.where("rent >= ?", params[:rent_min])
+      running_list = running_list.where("rent >= ?", params[:rent_min])
     elsif !params[:rent_min] && params[:rent_max]
-      @running_list = @running_list.where("rent <= ?", params[:rent_max])
+      running_list = running_list.where("rent <= ?", params[:rent_max])
     end
 
     # search neighborhoods
@@ -243,7 +247,7 @@ class ResidentialListing < ActiveRecord::Base
       neighborhoods = neighborhood_ids.split(",").select{|i| !i.strip.empty?}
       #puts "**** #{neighborhoods.inspect}"
       if neighborhoods.length > 0 # ignore empty selection
-        @running_list = @running_list
+        running_list = running_list
          .where('neighborhood_id IN (?)', neighborhoods)
       end
     end
@@ -252,12 +256,12 @@ class ResidentialListing < ActiveRecord::Base
       features = params[:building_feature_ids][0, 256]
       features = features.split(",").select{|i| !i.empty?}
         bldg_ids = Building.joins(:building_amenities).where('building_amenity_id IN (?)', features).map(&:id)
-        @running_list = @running_list.where("building_id IN (?)", bldg_ids)
+        running_list = running_list.where("building_id IN (?)", bldg_ids)
     end
 
     # search landlord code
     if params[:landlord]
-      @running_list = @running_list
+      running_list = running_list
       .where("code ILIKE ?", "%#{params[:landlord]}%")
     end
 
@@ -274,34 +278,34 @@ class ResidentialListing < ActiveRecord::Base
       end
 
       if policies
-        @running_list = @running_list#.joins(building: :pet_policy)
+        running_list = running_list#.joins(building: :pet_policy)
           .where('pet_policy_id IN (?)', policies.ids)
       end
     end
 
     if !params[:available_starting].blank?
-      @running_list = @running_list.where('available_by > ?', params[:available_starting]);
+      running_list = running_list.where('available_by > ?', params[:available_starting]);
     end
     if !params[:available_before].blank?
-      @running_list = @running_list.where('available_by < ?', params[:available_before]);
+      running_list = running_list.where('available_by < ?', params[:available_before]);
     end
 
     # search beds
     if params[:bed_min] && params[:bed_max]
-      @running_list = @running_list.where("beds >= ? AND beds <= ?", params[:bed_min], params[:bed_max])
+      running_list = running_list.where("beds >= ? AND beds <= ?", params[:bed_min], params[:bed_max])
     elsif params[:bed_min] && !params[:bed_max]
-      @running_list = @running_list.where("beds >= ?", params[:bed_min])
+      running_list = running_list.where("beds >= ?", params[:bed_min])
     elsif !params[:bed_min] && params[:bed_max]
-      @running_list = @running_list.where("beds <= ?", params[:bed_max])
+      running_list = running_list.where("beds <= ?", params[:bed_max])
     end
 
     # search baths
     if params[:bath_min] && params[:bath_max]
-      @running_list = @running_list.where("baths >= ? AND baths <= ?", params[:bath_min], params[:bath_max])
+      running_list = running_list.where("baths >= ? AND baths <= ?", params[:bath_min], params[:bath_max])
     elsif params[:bath_min] && !params[:bath_max]
-      @running_list = @running_list.where("baths >= ?", params[:bath_min])
+      running_list = running_list.where("baths >= ?", params[:bath_min])
     elsif !params[:bath_min] && params[:bath_max]
-      @running_list = @running_list.where("baths <= ?", params[:bath_max])
+      running_list = running_list.where("baths <= ?", params[:bath_max])
     end
 
     # search by brokers fee
@@ -309,7 +313,7 @@ class ResidentialListing < ActiveRecord::Base
       has_fee = params[:has_fee].downcase
       included = %w[yes no].include?(has_fee)
       if included
-        @running_list = @running_list.where(has_fee: has_fee == "yes")
+        running_list = running_list.where(has_fee: has_fee == "yes")
       end
     end
 
@@ -318,22 +322,22 @@ class ResidentialListing < ActiveRecord::Base
       # sanitize input
       features = params[:unit_feature_ids][0, 256]
       features = features.split(",").select{|i| !i.empty?}
-      @running_list = @running_list.joins(:residential_amenities)
+      running_list = running_list.joins(:residential_amenities)
         .where('residential_amenity_id IN (?)', features)
     end
 
     # roomsharing only
     if params[:roomsharing_filter] == 'true'
-      @running_list = @running_list.where(for_roomsharing: true)
+      running_list = running_list.where(for_roomsharing: true)
     end
 
     # unassigned listings only
     if params[:unassigned_filter] == 'true'
-      @running_list = @running_list.where(
+      running_list = running_list.where(
         'units.primary_agent_id IS NULL AND units.primary_agent2_id IS NULL')
     end
 
-    @running_list
+    running_list
   end
 
   # TODO: run this in the background. See Image class for stub

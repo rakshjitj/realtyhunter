@@ -59,36 +59,36 @@ class Landlord < ActiveRecord::Base
 		end
 	end
 
-	def self._search(params)
+	def self._search(running_list, params)
 		if !params
-	    return @running_list 
+	    return running_list 
   	end
 
   	if params[:filter]
 	    terms = params[:filter].split(" ")
 	    terms.each do |term|
-	      @running_list = @running_list.where('name ILIKE ? or code ILIKE ?', "%#{term}%", "%#{term}%").all
+	      running_list = running_list.where('name ILIKE ? or code ILIKE ?', "%#{term}%", "%#{term}%").all
 	    end
 	  end
 
     if params[:active_only] == "true"
     	# misnamed. this actually means active + pending
-    	@running_list = @running_list.joins(buildings: :units).where.not("status = ?", Unit.statuses["off"]).uniq
+    	running_list = running_list.joins(buildings: :units).where.not("status = ?", Unit.statuses["off"]).uniq
     end
 
-    @running_list
+    running_list
 	end
 
 	def self.search_csv(params)
-		@running_list = Landlord.unarchived.includes(:buildings)
-		self._search(params)
+		running_list = Landlord.unarchived.includes(:buildings)
+		self._search(running_list, params)
 	end
 
 	def self.search(params)
-		@running_list = Landlord.unarchived.includes(:buildings)
+		running_list = Landlord.unarchived.includes(:buildings)
 			.select('landlords.id', 'landlords.code', 'landlords.name',
 				'landlords.updated_at', 'landlords.mobile')
-		self._search(params)
+		self._search(running_list, params)
 	end
 
 	def residential_units(active_only=false)
