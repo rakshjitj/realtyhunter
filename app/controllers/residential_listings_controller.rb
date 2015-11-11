@@ -36,14 +36,12 @@ class ResidentialListingsController < ApplicationController
   # GET 
   # handles ajax call. uses latest data in modal
   def neighborhoods_modal
+    # TODO: as we onboard more locations, 
+    # will need to come up with a more robust solution here
     @neighborhoods = Neighborhood.unarchived
-    .where(city: current_user.office.administrative_area_level_2_short)
+    .where(state: current_user.office.administrative_area_level_1_short)
     .to_a
     .group_by(&:borough)
-    
-    # @neighborhoods.each do |borough, list|
-    #   puts list.inspect
-    # end
 
     respond_to do |format|
       format.js  

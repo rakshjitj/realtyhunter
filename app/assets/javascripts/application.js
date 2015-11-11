@@ -41,7 +41,6 @@ $(document).ready(function() {
 
 	// submit login form on enter
 	$('#session_password').keydown(function(e) {
-		console.log('sdfdsds');
 	    if (e.keyCode == 13) {
 	      $(this).closest('form').submit();
 	    }
