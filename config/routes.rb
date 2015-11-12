@@ -372,6 +372,9 @@ Rails.application.routes.draw do
   end
    
   resources :announcements do
+    member do
+      get 'delete_modal'
+    end
     collection do
       get :filter
       get :autocomplete_building_formatted_street_address

@@ -33,7 +33,6 @@ Announcements = {};
 		if ($('#announcements').length > 0 ) {
 			Announcements.clearTimer();
 			// update every few minutes
-			console.log('minute timer');
 		  Announcements.timer = setTimeout(Announcements.doSearch, 60 * 1 * 1000);
 		}
 	};

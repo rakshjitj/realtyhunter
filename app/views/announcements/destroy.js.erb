@@ -1,0 +1,4 @@
+// announcements page
+$('.items').html("<%= escape_javascript (render partial: 'announcements/items_list', locals: { announcements: @announcements } ) %>");
+// residential listings page
+$('.announcements').html("<%= j(render partial: 'announcements/top_row', locals: { announcements: @announcement_items}) %>");

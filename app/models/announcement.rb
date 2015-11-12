@@ -18,7 +18,7 @@ class Announcement < ActiveRecord::Base
       .joins('left join residential_listings on units.id = residential_listings.unit_id
 left join commercial_listings on units.id = commercial_listings.unit_id
 left join sales_listings on units.id = sales_listings.unit_id')
-      .select('announcements.updated_at', 'canned_response', 'note', 'users.name AS sender_name',
+      .select('announcements.id', 'announcements.updated_at', 'canned_response', 'note', 'users.name AS sender_name',
         'buildings.street_number', 'buildings.route', 'units.building_unit', 
         'residential_listings.id as residential_listing_id',
         'commercial_listings.id as commercial_listing_id',

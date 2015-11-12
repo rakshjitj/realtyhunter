@@ -44,6 +44,29 @@ class AnnouncementsController < ApplicationController
     end
 	end
 
+  def delete_modal
+    @announcement = Announcement.find(params[:id])
+    respond_to do |format|
+      format.js  
+    end
+  end
+
+  def destroy
+    @announcement = Announcement.find(params[:id])
+    @announcement.delete
+    
+    # for residential page
+    @announcement_items = Announcement.search({limit: 4})
+    # for announcements page
+    set_announcements
+
+    respond_to do |format|
+      format.html { redirect_to forms_careers_url, notice: 'Announcement was successfully inactivated.' }
+      format.json { head :no_content }
+      format.js
+    end
+  end
+
 	private
 
     def set_announcements
@@ -66,11 +89,11 @@ class AnnouncementsController < ApplicationController
 
   	def announcement_params
       
-  		data = params.permit(
+  		data = params.permit(:id,
         :address, :unit_id, :limit, :res_limit, :com_limit, :sales_limit, :event_limit,
         :filter_address, :created_start, :created_end,
         announcement: [
-          :audience, :unit, :unit_id, :canned_response, :note, :user])
+          :id, :audience, :unit, :unit_id, :canned_response, :note, :user])
 
       # clicked on 'make announcement' link from residential_listings/show for example
       # if !data[:unit_id].blank?
