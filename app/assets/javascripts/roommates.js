@@ -89,6 +89,7 @@ Roommates = {};
 
 	// email modal triggered
 	Roommates.sendMessage = function (e) {
+		$('#roommate_recipients').val('');
 		$('#roommate_ids').val(Roommates.selectedRoommates.join(","));
 		$('#roommate_message').val('');
 		e.preventDefault();
@@ -303,7 +304,6 @@ Roommates = {};
 		// index page - selecting listings menu dropdown
 		$('#roommates #emailListings').click(Roommates.sendMessage);
 		$('#roommates #matchMultiple').click(Roommates.matchMultiple);
-		//$('#roommates #mark-read').click(Roommates.markRead);
 
 		$('#roommates tbody').on('click', 'i', Roommates.toggleListingSelection);
 		$('#roommates .select-all-listings').click(Roommates.selectAllListings);
