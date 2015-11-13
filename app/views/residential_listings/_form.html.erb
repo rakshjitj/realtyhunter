@@ -16,18 +16,18 @@
     <div class="tab-content">
       <!-- ******************** third tabpanel - documents ******************** -->
       <div role="tabpanel" class="tab-pane fade" id="documents">
-      
+
       <% if @residential_unit && @residential_unit.id %>
 
         <br />
-        <%= form_for(@residential_unit, :url => residential_listing_documents_path(@residential_unit), 
+        <%= form_for(@residential_unit, :url => residential_listing_documents_path(@residential_unit),
           html: {multipart: true, class: "dropzone", id: "runit-dropzone-docs"}, method: :post) do |f| %>
           <div class="fallback">
             <%= f.file_field :file %><br>
             <%= f.submit "Upload" %>
           </div>
         <% end %>
-        
+
         <br />
         <div class="row">
           <div class="col-md-12">
@@ -46,23 +46,23 @@
         <br />
         <strong>Save the basic info first!</strong>
       <% end %>
-      
+
     </div><!-- end tabpanel docs -->
 
       <!-- ******************** second tabpanel - photos ******************** -->
       <div role="tabpanel" class="tab-pane fade" id="photos">
-        
+
         <% if @residential_unit.id %>
 
           <br />
-          <%= form_for(@residential_unit, url: residential_listing_unit_images_path(@residential_unit), 
+          <%= form_for(@residential_unit, url: residential_listing_unit_images_path(@residential_unit),
             html: {multipart: true, class: "dropzone", id: "runit-dropzone"}, method: :post) do |f| %>
             <div class="fallback">
               <%= f.file_field :file %><br>
               <%= f.submit "Upload" %>
             </div>
           <% end %>
-        
+
           <br />
           <div class="row">
             <div class="col-md-12">
@@ -81,15 +81,15 @@
           <br />
           <strong>Save the basic info first!</strong>
         <% end %>
-        
+
       </div><!-- end tabpanel photos -->
       <!-- ******************** first tabpanel - basic info ********************-->
       <div role="tabpanel" class="tab-pane fade in active" id="basic-info">
         <%= form_for(@residential_unit) do |f| %>
         <%= f.hidden_field :lock_version %>
-        <%= render :partial => 'shared/error_messages', 
+        <%= render :partial => 'shared/error_messages',
           :locals => {:model => @residential_unit} %>
-       
+
           <br />
           <div class="row">
           <%= f.fields_for @residential_unit.unit do |unit_form| %>
@@ -98,9 +98,9 @@
             </div>
             <div class="col-xs-12 col-md-4">
               <div class="field">
-                <%= unit_form.select :status, 
-                  options_for_select(%w(Active Pending Off), 
-                    [@residential_unit.unit.status.titleize]), 
+                <%= unit_form.select :status,
+                  options_for_select(%w(Active Pending Off),
+                    [@residential_unit.unit.status.titleize]),
                   {prompt: "Choose one..."},
                   :required => true,
                   class: "form-control" %>
@@ -116,11 +116,11 @@
           </div>
           <div class="col-xs-12 col-md-4">
             <%= f.fields_for @residential_unit.unit do |unit_form| %>
-            
+
               <!-- TODO: turn this into an autocomplete field -->
-              <%= unit_form.select(:building_id, 
+              <%= unit_form.select(:building_id,
                 options_for_select(current_user.company.buildings.order("formatted_street_address ASC").collect {|b| [b.street_address, b.id]},
-                  [@residential_unit.unit.building ? @residential_unit.unit.building.id : '']), 
+                  [@residential_unit.unit.building ? @residential_unit.unit.building.id : '']),
                 {prompt: "Choose one..."},
                 class: 'form-control',
                 :include_blank => true) %>
@@ -140,7 +140,7 @@
             <% end %>
           </div>
         </div>
-        
+
         <br />
         <div class="row">
           <div class="col-md-2 form-label-responsive">
@@ -158,7 +158,7 @@
             <%= f.label :baths, class: 'required' %>
           </div>
           <div class="col-md-4">
-            <%= f.number_field :baths, class: 'form-control', step: 0.5, in: 0.0..10.0, 
+            <%= f.number_field :baths, class: 'form-control', step: 0.5, in: 0.0..10.0,
             :required => true %>
           </div>
         </div>
@@ -182,12 +182,12 @@
               <%= unit_form.label :available_by, "Available", class: 'required' %>
             </div>
             <div class="col-md-4">
-              <div class='input-group date datepicker' 
+              <div class='input-group date datepicker'
                 data-available-by="<%= @residential_unit.unit.available_by ? @residential_unit.unit.available_by.strftime("%m/%d/%Y") : '' %>">
-              
-                <%= unit_form.text_field :available_by, 
+
+                <%= unit_form.text_field :available_by,
                   placeholder: "Available", class:"form-control", size:30 %>
-              
+
                 <label class="input-group-addon btn" for="date">
                   <span class="fa fa-calendar open-datepicker"></span>
                 </label>
@@ -216,14 +216,14 @@
             <%= f.label :lease_start, "Lease Duration", class: 'required' %>
           </div>
           <div class="col-xs-2">
-            <%= f.text_field :lease_start, class: 'form-control', 
+            <%= f.text_field :lease_start, class: 'form-control',
             required: true, placeholder: "min" %>
           </div>
           <div class="col-xs-1">
             to
           </div>
           <div class="col-xs-2">
-            <%= f.text_field :lease_end, class: 'form-control', 
+            <%= f.text_field :lease_end, class: 'form-control',
             required: true, placeholder: "max" %>
           </div>
           <div class="col-xs-1">
@@ -240,10 +240,10 @@
           <!-- for bigger screens -->
           <div class="col-xs-12 col-md-9">
             <div class="row">
-              
+
               <% i = 0 %>
               <%= f.collection_check_boxes(:residential_amenity_ids, current_user.company.residential_amenities, :id, :name) do |b| %>
-                
+
                 <% if i % 3 == 0 && i > 0 %>
                   </div>
                   <div class="row">
@@ -256,12 +256,12 @@
 
               <% i = i+1 %>
               <% end %>
-            
+
             </div><!-- row -->
 
             <div class="row">
               <div class="col-xs-12">
-                <%= f.text_field :custom_amenities, class: 'form-control', 
+                <%= f.text_field :custom_amenities, class: 'form-control',
                 placeholder: "Or enter new amenities, comma separated" %>
               </div>
             </div>
@@ -290,23 +290,23 @@
               <%= f.fields_for @residential_unit.unit do |unit_form| %>
                 <%= unit_form.check_box :exclusive, checked: @residential_unit.unit.exclusive %>
                 <%= f.label :exclusive %>
-              <% end %> 
+              <% end %>
 
             <%= f.text_area :description, class: 'form-control', rows: 6 %>
           </div>
         </div>
 
-        <br />
+<!--         <br />
         <div class="row">
           <div class="col-md-2 form-label-responsive">
             <strong>Roomshares</strong>
           </div>
           <div class="col-md-4">
-            <%= f.check_box :for_roomsharing, checked: @residential_unit.for_roomsharing %>
+            < % = f.check_box :for_roomsharing, checked: @residential_unit.for_roomsharing % >
             <strong>Roomsharing OK</strong>
           </div>
         </div>
-
+ -->
         <br />
         <div class="row">
           <div class="col-md-2 form-label-responsive">
@@ -328,7 +328,7 @@
             <div id="op_explainer_text"></div>
           </div>
         </div>
-        
+
         <div class="row show-tp">
           <div class="col-md-2 form-label-responsive">
             <%= f.label :tp_fee_percentage, 'Tenant Pays %' %>
@@ -346,9 +346,9 @@
           </div>
           <div class="col-md-4">
             <%= f.fields_for @residential_unit.unit do |unit_form| %>
-              <%= unit_form.select(:primary_agent_id, 
+              <%= unit_form.select(:primary_agent_id,
                 options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
-                  [@residential_unit.unit.primary_agent ? @residential_unit.unit.primary_agent.id : '']), 
+                  [@residential_unit.unit.primary_agent ? @residential_unit.unit.primary_agent.id : '']),
                 {prompt: "Choose one..."},
                 class: 'form-control',
                 :include_blank => true) %>
@@ -380,7 +380,7 @@
           </div>
         </div>
 
-        
+
         <% end %>
 
       </div><!-- end tabpanel home -->

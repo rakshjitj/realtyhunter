@@ -1,5 +1,5 @@
   <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= residential_listing.listing_id %>" >
-    
+
     <!-- ****** checkboxes ****************************************** -->
     <td>
       <i data-action="selectUnit" class="fa fa-square-o"></i>
@@ -15,7 +15,7 @@
         <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), residential_listing) %>
       <% end %>
     </td>
-    
+
     <!-- ****** ADDRESS ****************************************** -->
     <td>
       <%= link_to "#{residential_listing.street_address}", residential_listing_path(residential_listing.id) %><br />
@@ -27,7 +27,7 @@
     <!-- ****** UNIT ****************************************** -->
     <td>
       <%= residential_listing.building_unit %>
-      <% if residential_listing.for_roomsharing %>
+      <% if residential_listing.can_roomshare %>
         <br /><strong>(RS)</strong>
       <% end %>
     </td>
@@ -57,16 +57,16 @@
       </div>
 
       <!-- if roomsharing, draw indicators for each roommate slot here -->
-      <% if residential_listing.for_roomsharing %>
+      <% if residential_listing.can_roomshare %>
         <div class="row">
           <div class="col-md-12 margin-vertical">
             <% for idx in 0..residential_listing.beds-1 %>
-              
+
               <!-- if the roommate exists -->
               <% if idx < residential_listing.roommates.count && residential_listing.roommates[idx] %>
                 <% roommate = residential_listing.roommates[idx] %>
                 <% if roommate.upload_picture_of_yourself %>
-                  <%= image_tag roommate.upload_picture_of_yourself, class: 'roommate_icon', 
+                  <%= image_tag roommate.upload_picture_of_yourself, class: 'roommate_icon',
                     alt: roommate.upload_picture_of_yourself, size:'26x26' %>
                 <% else %>
                   <!-- otherwise the roommate is valid but has no photo -->
@@ -79,14 +79,14 @@
                 <!-- if there's no roommate -->
                 <div class="roommate_no_photo_icon">&nbsp;&nbsp;&nbsp;</div>
               <% end %>
-            
+
             <% end %>
             <br />
           </div>
         </div>
       <% end %><!-- roomsharing icons -->
     </td>
-    
+
     <!-- ****** LANDLORD ****************************************** -->
     <td>
       <% if current_user.is_management? %>
@@ -113,19 +113,19 @@
     <!-- ****** LINKS ****************************************** -->
     <% if current_user.is_management? || current_user.is_listings_manager? %>
       <td>
-        <%= link_to 'Edit', edit_residential_listing_path(residential_listing) %> 
-        <br /><%= link_to 'Delete', delete_modal_residential_listing_path(residential_listing), 
+        <%= link_to 'Edit', edit_residential_listing_path(residential_listing) %>
+        <br /><%= link_to 'Delete', delete_modal_residential_listing_path(residential_listing),
           data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
         <br />
-        <%= link_to 'Duplicate', duplicate_modal_residential_listing_path(residential_listing), 
+        <%= link_to 'Duplicate', duplicate_modal_residential_listing_path(residential_listing),
           data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
 
         <%= link_to 'Announcement', new_announcement_path(
           { address: residential_listing.formatted_street_address }) %>
-          
+
         <!--% if residential_listing.status == "active" %-->
           <!--br /-->
-          <!--%= link_to 'Take off', take_off_modal_residential_listing_path(residential_listing), 
+          <!--%= link_to 'Take off', take_off_modal_residential_listing_path(residential_listing),
             data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %-->
         <!--% end %-->
       </td>

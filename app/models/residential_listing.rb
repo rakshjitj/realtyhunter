@@ -116,11 +116,11 @@ class ResidentialListing < ActiveRecord::Base
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at',
-        'residential_listings.for_roomsharing',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by')
       .to_a.group_by(&:neighborhood_name)
+      #'residential_listings.for_roomsharing',
     running_list
   end
 
@@ -136,10 +136,10 @@ class ResidentialListing < ActiveRecord::Base
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at',
-        'residential_listings.for_roomsharing',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by', 'units.public_url')
+      #'residential_listings.for_roomsharing',
     running_list
   end
 
@@ -157,9 +157,10 @@ class ResidentialListing < ActiveRecord::Base
         'residential_listings.lease_end', 'residential_listings.has_fee',
         'residential_listings.op_fee_percentage','residential_listings.tp_fee_percentage',
         'residential_listings.tenant_occupied', 'residential_listings.created_at',
-        'residential_listings.updated_at', 'residential_listings.for_roomsharing',
+        'residential_listings.updated_at',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code AS landlord_code','landlords.id AS landlord_id')
+#'residential_listings.for_roomsharing',
   end
 
   # takes in a hash of search options
@@ -180,12 +181,11 @@ class ResidentialListing < ActiveRecord::Base
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at',
-        'residential_listings.for_roomsharing',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.listing_id', 'units.available_by', 'units.public_url')
       # unit.building.street_number + ' ' + unit.building.route
-
+      #'residential_listings.for_roomsharing',
     if !params && !building_id
       return running_list
     elsif !params && building_id
@@ -339,7 +339,9 @@ class ResidentialListing < ActiveRecord::Base
 
     # roomsharing only
     if params[:roomsharing_filter] == 'true'
-      running_list = running_list.where(for_roomsharing: true)
+      # roomsharing apartments are defined as 'apartments with 3+ bedrooms'
+      #running_list = running_list.where(for_roomsharing: true)
+      running_list = running_list.where('beds >= 3');
     end
 
     # unassigned listings only
@@ -497,10 +499,11 @@ class ResidentialListing < ActiveRecord::Base
         'residential_listings.beds', 'residential_listings.id',
         'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at',
-        'neighborhoods.name AS neighborhood_name', 'residential_listings.for_roomsharing',
+        'neighborhoods.name AS neighborhood_name',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by', 'units.listing_id')
       .order('residential_listings.updated_at desc')
+      #'residential_listings.for_roomsharing',
 
     if is_active
       listings = listings.where.not("status = ?", Unit.statuses["off"])
@@ -523,9 +526,10 @@ class ResidentialListing < ActiveRecord::Base
         'residential_listings.beds', 'residential_listings.id',
         'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at',
-        'neighborhoods.name AS neighborhood_name', 'residential_listings.for_roomsharing',
+        'neighborhoods.name AS neighborhood_name',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by', 'units.listing_id')
+      #'residential_listings.for_roomsharing',
 
     if is_active
       listings = listings.where.not("status = ?", Unit.statuses["off"])
@@ -543,6 +547,10 @@ class ResidentialListing < ActiveRecord::Base
     list = ResidentialListing.joins(:residential_amenities)
       .where(unit_id: unit_ids).select('name', 'unit_id', 'id')
       .to_a.group_by(&:unit_id)
+  end
+
+  def can_roomshare
+    beds >= 3
   end
 
   private

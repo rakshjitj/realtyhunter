@@ -72,8 +72,9 @@ class AnnouncementsController < ApplicationController
       # # include events, even if they do not have a unit defined
       # @event_announcements = Announcement.search_events(announcement_params)
 
-      params[:limit] = 12 unless !params[:limit].blank?
+      #params[:limit] = 12 unless !params[:limit].blank?
       @announcements = Announcement.search(announcement_params)
+      @announcements = @announcements.page params[:page]
     end
 
   	def announcement_params

@@ -1,13 +1,13 @@
 class ResidentialListingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource only: :create
-  before_action :set_residential_listing, only: [:show, :edit, :duplicate_modal, :duplicate, 
-    :take_off_modal, :take_off, :update, :delete_modal, :destroy, 
+  before_action :set_residential_listing, only: [:show, :edit, :duplicate_modal, :duplicate,
+    :take_off_modal, :take_off, :update, :delete_modal, :destroy,
     :inaccuracy_modal, :send_inaccuracy, :refresh_images, :refresh_documents]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
   etag { current_user.id }
-  
+
   # GET /residential_units
   # GET /residential_units.json
   def index
@@ -18,7 +18,7 @@ class ResidentialListingsController < ApplicationController
       end
       format.csv do
         set_residential_listings_csv
-        headers['Content-Disposition'] = "attachment; filename=\"" + 
+        headers['Content-Disposition'] = "attachment; filename=\"" +
           current_user.name + " - Residential Listings.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
@@ -29,14 +29,14 @@ class ResidentialListingsController < ApplicationController
   def filter
     set_residential_listings
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   def neighborhoods_modal
-    # TODO: as we onboard more locations, 
+    # TODO: as we onboard more locations,
     # will need to come up with a more robust solution here
     @neighborhoods = Neighborhood.unarchived
     .where(state: current_user.office.administrative_area_level_1_short)
@@ -44,18 +44,18 @@ class ResidentialListingsController < ApplicationController
     .group_by(&:borough)
 
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   def features_modal
     @building_amenities = BuildingAmenity.where(company: current_user.company)
     @unit_amenities = ResidentialAmenity.where(company: current_user.company)
 
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -74,7 +74,7 @@ class ResidentialListingsController < ApplicationController
       building = Building.find(params[:building_id])
       @residential_unit.unit.building_id = building.id
     end
-    
+
     @panel_title = "Add a listing"
   end
 
@@ -106,11 +106,11 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   def duplicate_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -118,7 +118,7 @@ class ResidentialListingsController < ApplicationController
   # handles ajax call. uses latest data in modal
   def duplicate
     residential_unit_dup = @residential_unit.duplicate(
-      residential_listing_params[:unit][:building_unit], 
+      residential_listing_params[:unit][:building_unit],
       residential_listing_params[:include_photos])
 
     if residential_unit_dup.valid?
@@ -128,17 +128,17 @@ class ResidentialListingsController < ApplicationController
       # TODO: not sure how to handle this best...
       flash[:warning] = "Duplication failed!"
       respond_to do |format|
-        format.js  
+        format.js
       end
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   # Modal collects info and prep unit to be taken off the market
   def take_off_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -151,7 +151,7 @@ class ResidentialListingsController < ApplicationController
     end
     set_residential_listings
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -164,7 +164,7 @@ class ResidentialListingsController < ApplicationController
     listings = ResidentialListing.listings_by_id(current_user, ids)
     images = ResidentialListing.get_images(listings)
     ResidentialListing.send_listings(current_user, listings, images, recipients, sub, msg)
-    
+
     respond_to do |format|
       format.js { flash[:success] = "Listings sent!"  }
     end
@@ -220,11 +220,11 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   def delete_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -240,11 +240,11 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   def inaccuracy_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -258,11 +258,11 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
-  # GET 
+  # GET
   # ajax call
   def refresh_documents
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -270,7 +270,7 @@ class ResidentialListingsController < ApplicationController
   # ajax call
   def refresh_images
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -280,10 +280,10 @@ class ResidentialListingsController < ApplicationController
       @landlord = building.landlord
     end
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
-  
+
   def update_announcements
     @announcement_items = Announcement.search({limit: 4})
   end
@@ -292,7 +292,7 @@ class ResidentialListingsController < ApplicationController
     @listings = ResidentialListing.joins(:unit)
       .where("units.listing_id IN (?)", params[:listing_ids])
     respond_to do |format|
-      format.js  
+      format.js
     end
 
   end
@@ -302,7 +302,7 @@ class ResidentialListingsController < ApplicationController
       .where("units.listing_id IN (?)", params[:listing_ids].split(" "))
     @agent = User.find(params[:primary_agent_id])
 
-    if @agent && @listings.length > 0 
+    if @agent && @listings.length > 0
       @listings.each do |l|
         l.unit.update_attribute(:primary_agent_id, @agent.id)
       end
@@ -315,7 +315,7 @@ class ResidentialListingsController < ApplicationController
     @listings = ResidentialListing.joins(:unit)
       .where("units.listing_id IN (?)", params[:listing_ids])
     respond_to do |format|
-      format.js  
+      format.js
     end
 
   end
@@ -324,7 +324,7 @@ class ResidentialListingsController < ApplicationController
     @listings = ResidentialListing.joins(:unit)
       .where("units.listing_id IN (?)", params[:listing_ids].split(" "))
 
-    if @listings.length > 0 
+    if @listings.length > 0
       @listings.each do |l|
         l.unit.update_attribute(:primary_agent_id, nil)
         l.unit.update_attribute(:primary_agent2_id, nil)
@@ -417,13 +417,13 @@ class ResidentialListingsController < ApplicationController
       data = params[:residential_listing].permit(
         :lock_version,
         :recipients, :title, :message, :listing_ids,
-        :tenant_occupied, :for_roomsharing,
+        :tenant_occupied, #:for_roomsharing,
         :beds, :baths, :notes, :description, :lease_start, :lease_end,
-        :include_photos, :inaccuracy_description, 
-        :has_fee, :op_fee_percentage, :tp_fee_percentage, 
+        :include_photos, :inaccuracy_description,
+        :has_fee, :op_fee_percentage, :tp_fee_percentage,
         :available_starting, :available_before, :custom_amenities,
-        :roomsharing_filter, :unassigned_filter, :primary_agent_id, 
-        :unit => [:building_unit, :rent, :available_by, :access_info, :status, 
+        :roomsharing_filter, :unassigned_filter, :primary_agent_id,
+        :unit => [:building_unit, :rent, :available_by, :access_info, :status,
           :open_house, :oh_exclusive, :exclusive,
           :building_id, :primary_agent_id, :listing_agent_id ],
         :residential_amenity_ids => []
@@ -446,7 +446,7 @@ class ResidentialListingsController < ApplicationController
         end
       end
 
-      if !data[:has_fee].nil? 
+      if !data[:has_fee].nil?
         if data[:has_fee] == "1"
           data[:has_fee] = true
         else

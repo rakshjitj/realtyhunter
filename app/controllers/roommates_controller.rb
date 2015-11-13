@@ -1,11 +1,11 @@
 class RoommatesController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
-  before_action :set_roommate, except: [:index, :new, :create, :filter, 
-    :download, :send_update, :unarchive, :unarchive_modal, 
+  before_action :set_roommate, except: [:index, :new, :create, :filter,
+    :download, :send_update, :unarchive, :unarchive_modal,
     :send_message, :delete_modal, :destroy, :get_units,
     :match_multiple, :match_multiple_modal,
-    :autocomplete_user_email, :autocomplete_roommate_name, 
+    :autocomplete_user_email, :autocomplete_roommate_name,
     :autocomplete_building_formatted_street_address, :check_availability,
     :mark_read]
   autocomplete :roommate, :name, full: true
@@ -19,7 +19,7 @@ class RoommatesController < ApplicationController
   def filter
     set_roommates
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -46,7 +46,7 @@ class RoommatesController < ApplicationController
   def download
   	ids = params[:roommate_ids].split(',')
   	@roommates = Roommate.pull_data_for_export(ids)
-    
+
   	respond_to do |format|
       format.csv do
         headers['Content-Disposition'] = "attachment; filename=\"roommates-list.csv\""
@@ -67,7 +67,7 @@ class RoommatesController < ApplicationController
     msg = roommate_params[:roommate][:message]
     roommate_ids = roommate_params[:roommate][:ids]
     Roommate.send_message(current_user, recipients, sub, msg, roommate_ids)
-    
+
     respond_to do |format|
       format.js { flash[:success] = "Message sent!"  }
     end
@@ -77,7 +77,7 @@ class RoommatesController < ApplicationController
     @roommate = Roommate.find(params[:id])
     # once someone views this roomie, mark the record as 'read'
     @roommate.mark_read
-    
+
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that roommate is no longer available."
       redirect_to :action => 'index'
@@ -92,7 +92,7 @@ class RoommatesController < ApplicationController
 
   def delete_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -110,7 +110,7 @@ class RoommatesController < ApplicationController
 
   def match_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -133,7 +133,7 @@ class RoommatesController < ApplicationController
   def match_multiple_modal
     set_roommates
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -172,7 +172,7 @@ class RoommatesController < ApplicationController
   def unmatch_modal
     @roommate = Roommate.find(params[:id])
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -198,10 +198,12 @@ class RoommatesController < ApplicationController
   end
 
   def get_units
+    # roomsharing units = residential listings with 3+ bedrooms
     @listings = Unit.joins(:residential_listing, :building)
       .where("buildings.formatted_street_address = ?", params[:address])
       .where("units.status = ?", Unit.statuses["active"])
-      .where("residential_listings.for_roomsharing = true")
+      .where('residential_listings.beds >= 3')
+      #.where("residential_listings.for_roomsharing = true")
     @can_proceed = @listings.count > 0
   end
 
