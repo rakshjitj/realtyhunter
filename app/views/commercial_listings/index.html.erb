@@ -30,27 +30,27 @@
             <%= label_tag(:address, "Address") %>
           </div>
           <div class="col-xs-9 col-sm-left-padding">
-            <%= autocomplete_field_tag :address, params[:address], 
+            <%= autocomplete_field_tag :address, params[:address],
               autocomplete_building_formatted_street_address_commercial_listings_path,
               update_elements: {},
-              placeholder: "123 Main St", 
+              placeholder: "123 Main St",
               class:'form-control' %>
           </div>
         </div>
-     
+
         <div class="row vertical-padding">
           <div class="col-xs-3">
             <%= label_tag(:unit, "Rent") %>
           </div>
           <div class="col-xs-4 col-sm-left-padding">
-            <%= number_field_tag :rent_min, params[:rent_min], placeholder: "$ min", 
+            <%= number_field_tag :rent_min, params[:rent_min], placeholder: "$ min",
               min: 0, max: 1000000, class:"form-control" %>
           </div>
           <div class="col-xs-1 col-no-padding">
-            &nbsp; to 
+            &nbsp; to
           </div>
           <div class="col-xs-4 col-no-padding">
-            <%= number_field_tag :rent_max, params[:rent_max], placeholder: "$ max", 
+            <%= number_field_tag :rent_max, params[:rent_max], placeholder: "$ max",
               min: 0, max: 1000000, class:"form-control" %>
           </div>
         </div>
@@ -60,27 +60,27 @@
             <%= label_tag(:unit, "Sq Footage") %>
           </div>
           <div class="col-xs-4 col-sm-left-padding">
-            <%= number_field_tag :sq_footage_min, params[:sq_footage_min], placeholder: "min", 
+            <%= number_field_tag :sq_footage_min, params[:sq_footage_min], placeholder: "min",
               min: 0, max: 1000000, class:"form-control" %>
           </div>
           <div class="col-xs-1 col-no-padding">
-            &nbsp; to 
+            &nbsp; to
           </div>
           <div class="col-xs-4 col-no-padding">
-            <%= number_field_tag :sq_footage_max, params[:sq_footage_max], placeholder: "max", 
+            <%= number_field_tag :sq_footage_max, params[:sq_footage_max], placeholder: "max",
               min: 0, max: 1000000, class:"form-control" %>
           </div>
         </div>
-        
+
         <div class="row vertical-padding">
           <div class="col-xs-3">
             <%= label_tag(:landlord, "Landlord ") %>
           </div>
           <div class="col-xs-9 col-sm-left-padding">
-            <%= autocomplete_field_tag :landlord, params[:landlord], 
+            <%= autocomplete_field_tag :landlord, params[:landlord],
               autocomplete_landlord_code_commercial_listings_path,
               update_elements: {},
-              placeholder: "code", 
+              placeholder: "code",
               size: 30, class:'form-control' %>
           </div>
         </div>
@@ -90,8 +90,8 @@
             <%= label_tag :status, "Status" %>
           </div>
           <div class="col-xs-9">
-            <%= select_tag(:status, 
-              options_for_select(['Any', 'Active', 'Offer Submitted', 'Offer Accepted', 'Binder Signed', 'Off Market for Lease Execution', 'Off'], 
+            <%= select_tag(:status,
+              options_for_select(['Any', 'Active', 'Offer Submitted', 'Offer Accepted', 'Binder Signed', 'Off Market for Lease Execution', 'Off'],
               params[:status] ? params[:status].titleize : "Active"),
               class:"form-control") %>
           </div>
@@ -102,14 +102,14 @@
             <%= label_tag :commercial_property_type_id, "Type" %>
           </div>
           <div class="col-xs-9">
-            <%= select_tag(:commercial_property_type_id, 
+            <%= select_tag(:commercial_property_type_id,
               options_for_select(current_user.company.commercial_property_types.map {|t| [t.property_sub_type, t.id]},
                 params[:commercial_property_type_id] ? params[:commercial_property_type_id].titleize : "Active"),
               prompt: 'Any',
               class:"form-control") %>
           </div>
         </div>
-        
+
         <div class="row vertical-padding">
           <div class="col-xs-12">
             <strong>Available</strong>
@@ -118,7 +118,7 @@
         <div class="row vertical-padding">
           <div class="col-xs-6 col-sm-left-padding">
             <div class='input-group date datepicker'>
-              <%= text_field_tag :available_starting, params[:available_starting], 
+              <%= text_field_tag :available_starting, params[:available_starting],
                 placeholder: "starting", class:"form-control", size:30 %>
               <label class="input-group-addon btn" for="date">
                 <span class="fa fa-calendar open-datepicker"></span>
@@ -130,7 +130,7 @@
           </div>
           <div class="col-xs-5 col-no-padding">
             <div class='input-group date datepicker'>
-              <%= text_field_tag :available_before, params[:available_before], 
+              <%= text_field_tag :available_before, params[:available_before],
                 placeholder: "by", class:"form-control" %>
               <label class="input-group-addon btn" for="date">
                 <span class="fa fa-calendar open-datepicker"></span>
@@ -138,17 +138,17 @@
             </div>
           </div>
         </div>
-        
+
         <br />
         <div class="row vertical-padding">
           <div class="col-xs-12">
-            <%= link_to 'Neighborhoods', neighborhoods_modal_commercial_listings_path, 
-              data: {toggle: "modal", target: "#neighborhoodsModal"}, remote: true, 
+            <%= link_to 'Neighborhoods', neighborhoods_modal_commercial_listings_path,
+              data: {toggle: "modal", target: "#neighborhoodsModal"}, remote: true,
               class: "link-as-button btn btn-xs btn-warning" %>
             <div id="selected_neighborhoods" class="vertical-padding">
               <!-- gets written over by neighborhood_modal.js.erb -->
               <% @selected_neighborhoods.each do |f| %>
-                <%= link_to "", 
+                <%= link_to "",
                   class: "btn btn-xs btn-default remove-neighborhood", remote: "true", data: {id:f.id} do %>
                   <%= f.name %> <span class="glyphicon glyphicon-remove"></span>
                 <% end %>
@@ -157,7 +157,7 @@
             <%= hidden_field_tag :neighborhood_ids, params[:neighborhood_ids] %>
           </div>
         </div>
-        
+
         <div class="row vertical-padding">
           <div class="col-xs-12">
             <%= link_to 'Clear filters', commercial_listings_path, class: 'btn btn-xs btn-default' %>
@@ -237,7 +237,7 @@
       </thead>
 
       <tbody class="commercial_units_table_body">
-        <%= render partial: 'commercial_listings/commercial_listing', 
+        <%= render partial: 'commercial_listings/commercial_listing',
         collection: @commercial_units, locals: {com_images: @com_images} %>
       </tbody>
 
@@ -254,13 +254,12 @@
 </div>
 
 <!-- Email Modal -->
-<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" 
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog"
   aria-labelledby="emailModal" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
+      <%= form_tag(send_listings_commercial_listings_path, remote:true) do %>
       <div class="modal-body">
-        
-        <%= form_tag(send_listings_commercial_listings_path, remote:true) do %>
         <div class="row vertical-padding">
           <div class="col-md-12">
             <%= label_tag "commercial_listing[recipients]", "Recipients", class: 'required' %>
@@ -286,16 +285,16 @@
         <br />
         <div class="row vertical-padding">
           <div class="col-md-12">
-            
+
           </div>
         </div>
 
         <%= hidden_field_tag "commercial_listing[listing_ids]" %>
-        
+
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp; 
+        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
         <%= submit_tag "Send Email", class:"btn btn-warning" %>
       </div>
 
@@ -306,7 +305,7 @@
 </div>
 
 <!-- Delete Modal -->
-<div class="modal fade" id="unitDeleteModal" tabindex="-1" role="dialog" 
+<div class="modal fade" id="unitDeleteModal" tabindex="-1" role="dialog"
   aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -327,7 +326,7 @@
 </div>
 
 <!-- Neighborhood Modal -->
-<div class="modal fade" id="neighborhoodsModal" tabindex="-1" role="dialog" 
+<div class="modal fade" id="neighborhoodsModal" tabindex="-1" role="dialog"
   aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

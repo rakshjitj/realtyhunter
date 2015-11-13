@@ -9,29 +9,32 @@ class Unit < ActiveRecord::Base
   has_one :sales_listing, dependent: :destroy
   has_many :announcements, dependent: :destroy
   has_many :deals, dependent: :destroy
-  
+
   before_validation :generate_unique_id
 
   scope :unarchived, ->{ where(archived: false) }
   scope :active, ->{ where(status: Unit.statuses["active"]) }
   scope :available_on_market, ->{ where("status = ? OR status = ?", Unit.statuses["active"], Unit.statuses["pending"]) }
-  
-	enum status: [ 
+
+	enum status: [
     :active, :pending, :off, #residential
     :offer_submitted, :offer_accepted, :binder_signed, :off_market_for_lease_execution, #additional for commercial
     :on_market, :contract_out, :in_escrow, :closed # additional for sales
    ]
-  
-	validates :status, presence: true, inclusion: { 
-    in: ['active', 'pending', 'off', 
+
+	validates :status, presence: true, inclusion: {
+    in: ['active', 'pending', 'off',
          'offer_submitted', 'offer_accepted', 'binder_signed', 'off_market_for_lease_execution',
          'on_market', 'contract_out', 'in_escrow', 'closed'] }
-	
+
   # this should really been called "price", as its used across both rentals and sales
 	validates :rent, presence: true, numericality: { only_integer: true }
-  
+
 	validates :listing_id, presence: true, uniqueness: true
-	
+
+  # sales/commercial might not have one yet
+  #validates :public_url, presence: true, uniqueness: true
+
   validates :building_id, presence: true
   validates :building_unit, allow_blank: true, length: {maximum: 50}
 
@@ -101,7 +104,9 @@ class Unit < ActiveRecord::Base
           end
 
           self.listing_id = listing_id
+          self.public_url = "http://myspacenyc.com/listing/MYSPACENYC-#{listing_id}"
       end
+
     end
 
 end
