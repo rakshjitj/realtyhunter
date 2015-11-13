@@ -5,15 +5,15 @@ class ResidentialListing < ActiveRecord::Base
   belongs_to :unit, touch: true
   before_save :process_custom_amenities
 
-  attr_accessor :include_photos, :inaccuracy_description, 
+  attr_accessor :include_photos, :inaccuracy_description,
     :pet_policy_shorthand, :available_starting, :available_before, :custom_amenities
 
 	validates :lease_start, presence: true, length: {maximum: 5}
   validates :lease_end, presence: true, length: {maximum: 5}
-  
+
 	validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }
 	validates :baths, presence: true, :numericality => { :less_than_or_equal_to => 11 }
-  
+
   validates :op_fee_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
   validates_inclusion_of :op_fee_percentage, :in => 0..100, allow_blank: true
 
@@ -24,7 +24,7 @@ class ResidentialListing < ActiveRecord::Base
     self.unit.archived = true
     self.unit.save
   end
-  
+
   def self.find_unarchived(id)
     ResidentialListing.joins(unit: [building: [:landlord, :neighborhood]])
       .where(id: id)
@@ -108,16 +108,16 @@ class ResidentialListing < ActiveRecord::Base
     running_list = ResidentialListing.joins(unit: {building: [:company, :landlord, :neighborhood]})
       .where('companies.id = ?', user.company_id)
       .where('units.listing_id IN (?)', listing_ids)
-      .select('buildings.formatted_street_address', 
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+      .select('buildings.formatted_street_address',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
-        'units.building_unit', 'units.status','units.rent', 'residential_listings.beds', 
+        'units.building_unit', 'units.status','units.rent', 'residential_listings.beds',
         'beds || \'/\' || baths as bed_and_baths',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
-        'residential_listings.has_fee', 'residential_listings.updated_at', 
+        'residential_listings.has_fee', 'residential_listings.updated_at',
         'residential_listings.for_roomsharing',
-        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
+        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by')
       .to_a.group_by(&:neighborhood_name)
@@ -128,16 +128,16 @@ class ResidentialListing < ActiveRecord::Base
     running_list = ResidentialListing.joins(unit: {building: [:company, :landlord, :neighborhood]})
       .where('companies.id = ?', user.company_id)
       .where('units.listing_id IN (?)', listing_ids)
-      .select('buildings.formatted_street_address', 
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+      .select('buildings.formatted_street_address',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
-        'units.building_unit', 'units.status','units.rent', 'residential_listings.beds', 
+        'units.building_unit', 'units.status','units.rent', 'residential_listings.beds',
         'beds || \'/\' || baths as bed_and_baths',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
-        'residential_listings.has_fee', 'residential_listings.updated_at', 
+        'residential_listings.has_fee', 'residential_listings.updated_at',
         'residential_listings.for_roomsharing',
-        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
+        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by', 'units.public_url')
     running_list
@@ -146,25 +146,25 @@ class ResidentialListing < ActiveRecord::Base
   def self.export_all(user)
     ResidentialListing.joins(unit: [building: [:company, :landlord, :neighborhood]])
       .where('companies.id = ?', user.company_id)
-      .select('buildings.formatted_street_address', 
+      .select('buildings.formatted_street_address',
         'units.listing_id', 'units.building_unit', 'units.status','units.rent', 'units.archived',
         'units.available_by', 'units.public_url', 'units.access_info', 'units.exclusive',
         'units.primary_agent_id', 'units.primary_agent2_id',
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
-        'buildings.lat', 'buildings.lng', 
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
+        'buildings.lat', 'buildings.lng',
         'residential_listings.beds', 'residential_listings.baths', 'residential_listings.notes',
         'residential_listings.description', 'residential_listings.lease_start',
-        'residential_listings.lease_end', 'residential_listings.has_fee', 
+        'residential_listings.lease_end', 'residential_listings.has_fee',
         'residential_listings.op_fee_percentage','residential_listings.tp_fee_percentage',
         'residential_listings.tenant_occupied', 'residential_listings.created_at',
         'residential_listings.updated_at', 'residential_listings.for_roomsharing',
-        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
+        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code AS landlord_code','landlords.id AS landlord_id')
   end
 
   # takes in a hash of search options
   # can be formatted_street_address, landlord
-  # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max, 
+  # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max,
   # neighborhoods, has_outdoor_space, features, pet_policy, ...
   def self.search(params, user, building_id=nil)
     # TODO: add amenities back in
@@ -172,16 +172,16 @@ class ResidentialListing < ActiveRecord::Base
     running_list = ResidentialListing.joins(unit: {building: [:company, :landlord, :neighborhood]})
       .where('units.archived = false')
       .where('companies.id = ?', user.company_id)
-      .select('buildings.formatted_street_address', 
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+      .select('buildings.formatted_street_address',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
-        'units.building_unit', 'units.status','units.rent', 'residential_listings.beds', 
+        'units.building_unit', 'units.status','units.rent', 'residential_listings.beds',
         'beds || \'/\' || baths as bed_and_baths',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
-        'residential_listings.has_fee', 'residential_listings.updated_at', 
+        'residential_listings.has_fee', 'residential_listings.updated_at',
         'residential_listings.for_roomsharing',
-        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
+        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.listing_id', 'units.available_by', 'units.public_url')
       # unit.building.street_number + ' ' + unit.building.route
@@ -207,7 +207,7 @@ class ResidentialListing < ActiveRecord::Base
     if params[:address]
       # cap query string length for security reasons
       address = params[:address][0, 500]
-      running_list = 
+      running_list =
        running_list.where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
     end
 
@@ -224,7 +224,7 @@ class ResidentialListing < ActiveRecord::Base
       included = ['active + pending', 'active', 'pending', 'off'].include?(status)
       if included
         if status == 'active + pending'
-          running_list = running_list.where("status = ? or status = ?", 
+          running_list = running_list.where("status = ? or status = ?",
             Unit.statuses["active"], Unit.statuses["pending"])
         else
           running_list = running_list.where("status = ?", Unit.statuses[status])
@@ -291,7 +291,16 @@ class ResidentialListing < ActiveRecord::Base
     end
 
     # search beds
+    params.delete('bed_min') if params[:bed_min] == 'Any'
+    params.delete('bed_max') if params[:bed_max] == 'Any'
     if params[:bed_min] && params[:bed_max]
+      if params[:bed_min].downcase == 'studio/loft'
+        params[:bed_min] = 0
+      end
+      if params[:bed_max].downcase == 'studio/loft'
+        params[:bed_max] = 0
+      end
+
       running_list = running_list.where("beds >= ? AND beds <= ?", params[:bed_min], params[:bed_max])
     elsif params[:bed_min] && !params[:bed_max]
       running_list = running_list.where("beds >= ?", params[:bed_min])
@@ -300,6 +309,8 @@ class ResidentialListing < ActiveRecord::Base
     end
 
     # search baths
+    params.delete('bath_min') if params[:bath_min] == 'Any'
+    params.delete('bath_max') if params[:bath_max] == 'Any'
     if params[:bath_min] && params[:bath_max]
       running_list = running_list.where("baths >= ? AND baths <= ?", params[:bath_min], params[:bath_max])
     elsif params[:bath_min] && !params[:bath_max]
@@ -347,7 +358,7 @@ class ResidentialListing < ActiveRecord::Base
     @dst = ResidentialListing.find(dst_id)
 
     # deep copy photos
-    self.unit.images.each {|i| 
+    self.unit.images.each {|i|
       img_copy = Image.new
       img_copy.file = i.file
       img_copy.unit_id = @dst.unit.id
@@ -368,12 +379,12 @@ class ResidentialListing < ActiveRecord::Base
         residential_unit_dup = self.dup
         residential_unit_dup.update(unit_id: unit_dup.id)
 
-        self.residential_amenities.each {|a| 
+        self.residential_amenities.each {|a|
           residential_unit_dup.residential_amenities << a
         }
       else
         raise "Error saving unit"
-      end    
+      end
 
       #Image.async_copy_residential_unit_images(self.id, residential_unit_dup.id)
       if include_photos
@@ -399,7 +410,7 @@ class ResidentialListing < ActiveRecord::Base
   def send_inaccuracy_report(reporter)
     if reporter
       UnitMailer.inaccuracy_reported(self, reporter).deliver_now
-    else 
+    else
       raise "No reporter specified"
     end
   end
@@ -436,7 +447,7 @@ class ResidentialListing < ActiveRecord::Base
     # else
     #   end_date = Date.today >> 12
     # end
-    
+
     end_date
   end
 
@@ -445,7 +456,7 @@ class ResidentialListing < ActiveRecord::Base
     map_infos = {}
     for i in 0..runits.length-1
       runit = runits[i]
-      
+
       if runit.street_number
         street_address = runit.street_number + ' ' + runit.route
       else
@@ -454,7 +465,7 @@ class ResidentialListing < ActiveRecord::Base
 
       bldg_info = {
         building_id: runit.building_id,
-        lat: runit.lat, 
+        lat: runit.lat,
         lng: runit.lng }
       unit_info = {
         id: runits[i].id,
@@ -479,25 +490,25 @@ class ResidentialListing < ActiveRecord::Base
     listings = ResidentialListing.joins(unit: {building: [:landlord, :neighborhood]})
       .where('buildings.id in (?)', bldg_ids)
       .where('units.archived = false')
-      .select('buildings.formatted_street_address', 
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
-        'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id', 
+      .select('buildings.formatted_street_address',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
+        'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id',
         'beds || \'/\' || baths as bed_and_baths',
-        'residential_listings.beds', 'residential_listings.id', 
+        'residential_listings.beds', 'residential_listings.id',
         'residential_listings.baths','units.access_info',
-        'residential_listings.has_fee', 'residential_listings.updated_at', 
+        'residential_listings.has_fee', 'residential_listings.updated_at',
         'neighborhoods.name AS neighborhood_name', 'residential_listings.for_roomsharing',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by', 'units.listing_id')
       .order('residential_listings.updated_at desc')
-      
+
     if is_active
       listings = listings.where.not("status = ?", Unit.statuses["off"])
     end
-    
+
     unit_ids = listings.map(&:unit_id)
     images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
-      
+
     return listings, images
   end
 
@@ -505,24 +516,24 @@ class ResidentialListing < ActiveRecord::Base
     listings = ResidentialListing.joins(unit: {building: [:landlord, :neighborhood]})
       .where('units.id in (?)', unit_ids)
       .where('units.archived = false')
-      .select('buildings.formatted_street_address', 
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
-        'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id', 
+      .select('buildings.formatted_street_address',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
+        'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id',
         'beds || \'/\' || baths as bed_and_baths',
-        'residential_listings.beds', 'residential_listings.id', 
+        'residential_listings.beds', 'residential_listings.id',
         'residential_listings.baths','units.access_info',
-        'residential_listings.has_fee', 'residential_listings.updated_at', 
+        'residential_listings.has_fee', 'residential_listings.updated_at',
         'neighborhoods.name AS neighborhood_name', 'residential_listings.for_roomsharing',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by', 'units.listing_id')
-      
+
     if is_active
       listings = listings.where.not("status = ?", Unit.statuses["off"])
     end
-    
+
     unit_ids = listings.map(&:unit_id)
     images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
-      
+
     return listings, images
   end
 

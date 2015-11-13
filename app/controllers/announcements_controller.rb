@@ -11,9 +11,6 @@ class AnnouncementsController < ApplicationController
     # NOTE: for now, we've decided to just email myspaceupdates google group.
     # This means 'everyone' will be getting all updates, all the time.
 		@announcement = Announcement.new(announcement_params[:announcement])
-    puts "*******"
-    puts announcement_params[:announcement][:category]
-    puts Announcement.categories[announcement_params[:announcement][:category]]
     if @announcement.save
     	@announcement.broadcast(current_user)
     	flash[:info] = "Announcement sent!"

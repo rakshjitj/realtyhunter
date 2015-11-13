@@ -11,9 +11,9 @@
       <h1>Rental Listings</h1>
     </div>
     <div class="col-md-6 form-label-responsive">
-      
+
       <% if current_user.is_management? || current_user.is_listings_manager? %>
-        <%= link_to 'Make Announcement', new_announcement_path, 
+        <%= link_to 'Make Announcement', new_announcement_path,
           class: "btn btn-warning btn-sm link-as-button" %>
 
         <%= link_to 'Add a unit', new_residential_listing_path, class: 'btn btn-warning btn-sm link-as-button' %>
@@ -35,10 +35,10 @@
             <%= label_tag(:address, "Address") %>
           </div>
           <div class="col-md-9 col-sm-left-padding">
-          <%= autocomplete_field_tag :address, params[:address], 
+          <%= autocomplete_field_tag :address, params[:address],
               autocomplete_building_formatted_street_address_residential_listings_path,
               update_elements: {},
-              placeholder: "123 Main St", 
+              placeholder: "123 Main St",
               class:'form-control' %>
           </div>
         </div>
@@ -55,11 +55,11 @@
             <%= label_tag(:unit, "Rent") %>
           </div>
           <div class="col-md-4 col-sm-left-padding">
-            <%= number_field_tag :rent_min, params[:rent_min], placeholder: "$ min", 
+            <%= number_field_tag :rent_min, params[:rent_min], placeholder: "$ min",
               min: 0, max: 1000000, class:"form-control" %>
           </div>
           <div class="col-md-4 col-sm-left-padding">
-            <%= number_field_tag :rent_max, params[:rent_max], placeholder: "$ max", 
+            <%= number_field_tag :rent_max, params[:rent_max], placeholder: "$ max",
               min: 0, max: 1000000, class:"form-control" %>
           </div>
         </div>
@@ -68,12 +68,14 @@
             <%= label_tag(:unit, "Beds") %>
           </div>
           <div class="col-md-4 col-sm-left-padding">
-            <%= number_field_tag :bed_min, params[:bed_min], min: 0, max: 10, interval: 1,
-              placeholder: " min", class:"form-control" %>
+            <%= select_tag(:bed_min,
+              options_for_select(%w(Any Studio/Loft 1 2 3 4 5 6 7 8 9 10),
+              params[:bed_min]), class: 'form-control') %>
           </div>
           <div class="col-md-4 col-sm-left-padding">
-            <%= number_field_tag :bed_max, params[:bed_max], min: 0, max: 10, interval: 1,
-              placeholder: " max", class:"form-control" %>
+            <%= select_tag(:bed_max,
+              options_for_select(%w(Any Studio/Loft 1 2 3 4 5 6 7 8 9 10),
+              params[:bed_max]), class: 'form-control') %>
           </div>
         </div>
         <div class="row vertical-padding">
@@ -81,12 +83,18 @@
             <%= label_tag(:unit, "Baths") %>
           </div>
           <div class="col-md-4 col-sm-left-padding">
-            <%= number_field_tag :bath_min, params[:bath_min], min: 0, max: 10, interval: 0.5,
-              placeholder: " min", class:"form-control" %>
+            <%= select_tag(:bath_min,
+              options_for_select(%w(Any 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 5.5 6 6.5 7 7.5 8 8.5 9 9.5 10),
+              params[:bath_min]), class: 'form-control') %>
+            <!--%= number_field_tag :bath_min, params[:bath_min], min: 0, max: 10, interval: 0.5,
+              placeholder: " min", class:"form-control" %-->
           </div>
           <div class="col-md-4 col-sm-left-padding">
-            <%= number_field_tag :bath_max, params[:bath_max], min: 0, max: 10, interval: 0.5,
-              placeholder: " max", class:"form-control" %>
+            <%= select_tag(:bath_max,
+              options_for_select(%w(Any 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 5.5 6 6.5 7 7.5 8 8.5 9 9.5 10),
+              params[:bath_max]), class: 'form-control') %>
+            <!--%= number_field_tag :bath_max, params[:bath_max], min: 0, max: 10, interval: 0.5,
+              placeholder: " max", class:"form-control" %-->
           </div>
         </div>
         <div class="row vertical-padding">
@@ -94,10 +102,10 @@
             <%= label_tag(:landlord, "Landlord ") %>
           </div>
           <div class="col-md-7">
-            <%= autocomplete_field_tag :landlord, params[:landlord], 
+            <%= autocomplete_field_tag :landlord, params[:landlord],
               autocomplete_landlord_code_residential_listings_path,
               update_elements: {},
-              placeholder: "code", 
+              placeholder: "code",
               size: 30, class:'form-control' %>
           </div>
         </div>
@@ -107,12 +115,12 @@
           </div>
           <div class="col-md-7">
             <% if current_user.is_management? || current_user.is_listings_manager? %>
-              <%= select_tag(:status, 
-                options_for_select(['Any', 'Active + Pending', 'Active', 'Pending', 'Off'], 
+              <%= select_tag(:status,
+                options_for_select(['Any', 'Active + Pending', 'Active', 'Pending', 'Off'],
                 params[:status] ? params[:status].titleize : "Active"), class: 'form-control') %>
             <% else %>
-              <%= select_tag(:status, 
-                options_for_select(['Any', 'Active + Pending', 'Active', 'Pending'], 
+              <%= select_tag(:status,
+                options_for_select(['Any', 'Active + Pending', 'Active', 'Pending'],
                 params[:status] ? params[:status].titleize : "Active"), class: 'form-control') %>
             <% end %>
           </div>
@@ -122,7 +130,7 @@
             <%= label_tag :has_fee, "Broker's Fee" %>
           </div>
           <div class="col-md-7">
-            <%= select_tag(:has_fee, 
+            <%= select_tag(:has_fee,
               options_for_select(%w(Any Yes No), params[:has_fee]), class: 'form-control') %>
           </div>
         </div>
@@ -131,8 +139,8 @@
             <%= label_tag :pet_policy_shorthand, "Pet policy" %>
           </div>
           <div class="col-md-7">
-            <%= select_tag(:pet_policy_shorthand, 
-              options_for_select(["Any", "Cats Only", "Dogs Only", "None"], 
+            <%= select_tag(:pet_policy_shorthand,
+              options_for_select(["Any", "Cats Only", "Dogs Only", "None"],
               [params[:pet_policy_shorthand] ? params[:pet_policy_shorthand].titleize : "Any"]),
               class: 'form-control') %>
           </div>
@@ -146,7 +154,7 @@
         <div class="row vertical-padding">
           <div class="col-md-6 col-sm-left-padding">
             <div class='input-group date datepicker'>
-              <%= text_field_tag :available_starting, params[:available_starting], 
+              <%= text_field_tag :available_starting, params[:available_starting],
                 placeholder: "start", class:"form-control", size:30 %>
               <label class="input-group-addon btn" for="date">
                 <span class="fa fa-calendar open-datepicker"></span>
@@ -155,7 +163,7 @@
           </div>
           <div class="col-md-5 col-sm-left-padding">
             <div class='input-group date datepicker'>
-              <%= text_field_tag :available_before, params[:available_before], 
+              <%= text_field_tag :available_before, params[:available_before],
                 placeholder: "by", class:"form-control" %>
               <label class="input-group-addon btn" for="date">
                 <span class="fa fa-calendar open-datepicker"></span>
@@ -163,15 +171,15 @@
             </div>
           </div>
         </div>
-        
+
 
         <div class="row vertical-padding">
           <div class="col-md-5">
             <%= label_tag :pet_policy_shorthand, "Pet policy" %>
           </div>
           <div class="col-md-7">
-            <%= select_tag(:pet_policy_shorthand, 
-              options_for_select(["Any", "Cats Only", "Dogs Only", "None"], 
+            <%= select_tag(:pet_policy_shorthand,
+              options_for_select(["Any", "Cats Only", "Dogs Only", "None"],
               [params[:pet_policy_shorthand] ? params[:pet_policy_shorthand].titleize : "Any"]),
               class: 'form-control') %>
           </div>
@@ -195,19 +203,19 @@
         </div>
 
         <div class="row vertical-padding">
-          
+
         </div>
-        
+
         <br />
         <div class="row vertical-padding">
           <div class="col-md-12">
-            <%= link_to 'Neighborhoods', neighborhoods_modal_residential_listings_path, 
-              data: {toggle: "modal", target: "#neighborhoodsModal"}, remote: true, 
+            <%= link_to 'Neighborhoods', neighborhoods_modal_residential_listings_path,
+              data: {toggle: "modal", target: "#neighborhoodsModal"}, remote: true,
               class: "link-as-button btn btn-xs btn-warning" %>
             <div id="selected_neighborhoods" class="vertical-padding">
               <!-- gets written over by neighborhood_modal.js.erb -->
               <% @selected_neighborhoods.each do |f| %>
-                <%= link_to "", 
+                <%= link_to "",
                   class: "btn btn-xs btn-default remove-neighborhood", remote: "true", data: {id:f.id} do %>
                   <%= f.name %> <span class="glyphicon glyphicon-remove"></span>
                 <% end %>
@@ -218,21 +226,21 @@
         </div>
         <div class="row vertical-padding">
           <div class="col-md-12">
-            <%= link_to 'Features', features_modal_residential_listings_path, 
-              data: {toggle: "modal", target: "#featuresModal"}, remote: true, 
+            <%= link_to 'Features', features_modal_residential_listings_path,
+              data: {toggle: "modal", target: "#featuresModal"}, remote: true,
               class: "link-as-button btn btn-xs btn-warning" %>
 
             <div id="selected_features" class="vertical-padding">
               <!-- gets written over by features_modal.js.erb -->
               <% @unit_features.each do |f| %>
-                <%= link_to "", 
+                <%= link_to "",
                   class: "btn btn-xs btn-default remove-unit-feature", remote: "true", data: {id:f.id} do %>
                   <%= f.name %> <span class="glyphicon glyphicon-remove"></span>
                 <% end %>
               <% end %>
               <!-- gets written over by features_modal.js.erb -->
               <% @bldg_features.each do |f| %>
-                <%= link_to "", 
+                <%= link_to "",
                   class: "btn btn-xs btn-default remove-building-feature", remote: "true", data: {id:f.id} do %>
                   <%= f.name %> <span class="glyphicon glyphicon-remove"></span>
                 <% end %>
@@ -241,7 +249,7 @@
 
             <%= hidden_field_tag :unit_feature_ids, params[:unit_feature_ids] %>
             <%= hidden_field_tag :building_feature_ids, params[:building_feature_ids] %>
-            
+
           </div>
         </div>
         <div class="row vertical-padding">
@@ -286,7 +294,7 @@
             <i class="fa fa-fw fa-list"></i> Internal Listings Sheet</a></li>
         </ul>
       </div>
-    
+
     <% if current_user.is_management? %>
       <%= link_to 'Export to CSV', residential_listings_path(format: 'csv'),
         class:"btn btn-sm btn-warning link-as-button" %>
@@ -329,9 +337,9 @@
         </tr>
       </thead>
 
-      
+
       <tbody class="residential_units_table_body">
-        <%= render partial: 'residential_listings/residential_listing', 
+        <%= render partial: 'residential_listings/residential_listing',
         collection: @residential_units, locals: {res_images: @res_images} %>
       </tbody>
     </table>
@@ -353,7 +361,7 @@
 <%= render 'modals' %>
 
 <!-- Neighborhood Modal -->
-<div class="modal fade" id="neighborhoodsModal" tabindex="-1" role="dialog" 
+<div class="modal fade" id="neighborhoodsModal" tabindex="-1" role="dialog"
   aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -373,7 +381,7 @@
 </div>
 
 <!-- Features Modal -->
-<div class="modal fade" id="featuresModal" tabindex="-1" role="dialog" 
+<div class="modal fade" id="featuresModal" tabindex="-1" role="dialog"
   aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
