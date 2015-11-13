@@ -107,14 +107,14 @@ ResidentialListings = {};
 
 	// update the announcements every 30 seconds
 	ResidentialListings.updateAnnouncements = function() {
-		if ($('#residential').length > 0) {
-			//console.log('updating ann');
-			$.ajax({
-	      url: '/residential_listings/update_announcements',
-	    });
+		// if ($('#residential').length > 0) {
+		// 	//console.log('updating ann');
+		// 	$.ajax({
+	 //      url: '/residential_listings/update_announcements',
+	 //    });
 
-			ResidentialListings.announcementsTimer = setTimeout(ResidentialListings.updateAnnouncements, 30 * 1000);
-		}
+		// 	ResidentialListings.announcementsTimer = setTimeout(ResidentialListings.updateAnnouncements, 60 * 2 * 1000);
+		// }
 	};
 
 	// if a user remains on this page for an extended amount of time,
