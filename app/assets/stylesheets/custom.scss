@@ -78,7 +78,7 @@ a:hover.btn-danger {
 }
 
 .container-fluid {
-  width: 80%; // !important;
+  width: 85%; // !important;
   max-width: 1200px !important;
   min-width: 400px !important;
 }
@@ -121,17 +121,17 @@ a:hover.btn-danger {
 }
 
 .th-sortable:hover {
-  background-color: #F0F0F0; 
+  background-color: #F0F0F0;
   a {
     text-decoration: none;
   }
 }
 
 // turn off scrollers on input type=number fields
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* header */
@@ -199,7 +199,7 @@ input {
 
 #error_explanation {
   color: red;
-  border: 0px !important; 
+  border: 0px !important;
   ul {
     color: red;
     margin: 0 0 30px 0;
@@ -286,7 +286,7 @@ aside {
   color: DarkOrange;
 }
 
-#map-canvas { 
+#map-canvas {
   width: 100%;
   margin-bottom: 15px;
   border: 2px solid #fff;
@@ -411,7 +411,7 @@ aside {
   width: 100px;
   margin-bottom: 10px;
 }
- 
+
 .sortable {
   //display: list-item;
 }

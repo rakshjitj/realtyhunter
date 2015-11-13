@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151106182929) do
+ActiveRecord::Schema.define(version: 20151113014019) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,14 +23,12 @@ ActiveRecord::Schema.define(version: 20151106182929) do
   end
 
   create_table "announcements", force: :cascade do |t|
-    t.integer  "unit_id"
-    t.integer  "audience",        default: 0
-    t.string   "canned_response"
     t.string   "note"
-    t.boolean  "was_broadcast",   default: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.boolean  "was_broadcast", default: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "user_id"
+    t.integer  "category"
   end
 
   create_table "bootsy_image_galleries", force: :cascade do |t|
@@ -542,11 +540,9 @@ ActiveRecord::Schema.define(version: 20151106182929) do
     t.boolean  "exclusive"
     t.integer  "documents_id"
     t.integer  "primary_agent2_id"
-    t.integer  "announcement_id"
     t.integer  "deals_id"
   end
 
-  add_index "units", ["announcement_id"], name: "index_units_on_announcement_id", using: :btree
   add_index "units", ["commercial_listing_id"], name: "index_units_on_commercial_listing_id", using: :btree
   add_index "units", ["documents_id"], name: "index_units_on_documents_id", using: :btree
   add_index "units", ["images_id"], name: "index_units_on_images_id", using: :btree

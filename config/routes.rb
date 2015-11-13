@@ -377,8 +377,8 @@ Rails.application.routes.draw do
     end
     collection do
       get :filter
-      get :autocomplete_building_formatted_street_address
-      get :get_units
+      #get :autocomplete_building_formatted_street_address
+      #get :get_units
     end
   end
   get 'announce' => 'announcements#new'

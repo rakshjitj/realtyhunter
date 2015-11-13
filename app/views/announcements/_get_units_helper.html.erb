@@ -1,5 +1,0 @@
-<%= select_tag(:unit_id, 
-  options_for_select(@listings.collect {|l| [l.building_unit, l.id]}), 
-  { prompt: "Choose one..." ,
-  class: 'form-control',
-  required: true }) %>

@@ -9,7 +9,9 @@
   </div>
   <div class="col-md-12 hidden-md hidden-lg">
     <div class="announcements">
-      <%= render partial: "announcements/top_row", locals: { announcements: [@announcement_items[0] ]} %>
+      <% if @announcement_items.length > 1 %>
+        <%= render partial: "announcements/top_row", locals: { announcements: [@announcement_items[0] ]} %>
+      <% end %>
     </div>
   </div>
 </div>
