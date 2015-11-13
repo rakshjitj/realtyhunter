@@ -26,7 +26,7 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self.find_unarchived(id)
-    ResidentialListing.joins(unit: [building: [:landlord, :neighborhood]])
+    ResidentialListing.joins(unit: [building: [:landlord]]) #:neighborhood
       .where(id: id)
       .where('units.archived = false')
       .first

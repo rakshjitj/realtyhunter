@@ -62,8 +62,6 @@ class ResidentialListingsController < ApplicationController
   # GET /residential_units/1
   # GET /residential_units/1.json
   def show
-    #fresh_when([@residential_unit, @residential_unit.images])
-    #@residential_unit
   end
 
   # GET /residential_units/new
