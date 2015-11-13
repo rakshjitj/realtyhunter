@@ -550,7 +550,7 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def can_roomshare
-    beds >= 3
+    beds >= 3 && status == Unit.statuses['pending']
   end
 
   private
