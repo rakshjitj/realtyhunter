@@ -23,10 +23,10 @@
             <%= label_tag :name, 'Name' %>
           </div>
           <div class="col-md-10 col-sm-left-padding">
-            <%= autocomplete_field_tag :name, params[:name], 
+            <%= autocomplete_field_tag :name, params[:name],
               autocomplete_wufoo_career_form_name_forms_careers_path,
               update_elements: {},
-              placeholder: "Bob Smith", 
+              placeholder: "Bob Smith",
               class:'form-control' %>
           </div>
         </div>
@@ -36,7 +36,7 @@
             <%= link_to 'Clear filters', forms_careers_path, class: 'btn btn-xs btn-default' %>
           </div>
         </div>
-        
+
     </div>
   </div>
 
@@ -47,7 +47,7 @@
         </div>
         <div class="col-md-7 col-sm-left-padding">
           <div class='input-group date datepicker'>
-            <%= text_field_tag :submitted_date, params[:submitted_date], 
+            <%= text_field_tag :submitted_date, params[:submitted_date],
               placeholder: "date", class:"form-control", size:30 %>
             <label class="input-group-addon btn" for="date">
               <span class="fa fa-calendar open-datepicker"></span>
@@ -59,14 +59,14 @@
 
   <div class="col-md-4">
     <div class="row vertical-padding">
-      <div class="col-md-5 form-label-responsive"> 
+      <div class="col-md-5 form-label-responsive">
         <%= label_tag(:status) %>
       </div>
       <div class="col-md-7 col-sm-left-padding">
-        <%= select_tag(:status, 
-          options_for_select(['Active', 'Hidden'], 
+        <%= select_tag(:status,
+          options_for_select(['Active', 'Inactive'],
             [params[:status].blank? ? 'Active' : params[:status]]),
-          {class: "form-control", 
+          {class: "form-control",
           prompt: "Any"}) %>
       </div>
     </div>
@@ -99,7 +99,7 @@
             <i class="fa fa-fw fa-list"></i> CSV</a></li>
         </ul>
       </div>
-    
+
     <span class="totals">
       &nbsp;&nbsp;<%= @entries.total_count %> Entries found
     </span>
@@ -135,9 +135,9 @@
           <% end %>
         </tr>
       </thead>
-    
+
       <tbody class="careers_table_body">
-        <%= render partial: 'forms/careers/entry', 
+        <%= render partial: 'forms/careers/entry',
         :collection => @entries, as: :entry %>
       </tbody>
     </table>
@@ -154,12 +154,12 @@
 </div>
 
 <!-- Email Modal -->
-<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" 
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog"
   aria-labelledby="emailModal" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
-        
+
         <%= form_tag(send_message_forms_careers_path, remote:true) do %>
         <div class="row vertical-padding">
           <div class="col-md-12">
@@ -186,13 +186,13 @@
         <br />
         <div class="row vertical-padding">
           <div class="col-md-12">
-            
+
           </div>
         </div>
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp; 
+        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
         <%= submit_tag "Send Email", class:"btn btn-warning" %>
       </div>
 

@@ -1,4 +1,4 @@
 $('#notices').html("<%= j(render :partial => "layouts/notices") %>");
 
 $('.form_listing_table_body').html("<%= escape_javascript (render partial: 'forms/commercial_listings/entry', :collection => @entries, as: :entry) %>");
-$('.totals').html("<%= @entries.count %> Entries");
+$('.totals').html("<%= @entries.total_count %> Entries");

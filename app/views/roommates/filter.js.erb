@@ -2,4 +2,4 @@ $('.roommates_table_body').html("<%= escape_javascript (render :partial => @room
 
 $('.pagination').html("<%= escape_javascript (render :partial => 'shared/pagination', locals: {:models => @roommates}) %>");
 
-$('.totals').html("<%= @roommates.count %> Units");
+$('.totals').html("<%= @roommates.total_count %> Roomates found");

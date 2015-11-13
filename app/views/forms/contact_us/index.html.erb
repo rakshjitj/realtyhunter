@@ -23,10 +23,10 @@
             <%= label_tag :name, 'Name' %>
           </div>
           <div class="col-xs-7 col-sm-left-padding">
-            <%= autocomplete_field_tag :name, params[:name], 
+            <%= autocomplete_field_tag :name, params[:name],
               autocomplete_wufoo_contact_us_form_name_forms_contact_us_path,
               update_elements: {},
-              placeholder: "Bob Smith", 
+              placeholder: "Bob Smith",
               class:'form-control' %>
           </div>
         </div>
@@ -37,7 +37,7 @@
         </div>
         <div class="col-xs-7 col-sm-left-padding">
           <div class='input-group date datepicker'>
-            <%= text_field_tag :submitted_date, params[:submitted_date], 
+            <%= text_field_tag :submitted_date, params[:submitted_date],
               placeholder: "date", class:"form-control", size:30 %>
             <label class="input-group-addon btn" for="date">
               <span class="fa fa-calendar open-datepicker"></span>
@@ -62,7 +62,7 @@
         <%= label_tag(:min_price, "Min Price >= ") %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
-        <%= text_field_tag :min_price, params[:min_price], 
+        <%= text_field_tag :min_price, params[:min_price],
           placeholder: "date", class:"form-control", size:30 %>
       </div>
     </div>
@@ -72,11 +72,11 @@
         <%= label_tag(:max_price, "Max Price <=") %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
-        <%= text_field_tag :max_price, params[:max_price], 
+        <%= text_field_tag :max_price, params[:max_price],
           placeholder: "date", class:"form-control", size:30 %>
       </div>
     </div>
-    
+
   </div>
 
   <div class="col-xs-12 col-md-4">
@@ -85,10 +85,10 @@
         <%= label_tag(:status) %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
-        <%= select_tag(:status, 
-          options_for_select(['Active', 'Hidden'], 
+        <%= select_tag(:status,
+          options_for_select(['Active', 'Inactive'],
             [params[:status].blank? ? 'Active' : params[:status]]),
-          {class: "form-control", 
+          {class: "form-control",
           prompt: "Any"}) %>
       </div>
     </div>
@@ -116,12 +116,12 @@
 
           <li role="presentation"><a class="list-item-sm-padding" data-action="PDF" role="menuitem" tabindex="-1">
             <i class="fa fa-fw fa-file-text"></i> PDF</a></li>
-            
+
           <li role="presentation"><a class="list-item-sm-padding" data-action="CSV" role="menuitem" tabindex="-1">
             <i class="fa fa-fw fa-list"></i> CSV</a></li>
         </ul>
       </div>
-    
+
     <span class="totals">
       &nbsp;&nbsp;<%= @entries.total_count %> Entries found
     </span>
@@ -156,9 +156,9 @@
           <% end %>
         </tr>
       </thead>
-    
+
       <tbody class="contact_us_table_body">
-        <%= render partial: 'forms/contact_us/entry', 
+        <%= render partial: 'forms/contact_us/entry',
         :collection => @entries, as: :entry %>
       </tbody>
     </table>
@@ -175,12 +175,12 @@
 </div>
 
 <!-- Email Modal -->
-<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" 
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog"
   aria-labelledby="emailModal" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
-        
+
         <%= form_tag(send_message_forms_contact_us_path, remote:true) do %>
         <div class="row vertical-padding">
           <div class="col-md-12">
@@ -207,13 +207,13 @@
         <br />
         <div class="row vertical-padding">
           <div class="col-md-12">
-            
+
           </div>
         </div>
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp; 
+        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
         <%= submit_tag "Send Email", class:"btn btn-warning" %>
       </div>
 

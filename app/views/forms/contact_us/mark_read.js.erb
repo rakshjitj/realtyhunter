@@ -1,6 +1,6 @@
 $('#notices').html("<%= j(render :partial => "layouts/notices") %>");
 
 $('.contact_us_table_body').html("<%= escape_javascript (render partial: 'forms/contact_us/entry', :collection => @entries, as: :entry) %>");
-$('.totals').html("<%= @entries.count %> Entries");
+$('.totals').html("<%= @entries.total_count %> Entries");
 $('.contact_us_badge').html("<%= unread_contact_us_count %>");
 $('.total_forms_badge').html("<%= total_unread_forms_count %>");

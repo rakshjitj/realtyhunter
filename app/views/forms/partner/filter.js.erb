@@ -2,4 +2,4 @@ $('.partner_table_body').html("<%= escape_javascript (render partial: 'forms/par
 
 $('.pagination').html("<%= escape_javascript (render partial: 'shared/pagination', locals: {:models => @entries}) %>");
 
-$('.totals').html("<%= @entries.count %> Entries");
+$('.totals').html("<%= @entries.total_count %> Entries");
