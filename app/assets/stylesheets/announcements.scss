@@ -17,6 +17,16 @@
 .announcement {
 	padding-top: 0px !important;
 	padding-bottom: 5px !important;
+	//padding: 5px !important;
+	.padding-left-sm2 {
+		.padding-left: 0px;
+	}
+	.padding-top {
+		padding-top: 5px;
+	}
+	.padding-right {
+		padding-right: 10px !important;
+	}
 }
 
 .announcement-fixed-height .well {
@@ -28,4 +38,3 @@
 // 	right: 10px;
 // 	bottom: 30px;
 // }
-

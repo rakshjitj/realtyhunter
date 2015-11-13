@@ -19,14 +19,14 @@
 		<a href="/announcements">
 	<% end %>
 	<div class="row">
-		<div class="col-xs-8">
+		<div class="col-xs-7 padding-left-sm2 padding-top">
 			<p><%= announcement.note %> - <%= announcement.sender_name %></p>
 		</div>
-		<div class="col-xs-4 text-right">
-			<small><em><%= time_ago_in_words(announcement.updated_at) %></em></small>
+		<div class="col-xs-5 padding-top text-right">
+			<small><em class="padding-right"><%= time_ago_in_words(announcement.updated_at) %></em></small>
 			<% if current_user.is_management? %>
 				<div class="">
-					<small><em>
+					<small><em class="padding-right">
 						<%= link_to 'Delete', delete_modal_announcement_path(announcement),
 	            data: { toggle: "modal", target: "#annDeleteModal"}, remote: true %>
 					</em></small>

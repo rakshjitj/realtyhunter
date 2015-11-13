@@ -74,7 +74,7 @@ class AnnouncementsController < ApplicationController
 
       #params[:limit] = 12 unless !params[:limit].blank?
       @announcements = Announcement.search(announcement_params)
-      @announcements = @announcements.page params[:page]
+      @announcements = @announcements.page(params[:page]).per(100)
     end
 
   	def announcement_params
