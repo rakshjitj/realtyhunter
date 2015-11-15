@@ -6,11 +6,11 @@
 <%= render partial: "residential_listings/announcements", locals: { announcements: @announcement_items } %>
 
 <div class="">
-  <div class="row">
+  <div class="row row-relative">
     <div class="col-md-6">
       <h1>Rental Listings</h1>
     </div>
-    <div class="col-md-6 form-label-responsive">
+    <div class="col-md-6 form-label-responsive bottom-align-text">
 
       <% if current_user.is_management? || current_user.is_listings_manager? %>
         <%= link_to 'Make Announcement', new_announcement_path,
@@ -148,15 +148,14 @@
 
         <div class="row vertical-padding">
           <div class="col-md-5">
-            <%= label_tag :primary_agent, "Agent" %>
+            <%= label_tag :primary_agent_id, "Agent" %>
           </div>
           <div class="col-md-7">
-            <%= select_tag(:primary_agent,
+            <%= select_tag(:primary_agent_id,
               options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
-                  [params[:primary_agent] ? params[:primary_agent].titleize : "Any"]),
+                  [params[:primary_agent_id] ? params[:primary_agent_id].titleize : "Any"]),
                 {prompt: "Choose one...",
-                class: 'form-control',
-                :include_blank => true}) %>
+                class: 'form-control'}) %>
           </div>
         </div>
 

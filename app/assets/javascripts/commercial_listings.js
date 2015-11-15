@@ -39,6 +39,7 @@ CommercialListings = {};
         commercial_property_type_id: $('#commercial #commercial_property_type_id').val(),
         listing_id: $('#commercial #listing_id').val(),
         neighborhood_ids: $('#commercial #neighborhood_ids').val(),
+        primary_agent_id:  $('#commercial #primary_agent_id').val(),
         sort_by: sort_by_col,
         direction: sort_direction,
       },
@@ -391,6 +392,7 @@ CommercialListings = {};
     $('#commercial #neighborhood_ids').change(CommercialListings.throttledSearch);
     $('#commercial #commercial_property_type_id').change(CommercialListings.throttledSearch);
     $('#commercial #listing_id').change(CommercialListings.throttledSearch);
+    $('#commercial #primary_agent_id').change(CommercialListings.throttledSearch);
 
     $('#commercial').on('click', '.remove-neighborhood', CommercialListings.removeNeighborhood);
 

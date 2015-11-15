@@ -366,11 +366,6 @@ class ResidentialListingsController < ApplicationController
     def set_residential_listings
       do_search
       @residential_units = custom_sort
-
-      @count_all = ResidentialListing.joins(:unit)
-        .where('units.archived = false')
-        .where('units.status = ?', Unit.statuses["active"])
-        .count
       @map_infos = ResidentialListing.set_location_data(@residential_units.to_a)
       @residential_units = @residential_units.page params[:page]
       @res_images = ResidentialListing.get_images(@residential_units)

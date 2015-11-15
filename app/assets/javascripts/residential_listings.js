@@ -44,6 +44,7 @@ ResidentialListings = {};
         building_feature_ids: $('#residential #building_feature_ids').val(),
         roomsharing_filter: $('#residential #roomsharing_filter').prop('checked'),
         unassigned_filter: $('#residential #unassigned_filter').prop('checked'),
+        primary_agent_id:  $('#residential #primary_agent_id').val(),
         sort_by: sort_by_col,
         direction: sort_direction,
 	    },
@@ -483,6 +484,8 @@ ResidentialListings = {};
 	  $('#residential #building_feature_ids').change(ResidentialListings.throttledSearch);
 	  $('#residential #roomsharing_filter').change(ResidentialListings.throttledSearch);
 	  $('#residential #unassigned_filter').change(ResidentialListings.throttledSearch);
+	  $('#residential #primary_agent_id').change(ResidentialListings.throttledSearch);
+
 	  // remove individual features by clicking on 'x' button
 	  //$('#residential .remove-unit-feature').click(ResidentialListings.removeUnitFeature);
 	  //$('#residential .remove-building-feature').click(ResidentialListings.removeBuildingFeature);

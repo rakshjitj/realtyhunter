@@ -306,14 +306,6 @@ class ResidentialListing < ActiveRecord::Base
       end
       running_list = running_list.where("beds <= ?", params[:bed_max])
     end
-    # now query beds
-    # if params[:bed_min] && params[:bed_max]
-    #   running_list = running_list.where("beds >= ? AND beds <= ?", params[:bed_min], params[:bed_max])
-    # elsif params[:bed_min] && !params[:bed_max]
-
-    # elsif !params[:bed_min] && params[:bed_max]
-
-    # end
 
     # search baths
     params.delete('bath_min') if params[:bath_min] == 'Any'
@@ -357,12 +349,17 @@ class ResidentialListing < ActiveRecord::Base
         'units.primary_agent_id IS NULL AND units.primary_agent2_id IS NULL')
     end
 
+    # primary agent
+    if !params[:primary_agent_id].blank?
+      running_list = running_list.where('units.primary_agent_id = ? OR units.primary_agent2_id = ?',
+        params[:primary_agent_id], params[:primary_agent_id])
+    end
+
     running_list
   end
 
   # TODO: run this in the background. See Image class for stub
   def deep_copy_imgs(dst_id)
-    #puts "YEAAAAAA MAN #{src_id} #{dst_id}"
     #@src = ResidentialListing.find(src_id)
     @dst = ResidentialListing.find(dst_id)
 

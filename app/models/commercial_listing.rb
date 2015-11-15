@@ -108,7 +108,7 @@ class CommercialListing < ActiveRecord::Base
     end
 
   def self.search(params, user, building_id=nil)
-    @running_list = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord, :neighborhood]}])
+    running_list = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord, :neighborhood]}])
       .where('units.archived = false')
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address',
@@ -119,19 +119,19 @@ class CommercialListing < ActiveRecord::Base
         'neighborhoods.name AS neighborhood_name',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
-        'units.available_by')
+        'units.available_by', 'units.primary_agent_id', 'units.primary_agent2_id')
 
     # actable_type to restrict to commercial only
     if !params && !building_id
-      return @running_list
+      return running_list
     elsif !params && building_id
-      @running_list.where(building_id: building_id)
-      return @running_list
+      running_list.where(building_id: building_id)
+      return running_list
     end
 
     # only admins are allowed to view off-market units
     if !user.is_management?
-     @running_list = @running_list.where.not('status = ?', Unit.statuses['off'])
+     running_list = running_list.where.not('status = ?', Unit.statuses['off'])
     end
 
     # clear out any invalid search params
@@ -142,8 +142,8 @@ class CommercialListing < ActiveRecord::Base
     if params[:address]
       # cap query string length for security reasons
       address = params[:address][0, 500]
-      @running_list =
-       @running_list.where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
+      running_list =
+       running_list.where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
     end
 
     # search by status
@@ -151,49 +151,55 @@ class CommercialListing < ActiveRecord::Base
       status = params[:status].downcase.gsub(/ /, '_')
       included = ['active', 'offer_submitted', 'offer_accepted', 'binder_signed', 'off_market_for_lease_execution', 'off'].include?(status)
       if included
-        @running_list = @running_list.where("status = ?", Unit.statuses[status])
+        running_list = running_list.where("status = ?", Unit.statuses[status])
       end
     end
 
     # search by rent
     if params[:rent_min] && params[:rent_max]
-      @running_list = @running_list.where("rent >= ? AND rent <= ?", params[:rent_min], params[:rent_max])
+      running_list = running_list.where("rent >= ? AND rent <= ?", params[:rent_min], params[:rent_max])
     elsif params[:rent_min] && !params[:rent_max]
-      @running_list = @running_list.where("rent >= ?", params[:rent_min])
+      running_list = running_list.where("rent >= ?", params[:rent_min])
     elsif !params[:rent_min] && params[:rent_max]
-      @running_list = @running_list.where("rent <= ?", params[:rent_max])
+      running_list = running_list.where("rent <= ?", params[:rent_max])
     end
 
     # search neighborhoods
     if params[:neighborhood_ids]
       neighborhood_ids = params[:neighborhood_ids][0, 256]
       neighborhoods = neighborhood_ids.split(",").select{|i| !i.empty?}
-      @running_list = @running_list
+      running_list = running_list
        .where('neighborhood_id IN (?)', neighborhoods)
     end
 
     # search landlord code
     if params[:landlord]
-      @running_list = @running_list
+      running_list = running_list
       .where("code ILIKE ?", "%#{params[:landlord]}%")
     end
 
     # sq footage
     if params[:sq_footage_min] && params[:sq_footage_max]
-      @running_list = @running_list.where("sq_footage >= ? AND sq_footage <= ?", params[:sq_footage_min], params[:sq_footage_max])
+      running_list = running_list.where("sq_footage >= ? AND sq_footage <= ?", params[:sq_footage_min], params[:sq_footage_max])
     elsif params[:sq_footage_min] && !params[:sq_footage_max]
-      @running_list = @running_list.where("sq_footage >= ?", params[:sq_footage_min])
+      running_list = running_list.where("sq_footage >= ?", params[:sq_footage_min])
     elsif !params[:sq_footage_min] && params[:sq_footage_max]
-      @running_list = @running_list.where("sq_footage <= ?", params[:sq_footage_max])
+      running_list = running_list.where("sq_footage <= ?", params[:sq_footage_max])
     end
 
     # search landlord code
     if params[:commercial_property_type_id]
-      @running_list = @running_list
+      running_list = running_list
       .where("commercial_property_type_id = ?", params[:commercial_property_type_id])
     end
 
-    return @running_list
+    # primary agent
+    if !params[:primary_agent_id].blank?
+      running_list = running_list.where('units.primary_agent_id = ? OR units.primary_agent2_id = ?',
+        params[:primary_agent_id], params[:primary_agent_id])
+    end
+
+    return running_list
   end
 
   # TODO: run this in the background. See Image class for stub

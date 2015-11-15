@@ -111,6 +111,19 @@
         </div>
 
         <div class="row vertical-padding">
+          <div class="col-md-5">
+            <%= label_tag :primary_agent_id, "Agent" %>
+          </div>
+          <div class="col-md-7">
+            <%= select_tag(:primary_agent_id,
+              options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
+                  [params[:primary_agent_id] ? params[:primary_agent_id].titleize : "Any"]),
+                {prompt: "Choose one...",
+                class: 'form-control'}) %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
           <div class="col-xs-12">
             <strong>Available</strong>
           </div>

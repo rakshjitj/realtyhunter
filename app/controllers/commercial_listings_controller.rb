@@ -366,7 +366,7 @@ class CommercialListingsController < ApplicationController
         :user_id, :include_photos, :sq_footage_min, :sq_footage_max,
         :sq_footage, :floor, :building_size, :build_to_suit, :minimum_divisible, :maximum_contiguous,
         :lease_type, :is_sublease, :property_description, :location_description,
-        :construction_status, :lease_term_months,
+        :construction_status, :lease_term_months, :primary_agent_id,
         :rate_is_negotiable, :total_lot_size, :property_type, :commercial_property_type_id,
         :commercial_unit_id, :inaccuracy_description, :has_basement, :basement_sq_footage,
         :has_ventilation, :key_money_required, :key_money_amt, :listing_title, :liquor_eligible,
