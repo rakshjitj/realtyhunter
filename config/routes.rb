@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   get 'user_home' => 'sessions#user_home'
 
   root :to => 'static_pages#home'
-  
+
   resources :users, except: 'new' do
     get :autocomplete_user_name, :on => :collection
     collection do
@@ -23,7 +23,7 @@ Rails.application.routes.draw do
       get 'admin_new'
       post 'admin_create'
     end
-    member do 
+    member do
       delete 'destroy_image'
       post 'upload_image'
       get 'coworkers'
@@ -35,14 +35,14 @@ Rails.application.routes.draw do
       get 'filter_listings'
     end
   end
-  
+
   resources :account_activations, only: [:edit]
   resources :account_approvals,   only: [:edit]
   resources :added_by_admins,     only: [:edit, :update]
   resources :password_resets,     only: [:new, :create, :edit, :update]
- 
+
   resources :companies do
-    collection do 
+    collection do
       get 'filter'
     end
     member do
@@ -95,7 +95,7 @@ Rails.application.routes.draw do
       patch 'send_inaccuracy'
       get 'refresh_images'
       get 'refresh_documents'
-      get 'filter_listings' 
+      get 'filter_listings'
     end
     collection do
       get 'filter'
@@ -130,6 +130,8 @@ Rails.application.routes.draw do
       get 'update_announcements'
       get 'assign_modal'
       post 'assign'
+      get 'unassign_modal'
+      post 'unassign'
     end
   end
 
@@ -205,7 +207,7 @@ Rails.application.routes.draw do
     end
   end
 
-  # designed to match nestio's API endpoints, so we can feed our data seamlessly to 
+  # designed to match nestio's API endpoints, so we can feed our data seamlessly to
   # our public-facing website
   namespace :api, :defaults => {:format => :json} do #, :path => "/", :constraints => {:subdomain => "api"}  do
     namespace :v1 do
@@ -215,7 +217,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :syndication, :defaults => { :format => 'rss' } do #:show #path:'public_feed', 
+  resources :syndication, :defaults => { :format => 'rss' } do #:show #path:'public_feed',
     member do
       get 'naked_apts'
       get 'streeteasy'
@@ -231,7 +233,7 @@ Rails.application.routes.draw do
       get 'unmatch_modal'
       post 'unmatch'
     end
-    collection do 
+    collection do
       get 'filter'
       get 'print_list'
       post 'send_message'
@@ -370,7 +372,7 @@ Rails.application.routes.draw do
       get :autocomplete_user_name
     end
   end
-   
+
   resources :announcements do
     member do
       get 'delete_modal'

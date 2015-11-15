@@ -38,10 +38,10 @@
 					    			<div class="col-xs-4">
 
 					    				<div class="btn-group neighborhood-buttons" data-toggle="buttons">
-							    			<label class="btn btn-xs btn-link btn-as-checkbox text-left"
+							    			<label class="btn btn-xs btn-link btn-as-checkbox text-left word-wrap"
 							    				id="<%= neighborhood.id %>" name="<%= neighborhood.name %>">
 												  <input type="checkbox" autocomplete="off">
-												  	<%= wrap_text(neighborhood.name.titleize, 20) %>
+												  	<%= neighborhood.name.titleize %>
 												</label>
 											</div>
 										</div>

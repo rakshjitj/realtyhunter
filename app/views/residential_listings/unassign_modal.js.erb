@@ -1,0 +1,7 @@
+$('#unitUnassignModal .modal-body').html("<%= j(render :partial => "unassign_modal_helper", locals: { listings: @listings }) %>");
+
+$('#unitUnassignModal .btn-submit').click( function(event) {
+	$('#unitUnassignModal').modal('hide');
+});
+
+$('#unitUnassignModal').modal('show');

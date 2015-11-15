@@ -8,7 +8,7 @@
 <div class="modal-body">
 
 	<div role="tabpanel" id="neighborhood-tabpanel">
-		
+
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs" role="tablist">
 					<% @neighborhoods.each do |borough, list| %>
@@ -21,11 +21,11 @@
 				<!-- Tab panes -->
 				<div class="tab-content">
 	  		<% @neighborhoods.each do |borough, list| %>
-	  				
+
 			    	<div role="tabpanel" class="tab-pane" id="<%= borough %>">
 			    		<br />
 			    		<div class="row">
-			    		
+
 			    			<% for i in 0..list.count-1 %>
 				    			<% neighborhood = list[i] %>
 				    			<% if i % 3 == 0 && i > 0 %>
@@ -35,9 +35,9 @@
 
 				    			<div class="col-xs-4">
 				    				<div class="btn-group neighborhood-buttons" data-toggle="buttons">
-						    			<label class="btn btn-xs btn-link btn-as-checkbox text-left" 
+						    			<label class="btn btn-xs btn-link btn-as-checkbox text-left word-wrap"
 						    				id="<%= neighborhood.id %>" name="<%= neighborhood.name %>">
-											  <input type="checkbox" autocomplete="off"><%= wrap_text(neighborhood.name.titleize, 20) %>
+											  <input type="checkbox" autocomplete="off"><%= neighborhood.name.titleize %>
 											</label>
 										</div>
 									</div>
@@ -49,7 +49,7 @@
 				<% end %><!-- boroughs -->
 				</div><!-- tab-content -->
 
-			
+
 	</div>
 
 

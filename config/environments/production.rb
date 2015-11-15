@@ -56,7 +56,7 @@
 
   # Use a different cache store in production.
   #config.cache_store = :mem_cache_store
-  config.cache_store = :dalli_store, 
+  config.cache_store = :dalli_store,
     (ENV["MEMCACHIER_SERVERS"] || "").split(","),
     {namespace: 'myspace-realty-monster',
      username: ENV["MEMCACHIER_USERNAME"],
@@ -69,9 +69,6 @@
     }
     #{ :pool_size => 5 }
   config.action_controller.perform_caching = true
-  
-  # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  # config.action_controller.asset_host = 'http://assets.example.com'
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -104,6 +101,7 @@
   config.active_record.dump_schema_after_migration = false
 
   # serve from CDN
+  # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   config.action_controller.asset_host = ENV['CLOUDFRONT_ENDPOINT']
 
   config.paperclip_defaults = {
