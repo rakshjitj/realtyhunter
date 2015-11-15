@@ -2,6 +2,7 @@ $('#unitUnassignModal .modal-body').html("<%= j(render :partial => "unassign_mod
 
 $('#unitUnassignModal .btn-submit').click( function(event) {
 	$('#unitUnassignModal').modal('hide');
+	Listings.hideSpinner();
 });
 
 $('#unitUnassignModal').modal('show');

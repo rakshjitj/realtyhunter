@@ -1,5 +1,5 @@
 /*
-* Factors out common functionality across all listings pages: 
+* Factors out common functionality across all listings pages:
 * Residential, Commercial, Sales
 */
 
@@ -68,7 +68,7 @@ Listings = {};
 		// TODO: cap the max # of listings you can select?
 		var isChecked = $(this).hasClass('fa-check-square');
 		var listing_id = $(this).parent().parent().attr('data-id');
-		
+
 		if (isChecked) {
 			//$(this).addClass('fa-square-o').removeClass('fa-check-square');
 			Listings.uncheckTheBox($(this));
@@ -91,9 +91,19 @@ Listings = {};
 		e.preventDefault();
 	};
 
-	Listings.assign = function(e) {
+	Listings.assignPrimaryAgent = function(e) {
 		$.ajax({
 			url: $('#section-name').attr('data-name') + '/assign_modal',
+	    data: {
+        listing_ids: Listings.selectedListings,
+	    },
+	    dataType: 'script'
+	  });
+	};
+
+	Listings.unassignPrimaryAgent = function(e) {
+		$.ajax({
+			url: $('#section-name').attr('data-name') + '/unassign_modal',
 	    data: {
         listing_ids: Listings.selectedListings,
 	    },

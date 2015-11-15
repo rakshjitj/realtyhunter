@@ -47,7 +47,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Assign Agent</h4>
+        <h4 class="modal-title" id="myModalLabel">Assign Primary Agent</h4>
       </div>
       <%= form_tag(assign_residential_listings_path, remote:true) do %>
         <div class="modal-body">
@@ -69,15 +69,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Unassign Agent</h4>
+        <h4 class="modal-title" id="myModalLabel">Remove Primary Agent</h4>
       </div>
-        Are you sure you want to remove the primary agent from the folowing listings?
-      <%= form_tag(assign_residential_listings_path, remote:true) do %>
+        <%= form_tag(unassign_residential_listings_path, remote:true) do %>
         <div class="modal-body">
-          <!-- blank -->
+          <p>Are you sure you want to remove the primary agent from the folowing listings?</p>
         </div>
         <div class="modal-footer">
-          <%= submit_tag "Unsasign", class:"btn btn-warning btn-submit" %>
+          <%= submit_tag "Unassign", class:"btn btn-warning btn-submit" %>
           <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
         </div>
       <% end %>

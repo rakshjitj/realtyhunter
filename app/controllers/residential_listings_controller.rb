@@ -314,6 +314,10 @@ class ResidentialListingsController < ApplicationController
       flash[:success] = "Primary agent successfully assigned!"
       set_residential_listings
     end
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   def unassign_modal
@@ -336,6 +340,10 @@ class ResidentialListingsController < ApplicationController
       end
       flash[:success] = "Primary agent successfully removed!"
       set_residential_listings
+    end
+
+    respond_to do |format|
+      format.js
     end
   end
 

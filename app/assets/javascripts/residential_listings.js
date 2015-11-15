@@ -486,14 +486,14 @@ ResidentialListings = {};
 	  // remove individual features by clicking on 'x' button
 	  //$('#residential .remove-unit-feature').click(ResidentialListings.removeUnitFeature);
 	  //$('#residential .remove-building-feature').click(ResidentialListings.removeBuildingFeature);
-	  //$('#residential .remove-neighborhood').click(ResidentialListings.removeNeighborhood);
 	  $('#residential').on('click', '.remove-unit-feature',     ResidentialListings.removeUnitFeature);
 	  $('#residential').on('click', '.remove-building-feature', ResidentialListings.removeBuildingFeature);
 	  $('#residential').on('click', '.remove-neighborhood',     ResidentialListings.removeNeighborhood);
 
 		// index page - selecting listings menu dropdown
 		$('#residential #emailListings').click(Listings.sendMessage);
-		$('#residential #assignListings').click(Listings.assign);
+		$('#residential #assignListings').click(Listings.assignPrimaryAgent);
+		$('#residential #unassignListings').click(Listings.unassignPrimaryAgent);
 		$('#residential tbody').on('click', 'i', Listings.toggleListingSelection);
 		$('#residential .select-all-listings').click(Listings.selectAllListings);
 		$('#residential .selected-listings-menu').on('click', 'a', function() {
