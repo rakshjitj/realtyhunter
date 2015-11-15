@@ -14,7 +14,10 @@
 				  		<h2><%= @residential_unit.street_address_and_unit %>
 				  		<% if @residential_unit.can_roomshare %> (RS)<% end %>
 				  		</h2>
-				  		<h3><%= rent_formatted(@residential_unit.unit.rent) %> &nbsp;&nbsp;&nbsp; <%= @residential_unit.beds %> Beds / <%= trim_zeros(@residential_unit.baths) %> Baths</h3>
+				  		<h3>
+				  			<%= rent_formatted(@residential_unit.unit.rent) %> &nbsp;&nbsp;&nbsp;
+				  			<%= beds_as_str(@residential_unit) %> / <%= baths_as_str(@residential_unit) %>
+				  		</h3>
 				  		<p>
 			  				<%= small_header(@residential_unit) %><br />
 			  				<%= render 'market_status' %> <br />Available <%= @residential_unit.unit.available_by %>
@@ -39,7 +42,9 @@
 			  		</div>
 			  		<div class="col-xs-12 col-md-5 form-label-responsive">
 			  			<h1><%= rent_formatted(@residential_unit.unit.rent) %></h1>
-			  			<p><%= @residential_unit.beds %> Beds / <%= trim_zeros(@residential_unit.baths) %> Baths</p>
+			  			<p>
+				  			<%= beds_as_str(@residential_unit) %>/ <%= baths_as_str(@residential_unit) %>
+			  			</p>
 
 			  		</div>
 			  	</div><!-- row -->

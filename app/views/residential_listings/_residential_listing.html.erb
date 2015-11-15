@@ -33,7 +33,9 @@
     </td>
 
     <!-- ****** BEDS/BATHS ****************************************** -->
-    <td><%= residential_listing.bed_and_baths %></td>
+    <td>
+      <%= residential_listing.beds %> / <%= residential_listing.baths %>
+    </td>
 
     <!-- ****** PRICE ****************************************** -->
     <td><%= rent_formatted(residential_listing.rent) %></td>
