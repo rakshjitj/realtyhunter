@@ -502,11 +502,12 @@ ResidentialListings = {};
 		});
 
 		// // make sure datepicker is formatted before setting initial date below
-		// $('.datepicker').datetimepicker({
-		//   viewMode: 'days',
-		//   format: 'MM/DD/YYYY',
-		//   allowInputToggle: true
-		// });
+		// use in residential/edit, on photos tab
+		$('.datepicker').datetimepicker({
+		  viewMode: 'days',
+		  format: 'MM/DD/YYYY',
+		  allowInputToggle: true
+		});
 		var available_by = $('#residential .datepicker').attr('data-available-by');
 		if (available_by) {
 			$('#residential .datepicker').data("DateTimePicker").date(available_by);
