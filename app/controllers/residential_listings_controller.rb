@@ -14,7 +14,6 @@ class ResidentialListingsController < ApplicationController
     respond_to do |format|
       format.html do
         set_residential_listings
-        #render stream: true
       end
       format.csv do
         set_residential_listings_csv
@@ -30,6 +29,10 @@ class ResidentialListingsController < ApplicationController
     set_residential_listings
     respond_to do |format|
       format.js
+      format.html do
+        # catch-all
+        redirect_to residential_listings_url
+      end
     end
   end
 

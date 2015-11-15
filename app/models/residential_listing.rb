@@ -291,22 +291,29 @@ class ResidentialListing < ActiveRecord::Base
     end
 
     # search beds
+    # clean up search terms first
     params.delete('bed_min') if params[:bed_min] == 'Any'
     params.delete('bed_max') if params[:bed_max] == 'Any'
-    if params[:bed_min] && params[:bed_max]
+    if !params[:bed_min].blank?
       if params[:bed_min].downcase == 'studio/loft'
         params[:bed_min] = 0
       end
+      running_list = running_list.where("beds >= ?", params[:bed_min])
+    end
+    if !params[:bed_max].blank?
       if params[:bed_max].downcase == 'studio/loft'
         params[:bed_max] = 0
       end
-
-      running_list = running_list.where("beds >= ? AND beds <= ?", params[:bed_min], params[:bed_max])
-    elsif params[:bed_min] && !params[:bed_max]
-      running_list = running_list.where("beds >= ?", params[:bed_min])
-    elsif !params[:bed_min] && params[:bed_max]
       running_list = running_list.where("beds <= ?", params[:bed_max])
     end
+    # now query beds
+    # if params[:bed_min] && params[:bed_max]
+    #   running_list = running_list.where("beds >= ? AND beds <= ?", params[:bed_min], params[:bed_max])
+    # elsif params[:bed_min] && !params[:bed_max]
+
+    # elsif !params[:bed_min] && params[:bed_max]
+
+    # end
 
     # search baths
     params.delete('bath_min') if params[:bath_min] == 'Any'
