@@ -1,21 +1,21 @@
-# 
+#
 # Encapsulates data from Wufoo form
 #
 class WufooCareerForm < ActiveRecord::Base
 	belongs_to :company, touch: true
-	
+
   scope :unarchived, ->{where(archived: false)}
 
   validates :name, presence: true, length: {maximum: 200}
   validates :phone_number, presence: true, length: {maximum: 20}
   validates :email, presence: true, length: {maximum: 100}
   validates :what_neighborhood_do_you_live_in, allow_blank: true, length: {maximum: 1000}
- 
+
   def archive
     self.archived = true
     self.save
   end
-  
+
   def unarchive
     self.archived = false
     self.save
@@ -23,7 +23,7 @@ class WufooCareerForm < ActiveRecord::Base
 
   def self.find_unarchived(id)
     WufooCareerForm.where(id: id).where(archived:false).first
-  end 
+  end
 
   def self.send_message(source_agent, recipients, sub, msg)
     if source_agent
@@ -46,7 +46,7 @@ class WufooCareerForm < ActiveRecord::Base
      success = success && e.mark_read
     end
   end
-  
+
   def self.search(params)
     entries = WufooCareerForm.all
 
@@ -59,7 +59,7 @@ class WufooCareerForm < ActiveRecord::Base
     end
 
     if !params[:name].blank?
-      entries = entries.where(name: params[:name])
+      entries = entries.where("name ilike ?", "%#{params[:name]}%")
     end
 
     if !params[:email].blank?
@@ -74,7 +74,7 @@ class WufooCareerForm < ActiveRecord::Base
     if !params[:submitted_date].blank?
       entries = entries.where('created_at >= ?', params[:submitted_date])
     end
-    
+
     entries
   end
 

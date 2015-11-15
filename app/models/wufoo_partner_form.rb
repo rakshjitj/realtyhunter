@@ -1,9 +1,9 @@
-# 
+#
 # Encapsulates data from Wufoo form
 #
 class WufooPartnerForm < ActiveRecord::Base
 	belongs_to :company, touch: true
-	
+
   scope :unarchived, ->{where(archived: false)}
 
   validates :name, presence: true, length: {maximum: 200}
@@ -23,7 +23,7 @@ class WufooPartnerForm < ActiveRecord::Base
     self.archived = true
     self.save
   end
-  
+
   def unarchive
     self.archived = false
     self.save
@@ -31,7 +31,7 @@ class WufooPartnerForm < ActiveRecord::Base
 
   def self.find_unarchived(id)
     WufooPartnerForm.where(id: id).where(archived:false).first
-  end 
+  end
 
   def self.send_message(source_agent, recipients, sub, msg)
     if source_agent
@@ -54,11 +54,11 @@ class WufooPartnerForm < ActiveRecord::Base
   end
 
   def full_address
-    ret = address_street_address 
+    ret = address_street_address
     if !address_address_line_2.blank?
       ret = ret + ", " + address_address_line_2
     end
-    ret = ret + "," + address_city + ", " + address_state_province_region + " " + 
+    ret = ret + "," + address_city + ", " + address_state_province_region + " " +
       address_postal_zip_code + " " + address_country
     ret
   end
@@ -87,7 +87,7 @@ class WufooPartnerForm < ActiveRecord::Base
 
     ret.join(", ")
   end
-  
+
   def self.search(params)
     entries = WufooPartnerForm.all
 
@@ -100,11 +100,11 @@ class WufooPartnerForm < ActiveRecord::Base
     end
 
     if !params[:name].blank?
-      entries = entries.where(name: params[:name])
+      entries = entries.where("name ilike ?", "%#{params[:name]}%")
     end
 
     if !params[:address_street_address].blank?
-      entries = entries.where(address_street_address: params[:address_street_address])
+      entries = entries.where("address_street_address ilike ?", "%#{params[:address_street_address]}%")
     end
 
     if !params[:number_of_bedrooms].blank?
@@ -127,7 +127,7 @@ class WufooPartnerForm < ActiveRecord::Base
     if !params[:submitted_date].blank?
       entries = entries.where('created_at >= ?', params[:submitted_date])
     end
-    
+
     entries
   end
 

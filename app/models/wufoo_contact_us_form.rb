@@ -1,9 +1,9 @@
-# 
+#
 # Encapsulates data from Wufoo form
 #
 class WufooContactUsForm < ActiveRecord::Base
 	belongs_to :company, touch: true
-	
+
   scope :unarchived, ->{where(archived: false)}
 
   validates :name, presence: true, length: {maximum: 200}
@@ -13,12 +13,12 @@ class WufooContactUsForm < ActiveRecord::Base
   validates :min_price, length: {maximum: 20}
   validates :max_price, length: {maximum: 20}
   validates :any_notes_for_us, allow_blank: true, length: {maximum: 1000}
- 
+
   def archive
     self.archived = true
     self.save
   end
-  
+
   def unarchive
     self.archived = false
     self.save
@@ -26,7 +26,7 @@ class WufooContactUsForm < ActiveRecord::Base
 
   def self.find_unarchived(id)
     WufooContactUsForm.where(id: id).where(archived:false).first
-  end 
+  end
 
   def self.send_message(source_agent, recipients, sub, msg)
     if source_agent
@@ -46,7 +46,7 @@ class WufooContactUsForm < ActiveRecord::Base
     entries = WufooContactUsForm.where(id: ids)
     entries.each{ |e| e.mark_read }
   end
-  
+
   def self.search(params)
     entries = WufooContactUsForm.all
 
@@ -59,7 +59,7 @@ class WufooContactUsForm < ActiveRecord::Base
     end
 
     if !params[:name].blank?
-      entries = entries.where(name: params[:name])
+      entries = entries.where("name ilike ?", "%#{params[:name]}%")
     end
 
     if !params[:min_price].blank?
@@ -68,7 +68,7 @@ class WufooContactUsForm < ActiveRecord::Base
 
     if !params[:max_price].blank?
       entries = entries.where("max_price <= ?", params[:max_price])
-    end    
+    end
 
     if !params[:status].blank?
       status = (params[:status] == 'Active') ? false : true
@@ -78,7 +78,7 @@ class WufooContactUsForm < ActiveRecord::Base
     if !params[:submitted_date].blank?
       entries = entries.where('created_at >= ?', params[:submitted_date])
     end
-    
+
     entries
   end
 

@@ -1,9 +1,9 @@
-# 
+#
 # Encapsulates data from Wufoo form
 #
 class WufooListingsForm < ActiveRecord::Base
 	belongs_to :company, touch: true
-	
+
   scope :unarchived,  ->{where(archived: false)}
   scope :residential, ->{where(is_residential: true)}
   scope :commercial,  ->{where(is_commercial: true)}
@@ -12,12 +12,12 @@ class WufooListingsForm < ActiveRecord::Base
   validates :email, presence: true, length: {maximum: 100}
   validates :phone_number, presence: true, length: {maximum: 20}
   validates :message, presence: true, length: {maximum: 1000}
-  
+
   def archive
     self.archived = true
     self.save
   end
-  
+
   def unarchive
     self.archived = false
     self.save
@@ -25,7 +25,7 @@ class WufooListingsForm < ActiveRecord::Base
 
   def self.find_unarchived(id)
     WufooListingsForm.where(id: id).where(archived:false).first
-  end 
+  end
 
   def self.send_message(source_agent, recipients, sub, msg)
     if source_agent
@@ -45,7 +45,7 @@ class WufooListingsForm < ActiveRecord::Base
     entries = WufooCareerForm.where(id: ids)
     entries.each{ |e| e.mark_read }
   end
-  
+
   def self.search(params)
     entries = WufooListingsForm.all
 
@@ -58,11 +58,11 @@ class WufooListingsForm < ActiveRecord::Base
     end
 
     if !params[:name].blank?
-      entries = entries.where(name: params[:name])
+      entries = entries.where("name ilike ?", "%#{params[:name]}%")
     end
 
     if !params[:email].blank?
-      entries = entries.where(email: params[:email])
+      entries = entries.where("email ilike ?", "%#{params[:email]}%")
     end
 
     if !params[:status].blank?
@@ -73,7 +73,7 @@ class WufooListingsForm < ActiveRecord::Base
     if !params[:submitted_date].blank?
       entries = entries.where('created_at >= ?', params[:submitted_date])
     end
-    
+
     entries
   end
 

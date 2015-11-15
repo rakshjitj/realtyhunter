@@ -139,7 +139,7 @@ Roommates = {};
 	Roommates.doSearch = function (sort_by_col, sort_direction) {
 		//console.log(sort_by_col, sort_direction);
 		var search_path = $('#room-search-filters').attr('data-search-path');
-	  
+
 	  Roommates.showSpinner();
 
 	  $.ajax({
@@ -193,7 +193,7 @@ Roommates = {};
 	Roommates.setupSortableColumns = function() {
 		$('#roommates .th-sortable').click(function(e) {
 			e.preventDefault();
-			
+
 			if ($(this).hasClass('selected-sort')) {
 				// switch sort order
 				var i = $('.selected-sort i');
@@ -223,7 +223,7 @@ Roommates = {};
 		});
 	};
 
-	// any phone #'s listed in 'access info' on main index pg should 
+	// any phone #'s listed in 'access info' on main index pg should
   // be automatically detected
 	Roommates.detectPhoneNumbers = function () {
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
@@ -281,7 +281,7 @@ Roommates = {};
 		Roommates.hideSpinner();
 
 		// main index table
-		Roommates.setupSortableColumns();		
+		Roommates.setupSortableColumns();
 
 		$('.close').click(function() {
 			//console.log('detected click');

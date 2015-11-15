@@ -26,7 +26,7 @@ class Roommate < ActiveRecord::Base
     self.archived = true
     self.save
   end
-  
+
   def unarchive
     self.archived = false
     self.save
@@ -44,12 +44,12 @@ class Roommate < ActiveRecord::Base
       .select(
         'roommates.id',
         'roommates.upload_picture_of_yourself',
-        'roommates.name', 'roommates.phone_number', 'roommates.email', 
-        'roommates.how_did_you_hear_about_us', 'roommates.describe_yourself', 
+        'roommates.name', 'roommates.phone_number', 'roommates.email',
+        'roommates.how_did_you_hear_about_us', 'roommates.describe_yourself',
         'roommates.monthly_budget',
         'roommates.upload_picture_of_yourself', 'roommates.move_in_date',
         'neighborhoods.name as neighborhood_name',
-        'roommates.dogs_allowed', 'roommates.cats_allowed', 'roommates.created_by', 
+        'roommates.dogs_allowed', 'roommates.cats_allowed', 'roommates.created_by',
         'roommates.archived', 'users.name as user_name', 'roommates.created_at', 'roommates.updated_at')
   end
 
@@ -59,9 +59,9 @@ class Roommate < ActiveRecord::Base
       .select(
     	  'roommates.id', 'roommates.read',
     	  'roommates.upload_picture_of_yourself',
-    	  'roommates.name', 'roommates.phone_number', 'roommates.email', 
+    	  'roommates.name', 'roommates.phone_number', 'roommates.email',
     	  'neighborhoods.name as neighborhood_name',
-    	  'roommates.monthly_budget', 'roommates.move_in_date', 'roommates.dogs_allowed', 
+    	  'roommates.monthly_budget', 'roommates.move_in_date', 'roommates.dogs_allowed',
     	  'roommates.cats_allowed', 'roommates.created_at as submitted_date',
     	  'roommates.archived', 'roommates.residential_listing_id')
 
@@ -74,7 +74,7 @@ class Roommate < ActiveRecord::Base
     end
 
     if !params[:name].blank?
-      roommates = roommates.where(name: params[:name])
+      roommates = roommates.where("roommates.name ilike ?", "%#{params[:name]}%")
     end
 
     if !params[:referred_by].blank?
@@ -115,7 +115,7 @@ class Roommate < ActiveRecord::Base
       archived = (params[:status] == 'Matched') ? true : false
       roommates = roommates.where('roommates.archived = ?', archived)
     end
-    
+
     roommates
   end
 
@@ -152,7 +152,7 @@ class Roommate < ActiveRecord::Base
 
     listing = ResidentialListing.joins(:unit)
       .where(unit_id: params[:unit_id]).limit(1).first
-    
+
     if listing && listing.roommates.count < listing.beds
       listing.roommates << self
       self.archive
