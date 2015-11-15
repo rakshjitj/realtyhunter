@@ -28,6 +28,10 @@ class CommercialListingsController < ApplicationController
     set_commercial_listings
     respond_to do |format|
       format.js
+      format.html do
+        # catch-all
+        redirect_to commercial_listings_url
+      end
     end
   end
 
@@ -41,6 +45,10 @@ class CommercialListingsController < ApplicationController
 
     respond_to do |format|
       format.js
+      format.html do
+        # catch-all
+        redirect_to commercial_listings_url
+      end
     end
   end
 

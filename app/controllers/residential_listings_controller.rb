@@ -48,6 +48,10 @@ class ResidentialListingsController < ApplicationController
 
     respond_to do |format|
       format.js
+      format.html do
+        # catch-all
+        redirect_to residential_listings_url
+      end
     end
   end
 
