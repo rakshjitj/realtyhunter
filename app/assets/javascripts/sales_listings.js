@@ -60,7 +60,7 @@ SalesListings = {};
 	SalesListings.setupSortableColumns = function() {
 		$('#sales .th-sortable').click(function(e) {
 			e.preventDefault();
-			
+
 			if ($(this).hasClass('selected-sort')) {
 				// switch sort order
 				var i = $('.selected-sort i');
@@ -143,7 +143,7 @@ SalesListings = {};
       //when the remove button is clicked
       removedfile: function(file){
         // grap the id of the uploaded file we set earlier
-        var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
+        var id = $(file.previewTemplate).find('.dz-remove').attr('id');
         var unit_id = $(file.previewTemplate).find('.dz-remove').attr('unit_id');
         DropZoneHelper.removeDocument(id, unit_id, 'sales_listings');
         file.previewElement.remove();
@@ -164,7 +164,7 @@ SalesListings = {};
         updated_order = []
         // set the updated positions
         DropZoneHelper.setPositions('sales', 'documents');
-        
+
         // populate the updated_order array with the new task positions
         $('.doc').each(function(i){
           updated_order.push({ id: $(this).data('id'), position: i });
@@ -201,7 +201,7 @@ SalesListings = {};
       //when the remove button is clicked
       removedfile: function(file){
         // grap the id of the uploaded file we set earlier
-        var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
+        var id = $(file.previewTemplate).find('.dz-remove').attr('id');
         var unit_id = $(file.previewTemplate).find('.dz-remove').attr('unit_id');
         DropZoneHelper.removeImage(id, unit_id, 'sales_listings');
         file.previewElement.remove();
@@ -222,7 +222,7 @@ SalesListings = {};
         updated_order = []
         // set the updated positions
         DropZoneHelper.setPositions('sales', 'images');
-        
+
         // populate the updated_order array with the new task positions
         $('.img').each(function(i) {
           updated_order.push({ id: $(this).data('id'), position: i });
@@ -271,7 +271,7 @@ SalesListings = {};
 	SalesListings.buildContentString = function (key, info) {
 	  var contentString = '<strong>' + key + '</strong><br />'; //<hr />';
 	  for (var i=0; i<info['units'].length; i++) {
-	    contentString += '<a href="https://myspace-realty-monster.herokuapp.com/sales_listings/' + info['units'][i].id + '">#' + info['units'][i].building_unit + '</a> ' + info['units'][i].beds + ' bd / ' 
+	    contentString += '<a href="https://myspace-realty-monster.herokuapp.com/sales_listings/' + info['units'][i].id + '">#' + info['units'][i].building_unit + '</a> ' + info['units'][i].beds + ' bd / '
 	      + info['units'][i].baths + ' baths $' + info['units'][i].rent + '<br />';
 	    if (i == 5) {
 	      contentString += '<a href="https://myspace-realty-monster.herokuapp.com/sales_listings?building_id=' + info['building_id'] + '">View more...</a>';
@@ -288,7 +288,7 @@ SalesListings = {};
 	    $(this).attr("data-pos", i+1);
 	  });
 	};
-	
+
 	SalesListings.initialize = function() {
 		document.addEventListener("page:restore", function() {
 			SalesListings.passiveRealTimeUpdate();
@@ -300,7 +300,7 @@ SalesListings = {};
 		});
 
 		// main index table
-		SalesListings.setupSortableColumns();		
+		SalesListings.setupSortableColumns();
 
 		$('.close').click(function() {
 			//console.log('detected click');
@@ -345,10 +345,10 @@ SalesListings = {};
 			$('#sales .datepicker').data("DateTimePicker").date(available_by);
 		}
 
-		// if ($('#big-map').length > 0) {
+		// if ($('#s-big-map').length > 0) {
 		// 	// mapbox
 		// 	L.mapbox.accessToken = $('#mapbox-token').attr('data-mapbox-token');
-	 //    // SalesListings.map = L.mapbox.map('big-map', 'rakelblujeans.8594241c', { zoomControl: false })
+	 //    // SalesListings.map = L.mapbox.map('s-big-map', 'rakelblujeans.8594241c', { zoomControl: false })
 	    // 	.setView([40.6739591, -73.9570342], 13);
 
 			// new L.Control.Zoom({ position: 'topright' }).addTo(SalesListings.map);

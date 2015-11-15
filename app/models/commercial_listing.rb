@@ -9,10 +9,10 @@ class CommercialListing < ActiveRecord::Base
 
   enum construction_status: [ :existing, :under_construction ]
   validates :construction_status, presence: true, inclusion: { in: %w(existing under_construction) }
-  
+
   enum lease_type: [ :na, :full_service, :nnn, :modified_gross, :modified_net, :industrial_gross, :other ]
   validates :lease_type, presence: true, inclusion: { in: %w(na full_service nnn modified_gross modified_net industrial_gross other) }
-  
+
 	#validates :sq_footage, presence: true, :numericality => { :less_than_or_equal_to => 99999999 }
 	#validates :floor, presence: true, :numericality => { :less_than_or_equal_to => 999 }
 	validates :building_size, presence: true, :numericality => { :less_than_or_equal_to => 99999999 }
@@ -86,37 +86,37 @@ class CommercialListing < ActiveRecord::Base
    def self.export_all(user)
     CommercialListing.joins([:commercial_property_type, unit: [building: [:company, :landlord, :neighborhood]]])
       .where('companies.id = ?', user.company_id)
-      .select('buildings.formatted_street_address', 
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+      .select('buildings.formatted_street_address',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
 
         'buildings.lat', 'buildings.lng', 'units.listing_id', 'units.access_info', 'units.listing_id',
         'units.building_unit', 'units.status','units.rent', 'units.available_by','units.exclusive',
         'units.primary_agent_id', 'units.primary_agent2_id',
-        'commercial_listings.sq_footage', 'commercial_listings.floor', 'commercial_listings.building_size', 
-        'commercial_listings.build_to_suit', 'commercial_listings.minimum_divisible', 'commercial_listings.maximum_contiguous', 
-        'commercial_listings.lease_type', 'commercial_listings.is_sublease', 'commercial_listings.listing_title', 
-        'commercial_listings.property_description', 'commercial_listings.location_description', 
-        'commercial_listings.construction_status', 'commercial_listings.lease_term_months', 'commercial_listings.rate_is_negotiable', 
-        'commercial_listings.total_lot_size', 
-        'commercial_listings.liquor_eligible', 'commercial_listings.has_basement', 'commercial_listings.basement_sq_footage', 
+        'commercial_listings.sq_footage', 'commercial_listings.floor', 'commercial_listings.building_size',
+        'commercial_listings.build_to_suit', 'commercial_listings.minimum_divisible', 'commercial_listings.maximum_contiguous',
+        'commercial_listings.lease_type', 'commercial_listings.is_sublease', 'commercial_listings.listing_title',
+        'commercial_listings.property_description', 'commercial_listings.location_description',
+        'commercial_listings.construction_status', 'commercial_listings.lease_term_months', 'commercial_listings.rate_is_negotiable',
+        'commercial_listings.total_lot_size',
+        'commercial_listings.liquor_eligible', 'commercial_listings.has_basement', 'commercial_listings.basement_sq_footage',
         'commercial_listings.has_ventilation', 'commercial_listings.key_money_required', 'commercial_listings.key_money_amt',
-        'commercial_listings.created_at','commercial_listings.updated_at', 'units.archived', 
-        'neighborhoods.name AS neighborhood_name', 
+        'commercial_listings.created_at','commercial_listings.updated_at', 'units.archived',
+        'neighborhoods.name AS neighborhood_name',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
         )
     end
-  
+
   def self.search(params, user, building_id=nil)
     @running_list = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord, :neighborhood]}])
       .where('units.archived = false')
       .where('companies.id = ?', user.company_id)
-      .select('buildings.formatted_street_address', 
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+      .select('buildings.formatted_street_address',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id', 'units.access_info', 'units.listing_id',
-        'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage', 
-        'commercial_listings.id', 'commercial_listings.updated_at', 
-        'neighborhoods.name AS neighborhood_name', 
+        'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage',
+        'commercial_listings.id', 'commercial_listings.updated_at',
+        'neighborhoods.name AS neighborhood_name',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
         'units.available_by')
@@ -133,7 +133,7 @@ class CommercialListing < ActiveRecord::Base
     if !user.is_management?
      @running_list = @running_list.where.not('status = ?', Unit.statuses['off'])
     end
-    
+
     # clear out any invalid search params
     #params.delete_if{|k,v| !(v || v > 0 || !v.empty?) }
     params.delete_if{|k,v| (!v || v == 0 || v.empty?) }
@@ -142,7 +142,7 @@ class CommercialListing < ActiveRecord::Base
     if params[:address]
       # cap query string length for security reasons
       address = params[:address][0, 500]
-      @running_list = 
+      @running_list =
        @running_list.where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
     end
 
@@ -192,7 +192,7 @@ class CommercialListing < ActiveRecord::Base
       @running_list = @running_list
       .where("commercial_property_type_id = ?", params[:commercial_property_type_id])
     end
-      
+
     return @running_list
   end
 
@@ -202,7 +202,7 @@ class CommercialListing < ActiveRecord::Base
     @dst = CommercialListing.find(dst_id)
 
     # deep copy photos
-    self.unit.images.each {|i| 
+    self.unit.images.each {|i|
       img_copy = Image.new
       img_copy.file = i.file
       img_copy.unit_id = @dst.unit.id
@@ -243,7 +243,7 @@ class CommercialListing < ActiveRecord::Base
   def send_inaccuracy_report(reporter)
     if reporter
       UnitMailer.commercial_inaccuracy_reported(self, reporter).deliver_now
-    else 
+    else
       raise "No reporter specified"
     end
   end
@@ -257,7 +257,7 @@ class CommercialListing < ActiveRecord::Base
       street_address = cunit.street_number + " " + cunit.route
       bldg_info = {
         building_id: cunit.building_id,
-        lat: cunit.lat, 
+        lat: cunit.lat,
         lng: cunit.lng }
       unit_info = {
         id: cunits[i].id,
@@ -283,12 +283,12 @@ class CommercialListing < ActiveRecord::Base
     listings = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord, :neighborhood]}])
       .where('units.archived = false')
       .where('buildings.id in (?)', bldg_ids)
-      .select('buildings.formatted_street_address', 
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+      .select('buildings.formatted_street_address',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id','units.access_info', 'units.listing_id',
-        'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage', 
-        'commercial_listings.id', 'commercial_listings.updated_at', 
-        'neighborhoods.name AS neighborhood_name', 
+        'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage',
+        'commercial_listings.id', 'commercial_listings.updated_at',
+        'neighborhoods.name AS neighborhood_name',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
         'units.available_by')
@@ -297,10 +297,10 @@ class CommercialListing < ActiveRecord::Base
     if is_active
       listings = listings.where.not("status = ?", Unit.statuses["off"])
     end
-    
+
     unit_ids = listings.map(&:unit_id)
     images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
-      
+
     return listings, images
   end
 
@@ -308,12 +308,12 @@ class CommercialListing < ActiveRecord::Base
     running_list = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord, :neighborhood]}])
       .where('companies.id = ?', user.company_id)
       .where('units.listing_id IN (?)', listing_ids)
-      .select('buildings.formatted_street_address', 
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+      .select('buildings.formatted_street_address',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id', 'units.access_info', 'units.listing_id',
-        'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage', 
-        'commercial_listings.id', 'commercial_listings.updated_at', 
-        'neighborhoods.name AS neighborhood_name', 
+        'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage',
+        'commercial_listings.id', 'commercial_listings.updated_at',
+        'neighborhoods.name AS neighborhood_name',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
         'units.available_by')
@@ -325,23 +325,23 @@ class CommercialListing < ActiveRecord::Base
     listings = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord, :neighborhood]}])
       .where('units.archived = false')
       .where('units.id in (?)', unit_ids)
-      .select('buildings.formatted_street_address', 
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+      .select('buildings.formatted_street_address',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id', 'units.access_info','units.listing_id',
-        'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage', 
-        'commercial_listings.id', 'commercial_listings.updated_at', 
-        'neighborhoods.name AS neighborhood_name', 
+        'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage',
+        'commercial_listings.id', 'commercial_listings.updated_at',
+        'neighborhoods.name AS neighborhood_name',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
         'units.available_by')
-      
+
     if is_active
       listings = listings.where.not("status = ?", Unit.statuses["off"])
     end
-    
+
     unit_ids = listings.map(&:unit_id)
     images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
-      
+
     return listings, images
   end
 
@@ -350,12 +350,12 @@ class CommercialListing < ActiveRecord::Base
       .where('companies.id = ?', user.company_id)
       .where('units.listing_id IN (?)', listing_ids)
       .where('units.archived = false')
-      .select('buildings.formatted_street_address', 
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
+      .select('buildings.formatted_street_address',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id', 'units.access_info',
-        'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage', 
-        'commercial_listings.id', 'commercial_listings.updated_at', 
-        'neighborhoods.name AS neighborhood_name', 
+        'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage',
+        'commercial_listings.id', 'commercial_listings.updated_at',
+        'neighborhoods.name AS neighborhood_name',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
         'units.available_by')

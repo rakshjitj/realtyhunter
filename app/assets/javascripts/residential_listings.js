@@ -18,7 +18,7 @@ ResidentialListings = {};
 	  }
 
 	  var search_path = $('#res-search-filters').attr('data-search-path');
-	  
+
 	  Listings.showSpinner();
 
 	  $.ajax({
@@ -146,7 +146,7 @@ ResidentialListings = {};
 	ResidentialListings.buildContentString = function (key, info) {
 	  var contentString = '<strong>' + key + '</strong><br />'; //<hr />';
 	  for (var i=0; i<info['units'].length; i++) {
-	    contentString += '<a href="https://myspace-realty-monster.herokuapp.com/residential_listings/' + info['units'][i].id + '">#' + info['units'][i].building_unit + '</a> ' + info['units'][i].beds + ' bd / ' 
+	    contentString += '<a href="https://myspace-realty-monster.herokuapp.com/residential_listings/' + info['units'][i].id + '">#' + info['units'][i].building_unit + '</a> ' + info['units'][i].beds + ' bd / '
 	      + info['units'][i].baths + ' baths $' + info['units'][i].rent + '<br />';
 	    if (i == 5) {
 	      contentString += '<a href="https://myspace-realty-monster.herokuapp.com/residential_listings?building_id=' + info['building_id'] + '">View more...</a>';
@@ -164,7 +164,7 @@ ResidentialListings = {};
     var markers = new L.MarkerClusterGroup({
     	maxClusterRadius: 30 // lean towards showing more individual markers
     }).addTo(ResidentialListings.overlays);//{ showCoverageOnHover: false });
-		
+
     var dataPoints;
 	  // if updating from an ajax call, in_data will hava content.
 	  // we load data from a data attribute on page load, but that remains cached forever -
@@ -172,7 +172,7 @@ ResidentialListings = {};
 	  if (in_data) {
 	  	dataPoints = JSON.parse(in_data);
 	  } else {
-	  	dataPoints = JSON.parse($('#big-map').attr('data-map-points'));
+	  	dataPoints = JSON.parse($('#r-big-map').attr('data-map-points'));
 	  }
 	  var features = [];
 	  Object.keys(dataPoints).forEach(function(key, index) {
@@ -181,7 +181,7 @@ ResidentialListings = {};
 	    var content = ResidentialListings.buildContentString(key, info);
 	    var marker = L.marker(new L.LatLng(info.lat, info.lng), {
 	      icon: L.mapbox.marker.icon({
-	      	'marker-size': 'small', 
+	      	'marker-size': 'small',
 	      	'marker-color': '#f86767'
 	      }),
 	      'title': key,
@@ -201,7 +201,7 @@ ResidentialListings = {};
      //        coordinates: [info.lng, info.lat]
      //    }
     	// };
-    	
+
     	// features.push(feature);
 		});
 
@@ -232,7 +232,7 @@ ResidentialListings = {};
 	ResidentialListings.inheritFeeOptions = function() {
 		bldg_id = $('#residential #residential_listing_unit_building_id').val();
 		//console.log('got new ids', bldg_id);
-		
+
 		$.ajax({
 			type: 'GET',
 			url: '/residential_listings/fee_options/',
@@ -251,11 +251,11 @@ ResidentialListings = {};
 	    $(this).attr("data-pos", i+1);
 	  });
 	};
-	
+
 	ResidentialListings.setupSortableColumns = function() {
 		$('#residential .th-sortable').click(function(e) {
 			e.preventDefault();
-			
+
 			if ($(this).hasClass('selected-sort')) {
 				// switch sort order
 				var i = $('.selected-sort i');
@@ -285,7 +285,7 @@ ResidentialListings = {};
 		});
 	};
 
-	// any phone #'s listed in 'access info' on main index pg should 
+	// any phone #'s listed in 'access info' on main index pg should
   // be automatically detected
 	ResidentialListings.detectPhoneNumbers = function () {
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
@@ -332,7 +332,7 @@ ResidentialListings = {};
       //when the remove button is clicked
       removedfile: function(file){
         // grap the id of the uploaded file we set earlier
-        var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
+        var id = $(file.previewTemplate).find('.dz-remove').attr('id');
         var unit_id = $(file.previewTemplate).find('.dz-remove').attr('unit_id');
         DropZoneHelper.removeImage(id, unit_id, 'residential_listings');
         file.previewElement.remove();
@@ -354,7 +354,7 @@ ResidentialListings = {};
         updated_order = []
         // set the updated positions
         DropZoneHelper.setPositions('residential', 'images');
-        
+
         // populate the updated_order array with the new task positions
         $('.img').each(function(i) {
           updated_order.push({ id: $(this).data('id'), position: i});
@@ -389,7 +389,7 @@ ResidentialListings = {};
       //when the remove button is clicked
       removedfile: function(file){
         // grap the id of the uploaded file we set earlier
-        var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
+        var id = $(file.previewTemplate).find('.dz-remove').attr('id');
         var unit_id = $(file.previewTemplate).find('.dz-remove').attr('unit_id');
         DropZoneHelper.removeDocument(id, unit_id, 'residential_listings');
         file.previewElement.remove();
@@ -410,7 +410,7 @@ ResidentialListings = {};
         updated_order = []
         // set the updated positions
         DropZoneHelper.setPositions('residential', 'documents');
-        
+
         // populate the updated_order array with the new task positions
         $('.doc').each(function(i){
           updated_order.push({ id: $(this).data('id'), position: i });
@@ -446,7 +446,7 @@ ResidentialListings = {};
 		});
 
 		// main index table
-		ResidentialListings.setupSortableColumns();		
+		ResidentialListings.setupSortableColumns();
 
 		$('.close').click(function() {
 			//console.log('detected click');
@@ -484,9 +484,12 @@ ResidentialListings = {};
 	  $('#residential #roomsharing_filter').change(ResidentialListings.throttledSearch);
 	  $('#residential #unassigned_filter').change(ResidentialListings.throttledSearch);
 	  // remove individual features by clicking on 'x' button
-	  $('#residential .remove-unit-feature').click(ResidentialListings.removeUnitFeature);
-	  $('#residential .remove-building-feature').click(ResidentialListings.removeBuildingFeature);
-	  $('#residential .remove-neighborhood').click(ResidentialListings.removeNeighborhood);
+	  //$('#residential .remove-unit-feature').click(ResidentialListings.removeUnitFeature);
+	  //$('#residential .remove-building-feature').click(ResidentialListings.removeBuildingFeature);
+	  //$('#residential .remove-neighborhood').click(ResidentialListings.removeNeighborhood);
+	  $('#residential').on('click', '.remove-unit-feature',     ResidentialListings.removeUnitFeature);
+	  $('#residential').on('click', '.remove-building-feature', ResidentialListings.removeBuildingFeature);
+	  $('#residential').on('click', '.remove-neighborhood',     ResidentialListings.removeNeighborhood);
 
 		// index page - selecting listings menu dropdown
 		$('#residential #emailListings').click(Listings.sendMessage);
@@ -498,23 +501,25 @@ ResidentialListings = {};
 			if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();
 		});
 
-		// make sure datepicker is formatted before setting initial date below
-		$('.datepicker').datetimepicker({
-		  viewMode: 'days',
-		  format: 'MM/DD/YYYY',
-		  allowInputToggle: true
-		});
+		// // make sure datepicker is formatted before setting initial date below
+		// $('.datepicker').datetimepicker({
+		//   viewMode: 'days',
+		//   format: 'MM/DD/YYYY',
+		//   allowInputToggle: true
+		// });
 		var available_by = $('#residential .datepicker').attr('data-available-by');
 		if (available_by) {
 			$('#residential .datepicker').data("DateTimePicker").date(available_by);
 		}
 
-		if ($('#big-map').length > 0) {
+		if ($('#r-big-map').length > 0) {
+      if(ResidentialListings.map) ResidentialListings.map.remove();
+      if(CommercialListings.map) CommercialListings.map.remove();
+      if(SalesListings.map) SalesListings.map.remove();
 			// mapbox
 			L.mapbox.accessToken = $('#mapbox-token').attr('data-mapbox-token');
-	    ResidentialListings.map = L.mapbox.map('big-map', 'rakelblujeans.8594241c', { zoomControl: false })
+	    ResidentialListings.map = L.mapbox.map('r-big-map', 'rakelblujeans.8594241c', { zoomControl: false })
 	    	.setView([40.6739591, -73.9570342], 13);
-
 			new L.Control.Zoom({ position: 'topright' }).addTo(ResidentialListings.map);
 	    //map.removeLayer(marker)
 	    //var markerLayer = L.mapbox.featureLayer().addTo(map);

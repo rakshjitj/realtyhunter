@@ -1,7 +1,7 @@
 $('.commercial_units_table_body').html("<%= escape_javascript (render :partial => @commercial_units) %>");
 $('.pagination').html("<%= escape_javascript (render :partial => 'shared/pagination', :locals => {:models => @commercial_units}) %>");
 
-$('.totals').html("<%= @commercial_units.total_count %> Units found");
-
 CommercialListings.updateOverviewMap("<%= escape_javascript(@map_infos).to_s.html_safe %>");
+
+$('.totals').html("<%= @commercial_units.total_count %> Units found");
 

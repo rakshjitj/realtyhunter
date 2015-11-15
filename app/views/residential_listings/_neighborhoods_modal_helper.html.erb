@@ -8,7 +8,7 @@
 <div class="modal-body">
 
 	<div role="tabpanel" id="neighborhood-tabpanel">
-		
+
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs" role="tablist">
 					<% @neighborhoods.each do |borough, list| %>
@@ -22,23 +22,23 @@
 				<div class="tab-content">
 
 	  		<% @neighborhoods.each do |borough, list| %>
-	  					
+
 			    	<div role="tabpanel" class="tab-pane" id="<%= borough %>">
 			    		<br />
-			    		
+
 			    			<% col_height = (list.count.to_f/3.to_f).ceil - 1 %>
 			    			<% if col_height < 0 ; col_height = 0; end %>
-			    			
+
 
 			    			<% for i in 0..col_height %>
 			    				<div class="row">
 
-			    				
+
 					    			<% neighborhood = list[i] %>
 					    			<div class="col-xs-4">
-					    			
+
 					    				<div class="btn-group neighborhood-buttons" data-toggle="buttons">
-							    			<label class="btn btn-xs btn-link btn-as-checkbox text-left" 
+							    			<label class="btn btn-xs btn-link btn-as-checkbox text-left"
 							    				id="<%= neighborhood.id %>" name="<%= neighborhood.name %>">
 												  <input type="checkbox" autocomplete="off">
 												  	<%= wrap_text(neighborhood.name.titleize, 20) %>
@@ -47,16 +47,16 @@
 										</div>
 
 										<% col_height <= 0 ? (offset = 1 + i): (offset = col_height + 1 + i) %>
-										
+
 										<% if offset < list.count %>
 											<% neighborhood = list[offset] %>
 											<div class="col-xs-4">
-												
+
 						    				<div class="btn-group neighborhood-buttons" data-toggle="buttons">
-								    			<label class="btn btn-xs btn-link btn-as-checkbox text-left" 
+								    			<label class="btn btn-xs btn-link btn-as-checkbox text-left word-wrap"
 								    				id="<%= neighborhood.id %>" name="<%= neighborhood.name %>">
 													  <input type="checkbox" autocomplete="off">
-													  	<%= wrap_text(neighborhood.name.titleize, 20) %>
+													  	<%= neighborhood.name.titleize %>
 													</label>
 												</div>
 											</div>
@@ -65,16 +65,16 @@
 										<% end %>
 
 										<% col_height <= 0 ? (offset = 2 + i): (offset = col_height*2 + 2 + i) %>
-										
+
 										<% if offset < list.count %>
 											<% neighborhood = list[offset] %>
 											<div class="col-xs-4">
-											
+
 						    				<div class="btn-group neighborhood-buttons" data-toggle="buttons">
-								    			<label class="btn btn-xs btn-link btn-as-checkbox text-left" 
+								    			<label class="btn btn-xs btn-link btn-as-checkbox text-left word-wrap"
 								    				id="<%= neighborhood.id %>" name="<%= neighborhood.name %>">
 													  <input type="checkbox" autocomplete="off">
-													  	<%= wrap_text(neighborhood.name.titleize, 20) %>
+													  	<%= neighborhood.name.titleize %>
 													</label>
 												</div>
 											</div>
@@ -84,13 +84,13 @@
 
 									</div><!-- row -->
 				    		<% end %>
-							
+
 			    	</div><!-- tabpanel -->
 
 				<% end %><!-- boroughs -->
 				</div><!-- tab-content -->
 
-			
+
 	</div>
 
 

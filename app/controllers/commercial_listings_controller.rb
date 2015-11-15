@@ -1,7 +1,7 @@
 class CommercialListingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource only: [:create, :update_subtype]
-  before_action :set_commercial_listing, except: [:new, :create, :index, :filter, 
+  before_action :set_commercial_listing, except: [:new, :create, :index, :filter,
     :neighborhoods_modal, :features_modal, :print_public, :print_private, :send_message, :update_subtype]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
@@ -10,14 +10,14 @@ class CommercialListingsController < ApplicationController
   # GET /commercial_units
   # GET /commercial_units.json
   def index
-    
+
     respond_to do |format|
       format.html do
         set_commercial_listings
       end
       format.csv do
         set_commercial_listings_csv
-        headers['Content-Disposition'] = "attachment; filename=\"" + 
+        headers['Content-Disposition'] = "attachment; filename=\"" +
           current_user.name + " - Commercial Listings.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
@@ -27,38 +27,23 @@ class CommercialListingsController < ApplicationController
   def filter
     set_commercial_listings
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   def neighborhoods_modal
-    @neighborhoods = Neighborhood.unarchived.where(
-      city: current_user.office.administrative_area_level_2_short).all
-    
-    # if boroughs are defined for this area, organize the neighborhoods by boroughs
-    boroughs = @neighborhoods.collect(&:borough).uniq
-    @by_boroughs = {}
-    if !boroughs.empty?
-      @neighborhoods.each do |neighborhood|
-        if !@by_boroughs.has_key? neighborhood.borough
-          @by_boroughs[neighborhood.borough] = []
-        end
-        @by_boroughs[neighborhood.borough] << neighborhood
-      end
-
-      # alphabetize
-      @by_boroughs.each do |b,n_array|
-        n_array.sort_by!{|n| n.name.downcase}
-      end
-    end
+    @neighborhoods = Neighborhood.unarchived
+    .where(state: current_user.office.administrative_area_level_1_short)
+    .to_a
+    .group_by(&:borough)
 
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
-  
+
   # GET /commercial_units/1
   # GET /commercial_units/1.json
   def show
@@ -89,7 +74,7 @@ class CommercialListingsController < ApplicationController
     ptype = params[:property_type]
     @property_sub_types = CommercialPropertyType.subtypes_for(ptype, current_user.company)
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -104,7 +89,7 @@ class CommercialListingsController < ApplicationController
       c_params.delete('unit')
       ret2 = CommercialListing.new(c_params)
       ret2.unit = ret1
-    
+
       if !ret1.available_by?
         ret1.available_by = Date.today
       end
@@ -118,11 +103,11 @@ class CommercialListingsController < ApplicationController
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   def duplicate_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -130,9 +115,9 @@ class CommercialListingsController < ApplicationController
   # handles ajax call. uses latest data in modal
   def duplicate
     commercial_unit_dup = @commercial_unit.duplicate(
-      commercial_listing_params[:unit][:building_unit], 
+      commercial_listing_params[:unit][:building_unit],
       commercial_listing_params[:include_photos])
-    
+
     if commercial_unit_dup.valid?
       @commercial_unit = commercial_unit_dup
       render :js => "window.location.pathname = '#{commercial_listing_path(@commercial_unit)}'"
@@ -140,17 +125,17 @@ class CommercialListingsController < ApplicationController
       # TODO: not sure how to handle this best...
       flash[:warning] = "Duplication failed!"
       respond_to do |format|
-        format.js  
+        format.js
       end
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   # Modal collects info and prep unit to be taken off the market
   def take_off_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -163,7 +148,7 @@ class CommercialListingsController < ApplicationController
     end
     set_commercial_listing
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -188,11 +173,11 @@ class CommercialListingsController < ApplicationController
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   def delete_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -208,11 +193,11 @@ class CommercialListingsController < ApplicationController
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   def inaccuracy_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -230,15 +215,15 @@ class CommercialListingsController < ApplicationController
   # ajax call
   def refresh_images
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
-  # GET 
+  # GET
   # ajax call
   def refresh_documents
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -273,7 +258,7 @@ class CommercialListingsController < ApplicationController
     listings = CommercialListing.listings_by_id(current_user, ids)
     images = CommercialListing.get_images(listings)
     CommercialListing.send_listings(current_user, listings, images, recipients, sub, msg)
-    
+
     respond_to do |format|
       format.js { flash[:success] = "Listings sent!"  }
     end
@@ -364,7 +349,7 @@ class CommercialListingsController < ApplicationController
       end
 
       data = params[:commercial_listing].permit(
-        :lock_version, 
+        :lock_version,
         :recipients, :title, :message, :listing_ids,
         :user_id, :include_photos, :sq_footage_min, :sq_footage_max,
         :sq_footage, :floor, :building_size, :build_to_suit, :minimum_divisible, :maximum_contiguous,
@@ -373,7 +358,7 @@ class CommercialListingsController < ApplicationController
         :rate_is_negotiable, :total_lot_size, :property_type, :commercial_property_type_id,
         :commercial_unit_id, :inaccuracy_description, :has_basement, :basement_sq_footage,
         :has_ventilation, :key_money_required, :key_money_amt, :listing_title, :liquor_eligible,
-        :unit => [:building_unit, :rent, :available_by, :access_info, :status, :open_house, :oh_exclusive, 
+        :unit => [:building_unit, :rent, :available_by, :access_info, :status, :open_house, :oh_exclusive,
           :building_id, :primary_agent_id, :primary_agent2_id, :listing_agent_id, :exclusive ],
         )
 
@@ -387,7 +372,7 @@ class CommercialListingsController < ApplicationController
         if data[:unit][:status]
           data[:unit][:status] = data[:unit][:status].downcase.gsub(/ /, '_')
         end
-        
+
         # convert into a datetime obj
         if data[:unit][:available_by] && !data[:unit][:available_by].empty?
           data[:unit][:available_by] = Date::strptime(data[:unit][:available_by], "%m/%d/%Y")

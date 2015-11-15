@@ -1,6 +1,6 @@
 $('#neighborhoodsModal #placeholder-body').html("<%= j(render :partial => "neighborhoods_modal_helper", locals: { neighborhoods: @neighborhoods }) %>");
 // remember the last selected neighborhoods
-var ids = $('#neighborhood_ids').val().split(", ");
+var ids = $('#neighborhood_ids').val().split(",");
 if (ids != "{:id=>\"neighborhood_ids\"}") {
 	$.each(ids, function(idx, val) {
 		$('#'+ val).toggleClass('active');
@@ -16,7 +16,7 @@ $('#neighborhoodsModal .btn-close').click( function(event) {
 		selectedNeighborhoods.push($(val).attr('name'));
 		selectedIds.push(val.id);
 		// create buttons with 'x' to remove each item
-		html += '<a href="" class="btn btn-xs btn-default remove-neighborhood" data-id="' + val.id + '">' + $(val).attr('name') 
+		html += '<a href="" class="btn btn-xs btn-default remove-neighborhood" data-id="' + val.id + '">' + $(val).attr('name')
 			+ ' <span class="glyphicon glyphicon-remove"></span></a> ';
 	});
 
@@ -25,6 +25,6 @@ $('#neighborhoodsModal .btn-close').click( function(event) {
 	} else {
 		$('#selected_neighborhoods').html('');
 	}
-	$('#neighborhood_ids').val(selectedIds.join(', '));
+	$('#neighborhood_ids').val(selectedIds.join(','));
 	$('#neighborhood_ids').trigger('change');
 });

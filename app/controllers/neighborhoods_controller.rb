@@ -1,7 +1,7 @@
 class NeighborhoodsController < ApplicationController
   before_action :set_neighborhood, only: [:show, :edit, :update, :destroy]
   etag { current_user.id }
-  
+
   # GET /neighborhoods
   # GET /neighborhoods.json
   def index
@@ -26,7 +26,8 @@ class NeighborhoodsController < ApplicationController
   # POST /neighborhoods.json
   def create
     @neighborhood = Neighborhood.new(neighborhood_params)
-
+    @neighborhood.city = 'New York'
+    @neighborhood.state = 'NY'
     respond_to do |format|
       if @neighborhood.save
         format.html { redirect_to @neighborhood, notice: 'Neighborhood was successfully created.' }

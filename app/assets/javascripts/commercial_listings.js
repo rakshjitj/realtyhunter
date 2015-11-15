@@ -1,8 +1,8 @@
-CommercialUnits = {};
+CommercialListings = {};
 
 (function() {
 
-  CommercialUnits.updatePropertySubTypes = function (ptype) {
+  CommercialListings.updatePropertySubTypes = function (ptype) {
     var id = $('#commercial').attr('data-cunit-id');
     //console.log('got path ', id);
     $.ajax({
@@ -15,7 +15,8 @@ CommercialUnits = {};
     });
   };
 
-  CommercialUnits.doSearch = function(sort_by_col, sort_direction) {
+  CommercialListings.doSearch = function(sort_by_col, sort_direction) {
+    //console.log('before', $('#commercial #neighborhood_ids').val());
     Listings.showSpinner();
 
     // sanitize invalid input before submitting
@@ -24,9 +25,9 @@ CommercialUnits = {};
     }
 
     var search_path = $('#com-search-filters').attr('data-search-path');
-    
+
     $.ajax({
-      url: search_path, 
+      url: search_path,
       data: {
         address: $('#commercial #address').val(),
         rent_min: $('#commercial #rent_min').val(),
@@ -50,13 +51,13 @@ CommercialUnits = {};
       }
     });
 
-    CommercialUnits.passiveRealTimeUpdate();
+    CommercialListings.passiveRealTimeUpdate();
   };
 
-  CommercialUnits.setupSortableColumns = function() {
+  CommercialListings.setupSortableColumns = function() {
     $('#commercial .th-sortable').click(function(e) {
       e.preventDefault();
-      
+
       if ($(this).hasClass('selected-sort')) {
         // switch sort order
         var i = $('.selected-sort i');
@@ -82,45 +83,130 @@ CommercialUnits = {};
 
       var sort_by_col = $(this).attr('data-sort');
       var sort_direction = $(this).attr('data-direction');
-      CommercialUnits.doSearch(sort_by_col, sort_direction);
+      CommercialListings.doSearch(sort_by_col, sort_direction);
     });
   };
 
-  // search as user types
-  CommercialUnits.timer;
+  CommercialListings.removeNeighborhood = function (event) {
+    event.preventDefault();
+    var feature_id = $(this).attr('data-id');
+    var idx = $('#commercial #neighborhood_ids').val().indexOf(feature_id);
+    $('#commercial #neighborhood_ids').val( $('#commercial #neighborhood_ids').val().replace(feature_id, '') );
+    $(this).remove();
+    CommercialListings.throttledSearch();
+  };
 
-  CommercialUnits.clearTimer = function() {
-    if (CommercialUnits.timer) {
-      clearTimeout(CommercialUnits.timer);
+  // search as user types
+  CommercialListings.timer;
+
+  CommercialListings.clearTimer = function() {
+    if (CommercialListings.timer) {
+      clearTimeout(CommercialListings.timer);
     }
   };
 
   // if a user remains on this page for an extended amount of time,
   // refresh the page every so often. We want to make sure they are
   // always viewing the latest data.
-  CommercialUnits.passiveRealTimeUpdate = function() {
+  CommercialListings.passiveRealTimeUpdate = function() {
     if ($('#commercial').length > 0) {
-      CommercialUnits.clearTimer();
+      CommercialListings.clearTimer();
       // update every few minutes
-      CommercialUnits.timer = setTimeout(CommercialUnits.doSearch, 60 * 3 * 1000);
+      CommercialListings.timer = setTimeout(CommercialListings.doSearch, 60 * 3 * 1000);
     }
   };
 
   // search as user types
-  CommercialUnits.throttledSearch = function () {
-    CommercialUnits.clearTimer();
+  CommercialListings.throttledSearch = function () {
+    CommercialListings.clearTimer();
     //clear any interval on key up
-    timer = setTimeout(CommercialUnits.doSearch, 500);
+    timer = setTimeout(CommercialListings.doSearch, 500);
   };
-  
+
   // change enter key to tab
-  CommercialUnits.preventEnter = function(event) {
+  CommercialListings.preventEnter = function(event) {
     if (event.keyCode == 13) {
       return false;
     }
   };
 
-  CommercialUnits.initializeDocumentsDropzone = function() {
+  CommercialListings.map;
+  CommercialListings.overlays;
+
+  // for giant google map
+  CommercialListings.buildContentString = function (key, info) {
+    var contentString = '<strong>' + key + '</strong><br />'; //<hr />';
+    for (var i=0; i<info['units'].length; i++) {
+      contentString += '<a href="https://myspace-realty-monster.herokuapp.com/commercial_listings/' + info['units'][i].id + '">#' + info['units'][i].building_unit + '</a> ' + info['units'][i].beds + ' bd / '
+        + info['units'][i].baths + ' baths $' + info['units'][i].rent + '<br />';
+      if (i == 5) {
+        contentString += '<a href="https://myspace-realty-monster.herokuapp.com/commercial_listings?building_id=' + info['building_id'] + '">View more...</a>';
+        break;
+      }
+    }
+    return contentString;
+  };
+
+  CommercialListings.updateOverviewMap = function(in_data) {
+    CommercialListings.overlays.clearLayers();
+    var markers = new L.MarkerClusterGroup({
+      maxClusterRadius: 30 // lean towards showing more individual markers
+    }).addTo(CommercialListings.overlays);//{ showCoverageOnHover: false });
+
+    var dataPoints;
+    // if updating from an ajax call, in_data will hava content.
+    // we load data from a data attribute on page load, but that remains cached forever -
+    // it will not update with subsequent ajax calls.
+    if (in_data) {
+      dataPoints = JSON.parse(in_data);
+    } else {
+      dataPoints = JSON.parse($('#c-big-map').attr('data-map-points'));
+    }
+    var features = [];
+    Object.keys(dataPoints).forEach(function(key, index) {
+      // draw each marker + load with data
+      var info = dataPoints[key];
+      var content = CommercialListings.buildContentString(key, info);
+      var marker = L.marker(new L.LatLng(info.lat, info.lng), {
+        icon: L.mapbox.marker.icon({
+          'marker-size': 'small',
+          'marker-color': '#f86767'
+        }),
+        'title': key,
+      });
+      marker.bindPopup(content);
+      markers.addLayer(marker);
+      // var feature = {
+     //    type: 'Feature',
+     //    properties: {
+     //        title: key,
+     //        'marker-color': '#f86767',
+     //        'description': CommercialListings.buildContentString(key, info),
+     //        'marker-size': 'small'
+     //    },
+     //    geometry: {
+     //        type: 'Point',
+     //        coordinates: [info.lng, info.lat]
+     //    }
+      // };
+
+      // features.push(feature);
+    });
+
+    var geojson = {
+      'type': 'FeatureCollection',
+      'features': features
+    };
+
+    //markerLayer.setGeoJSON(geojson);
+    var geoJsonLayer = L.geoJson(geojson);
+    //geoJsonLayer.clearLayers();
+    markers.addLayer(geoJsonLayer);
+    CommercialListings.map.addLayer(markers);
+    CommercialListings.map.fitBounds(markers.getBounds());
+  };
+
+  CommercialListings.initializeDocumentsDropzone = function() {
     // grap our upload form by its id
     $("#cunit-dropzone-docs").dropzone({
       // show remove links on each image upload
@@ -139,7 +225,7 @@ CommercialUnits = {};
       //when the remove button is clicked
       removedfile: function(file){
         // grap the id of the uploaded file we set earlier
-        var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
+        var id = $(file.previewTemplate).find('.dz-remove').attr('id');
         var unit_id = $(file.previewTemplate).find('.dz-remove').attr('unit_id');
         DropZoneHelper.removeDocument(id, unit_id, 'commercial_listings');
         file.previewElement.remove();
@@ -160,7 +246,7 @@ CommercialUnits = {};
         updated_order = []
         // set the updated positions
         DropZoneHelper.setPositions('commercial', 'documents');
-        
+
         // populate the updated_order array with the new task positions
         $('.doc').each(function(i){
           updated_order.push({ id: $(this).data('id'), position: i });
@@ -175,7 +261,7 @@ CommercialUnits = {};
     });
   };
 
-  CommercialUnits.initializeImageDropzone = function() {
+  CommercialListings.initializeImageDropzone = function() {
     // grap our upload form by its id
     $("#cunit-dropzone").dropzone({
       // restrict image size to a maximum 1MB
@@ -197,7 +283,7 @@ CommercialUnits = {};
       //when the remove button is clicked
       removedfile: function(file){
         // grap the id of the uploaded file we set earlier
-        var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
+        var id = $(file.previewTemplate).find('.dz-remove').attr('id');
         var unit_id = $(file.previewTemplate).find('.dz-remove').attr('unit_id');
         DropZoneHelper.removeImage(id, unit_id, 'commercial_listings');
         file.previewElement.remove();
@@ -218,7 +304,7 @@ CommercialUnits = {};
         updated_order = []
         // set the updated positions
         DropZoneHelper.setPositions('commercial', 'images');
-        
+
         // populate the updated_order array with the new task positions
         $('.img').each(function(i) {
           updated_order.push({ id: $(this).data('id'), position: i });
@@ -226,7 +312,6 @@ CommercialUnits = {};
         //console.log(updated_order);
         // send the updated order via ajax
         var unit_id = $('#commercial').attr('data-unit-id');
-        console.log(unit_id);
         $.ajax({
           type: "PUT",
           url: '/commercial_listings/' + unit_id + '/unit_images/sort',
@@ -236,9 +321,9 @@ CommercialUnits = {};
   };
 
   //call when typing or enter or focus leaving
-  CommercialUnits.initialize = function () {
+  CommercialListings.initialize = function () {
     document.addEventListener("page:restore", function() {
-      CommercialUnits.passiveRealTimeUpdate();
+      CommercialListings.passiveRealTimeUpdate();
       Listings.hideSpinner();
     });
     Listings.hideSpinner();
@@ -247,24 +332,38 @@ CommercialUnits = {};
     });
 
     // main index table
-    CommercialUnits.setupSortableColumns();
+    CommercialListings.setupSortableColumns();
 
     // edit/new form
     $('#commercial_listing_property_type').change(function(e) {
       var optionSelected = $("option:selected", this);
       var textSelected   = optionSelected.text();
-      console.log(textSelected);
-      CommercialUnits.updatePropertySubTypes(textSelected);
+      //console.log(textSelected);
+      CommercialListings.updatePropertySubTypes(textSelected);
     });
 
     var ptype = $('#commercial').attr('data-property-type');
     if (ptype) {
-      CommercialUnits.updatePropertySubTypes(ptype);
-    }	
+      CommercialListings.updatePropertySubTypes(ptype);
+    }
 
     var available_by = $('#commercial .datepicker').attr('data-available-by');
     if (available_by) {
       $('#commercial .datepicker').data("DateTimePicker").date(available_by);
+    }
+
+    if ($('#c-big-map').length > 0) {
+      if(ResidentialListings.map) ResidentialListings.map.remove();
+      if(CommercialListings.map) CommercialListings.map.remove();
+      if(SalesListings.map) SalesListings.map.remove();
+      // mapbox
+      L.mapbox.accessToken = $('#mapbox-token').attr('data-mapbox-token');
+      CommercialListings.map = L.mapbox.map('c-big-map', 'rakelblujeans.8594241c', { zoomControl: false })
+          .setView([40.6739591, -73.9570342], 13);
+
+      new L.Control.Zoom({ position: 'topright' }).addTo(CommercialListings.map);
+      CommercialListings.overlays = L.layerGroup().addTo(CommercialListings.map);
+      CommercialListings.updateOverviewMap();
     }
 
     // google map on show page
@@ -279,25 +378,21 @@ CommercialUnits = {};
       //console.log("[ERROR]: " + result);
     });
 
-    // $('#commercial .btn-print-list').click( function(event) {
-    //   // show spinner
-    //   $(this).toggleClass('active');
-    //   timer2 = setTimeout(clearSpinner, 15000);
-    // });
+    $('#commercial input').keydown(CommercialListings.preventEnter);
+    $('#commercial #address').bind('railsAutocomplete.select', CommercialListings.throttledSearch);
+    $('#commercial #address').change(CommercialListings.throttledSearch);
+    $('#commercial #rent_min').change(CommercialListings.throttledSearch);
+    $('#commercial #sq_footage_min').change(CommercialListings.throttledSearch);
+    $('#commercial #sq_footage_max').change(CommercialListings.throttledSearch);
+    $('#commercial #rent_max').change(CommercialListings.throttledSearch);
+    $('#commercial #landlord').bind('railsAutocomplete.select', CommercialListings.throttledSearch);
+    $('#commercial #landlord').change(CommercialListings.throttledSearch);
+    $('#commercial #status').change(CommercialListings.throttledSearch);
+    $('#commercial #neighborhood_ids').change(CommercialListings.throttledSearch);
+    $('#commercial #commercial_property_type_id').change(CommercialListings.throttledSearch);
+    $('#commercial #listing_id').change(CommercialListings.throttledSearch);
 
-    $('#commercial input').keydown(CommercialUnits.preventEnter);
-    $('#commercial #address').bind('railsAutocomplete.select', CommercialUnits.throttledSearch);
-    $('#commercial #address').change(CommercialUnits.throttledSearch);
-    $('#commercial #rent_min').change(CommercialUnits.throttledSearch);
-    $('#commercial #sq_footage_min').change(CommercialUnits.throttledSearch);
-    $('#commercial #sq_footage_max').change(CommercialUnits.throttledSearch);
-    $('#commercial #rent_max').change(CommercialUnits.throttledSearch);
-    $('#commercial #landlord').bind('railsAutocomplete.select', CommercialUnits.throttledSearch);
-    $('#commercial #landlord').change(CommercialUnits.throttledSearch);
-    $('#commercial #status').change(CommercialUnits.throttledSearch);
-    $('#commercial #neighborhood_ids').change(CommercialUnits.throttledSearch);
-    $('#commercial #commercial_property_type_id').change(CommercialUnits.throttledSearch);
-    $('#commercial #listing_id').change(CommercialUnits.throttledSearch);
+    $('#commercial').on('click', '.remove-neighborhood', CommercialListings.removeNeighborhood);
 
     // index page - selecting listings menu dropdown
     $('#commercial #emailListings').click(Listings.sendMessage);
@@ -311,10 +406,10 @@ CommercialUnits = {};
     // for drag n dropping photos/documents
     // disable auto discover
     Dropzone.autoDiscover = false;
-    CommercialUnits.initializeImageDropzone();
-    CommercialUnits.initializeDocumentsDropzone();
+    CommercialListings.initializeImageDropzone();
+    CommercialListings.initializeDocumentsDropzone();
 
-    CommercialUnits.passiveRealTimeUpdate();
+    CommercialListings.passiveRealTimeUpdate();
   };
 
 })();
@@ -325,4 +420,4 @@ $(document).on('keyup',function(evt) {
   }
 });
 
-$(document).ready(CommercialUnits.initialize);
+$(document).ready(CommercialListings.initialize);
