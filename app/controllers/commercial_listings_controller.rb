@@ -83,6 +83,10 @@ class CommercialListingsController < ApplicationController
     @property_sub_types = CommercialPropertyType.subtypes_for(ptype, current_user.company)
     respond_to do |format|
       format.js
+      format.html do
+        # catch-all
+        redirect_to commercial_listings_url
+      end
     end
   end
 
