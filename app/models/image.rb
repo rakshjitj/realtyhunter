@@ -5,7 +5,7 @@ class Image < ActiveRecord::Base
   after_save :check_priority
 
 	# This method associates the attribute ":file" with a file attachment
-  has_attached_file :file, 
+  has_attached_file :file,
     styles: lambda { |a| {
       thumb: {
         geometry: '100x100>',
@@ -25,12 +25,12 @@ class Image < ActiveRecord::Base
         rotation: a.instance.rotation,
         #processors: [:rotator]
       },
-      original: { 
+      original: {
         convert_options: '-auto-orient'
       }
     }},
-    default_url: "/images/:style/missing.png",
-    convert_options: { all: '-auto-orient' }, 
+    default_url: "/images/:style/listing_soon.png", #TODO: have a diff missing imag here
+    convert_options: { all: '-auto-orient' },
     source_file_options: { all: '-auto-orient' }, processors: [:rotator]
 
     # styles: {
@@ -39,7 +39,7 @@ class Image < ActiveRecord::Base
     #   square: '200x200#',
     #   medium: '300x300>',
     #   large:  '500x500>'
-    # }, 
+    # },
 
   process_in_background :file
 
