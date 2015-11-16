@@ -4,6 +4,8 @@ class Deal < ActiveRecord::Base
   belongs_to :user
   has_many :clients
 
+  attr_accessor :building_id
+
   #validates :price, presence: true
   validates :unit_id, presence: true
 
@@ -45,14 +47,18 @@ class Deal < ActiveRecord::Base
     puts params[:closed_date_end]
     deals = Deal.unarchived
       .joins(unit: :building)
-      .select('deals.id', 'deals.archived', 'deals.price', 'deals.closed_date', 'deals.commission', 
+      .select('deals.id', 'deals.archived', 'deals.price', 'deals.closed_date', 'deals.commission',
         'deals.updated_at', 'deals.created_at',
         'units.id as unit_id', 'units.building_unit',
         'buildings.street_number || \' \' || buildings.route as street_address2',
         'buildings.formatted_street_address')
 
     if !params[:address].blank?
-      deals = deals.where("buildings.formatted_street_address ilike ?", params[:address])
+      deals = deals.where("buildings.formatted_street_address ilike ?", "%#{params[:address]}%")
+    end
+
+    if !params[:landlord_code].blank?
+      deals = deals.where("deals.landlord_code ilike ?", "%#{params[:landlord_code]}%")
     end
 
     if !params[:closed_date_start].blank?

@@ -4,26 +4,27 @@
   <td><%= deal.building_unit %></td>
 
   <td>
-    <!-- currently we have the Client model created, but no saved data -->
+    <!-- NOTE: Currently we have the Client model created, but no saved data -->
+    <!-- The Client model is completely unused. -->
     <!-- %= deal.client % -->
-    - None specified - 
+    - None specified -
   </td>
 
   <td><%= rent_formatted deal.price %></td>
-  
+
   <td>
     <% if !deal.commission.blank? %>
       <%= deal.commission %>
     <% else %>
-      - None specified - 
+      - None specified -
     <% end %>
   </td>
 
   <td><%= deal.closed_date %></td>
-  
+
   <td>
-    <!--%= link_to 'Edit', edit_deal_path(deal) %--> Edit | Delete
-    <!--%= link_to 'Delete', delete_modal_deal_path(deal), 
-    data: {toggle: "modal", target: "#dealDeleteModal"}, remote: true %-->
+    <%= link_to 'Edit', edit_deal_path(deal) %>
+    <%= link_to 'Delete', delete_modal_deal_path(deal),
+    data: {toggle: "modal", target: "#dealDeleteModal"}, remote: true %>
   </td>
 </tr>

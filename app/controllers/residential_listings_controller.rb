@@ -349,10 +349,10 @@ class ResidentialListingsController < ApplicationController
 
   protected
 
-   def correct_stale_record_version
-    @residential_unit.reload
-    params[:residential_listing].delete('lock_version')
-   end
+    def correct_stale_record_version
+      @residential_unit.reload
+      params[:residential_listing].delete('lock_version')
+    end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -449,7 +449,7 @@ class ResidentialListingsController < ApplicationController
         end
 
         # convert into a datetime obj
-        if data[:unit][:available_by] && !data[:unit][:available_by].empty?
+        if !data[:unit][:available_by] && !data[:unit][:available_by].empty?
           data[:unit][:available_by] = Date::strptime(data[:unit][:available_by], "%m/%d/%Y")
         end
       end

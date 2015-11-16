@@ -4,10 +4,10 @@
 <div class="row">
   <div class="col-md-offset-2 col-md-8">
     <div class="page-header">
-      
+
       <div class="row">
         <div class="col-md-6">
-          <h1>Deal 
+          <h1>Deal
             <small><%= @deal.street_address_and_unit %> </small>
           </h1>
         </div>
@@ -15,9 +15,9 @@
 
           <% if can? :edit, @deal %>
             <%= link_to 'Edit', edit_deal_path(@deal) %>
-                
+
             <% if !@deal.archived %>
-              | &nbsp;<%= link_to 'Delete', @deal, method: :delete, 
+              | &nbsp;<%= link_to 'Delete', @deal, method: :delete,
                 data: { confirm: "Are you sure you want to delete #{@deal.street_address_and_unit}?" } %>
               <% @prev_link = true %>
             <!-- TODO: un-archive -->
@@ -34,17 +34,10 @@
     <div class="row">
       <div class="col-md-12">
         <div class="row">
-          <div class="col-md-12">
-            
-          </div>
-        </div>
-
-        <br />
-        <div class="row">
           <div class="col-md-6">
             <div class="row">
               <div class="col-xs-5">
-                <strong>Unit:</strong>
+                <strong>Listing:</strong>
               </div>
               <div class="col-xs-7">
                 <% if @deal.unit.residential_listing %>
@@ -61,8 +54,12 @@
                 <strong>Landlord:</strong>
               </div>
               <div class="col-xs-7">
-                <% if @deal.landlord_code.blank? %>
-                  <%= @deal.landlord_code %>
+                <% if !@deal.landlord_code.blank? %>
+                  <% if @landlord %>
+                    <%= link_to @landlord.code, @landlord %>
+                  <% else %>
+                    <%= @deal.landlord_code %>
+                  <% end %>
                 <% else %>
                   - None Specified -
                 <% end %>
@@ -90,10 +87,10 @@
             </div>
             <div class="row">
               <div class="col-xs-5">
-                
+
               </div>
               <div class="col-xs-7">
-                
+
               </div>
             </div>
 
@@ -106,7 +103,7 @@
               </div>
               <div class="col-xs-7">
                 <% if !@deal.lease_term.blank? %>
-                  <%= @deal.lease_term %>
+                  <%= @deal.lease_term %> Months
                 <% else %>
                   - None Specified -
                 <% end %>
@@ -163,7 +160,7 @@
 
           </div>
         </div>
-
+<!--
         <br />
         <div class="row">
           <div class="col-md-6">
@@ -181,7 +178,7 @@
           <% end %>
         <% else %>
           No clients specified.
-        <% end %>
+        <% end %> -->
 
         <br />
         <div class="row">
@@ -195,7 +192,7 @@
               <% if !@deal.deal_notes.blank? %>
                 <%= @deal.deal_notes %>
               <% else %>
-                - None Specified - 
+                - None Specified -
               <% end %>
             </p>
           </div>

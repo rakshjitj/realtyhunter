@@ -391,7 +391,9 @@ Rails.application.routes.draw do
     end
     collection do
       get :filter
+      get :get_units
       get :autocomplete_building_formatted_street_address
+      get :autocomplete_landlord_code
     end
   end
 end

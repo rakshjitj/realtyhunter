@@ -2,4 +2,4 @@ $('.deals_table_body').html("<%= escape_javascript (render partial: 'deals/deal'
 
 $('.pagination').html("<%= escape_javascript (render partial: 'shared/pagination', locals: {:models => @deals}) %>");
 
-$('.totals').html("<%= @deals.count %> Deals");
+$('.totals').html("<%= @deals.total_count %> Deals");

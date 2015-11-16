@@ -26,6 +26,9 @@ namespace :import do
 			# end
 			#if deal
 				#puts unit.inspect
+				deal.full_address = unit.building.formatted_street_address
+				deal.building_unit = unit.building_unit
+				puts "UNIT ID #{unit.id} #{unit.building_unit}"
 				deal.unit = unit
 				if !unit
 					puts "BLANK UNIT #{unit.inspect}"
@@ -63,7 +66,7 @@ namespace :import do
 
 		# each line in the file represents 1 recorded transaction
 		Deal.delete_all
-		file = File.read('lib/tasks/import/myspace_nyc_transactions.json')
+		file = File.read('lib/tasks/import/nestio_transactions.json')
 
 		idx = 1;
 		file.each_line do |line|
@@ -79,7 +82,7 @@ namespace :import do
 
 				idx = idx + 1
 
-				building_unit = unit_info['unit_number']	
+				building_unit = unit_info['unit_number']
 				unit1 = Unit.where(listing_id: unit_info['id']).first
 				unit2 = nil
 				if building_unit
@@ -90,13 +93,10 @@ namespace :import do
 				end
 
 				if unit1 == unit2 && unit1 && unit2
-					#puts "[MATCH] {data['unit_info']['id']} # #{building_unit}"
 					deal = create_deal(transaction, unit1)
 				elsif unit1
-					#puts "[111111] #{data['unit_info']['id']} # #{building_unit}-- #{unit1.id}"
 					deal = create_deal(transaction, unit1)
 				elsif unit2
-					#puts "[222222] #{data['unit_info']['id']} # #{building_unit} -- #{unit2.id}"
 					deal = create_deal(transaction, unit2)
 				elsif !unit1 && !unit2
 					#puts "[NONE] #{unit_info['id']} # #{building_unit} -- NOT FOUND"
@@ -113,9 +113,9 @@ namespace :import do
 			# 	log.info e.message
 			# end
 		end
-	
+
 		#rescue Exception => e
-			
+
     puts "Done!\n"
 		log.info "Done!\n"
 		end_time = Time.now
