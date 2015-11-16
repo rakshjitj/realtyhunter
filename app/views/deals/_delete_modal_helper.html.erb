@@ -1,8 +1,3 @@
-$('#dealDeleteModal .modal-body').html("<%= j(render :partial => "delete_modal_helper", locals: { deal: @deal }) %>");
-$('#dealDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', @deal, remote: true, method: :delete, class: 'btn btn-danger link-as-button delete-btn', id: 'delete-link') %>");
-$('#dealDeleteModal #delete-link').click( function(event) {
-	$('#dealDeleteModal').modal('hide');
-	event.preventDefault();
-});
-
-$('#dealDeleteModal').modal('show');
+<p>
+	Are you sure you want to delete the deal for <%= deal.unit.building.street_address %>? This is permanent!
+</p>

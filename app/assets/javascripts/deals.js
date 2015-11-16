@@ -97,10 +97,6 @@ Deals = {};
 		  format: 'MM/DD/YYYY',
 		  allowInputToggle: true
 		});
-		// var available_by = $('#deals .datepicker').attr('data-available-by');
-		// if (available_by) {
-		// 	$('#deals .datepicker').data("DateTimePicker").date(available_by);
-		// }
 		$('#deals .datepicker').each(function(idx) {
 			var available_by = $(this).attr('data-available-by');
 			$(this).data("DateTimePicker").date(available_by);

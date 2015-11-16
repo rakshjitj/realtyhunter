@@ -25,7 +25,7 @@
           <div class="col-md-4">
             <%= f.select(:building_id,
               options_for_select(current_user.company.buildings.order("formatted_street_address ASC").collect {|b| [b.street_address, b.id]},
-                [@deal.unit.building ? @deal.unit.building_id : '']),
+                [@deal && @deal.unit ? @deal.unit.building_id : '']),
               {prompt: "Choose one..."},
               class: 'form-control',
               include_blank: true) %>
@@ -44,6 +44,21 @@
               { prompt: "Choose one..."},
               class: 'form-control',
               required: true) %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-3 form-label-responsive">
+            <%= f.label :landlord_code, "Landlord", class: 'required' %>
+          </div>
+          <div class="col-md-4">
+            <%= f.select(:landlord_code, options_for_select(current_user.company.landlords.order("code ASC").collect {|l| [l.code]},
+              [@deal.landlord_code ? @deal.landlord_code : (@deal.unit ? @deal.unit.building.landlord.code : '')]),
+              {prompt: "Choose one..."},
+              required: true,
+              class: 'form-control',
+              include_blank: true) %>
           </div>
         </div>
 
@@ -70,7 +85,7 @@
         <br />
         <div class="row">
           <div class="col-md-3 form-label-responsive">
-            <strong class="required">Lease Duration</strong>
+            <%= f.label :lease_start_date, "Lease Duration", class: 'required' %>
           </div>
 
           <div class="col-md-3">
@@ -141,7 +156,22 @@
         <br />
         <div class="row">
           <div class="col-md-3 form-label-responsive">
-            <%= f.label :deal_notes %>
+            <%= f.label :user_id, "Primary Agent" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.select(:user_id,
+              options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
+                [@deal ? @deal.user_id : '']),
+              {prompt: "Choose one..."},
+              class: 'form-control',
+              :include_blank => true) %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-3 form-label-responsive">
+            <%= f.label :deal_notes, class: 'required' %>
           </div>
           <div class="col-md-4">
             <%= f.text_area :deal_notes, class: 'form-control', required: true, rows: 4 %>

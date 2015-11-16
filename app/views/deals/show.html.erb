@@ -87,13 +87,16 @@
             </div>
             <div class="row">
               <div class="col-xs-5">
-
+              <strong>Primary Agent</strong>
               </div>
               <div class="col-xs-7">
-
+                <% if @deal.user %>
+                  <%= link_to @deal.user.name, @deal.user %>
+                <% else %>
+                  - None specified -
+                <% end %>
               </div>
             </div>
-
           </div>
 
           <div class="col-md-6">
@@ -103,7 +106,7 @@
               </div>
               <div class="col-xs-7">
                 <% if !@deal.lease_term.blank? %>
-                  <%= @deal.lease_term %> Months
+                  <%= distance_of_time_in_words(@deal.lease_start_date, @deal.lease_expiration_date) %>
                 <% else %>
                   - None Specified -
                 <% end %>
@@ -187,7 +190,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-12">
             <p>
               <% if !@deal.deal_notes.blank? %>
                 <%= @deal.deal_notes %>

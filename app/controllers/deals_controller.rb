@@ -14,7 +14,7 @@ class DealsController < ApplicationController
       end
       format.csv do
         set_deals_csv
-        headers['Content-Disposition'] = "attachment; filename=\"landlords-list.csv\""
+        headers['Content-Disposition'] = "attachment; filename=\"deals-list.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
     end
@@ -25,6 +25,7 @@ class DealsController < ApplicationController
 
 	def new
 		@deal = Deal.new
+    @listings = Unit.none
 	end
 
 	def create
@@ -49,8 +50,13 @@ class DealsController < ApplicationController
     else
     	render 'edit'
 		end
-
 	end
+
+  def delete_modal
+    respond_to do |format|
+      format.js
+    end
+  end
 
 	def destroy
 		@deal.archive
@@ -72,6 +78,8 @@ class DealsController < ApplicationController
   def get_units
     @listings = Unit.joins(:building)
       .where("buildings.id = ?", params[:building_id])
+    @landlord = Building.where("buildings.id = ?", params[:building_id]).limit(1).first.landlord
+
     respond_to do |format|
       format.js
     end
@@ -88,7 +96,7 @@ class DealsController < ApplicationController
 
   	def set_deal
   		@deal = Deal.find_unarchived(params[:id])
-      @landlord = Landlord.find_by(code: @deal.landlord_code)
+      @landlord = Landlord.where(code: @deal.landlord_code).limit(1).first
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that deal is not active."
       redirect_to :action => 'index'
@@ -122,7 +130,7 @@ class DealsController < ApplicationController
         :landlord_code,
     		deal: [:lock_version, :price, :client, :lease_term, :lease_start_date, :lease_expiration_date,
     			:closed_date, :move_in_date, :commission, :deal_notes, :listing_type, :is_sale_deal,
-    			:unit_id, :agent_id, :building_unit, :building_id])
+    			:unit_id, :user_id, :building_unit, :building_id, :landlord_code])
 
       if data[:deal]
         # convert into a datetime obj
@@ -152,11 +160,12 @@ class DealsController < ApplicationController
           unit = Unit.find(data[:deal][:unit_id])
 
           if unit
-            data[:deal][:landlord_code] = unit.building.landlord.code
+            #data[:deal][:landlord_code] = unit.building.landlord.code
             data[:deal][:full_address]  = unit.building.formatted_street_address
             data[:deal][:building_unit] = unit.building_unit
           end
         end
+
       end
 
       data

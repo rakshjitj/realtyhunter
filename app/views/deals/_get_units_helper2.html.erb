@@ -1,0 +1,9 @@
+<% if @landlord %>
+	<%= select_tag(:landlord_code,
+		options_for_select(current_user.company.landlords.order("code ASC").collect {|l| [l.code]},
+    [@landlord.code]),
+    {prompt: "Choose one...",
+    required: true,
+    class: 'form-control'}) %>
+<% end %>
+
