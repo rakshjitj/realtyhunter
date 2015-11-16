@@ -3,7 +3,7 @@ class CompaniesController < ApplicationController
   skip_before_action :logged_in_user, only: [:new, :create]
   before_action :set_company, except: [:new, :filter, :create, :index]
   etag { current_user.id }
-  
+
   # GET /companies
   # GET /companies.json
   def index
@@ -45,7 +45,7 @@ class CompaniesController < ApplicationController
   def employees
     #.includes(:manager, :roles)
     @title = 'Employees'
-    @users = @company.employees 
+    @users = @company.employees
       .page params[:page]
     @user_images = User.get_images(@users)
     render 'users/index'
@@ -71,7 +71,6 @@ class CompaniesController < ApplicationController
       flash[:success] = 'Company was successfully created. Please check your email to activate your account.'
       redirect_to root_url
     else
-      #puts "**** #{@user.errors.inspect}"
       render 'new'
     end
 
@@ -117,7 +116,7 @@ class CompaniesController < ApplicationController
       @company.image = nil
     end
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 

@@ -24,8 +24,22 @@ class DealsController < ApplicationController
 	end
 
 	def new
-		@deal = Deal.new
-    @listings = Unit.none
+    if params[:unit_id]
+  		@deal = Deal.new(unit_id: params[:unit_id])
+      if @deal.unit
+        @listings = Unit.joins(:building)
+        .where("buildings.id = ?", @deal.unit.building_id)
+        .order('building_unit asc')
+      else
+        @listings = Unit.none
+      end
+    else
+      @deal = Deal.new
+    end
+
+    if params[:user_id]
+      @deal.user = User.find(params[:user_id])
+    end
 	end
 
 	def create

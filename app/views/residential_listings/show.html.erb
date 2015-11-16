@@ -63,8 +63,6 @@
 		  	<div class="row">
 			  	<div class="col-md-6 vertical-padding">
 			  		<%= link_to 'View all', residential_listings_path %>
-			  		<!--%= link_to 'Print', print_modal_residential_listing_path(@residential_unit),
-			      		data: {toggle: "modal", target: "#printModal"}, remote: true %-->
 			  		<% if current_user.is_management? || current_user.is_listings_manager? %>
 		  				| <%= link_to 'Edit', edit_residential_listing_path(@residential_unit.id) %>
 			        | <%= link_to 'Duplicate', duplicate_modal_residential_listing_path(@residential_unit),
@@ -78,6 +76,10 @@
 				  		<%= link_to 'Make Announcement', new_announcement_path(
 				  			{ address: @residential_unit.unit.building.formatted_street_address }),
 				  			class: "btn btn-warning btn-sm link-as-button" %>
+				  		<%= link_to 'Add a Deal', new_deal_path(
+				  				unit_id: @residential_unit.unit_id,
+				  				user_id: @residential_unit.unit.primary_agent),
+			    			class: 'btn btn-warning btn-sm link-as-button' %>
 				  	<% end %>
 
 			  		<%= link_to 'Report Inaccuracy', inaccuracy_modal_residential_listing_path(@residential_unit),
