@@ -108,7 +108,8 @@ ResidentialListings = {};
 
 	// update the announcements every 60 seconds
 	ResidentialListings.updateAnnouncements = function() {
-		if ($('#residential').length > 0) {
+		console.log('updateAnnouncements ', $('#residential').length);
+		if ($('#residential').length) {
 			//console.log('updating ann');
 			$.ajax({
 	      url: '/residential_listings/update_announcements',
@@ -122,7 +123,7 @@ ResidentialListings = {};
 	// refresh the page every so often. We want to make sure they are
 	// always viewing the latest data.
 	ResidentialListings.passiveRealTimeUpdate = function() {
-		if ($('#residential').length > 0) {
+		if ($('#residential').length) {
 			ResidentialListings.clearTimer();
 			// update every few minutes
 		  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 60 * 3 * 1000);
@@ -427,8 +428,12 @@ ResidentialListings = {};
   };
 
 	ResidentialListings.initialize = function() {
+		if (!$('#residential').length) {
+			return;
+		}
 		ResidentialListings.passiveRealTimeUpdate();
 		ResidentialListings.updateAnnouncements();
+
 
 		// hide spinner on main index when first pulling up the page
 		document.addEventListener("page:restore", function() {

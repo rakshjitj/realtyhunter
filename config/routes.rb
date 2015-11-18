@@ -24,6 +24,7 @@ Rails.application.routes.draw do
       post 'admin_create'
     end
     member do
+      patch 'unarchive'
       delete 'destroy_image'
       post 'upload_image'
       get 'coworkers'

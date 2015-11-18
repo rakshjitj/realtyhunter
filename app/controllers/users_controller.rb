@@ -1,14 +1,15 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
   skip_before_action :logged_in_user, only: [:new, :create, :update_offices]
-  before_action :set_user, except: [:index, :filter, :filter_listings, :teams, :new, :create, :admin_new, 
-    :admin_create, :update_offices, :autocomplete_user_name]
+  before_action :set_user, except: [:index, :filter, :filter_listings, :teams, :new, :create, :admin_new,
+    :admin_create, :update_offices, :autocomplete_user_name, :unarchive]
   before_action :set_company, except: [:update_offices]
-  autocomplete :user, :name, where: {archived: false}, full: true
-  
+  autocomplete :user, :name, full: true
+
   # GET /users
   # GET /users.json
   def index
+    params[:status] = 'Active'
     @agent_title = EmployeeTitle.agent
     set_users
     @title = 'All users'
@@ -127,7 +128,7 @@ class UsersController < ApplicationController
     end
   end
 
- 
+
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
@@ -164,7 +165,7 @@ class UsersController < ApplicationController
       @user.image = nil
     end
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -180,8 +181,20 @@ class UsersController < ApplicationController
       respond_to do |format|
         format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
         format.json { head :no_content }
-        format.js  
+        format.js
       end
+    end
+  end
+
+  # effectively un-delete, the opposite of destroy() above.
+  def unarchive
+    @user.update_attribute(:archived, false)
+    params[:status] = 'Deleted'
+    set_users
+    respond_to do |format|
+      format.html { redirect_to users_url, notice: 'User was successfully un-deleted.' }
+      format.json { head :no_content }
+      format.js
     end
   end
 
@@ -262,7 +275,7 @@ class UsersController < ApplicationController
     end
 
     def set_users
-      @users = User.search(params[:search_params], current_user)
+      @users = User.search(params, current_user)
       @users = @users.page params[:page]
       @user_images = User.get_images(@users)
     end
@@ -277,8 +290,8 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:lock_version, :email, :name, :mobile_phone_number, :bio, :password, 
-        :password_confirmation, :avatar, :remove_avatar, :remote_avatar_url, :phone_number, 
+      params.require(:user).permit(:lock_version, :email, :name, :mobile_phone_number, :bio, :password,
+        :password_confirmation, :avatar, :remove_avatar, :remote_avatar_url, :phone_number, :status,
         :mobile_phone_number, :employee_title_id, :company_id, :office_id, :file, agent_types: [])
     end
 end

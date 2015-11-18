@@ -24,9 +24,8 @@ Users = {};
     $.ajax({
       url: search_path,
       data: {
-        search_params: {
-          name_email: $('#name_email').val()
-        } 
+        name_email: $('#users #name_email').val(),
+        status: $('#users #status').val(),
       },
       dataType: "script"
     });
@@ -38,7 +37,7 @@ Users = {};
     clearInterval(Users.timer);  //clear any interval on key up
     Users.timer = setTimeout(Users.doSearch, 500);
   };
-  
+
   // change enter key to tab
   Users.preventEnter = function (event) {
     if (event.keyCode == 13) {
@@ -54,17 +53,18 @@ Users = {};
     } else {
       $('.agent-type').hide();
     }
-  };  
-	
+  };
+
 	Users.initialize = function() {
 		$('.auth-token-toggle').click(function (event) {
 	    $('.auth-token').toggleClass('hidden');
 	    event.preventDefault();
 	  });
 
-    $('#name_email').bind('railsAutocomplete.select', Users.throttledSearch);
-    $('input').keydown(Users.preventEnter); 
-    $('#name_email').change(Users.throttledSearch);
+    $('#users input').keydown(Users.preventEnter);
+    $('#users #name_email').bind('railsAutocomplete.select', Users.throttledSearch);
+    $('#users #name_email').change(Users.throttledSearch);
+    $('#users #status').change(Users.throttledSearch);
     $('#users #listings_checkbox_active').click(Users.filterListings);
 
     // $('#companies_select').change(function() {

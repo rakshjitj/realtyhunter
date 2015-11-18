@@ -3,19 +3,22 @@
 
 <% if can? :update, user %>
 	<%= link_to 'Edit', edit_user_path(user) %>
-    	
+
   <% if !user.archived %>
 	  <br />
-	  <%= link_to user, :remote => true, method: :delete, 
-	  	data: { confirm: "Are you sure you want to delete #{user.name}?" } do %>
-	  	 <button class="btn btn-md btn-link no-padding">Delete</button>
-	  	<% end %>
-	  <% @prev_link = true %>
+	  <%= link_to "Delete", remote: true, method: :delete,
+	  	data: { confirm: "Are you sure you want to delete #{user.name}?" } %>
+
+
+	<% else %>
+		<%= link_to "Undelete", unarchive_user_path(user), remote: true, method: :patch,
+	  	data: { confirm: "Are you sure you want to undelete #{user.name}?" } %>
+
 	<% end %>
 <% end %>
 
 <% if current_user.can_manage_team(user) %>
-	<% if @prev_link %> <br /> <% end %>
+	<br />
   <%= link_to 'Manage team', subordinates_user_path(user) %>
   <% @prev_link = true %>
 <% end %>
@@ -23,11 +26,11 @@
 <% if current_user.can_approve(user) %>
 	<br />
 	<% if !user.approved? %>
-		
-		<%= link_to 'Authorize', admin_approve_user_path(user), :remote => true, method: :post, data: { confirm: "Are you sure you want to approve #{user.name}'s account?" } %>
+
+		<%= link_to 'Authorize', admin_approve_user_path(user), remote: true, method: :post, data: { confirm: "Are you sure you want to approve #{user.name}'s account?" } %>
 	<% else %>
-		
-		<%= link_to 'Unauthorize', admin_unapprove_user_path(user), :remote => true, method: :post, data: { confirm: "Are you sure you want to unapprove #{user.name}'s account?" } %>
+
+		<%= link_to 'Unauthorize', admin_unapprove_user_path(user), remote: true, method: :post, data: { confirm: "Are you sure you want to unapprove #{user.name}'s account?" } %>
 	<% end %>
 	<% @prev_link = true %>
 <% end %>
@@ -35,5 +38,5 @@
 
 <% if current_user.can_kick(user) %>
 	<% if @prev_link %> <br /> <% end %>
-	<%= link_to 'Kick off team', admin_kick_user_path(user), :remote => true, method: :post, data: { confirm: "Are you sure you want to kick #{user.name} off #{user.manager.name.titleize}'s team?" } %>
+	<%= link_to 'Kick off team', admin_kick_user_path(user), remote: true, method: :post, data: { confirm: "Are you sure you want to kick #{user.name} off #{user.manager.name.titleize}'s team?" } %>
 <% end %>

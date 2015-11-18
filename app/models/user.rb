@@ -8,14 +8,14 @@ class User < ActiveRecord::Base
 
   default_scope { order("users.name ASC") }
   scope :unarchived, ->{where(archived: false)}
-  
+
   belongs_to :office, touch: true
   belongs_to :company, touch: true
   belongs_to :manager, :class_name => "User"#, : true
   belongs_to :employee_title
-  
+
   has_many   :subordinates, :class_name => "User", :foreign_key => "manager_id"
-  
+
   # A unit can have up to 2 assigned or "primary" agents
   # if you are assigned agent #1
   has_many :primary_units, class_name: 'Unit', :foreign_key => 'primary_agent_id'
@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
   has_many :primary2_units, class_name: 'Unit', :foreign_key => 'primary_agent2_id'
   # A unit can have only 1 listing agent
   has_many :listed_units,  class_name: 'Unit', :foreign_key => 'listing_agent_id'
-  
+
   has_many :roommates, class_name: 'WufooRoommatesWebForm'
   has_many :roomsharing_applications
 
@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
   has_one :image, dependent: :destroy
   has_many :announcements
   has_many :deals
-  
+
 	attr_accessor :remember_token, :activation_token, :reset_token, :approval_token, :agent_types, :batch
   before_create :create_activation_digest
   before_create :set_auth_token # for API
@@ -41,14 +41,14 @@ class User < ActiveRecord::Base
 
   before_save :downcase_email
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
-	validates :email, presence: true, length: {maximum: 100}, 
-						format: { with: VALID_EMAIL_REGEX }, 
+	validates :email, presence: true, length: {maximum: 100},
+						format: { with: VALID_EMAIL_REGEX },
             uniqueness: { case_sensitive: false }
 
   VALID_TELEPHONE_REGEX = /(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/
-  validates :mobile_phone_number, length: {maximum: 25}, presence: true, 
+  validates :mobile_phone_number, length: {maximum: 25}, presence: true,
     format: { with: VALID_TELEPHONE_REGEX }
-  
+
   has_secure_password
 	validates :password, length: { minimum: 6 }, allow_blank: true
 
@@ -73,7 +73,7 @@ class User < ActiveRecord::Base
     else
       ids = self.primary_units.map(&:id) + self.primary2_units.active.map(&:id)
     end
-    
+
     ResidentialListing.for_units(ids)
   end
 
@@ -141,7 +141,7 @@ class User < ActiveRecord::Base
     UserMailer.account_activation(self).deliver_now
   end
 
-  # sends the company admin a notification, asking to 
+  # sends the company admin a notification, asking to
   # approve this user
   def send_company_approval_email
     UserMailer.account_approval_needed(self, self.company).deliver_now
@@ -180,29 +180,38 @@ class User < ActiveRecord::Base
   end
 
   def self.search(query_params, current_user)
-    running_list = User.unarchived
+    running_list = User
       .joins(:office, :employee_title)
       .where(company: current_user.company)
-      .select('users.company_id', 'users.archived', 'users.id', 
+      .select('users.company_id', 'users.archived', 'users.id',
         'users.name', 'users.email', 'users.activated', 'users.approved', 'users.last_login_at',
         'employee_titles.name AS employee_title_name', 'employee_titles.id AS employee_title_id',
         'offices.name AS office_name', 'offices.id as office_id')
 
-    if !query_params || !query_params[:name_email]
-      return running_list 
+    if !query_params
+      return running_list
     end
-    
-    query_string = query_params[:name_email]
-    query_string = query_string[0..500] # truncate for security reasons
-    terms = query_string.split(" ")
-    terms.each do |term|
-      running_list = running_list.where('users.name ILIKE ? or users.email ILIKE ?', "%#{term}%", "%#{term}%").all
+
+    if !query_params[:name_email].blank?
+      query_string = query_params[:name_email]
+      terms = query_string.split(" ")
+      terms.each do |term|
+        running_list = running_list.where('users.name ILIKE ? or users.email ILIKE ?', "%#{term}%", "%#{term}%").all
+      end
+    end
+
+    if !query_params[:status].blank?
+      if query_params[:status].downcase == 'active'
+        running_list = running_list.where("users.archived = false")
+      elsif query_params[:status].downcase == 'deleted'
+        running_list = running_list.where("users.archived = true")
+      end
     end
 
     running_list
   end
 
-  # copies in new roles from 
+  # copies in new roles from
   # user.agent_types & user.employee_title
   def update_roles
     # clear out old roles
@@ -217,12 +226,12 @@ class User < ActiveRecord::Base
 
     # (almost) everyone should always be able to see residential stuff
     if self.employee_title != EmployeeTitle.external_vendor
-      # note: this isn't really used anymore... 
+      # note: this isn't really used anymore...
       # we decided that everyone should be able to view residential/commercial/sales listings
       self.add_role :residential
       self.add_role :commercial
     end
-    
+
     # if you're an agent, add in specific roles for the type of
     # agent that you are
     if self.employee_title == EmployeeTitle.agent
@@ -232,7 +241,7 @@ class User < ActiveRecord::Base
       end
       # always make sure they at least have one specialty area selected
       if !self.agent_types || !self.agent_types.any?
-        # note: this isn't really used anymore... 
+        # note: this isn't really used anymore...
         # we decided that everyone should be able to view residential/commercial/sales listings
         self.add_role :residential
         self.add_role :commercial
@@ -293,7 +302,7 @@ class User < ActiveRecord::Base
       #puts "#{subord.manager.name} "
       #puts "#{subord.manager.subordinates.length} \n\n"
     else
-      raise 'Tried to add subordinate without being manager first'  
+      raise 'Tried to add subordinate without being manager first'
     end
   end
 
@@ -301,23 +310,23 @@ class User < ActiveRecord::Base
     if self.has_role? :manager
       subord.manager = nil
     else
-      raise 'Tried to remove subordinate without being manager first'  
+      raise 'Tried to remove subordinate without being manager first'
     end
   end
 
   def is_management?
     if (has_role? :super_admin) ||
-      (has_role? :company_admin) || 
+      (has_role? :company_admin) ||
       (has_role? :operations) ||
       (has_role? :data_entry) ||
-      (has_role? :broker) || 
+      (has_role? :broker) ||
       (has_role? :associate_broker) ||
       (has_role? :manager) ||
       (has_role? :closing_manager)
       true
-    else 
+    else
       false
-    end    
+    end
   end
 
   def is_listings_manager?
@@ -341,7 +350,7 @@ class User < ActiveRecord::Base
   #   Image.where(user_id: user_ids).index_by(&:user_id)
   # end
 
-  # keep a running list of my specialties so we 
+  # keep a running list of my specialties so we
   # don't always have to recalculate
   def agent_specialties
     specialties = AgentType.where(name: self.roles.map(&:name)).map(&:name)
@@ -354,9 +363,9 @@ class User < ActiveRecord::Base
   end
 
   def add_sanitized_role(unsan_role_name, is_agent_type)
-    # input has not been sanitized. let's translate it into our 
+    # input has not been sanitized. let's translate it into our
     # naming scheme
-    
+
     # don't allow roles that are not approved by us
     @real_role_name = nil
     if is_agent_type
@@ -365,7 +374,7 @@ class User < ActiveRecord::Base
       @real_role_name = @real_role.name
     else
       @real_role = EmployeeTitle.where(name: unsan_role_name).first
-      @real_role_name = @real_role.name.downcase.gsub(' ', '_')  
+      @real_role_name = @real_role.name.downcase.gsub(' ', '_')
     end
 
     if @real_role_name
@@ -408,7 +417,7 @@ class User < ActiveRecord::Base
   # - We need to be a company admin or the manager in question
   # - We must both work for the same company
   def can_manage_team(other_user)
-    return other_user.is_manager? && 
+    return other_user.is_manager? &&
     (self.is_company_admin? || self == other_user)
   end
 
@@ -425,7 +434,7 @@ class User < ActiveRecord::Base
       email_md5 = Digest::MD5.hexdigest(self.email)
       self.public_url = "http://myspacenyc.com/agent/AGENT-#{email_md5}"
     end
-    
+
     def create_activation_digest
       # Create the token and digest.
       self.activation_token  = User.new_token
