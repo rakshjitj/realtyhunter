@@ -1,8 +1,9 @@
 module Forms
 	class PartnerController < ApplicationController
 		skip_authorize_resource
-  	before_action :set_entry, except: [:index, :new, :create, :filter, 
-			:download, :send_update, :unarchive, :unarchive_modal, :detail_modal, :destroy, :delete_modal]
+  	before_action :set_entry, except: [:index, :new, :create, :filter,
+			:download, :send_update, :unarchive, :unarchive_modal, :detail_modal,
+			:destroy, :delete_modal, :destroy_multiple, :destroy_multiple_modal]
 		autocomplete :wufoo_partner_form, :name, full: true
 		autocomplete :wufoo_partner_form, :address_street_address, full: true
 
@@ -15,7 +16,7 @@ module Forms
 	  	ids = params[:entry_ids].split(',')
 	  	@entries = WufooPartnerForm
       	.where(id: ids)
-	    
+
 	  	respond_to do |format|
 	      format.csv do
 	        headers['Content-Disposition'] = "attachment; filename=\"partner-with-us-data.csv\""
@@ -35,7 +36,7 @@ module Forms
 	    sub = partner_params[:email_modal][:title]
 	    msg = partner_params[:email_modal][:message]
 	    WufooPartnerForm.send_message(current_user, recipients, sub, msg)
-	    
+
 	    respond_to do |format|
 	      format.js { flash[:success] = "Message sent!"  }
 	    end
@@ -60,7 +61,7 @@ module Forms
 	  def filter
 	    set_entries
 	    respond_to do |format|
-	      format.js  
+	      format.js
 	    end
 	  end
 
@@ -70,14 +71,14 @@ module Forms
 	  	WufooPartnerForm.mark_read(params[:id])
 	  	set_entries
 	  	respond_to do |format|
-	      format.js  
+	      format.js
 	    end
 	  end
-	  
+
 	  def delete_modal
 	  	@entry = WufooPartnerForm.find(params[:id])
 	    respond_to do |format|
-	      format.js  
+	      format.js
 	    end
 	  end
 
@@ -92,9 +93,29 @@ module Forms
 	    end
 	  end
 
+	  def destroy_multiple_modal
+	    @entries = WufooPartnerForm.where(id: params[:ids]).order('name asc')
+	    respond_to do |format|
+	      format.js
+	    end
+	  end
+
+	  def destroy_multiple
+	    if !params[:ids].blank?
+	      WufooPartnerForm.where(id: params[:ids]).delete_all
+	      params.delete('ids')
+	    end
+	    set_entries
+	    respond_to do |format|
+	      format.html { redirect_to forms_partner_index_url, notice: 'Entries were successfully deleted.' }
+	      format.json { head :no_content }
+	      format.js
+	    end
+	  end
+
 	  def hide_modal
 	    respond_to do |format|
-	      format.js  
+	      format.js
 	    end
 	  end
 
@@ -111,7 +132,7 @@ module Forms
 	  def unarchive_modal
 	  	@entry = WufooPartnerForm.find(params[:id])
 	    respond_to do |format|
-	      format.js  
+	      format.js
 	    end
 	  end
 
@@ -139,7 +160,7 @@ module Forms
 				if params[:status].blank?
 					params[:status] = 'Active'
 				end
-				
+
 				@entries = WufooPartnerForm.search(partner_params)
 				@entries = custom_sort
 		    @entries = @entries.page params[:page]
@@ -148,7 +169,7 @@ module Forms
 
 			def custom_sort
 	      sort_column = params[:sort_by] || "created_at"
-	      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+	      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
 	      params[:sort_by] = sort_column
 	      params[:direction] = sort_order
 	      @entries = @entries.order(sort_column + ' ' + sort_order)
@@ -156,7 +177,7 @@ module Forms
 	  	end
 
 	  	def partner_params
-	  		data = params.permit(:sort_by, :direction, :filter, :name, :status, 
+	  		data = params.permit(:sort_by, :direction, :filter, :name, :status,
 	  			:entry_ids, :submitted_date, :address_street_address,
 	  			:move_in_date, :renovated, :number_of_bedrooms, :id,
 	  			email_modal: [:title, :message, :recipients])

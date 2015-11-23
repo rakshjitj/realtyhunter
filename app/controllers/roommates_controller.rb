@@ -7,7 +7,7 @@ class RoommatesController < ApplicationController
     :match_multiple, :match_multiple_modal,
     :autocomplete_user_email, :autocomplete_roommate_name,
     :autocomplete_building_formatted_street_address, :check_availability,
-    :mark_read]
+    :mark_read, :destroy_multiple_modal, :destroy_multiple]
   autocomplete :roommate, :name, full: true
   autocomplete :user, :email, full: true
   autocomplete :building, :formatted_street_address, full: true
@@ -102,7 +102,27 @@ class RoommatesController < ApplicationController
     Roommate.delete(@roommate.id)
     set_roommates
     respond_to do |format|
-      format.html { redirect_to roommates_url, notice: 'Roommate was successfully inactivated.' }
+      format.html { redirect_to roommates_url, notice: 'Roommate was successfully deleted.' }
+      format.json { head :no_content }
+      format.js
+    end
+  end
+
+  def destroy_multiple_modal
+    @roommates = Roommate.where(id: params[:ids]).order('name asc')
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def destroy_multiple
+    if !params[:ids].blank?
+      Roommate.where(id: params[:ids]).delete_all
+      params.delete('ids')
+    end
+    set_roommates
+    respond_to do |format|
+      format.html { redirect_to roommates_url, notice: 'Roommates were successfully deleted.' }
       format.json { head :no_content }
       format.js
     end

@@ -4,7 +4,7 @@ Partner = {};
 	Partner.setupSortableColumns = function() {
 		$('#partner .th-sortable').click(function(e) {
 			e.preventDefault();
-			
+
 			if ($(this).hasClass('selected-sort')) {
 				// switch sort order
 				var i = $('.selected-sort i');
@@ -37,7 +37,7 @@ Partner = {};
 	// for searching on the index page
 	Partner.doSearch = function (sort_by_col, sort_direction) {
 		var search_path = $('#partner-search-filters').attr('data-search-path');
-	  
+
 	  Forms.showSpinner();
 
 	  $.ajax({
@@ -86,7 +86,7 @@ Partner = {};
 		Forms.hideSpinner();
 
 		// main index table
-		Partner.setupSortableColumns();		
+		Partner.setupSortableColumns();
 
 		$('.close').click(function() {
 			Forms.hideSpinner();
@@ -106,6 +106,8 @@ Partner = {};
 
 		// index page - selecting listings menu dropdown
 		$('#partner #emailListings').click(Forms.sendMessage);
+		$('#partner #deleteMultiple').click(Forms.deleteMultiple);
+
 		$('#partner tbody').on('click', 'i', Forms.toggleListingSelection);
 		$('#partner .select-all-listings').click(Forms.selectAllListings);
 		$('#partner .selected-listings-menu').on('click', 'a', function() {

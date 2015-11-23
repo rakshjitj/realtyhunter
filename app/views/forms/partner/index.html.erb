@@ -23,10 +23,10 @@
             <%= label_tag :name, 'Name' %>
           </div>
           <div class="col-xs-7 col-sm-left-padding">
-            <%= autocomplete_field_tag :name, params[:name], 
+            <%= autocomplete_field_tag :name, params[:name],
               autocomplete_wufoo_partner_form_name_forms_partner_index_path,
               update_elements: {},
-              placeholder: "Bob Smith", 
+              placeholder: "Bob Smith",
               class:'form-control' %>
           </div>
         </div>
@@ -36,10 +36,10 @@
             <%= label_tag(:address_street_address, "Street Address") %>
           </div>
           <div class="col-xs-7 col-sm-left-padding">
-            <%= autocomplete_field_tag :address_street_address, params[:address_street_address], 
+            <%= autocomplete_field_tag :address_street_address, params[:address_street_address],
               autocomplete_wufoo_partner_form_address_street_address_forms_partner_index_path,
               update_elements: {},
-              placeholder: "Bob Smith", 
+              placeholder: "Bob Smith",
               class:'form-control' %>
           </div>
         </div>
@@ -49,10 +49,10 @@
             <%= label_tag(:number_of_bedrooms, 'Bedrooms') %>
           </div>
           <div class="col-xs-7 col-sm-left-padding">
-            <%= select_tag(:number_of_bedrooms, 
-              options_for_select(['Studio', '1 Bed', '2 Beds', '3 Beds', '4 Beds', '5 Beds', '6+ Beds'], 
+            <%= select_tag(:number_of_bedrooms,
+              options_for_select(['Studio', '1 Bed', '2 Beds', '3 Beds', '4 Beds', '5 Beds', '6+ Beds'],
                 [params[:number_of_bedrooms]]),
-              {class: "form-control", 
+              {class: "form-control",
               prompt: "Any"}) %>
           </div>
         </div>
@@ -74,7 +74,7 @@
       </div>
       <div class="col-xs-7 col-sm-left-padding">
         <div class='input-group date datepicker'>
-          <%= text_field_tag :move_in_date, params[:move_in_date], 
+          <%= text_field_tag :move_in_date, params[:move_in_date],
             placeholder: "date", class:"form-control", size:30 %>
           <label class="input-group-addon btn" for="date">
             <span class="fa fa-calendar open-datepicker"></span>
@@ -89,7 +89,7 @@
       </div>
       <div class="col-xs-7 col-sm-left-padding">
         <div class='input-group date datepicker'>
-          <%= text_field_tag :submitted_date, params[:submitted_date], 
+          <%= text_field_tag :submitted_date, params[:submitted_date],
             placeholder: "date", class:"form-control", size:30 %>
           <label class="input-group-addon btn" for="date">
             <span class="fa fa-calendar open-datepicker"></span>
@@ -99,7 +99,7 @@
     </div>
 
   </div>
-    
+
   <div class="col-xs-12 col-md-4">
 
     <div class="row vertical-padding">
@@ -107,10 +107,10 @@
         <%= label_tag(:renovated) %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
-        <%= select_tag(:renovated, 
-          options_for_select(['Yes', 'No'], 
+        <%= select_tag(:renovated,
+          options_for_select(['Yes', 'No'],
             [params[:renovated].blank? ? 'Active' : params[:renovated]]),
-          {class: "form-control", 
+          {class: "form-control",
           prompt: "Any"}) %>
       </div>
     </div>
@@ -120,10 +120,10 @@
         <%= label_tag(:status) %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
-        <%= select_tag(:status, 
-          options_for_select(['Active', 'Inactive'], 
+        <%= select_tag(:status,
+          options_for_select(['Active', 'Inactive'],
             [params[:status].blank? ? 'Active' : params[:status]]),
-          {class: "form-control", 
+          {class: "form-control",
           prompt: "Any"}) %>
       </div>
     </div>
@@ -146,17 +146,21 @@
           <li role="presentation"><a class="list-item-sm-padding" data-action="mark-read" role="menuitem" tabindex="-1">
             <i class="fa fa-fw fa-file-text"></i> Mark Read</a></li>
 
+          <li role="presentation"><a class="list-item-sm-padding" id="deleteMultiple" role="menuitem" tabindex="-1"
+            data-toggle="modal" data-target="#entryDeleteMultipleModal">
+            <i class="fa fa-fw fa-envelope"></i> Delete</a></li>
+
           <li role="presentation"><a class="list-item-sm-padding" id="emailListings" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#emailModal">
             <i class="fa fa-fw fa-envelope"></i> Email</a></li>
 
           <li role="presentation"><a class="list-item-sm-padding" data-action="PDF" role="menuitem" tabindex="-1">
             <i class="fa fa-fw fa-file-text"></i> PDF</a></li>
-            
+
           <li role="presentation"><a class="list-item-sm-padding" data-action="CSV" role="menuitem" tabindex="-1">
             <i class="fa fa-fw fa-list"></i> CSV</a></li>
         </ul>
       </div>
-    
+
     <span class="totals">
       &nbsp;&nbsp;<%= @entries.total_count %> Entries found
     </span>
@@ -194,9 +198,9 @@
           <% end %>
         </tr>
       </thead>
-    
+
       <tbody class="partner_table_body">
-        <%= render partial: 'forms/partner/entry', 
+        <%= render partial: 'forms/partner/entry',
         :collection => @entries, as: :entry %>
       </tbody>
     </table>
@@ -213,12 +217,12 @@
 </div>
 
 <!-- Email Modal -->
-<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" 
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog"
   aria-labelledby="emailModal" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
-        
+
         <%= form_tag(send_message_forms_partner_index_path, remote:true) do %>
         <div class="row vertical-padding">
           <div class="col-md-12">
@@ -245,13 +249,13 @@
         <br />
         <div class="row vertical-padding">
           <div class="col-md-12">
-            
+
           </div>
         </div>
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp; 
+        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
         <%= submit_tag "Send Email", class:"btn btn-warning" %>
       </div>
 

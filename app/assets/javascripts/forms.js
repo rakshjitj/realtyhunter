@@ -1,4 +1,4 @@
-// Factors out common functionality across all forms pages: 
+// Factors out common functionality across all forms pages:
 // "Parter With Us", "Contact Us", ... others will be added
 //
 
@@ -90,6 +90,17 @@ Forms = {};
 		$('#email_modal_recipients').val(Forms.selectedRoommateEmails.join(","));
 		$('#email_modal_message').val('');
 		e.preventDefault();
+	};
+
+	Forms.deleteMultiple = function() {
+		var section_name = $('#section-name').attr('data-name');
+		$.ajax({
+	    url: section_name + '/destroy_multiple_modal',
+	    data: {
+        ids: Forms.selectedEntries,
+	    },
+	    dataType: 'script'
+	  });
 	};
 
 	Forms.indexMenuActions = {

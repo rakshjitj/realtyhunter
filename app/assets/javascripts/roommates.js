@@ -106,6 +106,16 @@ Roommates = {};
 	  });
 	};
 
+	Roommates.deleteMultiple = function() {
+		$.ajax({
+	    url: 'roommates/destroy_multiple_modal',
+	    data: {
+        ids: Roommates.selectedRoommates,
+	    },
+	    dataType: 'script'
+	  });
+	};
+
 	Roommates.indexMenuActions = {
 		'mark-read': function() {
 			$.ajax({
@@ -304,6 +314,7 @@ Roommates = {};
 		// index page - selecting listings menu dropdown
 		$('#roommates #emailListings').click(Roommates.sendMessage);
 		$('#roommates #matchMultiple').click(Roommates.matchMultiple);
+		$('#roommates #deleteMultiple').click(Roommates.deleteMultiple);
 
 		$('#roommates tbody').on('click', 'i', Roommates.toggleListingSelection);
 		$('#roommates .select-all-listings').click(Roommates.selectAllListings);

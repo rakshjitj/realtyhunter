@@ -1,7 +1,7 @@
 Careers = {};
 
 (function() {
-	// any phone #'s listed in 'access info' on main index pg should 
+	// any phone #'s listed in 'access info' on main index pg should
   // be automatically detected
 	Careers.detectPhoneNumbers = function () {
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
@@ -31,7 +31,7 @@ Careers = {};
 	Careers.setupSortableColumns = function() {
 		$('#careers .th-sortable').click(function(e) {
 			e.preventDefault();
-			
+
 			if ($(this).hasClass('selected-sort')) {
 				// switch sort order
 				var i = $('.selected-sort i');
@@ -64,7 +64,7 @@ Careers = {};
 	// for searching on the index page
 	Careers.doSearch = function (sort_by_col, sort_direction) {
 		var search_path = $('#careers-search-filters').attr('data-search-path');
-	  
+
 	  Forms.showSpinner();
 
 	  $.ajax({
@@ -109,7 +109,7 @@ Careers = {};
 		Forms.hideSpinner();
 
 		// main index table
-		Careers.setupSortableColumns();		
+		Careers.setupSortableColumns();
 
 		$('.close').click(function() {
 			Forms.hideSpinner();
@@ -121,9 +121,11 @@ Careers = {};
 		$('#careers #name').change(Careers.throttledSearch);
 	  $('#careers #status').change(Careers.throttledSearch);
 	  $('#careers #submitted_date').blur(Careers.throttledSearch);
-	  
+
 		// index page - selecting listings menu dropdown
 		$('#careers #emailListings').click(Forms.sendMessage);
+		$('#careers #deleteMultiple').click(Forms.deleteMultiple);
+
 		$('#careers tbody').on('click', 'i', Forms.toggleListingSelection);
 		$('#careers .select-all-listings').click(Forms.selectAllListings);
 		$('#careers .selected-listings-menu').on('click', 'a', function() {

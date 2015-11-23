@@ -4,7 +4,7 @@ ContactUs = {};
 	ContactUs.setupSortableColumns = function() {
 		$('#contact-us .th-sortable').click(function(e) {
 			e.preventDefault();
-			
+
 			if ($(this).hasClass('selected-sort')) {
 				// switch sort order
 				var i = $('.selected-sort i');
@@ -38,7 +38,7 @@ ContactUs = {};
 	ContactUs.doSearch = function (sort_by_col, sort_direction) {
 		//console.log(sort_by_col, sort_direction);
 		var search_path = $('#contact-us-search-filters').attr('data-search-path');
-	  
+
 	  Forms.showSpinner();
 
 	  $.ajax({
@@ -85,7 +85,7 @@ ContactUs = {};
 		Forms.hideSpinner();
 
 		// main index table
-		ContactUs.setupSortableColumns();		
+		ContactUs.setupSortableColumns();
 
 		$('.close').click(function() {
 			Forms.hideSpinner();
@@ -102,6 +102,8 @@ ContactUs = {};
 
 		// index page - selecting listings menu dropdown
 		$('#contact-us #emailListings').click(Forms.sendMessage);
+		$('#contact-us #deleteMultiple').click(Forms.deleteMultiple);
+
 		$('#contact-us tbody').on('click', 'i', Forms.toggleListingSelection);
 		$('#contact-us .select-all-listings').click(Forms.selectAllListings);
 		$('#contact-us .selected-listings-menu').on('click', 'a', function() {

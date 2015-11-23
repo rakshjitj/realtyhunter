@@ -248,6 +248,8 @@ Rails.application.routes.draw do
       get :autocomplete_user_email
       get :autocomplete_building_formatted_street_address
       get :get_units
+      get 'destroy_multiple_modal'
+      delete 'destroy_multiple'
     end
   end
 
@@ -267,6 +269,8 @@ Rails.application.routes.draw do
         get 'download'
         patch 'mark_read'
         get :autocomplete_wufoo_contact_us_form_name
+        get 'destroy_multiple_modal'
+        delete 'destroy_multiple'
       end
     end
 
@@ -286,6 +290,8 @@ Rails.application.routes.draw do
         patch 'mark_read'
         get :autocomplete_wufoo_partner_form_name
         get :autocomplete_wufoo_partner_form_address_street_address
+        get 'destroy_multiple_modal'
+        delete 'destroy_multiple'
       end
     end
 
@@ -304,6 +310,8 @@ Rails.application.routes.draw do
         get 'download'
         patch 'mark_read'
         get :autocomplete_wufoo_career_form_name
+        get 'destroy_multiple_modal'
+        delete 'destroy_multiple'
       end
     end
 
@@ -325,6 +333,8 @@ Rails.application.routes.draw do
   #       patch 'mark_read'
   #       get :autocomplete_wufoo_listings_form_name
   #       get :autocomplete_wufoo_listings_form_email
+        # get 'destroy_multiple_modal'
+        # delete 'destroy_multiple'
   #     end
   #   end
 
@@ -344,6 +354,8 @@ Rails.application.routes.draw do
   #       patch 'mark_read'
   #       get :autocomplete_wufoo_listings_form_name
   #       get :autocomplete_wufoo_listings_form_email
+          # get 'destroy_multiple_modal'
+          # delete 'destroy_multiple'
   #     end
   #   end
   end

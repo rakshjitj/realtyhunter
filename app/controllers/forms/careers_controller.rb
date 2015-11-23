@@ -1,8 +1,9 @@
 module Forms
 	class CareersController < ApplicationController
 		skip_authorize_resource
-  	before_action :set_entry, except: [:index, :new, :create, :filter, 
-			:download, :send_update, :unarchive, :unarchive_modal, :detail_modal, :destroy, :delete_modal]
+  	before_action :set_entry, except: [:index, :new, :create, :filter,
+			:download, :send_update, :unarchive, :unarchive_modal, :detail_modal,
+			:destroy, :delete_modal, :destroy_multiple, :destroy_multiple_modal]
 		autocomplete :wufoo_career_form, :name, full: true
 
 		def index
@@ -13,7 +14,7 @@ module Forms
 		def download
 	  	ids = params[:entry_ids].split(',')
 	  	@entries = WufooCareerForm.where(id: ids)
-	    
+
 	  	respond_to do |format|
 	      format.csv do
 	        headers['Content-Disposition'] = "attachment; filename=\"careers-data.csv\""
@@ -34,7 +35,7 @@ module Forms
 	    msg = careers_params[:email_modal][:message]
 	    puts current_user, recipients, sub, msg
 	    WufooCareerForm.send_message(current_user, recipients, sub, msg)
-	    
+
 	    respond_to do |format|
 	      format.js { flash[:success] = "Message sent!"  }
 	    end
@@ -59,7 +60,7 @@ module Forms
 	  def filter
 	    set_entries
 	    respond_to do |format|
-	      format.js  
+	      format.js
 	    end
 	  end
 
@@ -68,20 +69,20 @@ module Forms
 	  	WufooCareerForm.mark_read(params[:id])
 	  	set_entries
 	  	respond_to do |format|
-	      format.js  
+	      format.js
 	    end
 	  end
-	  
+
 	  def delete_modal
 	  	@entry = WufooCareerForm.find(params[:id])
 	    respond_to do |format|
-	      format.js  
+	      format.js
 	    end
 	  end
 
 	  def hide_modal
 	    respond_to do |format|
-	      format.js  
+	      format.js
 	    end
 	  end
 
@@ -106,10 +107,30 @@ module Forms
 	    end
 	  end
 
+	  def destroy_multiple_modal
+	    @entries = WufooCareerForm.where(id: params[:ids]).order('name asc')
+	    respond_to do |format|
+	      format.js
+	    end
+	  end
+
+	  def destroy_multiple
+	    if !params[:ids].blank?
+	      WufooCareerForm.where(id: params[:ids]).delete_all
+	      params.delete('ids')
+	    end
+	    set_entries
+	    respond_to do |format|
+	      format.html { redirect_to forms_careers_url, notice: 'Entries were successfully deleted.' }
+	      format.json { head :no_content }
+	      format.js
+	    end
+	  end
+
 	  def unarchive_modal
 	  	@entry = WufooCareerForm.find(params[:id])
 	    respond_to do |format|
-	      format.js  
+	      format.js
 	    end
 	  end
 
@@ -146,7 +167,7 @@ module Forms
 
 			def custom_sort
 	      sort_column = params[:sort_by] || "created_at"
-	      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+	      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
 	      params[:sort_by] = sort_column
 	      params[:direction] = sort_order
 	      @entries = @entries.order(sort_column + ' ' + sort_order)
@@ -155,7 +176,7 @@ module Forms
 
 	  	def careers_params
 	  		data = params.permit(:sort_by, :direction, :filter, :name, :status, :licensed_agent, :id,
-	  			:how_did_you_hear_about_use, :source, :what_neighborhood_do_you_live_in, :submitted_date, 
+	  			:how_did_you_hear_about_use, :source, :what_neighborhood_do_you_live_in, :submitted_date,
 	  			email_modal: [:title, :message, :recipients])
 	  	end
 	end
