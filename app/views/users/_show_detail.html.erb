@@ -4,19 +4,17 @@
 <div class="row">
   <div class="col-md-offset-2 col-md-8">
     <div class="page-header">
-      
+
       <div class="row">
         <div class="col-md-6">
           <h1><%= @user.name %></h1>
         </div>
         <div class="col-md-6 form-label-responsive">
-          <!--%= render 'actions', :user => @user %-->
-
           <% if can? :manage, @user %>
             <%= link_to 'Edit', edit_user_path(@user) %>
-                
+
             <% if !@user.archived %>
-              | &nbsp;<%= link_to 'Delete', @user, method: :delete, 
+              | &nbsp;<%= link_to 'Delete', @user, method: :delete,
                 data: { confirm: "Are you sure you want to delete #{@user.name}?" } %>
               <% @prev_link = true %>
             <% end %>
@@ -48,10 +46,10 @@
       <div class="col-md-6">
         <% if @user.image %>
           <% if @user.image.file.exists?(:large) %>
-            <%= image_tag @user.image.file.url(:large), class: 'img-responsive', 
+            <%= image_tag @user.image.file.url(:large), class: 'img-responsive',
               alt: @user.image.file.url(:large) %>
           <% else %>
-            <%= image_tag @user.image.file.url(:medium), class: 'img-responsive', 
+            <%= image_tag @user.image.file.url(:medium), class: 'img-responsive',
               alt: @user.image.file.url(:medium) %>
           <% end %>
         <% else %>
@@ -68,7 +66,7 @@
 
             <strong><%= @user.employee_title.display_name %>
             <% if @user.is_agent? %>
-              <% @sp = @user.agent_specialties; if @sp.length > 0 %> 
+              <% @sp = @user.agent_specialties; if @sp.length > 0 %>
                 | <%= @sp.join(", ") %>
               <% end %>
             <% end %>
@@ -85,11 +83,11 @@
 
               <% if current_user.can_kick(@user) %>
                 <%= link_to '(Kick off team)', admin_kick_user_path(user), :remote => true, method: :post, data: { confirm: "Are you sure you want to kick #{@user.name} off #{@user.manager.name.titleize}'s team?" } %>
-              <% end %> 
+              <% end %>
             </div>
           </div>
         <% end %>
-        
+
         <div class="row">
           <div class="col-md-12">
           <strong>e &nbsp;|</strong> <%= mail_to @user.email, @user.email %>
@@ -122,7 +120,7 @@
       </div>
     </div><!-- end top half -->
 
-    
+
 
     <!-- ******** EMPLOYEES ********** -->
     <% if @user.subordinates.length > 0 %>
@@ -140,7 +138,7 @@
               <div class="col-md-3">
                 <%= link_to @user.subordinates[i].name, @user.subordinates[i] %>
               </div>
-              
+
             <% end %>
           </div>
         </div>
@@ -165,9 +163,9 @@
 
 
 <div id="listings" data-search-path="<%= filter_listings_user_path %>">
-  <%= render partial:'shared/listings', locals: { 
-    model: @user, 
-    residential_units: @residential_units, 
+  <%= render partial:'shared/listings', locals: {
+    model: @user,
+    residential_units: @residential_units,
     res_images: @res_images,
     commercial_units: @commercial_units,
     com_images: @com_images } %>

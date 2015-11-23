@@ -4,7 +4,7 @@ class OfficesController < ApplicationController
   before_action :set_company, except: [:destroy]
   before_action :set_office, except: [:new, :create, :index]
   etag { current_user.id }
-  
+
   # GET /offices
   # GET /offices.json
   def index
@@ -50,7 +50,7 @@ class OfficesController < ApplicationController
 
     respond_to do |format|
       if @office.save
-        flash[:success] = 'Office was successfully created.' 
+        flash[:success] = 'Office was successfully created.'
         format.html { redirect_to company_office_path(@company, @office)}
         format.json { render :show, status: :created, location: @office }
       else
@@ -95,7 +95,7 @@ class OfficesController < ApplicationController
     end
 
     def set_offices
-      @offices = Office.unarchived.where(company: @company)
+      @offices = Office.unarchived.includes(:company).where(company: @company)
     end
 
     def set_company
@@ -108,16 +108,16 @@ class OfficesController < ApplicationController
       param_obj = office_params
       param_obj[:office].each{ |k,v| param_obj[k] = v };
       param_obj.delete("office")
-      
+
       param_obj
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def office_params
-      params.permit(:direction, :filter, :street_number, :route, 
-        :sublocality, :administrative_area_level_2_short, :administrative_area_level_1_short, 
+      params.permit(:direction, :filter, :street_number, :route,
+        :sublocality, :administrative_area_level_2_short, :administrative_area_level_1_short,
         :postal_code, :country_short, :lat, :lng, :place_id,
-        :office => [:formatted_street_address, :name, :telephone, :street_address, :city, 
+        :office => [:formatted_street_address, :name, :telephone, :street_address, :city,
         :state, :zipcode, :fax ])
     end
 end

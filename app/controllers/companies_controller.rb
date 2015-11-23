@@ -18,7 +18,6 @@ class CompaniesController < ApplicationController
   # GET /companies/1.json
   def show
     @employee_titles = EmployeeTitle.all.map{|e| e.display_name}
-    @agent_types = AgentType.all.map{|e| e.display_name}
   end
 
   # GET /companies/new

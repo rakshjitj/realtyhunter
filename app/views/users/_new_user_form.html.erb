@@ -1,7 +1,7 @@
 <%= form_for(@user, html: { class: "directUpload" }) do |f| %>
-  <%= render :partial => 'shared/error_messages', 
+  <%= render :partial => 'shared/error_messages',
       :locals => {:model => @user} %>
-  
+
   <div class="field">
     <%= f.label :name, "Name" %><br>
     <%= f.text_field :name, class: 'form-control', :required => true %>
@@ -25,55 +25,48 @@
 
   <div class="field">
     <%= f.label :company_id, "Company:" %><br>
-    <%= f.select(:company_id, options_for_select(@companies.collect {|t| [t.name.titleize, t.id]}), 
+    <%= f.select(:company_id, options_for_select(@companies.collect {|t| [t.name.titleize, t.id]}),
       {prompt: "Choose one..."},
       { id: 'companies_select',
-        :required => true, 
+        :required => true,
       class: 'form-control',
       :include_blank => true}) %>
   </div>
 
   <div class="field">
     <%= f.label :office_id, "Office" %><br>
-    <%= f.select(:office_id, options_for_select(@offices.collect {|t| [t.name.titleize, t.id]}), 
+    <%= f.select(:office_id, options_for_select(@offices.collect {|t| [t.name.titleize, t.id]}),
       {prompt: "Choose one..."},
       { id: 'offices_select',
-        :required => true, 
+        :required => true,
         class: 'form-control',
         :include_blank => true}) %>
   </div>
 
-  <div class="row">
-    <div class="col-md-4">
-      <div class="field">
-        <%= f.label :employee_title_id, "Role within the company" %><br>
-        <%= f.select(:employee_title_id, options_for_select(@employtee_titles.collect {|t| [t.name.titleize, t.id]}), 
-          {prompt: "Choose one..."},
-          :required => true, 
-          class: 'form-control',
-          :include_blank => true,
-          data: { 
-            agent_title_name: @agent_title.name,
-            user_title_name: @user.employee_title.name
-          }) %>
-      </div>
-    </div>
-
-    <div class="col-md-4 agent-type">
-      <div class="field " >
-        <%= f.label :agent_types, "Areas you work in" %><br>
-        <%= f.select(:agent_types, options_for_select(AgentType.all.collect {|t| [t.name.titleize]}, ['Residential']),
-            {},
-            {
-            :multiple => true,
-            class: 'form-control' } ) %>
-      </div>
-    </div>
+  <div class="field">
+    <%= f.label :employee_title_id, "Job title" %><br>
+    <%= f.select(:employee_title_id, options_for_select(@employtee_titles.collect {|t| [t.name.titleize, t.id]}),
+      {prompt: "Choose one..."},
+      :required => true,
+      class: 'form-control',
+      :include_blank => true,
+      ) %>
   </div>
 
+  <div class="col-md-4">
+    <%= f.label :role_ids, "Enabled permissions", class: 'required' %><br>
+    <%= f.select(:role_ids,
+      options_for_select(Role.all.collect {|t| [t.name.titleize, t.id]},
+      @user.role_ids.length > 0 ? @user.role_ids : @default_role_set),
+      {},
+      required: true,
+      multiple: true,
+      class: 'form-control',
+      size: 8) %>
+  </div>
 
   <div class="actions">
     <%= f.submit class: "btn btn-warning" %>
-    
+
   </div>
 <% end %>

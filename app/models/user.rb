@@ -1,21 +1,14 @@
 class User < ActiveRecord::Base
   rolify
-  has_and_belongs_to_many :roles, :join_table => :users_roles
-
-  def has_role?(role_name)
-    self.roles.any? {|r| r.name == role_name.to_s}
-  end
-
   default_scope { order("users.name ASC") }
   scope :unarchived, ->{where(archived: false)}
 
+  has_and_belongs_to_many :roles, :join_table => :users_roles
   belongs_to :office, touch: true
   belongs_to :company, touch: true
-  belongs_to :manager, :class_name => "User"#, : true
+  belongs_to :manager, :class_name => "User"
   belongs_to :employee_title
-
   has_many   :subordinates, :class_name => "User", :foreign_key => "manager_id"
-
   # A unit can have up to 2 assigned or "primary" agents
   # if you are assigned agent #1
   has_many :primary_units, class_name: 'Unit', :foreign_key => 'primary_agent_id'
@@ -23,21 +16,15 @@ class User < ActiveRecord::Base
   has_many :primary2_units, class_name: 'Unit', :foreign_key => 'primary_agent2_id'
   # A unit can have only 1 listing agent
   has_many :listed_units,  class_name: 'Unit', :foreign_key => 'listing_agent_id'
-
   has_many :roommates, class_name: 'WufooRoommatesWebForm'
   has_many :roomsharing_applications
-
   has_many :user_waterfalls, class_name: 'UserWatefall', foreign_key: 'parent_agent_id'
-
   has_one :image, dependent: :destroy
   has_many :announcements
   has_many :deals
 
-	attr_accessor :remember_token, :activation_token, :reset_token, :approval_token, :agent_types, :batch
-  before_create :create_activation_digest
+	before_create :create_activation_digest
   before_create :set_auth_token # for API
-
-  validates :name, presence: true, length: {maximum: 50}
 
   before_save :downcase_email
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
@@ -49,14 +36,18 @@ class User < ActiveRecord::Base
   validates :mobile_phone_number, length: {maximum: 25}, presence: true,
     format: { with: VALID_TELEPHONE_REGEX }
 
+  validates :name, presence: true, length: {maximum: 50}
   has_secure_password
 	validates :password, length: { minimum: 6 }, allow_blank: true
-
   validates :bio, length: {maximum: 2000}
-
   validates :company, presence: true
   validates :office, presence: true
-  #validates :auth_token, presence: true
+
+  attr_accessor :remember_token, :activation_token, :reset_token, :approval_token, :agent_types, :batch
+
+  def has_role?(role_name)
+    self.roles.any? {|r| r.name == role_name.to_s}
+  end
 
   # Returns the hash digest of the given string.
   def User.digest(string)
@@ -107,25 +98,25 @@ class User < ActiveRecord::Base
 
   # Forgets a user.
   def forget
-    update_columns(remember_digest: nil)
+    update(remember_digest: nil)
   end
 
   # Activates an account.
   def activate
-    update_columns(activated: true, activated_at: Time.zone.now)
+    update(activated: true, activated_at: Time.zone.now)
   end
 
   # Marks an account as approved by an admin
   def approve
-    update_columns(approved: true, approved_at: Time.zone.now)
+    update(approved: true, approved_at: Time.zone.now)
   end
 
   def unapprove
-    update_columns(approved: false, approved_at: nil)
+    update(approved: false, approved_at: nil)
   end
 
   def archive
-    self.update_attribute(:archived, true)
+    self.update(archived: true)
   end
 
   def self.find_unarchived(id)
@@ -215,7 +206,7 @@ class User < ActiveRecord::Base
   # user.agent_types & user.employee_title
   def update_roles
     # clear out old roles
-    self.roles = [];
+    #self.roles = [];
 
     # add a role representing your position in the company.
     # default to an agent if none otherwise specified
@@ -224,37 +215,45 @@ class User < ActiveRecord::Base
       self.save
     end
 
-    # (almost) everyone should always be able to see residential stuff
-    if self.employee_title != EmployeeTitle.external_vendor
-      # note: this isn't really used anymore...
-      # we decided that everyone should be able to view residential/commercial/sales listings
+    # assign sensible defaults, if nothing is otherwise specified
+    if !self.roles.length
       self.add_role :residential
       self.add_role :commercial
+      self.add_role :sales
+      self.add_role :agent
     end
+
+    # (almost) everyone should always be able to see residential stuff
+    # if self.employee_title != EmployeeTitle.external_vendor
+    #   # note: this isn't really used anymore...
+    #   # we decided that everyone should be able to view residential/commercial/sales listings
+    #   self.add_role :residential
+    #   self.add_role :commercial
+    # end
 
     # if you're an agent, add in specific roles for the type of
     # agent that you are
-    if self.employee_title == EmployeeTitle.agent
-      # cull out empty selections
-      if self.agent_types
-        self.agent_types = self.agent_types.select(&:present?)
-      end
-      # always make sure they at least have one specialty area selected
-      if !self.agent_types || !self.agent_types.any?
-        # note: this isn't really used anymore...
-        # we decided that everyone should be able to view residential/commercial/sales listings
-        self.add_role :residential
-        self.add_role :commercial
-      else
-        # otherwise, note the specialities they indicated
-        self.agent_types.each do |role|
-          self.add_sanitized_role(role, true)
-        end
+    # if self.employee_title == EmployeeTitle.agent
+    #   # cull out empty selections
+    #   if self.agent_types
+    #     self.agent_types = self.agent_types.select(&:present?)
+    #   end
+    #   # always make sure they at least have one specialty area selected
+    #   if !self.agent_types || !self.agent_types.any?
+    #     # note: this isn't really used anymore...
+    #     # we decided that everyone should be able to view residential/commercial/sales listings
+    #     self.add_role :residential
+    #     self.add_role :commercial
+    #   else
+    #     # otherwise, note the specialities they indicated
+    #     self.agent_types.each do |role|
+    #       self.add_sanitized_role(role, true)
+    #     end
 
-      end
-    else
-      self.add_sanitized_role(self.employee_title.name, false)
-    end
+    #   end
+    # else
+    #   self.add_sanitized_role(self.employee_title.name, false)
+    # end
   end
 
   def handles_residential?
@@ -269,10 +268,6 @@ class User < ActiveRecord::Base
     self.has_role? :sales
   end
 
-  def is_manager?
-    self.has_role? :manager
-  end
-
   def is_company_admin?
     self.has_role? :company_admin
   end
@@ -283,6 +278,53 @@ class User < ActiveRecord::Base
 
   def is_agent?
     employee_title == EmployeeTitle.agent
+  end
+
+  # does this user actually manage other agents?
+  def is_manager?
+    self.has_role? :manager
+  end
+
+  # Many roles can be considered 'managerial' from
+  # a staffing point of view. Any employees that work
+  # in operations should have permission to edit
+  # listings or users. This is a catch-all function.
+  def is_management?
+    # self.roles.any? {|r| r.name == role_name.to_s}
+    management_roles = [
+      :super_admin,
+      :company_admin,
+      :operations,
+      :data_entry,
+      :broker,
+      :associate_broker,
+      :manager,
+      :closing_manager]
+    management_roles.each do |r|
+      return true if self.has_role? r
+    end
+
+    false
+    # if (has_role? :super_admin) ||
+    #   (has_role? :company_admin) ||
+    #   (has_role? :operations) ||
+    #   (has_role? :data_entry) ||
+    #   (has_role? :broker) ||
+    #   (has_role? :associate_broker) ||
+    #   (has_role? :manager) ||
+    #   (has_role? :closing_manager)
+    #   true
+    # else
+    #   false
+    # end
+  end
+
+  def is_listings_manager?
+    if has_role? :listings_manager
+      true
+    else
+      false
+    end
   end
 
   def make_manager
@@ -314,31 +356,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def is_management?
-    if (has_role? :super_admin) ||
-      (has_role? :company_admin) ||
-      (has_role? :operations) ||
-      (has_role? :data_entry) ||
-      (has_role? :broker) ||
-      (has_role? :associate_broker) ||
-      (has_role? :manager) ||
-      (has_role? :closing_manager)
-      true
-    else
-      false
-    end
-  end
-
-  def is_listings_manager?
-    if has_role? :listings_manager
-      true
-    else
-      false
-    end
-  end
-
   def coworkers
-    company.users
+    company.users.preload(:roles)
   end
 
   def self.get_all_agent_specialties(lists)
@@ -350,38 +369,25 @@ class User < ActiveRecord::Base
   #   Image.where(user_id: user_ids).index_by(&:user_id)
   # end
 
-  # keep a running list of my specialties so we
+  # keep a running list of our specialties so we
   # don't always have to recalculate
   def agent_specialties
-    specialties = AgentType.where(name: self.roles.map(&:name)).map(&:name)
-    specialties = specialties.map {|s| s.titleize}
+    specialties = []
+
+    if has_role? :residential
+      specialties << 'Residential'
+    end
+    if has_role? :commercial
+      specialties << 'Commercial'
+    end
+    if has_role? :sales
+      specialties << 'Sales'
+    end
+    if has_role? :roomsharing
+      specialties << 'Roomsharing'
+    end
+
     specialties
-  end
-
-  def agent_specialties_as_indicies
-    AgentType.where(name: self.roles.map(&:name)).map(&:id)
-  end
-
-  def add_sanitized_role(unsan_role_name, is_agent_type)
-    # input has not been sanitized. let's translate it into our
-    # naming scheme
-
-    # don't allow roles that are not approved by us
-    @real_role_name = nil
-    if is_agent_type
-      @name = unsan_role_name.downcase.gsub(' ', '_')
-      @real_role = AgentType.where(name: @name).first
-      @real_role_name = @real_role.name
-    else
-      @real_role = EmployeeTitle.where(name: unsan_role_name).first
-      @real_role_name = @real_role.name.downcase.gsub(' ', '_')
-    end
-
-    if @real_role_name
-      self.add_role @real_role_name
-    else
-      raise "No role found by that name [#{@unsan_role_name}]"
-    end
   end
 
   # In order to approve another user, we must be:

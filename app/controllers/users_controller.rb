@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     params[:status] = 'Active'
-    @agent_title = EmployeeTitle.agent
+    #@agent_title = EmployeeTitle.agent
     set_users
     @title = 'All users'
   end
@@ -66,19 +66,16 @@ class UsersController < ApplicationController
   # GET /users/new
   # GET /signup
   def new
-    #@company = Company.find_by(name: "MyspaceNYC")
     @companies = Company.all
     @offices = []
     @employtee_titles = EmployeeTitle.where.not("name like ?", "%admin%")
-    @agent_title = EmployeeTitle.agent
     @user = User.new
   end
 
   # GET /users/batch_new
   def admin_new
-    @agent_title = EmployeeTitle.agent
+    @default_role_set = Role.where(name: ['residential', 'commercial', 'sales']).map(&:id)
     @user = User.new
-    @user.employee_title = EmployeeTitle.agent
   end
 
   # POST /users/batch_create
@@ -267,7 +264,7 @@ class UsersController < ApplicationController
     # Confirms the correct user.
     def set_user
       @user = User.find_unarchived(params[:id])
-      @agent_title = EmployeeTitle.agent
+      #@agent_title = EmployeeTitle.agent
       set_units
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that user account is not active."
@@ -290,8 +287,11 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:lock_version, :email, :name, :mobile_phone_number, :bio, :password,
-        :password_confirmation, :avatar, :remove_avatar, :remote_avatar_url, :phone_number, :status,
-        :mobile_phone_number, :employee_title_id, :company_id, :office_id, :file, agent_types: [])
+      params.require(:user).permit(:lock_version, :email, :name, :mobile_phone_number,
+        :bio, :password, :password_confirmation, :avatar, :remove_avatar,
+        :remote_avatar_url, :phone_number, :status, :mobile_phone_number,
+        :employee_title_id, :company_id, :office_id, :file,
+        role_ids: [],
+        agent_types: [])
     end
 end

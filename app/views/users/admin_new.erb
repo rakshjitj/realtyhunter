@@ -1,87 +1,96 @@
 <% provide(:title, 'Admin User Signup') %>
+
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-6 col-md-offset-3">
+
     <div class="page-header">
       <div class="row">
-        <div class="col-md-6">
-          <h1>New Employee Signup</h1>
+        <div class="col-md-9">
+          <h1 class="hidden-xs hidden-sm">New Employee Signup</h1>
+          <h2 class="hidden-md hidden-lg">New Employee Signup</h2>
         </div>
-        <div class="col-md-6 form-label-responsive">
-          <%= link_to 'All Employees', employees_company_path(current_user.company) %>
+        <div class="col-md-3 form-label-responsive">
+          <%= link_to 'View Employees', employees_company_path(current_user.company) %>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
 <div class="row">
   <div class="col-md-12">
-    
+
     <p>Users will be notified of their accounts immediately after creation.</p><br />
 
     <%= form_for(@user, :url => admin_create_users_path) do |f| %>
       <%= render :partial => 'shared/error_messages', :locals => {:model => @user} %>
-      
+
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-12">
           <div class="field">
-            <%= f.label :name, "Name" %><br>
+            <%= f.label :name, "Full name" %><br>
             <%= f.text_field :name, class: 'form-control' %>
           </div>
         </div>
-        <div class="col-md-3">
+      </div>
+      <div class="row">
+        <div class="col-md-12">
           <div class="field">
             <%= f.label :email, "Email (username)" %><br>
             <%= f.email_field :email, class: 'form-control' %>
           </div>
         </div>
-
-        <div class="col-md-2">
+      </div>
+      <div class="row">
+        <div class="col-md-12">
           <div class="field">
             <%= f.label :office_id, "Office" %><br>
-            <%= f.select(:office_id, options_for_select(current_user.company.offices.collect {|t| [t.name.titleize, t.id]}), 
+            <%= f.select(:office_id, options_for_select(current_user.company.offices.collect {|t| [t.name.titleize, t.id]}),
               {prompt: "Choose one..."},
-              :required => true, 
+              :required => true,
               class: 'form-control',
               :include_blank => true) %>
           </div>
         </div>
-
-        <div class="col-md-2">
+      </div>
+      <div class="row">
+        <div class="col-md-12">
           <div class="field">
-            <%= f.label :employee_title_id, "Role within the company" %><br>
-            <%= f.select(:employee_title_id, options_for_select(EmployeeTitle.all.collect {|t| [t.name.titleize, t.id]}), 
+            <%= f.label :employee_title_id, "Job title" %><br>
+            <%= f.select(:employee_title_id, options_for_select(EmployeeTitle.all.collect {|t| [t.name.titleize, t.id]}, [EmployeeTitle.agent.id]),
               {prompt: "Choose one..."},
-              :required => true, 
+              :required => true,
               class: 'form-control',
               :include_blank => true,
-              data: { 
-                agent_title_name: @agent_title.name,
-                user_title_name: @user.employee_title.name
-              }) %>
+              # data: {
+              #   agent_title_name: @agent_title.name,
+              #   user_title_name: @user.employee_title.name
+              # }
+              ) %>
           </div>
         </div>
-
-        <div class="col-md-2 agent-type">
-          <div class="field " >
-            <%= f.label :agent_types, "Specialty Areas" %><br>
-            <%= f.select(:agent_types, options_for_select(AgentType.all.collect {|t| [t.name.titleize]}, ['Residential']),
-                {},
-                {
-                :multiple => true,
-                class: 'form-control' } ) %>
-          </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <%= f.label :role_ids, "Enabled permissions", class: 'required' %><br>
+          <%= f.select(:role_ids,
+            options_for_select(Role.all.collect {|t| [t.name.titleize, t.id]},
+            @user.role_ids.length > 0 ? @user.role_ids : @default_role_set),
+            {},
+            required: true,
+            multiple: true,
+            class: 'form-control',
+            size: 8) %>
         </div>
       </div><!-- row -->
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-12">
           <div class="field">
+            <br />
             <%= f.label :mobile_phone_number %><br>
             <%= f.text_field :mobile_phone_number, class: 'form-control' %>
           </div>
         </div>
       </div>
-      
+
       <div class="actions">
         <%= f.submit class: "btn btn-warning" %>
       </div>
@@ -89,3 +98,7 @@
 
   </div>
 </div>
+
+
+  </div><!-- end main col -->
+</div><!-- end main row -->

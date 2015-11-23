@@ -10,39 +10,40 @@
 
 <div id="user-search-filters" data-search-path="<%= filter_users_path %>"></div>
 <%= form_tag users_path, :method => 'get' do %>
-<div class="row vertical-padding">
-  <div class="col-md-2">
-    <%= label_tag :name_email, "Filter by name:" %>
+<div class="row">
+  <div class="col-md-9">
+    <div class="row vertical-padding">
+      <div class="col-md-2">
+        <%= label_tag :name_email, "Name/Email" %>
+      </div>
+      <div class="col-md-4">
+        <%= autocomplete_field_tag :name_email, params[:search],
+          autocomplete_user_name_users_path,
+          update_elements: {},
+          placeholder: "Joe Smith",
+          size: 30, class:'form-control' %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <%= label_tag :status %>
+      </div>
+      <div class="col-md-4">
+        <%= params[:status] %>
+        <%= select_tag(:status,
+          options_for_select(['Active', 'Deleted'],
+            [params[:status].blank? ? 'Active' : params[:status]]),
+          {class: "form-control",
+          prompt: "Any"}) %>
+      </div>
+    </div>
   </div>
-  <div class="col-md-3">
-    <%= autocomplete_field_tag :name_email, params[:search],
-      autocomplete_user_name_users_path,
-      update_elements: {},
-      placeholder: "Joe Smith",
-      size: 30, class:'form-control' %>
-  </div>
-  <div class="col-md-1">
-    <%= label_tag :status %>
-  </div>
-  <div class="col-md-2">
-    <%= params[:status] %>
-    <%= select_tag(:status,
-      options_for_select(['Active', 'Deleted'],
-        [params[:status].blank? ? 'Active' : params[:status]]),
-      {class: "form-control",
-      prompt: "Any"}) %>
-  </div>
-</div>
-
-<div class="row vertical-padding">
-  <div class="col-md-6 vertical-align2 totals">
-  <br />
+  <div class="col-md-3 vertical-align2 totals pull-right">
     <%= @users.total_count %> Users found &nbsp;&nbsp;
-  </div>
-  <div class="col-md-3 pull-right">
     <%= render partial: 'shared/pagination', locals: {models: @users} %>
   </div>
 </div>
+
 <% end %>
 
 <div class="row">

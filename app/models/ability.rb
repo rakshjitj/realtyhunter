@@ -21,13 +21,13 @@ class Ability
     can :manage, Building, :company_id => user.company.id
 
     can :manage, ResidentialListing do |residential_listing|
-      !residential_listing.unit || user.is_management? || (residential_listing.unit.building.company_id == user.company_id && user.handles_residential?)
+      !residential_listing.unit || user.is_management? #|| (residential_listing.unit.building.company_id == user.company_id && user.handles_residential?)
     end
     can :manage, SalesListing do |sales_listing|
       !sales_listing.unit || user.is_management? || (sales_listing.unit.building.company_id == user.company_id && user.handles_sales?)
     end
     can :manage, CommercialListing do |commercial_listing|
-      !commercial_listing.unit || user.is_management? || (commercial_listing.unit.building.company_id == user.company_id && user.handles_commercial?)
+      !commercial_listing.unit || user.is_management? #|| (commercial_listing.unit.building.company_id == user.company_id && user.handles_commercial?)
     end
   end
 
@@ -60,7 +60,7 @@ class Ability
     if user.has_role?(:company_admin)
       can :manage, UserWaterfall
     end
-    
+
     can :manage, Deal
   end
 
@@ -77,7 +77,7 @@ class Ability
       residential_listing.unit.building.company_id == user.company_id #&& user.handles_residential?
     end
     can :read, SalesListing do |sales_listing|
-        !sales_listing.unit || user.is_management? || (sales_listing.unit.building.company_id == user.company_id) #&& user.handles_residential?)
+        !sales_listing.unit || user.is_management? #|| (sales_listing.unit.building.company_id == user.company_id) #&& user.handles_residential?)
       end
     can :read, CommercialListing do |commercial_listing|
       commercial_listing.unit.building.company_id == user.company_id #&& user.handles_commercial?
@@ -97,7 +97,7 @@ class Ability
 
     # company admins can do anything, but for his/her particular company only
     # managers/data entry can do most things
-    elsif user.has_role?(:company_admin) || user.has_role?(:manager) || 
+    elsif user.has_role?(:company_admin) || user.has_role?(:manager) ||
       user.has_role?(:data_entry) || user.has_role?(:closing_manager) ||
       user.has_role?(:listings_manager)
 
@@ -112,7 +112,7 @@ class Ability
 
       # user can enter in all kinds of data
       # if labelled "posting admin", then this is an agent who has been
-      # entrusted with managing listings. They should still show up labelled as 
+      # entrusted with managing listings. They should still show up labelled as
       # an "agent" on the rest of the site
       elsif user.has_role?(:data_entry) || user.has_role?(:listings_manager)
 
@@ -167,10 +167,10 @@ class Ability
 
         can :read, User, :company_id => user.company_id
       end
-      
+
       can :manage, User, :id => user.id
       roomsharing_permissions(user)
     end
-    
+
   end
 end

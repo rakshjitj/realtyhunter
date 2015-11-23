@@ -23,11 +23,11 @@ class Company < ActiveRecord::Base
 	has_many :wufoo_partner_forms, dependent: :destroy
 	has_many :wufoo_career_forms, dependent: :destroy
 	#has_many :wufoo_listings_forms, dependent: :destroy
-	
+
 	#attr_accessor :agent_types, :employee_titles
 	#attr_access :building_amenities
 
-	validates :name, presence: true, length: {maximum: 100}, 
+	validates :name, presence: true, length: {maximum: 100},
 		uniqueness: { case_sensitive: false }
 
 	validates :name, presence: true, length: {maximum: 50},
@@ -58,7 +58,7 @@ class Company < ActiveRecord::Base
 			.joins(:roles, :office, :employee_title)
 			.where('roles.name = ?', 'manager')
 			.includes( :manager, )
-			.select('users.company_id', 'users.archived', 'users.id', 
+			.select('users.company_id', 'users.archived', 'users.id',
         'users.name', 'users.email', 'users.activated', 'users.approved', 'users.last_login_at',
         'users.mobile_phone_number',
         'employee_titles.id AS employee_title_id',
@@ -71,7 +71,7 @@ class Company < ActiveRecord::Base
 		self.users.unarchived
 			.joins(:office, :employee_title)
 			.order(:name)
-			.select('users.company_id', 'users.archived', 'users.id', 
+			.select('users.company_id', 'users.archived', 'users.id',
         'users.name', 'users.email', 'users.activated', 'users.approved', 'users.last_login_at',
         'users.mobile_phone_number',
         'employee_titles.id AS employee_title_id',
@@ -84,7 +84,7 @@ class Company < ActiveRecord::Base
 		self.users.unarchived
       .joins(:office, :employee_title)
       .includes(:manager, :roles)
-      .select('users.company_id', 'users.archived', 'users.id', 
+      .select('users.company_id', 'users.archived', 'users.id',
         'users.name', 'users.email', 'users.activated', 'users.approved', 'users.last_login_at',
         'employee_titles.name AS employee_title_name', 'employee_titles.id AS employee_title_id',
         'offices.name AS office_name', 'offices.id as office_id',
@@ -95,13 +95,6 @@ class Company < ActiveRecord::Base
 	# 	#users.unarchived.includes(:employee_title, :office, :image, :company, :manager).select{|u| u if u.is_data_entry? }
 	# 	User.joins(:roles).where('roles.name = ?', 'manager').includes(:employee_title, :office, :image, :manager)
 	# end
-
-	def update_agent_types
-		agent_types.split(/\r?\n/).each {|a|
-      sanitized_name = AgentType.sanitize_name(a)
-      AgentType.find_or_create_by(name: sanitized_name)
-    }
-	end
 
 	def update_employee_titles
 		employee_titles.split(/\r?\n/).each {|e|
@@ -115,7 +108,7 @@ class Company < ActiveRecord::Base
     if !query_params || !query_params[:name]
       return running_list
     end
-    
+
     query_string = query_params[:name]
     query_string = query_string[0..500] # truncate for security reasons
     terms = query_string.split(" ")
@@ -128,7 +121,7 @@ class Company < ActiveRecord::Base
 
 	# Create the default environment options for the company.
 	# Admins can always change them once the company has been created.
-	def create_environment		
+	def create_environment
 		BuildingAmenity.create!([
 			{name: "Fitness Center", company: self},
 			{name: "Sauna", company: self},

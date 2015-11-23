@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
   skip_authorize_resource
   skip_before_action :logged_in_user, only: [:new, :create]
-  
+
   def new
   end
 
@@ -47,7 +47,7 @@ class SessionsController < ApplicationController
 
   def user_home
     redirect_to root_path unless current_user
-    
+
     if current_user.is_external_vendor?
       redirect_to current_user
     elsif current_user.handles_residential?
