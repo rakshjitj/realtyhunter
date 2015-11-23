@@ -66,10 +66,14 @@ class Deal < ActiveRecord::Base
     end
 
     if !params[:closed_date_start].blank?
-      deals = deals.where("deals.closed_date > ?", params[:closed_date_start]);
+      deals = deals.where("deals.closed_date > ?", params[:closed_date_start])
     end
     if !params[:closed_date_end].blank?
-      deals = deals.where("deals.closed_date < ?", params[:closed_date_end]);
+      deals = deals.where("deals.closed_date < ?", params[:closed_date_end])
+    end
+
+    if !params[:state].blank? && params[:state] != 'Any'
+      deals = deals.where("deals.state = ?", Deal.states[params[:state].downcase])
     end
 
     deals

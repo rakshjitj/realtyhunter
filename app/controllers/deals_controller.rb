@@ -8,7 +8,7 @@ class DealsController < ApplicationController
   autocomplete :landlord, :code, full: true
 
 	def index
-		respond_to do |format|
+    respond_to do |format|
       format.html do
         set_deals
       end
@@ -116,6 +116,11 @@ class DealsController < ApplicationController
   	end
 
 		def set_deals
+      # set a default status if none otherwise specified
+      if params[:state].blank?
+        params[:state] = 'Any'
+      end
+
 			@deals = Deal.search(deal_params)
       @deals = custom_sort
 			@deals = @deals.page params[:page]

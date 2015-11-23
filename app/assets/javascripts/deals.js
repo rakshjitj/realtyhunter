@@ -48,6 +48,7 @@ Deals = {};
         landlord_code: $('#deals #landlord_code').val(),
         closed_date_start: $('#deals #closed_date_start').val(),
         closed_date_end: $('#deals #closed_date_end').val(),
+        state: $('#deals #state').val(),
         sort_by: sort_by_col,
         direction: sort_direction,
 	    },
@@ -92,15 +93,17 @@ Deals = {};
 		Forms.hideSpinner();
 
 		// change all date input fields to auto-open the calendar
-		$('.datepicker').datetimepicker({
-		  viewMode: 'days',
-		  format: 'MM/DD/YYYY',
-		  allowInputToggle: true
-		});
-		$('#deals .datepicker').each(function(idx) {
-			var available_by = $(this).attr('data-available-by');
-			$(this).data("DateTimePicker").date(available_by);
-		});
+		// $('.datepicker').datetimepicker({
+		//   viewMode: 'days',
+		//   format: 'MM/DD/YYYY',
+		//   allowInputToggle: true
+		// });
+		// if ($('#deals .datepicker').length) {
+		// 	$('#deals .datepicker').each(function(idx) {
+		// 		var available_by = $(this).attr('data-available-by');
+		// 		$(this).data("DateTimePicker").date(available_by);
+		// 	});
+		// }
 
 		// main index table
 		Deals.setupSortableColumns();
@@ -117,6 +120,7 @@ Deals = {};
 		$('#deals #landlord_code').change(Deals.throttledSearch);
 		$('#deals #closed_date_start').blur(Deals.throttledSearch);
 	  $('#deals #closed_date_end').blur(Deals.throttledSearch);
+	  $('#deals #state').change(Deals.throttledSearch);
 
 	  // edit
 	  if ($('#deals #deal_building_id').length) {

@@ -69,6 +69,14 @@
           placeholder: "code",
           class:'form-control' %>
       </div>
+      <div class="col-md-2 form-label-responsive">
+        <%= label_tag(:state, "State:") %>
+      </div>
+      <div class="col-md-2">
+        <%= select_tag(:state,
+          options_for_select(['Any', 'Accepted', 'Rejected', 'Dead'],
+          params[:state] ? params[:state].titleize : "Accepted"), class: 'form-control') %>
+      </div>
     </div>
 
     <div class="row vertical-padding">
