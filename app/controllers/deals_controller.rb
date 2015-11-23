@@ -24,14 +24,13 @@ class DealsController < ApplicationController
 	end
 
 	def new
+    @listings = Unit.none
     if params[:unit_id]
   		@deal = Deal.new(unit_id: params[:unit_id])
       if @deal.unit
         @listings = Unit.joins(:building)
         .where("buildings.id = ?", @deal.unit.building_id)
         .order('building_unit asc')
-      else
-        @listings = Unit.none
       end
     else
       @deal = Deal.new
@@ -117,7 +116,6 @@ class DealsController < ApplicationController
   	end
 
 		def set_deals
-      puts deal_params
 			@deals = Deal.search(deal_params)
       @deals = custom_sort
 			@deals = @deals.page params[:page]
@@ -141,10 +139,10 @@ class DealsController < ApplicationController
 
     def deal_params
     	data = params.permit(:sort_by, :direction, :address, :agent, :closed_date_start, :closed_date_end,
-        :landlord_code,
+        :landlord_code, :state,
     		deal: [:lock_version, :price, :client, :lease_term, :lease_start_date, :lease_expiration_date,
     			:closed_date, :move_in_date, :commission, :deal_notes, :listing_type, :is_sale_deal,
-    			:unit_id, :user_id, :building_unit, :building_id, :landlord_code])
+    			:unit_id, :user_id, :building_unit, :building_id, :landlord_code, :state])
 
       if data[:deal]
         # convert into a datetime obj
@@ -178,6 +176,10 @@ class DealsController < ApplicationController
             data[:deal][:full_address]  = unit.building.formatted_street_address
             data[:deal][:building_unit] = unit.building_unit
           end
+        end
+
+        if data[:deal][:state]
+          data[:deal][:state] = data[:deal][:state].downcase
         end
 
       end

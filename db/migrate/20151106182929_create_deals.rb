@@ -17,7 +17,7 @@ class CreateDeals < ActiveRecord::Migration
     	t.belongs_to :unit
     	t.belongs_to :user # closing_agents
         t.references :clients
-    	t.timestamps	
+    	t.timestamps
     end
 
     create_table :clients do |t|

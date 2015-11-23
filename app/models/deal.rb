@@ -4,10 +4,14 @@ class Deal < ActiveRecord::Base
   belongs_to :user
   has_many :clients
 
-  attr_accessor :building_id
+  enum state: [:accepted, :rejected, :dead]
+  validates :state, presence: true, inclusion: {
+    in: ['accepted', 'rejected', 'dead']
+  }
 
-  #validates :price, presence: true
   validates :unit_id, presence: true
+
+  attr_accessor :building_id
 
 	def archive
     self.archived = true
@@ -48,7 +52,7 @@ class Deal < ActiveRecord::Base
     deals = Deal.unarchived
       .joins(unit: :building)
       .select('deals.id', 'deals.archived', 'deals.price', 'deals.closed_date', 'deals.commission',
-        'deals.updated_at', 'deals.created_at',
+        'deals.updated_at', 'deals.created_at', 'deals.state',
         'units.id as unit_id', 'units.building_unit',
         'buildings.street_number || \' \' || buildings.route as street_address2',
         'buildings.formatted_street_address')
