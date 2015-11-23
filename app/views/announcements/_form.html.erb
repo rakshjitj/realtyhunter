@@ -24,7 +24,7 @@
           <div class="col-md-9">
             <%= f.select(:category,
               options_for_select(%w(Residential Commercial Sales Event),
-                [@announcement.category ? @announcement.category.titleize : '']),
+                [@announcement.category ? @announcement.category.titleize : 'Residential']),
               { prompt: "Choose one..."},
               class: 'form-control',
               required: true ) %>
