@@ -432,14 +432,14 @@ ResidentialListings = {};
 			return;
 		}
 		ResidentialListings.passiveRealTimeUpdate();
-		ResidentialListings.updateAnnouncements();
+		//ResidentialListings.updateAnnouncements();
 
 
 		// hide spinner on main index when first pulling up the page
 		document.addEventListener("page:restore", function() {
 		  Listings.hideSpinner();
 		  ResidentialListings.passiveRealTimeUpdate();
-		  ResidentialListings.updateAnnouncements();
+		  //ResidentialListings.updateAnnouncements();
 		});
 		Listings.hideSpinner();
 		// // hide the spinner when we are editing, but switch to a new tab
