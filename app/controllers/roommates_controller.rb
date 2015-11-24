@@ -228,9 +228,12 @@ class RoommatesController < ApplicationController
   end
 
   def check_availability
-    listing = ResidentialListing.where(unit_id: params[:unit_id]).limit(1).first
-    num_roommates = params[:ids].count + listing.roommates.count
-    @can_proceed = num_roommates <= listing.beds
+    @can_proceed = false
+    if !params[:ids].blank? && !params[:unit_id].blank?
+      listing = ResidentialListing.where(unit_id: params[:unit_id]).limit(1).first
+      num_roommates = params[:ids].count + listing.roommates.count
+      @can_proceed = num_roommates <= listing.beds
+    end
   end
 
   protected

@@ -109,7 +109,7 @@ ResidentialListings = {};
 	// update the announcements every 60 seconds
 	ResidentialListings.updateAnnouncements = function() {
 		//console.log('updateAnnouncements ', $('#residential').length);
-		if ($('#residential').length) {
+		if ($('#residential .announcement').length) {
 			//console.log('updating ann');
 			$.ajax({
 	      url: '/residential_listings/update_announcements',

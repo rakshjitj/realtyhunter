@@ -48,13 +48,13 @@ class UserWaterfallsController < ApplicationController
   def get_rate
   	@rate = UserWaterfall.get_rate(user_waterfall_params)
   	respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
   def delete_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -71,7 +71,7 @@ class UserWaterfallsController < ApplicationController
 
   def edit_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -114,7 +114,7 @@ class UserWaterfallsController < ApplicationController
   		params.permit(:direction, :sort_by, :rate, :level, :agent_seniority_rate,
   			:parent_agent, :child_agent, :parent_agent_id, :child_agent_id, :id,
   			user_waterfall: [
-          :rate, :level, :parent_agent_id, :child_agent_id, 
+          :rate, :level, :parent_agent_id, :child_agent_id,
           :agent_seniority_rate, :id])
   	end
 
