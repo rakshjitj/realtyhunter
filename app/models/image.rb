@@ -29,7 +29,7 @@ class Image < ActiveRecord::Base
         convert_options: '-auto-orient'
       }
     }},
-    //default_url: "/images/:style/listing_soon.png", #TODO: have a diff missing imag here
+    default_url: "/images/:style/listing_soon.png", #TODO: have a diff missing imag here
     convert_options: { all: '-auto-orient' },
     source_file_options: { all: '-auto-orient' }, processors: [:rotator]
 
@@ -80,13 +80,13 @@ class Image < ActiveRecord::Base
     }
   end
 
-  def rotate
-    self.rotation += 90
-    puts "**** NEW rotation is #{rotation}"
-    self.rotation = self.rotation % 360 if (self.rotation >= 360 || self.rotation <= -360)
-    self.update_attribute(:rotation, rotation)
-    self.file.reprocess! :large
-  end
+  # def rotate
+  #   self.rotation += 90
+  #   puts "**** NEW rotation is #{rotation}"
+  #   self.rotation = self.rotation % 360 if (self.rotation >= 360 || self.rotation <= -360)
+  #   self.update_attribute(:rotation, rotation)
+  #   self.file.reprocess! :large
+  # end
 
   private
     # preserve order. keep numbers starting at 0
