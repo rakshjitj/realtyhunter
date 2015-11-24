@@ -1,12 +1,12 @@
 class UnitImagesController < ApplicationController
-  before_action :set_image, only: [:destroy]
-  before_action :set_unit, except: [:destroy]
-
+  before_action :set_image, only: [:destroy, :rotate]
+  before_action :set_unit, except: [:destroy, :rotate]
+  
   # POST /images
   # POST /images.json
   def create
     @image = @unit.images.build(image_params)
-
+    
     # dropzone expects a json response code
     if @image.save(image_params)
       @unit.images << @image
@@ -20,7 +20,7 @@ class UnitImagesController < ApplicationController
         render json: { message: "success", fileID: @image.id, unitID: @unit.id, sunitID: @unit.sales_listing.id },
           :status => 200
       end
-    else
+    else 
       #  you need to send an error header, otherwise Dropzone
       #  will not interpret the response as an error:
       render json: { error: @image.errors.full_messages.join(',')}, :status => 400
@@ -30,20 +30,18 @@ class UnitImagesController < ApplicationController
   # DELETE /images/1
   # DELETE /images/1.json
   def destroy
-    if @image
-      @image.file = nil
-      if @image.destroy
-        render json: { message: "File deleted from server" }
-      else
-        render json: { message: @image.errors.full_messages.join(',') }
-      end
+    @image.file = nil
+    if @image.destroy
+      render json: { message: "File deleted from server" }
+    else
+      render json: { message: @image.errors.full_messages.join(',') }
     end
   end
 
   def sort
     params[:order].each do |key,value|
       img = Image.find(value[:id])
-      if img && img.priority != value[:position]
+      if img.priority != value[:position]
         img.update_columns(priority: value[:position])
       end
     end
@@ -51,19 +49,18 @@ class UnitImagesController < ApplicationController
     render :nothing => true
   end
 
-  # def rotate
-  #   if @image.rotate
-  #     render json: { message: "File has been rotated +90 degrees" }
-  #   else
-  #     render json: { message: @image.errors.full_messages.join(',') }
-  #   end
-  # end
+  def rotate
+    if @image.rotate
+      render json: { message: "File has been rotated +90 degrees" }
+    else
+      render json: { message: @image.errors.full_messages.join(',') }
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_image
       @image = Image.find(params[:id])
-      puts "********** set_image ******** #{@image.inspect}"
     end
 
     def set_unit
