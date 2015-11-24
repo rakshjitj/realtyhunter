@@ -15,6 +15,8 @@
       listing.has_fee, listing.op_fee_percentage, listing.tp_fee_percentage, listing.tenant_occupied,
       listing.primary_agent_id ? @agents[listing.primary_agent_id][0].name : '',
       listing.listing_id, listing.landlord_code, listing.rent,
-      listing.available_by, listing.access_info, listing.status, listing.created_at, listing.updated_at, listing.archived
+      listing.available_by, listing.access_info,
+      @reverse_statuses[listing.status.to_s.to_sym],
+      listing.created_at, listing.updated_at, listing.archived
     ].to_csv.html_safe %>
 <%- end -%>

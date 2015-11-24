@@ -377,6 +377,7 @@ class ResidentialListingsController < ApplicationController
       @residential_units = ResidentialListing.export_all(current_user)
       @residential_units = custom_sort
       @agents = Unit.get_primary_agents(@residential_units)
+      @reverse_statuses = {'0': 'Active', '1': 'Pending', '2': 'Off'}
     end
 
     def do_search

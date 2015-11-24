@@ -311,6 +311,11 @@ class CommercialListingsController < ApplicationController
       @commercial_units = CommercialListing.export_all(current_user)
       @commercial_units = custom_sort
       @agents = Unit.get_primary_agents(@commercial_units)
+      @reverse_statuses = {
+        '0': 'Offer Submitted',
+        '1': 'Offer Accepted',
+        '2': 'Binder Signed',
+        '3': 'Off Market For Lease Execution'}
     end
 
     def do_search
