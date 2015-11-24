@@ -47,7 +47,7 @@ module Forms
 	      set_entries
 	      flash[:success] = 'Entries marked as read.'
 	      respond_to do |format|
-	        format.html { redirect_to forms_contact_u_url }
+	        format.html { redirect_to forms_contact_us_url }
 	        format.json { head :no_content }
 	        format.js
 	      end
