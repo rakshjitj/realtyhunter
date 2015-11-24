@@ -298,6 +298,12 @@ Roommates = {};
 			Roommates.hideSpinner();
 		});
 
+		$('.datepicker').datetimepicker({
+		  viewMode: 'days',
+		  format: 'MM/DD/YYYY',
+		  allowInputToggle: true
+		});
+
 		// index filtering
 		$('#roommates input').keydown(Roommates.preventEnter);
 		$('#roommates #name').bind('railsAutocomplete.select', Roommates.throttledSearch);
