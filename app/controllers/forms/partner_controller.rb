@@ -62,6 +62,7 @@ module Forms
 	    set_entries
 	    respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_partner_index_url }
 	    end
 	  end
 
@@ -72,6 +73,7 @@ module Forms
 	  	set_entries
 	  	respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_partner_index_url }
 	    end
 	  end
 
@@ -79,6 +81,7 @@ module Forms
 	  	@entry = WufooPartnerForm.find(params[:id])
 	    respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_partner_index_url }
 	    end
 	  end
 
@@ -97,6 +100,7 @@ module Forms
 	    @entries = WufooPartnerForm.where(id: params[:ids]).order('name asc')
 	    respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_partner_index_url }
 	    end
 	  end
 
@@ -116,6 +120,7 @@ module Forms
 	  def hide_modal
 	    respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_partner_index_url }
 	    end
 	  end
 
@@ -133,6 +138,7 @@ module Forms
 	  	@entry = WufooPartnerForm.find(params[:id])
 	    respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_partner_index_url }
 	    end
 	  end
 

@@ -61,6 +61,7 @@ module Forms
 	    set_entries
 	    respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_contact_us_url }
 	    end
 	  end
 
@@ -71,6 +72,7 @@ module Forms
 	  	set_entries
 	  	respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_contact_us_url }
 	    end
 	  end
 
@@ -78,6 +80,7 @@ module Forms
 	  	@entry = WufooContactUsForm.find(params[:id])
 	    respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_contact_us_url }
 	    end
 	  end
 
@@ -86,7 +89,7 @@ module Forms
 	    @entry.delete
 	    set_entries
 	    respond_to do |format|
-	      format.html { redirect_to forms_contact_u_url, notice: 'Entry was successfully inactivated.' }
+	      format.html { redirect_to forms_contact_us_url, notice: 'Entry was successfully inactivated.' }
 	      format.json { head :no_content }
 	      format.js
 	    end
@@ -96,6 +99,7 @@ module Forms
 	    @entries = WufooContactUsForm.where(id: params[:ids]).order('name asc')
 	    respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_contact_u_url }
 	    end
 	  end
 
@@ -106,7 +110,7 @@ module Forms
 	    end
 	    set_entries
 	    respond_to do |format|
-	      format.html { redirect_to forms_contact_u_url, notice: 'Entries were successfully deleted.' }
+	      format.html { redirect_to forms_contact_us_url, notice: 'Entries were successfully deleted.' }
 	      format.json { head :no_content }
 	      format.js
 	    end
@@ -115,6 +119,7 @@ module Forms
 	  def hide_modal
 	    respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_contact_us_url }
 	    end
 	  end
 
@@ -122,7 +127,7 @@ module Forms
 			@entry.archive
 			set_entries
 	    respond_to do |format|
-	      format.html { redirect_to forms_contact_u_url, notice: 'Entry was successfully inactivated.' }
+	      format.html { redirect_to forms_contact_us_url, notice: 'Entry was successfully inactivated.' }
 	      format.json { head :no_content }
 	      format.js
 	    end
@@ -132,6 +137,7 @@ module Forms
 	  	@entry = WufooContactUsForm.find(params[:id])
 	    respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_contact_us_url }
 	    end
 	  end
 

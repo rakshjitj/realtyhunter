@@ -61,6 +61,7 @@ module Forms
 	    set_entries
 	    respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_careers_url }
 	    end
 	  end
 
@@ -70,6 +71,7 @@ module Forms
 	  	set_entries
 	  	respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_careers_url }
 	    end
 	  end
 
@@ -77,12 +79,14 @@ module Forms
 	  	@entry = WufooCareerForm.find(params[:id])
 	    respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_careers_url }
 	    end
 	  end
 
 	  def hide_modal
 	    respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_careers_url }
 	    end
 	  end
 
@@ -111,6 +115,7 @@ module Forms
 	    @entries = WufooCareerForm.where(id: params[:ids]).order('name asc')
 	    respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_careers_url }
 	    end
 	  end
 
@@ -131,6 +136,7 @@ module Forms
 	  	@entry = WufooCareerForm.find(params[:id])
 	    respond_to do |format|
 	      format.js
+	      format.html { redirect_to forms_careers_url }
 	    end
 	  end
 
