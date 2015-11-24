@@ -29,7 +29,7 @@ class Image < ActiveRecord::Base
         convert_options: '-auto-orient'
       }
     }},
-    //default_url: "/images/:style/listing_soon.png", #TODO: have a diff missing imag here
+    default_url: "/images/:style/listing_soon.png", #TODO: have a diff missing imag here
     convert_options: { all: '-auto-orient' },
     source_file_options: { all: '-auto-orient' }, processors: [:rotator]
 
