@@ -28,6 +28,7 @@ class ImagesController < ApplicationController
       else
         render json: { message: @image.errors.full_messages.join(',') }
       end
+    end
   end
 
   def sort
