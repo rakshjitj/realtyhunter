@@ -57,20 +57,6 @@
       </div>
   </div>
 
-  <div class="col-md-4">
-    <div class="row vertical-padding">
-      <div class="col-md-5 form-label-responsive">
-        <%= label_tag(:status) %>
-      </div>
-      <div class="col-md-7 col-sm-left-padding">
-        <%= select_tag(:status,
-          options_for_select(['Active', 'Inactive'],
-            [params[:status].blank? ? 'Active' : params[:status]]),
-          {class: "form-control",
-          prompt: "Any"}) %>
-      </div>
-    </div>
-  </div>
   <% end %>
 </div>
 

@@ -46,19 +46,6 @@
 
         <div class="row vertical-padding">
           <div class="col-xs-5 form-label-responsive">
-            <%= label_tag(:number_of_bedrooms, 'Bedrooms') %>
-          </div>
-          <div class="col-xs-7 col-sm-left-padding">
-            <%= select_tag(:number_of_bedrooms,
-              options_for_select(['Studio', '1 Bed', '2 Beds', '3 Beds', '4 Beds', '5 Beds', '6+ Beds'],
-                [params[:number_of_bedrooms]]),
-              {class: "form-control",
-              prompt: "Any"}) %>
-          </div>
-        </div>
-
-        <div class="row vertical-padding">
-          <div class="col-xs-5 form-label-responsive">
             <%= link_to 'Clear filters', forms_partner_index_path, class: 'btn btn-xs btn-default' %>
           </div>
         </div>
@@ -117,12 +104,12 @@
 
     <div class="row vertical-padding">
       <div class="col-xs-5 form-label-responsive">
-        <%= label_tag(:status) %>
+        <%= label_tag(:number_of_bedrooms, 'Bedrooms') %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
-        <%= select_tag(:status,
-          options_for_select(['Active', 'Inactive'],
-            [params[:status].blank? ? 'Active' : params[:status]]),
+        <%= select_tag(:number_of_bedrooms,
+          options_for_select(['Studio', '1 Bed', '2 Beds', '3 Beds', '4 Beds', '5 Beds', '6+ Beds'],
+            [params[:number_of_bedrooms]]),
           {class: "form-control",
           prompt: "Any"}) %>
       </div>
