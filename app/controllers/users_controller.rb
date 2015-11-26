@@ -263,7 +263,7 @@ class UsersController < ApplicationController
 
     # Confirms the correct user.
     def set_user
-      @user = User.find_unarchived(params[:id])
+      @user = User.find(params[:id])
       #@agent_title = EmployeeTitle.agent
       set_units
     rescue ActiveRecord::RecordNotFound

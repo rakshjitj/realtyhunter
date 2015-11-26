@@ -25,7 +25,7 @@ module API
 					end
 				end
 
-				@agents = User.where(archived: false)
+				@agents = User.unarchived
 					.where(company: @user.company)
 					.joins(:employee_title)
 					.select('users.name', 'users.email', 'users.id', 'users.phone_number',
@@ -35,7 +35,7 @@ module API
 
 
 				@agents = @agents.where('employee_titles.name = ?', EmployeeTitle.agent.name)
-				
+
 				# updated_at
 				if agent_params[:changed_at] && !agent_params[:changed_at].empty?
 					time = Time.parse(agent_params[:changed_at]).in_time_zone
@@ -51,12 +51,12 @@ module API
 			def show
 				@agent = User.find(params[:id])
 			end
-		
+
 		protected
 			def agent_params
 				params.permit(:token, :pretty, :updated_at, :format, :per_page, :page, :changed_at)
 			end
-		
+
 		end
 	end
 end
