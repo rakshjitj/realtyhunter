@@ -92,6 +92,9 @@ class OfficesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_office
       @office = Office.find_unarchived(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:warning] = "Sorry, that office was not found"
+      redirect_to :action => 'index'
     end
 
     def set_offices

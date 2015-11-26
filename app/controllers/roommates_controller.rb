@@ -1,6 +1,6 @@
 class RoommatesController < ApplicationController
   load_and_authorize_resource
-  skip_load_resource :only => :create
+  skip_load_resource only: :create
   before_action :set_roommate, except: [:index, :new, :create, :filter,
     :download, :send_update, :unarchive, :unarchive_modal,
     :send_message, :delete_modal, :destroy, :get_units,
@@ -245,9 +245,9 @@ class RoommatesController < ApplicationController
 
   private
   	def set_roommate
-      @roommate = Roommate.find(params[:id])
+      @roommate = Roommate.find_by!(id: params[:id])
     rescue ActiveRecord::RecordNotFound
-      flash[:warning] = "Sorry, that roommate is not active."
+      flash[:warning] = "Sorry, that roommate was not found."
       redirect_to :action => 'index'
   	end
 

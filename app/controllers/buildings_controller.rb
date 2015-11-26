@@ -1,11 +1,11 @@
 class BuildingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource :only => :create
-  before_action :set_building, except: [:index, :new, :create, :filter, :filter_listings, 
+  before_action :set_building, except: [:index, :new, :create, :filter, :filter_listings,
     :refresh_images, :neighborhood_options, :autocomplete_building_formatted_street_address]
   autocomplete :building, :formatted_street_address, full: true
   etag { current_user.id }
-    
+
   # GET /buildings
   # GET /buildings.json
   def index
@@ -19,7 +19,7 @@ class BuildingsController < ApplicationController
       end
     end
   end
-  
+
   # GET /filter_buildings
   # AJAX call
   def filter
@@ -68,7 +68,7 @@ class BuildingsController < ApplicationController
       if @bldg
         flash[:info] = "Building already exists!"
         redirect_to @bldg
-      else 
+      else
         @formatted_street_address = building_params[:building][:formatted_street_address]
         bldg_params = format_params_before_save(true)
         if @building.save(bldg_params)
@@ -95,15 +95,15 @@ class BuildingsController < ApplicationController
   # ajax call
   def refresh_images
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   def delete_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -119,11 +119,11 @@ class BuildingsController < ApplicationController
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   def inaccuracy_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -141,7 +141,7 @@ class BuildingsController < ApplicationController
     @building.sublocality = params[:sublocality]
 
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -175,7 +175,7 @@ class BuildingsController < ApplicationController
 
     def set_buildings
       @buildings = Building.search(
-        building_params[:filter], 
+        building_params[:filter],
         building_params[:active_only])
 
       @buildings = custom_sort
@@ -209,24 +209,24 @@ class BuildingsController < ApplicationController
       end
 
       @building.company = current_user.company
-      @building.neighborhood = @building.find_or_create_neighborhood(@neighborhood_name, param_obj[:sublocality], 
+      @building.neighborhood = @building.find_or_create_neighborhood(@neighborhood_name, param_obj[:sublocality],
         param_obj[:administrative_area_level_2_short], param_obj[:administrative_area_level_1_short])
 
       param_obj
     end
-    
+
     # Never trust parameters from the scary internet, only allow the white list through.
     # Need to take in additional params here. Can't rename them, or the geocode plugin
     # will not map to them correctly
     def building_params
-      params.permit(:sort_by, :direction, :filter, :active_only, :street_number, :route, :intersection, 
-        :neighborhood, 
-        :sublocality, :administrative_area_level_2_short, 
-        :administrative_area_level_1_short, 
+      params.permit(:sort_by, :direction, :filter, :active_only, :street_number, :route, :intersection,
+        :neighborhood,
+        :sublocality, :administrative_area_level_2_short,
+        :administrative_area_level_1_short,
         :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id, :file,
-        building: [:lock_version, :formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description, 
+        building: [:lock_version, :formatted_street_address, :notes, :landlord_id, :user_id, :inaccuracy_description,
           :pet_policy_id, :rental_term_id, :custom_rental_term, :file, :custom_amenities,
-          :custom_utilities, 
+          :custom_utilities,
           :neighborhood_id, :neighborhood,
           building_amenity_ids: [], images_files: [], utility_ids: [] ])
     end

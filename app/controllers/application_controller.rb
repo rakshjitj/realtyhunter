@@ -8,11 +8,16 @@ class ApplicationController < ActionController::Base
   #before_action :set_locale
   before_action ->{ @remote_ip = request.headers['REMOTE_ADDR'] }
   after_filter :clear_xhr_flash
-  
+
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, :alert => exception.message
+    redirect_to root_url, alert: exception.message
   end
-  
+
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    flash[:warning] = 'Sorry, that item was not found in our system.' #exception.message
+    redirect_to :action => 'index'
+  end
+
   protect_from_forgery with: :exception
   include SessionsHelper
   before_action :expire_hsts
@@ -35,7 +40,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  protected   
+  protected
 
     def stale_record_recovery_action
       flash.now[:danger] = "Another user has made a change to that record "+

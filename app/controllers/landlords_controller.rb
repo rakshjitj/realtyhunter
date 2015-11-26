@@ -1,11 +1,11 @@
 class LandlordsController < ApplicationController
   load_and_authorize_resource
-  skip_load_resource :only => :create
-  before_action :set_landlord, except: [:index, :new, :create, :filter, 
+  skip_load_resource only: :create
+  before_action :set_landlord, except: [:index, :new, :create, :filter,
     :filter_listings, :autocomplete_landlord_code]
   autocomplete :landlord, :code, full: true
   etag { current_user.id }
-    
+
   # GET /landlords
   # GET /landlords.json
   def index
@@ -78,11 +78,11 @@ class LandlordsController < ApplicationController
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   def delete_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -162,13 +162,13 @@ class LandlordsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def landlord_params
 
-      params.permit(:sort_by, :filter, :agent_filter, :active_only, :street_number, :route, 
-        :neighborhood, :sublocality, :administrative_area_level_2_short, 
-        :administrative_area_level_1_short, :postal_code, :country_short, :lat, :lng, :place_id, 
-        :landlord => [:lock_version, :code, :name, :contact_name, :mobile, :office_phone, :fax, 
-          :email, :website, :formatted_street_address, :notes, 
+      params.permit(:sort_by, :filter, :agent_filter, :active_only, :street_number, :route,
+        :neighborhood, :sublocality, :administrative_area_level_2_short,
+        :administrative_area_level_1_short, :postal_code, :country_short, :lat, :lng, :place_id,
+        :landlord => [:lock_version, :code, :name, :contact_name, :mobile, :office_phone, :fax,
+          :email, :website, :formatted_street_address, :notes,
           :listing_agent_percentage, :listing_agent_id,
-          :has_fee, :op_fee_percentage, :tp_fee_percentage, 
+          :has_fee, :op_fee_percentage, :tp_fee_percentage,
           :management_info, :key_pick_up_location, :update_source ])
     end
 end

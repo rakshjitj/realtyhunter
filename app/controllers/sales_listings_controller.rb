@@ -1,13 +1,13 @@
 class SalesListingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource only: :create
-  before_action :set_sales_listing, except: [:new, :create, :index, :filter, 
-    :print_list, :neighborhoods_modal, :features_modal, 
+  before_action :set_sales_listing, except: [:new, :create, :index, :filter,
+    :print_list, :neighborhoods_modal, :features_modal,
     :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood, :fee_options]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
   etag { current_user.id }
-  
+
   # GET /sales_units
   # GET /sales_units.json
   def index
@@ -17,7 +17,7 @@ class SalesListingsController < ApplicationController
       end
       format.csv do
         set_sales_listings_csv
-        headers['Content-Disposition'] = "attachment; filename=\"" + 
+        headers['Content-Disposition'] = "attachment; filename=\"" +
           current_user.name + " - Sales Listings.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
@@ -28,35 +28,35 @@ class SalesListingsController < ApplicationController
   def filter
     set_sales_listings
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   def neighborhoods_modal
     @neighborhoods = Neighborhood.unarchived
     .where(city: current_user.office.administrative_area_level_2_short)
     .to_a
     .group_by(&:borough)
-    
+
     # @neighborhoods.each do |borough, list|
     #   puts list.inspect
     # end
 
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   def features_modal
     @building_amenities = BuildingAmenity.where(company: current_user.company)
     @unit_amenities = SalesAmenity.where(company: current_user.company)
 
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -74,7 +74,7 @@ class SalesListingsController < ApplicationController
       building = Building.find(params[:building_id])
       @sales_unit.unit.building = building
     end
-    
+
     @panel_title = "Add a listing"
   end
 
@@ -105,7 +105,7 @@ class SalesListingsController < ApplicationController
           get_bldg_params.merge(
             company_id: current_user.company.id))
       end
-      
+
       # create unit
       new_unit = Unit.new(u_params)
       new_unit.building = new_bldg
@@ -113,7 +113,7 @@ class SalesListingsController < ApplicationController
       if !new_unit.available_by?
         new_unit.available_by = Date.today
       end
-    
+
       # create new listing
       @sales_unit = SalesListing.new(s_params)
       @sales_unit.unit = new_unit
@@ -129,11 +129,11 @@ class SalesListingsController < ApplicationController
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   def duplicate_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -141,7 +141,7 @@ class SalesListingsController < ApplicationController
   # handles ajax call. uses latest data in modal
   def duplicate
     sales_listing_dup = @sales_unit.duplicate(
-      sales_listing_params[:unit][:building_unit], 
+      sales_listing_params[:unit][:building_unit],
       sales_listing_params[:include_photos])
 
     if sales_listing_dup.valid?
@@ -151,17 +151,17 @@ class SalesListingsController < ApplicationController
       # TODO: not sure how to handle this best...
       flash[:warning] = "Duplication failed!"
       respond_to do |format|
-        format.js  
+        format.js
       end
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   # Modal collects info and prep unit to be taken off the market
   def take_off_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -174,7 +174,7 @@ class SalesListingsController < ApplicationController
     end
     set_sales_listings
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -183,7 +183,7 @@ class SalesListingsController < ApplicationController
   # Modal collects info and prep unit to be taken off the market
   def print_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -238,11 +238,11 @@ class SalesListingsController < ApplicationController
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   def delete_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -258,11 +258,11 @@ class SalesListingsController < ApplicationController
     end
   end
 
-  # GET 
+  # GET
   # handles ajax call. uses latest data in modal
   def inaccuracy_modal
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -275,7 +275,7 @@ class SalesListingsController < ApplicationController
     listings = SalesListing.listings_by_id(current_user, ids)
     images = SalesListing.get_images(listings)
     SalesListing.send_listings(current_user, listings, images, recipients, sub, msg)
-    
+
     respond_to do |format|
       format.js { flash[:success] = "Listings sent!"  }
     end
@@ -295,15 +295,15 @@ class SalesListingsController < ApplicationController
   # ajax call
   def refresh_images
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
-  # GET 
+  # GET
   # ajax call
   def refresh_documents
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -313,7 +313,7 @@ class SalesListingsController < ApplicationController
       @landlord = building.landlord
     end
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
 
@@ -324,10 +324,10 @@ class SalesListingsController < ApplicationController
     @sales_unit.unit.building.sublocality = params[:sublocality]
 
     respond_to do |format|
-      format.js  
+      format.js
     end
   end
-  
+
   protected
 
    def correct_stale_record_version
@@ -340,7 +340,7 @@ class SalesListingsController < ApplicationController
     def set_sales_listing
       @sales_unit = SalesListing.find_unarchived(params[:id])
     rescue ActiveRecord::RecordNotFound
-      flash[:warning] = "Sorry, that listing is not active."
+      flash[:warning] = "Sorry, that listing is not active"
       redirect_to :action => 'index'
     end
 
@@ -406,9 +406,9 @@ class SalesListingsController < ApplicationController
 
     # pull only the building params out of our general params list
     def get_bldg_params
-      param_names_list = [:street_number, :route, :intersection, :neighborhood, 
-        :sublocality, :administrative_area_level_2_short, 
-        :administrative_area_level_1_short, :postal_code, :country_short, 
+      param_names_list = [:street_number, :route, :intersection, :neighborhood,
+        :sublocality, :administrative_area_level_2_short,
+        :administrative_area_level_1_short, :postal_code, :country_short,
         :lat, :lng, :place_id, :neighborhood]
 
       bldg_params = {}
@@ -424,26 +424,26 @@ class SalesListingsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def sales_listing_params
       data = params.permit(
-        :sort_by, :direction, :filter, 
-        :beds, :baths, :include_photos, :inaccuracy_description, 
-        :available_starting, :available_before, 
-        :street_number, :route, :intersection, 
+        :sort_by, :direction, :filter,
+        :beds, :baths, :include_photos, :inaccuracy_description,
+        :available_starting, :available_before,
+        :street_number, :route, :intersection,
         :neighborhood, :formatted_street_address,
-        :sublocality, :administrative_area_level_2_short, 
-        :administrative_area_level_1_short, 
+        :sublocality, :administrative_area_level_2_short,
+        :administrative_area_level_1_short,
         :postal_code, :country_short, :lat, :lng, :place_id,
 
         sales_listing: [
-          :lock_version, 
+          :lock_version,
           :beds, :baths, :custom_amenities, :formatted_street_address,
           :listing_type, :percent_commission, :outside_broker_commission, :seller_name,
           :seller_phone, :seller_address, :year_built, :building_type, :lot_size,
           :building_size, :block_taxes, :lot_taxes, :water_sewer, :insurance,
-          :school_district, :certificate_of_occupancy, :violation_search, :tenant_occupied, 
-          :internal_notes, :public_description, 
+          :school_district, :certificate_of_occupancy, :violation_search, :tenant_occupied,
+          :internal_notes, :public_description,
 
-          :unit => [:building_unit, :rent, :available_by, :access_info, :status, 
-            :open_house, :oh_exclusive, 
+          :unit => [:building_unit, :rent, :available_by, :access_info, :status,
+            :open_house, :oh_exclusive,
             :building_id, :primary_agent_id, :listing_agent_id],
           :sales_amenity_ids => []
           ])

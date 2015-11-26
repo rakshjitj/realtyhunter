@@ -122,6 +122,9 @@ class CompaniesController < ApplicationController
   private
     def set_company
       @company = Company.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:warning] = "Sorry, that company is not active"
+      redirect_to :action => 'index'
     end
 
     def set_companies
