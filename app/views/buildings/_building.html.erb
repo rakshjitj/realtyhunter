@@ -26,7 +26,13 @@
   <td><%= building.total_unit_count %></td>
 
   <!-- LAST UNIT UPDATED -->
-  <td><%= time_ago_in_words(building.last_unit_updated_at) %></td>
+  <td>
+    <% if building.last_unit_updated_at %>
+      <%= time_ago_in_words(building.last_unit_updated_at) %>
+    <% else %>
+      --
+    <% end %>
+  </td>
 
   <!-- ACTIONS -->
   <% if current_user.is_management? || current_user.is_listings_manager? %>

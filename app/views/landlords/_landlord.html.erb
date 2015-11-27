@@ -5,10 +5,10 @@
   <td><%= landlord.active_unit_count %></td>
   <td><%= landlord.total_unit_count %></td>
   <td>
-    <% if landlord.buildings.length > 0 %>
+    <% if landlord.last_unit_updated_at %>
       <%= time_ago_in_words(landlord.last_unit_updated_at) %>
     <% else %>
-      -- No buildings --
+      --
     <% end %>
   </td>
   <td>
