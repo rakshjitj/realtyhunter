@@ -3,7 +3,7 @@ class Ability
 
   def common_permissions(user)
     # everyone can filter, send error reports
-    can :filter, Building, :company_id => user.company_id
+    can :filter, Building, company_id: user.company_id
     can [:filter, :neighborhoods_modal, :features_modal, :print_list], [ResidentialListing, CommercialListing]
     can [:inaccuracy_modal, :send_inaccuracy, :print_modal, :print_public, :print_private], [ResidentialListing, CommercialListing]
     can [:autocomplete_building_formatted_street_address], [ResidentialListing, CommercialListing, Building]
@@ -134,13 +134,14 @@ class Ability
 
       elsif user.has_role?(:manager)
         # managers/admins of any kind can manage user accounts
-        can :manage, User, :company_id => user.company_id
-        can :read, User, :company_id => user.company_id
-        can :view_staff, Company, :id => user.company.id
-        can :read, Office, :company_id => user.company.id
+        can :manage, User, company_id: user.company_id
+        can :read, User, company_id: user.company_id
+        can :view_staff, Company, id: user.company.id
+        can :read, Office, company_id: user.company.id
         can :read, Landlord do |landlord|
           landlord.company_id == user.company_id
         end
+        can :filter, Landlord, company_id: user.company_id
       end
 
       common_permissions(user)
@@ -149,7 +150,7 @@ class Ability
 
     elsif user.has_role?(:external_vendor)
       cannot :read, :all
-      can :manage, User, :id => user.id
+      can :manage, User, id: user.id
 
     else # regular users (agents, non-management)
       # can only see info for his/her particular company
@@ -157,18 +158,18 @@ class Ability
       # can't view landlords
       if user.company_id
 
-        can :read, Company, :id => user.company.id
-        can :view_staff, Company, :id => user.company.id
-        can :read, Office, :company_id => user.company.id
-        can :view_staff, Office, :id => user.company.id
+        can :read, Company, id: user.company.id
+        can :view_staff, Company, id: user.company.id
+        can :read, Office, company_id: user.company.id
+        can :view_staff, Office, id: user.company.id
 
         common_permissions(user)
         agent_permissions(user)
 
-        can :read, User, :company_id => user.company_id
+        can :read, User, company_id: user.company_id
       end
 
-      can :manage, User, :id => user.id
+      can :manage, User, id: user.id
       roomsharing_permissions(user)
     end
 

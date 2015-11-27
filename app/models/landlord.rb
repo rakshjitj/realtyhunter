@@ -91,13 +91,6 @@ class Landlord < ActiveRecord::Base
   end
 
 	private
-    # Converts email to all lower-case.
-    # def downcase_email
-    # 	if email
-    #   	self.email = email.downcase
-    #  	end
-    # end
-
     def clean_up_important_fields
     	if email
       	self.email = email.gsub(/\A\p{Space}*|\p{Space}*\z/, '').downcase

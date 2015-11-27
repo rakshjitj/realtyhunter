@@ -139,13 +139,9 @@ class LandlordsController < ApplicationController
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      if Landlord.column_names.include?(params[:sort_by])
-        #if sort_column == 'name' || sort_column == 'code'
-          #@landlords = @landlords.order("#{sort_column} " + sort_order)
-        #else
-          @landlords = @landlords.order(sort_column + ' ' + sort_order)
-        #end
-      end
+      #if Landlord.column_names.include?(params[:sort_by])
+      @landlords = @landlords.order(sort_column + ' ' + sort_order)
+      #end
       @landlords
     end
 
