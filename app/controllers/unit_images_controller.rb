@@ -1,4 +1,5 @@
 class UnitImagesController < ApplicationController
+  skip_authorize_resource
   before_action :set_image, only: [:destroy]
   before_action :set_unit, except: [:destroy]
 
@@ -37,6 +38,10 @@ class UnitImagesController < ApplicationController
       else
         render json: { message: @image.errors.full_messages.join(',') }
       end
+    else
+      # if a user clicks a delete link twice in rapid succession,
+      # just ignore it
+      render nothing: true
     end
   end
 
@@ -63,7 +68,9 @@ class UnitImagesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_image
       @image = Image.find(params[:id])
-      puts "********** set_image ******** #{@image.inspect}"
+      # puts "********** set_image ******** #{@image.inspect}"
+    rescue ActiveRecord::RecordNotFound
+      # noop
     end
 
     def set_unit

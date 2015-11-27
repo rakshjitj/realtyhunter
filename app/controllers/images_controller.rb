@@ -1,7 +1,7 @@
 class ImagesController < ApplicationController
+  skip_load_resource
   before_action :set_image, only: [:destroy]
   before_action :set_building, except: [:destroy]
-  etag { current_user.id }
 
   # POST /images
   # POST /images.json
@@ -28,12 +28,19 @@ class ImagesController < ApplicationController
       else
         render json: { message: @image.errors.full_messages.join(',') }
       end
+    else
+      # if a user clicks a delete link twice in rapid succession,
+      # just ignore it
+      render nothing: true
     end
   end
 
   def sort
     params[:order].each do |key,value|
-      Image.find(value[:id]).update_attribute(:priority, value[:position])
+      img = Image.find(value[:id])
+      if img && img.priority != value[:position]
+        img.update_columns(priority: value[:position])
+      end
     end
     render :nothing => true
   end
@@ -42,6 +49,8 @@ class ImagesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_image
       @image = Image.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      # noop
     end
 
     def set_building

@@ -342,7 +342,7 @@ ResidentialListings = {};
     });
 
     DropZoneHelper.updateRemoveImgLinks('residential', 'residential_listings');
-    DropZoneHelper.updateRotateImgLinks('residential', 'residential_listings');
+    //DropZoneHelper.updateRotateImgLinks('residential', 'residential_listings');
 
     $('.carousel-indicators > li:first-child').addClass('active');
     $('.carousel-inner > .item:first-child').addClass('active');

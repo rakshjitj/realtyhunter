@@ -13,9 +13,11 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, alert: exception.message
   end
 
+  # this throws an error when it comes to image deletion, as we do not navigate
+  # to those records directly
   rescue_from ActiveRecord::RecordNotFound do |exception|
     flash[:warning] = 'Sorry, that item was not found in our system.' #exception.message
-    redirect_to :action => 'index'
+    redirect_to action: 'index'
   end
 
   protect_from_forgery with: :exception

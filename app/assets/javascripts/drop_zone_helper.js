@@ -1,5 +1,5 @@
-// 
-// Used to manage the dropzone uploaders on the edit pages for: 
+//
+// Used to manage the dropzone uploaders on the edit pages for:
 // sales, residential, commercial, buildings
 //
 DropZoneHelper = {};
@@ -22,22 +22,30 @@ DropZoneHelper = {};
     });
   };
 
+  DropZoneHelper.currentlyDeleting = false;
+
+  // make a DELETE ajax request to delete the file
   DropZoneHelper.removeImage = function (id, unit_id, controllerPath) {
-    // make a DELETE ajax request to delete the file
-    Listings.showSpinner();
-    $.ajax({
-      type: 'DELETE',
-      url: '/' + controllerPath + '/' + unit_id + '/unit_images/' + id,
-      success: function(data){
-        //console.log(data.message);
-        $.getScript('/' + controllerPath + '/' + unit_id + '/refresh_images');
-        Listings.hideSpinner();
-      },
-      error: function(data) {
-        Listings.hideSpinner();
-        //console.log('ERROR:', data);
-      }
-    });
+    // if not currently in the middle of a deletion request, delete this photo
+    if (!DropZoneHelper.currentlyDeleting) {
+      DropZoneHelper.currentlyDeleting = true;
+      Listings.showSpinner();
+      $.ajax({
+        type: 'DELETE',
+        url: '/' + controllerPath + '/' + unit_id + '/unit_images/' + id,
+        success: function(data){
+          //console.log(data.message);
+          $.getScript('/' + controllerPath + '/' + unit_id + '/refresh_images');
+          Listings.hideSpinner();
+          DropZoneHelper.currentlyDeleting = false;
+        },
+        error: function(data) {
+          Listings.hideSpinner();
+          DropZoneHelper.currentlyDeleting = false;
+          //console.log('ERROR:', data);
+        }
+      });
+    }
   };
 
   DropZoneHelper.rotateImage = function (id, unit_id, controllerPath) {
