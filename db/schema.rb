@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151123030529) do
+ActiveRecord::Schema.define(version: 20151127181753) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,9 @@ ActiveRecord::Schema.define(version: 20151123030529) do
     t.datetime "updated_at",                                        null: false
     t.integer  "documents_id"
     t.integer  "lock_version",                      default: 0,     null: false
+    t.integer  "total_unit_count",                  default: 0,     null: false
+    t.integer  "active_unit_count",                 default: 0,     null: false
+    t.datetime "last_unit_updated_at"
   end
 
   add_index "buildings", ["documents_id"], name: "index_buildings_on_documents_id", using: :btree
@@ -283,6 +286,9 @@ ActiveRecord::Schema.define(version: 20151123030529) do
     t.boolean  "has_fee"
     t.integer  "tp_fee_percentage"
     t.integer  "lock_version",                      default: 0,     null: false
+    t.integer  "total_unit_count",                  default: 0,     null: false
+    t.integer  "active_unit_count",                 default: 0,     null: false
+    t.datetime "last_unit_updated_at"
   end
 
   add_index "landlords", ["buildings_id"], name: "index_landlords_on_buildings_id", using: :btree

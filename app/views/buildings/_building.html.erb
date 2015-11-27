@@ -1,31 +1,38 @@
 <tr class="<%= cycle('even', 'odd') -%>">
+  <!-- IMAGES -->
   <td>
     <% if @bldg_imgs[building.id] %>
 
       <%= link_to(
-        image_tag(@bldg_imgs[building.id].file.url(:thumb), :class => 'img-responsive', 
+        image_tag(@bldg_imgs[building.id].file.url(:thumb), :class => 'img-responsive',
         alt: @bldg_imgs[building.id].file.url(:medium)), building) %>
-      
+
     <% else %>
       <!-- placeholder image -->
       <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), building) %>
     <% end %>
   </td>
+
+  <!-- ADDRESS -->
   <td>
     <%= link_to "#{building.street_address}", building %><br />
     <%= short_location_title(building) %>
   </td>
-  <td>
-    <%= building.active_unit_count %>
-  </td>
-  <td>
-    <%= building.total_unit_count %>
-  </td>
-  <td><%= time_ago_in_words(building.updated_at) %></td>
+
+  <!-- ACTIVE UNITS -->
+  <td><%= building.active_unit_count %></td>
+
+  <!-- TOTAL UNITS -->
+  <td><%= building.total_unit_count %></td>
+
+  <!-- LAST UNIT UPDATED -->
+  <td><%= time_ago_in_words(building.last_unit_updated_at) %></td>
+
+  <!-- ACTIONS -->
   <% if current_user.is_management? || current_user.is_listings_manager? %>
     <td>
       <%= link_to 'Edit', edit_building_path(building) %> <br />
-      <%= link_to 'Delete', delete_modal_building_path(building), 
+      <%= link_to 'Delete', delete_modal_building_path(building),
         data: {toggle: "modal", target: "#bldgDeleteModal"}, remote: true %>
     </td>
   <% end %>

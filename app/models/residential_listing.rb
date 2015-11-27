@@ -4,6 +4,7 @@ class ResidentialListing < ActiveRecord::Base
   has_many :roommates
   belongs_to :unit, touch: true
   before_save :process_custom_amenities
+  after_commit :update_building_counts
 
   attr_accessor :include_photos, :inaccuracy_description,
     :pet_policy_shorthand, :available_starting, :available_before, :custom_amenities
@@ -575,6 +576,17 @@ class ResidentialListing < ActiveRecord::Base
           end
         }
       end
+    end
+
+    def update_building_counts
+      bldg = self.unit.building
+      bldg.update_total_unit_count
+      bldg.update_active_unit_count
+      bldg.last_unit_updated_at = DateTime.now
+
+      bldg.landlord.update_total_unit_count
+      bldg.landlord.update_active_unit_count
+      bldg.landlord.last_unit_updated_at = DateTime.now
     end
 
 end

@@ -4,6 +4,7 @@ class CommercialListing < ActiveRecord::Base
   belongs_to :unit, touch: true
   has_many :documents, dependent: :destroy
   #belongs_to :primary_agent2, :class_name => 'User', touch: true
+  after_commit :update_building_counts
 
   attr_accessor :property_type, :inaccuracy_description, :sq_footage_min, :sq_footage_max
 
@@ -368,4 +369,15 @@ class CommercialListing < ActiveRecord::Base
     running_list
   end
 
+  private
+    def update_building_counts
+      bldg = self.unit.building
+      bldg.update_total_unit_count
+      bldg.update_active_unit_count
+      bldg.last_unit_updated_at = DateTime.now
+
+      bldg.landlord.update_total_unit_count
+      bldg.landlord.update_active_unit_count
+      bldg.landlord.last_unit_updated_at = DateTime.now
+    end
 end

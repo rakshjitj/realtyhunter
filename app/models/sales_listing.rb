@@ -3,36 +3,37 @@ class SalesListing < ActiveRecord::Base
   has_and_belongs_to_many :sales_amenities
   belongs_to :unit, touch: true
   before_save :process_custom_amenities
+  after_commit :update_building_counts
 
-  # NOTE: because our accessors clobber the names of some of our 
+  # NOTE: because our accessors clobber the names of some of our
   # building's fields, we reference the intended names here, but change
   # the names in our search method defined below.
-  attr_accessor :include_photos, :inaccuracy_description, 
-    :available_starting, :available_before, :custom_amenities, 
-    :street_number, :route, :intersection, 
+  attr_accessor :include_photos, :inaccuracy_description,
+    :available_starting, :available_before, :custom_amenities,
+    :street_number, :route, :intersection,
     :neighborhood, :lat, :lng,
-    :sublocality, :administrative_area_level_2_short, 
-    :administrative_area_level_1_short, 
-    :postal_code, :country_short, 
+    :sublocality, :administrative_area_level_2_short,
+    :administrative_area_level_1_short,
+    :postal_code, :country_short,
     :place_id, :formatted_street_address
 
   VALID_TELEPHONE_REGEX = /(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/
 
   validates :seller_name, presence: true, length: {maximum: 500}
-  validates :seller_phone, allow_blank: true, length: {maximum: 25}, 
+  validates :seller_phone, allow_blank: true, length: {maximum: 25},
     format: { with: VALID_TELEPHONE_REGEX }
 
 	validates :seller_address, presence: true, length: {maximum: 500}
   validates :listing_type, presence: true, length: {maximum: 100}
-  
+
 	validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }
 	validates :baths, presence: true, :numericality => { :less_than_or_equal_to => 11 }
-  
+
   def archive
     self.unit.archived = true
     self.unit.save
   end
-  
+
   def self.find_unarchived(id)
     SalesListing.joins(:unit)
       .where(id: id)
@@ -116,17 +117,17 @@ class SalesListing < ActiveRecord::Base
     running_list = SalesListing.joins(unit: {building: [:company, :neighborhood]})
       .where('companies.id = ?', user.company_id)
       .where('units.listing_id IN (?)', listing_ids)
-      .select('buildings.formatted_street_address AS formatted_street_address2', 
+      .select('buildings.formatted_street_address AS formatted_street_address2',
         'units.listing_id',
-        'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2', 
+        'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2',
         'buildings.lat as lat2', 'buildings.lng as lng2', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent',
         'sales_listings.beds || \'/\' || sales_listings.baths as bed_and_baths',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'units.access_info',
         'sales_listings.id', 'sales_listings.baths', 'sales_listings.beds', 'units.access_info',
-        'sales_listings.seller_name', 'sales_listings.updated_at', 
-        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
+        'sales_listings.seller_name', 'sales_listings.updated_at',
+        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'units.available_by', 'units.public_url')
       .to_a.group_by(&:neighborhood_name)
     running_list
@@ -136,17 +137,17 @@ class SalesListing < ActiveRecord::Base
     running_list = SalesListing.joins(unit: {building: [:company, :neighborhood]})
       .where('companies.id = ?', user.company_id)
       .where('units.listing_id IN (?)', listing_ids)
-      .select('buildings.formatted_street_address AS formatted_street_address2', 
+      .select('buildings.formatted_street_address AS formatted_street_address2',
         'units.listing_id',
-        'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2', 
+        'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2',
         'buildings.lat as lat2', 'buildings.lng as lng2', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent',
         'sales_listings.beds || \'/\' || sales_listings.baths as bed_and_baths',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'units.access_info',
         'sales_listings.id', 'sales_listings.baths', 'sales_listings.beds', 'units.access_info',
-        'sales_listings.seller_name', 'sales_listings.updated_at', 
-        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
+        'sales_listings.seller_name', 'sales_listings.updated_at',
+        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'units.available_by', 'units.public_url',
         'users.name as primary_agent_name')
 
@@ -157,9 +158,9 @@ class SalesListing < ActiveRecord::Base
     SalesListing.joins(unit: [building: [:company, :neighborhood]])
       .where('units.archived = false')
       .where('companies.id = ?', user.company_id)
-      .select('buildings.formatted_street_address AS formatted_street_address2', 
+      .select('buildings.formatted_street_address AS formatted_street_address2',
         'units.listing_id',
-        'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2', 
+        'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2',
         'buildings.lat as lat2', 'buildings.lng as lng2', 'units.id AS unit_id',
         'units.building_unit', 'units.status', 'units.rent', 'units.exclusive',
         'units.primary_agent_id', 'units.primary_agent2_id',
@@ -173,9 +174,9 @@ class SalesListing < ActiveRecord::Base
         'sales_listings.block_taxes', 'sales_listings.lot_taxes', 'sales_listings.water_sewer','sales_listings.insurance',
         'sales_listings.school_district', 'sales_listings.certificate_of_occupancy', 'sales_listings.violation_search',
         'units.access_info',
-        'sales_listings.seller_name', 'sales_listings.created_at', 'sales_listings.updated_at', 
-        'units.archived', 
-        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
+        'sales_listings.seller_name', 'sales_listings.created_at', 'sales_listings.updated_at',
+        'units.archived',
+        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'units.available_by', 'units.public_url')
   end
 
@@ -186,16 +187,16 @@ class SalesListing < ActiveRecord::Base
     @running_list = SalesListing.joins(unit: [building: [:company, :neighborhood]])
       .where('units.archived = false')
       .where('companies.id = ?', user.company_id)
-      .select('units.listing_id', 'buildings.formatted_street_address AS formatted_street_address2', 
-        'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2', 
+      .select('units.listing_id', 'buildings.formatted_street_address AS formatted_street_address2',
+        'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2',
         'buildings.lat as lat2', 'buildings.lng as lng2', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent',
         'sales_listings.beds || \'/\' || sales_listings.baths as bed_and_baths',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'units.access_info', 'sales_listings.lot_size',
         'sales_listings.id', 'sales_listings.baths', 'sales_listings.beds', 'units.access_info',
-        'sales_listings.seller_name', 'sales_listings.updated_at', 
-        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id', 
+        'sales_listings.seller_name', 'sales_listings.updated_at',
+        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'units.available_by', 'units.public_url')
 
     if !params && !building_id
@@ -218,7 +219,7 @@ class SalesListing < ActiveRecord::Base
     if params[:address]
       # cap query string length for security reasons
       address = params[:address][0, 500]
-      @running_list = 
+      @running_list =
         @running_list.where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
     end
 
@@ -235,7 +236,7 @@ class SalesListing < ActiveRecord::Base
       included = ['active + pending', 'active', 'pending', 'off'].include?(status)
       if included
         if status == 'active + pending'
-          @running_list = @running_list.where("status = ? or status = ?", 
+          @running_list = @running_list.where("status = ? or status = ?",
             Unit.statuses["active"], Unit.statuses["pending"])
         else
           @running_list = @running_list.where("status = ?", Unit.statuses[status])
@@ -307,7 +308,7 @@ class SalesListing < ActiveRecord::Base
     @dst = SalesListing.find(dst_id)
 
     # deep copy photos
-    self.unit.images.each {|i| 
+    self.unit.images.each {|i|
       img_copy = Image.new
       img_copy.file = i.file
       img_copy.unit_id = @dst.unit.id
@@ -328,12 +329,12 @@ class SalesListing < ActiveRecord::Base
         sales_unit_dup = self.dup
         sales_unit_dup.update(unit_id: unit_dup.id)
 
-        self.sales_amenities.each {|a| 
+        self.sales_amenities.each {|a|
           sales_unit_dup.sales_amenities << a
         }
       else
         raise "Error saving unit"
-      end    
+      end
 
       #Image.async_copy_sales_unit_images(self.id, sales_unit_dup.id)
       if include_photos
@@ -359,7 +360,7 @@ class SalesListing < ActiveRecord::Base
   def send_inaccuracy_report(reporter)
     if reporter
       UnitMailer.inaccuracy_reported(self, reporter).deliver_now
-    else 
+    else
       raise "No reporter specified"
     end
   end
@@ -378,7 +379,7 @@ class SalesListing < ActiveRecord::Base
     map_infos = {}
     for i in 0..runits.length-1
       runit = runits[i]
-      
+
       if runit.street_number2
         street_address = runit.street_number2 + ' ' + runit.route2
       else
@@ -387,7 +388,7 @@ class SalesListing < ActiveRecord::Base
 
       bldg_info = {
         building_id: runit.building_id,
-        lat: runit.lat2, 
+        lat: runit.lat2,
         lng: runit.lng2 }
       unit_info = {
         id: runits[i].id,
@@ -412,23 +413,23 @@ class SalesListing < ActiveRecord::Base
     listings = SalesListing.joins(unit: {building: [:neighborhood]})
       .where('buildings.id in (?)', bldg_ids)
       .where('units.archived = false')
-      .select('buildings.formatted_street_address AS formatted_street_address2', 
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
-        'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id', 
+      .select('buildings.formatted_street_address AS formatted_street_address2',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
+        'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id',
         'beds || \'/\' || baths as bed_and_baths',
-        'sales_listings.beds', 'sales_listings.id', 
+        'sales_listings.beds', 'sales_listings.id',
         'sales_listings.baths','units.access_info',
-        'sales_listings.updated_at', 
-        'neighborhoods.name AS neighborhood_name', 
+        'sales_listings.updated_at',
+        'neighborhoods.name AS neighborhood_name',
         'units.available_by')
-      
+
     if is_active
       listings = listings.where.not("status = ?", Unit.statuses["off"])
     end
-    
+
     unit_ids = listings.map(&:unit_id)
     images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
-      
+
     return listings, images
   end
 
@@ -436,23 +437,23 @@ class SalesListing < ActiveRecord::Base
     listings = SalesListing.joins(unit: {building: [:neighborhood]})
       .where('units.id in (?)', unit_ids)
       .where('units.archived = false')
-      .select('buildings.formatted_street_address AS formatted_street_address2', 
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 
-        'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id', 
+      .select('buildings.formatted_street_address AS formatted_street_address2',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
+        'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id',
         'beds || \'/\' || baths as bed_and_baths',
-        'sales_listings.beds', 'sales_listings.id', 
+        'sales_listings.beds', 'sales_listings.id',
         'sales_listings.baths','units.access_info',
-        'sales_listings.updated_at', 
-        'neighborhoods.name AS neighborhood_name', 
+        'sales_listings.updated_at',
+        'neighborhoods.name AS neighborhood_name',
         'units.available_by')
-      
+
     if is_active
       listings = listings.where.not("status = ?", Unit.statuses["off"])
     end
-    
+
     unit_ids = listings.map(&:unit_id)
     images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
-      
+
     return listings, images
   end
 
@@ -480,4 +481,10 @@ class SalesListing < ActiveRecord::Base
       end
     end
 
+    def update_building_counts
+      bldg = self.unit.building
+      bldg.update_total_unit_count
+      bldg.update_active_unit_count
+      bldg.last_unit_updated_at = DateTime.now
+    end
 end
