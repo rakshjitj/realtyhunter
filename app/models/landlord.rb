@@ -72,7 +72,7 @@ class Landlord < ActiveRecord::Base
 	end
 
 	def self.search(params)
-		running_list = Landlord.unarchived.includes(:buildings)
+		running_list = Landlord.unarchived
 			.select('landlords.id', 'landlords.code', 'landlords.name',
 				'landlords.updated_at', 'landlords.mobile',
 				'landlords.active_unit_count', 'landlords.total_unit_count',
