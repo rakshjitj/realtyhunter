@@ -1,5 +1,5 @@
-<div id="commercial" 
-  data-unit-id="<%= @commercial_unit.id %>" 
+<div id="commercial"
+  data-unit-id="<%= @commercial_unit.id %>"
   data-property-type="<%= @commercial_unit.commercial_property_type ? @commercial_unit.commercial_property_type.property_type: '' %>">
 
 <!-- Nav tabs -->
@@ -15,18 +15,18 @@
   <div class="tab-content">
     <!-- ******************** third tabpanel - documents ******************** -->
     <div role="tabpanel" class="tab-pane fade" id="documents">
-      
+
       <% if @commercial_unit && @commercial_unit.id %>
 
         <br />
-        <%= form_for(@commercial_unit, :url => commercial_listing_documents_path(@commercial_unit), 
+        <%= form_for(@commercial_unit, :url => commercial_listing_documents_path(@commercial_unit),
           html: {multipart: true, class: "dropzone", id: "cunit-dropzone-docs"}, method: :post) do |f| %>
           <div class="fallback">
             <%= f.file_field :file %><br>
             <%= f.submit "Upload" %>
           </div>
         <% end %>
-      
+
         <br />
         <div class="row">
           <div class="col-md-12">
@@ -45,23 +45,23 @@
         <br />
         <strong>Save the basic info first!</strong>
       <% end %>
-      
+
     </div><!-- end tabpanel docs -->
 
     <!-- ******************** second tabpanel - photos ******************** -->
     <div role="tabpanel" class="tab-pane fade" id="photos">
-      
+
       <% if @commercial_unit && @commercial_unit.id %>
 
         <br />
-        <%= form_for(@commercial_unit, :url => commercial_listing_unit_images_path(@commercial_unit), 
+        <%= form_for(@commercial_unit, :url => commercial_listing_unit_images_path(@commercial_unit),
           html: {multipart: true, class: "dropzone", id: "cunit-dropzone"}, method: :post) do |f| %>
           <div class="fallback">
             <%= f.file_field :file %><br>
             <%= f.submit "Upload" %>
           </div>
         <% end %>
-      
+
         <br />
         <div class="row">
           <div class="col-md-12">
@@ -80,13 +80,13 @@
         <br />
         <strong>Save the basic info first!</strong>
       <% end %>
-      
+
     </div><!-- end tabpanel photos -->
     <!-- ******************** first tabpanel - basic info ********************-->
     <div role="tabpanel" class="tab-pane fade in active" id="basic-info">
       <%= form_for(@commercial_unit) do |f| %>
       <%= f.hidden_field :lock_version %>
-      <%= render :partial => 'shared/error_messages', 
+      <%= render :partial => 'shared/error_messages',
         :locals => {:model => @commercial_unit} %>
         <div class="row">
           <div class="col-md-12 form-section-header">
@@ -104,13 +104,13 @@
             <div class="col-md-5">
               <div class="field">
 
-                <%= unit_form.select :status, 
-                  options_for_select(['Active', 'Offer Submitted', 'Offer Accepted', 'Binder Signed', 'Off Market for Lease Execution', 'Off'], 
-                    [@commercial_unit.unit.status.titleize]), 
+                <%= unit_form.select :status,
+                  options_for_select(['Active', 'Offer Submitted', 'Offer Accepted', 'Binder Signed', 'Off Market for Lease Execution', 'Off'],
+                    [@commercial_unit.unit.status.titleize]),
                   {prompt: "Choose one..."},
                   :required => true,
                   class: "form-control" %>
-              
+
               </div>
             </div>
           <% end %>
@@ -122,22 +122,22 @@
           </div>
           <div class="col-md-3">
             <div class="field">
-              <%= f.select(:property_type, 
+              <%= f.select(:property_type,
                 options_for_select(@property_types.collect {|b| [b.property_type]},
-                [@commercial_unit.commercial_property_type ? @commercial_unit.commercial_property_type.property_type : '']), 
+                [@commercial_unit.commercial_property_type ? @commercial_unit.commercial_property_type.property_type : '']),
                 {},
                 {:size => 8,
                   class: 'form-control',
                   data: {
                   }
                 }) %>
-                <!-- "update-subtype-path": update_subtype_commercial_listing_path(@commercial_unit), --> 
+                <!-- "update-subtype-path": update_subtype_commercial_listing_path(@commercial_unit), -->
             </div>
           </div>
           <div class="col-md-5">
             <div class="field">
               <!-- gets updated when property_type changes -->
-              <%= render partial: 'commercial_listings/sub_types_select', 
+              <%= render partial: 'commercial_listings/sub_types_select',
                 locals:{ commercial_unit:@commercial_unit, property_sub_types: @property_sub_types} %>
             </div>
           </div>
@@ -149,10 +149,10 @@
           </div>
           <div class="col-md-8">
             <div class="field">
-              <%= f.radio_button :construction_status, "existing", 
+              <%= f.radio_button :construction_status, "existing",
                 checked: (@commercial_unit.construction_status == "existing") %>
               <%= f.label :construction_status_existing, "Existing" %>&nbsp;&nbsp;&nbsp;
-              <%= f.radio_button :construction_status, "under_construction", 
+              <%= f.radio_button :construction_status, "under_construction",
                 checked: (@commercial_unit.construction_status == "under_construction") %>
               <%= f.label :construction_status_under_construction, "Under Construction" %><br>
             </div>
@@ -177,9 +177,9 @@
           </div>
           <div class="col-md-4">
             <%= f.fields_for @commercial_unit.unit do |unit_form| %>
-              <%= unit_form.select(:primary_agent_id, 
+              <%= unit_form.select(:primary_agent_id,
                 options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
-                  [@commercial_unit.unit.primary_agent ? @commercial_unit.unit.primary_agent.id : '']), 
+                  [@commercial_unit.unit.primary_agent ? @commercial_unit.unit.primary_agent.id : '']),
                 {prompt: "Choose one..."},
                 class: 'form-control',
                 :include_blank => true) %>
@@ -194,9 +194,9 @@
           </div>
           <div class="col-md-4">
             <%= f.fields_for @commercial_unit.unit do |unit_form| %>
-              <%= unit_form.select(:primary_agent2_id, 
+              <%= unit_form.select(:primary_agent2_id,
                 options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
-                  [@commercial_unit.unit.primary_agent2 ? @commercial_unit.unit.primary_agent2.id : '']), 
+                  [@commercial_unit.unit.primary_agent2 ? @commercial_unit.unit.primary_agent2.id : '']),
                 {prompt: "Choose one..."},
                 class: 'form-control',
                 :include_blank => true) %>
@@ -222,16 +222,16 @@
             <div class="col-md-8">
               <div class="field">
                 <!-- TODO: turn this into an autocomplete field -->
-                <%= unit_form.select(:building_id, 
+                <%= unit_form.select(:building_id,
                   options_for_select(current_user.company.buildings.order("formatted_street_address ASC").collect {|b| [b.street_address, b.id]},
-                    [@commercial_unit.unit.building ? @commercial_unit.unit.building.id : '']), 
+                    [@commercial_unit.unit.building ? @commercial_unit.unit.building.id : '']),
                   {prompt: "Choose one..."},
                   class: 'form-control',
                   :include_blank => true) %>
               </div>
             </div>
           </div>
-        
+
           <div class="row">
             <div class="col-md-4 form-label-responsive">
               <%= unit_form.label :building_unit, "Suite/Apt/Unit" %>
@@ -265,7 +265,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="row">
           <%= f.fields_for @commercial_unit.unit do |unit_form| %>
           <div class="col-md-4 form-label-responsive">
@@ -294,7 +294,7 @@
           <div class="col-md-4">
             <div class="field">
               <div class='input-group date datepicker'>
-                <%= unit_form.text_field :available_by, 
+                <%= unit_form.text_field :available_by,
                   class:"form-control", placeholder: "Available" %>
                 <label class="input-group-addon btn" for="date">
                   <span class="fa fa-calendar open-datepicker"></span>
@@ -311,9 +311,9 @@
           </div>
           <div class="col-md-4">
             <div class="field">
-              <%= f.select :lease_type, 
-                options_for_select(CommercialListing.lease_types.collect { |s| [s[0].humanize.titleize, s[0]] }, 
-                  [@commercial_unit.lease_type]), 
+              <%= f.select :lease_type,
+                options_for_select(CommercialListing.lease_types.collect { |s| [s[0].humanize.titleize, s[0]] },
+                  [@commercial_unit.lease_type]),
                 {prompt: "Choose one..."},
                 :required => true,
                 class: "form-control" %>
@@ -360,7 +360,7 @@
           </div>
           <div class="col-md-2">
             <div class="field">
-              <%= f.number_field :lease_term_months, class: 'form-control' %> 
+              <%= f.number_field :lease_term_months, class: 'form-control' %>
             </div>
           </div>
         </div>
@@ -483,12 +483,12 @@
           </div>
           <div class="col-md-2">
             <div class="field">
-              
+
               <%= f.number_field :building_size, class: 'form-control', :required => true %>
             </div>
           </div>
         </div>
-        
+
         <div class="row">
           <div class="col-md-4 form-label-responsive">
             <%= f.label :total_lot_size, 'Total Lot Size', class: 'required' %>
@@ -511,7 +511,7 @@
               <%= f.submit 'Save Data', class:"btn btn-warning" %>
             </div>
           </div>
-          
+
         </div>
       <% end %>
     </div>

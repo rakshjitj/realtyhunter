@@ -2,7 +2,7 @@ class CommercialListingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource only: [:create, :update_subtype]
   before_action :set_commercial_listing, except: [:new, :create, :index, :filter,
-    :neighborhoods_modal, :features_modal, :print_public, :print_private, :send_message, :update_subtype]
+    :neighborhoods_modal, :features_modal, :print_public, :print_private, :send_message]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
   etag { current_user.id }
@@ -78,7 +78,6 @@ class CommercialListingsController < ApplicationController
   end
 
   def update_subtype
-    @commercial_unit = CommercialListing.find_unarchived(params[:id])
     ptype = params[:property_type]
     @property_sub_types = CommercialPropertyType.subtypes_for(ptype, current_user.company)
     respond_to do |format|
@@ -288,6 +287,7 @@ class CommercialListingsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_commercial_listing
       @commercial_unit = CommercialListing.find_unarchived(params[:id])
+      puts "**** GOT UNIT #{@commercial_unit}"
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that listing is not active."
       redirect_to :action => 'index'

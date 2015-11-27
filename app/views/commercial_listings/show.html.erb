@@ -1,14 +1,12 @@
 <% provide(:title, @commercial_unit.unit.building.street_address) %>
 
-<div id="commercial">
-
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
 		<br/>
   	<br/>
 		<div id="cunit-panel" class="panel panel-default">
 		  <div class="panel-heading">
-		    <div class="panel-title">    	
+		    <div class="panel-title">
 		    	<div class="row">
 			  		<div class="col-md-6">
 			  			<h1>
@@ -31,27 +29,27 @@
 		  		<div class="col-md-6">
 		  			<p>
 				  	  <%= link_to 'View all', commercial_listings_path %>
-		        	<!--%= link_to 'Print', print_modal_commercial_listing_path(@commercial_unit), 
+		        	<!--%= link_to 'Print', print_modal_commercial_listing_path(@commercial_unit),
 		        		data: {toggle: "modal", target: "#printModal"}, remote: true %-->
 		        	<% if current_user.is_management? || current_user.is_listings_manager? %>
 					  		| <%= link_to 'Edit', edit_commercial_listing_path(@commercial_unit) %>
-					  		| <%= link_to 'Duplicate', duplicate_modal_commercial_listing_path(@commercial_unit), 
+					  		| <%= link_to 'Duplicate', duplicate_modal_commercial_listing_path(@commercial_unit),
 			      				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
 					  	<% end %>
-		        </p>		
+		        </p>
 		  		</div>
 		  		<div class="col-md-6 form-label-responsive vertical-padding">
 		  			<% if current_user.is_management? %>
 			  			<%= link_to 'Make Announcement', new_announcement_path(
-				  			{ address: @commercial_unit.unit.building.formatted_street_address }), 
+				  			{ address: @commercial_unit.unit.building.formatted_street_address }),
 				  			class: "btn btn-warning btn-sm link-as-button" %>
 				  	<% end %>
-			  		<%= link_to 'Report Inaccuracy', inaccuracy_modal_commercial_listing_path(@commercial_unit), 
+			  		<%= link_to 'Report Inaccuracy', inaccuracy_modal_commercial_listing_path(@commercial_unit),
 		  				class: "btn btn-danger btn-sm",
 		  				data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
 		  		</div>
 		  	</div><!-- row -->
-		  	
+
 
 		  	<br />
 		  	<div class="row">
@@ -64,15 +62,15 @@
 							  <!-- first display building photos... -->
 							  	<% @commercial_unit.unit.building.images.each do |image| %>
 							  		<div class="item">
-						  				<%= image_tag image.file.url(:original), :class => 'img-responsive center-block', 
+						  				<%= image_tag image.file.url(:original), :class => 'img-responsive center-block',
 								      	alt: image.file.url(:original)  %>
-								    
+
 								    </div>
 							  	<% end %>
 							  	<!-- now display unit photos -->
 							  	<% @commercial_unit.unit.images.each do |image| %>
 							  		<div class="item">
-						  				<%= image_tag image.file.url(:original), :class => 'img-responsive center-block', 
+						  				<%= image_tag image.file.url(:original), :class => 'img-responsive center-block',
 								      	alt: image.file.url(:original) %>
 								    </div>
 							  	<% end %>
@@ -98,7 +96,7 @@
 								<% for i in 0..@commercial_unit.unit.building.images.length-1 %>
 									<% image = @commercial_unit.unit.building.images[i] %>
 						  		<a href="#commercial_unit-carousel" data-slide-to="<%= i %>">
-							      <%= image_tag image.file.url(:thumb), :class => 'photo-inline', 
+							      <%= image_tag image.file.url(:thumb), :class => 'photo-inline',
 							      	alt: image.file.url(:thumb) %>
 							    </a>
 						  	<% end %>
@@ -106,7 +104,7 @@
 						  	<% for j in 0..@commercial_unit.unit.images.length-1 %>
 									<% image = @commercial_unit.unit.images[j] %>
 						  		<a href="#commercial_unit-carousel" data-slide-to="<%= (j+i) %>">
-							      <%= image_tag image.file.url(:thumb), :class => 'photo-inline', 
+							      <%= image_tag image.file.url(:thumb), :class => 'photo-inline',
 							      	alt: image.file.url(:thumb) %>
 							    </a>
 						  	<% end %>
@@ -120,7 +118,7 @@
 					  <!-- end photos -->
 		  		</div>
 		  	</div><!-- row -->
-        
+
 		  	<br />
 		  	<div class="row">
 		  		<div class="col-md-12">
@@ -172,7 +170,7 @@
 				  <div class="col-md-3">
 				    <%= @commercial_unit.total_lot_size %>
 				  </div>
-				  
+
 				</div>
 
 				<div class="row">
@@ -352,10 +350,10 @@
 
 				<div class="row">
 				  <div class="col-md-3">
-				    
+
 				  </div>
 				  <div class="col-md-3">
-				  	
+
 				  </div>
 				  <div class="col-md-3">
 				    <strong>Listing ID</strong>
@@ -399,7 +397,7 @@
 		    		<%= @commercial_unit.location_description %>
 					</div>
 				</div>
-		    
+
 		    <% if @commercial_unit.unit.documents.count > 0 %>
 		    <br />
 	    	<div class="row">
@@ -424,7 +422,7 @@
 	    		<div class="col-md-12">
 	    			<!-- Nav tabs -->
 				    <ul class="nav nav-tabs" role="tablist">
-				      <li role="google-map-tab" class="active"><a href="#google-map-tab" aria-controls="google-map-tab" 
+				      <li role="google-map-tab" class="active"><a href="#google-map-tab" aria-controls="google-map-tab"
 				      	role="tab" data-toggle="tab">Map</a></li>
 				      <li role="walkscore"><a href="#walkscore" aria-controls="walkscore" role="tab" data-toggle="tab">Walkscore</a></li>
 				    </ul>
@@ -450,7 +448,7 @@
     					</div><!-- end tabpanel - walkscore -->
     				</div>
 
-	    			
+
 	    		</div>
 	    	</div><!-- row -->
 
@@ -459,14 +457,14 @@
 	</div><!-- col -->
 </div><!-- row -->
 
-  
+
   </div><!-- col -->
 </div><!-- row -->
 
 <%= render 'layouts/modals' %>
 
 <!-- Print Modal: only on the show page -->
-<div class="modal fade" id="printModal" tabindex="-1" role="dialog" 
+<div class="modal fade" id="printModal" tabindex="-1" role="dialog"
   aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -481,7 +479,7 @@
         		<br />
         	</div>
         </div>
-        
+
       </div>
       <div class="modal-footer">
       	<%= link_to commercial_listing_path(@commercial_unit, :format => 'pdf'), class:"btn btn-warning link-as-button print-btn has-spinner" do %>

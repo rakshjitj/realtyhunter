@@ -3,8 +3,8 @@ CommercialListings = {};
 (function() {
 
   CommercialListings.updatePropertySubTypes = function (ptype) {
-    var id = $('#commercial').attr('data-cunit-id');
-    //console.log('got path ', id);
+    var id = $('#commercial').attr('data-unit-id');
+    // console.log('got path ', id);
     $.ajax({
       url: "/commercial_listings/update_subtype",
       data: {
@@ -345,6 +345,7 @@ CommercialListings = {};
 
     var ptype = $('#commercial').attr('data-property-type');
     if (ptype) {
+      //console.log(ptype);
       CommercialListings.updatePropertySubTypes(ptype);
     }
 
