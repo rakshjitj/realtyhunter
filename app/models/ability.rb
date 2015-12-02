@@ -88,7 +88,7 @@ class Ability
 
   def initialize(user)
     user ||= User.new # guest user (not logged in)
-    alias_action :managers, :employees, :agents, :to => :view_staff
+    alias_action :managers, :employees, :agents, to: :view_staff
 
     # global super admin can control everything
     if user.has_role? :super_admin
@@ -103,9 +103,9 @@ class Ability
 
       if user.has_role?(:company_admin) || user.has_role?(:closing_manager)
         # managers/admins of any kind can manage user accounts
-        can :manage, User, :company_id => user.company_id
-        can :manage, Company, :id => user.company.id
-        can :manage, Office, :company_id => user.company.id
+        can :manage, User, company_id: user.company_id
+        can :manage, Company, id: user.company.id
+        can :manage, Office, company_id: user.company.id
         can :manage, Landlord do |landlord|
           !landlord.company_id || landlord.company_id == user.company_id
         end
@@ -116,17 +116,17 @@ class Ability
       # an "agent" on the rest of the site
       elsif user.has_role?(:data_entry) || user.has_role?(:listings_manager)
 
-        can :read, Company, :id => user.company.id
-        can :view_staff, Company, :id => user.company.id
-        can :read, Office, :company_id => user.company.id
-        can :view_staff, Office, :id => user.company.id
+        can :read, Company, id: user.company.id
+        can :view_staff, Company, id: user.company.id
+        can :read, Office, company_id: user.company.id
+        can :view_staff, Office, id: user.company.id
 
-        can :read, Building, :company_id => user.company_id
-        can :filter, Building, :company_id => user.company_id
+        can :read, Building, company_id: user.company_id
+        can :filter, Building, company_id: user.company_id
 
         # should only be able to edit their own user profile
-        can :read, User, :company_id => user.company_id
-        can :manage, User, :id => user.id
+        can :read, User, company_id: user.company_id
+        can :manage, User, id: user.id
 
         can :manage, Landlord do |landlord|
           !landlord.company_id || landlord.company_id == user.company_id

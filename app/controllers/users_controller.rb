@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   load_and_authorize_resource
   skip_before_action :logged_in_user, only: [:new, :create, :update_offices]
   before_action :set_user, except: [:index, :filter, :filter_listings, :teams, :new, :create, :admin_new,
-    :admin_create, :update_offices, :autocomplete_user_name, :unarchive]
+    :admin_create, :update_offices, :autocomplete_user_name, :destroy, :unarchive]
   before_action :set_company, except: [:update_offices]
   autocomplete :user, :name, full: true
 
@@ -169,6 +169,8 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
+    # don't set_user, that does addtl work
+    @user = User.find(params[:id])
     @user.archive
     set_users
     # if this is us, log us out
@@ -185,7 +187,7 @@ class UsersController < ApplicationController
 
   # effectively un-delete, the opposite of destroy() above.
   def unarchive
-    @user.update_attribute(:archived, false)
+    @user.update(archived: false)
     params[:status] = 'Deleted'
     set_users
     respond_to do |format|
@@ -264,7 +266,6 @@ class UsersController < ApplicationController
     # Confirms the correct user.
     def set_user
       @user = User.find(params[:id])
-      #@agent_title = EmployeeTitle.agent
       set_units
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that user account is not active."

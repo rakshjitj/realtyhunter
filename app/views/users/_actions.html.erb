@@ -6,7 +6,7 @@
 
   <% if !user.archived %>
 	  <br />
-	  <%= link_to "Delete", remote: true, method: :delete,
+	  <%= link_to "Delete", user, remote: true, method: :delete,
 	  	data: { confirm: "Are you sure you want to delete #{user.name}?" } %>
 
 

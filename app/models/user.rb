@@ -4,8 +4,8 @@ class User < ActiveRecord::Base
   scope :unarchived, ->{where(archived: false)}
 
   has_and_belongs_to_many :roles, :join_table => :users_roles
-  belongs_to :office, touch: true
-  belongs_to :company, touch: true
+  belongs_to :office
+  belongs_to :company
   belongs_to :manager, :class_name => "User"
   belongs_to :employee_title
   has_many   :subordinates, :class_name => "User", :foreign_key => "manager_id"
@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
             uniqueness: { case_sensitive: false }
 
   VALID_TELEPHONE_REGEX = /(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/
-  validates :mobile_phone_number, length: {maximum: 25}, presence: true,
+  validates :mobile_phone_number, length: {maximum: 25}, allow_blank: true, #presence: true,
     format: { with: VALID_TELEPHONE_REGEX }
 
   validates :name, presence: true, length: {maximum: 50}
@@ -98,21 +98,21 @@ class User < ActiveRecord::Base
 
   # Forgets a user.
   def forget
-    update(remember_digest: nil)
+    self.update(remember_digest: nil)
   end
 
   # Activates an account.
   def activate
-    update(activated: true, activated_at: Time.zone.now)
+    self.update(activated: true, activated_at: Time.zone.now)
   end
 
   # Marks an account as approved by an admin
   def approve
-    update(approved: true, approved_at: Time.zone.now)
+    self.update(approved: true, approved_at: Time.zone.now)
   end
 
   def unapprove
-    update(approved: false, approved_at: nil)
+    self.update(approved: false, approved_at: nil)
   end
 
   def archive
@@ -120,7 +120,7 @@ class User < ActiveRecord::Base
   end
 
   def self.find_unarchived(id)
-    find_by!(id: id, archived: false)
+    self.find_by!(id: id, archived: false)
   end
 
   def fname
