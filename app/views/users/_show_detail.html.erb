@@ -54,9 +54,6 @@
           <% if @user.image.file.exists?(:large) %>
             <%= image_tag @user.image.file.url(:large), class: 'img-responsive',
               alt: @user.image.file.url(:large) %>
-          <% else %>
-            <%= image_tag @user.image.file.url(:medium), class: 'img-responsive',
-              alt: @user.image.file.url(:medium) %>
           <% end %>
         <% else %>
           <!-- placeholder image -->

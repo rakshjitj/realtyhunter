@@ -1,13 +1,13 @@
 <% if @user.image %>
   <!-- display existing image -->
   <div class="img-medium">
-    <%= image_tag @user.image.file.url(:medium), :class => 'img-responsive', 
-      alt: @user.image.file.url(:medium) %>
+    <%= image_tag @user.image.file.url(:large), :class => 'img-responsive',
+      alt: @user.image.file.url(:large) %>
 
     <!-- remove image -->
     <% if current_user.is_management? %>
       <%= link_to "Remove", destroy_image_user_path(@user), remote: true, method: :delete,
-        class: 'btn btn-xs btn-warning center-block', 
+        class: 'btn btn-xs btn-warning center-block',
         data: { confirm: "Are you sure you want to remove the profile picture?" }
        %>
     <% end %>
@@ -22,7 +22,7 @@
   <br />
   <div class="row">
     <div class="col-md-12">
-      <%= form_for(@user, :url => upload_image_user_path(@user), 
+      <%= form_for(@user, :url => upload_image_user_path(@user),
         html: {multipart: true}, method: :post) do |f| %>
         <%= f.file_field :file %><br>
         <%= f.submit "Upload Photo", class: "btn btn-warning" %>
