@@ -45,9 +45,9 @@
             <%= f.label :office_id, "Office" %><br>
             <%= f.select(:office_id, options_for_select(current_user.company.offices.collect {|t| [t.name.titleize, t.id]}),
               {prompt: "Choose one..."},
-              :required => true,
+              required: true,
               class: 'form-control',
-              :include_blank => true) %>
+              include_blank: true) %>
           </div>
         </div>
       </div>
@@ -57,14 +57,9 @@
             <%= f.label :employee_title_id, "Job title" %><br>
             <%= f.select(:employee_title_id, options_for_select(EmployeeTitle.all.collect {|t| [t.name.titleize, t.id]}, [EmployeeTitle.agent.id]),
               {prompt: "Choose one..."},
-              :required => true,
+              required: true,
               class: 'form-control',
-              :include_blank => true,
-              # data: {
-              #   agent_title_name: @agent_title.name,
-              #   user_title_name: @user.employee_title.name
-              # }
-              ) %>
+              include_blank: true) %>
           </div>
         </div>
       </div>
@@ -85,8 +80,8 @@
         <div class="col-md-12">
           <div class="field">
             <br />
-            <%= f.label :mobile_phone_number %><br>
-            <%= f.text_field :mobile_phone_number, class: 'form-control' %>
+            <%= f.label :mobile_phone_number, class: 'required' %><br>
+            <%= f.text_field :mobile_phone_number, class: 'form-control', required: true %>
           </div>
         </div>
       </div>
