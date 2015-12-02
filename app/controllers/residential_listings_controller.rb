@@ -16,13 +16,13 @@ class ResidentialListingsController < ApplicationController
         set_residential_listings
       end
       format.csv do
-        async_create_csv
-        flash[:success] = "The CSV file will be emailed to you once it has been generated."
-        redirect_to residential_listings_url
-        #set_residential_listings_csv
-        # headers['Content-Disposition'] = "attachment; filename=\"" +
-        #   current_user.name + " - Residential Listings.csv\""
-        # headers['Content-Type'] ||= 'text/csv'
+        #async_create_csv
+        #flash[:success] = "The CSV file will be emailed to you once it has been generated."
+        #redirect_to residential_listings_url
+        set_residential_listings_csv
+        headers['Content-Disposition'] = "attachment; filename=\"" +
+          current_user.name + " - Residential Listings.csv\""
+        headers['Content-Type'] ||= 'text/csv'
       end
     end
   end
