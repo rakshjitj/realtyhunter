@@ -7,8 +7,8 @@ class UnitMailer < ApplicationMailer
     # end
     @listing = listing
     @reporter = reporter
-    mail to: 'info@myspacenyc.com', #data_enterers.map(&:email), 
-    	subject: "Inaccuracy Reported for #{listing.unit.building.street_address} ##{listing.unit.building_unit}", 
+    mail to: 'info@myspacenyc.com', #data_enterers.map(&:email),
+    	subject: "Inaccuracy Reported for #{listing.unit.building.street_address} ##{listing.unit.building_unit}",
     	from: @reporter.email
   end
 
@@ -19,8 +19,8 @@ class UnitMailer < ApplicationMailer
     # end
     @listing = listing
     @reporter = reporter
-    mail to: 'info@myspacenyc.com', #data_enterers.map(&:email), 
-    	subject: "Inaccuracy Reported for Commercial Unit: #{listing.unit.building.street_address}", 
+    mail to: 'info@myspacenyc.com', #data_enterers.map(&:email),
+    	subject: "Inaccuracy Reported for Commercial Unit: #{listing.unit.building.street_address}",
     	from: @reporter.email
   end
 
@@ -47,4 +47,11 @@ class UnitMailer < ApplicationMailer
     @images = images
     mail to: recipients, subject: sub, from: @source_agent.email
   end
+
+  def send_residential_csv(user_id)
+    send_to = User.find(user_id)
+    attachments['Residential Listings.csv'] = ResidentialListing.to_csv(listings)
+    mail to: send_to, send_to.company.name + ' Residential Listings CSV'
+  end
+
 end

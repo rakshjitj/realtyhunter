@@ -1,4 +1,5 @@
 class ResidentialListing < ActiveRecord::Base
+  queue = :residential_listings
   scope :unarchived, ->{where(archived: false)}
   has_and_belongs_to_many :residential_amenities
   has_many :roommates
@@ -559,6 +560,35 @@ class ResidentialListing < ActiveRecord::Base
       beds >= 3 && unit.status == Unit.statuses['pending']
     elsif status
       beds >= 3 && self.status == Unit.statuses['pending']
+    end
+  end
+
+  def self.to_csv(listings)
+    agents = Unit.get_primary_agents(listings)
+    reverse_statuses = {'0': 'Active', '1': 'Pending', '2': 'Off'}
+
+    attributes = [
+      'Full Address', 'Unit', 'Neighborhood', 'Is Exclusive?', 'Roomsharing OK?',
+      'Beds', 'Baths', 'Notes', 'Description', 'Lease Start', 'Lease End',
+      'Has Fee?', 'OP Fee Percentage', 'TP Fee Percentage', 'Tenant Occupied',
+      'Primary Agent', 'Listing ID', 'Landlord', 'Price', 'Available', 'Access',
+      'Status', 'Created At', 'Updated At', 'Archived']
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      listings.each do |listing|
+        #csv << attributes.map{ |attr| listing.send(attr) }
+        csv << [listing.formatted_street_address, listing.building_unit, listing.neighborhood_name,
+          listing.exclusive, listing.can_roomshare,
+          listing.beds, listing.baths, listing.notes, listing.description, listing.lease_start, listing.lease_end,
+          listing.has_fee, listing.op_fee_percentage, listing.tp_fee_percentage, listing.tenant_occupied,
+          listing.primary_agent_id ? @agents[listing.primary_agent_id][0].name : '',
+          listing.listing_id, listing.landlord_code, listing.rent,
+          listing.available_by, listing.access_info,
+          @reverse_statuses[listing.status.to_s.to_sym],
+          listing.created_at, listing.updated_at, listing.archived]
+      end
     end
   end
 

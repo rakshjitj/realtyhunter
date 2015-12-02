@@ -2,7 +2,7 @@
 <table>
 	<tr>
 		<td>
-			<%= image_tag @source_agent.company.image.file.url(:thumb), 
+			<%= image_tag @source_agent.company.image.file.url(:thumb),
       	alt: @source_agent.company.image.file.url(:thumb), align:"left" %>
 		</td>
 		<td style="min-width:200px;">
@@ -15,7 +15,7 @@
 	    <% end %>
 		</td>
 		<td>
-			<%= image_tag @source_agent.image.file.url(:thumb), 
+			<%= image_tag @source_agent.image.file.url(:thumb),
   	    alt: @source_agent.image.file.url(:thumb) %>
 		</td>
 	</tr>
@@ -40,8 +40,8 @@
 
 		<td style="max-width: 200px; vertical-align: top;">
 			<% if @images[listing.unit_id] %>
-	      <a href="<%= listing.public_url %>"><%= image_tag(@images[listing.unit_id].file.url(:thumb), 
-	        alt: @images[listing.unit_id].file.url(:medium)) %></a>
+	      <a href="<%= listing.public_url %>"><%= image_tag(@images[listing.unit_id].file.url(:thumb),
+	        alt: @images[listing.unit_id].file.url(:thumb)) %></a>
 	    <% else %>
 	      <!-- placeholder image -->
 	      <a href="<%= listing.public_url %>"><%= image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100") %></a>
@@ -66,7 +66,7 @@
 	    <br />
 	    <br />
 	    <a style="padding: 5px 10px; font-size: 12px;line-height: 1.5; border-radius: 3px;color: #fff;
-    background-color: #f0ad4e;border-color: #eea236;" 
+    background-color: #f0ad4e;border-color: #eea236;"
 	    	href="<%= listing.public_url %>">View More Details</a>
 	    <br />
 	    <br />
@@ -83,7 +83,7 @@
 <table>
 	<tr>
 		<td>
-			<%= image_tag @source_agent.company.image.file.url(:thumb), 
+			<%= image_tag @source_agent.company.image.file.url(:thumb),
 		    alt: @source_agent.company.image.file.url(:thumb), align:"left" %>
 		</th>
 		<td style="vertical-align: middle;">
