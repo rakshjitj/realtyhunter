@@ -5,7 +5,7 @@
 
       <%= link_to(
         image_tag(@bldg_imgs[building.id].file.url(:thumb), :class => 'img-responsive',
-        alt: @bldg_imgs[building.id].file.url(:medium)), building) %>
+        alt: @bldg_imgs[building.id].file.url(:thumb)), building) %>
 
     <% else %>
       <!-- placeholder image -->

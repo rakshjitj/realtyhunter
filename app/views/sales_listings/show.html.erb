@@ -22,7 +22,7 @@
 			  				<%= render 'market_status' %>
 			  			</p>
 			  		</div>
-			  		
+
 			  	</div><!-- row -->
 			  </div><!-- panel title -->
 			</div><!-- panel heading -->
@@ -41,7 +41,7 @@
 			  		<div class="col-xs-12 col-md-5 form-label-responsive">
 			  			<h1><%= rent_formatted(@sales_unit.unit.rent) %></h1>
 			  			<p><%= @sales_unit.beds %> Beds / <%= trim_zeros(@sales_unit.baths) %> Baths</p>
-			  			
+
 			  		</div>
 			  	</div><!-- row -->
 			  	<div class="row">
@@ -61,19 +61,19 @@
 			  		<%= link_to 'View all', sales_listings_path %>
 			  		<% if current_user.is_management? %>
 		  				| <%= link_to 'Edit', edit_sales_listing_path(@sales_unit.id) %>
-			        | <%= link_to 'Duplicate', duplicate_modal_sales_listing_path(@sales_unit), 
+			        | <%= link_to 'Duplicate', duplicate_modal_sales_listing_path(@sales_unit),
 			    				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
-			      	<!-- %= link_to 'Take off market', take_off_modal_sales_listing_path(@sales_unit), 
+			      	<!-- %= link_to 'Take off market', take_off_modal_sales_listing_path(@sales_unit),
 			      			data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %-->
 			      <% end %>
 			  	</div>
 			  	<div class="col-md-6 form-label-responsive vertical-padding">
 			  		<% if current_user.is_management? %>
 				  		<%= link_to 'Make Announcement', new_announcement_path(
-				  			{ address: @sales_unit.unit.building.formatted_street_address }), 
+				  			{ address: @sales_unit.unit.building.formatted_street_address }),
 				  			class: "btn btn-warning btn-sm link-as-button" %>
 				  	<% end %>
-			  		<%= link_to 'Report Inaccuracy', inaccuracy_modal_sales_listing_path(@sales_unit), 
+			  		<%= link_to 'Report Inaccuracy', inaccuracy_modal_sales_listing_path(@sales_unit),
 		  				class: "btn btn-danger btn-sm",
 		  				data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
 		  		</div>
@@ -90,25 +90,15 @@
 							  <!-- first display building photos... -->
 							  	<% @sales_unit.unit.building.images.each do |image| %>
 							  		<div class="item">
-							  			<% if image.file.exists?(:large) %>
-									      <%= image_tag image.file.url(:large), :class => 'img-responsive center-block', 
-									      	alt: image.file.url(:large) %>
-									    <% else %>
-									    	<%= image_tag image.file.url(:medium), :class => 'img-responsive center-block', 
-									      	alt: image.file.url(:medium) %>
-									    <% end %>
+								      <%= image_tag image.file.url(:large), :class => 'img-responsive center-block',
+								      	alt: image.file.url(:large) %>
 								    </div>
 							  	<% end %>
 							  	<!-- now display unit photos -->
 							  	<% @sales_unit.unit.images.each do |image| %>
 							  		<div class="item">
-							  			<% if image.file.exists?(:large) %>
-									      <%= image_tag image.file.url(:large), :class => 'img-responsive center-block', 
-									      	alt: image.file.url(:large) %>
-									    <% else %>
-									    	<%= image_tag image.file.url(:medium), :class => 'img-responsive center-block', 
-									      	alt: image.file.url(:medium) %>
-									    <% end %>
+								      <%= image_tag image.file.url(:large), :class => 'img-responsive center-block',
+								      	alt: image.file.url(:large) %>
 								    </div>
 							  	<% end %>
 							  </div>
@@ -133,7 +123,7 @@
 								<% for i in 0..@sales_unit.unit.building.images.length-1 %>
 									<% image = @sales_unit.unit.building.images[i] %>
 						  		<a href="#sales_unit-carousel" data-slide-to="<%= i %>">
-							      <%= image_tag image.file.url(:thumb), :class => 'photo-inline', 
+							      <%= image_tag image.file.url(:thumb), :class => 'photo-inline',
 							      	alt: image.file.url(:thumb) %>
 							    </a>
 						  	<% end %>
@@ -141,7 +131,7 @@
 						  	<% for j in 0..@sales_unit.unit.images.length-1 %>
 									<% image = @sales_unit.unit.images[j] %>
 						  		<a href="#sales_unit-carousel" data-slide-to="<%= (j+i) %>">
-							      <%= image_tag image.file.url(:thumb), :class => 'photo-inline', 
+							      <%= image_tag image.file.url(:thumb), :class => 'photo-inline',
 							      	alt: image.file.url(:thumb) %>
 							    </a>
 						  	<% end %>
@@ -199,7 +189,7 @@
 			    			<% if @sales_unit.unit.available_by %>
 									<%= @sales_unit.unit.available_by %>
 								<% else %>
-									- 
+									-
 								<% end %>
 							</div>
 	    			</div>
@@ -243,7 +233,7 @@
 			    			<%= @sales_unit.school_district %>
 			    		</div>
 	    			</div>
-	    			
+
 	    		</div>
 
 	    		<div class="col-md-6">
@@ -291,7 +281,7 @@
 			    			<% if @sales_unit.unit.primary_agent %>
 			    				<%= link_to @sales_unit.unit.primary_agent.name, @sales_unit.unit.primary_agent %>
 			    			<% else %>
-			    				- 
+			    				-
 			    			<% end %>
 			    		</div>
 	    			</div>
@@ -319,7 +309,7 @@
 			    			<%= @sales_unit.outside_broker_commission %> %
 			    		</div>
 	    			</div>
-	    			
+
 	    			<div class="row">
 	    				<div class="col-xs-6">
 			    			<strong>Listing ID:</strong>
@@ -328,7 +318,7 @@
 			    			<%= @sales_unit.unit.listing_id %>
 			    		</div>
 	    			</div>
-	    		</div>	
+	    		</div>
 	    	</div>
 
 	    	<!-- TODO: integrate with dept of buildings to get
@@ -460,7 +450,7 @@
 	    		<div class="col-md-12">
 	    			<!-- Nav tabs -->
 				    <ul class="nav nav-tabs" role="tablist">
-				      <li role="google-map-tab" class="active"><a href="#google-map-tab" aria-controls="google-map-tab" 
+				      <li role="google-map-tab" class="active"><a href="#google-map-tab" aria-controls="google-map-tab"
 				      	role="tab" data-toggle="tab">Map</a></li>
 				      <li role="walkscore"><a href="#walkscore" aria-controls="walkscore" role="tab" data-toggle="tab">Walkscore</a></li>
 				    </ul>
@@ -486,7 +476,7 @@
     					</div><!-- end tabpanel - walkscore -->
     				</div>
 
-	    			
+
 	    		</div>
 	    	</div><!-- row -->
 

@@ -17,7 +17,7 @@
   <div class="row">
 	  <div class="col-md-12">
 	    <br />
-	   
+
 
 	    <table class="table table-striped table-hover table-condensed table-responsive splitForPrint new_section">
 	        <tr class="heading1">
@@ -31,7 +31,7 @@
 	          <th style="width: 20%;">Features</th>
 	        </tr>
 	      <% @listings.each do |residential_unit| %>
-	      	
+
 	      	<tr class="<%= cycle('even', 'odd') -%>">
 					  <td>
 					    <%= residential_unit.street_address_and_unit %>
@@ -77,8 +77,8 @@
 		    <div class="row">
 	        <div class="col-xs-5">
             <% if listing.unit.images.length > 0 %>
-  	          <%= image_tag listing.unit.images[0].file.url(:medium), :class => 'photo-inline', 
-                alt: listing.unit.images[0].file.url(:medium), size:"100%" %>
+  	          <%= image_tag listing.unit.images[0].file.url(:large), :class => 'photo-inline',
+                alt: listing.unit.images[0].file.url(:large), size:"100%" %>
               <br />
             <% else %>
               <!-- placeholder image -->
@@ -104,7 +104,7 @@
                   <%= listing.op_fee_percentage %>
                 </div>
 	            </div>
-              
+
               <div class="row">
                 <div class="col-xs-5 text-right">
                   <strong>Tenant Pays %</strong>

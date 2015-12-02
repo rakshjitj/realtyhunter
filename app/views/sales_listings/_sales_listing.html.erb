@@ -6,14 +6,14 @@
 
   <td>
     <% if @res_images[sales_listing.unit_id] %>
-      <%= link_to(image_tag(@res_images[sales_listing.unit_id].file.url(:thumb), :class => 'img-responsive', 
-        alt: @res_images[sales_listing.unit_id].file.url(:medium)), sales_listing) %>
+      <%= link_to(image_tag(@res_images[sales_listing.unit_id].file.url(:thumb), :class => 'img-responsive',
+        alt: @res_images[sales_listing.unit_id].file.url(:thumb)), sales_listing) %>
     <% else %>
       <!-- placeholder image -->
       <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), sales_listing) %>
     <% end %>
   </td>
-  
+
   <td>
     <%= link_to "#{sales_listing.street_address_and_unit}", sales_listing_path(sales_listing.id) %><br />
     <% if sales_listing.neighborhood_name %>
@@ -53,17 +53,17 @@
   </td>
   <% if current_user.is_management? %>
     <td>
-      <%= link_to 'Edit', edit_sales_listing_path(sales_listing) %> 
-      <br /><%= link_to 'Delete', delete_modal_sales_listing_path(sales_listing), 
+      <%= link_to 'Edit', edit_sales_listing_path(sales_listing) %>
+      <br /><%= link_to 'Delete', delete_modal_sales_listing_path(sales_listing),
         data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
       <br />
-      <%= link_to 'Duplicate', duplicate_modal_sales_listing_path(sales_listing), 
+      <%= link_to 'Duplicate', duplicate_modal_sales_listing_path(sales_listing),
         data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %><br />
       <%= link_to 'Announcement', new_announcement_path(
           { address: sales_listing.formatted_street_address2 }) %>
       <!--% if sales_listing.status == "active" %-->
         <!--br /-->
-        <!--%= link_to 'Take off', take_off_modal_sales_listing_path(sales_listing), 
+        <!--%= link_to 'Take off', take_off_modal_sales_listing_path(sales_listing),
           data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %-->
       <!--% end %-->
     </td>

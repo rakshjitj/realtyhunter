@@ -6,8 +6,8 @@
 
     <td>
       <% if @com_images[commercial_listing.unit_id] %>
-        <%= link_to(image_tag(@com_images[commercial_listing.unit_id].file.url(:thumb), :class => 'img-responsive', 
-          alt: @com_images[commercial_listing.unit_id].file.url(:medium)), commercial_listing) %>
+        <%= link_to(image_tag(@com_images[commercial_listing.unit_id].file.url(:thumb), :class => 'img-responsive',
+          alt: @com_images[commercial_listing.unit_id].file.url(:thumb)), commercial_listing) %>
       <% else %>
         <!-- placeholder image -->
         <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), commercial_listing) %>
@@ -54,7 +54,7 @@
     <% if current_user.is_management? || current_user.is_listings_manager? %>
       <td>
         <%= link_to 'Edit', edit_commercial_listing_path(commercial_listing) %><br />
-        <%= link_to 'Delete', delete_modal_commercial_listing_path(commercial_listing), 
+        <%= link_to 'Delete', delete_modal_commercial_listing_path(commercial_listing),
           data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
         <%= link_to 'Announcement', new_announcement_path(
           { address: commercial_listing.formatted_street_address }) %>

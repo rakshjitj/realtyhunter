@@ -21,8 +21,8 @@
     <div class="col-xs-12 col-md-6">
       <% if @company.image %>
         <div class="img-medium">
-          <%= image_tag @company.image.file.url(:medium), :class => 'img-responsive',
-            alt: @company.image.file.url(:medium) %>
+          <%= image_tag @company.image.file.url(:large), :class => 'img-responsive',
+            alt: @company.image.file.url(:large) %>
         </div>
       <% else %>
           <div class="company-logo">

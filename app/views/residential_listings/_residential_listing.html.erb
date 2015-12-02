@@ -9,7 +9,7 @@
     <td>
       <% if @res_images[residential_listing.unit_id] %>
         <%= link_to(image_tag(@res_images[residential_listing.unit_id].file.url(:thumb), :class => 'img-responsive',
-          alt: @res_images[residential_listing.unit_id].file.url(:medium)), residential_listing) %>
+          alt: @res_images[residential_listing.unit_id].file.url(:thumb)), residential_listing) %>
       <% else %>
         <!-- placeholder image -->
         <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), residential_listing) %>
