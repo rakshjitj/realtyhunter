@@ -3,7 +3,12 @@ class AnnouncementMailer < ApplicationMailer
 	def send_broadcast(sender, recipients, note)
 		@sender = sender
 		@note = note
-		mail to: recipients, subject: "[Announcement] "
+		if note.length > 50
+			title = note[0..50] + '...'
+		else
+			title = note
+		end
+		mail to: recipients, subject: "[Announcement] " + title
 	end
 
 end
