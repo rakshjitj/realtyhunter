@@ -1,8 +1,8 @@
 <% announcements.each do |announcement| %>
 <div class="row row-no-padding">
   <div class="col-md-12">
-    <%= render partial: 'announcements/announcement', 
-      locals: { announcement: announcement } %>
-  </div>  
+    <%= render partial: 'announcements/announcement',
+      locals: { announcement: announcement, shorten_text: false } %>
+  </div>
 </div>
 <% end %>

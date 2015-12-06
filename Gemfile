@@ -26,14 +26,11 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 # Use ActiveModel has_secure_password
- gem 'bcrypt', '~> 3.1.7'
-# Use Unicorn as the app server
-# gem 'unicorn'
+gem 'bcrypt', '~> 3.1.7'
 gem 'bootstrap-sass', '~> 3.3.4'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
 gem 'autoprefixer-rails'
-
 # for handling single image uploads
 gem "paperclip"
 gem 'aws-sdk-v1' #paperclip
@@ -66,18 +63,13 @@ gem 'dalli'
 gem 'redis-rails'
 gem 'resque', "~> 1.22.0"
 gem 'delayed_paperclip'
-#gem 'delayed_job_active_record'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
 gem 'rollbar', '~> 1.2.7'
-
 gem "active_model_serializers", github: "rails-api/active_model_serializers"
-
 gem 'bootsy'
-
 # wufoo
 gem 'wuparty'
-
 gem 'twilio-ruby'
 
 group :production do

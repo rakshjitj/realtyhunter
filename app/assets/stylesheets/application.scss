@@ -1,12 +1,14 @@
 @import "custom.scss";
 @import "pdf.scss";
 @import "scaffolds.scss";
-@import "screen.scss";
 @import "residential_listing.scss";
 @import "announcements.scss";
 @import "dropzone/dropzone";
 @import "jquery.ui.all";
 @import "bootstrap-sprockets";
+$grid-float-breakpoint: 1150px;
+$navbarCollapseWidth: 1150px;
 @import "bootstrap";
 @import 'bootstrap-datetimepicker';
 @import "bootsy";
+

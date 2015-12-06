@@ -20,7 +20,13 @@
 	<% end %>
 	<div class="row">
 		<div class="col-xs-7 padding-left-sm2 padding-top inside-well">
-			<p><%= announcement.note %> - <%= announcement.sender_name %></p>
+			<p>
+				<% if shorten_text %>
+					<%= trim_announcement("#{announcement.note} - #{announcement.sender_name}") %>
+				<% else %>
+					<%= announcement.note %> - <%= announcement.sender_name %>
+				<% end %>
+			</p>
 		</div>
 		<div class="col-xs-5 padding-top text-right">
 			<small><em class="padding-right"><%= time_ago_in_words(announcement.updated_at) %></em></small>

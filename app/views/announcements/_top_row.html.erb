@@ -6,16 +6,16 @@
     <% end %>
 
     <div class="col-md-3 ">
-      <%= render partial: 'announcements/announcement', 
-        locals: { announcement: announcements[idx] } %>
-    </div>  
-      
+      <%= render partial: 'announcements/announcement',
+        locals: { announcement: announcements[idx], shorten_text: true } %>
+    </div>
+
   <% end %>
 </div>
 
 
 <!-- Delete Modal -->
-<div class="modal fade" id="annDeleteModal" tabindex="-1" role="dialog" 
+<div class="modal fade" id="annDeleteModal" tabindex="-1" role="dialog"
   aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

@@ -76,7 +76,8 @@
           </div>
           <div class="col-md-6 col-md-offset3">
             <div class="form-label-responsive">
-              <%= render partial: 'shared/pagination', locals: {models: @announcements} %>
+              <%= render partial: 'shared/pagination',
+                locals: {models: @announcements, shorten_text: false} %>
             </div>
           </div>
         </div>
@@ -90,7 +91,8 @@
 <hr />
 
 <div class="items">
-  <%= render partial: "announcements/items_list", locals: { announcements: @announcements } %>
+  <%= render partial: "announcements/items_list",
+    locals: { announcements: @announcements, shorten_text: false } %>
 </div>
 
 <!-- Delete Modal -->

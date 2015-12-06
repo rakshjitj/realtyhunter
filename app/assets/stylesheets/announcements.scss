@@ -29,13 +29,26 @@
 	}
 }
 
+// $font-size: 12px;
+// $line-height: 1;
+// $lines-to-show: 3;
+
 .announcement-fixed-height .well {
-	height: 75px;
+	height: 80px;
+	overflow: hidden;
+	//width: 300px;
 }
 
-// .inside_well {
-//   width: 100%;
-//   // "overflow" value must be different from "visible"
+//.inside-well {
+// 	display: block;
+//   display: -webkit-box;
+   //max-width: 100%;
+//   height: $lines-to-show * $line-height * $font-size + 15;
+//   margin: 0 auto;
+//   font-size: $font-size;
+//   line-height: $line-height;
+//   -webkit-line-clamp: $lines-to-show;
+//   -webkit-box-orient: vertical;
 //   overflow: hidden;
 //   text-overflow: ellipsis;
-// }
+//}
