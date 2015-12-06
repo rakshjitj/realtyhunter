@@ -6,7 +6,7 @@ class Announcement < ActiveRecord::Base
   validates :category, presence: true, inclusion:
     { in: ['residential', 'commercial', 'sales', 'event'] }
 
-	validates :note, allow_blank: true, length: {maximum: 140}
+	validates :note, allow_blank: true, length: {maximum: 2000}
 
   def self.search(params)
     entries = Announcement.joins(:user)

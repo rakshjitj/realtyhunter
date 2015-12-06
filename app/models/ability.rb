@@ -19,16 +19,18 @@ class Ability
 
   def posting_permissions(user)
     can :manage, Building, :company_id => user.company.id
+    can :manage, Announcement
 
-    can :manage, ResidentialListing do |residential_listing|
-      !residential_listing.unit || user.is_management? #|| (residential_listing.unit.building.company_id == user.company_id && user.handles_residential?)
-    end
+    can :manage, ResidentialListing #do |residential_listing|
+      #!residential_listing.unit
+    #end
     can :manage, SalesListing do |sales_listing|
-      !sales_listing.unit || user.is_management? || (sales_listing.unit.building.company_id == user.company_id && user.handles_sales?)
+      #!sales_listing.unit ||
+      sales_listing.unit.building.company_id == user.company_id && user.handles_sales?
     end
-    can :manage, CommercialListing do |commercial_listing|
-      !commercial_listing.unit || user.is_management? #|| (commercial_listing.unit.building.company_id == user.company_id && user.handles_commercial?)
-    end
+    can :manage, CommercialListing# do |commercial_listing|
+      #!commercial_listing.unit
+    #end
   end
 
   # Nir, Michelle, Shawn, Dani, Cheryl, Ashleigh, me
@@ -51,7 +53,6 @@ class Ability
     can :manage, ResidentialAmenity, :company_id => user.company.id
     can :manage, Utility, :company_id => user.company.id
     posting_permissions(user)
-    can :manage, Announcement
     can :manage, WufooContactUsForm
     can :manage, WufooListingsForm
     can :manage, WufooPartnerForm
@@ -82,8 +83,6 @@ class Ability
     can :read, CommercialListing do |commercial_listing|
       commercial_listing.unit.building.company_id == user.company_id #&& user.handles_commercial?
     end
-    can :filter, CommercialListing, company_id: user.company_id
-
   end
 
   def initialize(user)
@@ -115,7 +114,6 @@ class Ability
       # entrusted with managing listings. They should still show up labelled as
       # an "agent" on the rest of the site
       elsif user.has_role?(:data_entry) || user.has_role?(:listings_manager)
-
         can :read, Company, id: user.company.id
         can :view_staff, Company, id: user.company.id
         can :read, Office, company_id: user.company.id
