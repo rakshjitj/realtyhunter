@@ -16,13 +16,13 @@ class ResidentialListingsController < ApplicationController
         set_residential_listings
       end
       format.csv do
-        #async_create_csv
-        #flash[:success] = "The CSV file will be emailed to you once it has been generated."
-        #redirect_to residential_listings_url
-        set_residential_listings_csv
-        headers['Content-Disposition'] = "attachment; filename=\"" +
-          current_user.name + " - Residential Listings.csv\""
-        headers['Content-Type'] ||= 'text/csv'
+        async_create_csv
+        flash[:success] = "The CSV file will be emailed to you once it has been generated."
+        redirect_to residential_listings_url
+        #set_residential_listings_csv
+        #headers['Content-Disposition'] = "attachment; filename=\"" +
+        #  current_user.name + " - Residential Listings.csv\""
+        #headers['Content-Type'] ||= 'text/csv'
       end
     end
   end
@@ -368,8 +368,10 @@ class ResidentialListingsController < ApplicationController
 
     def set_residential_listings
       do_search
-      @residential_units = custom_sort
+      custom_sort
+      # display all found listings on the map
       @map_infos = ResidentialListing.set_location_data(@residential_units.to_a)
+      # only get data + images for paginated responses
       @residential_units = @residential_units.page params[:page]
       @res_images = ResidentialListing.get_images(@residential_units)
       @announcement_items = Announcement.search({limit: 4})

@@ -7,6 +7,7 @@ class UnitImagesController < ApplicationController
   # POST /images.json
   def create
     @image = @unit.images.build(image_params)
+#    @image.file.reprocess_without_delay!(:thumb)
 
     # dropzone expects a json response code
     if @image.save(image_params)

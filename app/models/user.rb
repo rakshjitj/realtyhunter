@@ -256,13 +256,13 @@ class User < ActiveRecord::Base
     # end
   end
 
-  def handles_residential?
-    self.has_role? :residential
-  end
+  # def handles_residential?
+  #   self.has_role? :residential
+  # end
 
-  def handles_commercial?
-    self.has_role? :commercial
-  end
+  # def handles_commercial?
+  #   self.has_role? :commercial
+  # end
 
   def handles_sales?
     self.has_role? :sales

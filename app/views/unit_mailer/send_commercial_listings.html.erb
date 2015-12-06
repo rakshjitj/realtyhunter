@@ -77,13 +77,13 @@
 		<td>
 			<%= image_tag @source_agent.company.image.file.url(:thumb),
 		    alt: @source_agent.company.image.file.url(:thumb), align:"left" %>
-		</th>
+		</td>
 		<td style="vertical-align: middle;">
 			<b><%= @source_agent.company.name %></b>
 			<br />
 			<% if @source_agent.company.website %>
 				<%= link_to @source_agent.company.website, @source_agent.company.website %>
 			<% end %>
-		</th>
+		</td>
 	</tr>
 </table>

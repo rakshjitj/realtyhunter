@@ -29,9 +29,11 @@ class Image < ActiveRecord::Base
         convert_options: '-auto-orient'
       }
     }},
-    default_url: "/images/:style/missing.png",
+    #default_url: Rails.root + "/images/:style/missing.png",
+    only_process: [:thumb],
     convert_options: { all: '-auto-orient' },
-    source_file_options: { all: '-auto-orient' }, processors: [:rotator]
+    source_file_options: { all: '-auto-orient' },
+    processors: [:rotator]
 
     # styles: {
     #   original: {convert_options: '-auto-orient'},
@@ -41,7 +43,14 @@ class Image < ActiveRecord::Base
     #   large:  '500x500>'
     # },
 
-  process_in_background :file
+  process_in_background :file, processing_image_url: :processing_image_fallback,
+    #processing_image_url: Rails.root + "/images/:style/image_uploading.jpg",
+    only_process: [:large, :original]
+
+  def processing_image_fallback
+    options = file.options
+    options[:interpolator].interpolate(options[:url], file, :original)
+  end
 
   # Validate filename
   validates_attachment_file_name :file, :matches => [/png\Z/, /jpe?g\Z/, /gif\Z/, /PNG\Z/, /JPE?G\Z/, /GIF\Z/]

@@ -1,6 +1,6 @@
 class ResidentialListing < ActiveRecord::Base
   queue = :residential_listings
-  scope :unarchived, ->{where(archived: false)}
+  # scope :unarchived, ->{where(archived: false)}
   has_and_belongs_to_many :residential_amenities
   has_many :roommates
   belongs_to :unit, touch: true
@@ -28,7 +28,7 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self.find_unarchived(id)
-    ResidentialListing.joins(unit: [building: [:landlord]]) #:neighborhood
+    ResidentialListing.joins(unit: [building: [:landlord]])
       .where(id: id)
       .where('units.archived = false')
       .first
@@ -145,7 +145,8 @@ class ResidentialListing < ActiveRecord::Base
     running_list
   end
 
-  def self.export_all(user)
+  def self.export_all(user_id)
+    user = User.find(user_id)
     ResidentialListing.joins(unit: [building: [:company, :landlord, :neighborhood]])
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address',
@@ -190,7 +191,7 @@ class ResidentialListing < ActiveRecord::Base
       #'residential_listings.for_roomsharing',
     if !params && !building_id
       return running_list
-    elsif !params && building_id
+    #elsif !params && building_id
       # TODO
       #running_list = running_list.where(building_id: building_id)
       #return running_list
@@ -556,14 +557,15 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def can_roomshare
-    if unit
-      beds >= 3 && unit.status == Unit.statuses['pending']
-    elsif status
+    if self.respond_to?(:status)
       beds >= 3 && self.status == Unit.statuses['pending']
+    else
+      beds >= 3 && unit.status == Unit.statuses['pending']
     end
   end
 
-  def self.to_csv(listings)
+  def self.to_csv(user_id)
+    listings = ResidentialListing.export_all(user_id)
     agents = Unit.get_primary_agents(listings)
     reverse_statuses = {'0': 'Active', '1': 'Pending', '2': 'Off'}
 
@@ -583,10 +585,10 @@ class ResidentialListing < ActiveRecord::Base
           listing.exclusive, listing.can_roomshare,
           listing.beds, listing.baths, listing.notes, listing.description, listing.lease_start, listing.lease_end,
           listing.has_fee, listing.op_fee_percentage, listing.tp_fee_percentage, listing.tenant_occupied,
-          listing.primary_agent_id ? @agents[listing.primary_agent_id][0].name : '',
+          listing.primary_agent_id ? agents[listing.primary_agent_id][0].name : '',
           listing.listing_id, listing.landlord_code, listing.rent,
           listing.available_by, listing.access_info,
-          @reverse_statuses[listing.status.to_s.to_sym],
+          reverse_statuses[listing.status.to_s.to_sym],
           listing.created_at, listing.updated_at, listing.archived]
       end
     end

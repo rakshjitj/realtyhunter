@@ -1,0 +1,22 @@
+<!-- company header -->
+<table>
+	<tr>
+		<td>
+			<%= image_tag @source_agent.company.image.file.url(:thumb),
+		    alt: @source_agent.company.image.file.url(:thumb), align:"left" %>
+		</td>
+		<td style="vertical-align: middle;">
+			<b><%= @source_agent.company.name %></b>
+		</td>
+	</tr>
+</table>
+
+<hr />
+
+<!-- message -->
+<p>
+	Attached below you'll find the csv you requested.
+</p>
+
+Best,
+The Team at Myspace
