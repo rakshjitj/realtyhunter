@@ -64,17 +64,12 @@ gem 'local_time'
 gem 'dalli'
 # background workers
 gem 'redis-rails'
-gem 'resque'
+gem 'resque', "~> 1.22.0"
 gem 'delayed_paperclip'
 #gem 'delayed_job_active_record'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
 gem 'rollbar', '~> 1.2.7'
-
-#gem 'yajl-ruby', :require => "yajl"
-#gem "oj"
-# timeout requests, note error in logs
-#gem "rack-timeout"
 
 gem "active_model_serializers", github: "rails-api/active_model_serializers"
 

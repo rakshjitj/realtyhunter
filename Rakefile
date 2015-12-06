@@ -4,7 +4,7 @@ require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
 
-#require 'resque/tasks'
-# task "resque:setup" do
-#   ENV['QUEUE'] = '*'
-# end
+require 'resque/tasks'
+task 'resque:setup' => :environment do
+	ENV['QUEUE'] = '*'
+end
