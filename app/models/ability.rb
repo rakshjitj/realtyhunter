@@ -21,16 +21,12 @@ class Ability
     can :manage, Building, :company_id => user.company.id
     can :manage, Announcement
 
-    can :manage, ResidentialListing #do |residential_listing|
-      #!residential_listing.unit
-    #end
+    can :manage, ResidentialListing
     can :manage, SalesListing do |sales_listing|
       #!sales_listing.unit ||
       sales_listing.unit.building.company_id == user.company_id && user.handles_sales?
     end
-    can :manage, CommercialListing# do |commercial_listing|
-      #!commercial_listing.unit
-    #end
+    can :manage, CommercialListing
   end
 
   # Nir, Michelle, Shawn, Dani, Cheryl, Ashleigh, me
