@@ -51,7 +51,7 @@ class UnitMailer < ApplicationMailer
   def send_residential_csv(user_id)
     @source_agent = User.find(user_id)
     attachments['Residential Listings.csv'] = ResidentialListing.to_csv(user_id)
-    mail to: @source_agent, subject: "#{@source_agent.company.name} Residential Listings CSV"
+    mail to: @source_agent.email, subject: "#{@source_agent.company.name} Residential Listings CSV"
   end
 
 end
