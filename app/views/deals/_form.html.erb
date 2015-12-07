@@ -110,7 +110,7 @@
               data-available-by="<%= @deal.lease_start_date ? @deal.lease_start_date.strftime("%m/%d/%Y") : '' %>">
 
               <%= f.text_field :lease_start_date,
-                placeholder: "Starts", class:"form-control" %>
+                placeholder: "Starts", class:"form-control", required: true %>
 
               <label class="input-group-addon btn" for="date">
                 <span class="fa fa-calendar open-datepicker"></span>
@@ -123,7 +123,7 @@
               data-available-by="<%= @deal.lease_expiration_date ? @deal.lease_expiration_date.strftime("%m/%d/%Y") : '' %>">
 
               <%= f.text_field :lease_expiration_date,
-                placeholder: "Ends", class:"form-control" %>
+                placeholder: "Ends", class:"form-control", required: true %>
 
               <label class="input-group-addon btn" for="date">
                 <span class="fa fa-calendar open-datepicker"></span>

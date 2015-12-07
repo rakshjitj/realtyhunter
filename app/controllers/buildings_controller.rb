@@ -40,14 +40,13 @@ class BuildingsController < ApplicationController
   # GET /buildings/1
   # GET /buildings/1.json
   def show
-    #fresh_when([@building, @building.images])
   end
 
   # GET /buildings/new
   def new
     @building = Building.new
     landlord_id = params[:landlord_id]
-    if landlord_id && Landlord.where(landlord_id)
+    if landlord_id && Landlord.where("id = ?", landlord_id)
       @building.landlord_id = landlord_id
     end
   end
@@ -85,7 +84,7 @@ class BuildingsController < ApplicationController
   def update
     if @building.update(format_params_before_save(false).merge({updated_at: Time.now}))
       flash[:success] = "Building updated!"
-      redirect_to @building
+      redirect_to building_path(@building, only_path: true)
     else
       render 'edit'
     end

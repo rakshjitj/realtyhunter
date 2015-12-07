@@ -59,7 +59,7 @@ class DealsController < ApplicationController
 	def update
     if @deal.update(deal_params[:deal])
 			flash[:success] = "Deal updated!"
-      redirect_to @deal
+      redirect_to deal_path(@deal, only_path: true)
     else
     	render 'edit'
 		end
@@ -159,7 +159,7 @@ class DealsController < ApplicationController
           data[:deal][:lease_expiration_date] = Date::strptime(data[:deal][:lease_expiration_date], "%m/%d/%Y")
         end
 
-        if data[:deal][:lease_start_date] && data[:deal][:lease_expiration_date]
+        if !data[:deal][:lease_start_date].blank? && !data[:deal][:lease_expiration_date].blank?
           data[:deal][:lease_term] = ((data[:deal][:lease_expiration_date] - data[:deal][:lease_start_date])/30).round
         end
 

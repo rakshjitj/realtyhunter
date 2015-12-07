@@ -363,7 +363,7 @@
 		    		</div>
 		    		<div class="col-xs-12 col-md-9">
 		    			<%= @sales_unit.seller_name %><br />
-		    			<%= link_to @sales_unit.seller_phone, 'tel:' + @sales_unit.seller_phone %><br />
+		    			<%= link_to @sales_unit.seller_phone, "tel:#{CGI.escape @sales_unit.seller_phone}" %><br />
 		    			<%= @sales_unit.seller_address %>
 		    		</div>
 		    	</div>

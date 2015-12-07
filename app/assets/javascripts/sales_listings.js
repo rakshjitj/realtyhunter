@@ -271,8 +271,9 @@ SalesListings = {};
 	SalesListings.buildContentString = function (key, info) {
 	  var contentString = '<strong>' + key + '</strong><br />'; //<hr />';
 	  for (var i=0; i<info['units'].length; i++) {
-	    contentString += '<a href="https://myspace-realty-monster.herokuapp.com/sales_listings/' + info['units'][i].id + '">#' + info['units'][i].building_unit + '</a> ' + info['units'][i].beds + ' bd / '
-	      + info['units'][i].baths + ' baths $' + info['units'][i].rent + '<br />';
+	    contentString += '<a href="https://myspace-realty-monster.herokuapp.com/sales_listings/' + info['units'][i].id + '">'
+	    	+ info['units'][i].beds + ' bd / '
+	      + info['units'][i].baths + ' baths</a> $' + info['units'][i].rent + '<br />';
 	    if (i == 5) {
 	      contentString += '<a href="https://myspace-realty-monster.herokuapp.com/sales_listings?building_id=' + info['building_id'] + '">View more...</a>';
 	      break;
@@ -281,12 +282,74 @@ SalesListings = {};
 	  return contentString;
 	};
 
+	SalesListings.map;
+	SalesListings.overlays;
+
 	SalesListings.setPositions = function() {
 	  // loop through and give each task a data-pos
 	  // attribute that holds its position in the DOM
 	  $('#sales .img-thumbnail').each(function(i) {
 	    $(this).attr("data-pos", i+1);
 	  });
+	};
+
+	SalesListings.updateOverviewMap = function(in_data) {
+		SalesListings.overlays.clearLayers();
+    var markers = new L.MarkerClusterGroup({
+    	maxClusterRadius: 30 // lean towards showing more individual markers
+    }).addTo(SalesListings.overlays);
+
+    var dataPoints;
+	  // if updating from an ajax call, in_data will hava content.
+	  // we load data from a data attribute on page load, but that remains cached forever -
+	  // it will not update with subsequent ajax calls.
+	  if (in_data) {
+	  	dataPoints = JSON.parse(in_data);
+	  } else {
+	  	dataPoints = JSON.parse($('#s-big-map').attr('data-map-points'));
+	  }
+	  var features = [];
+	  Object.keys(dataPoints).forEach(function(key, index) {
+	    // draw each marker + load with data
+	    var info = dataPoints[key];
+	    var content = SalesListings.buildContentString(key, info);
+	    var marker = L.marker(new L.LatLng(info.lat, info.lng), {
+	      icon: L.mapbox.marker.icon({
+	      	'marker-size': 'small',
+	      	'marker-color': '#f86767'
+	      }),
+	      'title': key,
+	    });
+	    marker.bindPopup(content);
+      markers.addLayer(marker);
+	    // var feature = {
+     //    type: 'Feature',
+     //    properties: {
+     //        title: key,
+     //        'marker-color': '#f86767',
+     //        'description': SalesListings.buildContentString(key, info),
+     //        'marker-size': 'small'
+     //    },
+     //    geometry: {
+     //        type: 'Point',
+     //        coordinates: [info.lng, info.lat]
+     //    }
+    	// };
+
+    	// features.push(feature);
+		});
+
+		var geojson = {
+			'type': 'FeatureCollection',
+			'features': features
+		};
+
+    //markerLayer.setGeoJSON(geojson);
+    var geoJsonLayer = L.geoJson(geojson);
+    //geoJsonLayer.clearLayers();
+    markers.addLayer(geoJsonLayer);
+ 		SalesListings.map.addLayer(markers);
+    SalesListings.map.fitBounds(markers.getBounds());
 	};
 
 	SalesListings.initialize = function() {
@@ -334,29 +397,23 @@ SalesListings = {};
 	  $('#sales .remove-building-feature').click(SalesListings.removeBuildingFeature);
 	  $('#sales .remove-neighborhood').click(SalesListings.removeNeighborhood);
 
-	  // print pdf from the index page
-	 //  $('#sales .btn-print-list').click( function(event) {
-		//   Listings.showSpinner();
-		//   $(this).toggleClass('active');
-		// });
-
 		var available_by = $('#sales .datepicker').attr('data-available-by');
 		if (available_by) {
 			$('#sales .datepicker').data("DateTimePicker").date(available_by);
 		}
 
-		// if ($('#s-big-map').length > 0) {
-		// 	// mapbox
-		// 	L.mapbox.accessToken = $('#mapbox-token').attr('data-mapbox-token');
-	 //    // SalesListings.map = L.mapbox.map('s-big-map', 'rakelblujeans.8594241c', { zoomControl: false })
-	    // 	.setView([40.6739591, -73.9570342], 13);
+		if ($('#s-big-map').length > 0) {
+			// mapbox
+			L.mapbox.accessToken = $('#mapbox-token').attr('data-mapbox-token');
+	    SalesListings.map = L.mapbox.map('s-big-map', 'rakelblujeans.8594241c', { zoomControl: false })
+	    	.setView([40.6739591, -73.9570342], 13);
 
-			// new L.Control.Zoom({ position: 'topright' }).addTo(SalesListings.map);
-	  //   //map.removeLayer(marker)
-	  //   //var markerLayer = L.mapbox.featureLayer().addTo(map);
-	  //   SalesListings.overlays = L.layerGroup().addTo(SalesListings.map);
-	  //   SalesListings.updateOverviewMap();
-		//}
+			new L.Control.Zoom({ position: 'topright' }).addTo(SalesListings.map);
+	    //map.removeLayer(marker)
+	    //var markerLayer = L.mapbox.featureLayer().addTo(map);
+	    SalesListings.overlays = L.layerGroup().addTo(SalesListings.map);
+	    SalesListings.updateOverviewMap();
+		}
 
 		// google map on show page
 		var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';

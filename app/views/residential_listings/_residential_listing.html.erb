@@ -116,12 +116,12 @@
     <% if current_user.is_management? || current_user.is_listings_manager? %>
       <td>
         <%= link_to 'Edit', edit_residential_listing_path(residential_listing) %>
-        <br /><%= link_to 'Delete', delete_modal_residential_listing_path(residential_listing),
+        <br><%= link_to 'Delete', delete_modal_residential_listing_path(residential_listing),
           data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
-        <br />
+        <br>
         <%= link_to 'Duplicate', duplicate_modal_residential_listing_path(residential_listing),
           data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
-
+        <br>
         <%= link_to 'Announcement', new_announcement_path(
           { address: residential_listing.formatted_street_address }) %>
 

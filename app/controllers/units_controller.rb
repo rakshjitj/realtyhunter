@@ -1,7 +1,7 @@
 class UnitsController < ApplicationController
   before_action :set_unit, only: [:show, :edit, :update, :destroy]
   etag { current_user.id }
-  
+
   # GET /units
   # GET /units.json
   def index
@@ -43,7 +43,7 @@ class UnitsController < ApplicationController
   def update
     respond_to do |format|
       if @unit.update(unit_params)
-        format.html { redirect_to @unit, notice: 'Unit was successfully updated.' }
+        format.html { redirect_to unit_path(@unit, only_path: true), notice: 'Unit was successfully updated.' }
         format.json { render :show, status: :ok, location: @unit }
       else
         format.html { render :edit }
@@ -71,7 +71,7 @@ class UnitsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def unit_params
-      params.require(:unit).permit(:building_unit, :rent, :available_by, 
+      params.require(:unit).permit(:building_unit, :rent, :available_by,
         :access_info, :status, :open_house, :building_id, :user_id)
     end
 end

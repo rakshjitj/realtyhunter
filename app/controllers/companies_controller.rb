@@ -42,10 +42,8 @@ class CompaniesController < ApplicationController
   end
 
   def employees
-    #.includes(:manager, :roles)
     @title = 'Employees'
-    @users = @company.employees
-      .page params[:page]
+    @users = @company.employees.page params[:page]
     @user_images = User.get_images(@users)
     render 'users/index'
   end
@@ -124,7 +122,7 @@ class CompaniesController < ApplicationController
       @company = Company.find(params[:id])
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that company is not active"
-      redirect_to :action => 'index'
+      redirect_to action: 'index'
     end
 
     def set_companies

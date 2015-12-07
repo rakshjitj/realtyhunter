@@ -1,6 +1,6 @@
 class UserWaterfall < ActiveRecord::Base
-	belongs_to :parent_agent, :class_name => 'User', touch: true, dependent: :destroy
-	belongs_to :child_agent, :class_name => 'User', touch: true, dependent: :destroy
+	belongs_to :parent_agent, class_name: 'User', touch: true, dependent: :destroy
+	belongs_to :child_agent, class_name: 'User', touch: true, dependent: :destroy
 	scope :unarchived, ->{where(archived: false)}
 
 	# Agents earn different rates depending of if they are considered "active" or not.
@@ -9,16 +9,16 @@ class UserWaterfall < ActiveRecord::Base
   # than those who don't.
   # The first number in the array below represents what you earn if you are still active.
   # Second number is for when you're inactive.
-	
+
 	validates :parent_agent_id, presence: true
-  # agents collect different commission rates depending on 
+  # agents collect different commission rates depending on
   # their seniority
   validates :agent_seniority_rate, presence: true, numericality: { only_integer: false }
-	validates :level, presence: true, numericality: { only_integer: true }, 
+	validates :level, presence: true, numericality: { only_integer: true },
 		inclusion: { in: [1,2,3,4] }
 	validates :rate, presence: true, numericality: { only_integer: false }
 
-  
+
 	def archive
     self.update(archived: true)
   end
@@ -32,7 +32,7 @@ class UserWaterfall < ActiveRecord::Base
   		return ""
   	end
 
-  	rates = { 
+  	rates = {
 			'senior': {
 				'1': [5, 2],
 				'2': [3.5, 1.25],
@@ -56,30 +56,30 @@ class UserWaterfall < ActiveRecord::Base
 LEFT JOIN users AS child_agents ON child_agents.id = user_waterfalls.child_agent_id')
   		.select('user_waterfalls.id', 'rate', 'level', 'user_waterfalls.updated_at',
         'agent_seniority_rate',
-  			'parent_agents.name as parent_agent_name', 
+  			'parent_agents.name as parent_agent_name',
   			'child_agents.name as child_agent_name')
 
   	if !params[:parent_agent].blank?
-      @running_list = 
+      @running_list =
       	@running_list.where('parent_agents.name ILIKE ?', "%#{params[:parent_agent]}%")
     end
 
     if !params[:parent_agent_id].blank?
-      @running_list = 
+      @running_list =
       	@running_list.where('parent_agent_id = ?', params[:parent_agent_id])
     end
 
     if !params[:child_agent].blank?
-      @running_list = 
+      @running_list =
       	@running_list.where('child_agents.name ILIKE ?', "%#{params[:child_agent]}%")
     end
 
     if !params[:level].blank? && ['1', '2', '3' '4'].include?(params[:level])
-      @running_list = 
+      @running_list =
       	@running_list.where('level = ?', params[:level])
     end
 
   	@running_list
   end
-	
+
 end

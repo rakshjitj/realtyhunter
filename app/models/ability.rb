@@ -21,12 +21,15 @@ class Ability
     can :manage, Building, :company_id => user.company.id
     can :manage, Announcement
 
-    can :manage, ResidentialListing
-    can :manage, SalesListing do |sales_listing|
-      #!sales_listing.unit ||
-      sales_listing.unit.building.company_id == user.company_id && user.handles_sales?
+    can :manage, ResidentialListing do |residential_listing|
+      residential_listing.unit.building.company_id == user.company_id
     end
-    can :manage, CommercialListing
+    can :manage, SalesListing do |sales_listing|
+        sales_listing.unit.building.company_id == user.company_id
+      end
+    can :manage, CommercialListing do |commercial_listing|
+      commercial_listing.unit.building.company_id == user.company_id
+    end
   end
 
   # Nir, Michelle, Shawn, Dani, Cheryl, Ashleigh, me
@@ -71,13 +74,13 @@ class Ability
     can :read, Building, company_id: user.company_id
 
     can :read, ResidentialListing do |residential_listing|
-      residential_listing.unit.building.company_id == user.company_id #&& user.handles_residential?
+      residential_listing.unit.building.company_id == user.company_id
     end
     can :read, SalesListing do |sales_listing|
-        !sales_listing.unit || user.is_management? #|| (sales_listing.unit.building.company_id == user.company_id) #&& user.handles_residential?)
-      end
+      sales_listing.unit.building.company_id == user.company_id
+    end
     can :read, CommercialListing do |commercial_listing|
-      commercial_listing.unit.building.company_id == user.company_id #&& user.handles_commercial?
+      commercial_listing.unit.building.company_id == user.company_id
     end
   end
 

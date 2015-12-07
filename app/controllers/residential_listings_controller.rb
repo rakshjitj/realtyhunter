@@ -222,7 +222,7 @@ class ResidentialListingsController < ApplicationController
     # update res
     if ret1 && ret2
       flash[:success] = "Unit successfully updated!"
-      redirect_to @residential_unit
+      redirect_to residential_listing_path(@residential_unit, only_path: true)
     else
       render 'edit'
     end

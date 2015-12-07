@@ -60,7 +60,7 @@ class LandlordsController < ApplicationController
     @landlord = Landlord.new(format_params_before_save)
     @landlord.company = current_user.company
     if @landlord.save
-      redirect_to @landlord
+      redirect_to landlord_path(@landlord, only_path: true)
     else
       # error
       render 'new'
@@ -72,7 +72,7 @@ class LandlordsController < ApplicationController
   def update
     if @landlord.update(format_params_before_save.merge({updated_at: Time.now}))
       flash[:success] = "Landlord updated!"
-      redirect_to @landlord
+      redirect_to landlord_path(@landlord, only_path: true)
     else
       render 'edit'
     end

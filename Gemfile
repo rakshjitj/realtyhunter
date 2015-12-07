@@ -70,7 +70,7 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers"
 gem 'bootsy'
 # wufoo
 gem 'wuparty'
-gem 'twilio-ruby'
+#gem "brakeman", :require => false
 
 group :production do
 	gem 'rails_12factor' # related to serving static assets

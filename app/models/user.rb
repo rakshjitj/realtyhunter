@@ -25,14 +25,14 @@ class User < ActiveRecord::Base
 
 	before_create :create_activation_digest
   before_create :set_auth_token # for API
+  before_save :sanitize_email
 
-  before_save :downcase_email
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
 	validates :email, presence: true, length: {maximum: 100},
 						format: { with: VALID_EMAIL_REGEX },
             uniqueness: { case_sensitive: false }
 
-  VALID_TELEPHONE_REGEX = /(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/
+  VALID_TELEPHONE_REGEX = /\A(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?\z/
   validates :mobile_phone_number, length: {maximum: 25}, allow_blank: true, #presence: true,
     format: { with: VALID_TELEPHONE_REGEX }
 
@@ -434,8 +434,8 @@ class User < ActiveRecord::Base
   end
 
   private
-    # Converts email to all lower-case.
-    def downcase_email
+
+    def sanitize_email
       self.email = email.downcase
       email_md5 = Digest::MD5.hexdigest(self.email)
       self.public_url = "http://myspacenyc.com/agent/AGENT-#{email_md5}"

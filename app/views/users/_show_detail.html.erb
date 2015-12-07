@@ -100,7 +100,8 @@
         <% if !@user.mobile_phone_number.empty? %>
           <div class="row">
             <div class="col-md-12">
-              <strong>m |</strong> <%= link_to @user.mobile_phone_number, 'tel:' + @user.mobile_phone_number %>
+              <strong>m |</strong> <%= link_to @user.mobile_phone_number,
+                "tel:#{CGI.escape@user.mobile_phone_number}" %>
             </div>
           </div>
         <% end %>

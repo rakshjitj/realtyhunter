@@ -3,8 +3,8 @@ class RoomsharingApplication < ActiveRecord::Base
 	#has_one :unit, dependent: :destroy
 
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
-	
-  VALID_TELEPHONE_REGEX = /(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/
+
+  VALID_TELEPHONE_REGEX = /\A(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?\z/
 
 	validates :f_name, presence: true, length: {maximum: 100}
 	validates :l_name, presence: true, length: {maximum: 100}
@@ -14,7 +14,7 @@ class RoomsharingApplication < ActiveRecord::Base
     format: { with: VALID_TELEPHONE_REGEX }
   validates :other_phone, length: {maximum: 25}, allow_blank: true,
     format: { with: VALID_TELEPHONE_REGEX }
-	validates :email, presence: true, length: {maximum: 100}, 
+	validates :email, presence: true, length: {maximum: 100},
 						format: { with: VALID_EMAIL_REGEX }
             #uniqueness: { case_sensitive: false }
 	validates :describe_pets, length: {maximum: 50}
@@ -40,7 +40,7 @@ class RoomsharingApplication < ActiveRecord::Base
 	validates :curr_landlord_name, presence: true, length: {maximum: 50}
 	validates :curr_daytime_phone, length: {maximum: 25}, presence: true,
     format: { with: VALID_TELEPHONE_REGEX }
-    validates :curr_evening_phone, allow_blank: true, length: {maximum: 25}, 
+    validates :curr_evening_phone, allow_blank: true, length: {maximum: 25},
     format: { with: VALID_TELEPHONE_REGEX }
 	validates :curr_rent_paid, presence: true, length: {maximum: 50}
 	validates :curr_tenancy_years, presence: true, length: {maximum: 10}
