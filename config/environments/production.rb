@@ -119,5 +119,5 @@
 
   config.lograge.enabled = true
 
-  config.middleware.use Rack::TwilioWebhookAuthentication, ENV["TWILIO_AUTH_TOKEN"], '/voice'
+  #config.middleware.use Rack::TwilioWebhookAuthentication, ENV["TWILIO_AUTH_TOKEN"], '/voice'
 end
