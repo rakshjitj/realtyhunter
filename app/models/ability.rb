@@ -22,13 +22,13 @@ class Ability
     can :manage, Announcement
 
     can :manage, ResidentialListing do |residential_listing|
-      residential_listing.unit.building.company_id == user.company_id
+      !residential_listing.unit || residential_listing.unit.building.company_id == user.company_id
     end
     can :manage, SalesListing do |sales_listing|
-        sales_listing.unit.building.company_id == user.company_id
+        !sales_listing.unit || sales_listing.unit.building.company_id == user.company_id
       end
     can :manage, CommercialListing do |commercial_listing|
-      commercial_listing.unit.building.company_id == user.company_id
+      !commercial_listing.unit || commercial_listing.unit.building.company_id == user.company_id
     end
   end
 
