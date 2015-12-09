@@ -106,7 +106,7 @@
                   <% if current_user.is_company_admin? %>
                     <li><%= link_to "Waterfall", user_waterfalls_path %></li>
                   <% end %>
-                  <% if current_user.is_management? || current.is_listings_manager? %>
+                  <% if current_user.is_management? || current_user.is_listings_manager? %>
                     <li><%= link_to "Announcements", new_announcement_path %></li>
                     <li role="separator" class="divider"></li>
 
