@@ -10,7 +10,7 @@
     </div>
     <div class="col-md-6 form-label-responsive">
 
-      <% if current_user.is_management? %>
+      <% if current_user.is_management? || current_user.is_listings_manager? %>
         <%= link_to 'Make an Announcement', new_announcement_path %><br />
       <% end %>
       <!--%= link_to 'Load more', announcements_path(

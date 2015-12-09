@@ -30,7 +30,7 @@
 		</div>
 		<div class="col-xs-5 padding-top text-right">
 			<small><em class="padding-right"><%= time_ago_in_words(announcement.updated_at) %></em></small>
-			<% if current_user.is_management? %>
+			<% if current_user.is_management? || current_user.is_listings_manager? %>
 				<div class="">
 					<small><em class="padding-right">
 						<%= link_to 'Delete', delete_modal_announcement_path(announcement),
