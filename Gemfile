@@ -97,6 +97,8 @@ group :development do
   gem "bullet"
   #gem 'sql-logging'
   gem 'better_errors'
+  gem 'derailed'
+  gem 'stackprof'
 end
 
 group :test do
