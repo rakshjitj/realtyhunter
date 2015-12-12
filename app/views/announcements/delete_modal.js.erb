@@ -1,5 +1,5 @@
 $('#annDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', announcement_path(@announcement), remote: true, method: :delete, class: 'btn btn-danger delete-btn link-as-button', id: 'delete-link') %>");
-$('#annDeleteModal #delete-link').click( function(event) {
+$('#annDeleteModal .delete-btn').click( function(event) {
 	$('#annDeleteModal').modal('hide');
 	event.preventDefault();
 });
