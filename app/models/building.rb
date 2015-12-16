@@ -21,8 +21,8 @@ class Building < ActiveRecord::Base
 	attr_accessor :building, :inaccuracy_description,
     :custom_rental_term, :custom_amenities, :custom_utilities, :custom_neighborhood_id
 
-	validates :formatted_street_address, presence: true, length: {maximum: 200},
-		uniqueness: { case_sensitive: false }
+	validates :formatted_street_address, presence: true, length: {maximum: 200}
+		#uniqueness: { case_sensitive: false }
 
 	validates :street_number, allow_blank: true, length: {maximum: 20}
 	validates :route, presence: true, length: {maximum: 100}

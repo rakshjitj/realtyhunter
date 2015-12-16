@@ -62,7 +62,9 @@ class BuildingsController < ApplicationController
       #puts building_params[:building]
       @bldg = Building.where(
         street_number: building_params[:street_number],
-        route: building_params[:route]).first
+        route: building_params[:route],
+        archived: false
+        ).first
       #puts "FOUND BLDG #{@bldg.inspect} #{building_params[:street_number]} #{building_params[:route]}"
       if @bldg
         flash[:info] = "Building already exists!"
