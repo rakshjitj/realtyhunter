@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151215074309) do
+ActiveRecord::Schema.define(version: 20151220201041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -429,7 +429,6 @@ ActiveRecord::Schema.define(version: 20151215074309) do
 
   create_table "roomsharing_applications", force: :cascade do |t|
     t.string   "ssn"
-    t.string   "dob"
     t.string   "cell_phone"
     t.string   "other_phone"
     t.string   "email"
@@ -487,6 +486,7 @@ ActiveRecord::Schema.define(version: 20151215074309) do
     t.string   "referenceId"
     t.string   "orderId"
     t.string   "orderStatus"
+    t.date     "dob"
   end
 
   add_index "roomsharing_applications", ["user_id"], name: "index_roomsharing_applications_on_user_id", using: :btree

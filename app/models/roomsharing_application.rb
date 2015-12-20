@@ -23,12 +23,6 @@ class RoomsharingApplication < ActiveRecord::Base
 	validates :facebook_profile_url, length: {maximum: 100}
 	validates :twitter_profile_url, length: {maximum: 100}
 	validates :linkedin_profile_url, length: {maximum: 100}
-	validates :bank_name, presence: true, length: {maximum: 100}
-	validates :checking_acct_no, presence: true, length: {maximum: 50}
-	validates :savings_acct_no, length: {maximum: 50}
-	validates :relative_name, length: {maximum: 200}
-	validates :relative_address, length: {maximum: 500}
-	validates :relative_phone, length: {maximum: 20}
 	validates :listing_address, presence: true, length: {maximum: 20}
 	validates :listing_unit, presence: true, length: {maximum: 20}
 
@@ -36,6 +30,7 @@ class RoomsharingApplication < ActiveRecord::Base
 	validates :curr_street_address, presence: true, length: {maximum: 100}
 	validates :curr_apt_suite, allow_blank: true, length: {maximum: 50}
 	validates :curr_city, presence: true, length: {maximum: 100}
+  validates :curr_state_abbrev, presence: true, length: {maximum: 100}
 	validates :curr_zip, presence: true, length: {maximum: 15}
 	validates :curr_landlord_name, presence: true, length: {maximum: 50}
 	validates :curr_daytime_phone, length: {maximum: 25}, presence: true,
@@ -56,6 +51,7 @@ class RoomsharingApplication < ActiveRecord::Base
 	validates :prev_apt_suite, allow_blank: true, length: {maximum: 50}
 	validates :prev_city, allow_blank: true, length: {maximum: 100}
 	validates :prev_zip, allow_blank: true, length: {maximum: 15}
+  validates :prev_state_abbrev, allow_blank: true, length: {maximum: 100}
 	validates :prev_landlord_name, allow_blank: true, length: {maximum: 50}
 	validates :prev_daytime_phone, allow_blank: true, length: {maximum: 25},
     format: { with: VALID_TELEPHONE_REGEX }
