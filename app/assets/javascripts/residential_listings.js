@@ -190,21 +190,6 @@ ResidentialListings = {};
 	    });
 	    marker.bindPopup(content);
       markers.addLayer(marker);
-	    // var feature = {
-     //    type: 'Feature',
-     //    properties: {
-     //        title: key,
-     //        'marker-color': '#f86767',
-     //        'description': ResidentialListings.buildContentString(key, info),
-     //        'marker-size': 'small'
-     //    },
-     //    geometry: {
-     //        type: 'Point',
-     //        coordinates: [info.lng, info.lat]
-     //    }
-    	// };
-
-    	// features.push(feature);
 		});
 
 		var geojson = {
@@ -233,16 +218,13 @@ ResidentialListings = {};
 
 	ResidentialListings.inheritFeeOptions = function() {
 		bldg_id = $('#residential #residential_listing_unit_building_id').val();
-		//console.log('got new ids', bldg_id);
 
 		$.ajax({
 			type: 'GET',
 			url: '/residential_listings/fee_options/',
 			data: {
 				building_id: bldg_id,
-			},
-			//success: function(data) {},
-			//error: function(data) {}
+			}
 		});
 	};
 
@@ -442,10 +424,6 @@ ResidentialListings = {};
 		  ResidentialListings.updateAnnouncements();
 		});
 		Listings.hideSpinner();
-		// // hide the spinner when we are editing, but switch to a new tab
-		// $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-		//   Listings.hideSpinner();
-		// });
 
 		$('#residential a').click(function() {
 			Listings.showSpinner();

@@ -3,7 +3,8 @@ class UnitMailerPreview < ActionMailer::Preview
 
   def send_residential_listings
     source_agent = User.where(email: 'rbujans@myspacenyc.com').first
-    listings = ResidentialListing.listings_by_id(source_agent, [9825715, 287337, 228125])
+    listing_ids = ResidentialListing.joins(:unit).where('units.archived = false').limit(3).select('listing_id').map(&:listing_id)
+    listings = ResidentialListing.listings_by_id(source_agent, listing_ids)
     images = ResidentialListing.get_images(listings)
 
     UnitMailer.send_residential_listings(source_agent, listings, images,
@@ -14,7 +15,8 @@ class UnitMailerPreview < ActionMailer::Preview
 
   def send_commercial_listings
     source_agent = User.where(email: 'rbujans@myspacenyc.com').first
-    listings = CommercialListing.listings_by_id(source_agent, [9825715, 287337, 228125])
+    listing_ids = CommercialListing.joins(:unit).where('units.archived = false').limit(3).select('listing_id').map(&:listing_id)
+    listings = CommercialListing.listings_by_id(source_agent, listing_ids)
     images = CommercialListing.get_images(listings)
 
     UnitMailer.send_commercial_listings(source_agent, listings, images,

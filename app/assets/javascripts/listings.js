@@ -26,7 +26,11 @@ Listings = {};
 		}
 
 		// update the hidden tag with the latest list of ids
-		$('#residential_listing_listing_ids').val(Listings.selectedListings);
+		var sectionName = $('#section-name').attr('data-name');
+		if (sectionName[sectionName.length-1] === 's') {
+			sectionName = sectionName.substring(0, sectionName.length-1);
+		}
+		$('#' + sectionName + '_listing_ids').val(Listings.selectedListings);
 	};
 	// private
 	// if any individual listings get unchecked, then uncheck
@@ -68,25 +72,23 @@ Listings = {};
 		// TODO: cap the max # of listings you can select?
 		var isChecked = $(this).hasClass('fa-check-square');
 		var listing_id = $(this).parent().parent().attr('data-id');
-
+		//console.log(isChecked, listing_id);
 		if (isChecked) {
-			//$(this).addClass('fa-square-o').removeClass('fa-check-square');
 			Listings.uncheckTheBox($(this));
 			Listings.selectedListings.splice(Listings.selectedListings.indexOf(listing_id), 1);
 			Listings.uncheckHeadToggle();
 		} else {
-			//$(this).addClass('fa-check-square').removeClass('fa-square-o');
 			Listings.checkTheBox($(this));
 			Listings.selectedListings.push(listing_id);
 		}
-
+		//console.log('currently selected:', Listings.selectedListings);
 		Listings.updateSelectedButton();
 	};
 
 	Listings.sendMessage = function(e) {
 		Listings.hideSpinner();
+		//console.log(Listings.selectedListings);
 		$('#email_modal_recipients').val('');
-		//$('#residential_listing_title').val('');
 		$('#email_modal_message').val('');
 		e.preventDefault();
 	};

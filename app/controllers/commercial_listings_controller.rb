@@ -265,8 +265,8 @@ class CommercialListingsController < ApplicationController
     recipients = commercial_listing_params[:recipients].split(/[\,,\s]/)
     sub = commercial_listing_params[:title]
     msg = commercial_listing_params[:message]
-    ids = commercial_listing_params[:listing_ids].split(',')
-    listings = CommercialListing.listings_by_id(current_user, ids)
+    listing_ids = commercial_listing_params[:listing_ids].split(',')
+    listings = CommercialListing.listings_by_id(current_user, listing_ids)
     images = CommercialListing.get_images(listings)
     CommercialListing.send_listings(current_user, listings, images, recipients, sub, msg)
 
@@ -287,7 +287,6 @@ class CommercialListingsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_commercial_listing
       @commercial_unit = CommercialListing.find_unarchived(params[:id])
-      puts "**** GOT UNIT #{@commercial_unit}"
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that listing is not active."
       redirect_to :action => 'index'
