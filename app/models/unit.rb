@@ -1,7 +1,7 @@
 class Unit < ActiveRecord::Base
 	belongs_to :building, touch: true
-  belongs_to :primary_agent, :class_name => 'User', touch: true
-  belongs_to :primary_agent2, :class_name => 'User', touch: true
+  belongs_to :primary_agent, class_name: 'User', touch: true
+  belongs_to :primary_agent2, class_name: 'User', touch: true
   has_many :images, dependent: :destroy
   has_many :documents, dependent: :destroy
   has_one :residential_listing, dependent: :destroy

@@ -33,8 +33,8 @@
 			<% if current_user.is_management? || current_user.is_listings_manager? %>
 				<div class="">
 					<small><em class="padding-right">
-						<%= link_to 'Delete', delete_modal_announcement_path(announcement),
-	            data: { toggle: "modal", target: "#annDeleteModal"}, remote: true %>
+						<!-- %= link_to 'Delete', delete_modal_announcement_path(announcement),
+	            data: { toggle: "modal", target: "#annDeleteModal"}, remote: true %-->
 					</em></small>
 				</div>
 			<% end %>

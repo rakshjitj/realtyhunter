@@ -8,7 +8,7 @@ class AnnouncementMailer < ApplicationMailer
 		else
 			title = note
 		end
-		mail to: recipients, subject: "[Announcement] " + title
+		mail to: recipients #, subject: "[Announcement] " + title
 	end
 
 end

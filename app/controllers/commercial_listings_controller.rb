@@ -277,11 +277,11 @@ class CommercialListingsController < ApplicationController
 
   protected
 
-   def correct_stale_record_version
-    @commercial_unit.reload
-    params[:commercial_listing].delete('lock_version')
-    set_property_types
-   end
+    def correct_stale_record_version
+      @commercial_unit.reload
+      params[:commercial_listing].delete('lock_version')
+      set_property_types
+    end
 
   private
     # Use callbacks to share common setup or constraints between actions.
