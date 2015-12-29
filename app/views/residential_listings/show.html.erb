@@ -61,7 +61,7 @@
 
 			<div class="panel-body">
 		  	<div class="row">
-			  	<div class="col-md-6 vertical-padding">
+			  	<div class="col-sm-4 vertical-padding">
 			  		<%= link_to 'View all', residential_listings_path %>
 			  		<% if current_user.is_management? || current_user.is_listings_manager? %>
 		  				| <%= link_to 'Edit', edit_residential_listing_path(@residential_unit.id) %>
@@ -71,7 +71,7 @@
 			      			data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %-->
 			      <% end %>
 			  	</div>
-			  	<div class="col-md-6 form-label-responsive vertical-padding">
+			  	<div class="col-sm-8 form-label-responsive vertical-padding">
 			  		<% if current_user.is_management? %>
 				  		<%= link_to 'Make Announcement', new_announcement_path(
 				  			{ address: @residential_unit.unit.building.formatted_street_address }),

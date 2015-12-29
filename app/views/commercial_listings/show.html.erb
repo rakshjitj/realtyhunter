@@ -26,7 +26,7 @@
 
 		  <div class="panel-body">
 		  	<div class="row">
-		  		<div class="col-md-6">
+		  		<div class="col-sm-4">
 		  			<p>
 				  	  <%= link_to 'View all', commercial_listings_path %>
 		        	<!--%= link_to 'Print', print_modal_commercial_listing_path(@commercial_unit),
@@ -38,7 +38,7 @@
 					  	<% end %>
 		        </p>
 		  		</div>
-		  		<div class="col-md-6 form-label-responsive vertical-padding">
+		  		<div class="col-sm-8 form-label-responsive vertical-padding">
 		  			<% if current_user.is_management? %>
 			  			<%= link_to 'Make Announcement', new_announcement_path(
 				  			{ address: @commercial_unit.unit.building.formatted_street_address }),
