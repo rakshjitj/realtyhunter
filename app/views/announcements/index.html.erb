@@ -9,15 +9,9 @@
       <h1>Recent Announcements</h1>
     </div>
     <div class="col-md-6 form-label-responsive">
-
       <% if current_user.is_management? || current_user.is_listings_manager? %>
         <%= link_to 'Make an Announcement', new_announcement_path %><br />
       <% end %>
-      <!--%= link_to 'Load more', announcements_path(
-        params.merge({
-        limit: params[:limit] ? params[:limit].to_i + 8 : 12,
-        }).symbolize_keys)
-        % -->
     </div>
   </div>
 </div>
@@ -29,11 +23,6 @@
 
     <div id="announcement-search-filters" data-search-path="<%= filter_announcements_path %>">
       <%= form_tag filter_announcements_path, :method => 'get' do %>
-
-        <!--%= hidden_field_tag :res_limit, params[:res_limit] %-->
-        <!--%= hidden_field_tag :com_limit, params[:com_limit] %-->
-        <!--%= hidden_field_tag :sales_limit, params[:sales_limit] %-->
-        <!--%= hidden_field_tag :event_limit, params[:event_limit] %-->
 
         <div class="row vertical-padding">
           <div class="col-md-1 text-right">
