@@ -237,11 +237,15 @@ class ResidentialListing < ActiveRecord::Base
 
     # search by rent
     if params[:rent_min] && params[:rent_max]
-      running_list = running_list.where("rent >= ? AND rent <= ?", params[:rent_min], params[:rent_max])
+      rent_min = params[:rent_min].to_i
+      rent_max = params[:rent_max].to_i
+      running_list = running_list.where("rent >= ? AND rent <= ?", rent_min, rent_max)
     elsif params[:rent_min] && !params[:rent_max]
-      running_list = running_list.where("rent >= ?", params[:rent_min])
+      rent_min = params[:rent_min].to_i
+      running_list = running_list.where("rent >= ?", rent_min)
     elsif !params[:rent_min] && params[:rent_max]
-      running_list = running_list.where("rent <= ?", params[:rent_max])
+      rent_max = params[:rent_max].to_i
+      running_list = running_list.where("rent <= ?", rent_max)
     end
 
     # search neighborhoods
