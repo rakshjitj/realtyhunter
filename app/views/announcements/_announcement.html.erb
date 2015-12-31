@@ -20,51 +20,28 @@
 	<% end %>
 	<div class="row">
 		<!-- we are on the /residential_listings/index -->
-		<% if params[:action] != 'index' %>
-			<div class="col-xs-12 padding-left-sm2 padding-top inside-well">
-				<p>
-					<% if shorten_text %>
-						<%= trim_announcement("#{announcement.note} - #{announcement.sender_name}") %>
-					<% else %>
-						<%= announcement.note %> - <%= announcement.sender_name %>
-					<% end %>
-				</p>
-			</div>
-		<% else %>
-			<!-- we are somewhere under /announcements -->
-			<% if current_user.is_management? || current_user.is_listings_manager? %>
-				<div class="col-xs-9 padding-left-sm2 padding-top inside-well">
-					<p>
-						<% if shorten_text %>
-							<%= trim_announcement("#{announcement.note} - #{announcement.sender_name}") %>
-						<% else %>
-							<%= announcement.note %> - <%= announcement.sender_name %>
-						<% end %>
-					</p>
-				</div>
-				<div class="col-xs-3 padding-top text-right">
-					<small><em class="padding-right"><%= time_ago_in_words(announcement.updated_at) %></em></small>
+		<!-- we are somewhere under /announcements -->
+		<div class="col-xs-9 padding-left-sm2 padding-top inside-well">
+			<p>
+				<% if shorten_text %>
+					<%= trim_announcement("#{announcement.note} - #{announcement.sender_name}") %>
+				<% else %>
+					<%= announcement.note %> - <%= announcement.sender_name %>
+				<% end %>
+			</p>
+		</div>
+		<div class="col-xs-3 padding-top text-right">
+			<small><em class="padding-right"><%= time_ago_in_words(announcement.updated_at) %></em></small>
 
-					<br>
-					<small><em class="padding-right">
-						<%= link_to 'Delete', delete_modal_announcement_path(announcement),
-		          	data: { toggle: "modal", target: "#annDeleteModal"}, remote: true %>
-					</em></small>
-				</div>
-			<% else %>
-				<div class="col-xs-12 padding-left-sm2 padding-top inside-well">
-				<p>
-					<% if shorten_text %>
-						<%= trim_announcement("#{announcement.note} - #{announcement.sender_name}") %>
-					<% else %>
-						<%= announcement.note %> - <%= announcement.sender_name %>
-					<% end %>
-				</p>
-			</div>
+			<% if params[:controller] == 'announcements' &&
+					(current_user.is_management? || current_user.is_listings_manager?) %>
+				<br>
+				<small><em class="padding-right">
+					<%= link_to 'Delete', delete_modal_announcement_path(announcement),
+	          	data: { toggle: "modal", target: "#annDeleteModal"}, remote: true %>
+				</em></small>
 			<% end %>
-		<% end %>
-
-
+		</div>
 	</div>
 	<!-- end link_to -->
 	<% if params[:action] != 'announcements' %>
