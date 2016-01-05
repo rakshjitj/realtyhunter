@@ -11,16 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151220201041) do
+ActiveRecord::Schema.define(version: 20160105233715) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "agent_types", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "announcements", force: :cascade do |t|
     t.string   "note"
@@ -487,6 +481,7 @@ ActiveRecord::Schema.define(version: 20151220201041) do
     t.string   "orderId"
     t.string   "orderStatus"
     t.date     "dob"
+    t.date     "report_url"
   end
 
   add_index "roomsharing_applications", ["user_id"], name: "index_roomsharing_applications_on_user_id", using: :btree
