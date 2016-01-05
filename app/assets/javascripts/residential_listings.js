@@ -126,7 +126,7 @@ ResidentialListings = {};
 		if ($('#residential').length) {
 			ResidentialListings.clearTimer();
 			// update every few minutes
-		  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 60 * 5 * 1000);
+		  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 60 * 10 * 1000);
 		}
 	};
 

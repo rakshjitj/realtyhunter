@@ -1,4 +1,4 @@
-<p><%= @note %></p>
+<p><%= @note.gsub(/\n/, '<br>') %></p>
 
 
 <p>- <%= @sender.name %></p>
