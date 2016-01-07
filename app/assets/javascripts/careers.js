@@ -4,7 +4,7 @@ Careers = {};
 	// any phone #'s listed in 'access info' on main index pg should
   // be automatically detected
 	Careers.detectPhoneNumbers = function () {
-    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    //if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
 
 			var countrycodes = "1"
 			var delimiters = "-|\\.|—|–|&nbsp;"
@@ -25,7 +25,7 @@ Careers = {};
 			$('.phone').map(function() {
 				$(this).html(ReplacePhoneNumbers($(this).html()))
 			});
-		}
+		//}
 	};
 
 	Careers.setupSortableColumns = function() {

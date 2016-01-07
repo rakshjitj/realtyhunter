@@ -1,4 +1,4 @@
-<p><%= @note.gsub(/\n/, '<br>') %></p>
+<p><%= h raw sanitize @note.gsub(/\n/, '<br>') %></p>
 
 
 <p>- <%= @sender.name %></p>
