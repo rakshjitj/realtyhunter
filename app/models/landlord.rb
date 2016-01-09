@@ -21,7 +21,6 @@ class Landlord < ActiveRecord::Base
 	validates :fax, allow_blank: true, length: {maximum: 25},
 		format: { with: VALID_TELEPHONE_REGEX }
 
-	#before_save :downcase_email
 	before_save :clean_up_important_fields
 
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
@@ -30,8 +29,7 @@ class Landlord < ActiveRecord::Base
     uniqueness: { case_sensitive: false }
 
   def archive
-    self.archived = true
-    self.save
+    self.update({archived: true})
   end
 
   def self.find_unarchived(id)

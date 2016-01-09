@@ -12,7 +12,8 @@
     <% end %>
   </td>
   <td>
-    <%= link_to 'Edit', edit_landlord_path(landlord) %> |
+    <%= link_to 'Edit', edit_landlord_path(landlord) %>
+    <br>
     <%= link_to 'Delete', delete_modal_landlord_path(landlord),
     data: {toggle: "modal", target: "#landlordDeleteModal"}, remote: true %>
   </td>
