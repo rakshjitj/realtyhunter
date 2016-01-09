@@ -78,7 +78,8 @@ class Building < ActiveRecord::Base
   end
 
 	def self.search(query_str, active_only)
-    @running_list = Building.joins(:landlord, :neighborhood)
+    @running_list = Building.joins(:landlord)
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('buildings.archived = false')
       .select(
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
