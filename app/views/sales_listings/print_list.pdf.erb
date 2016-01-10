@@ -4,9 +4,9 @@
   <div class="row">
 	  <div class="col-md-12">
 	    <br />
-	   
 
-	    <table class="table table-striped table-hover table-condensed table-responsive splitForPrint new_section">
+
+	    <table class="table table-striped table-hover table-condensed splitForPrint new_section">
 	        <tr class="heading1">
 	          <th>Address</th>
 	          <th>Landlord</th>
@@ -18,7 +18,7 @@
 	          <th style="width: 20%;">Features</th>
 	        </tr>
 	      <% @sales_units.each do |sales_unit| %>
-	      	
+
 	      	<tr class="<%= cycle('even', 'odd') -%>">
 					  <td>
 					    <%= sales_unit.street_address_and_unit %>

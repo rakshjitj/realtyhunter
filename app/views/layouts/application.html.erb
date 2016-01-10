@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= full_title(yield(:title)) %></title>
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   <!-- used for main residential listings page -->
@@ -43,6 +44,7 @@
 	<header class="navbar navbar-fixed-top navbar-inverse">
   <div class="container-fluid">
     <%= link_to "RealtyHunter", current_user ? user_home_path : root_path, id: "logo" %>
+    <% if logged_in? %>
     <nav>
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -54,10 +56,9 @@
         <!--%= link_to "Home", root_path, class: 'navbar-brand' %-->
       </div>
 
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
-          <% if logged_in? %>
             <li><%= link_to "Rentals", residential_listings_path %></li>
             <li><%= link_to "Commercial", commercial_listings_path %></li>
             <li><%= link_to "Sales", sales_listings_path %></li>
@@ -151,37 +152,33 @@
               </ul>
               </li>
             <% end %>
-          <% end %><!-- if logged in -->
-          <% if logged_in? %>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <%= current_user.name.titleize %> <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
 
-                  <li><%= link_to "Profile", current_user %></li>
-                  <li><%= link_to "My Waterfall", user_waterfall_path(current_user) %></li>
-                  <% if current_user.is_manager? %>
-                    <li><%= link_to "My Team Members", subordinates_user_path(current_user) %></li>
-                  <% end %>
-                  <% if current_user.is_management? %>
-                    <li><%= link_to "Add New Member", admin_new_users_path %></li>
-                  <% elsif current_user.is_company_admin? %>
-                    <li><%= link_to "Add Office", new_company_office_path(current_user.company) %></li>
-                  <% end %>
-                  <li class="divider"></li>
-                  <li>
-                    <%= link_to "Log out", logout_path, method: "delete" %>
-                  </li>
-                </ul>
-              </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <%= current_user.name.titleize %> <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
 
-            <% else %>
-              <li><%= link_to "Log in", login_path %></li>
-            <% end %><!-- if logged_in? -->
+                <li><%= link_to "Profile", current_user %></li>
+                <li><%= link_to "My Waterfall", user_waterfall_path(current_user) %></li>
+                <% if current_user.is_manager? %>
+                  <li><%= link_to "My Team Members", subordinates_user_path(current_user) %></li>
+                <% end %>
+                <% if current_user.is_management? %>
+                  <li><%= link_to "Add New Member", admin_new_users_path %></li>
+                <% elsif current_user.is_company_admin? %>
+                  <li><%= link_to "Add Office", new_company_office_path(current_user.company) %></li>
+                <% end %>
+                <li class="divider"></li>
+                <li>
+                  <%= link_to "Log out", logout_path, method: "delete" %>
+                </li>
+              </ul>
+            </li>
         </ul>
       </div><!-- collapse -->
     </nav>
+    <% end %><!-- if logged_in? -->
   </div>
   </header>
 

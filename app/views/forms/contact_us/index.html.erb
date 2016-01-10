@@ -124,33 +124,34 @@
 
 <div class="row">
   <div class="col-md-12">
-    <table class="table table-striped table-hover table-condensed table-responsive">
-      <thead>
-        <tr>
-          <th style="min-width: 30px;">
-            <!-- checkboxes -->
-            <i data-action="selectAllUnits" class="select-all-listings fa fa-square-o"></i>
-          </th>
-          <th data-sort="name" class="th-sortable">Name</th>
-          <th>Phone</th>
-          <th>Email</th>
-          <th>Source</th>
-          <th data-sort="min_price" class="th-sortable">Min Price</th>
-          <th data-sort="min_price" class="th-sortable">Max Price</th>
-          <th data-sort="created_at" class="th-sortable selected-sort">Submitted <i class="glyphicon glyphicon-triangle-bottom"></i></th>
-          <th data-sort="status">Status</th>
-          <% if current_user.is_management? || current_user.is_listings_manager? %>
-            <th colspan="1"></th>
-          <% end %>
-        </tr>
-      </thead>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover table-condensed">
+        <thead>
+          <tr>
+            <th style="min-width: 45px;">
+              <!-- checkboxes -->
+              <i data-action="selectAllUnits" class="select-all-listings fa fa-square-o fa-lg"></i>
+            </th>
+            <th data-sort="name" class="th-sortable">Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Source</th>
+            <th data-sort="min_price" class="th-sortable">Min Price</th>
+            <th data-sort="min_price" class="th-sortable">Max Price</th>
+            <th data-sort="created_at" class="th-sortable selected-sort">Submitted <i class="glyphicon glyphicon-triangle-bottom"></i></th>
+            <th data-sort="status">Status</th>
+            <% if current_user.is_management? || current_user.is_listings_manager? %>
+              <th colspan="1"></th>
+            <% end %>
+          </tr>
+        </thead>
 
-      <tbody class="contact_us_table_body">
-        <%= render partial: 'forms/contact_us/entry',
-        :collection => @entries, as: :entry %>
-      </tbody>
-    </table>
-
+        <tbody class="contact_us_table_body">
+          <%= render partial: 'forms/contact_us/entry',
+          :collection => @entries, as: :entry %>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 

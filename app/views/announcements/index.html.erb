@@ -10,7 +10,8 @@
     </div>
     <div class="col-md-6 form-label-responsive">
       <% if current_user.is_management? || current_user.is_listings_manager? %>
-        <%= link_to 'Make an Announcement', new_announcement_path %><br />
+        <%= link_to 'Make an Announcement', new_announcement_path, class: "btn btn-warning btn-sm link-as-button"  %>
+
       <% end %>
     </div>
   </div>
@@ -24,34 +25,35 @@
     <div id="announcement-search-filters" data-search-path="<%= filter_announcements_path %>">
       <%= form_tag filter_announcements_path, :method => 'get' do %>
 
-        <div class="row vertical-padding">
-          <div class="col-md-1 text-right">
+        <div class="row vertical-margin-lg">
+          <div class="col-xs-3 col-sm-1">
             <strong>Posted:</strong>
           </div>
 
-          <div class="col-md-2">
+          <div class="col-xs-4 col-sm-2">
             <div class='input-group date datepicker'>
               <%= text_field_tag :created_start, params[:created_start],
-                placeholder: "starting", class:"form-control", size:30 %>
+                placeholder: "begin", class:"form-control", size:30 %>
               <label class="input-group-addon btn" for="date">
                 <span class="fa fa-calendar open-datepicker"></span>
               </label>
             </div>
           </div>
-          <div class="col-md-2">
+          <div class="col-xs-4 col-sm-2">
             <div class='input-group date datepicker'>
               <%= text_field_tag :created_end, params[:created_end],
-                placeholder: "ending", class:"form-control" %>
+                placeholder: "end", class:"form-control" %>
               <label class="input-group-addon btn" for="date">
                 <span class="fa fa-calendar open-datepicker"></span>
               </label>
             </div>
           </div>
-
-          <div class="col-md-1 text-right">
+        </div>
+        <div class="row vertical-margin-lg">
+          <div class="col-xs-3 col-sm-1">
             <strong>Category:</strong>
           </div>
-          <div class="col-md-2">
+          <div class="col-xs-8 col-sm-3">
             <%= select_tag :category_filter,
               options_for_select(%w(Any Residential Commercial Sales Event)),
               {prompt: "Choose one...",
@@ -60,9 +62,6 @@
         </div>
 
         <div class="row vertical-padding">
-          <div class="col-md-2 col-md-offset-1">
-            <%= link_to 'Clear filters', announcements_path, class: 'btn btn-xs btn-default' %>
-          </div>
           <div class="col-md-6 col-md-offset3">
             <div class="form-label-responsive">
               <%= render partial: 'shared/pagination',

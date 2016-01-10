@@ -1,8 +1,8 @@
   <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= roommate.id %>" data-email="<%= roommate.email %>" >
-    
+
     <!-- ****** checkboxes ****************************************** -->
     <td>
-      <i data-action="selectUnit" class="fa fa-square-o"></i>
+      <i data-action="selectUnit" class="fa fa-square-o fa-lg"></i>
     </td>
 
     <!-- ****** IMAGE ****************************************** -->
@@ -16,7 +16,7 @@
         <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), roommate) %>
       <% end %>
     </td>
-    
+
     <!-- ****** NAME ****************************************** -->
     <td>
       <% if !roommate.read %>
@@ -91,20 +91,20 @@
     </td>
 
     <!-- ****** LINKS ****************************************** -->
-    
+
       <td>
-        <%= link_to 'Edit', edit_roommate_path(roommate) %> 
+        <%= link_to 'Edit', edit_roommate_path(roommate) %>
         <br />
         <% if !roommate.archived %>
-          <%= link_to 'Match', match_modal_roommate_path(roommate), 
+          <%= link_to 'Match', match_modal_roommate_path(roommate),
             data: { toggle: "modal", target: "#roommateMatchModal"}, remote: true %>
         <% else %>
-          <%= link_to 'Unmatch', unmatch_modal_roommate_path(roommate), 
+          <%= link_to 'Unmatch', unmatch_modal_roommate_path(roommate),
             data: { toggle: "modal", target: "#roommateUnmatchModal"}, remote: true %>
         <% end %>
-          <%= link_to 'Delete', delete_modal_roommate_path(roommate), 
+          <%= link_to 'Delete', delete_modal_roommate_path(roommate),
             data: { toggle: "modal", target: "#roommateDeleteModal"}, remote: true %>
         <br />
       </td>
-    
+
   </tr>

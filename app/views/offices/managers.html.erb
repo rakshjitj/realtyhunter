@@ -5,39 +5,39 @@
       <h1><%= @office.name.titleize %>'s Managers</h1>
     </div>
     <div class="col-md-5 form-label-responsive">
-      
+
     </div>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-12">
-    
+
     <% if @users.empty? %>
-      There are no managers for this office yet. 
+      There are no managers for this office yet.
       <% if current_user.is_management? %>
         Why don't you <%= link_to "promote someone?", employees_company_path(current_user.company) %>
       <% end %>
     <% else %>
-
-      <table class="table table-striped table-hover table-condensed table-responsive">
-        <thead>
-          <tr>
-            <th>Manager</th>
-            <th>Headcount</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @users.each do |user| %>
-          <tr>
-            <td><%= link_to user.name, subordinates_user_path(user) %></td>
-            <td><%= user.subordinates.length %></td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
-
+      <div class="table-responsive">
+        <table class="table table-striped table-hover table-condensed">
+          <thead>
+            <tr>
+              <th>Manager</th>
+              <th>Headcount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @users.each do |user| %>
+            <tr>
+              <td><%= link_to user.name, subordinates_user_path(user) %></td>
+              <td><%= user.subordinates.length %></td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     <% end %>
 
-  </div>  
+  </div>
 </div>

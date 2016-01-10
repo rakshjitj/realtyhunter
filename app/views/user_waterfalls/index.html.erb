@@ -8,11 +8,11 @@
     <div class="col-md-6">
       <h1>Waterfall Plan</h1>
     </div>
-    
+
   </div>
 </div>
 
-<%= render partial: 'user_waterfalls/form', 
+<%= render partial: 'user_waterfalls/form',
   locals:{ entry: @new_entry, title: "Enter a new waterfall connection"} %>
 
 <hr />
@@ -28,25 +28,25 @@
           <strong>Filter By:</strong>
         </div>
         <div class="col-xs-3 col-sm-left-padding">
-          <%= autocomplete_field_tag :parent_agent, params[:parent_agent], 
+          <%= autocomplete_field_tag :parent_agent, params[:parent_agent],
             autocomplete_user_name_user_waterfalls_path,
             update_elements: {},
-            placeholder: "Agent", 
+            placeholder: "Agent",
             size: 25, class:'form-control' %>
         </div>
         <div class="col-xs-3 col-sm-left-padding">
-          <%= autocomplete_field_tag :child_agent, params[:child_agent], 
+          <%= autocomplete_field_tag :child_agent, params[:child_agent],
             autocomplete_user_name_user_waterfalls_path,
             update_elements: {},
-            placeholder: "Waterfall Agent", 
+            placeholder: "Waterfall Agent",
             size: 25, class:'form-control' %>
         </div>
         <div class="col-xs-1 text-right">
           <%= label_tag :level, "Tier:" %>
         </div>
         <div class="col-xs-1 col-sm-left-padding">
-          <%= select_tag(:level, 
-            options_for_select([['Any',0], ['Level 1',1], ['Level 2',2], ['Level 3',3], ['Special Agreement', 4]], 
+          <%= select_tag(:level,
+            options_for_select([['Any',0], ['Level 1',1], ['Level 2',2], ['Level 3',3], ['Special Agreement', 4]],
             params[:level] ? params[:level] : "Any"),
             class:"form-control") %>
         </div>
@@ -60,7 +60,7 @@
 
 <div class="row">
   <div class="col-md-6">
-    <br />    
+    <br />
     <span class="totals">
       &nbsp;&nbsp;<%= @entries.total_count %> Entries found
     </span>
@@ -75,23 +75,25 @@
 <div class="row">
   <div class="col-md-12">
     <div>
-      <table class="table table-striped table-hover table-condensed table-responsive">
-        <thead>
-          <tr>
-            <th data-sort="parent_agent_name" class="th-sortable">Agent</th>
-            <th data-sort="agent_seniority_rate" class="th-sortable">Agent Seniority</th>
-            <th data-sort="child_agent_name" class="th-sortable">Waterfall Agent</th>
-            <th data-sort="level" class="th-sortable">Tier</th>
-            <th data-sort="rate" class="th-sortable">Percentage</th>
-            <th colspan="1"></th>
-          </tr>
-        </thead>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover table-condensed">
+          <thead>
+            <tr>
+              <th data-sort="parent_agent_name" class="th-sortable">Agent</th>
+              <th data-sort="agent_seniority_rate" class="th-sortable">Agent Seniority</th>
+              <th data-sort="child_agent_name" class="th-sortable">Waterfall Agent</th>
+              <th data-sort="level" class="th-sortable">Tier</th>
+              <th data-sort="rate" class="th-sortable">Percentage</th>
+              <th colspan="1"></th>
+            </tr>
+          </thead>
 
-        <tbody class="user_waterfall_table_body">
-          <%= render partial: 'user_waterfalls/user_waterfall', collection: @entries, as: :entry %>
-        </tbody>
+          <tbody class="user_waterfall_table_body">
+            <%= render partial: 'user_waterfalls/user_waterfall', collection: @entries, as: :entry %>
+          </tbody>
 
-      </table>
+        </table>
+      </div>
     </div>
   </div>
 </div>
@@ -104,7 +106,7 @@
 
 
 <!-- Delete Modal -->
-<div class="modal fade" id="unitDeleteModal" tabindex="-1" role="dialog" 
+<div class="modal fade" id="unitDeleteModal" tabindex="-1" role="dialog"
   aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -125,7 +127,7 @@
 </div>
 
 <!-- Edit Modal -->
-<div class="modal fade" id="waterfallEditModal" tabindex="-1" role="dialog" 
+<div class="modal fade" id="waterfallEditModal" tabindex="-1" role="dialog"
   aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">

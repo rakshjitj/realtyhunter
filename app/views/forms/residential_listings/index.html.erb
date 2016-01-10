@@ -23,10 +23,10 @@
             <%= label_tag :name, 'Name' %>
           </div>
           <div class="col-xs-7 col-sm-left-padding">
-            <%= autocomplete_field_tag :name, params[:name], 
+            <%= autocomplete_field_tag :name, params[:name],
               autocomplete_wufoo_listings_form_name_forms_residential_listings_path,
               update_elements: {},
-              placeholder: "Bob Smith", 
+              placeholder: "Bob Smith",
               class:'form-control' %>
           </div>
         </div>
@@ -36,10 +36,10 @@
             <%= label_tag(:email) %>
           </div>
           <div class="col-xs-7 col-sm-left-padding">
-            <%= autocomplete_field_tag :email, params[:email], 
+            <%= autocomplete_field_tag :email, params[:email],
               autocomplete_wufoo_listings_form_email_forms_residential_listings_path,
               update_elements: {},
-              placeholder: "Bob Smith", 
+              placeholder: "Bob Smith",
               class:'form-control' %>
           </div>
         </div>
@@ -61,7 +61,7 @@
       </div>
       <div class="col-xs-7 col-sm-left-padding">
         <div class='input-group date datepicker'>
-          <%= text_field_tag :submitted_date, params[:submitted_date], 
+          <%= text_field_tag :submitted_date, params[:submitted_date],
             placeholder: "date", class:"form-control", size:30 %>
           <label class="input-group-addon btn" for="date">
             <span class="fa fa-calendar open-datepicker"></span>
@@ -75,16 +75,16 @@
         <%= label_tag(:status) %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
-        <%= select_tag(:status, 
-          options_for_select(['Active', 'Inactive'], 
+        <%= select_tag(:status,
+          options_for_select(['Active', 'Inactive'],
             [params[:status].blank? ? 'Active' : params[:status]]),
-          {class: "form-control", 
+          {class: "form-control",
           prompt: "Any"}) %>
       </div>
     </div>
 
   </div>
-    
+
   <div class="col-xs-12 col-md-4">
   </div>
 
@@ -110,12 +110,12 @@
 
           <li role="presentation"><a class="list-item-sm-padding" data-action="PDF" role="menuitem" tabindex="-1">
             <i class="fa fa-fw fa-file-text"></i> PDF</a></li>
-            
+
           <li role="presentation"><a class="list-item-sm-padding" data-action="CSV" role="menuitem" tabindex="-1">
             <i class="fa fa-fw fa-list"></i> CSV</a></li>
         </ul>
       </div>
-    
+
     <span class="totals">
       &nbsp;&nbsp;<%= @entries.total_count %> Entries found
     </span>
@@ -130,30 +130,31 @@
 
 <div class="row">
   <div class="col-md-12">
-    <table class="table table-striped table-hover table-condensed table-responsive">
-      <thead>
-        <tr>
-          <th style="min-width: 30px;">
-            <!-- checkboxes -->
-            <i data-action="selectAllUnits" class="select-all-listings fa fa-square-o"></i>
-          </th>
-          <th data-sort="name" class="th-sortable">Name</th>
-          <th>Phone</th>
-          <th>Email</th>
-          <th>Message</th>
-          <th data-sort="created_at" class="th-sortable selected-sort">Submitted <i class="glyphicon glyphicon-triangle-bottom"></i></th>
-          <th data-sort="status">Status</th>
-          <% if current_user.is_management? || current_user.is_listings_manager? %>
-            <th colspan="1"></th>
-          <% end %>
-        </tr>
-      </thead>
-    
-      <tbody class="form_listing_table_body">
-        <%= render partial: 'forms/residential_listings/entry', 
-        :collection => @entries, as: :entry %>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover table-condensed">
+        <thead>
+          <tr>
+            <th style="min-width: 45px;">
+              <!-- checkboxes -->
+              <i data-action="selectAllUnits" class="select-all-listings fa fa-square-o fa-lg"></i>
+            </th>
+            <th data-sort="name" class="th-sortable">Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Message</th>
+            <th data-sort="created_at" class="th-sortable selected-sort">Submitted <i class="glyphicon glyphicon-triangle-bottom"></i></th>
+            <th data-sort="status">Status</th>
+            <% if current_user.is_management? || current_user.is_listings_manager? %>
+              <th colspan="1"></th>
+            <% end %>
+          </tr>
+        </thead>
+
+        <tbody class="form_listing_table_body">
+          <%= render partial: 'forms/residential_listings/entry', collection: @entries, as: :entry %>
+        </tbody>
+      </table>
+    </div>
 
   </div>
 </div>
@@ -167,12 +168,12 @@
 </div>
 
 <!-- Email Modal -->
-<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" 
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog"
   aria-labelledby="emailModal" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
-        
+
         <%= form_tag(send_message_forms_residential_listings_path, remote:true) do %>
         <div class="row vertical-padding">
           <div class="col-md-12">
@@ -199,13 +200,13 @@
         <br />
         <div class="row vertical-padding">
           <div class="col-md-12">
-            
+
           </div>
         </div>
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp; 
+        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
         <%= submit_tag "Send Email", class:"btn btn-warning" %>
       </div>
 

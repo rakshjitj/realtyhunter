@@ -19,10 +19,10 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 form-label-responsive">
+          <div class="col-xs-3 form-label-responsive">
             <%= f.label :code, class: 'required' %>
           </div>
-          <div class="col-md-9">
+          <div class="col-xs-9">
               <%= f.text_field :code, :required => true, class: 'form-control' %>
           </div>
         </div>
@@ -30,10 +30,10 @@
         <br />
         <div class="row">
           <div class="form-group">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-3 form-label-responsive">
               <%= f.label :name, class: 'required' %>
             </div>
-            <div class="col-md-9">
+            <div class="col-xs-9">
                 <%= f.text_field :name, :required => true, class: 'form-control' %>
             </div>
           </div>
@@ -41,10 +41,10 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 form-label-responsive">
+          <div class="col-xs-3 form-label-responsive">
             <%= f.label :contact_name %>
           </div>
-          <div class="col-md-9">
+          <div class="col-xs-9">
             <div class="field">
               <%= f.text_field :contact_name, class: 'form-control' %>
             </div>
@@ -53,10 +53,10 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 form-label-responsive">
+          <div class="col-xs-3 form-label-responsive">
             <%= f.label :office_phone %>
           </div>
-          <div class="col-md-9">
+          <div class="col-xs-9">
             <div class="field">
               <%= f.text_field :office_phone, class: 'form-control' %>
             </div>
@@ -65,10 +65,10 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 form-label-responsive">
+          <div class="col-xs-3 form-label-responsive">
             <%= f.label :mobile %>
           </div>
-          <div class="col-md-9">
+          <div class="col-xs-9">
             <div class="field">
               <%= f.text_field :mobile, class: 'form-control' %>
             </div>
@@ -77,10 +77,10 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 form-label-responsive">
+          <div class="col-xs-3 form-label-responsive">
             <%= f.label :fax %>
           </div>
-          <div class="col-md-9">
+          <div class="col-xs-9">
             <div class="field">
               <%= f.text_field :fax, class: 'form-control' %>
             </div>
@@ -89,10 +89,10 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 form-label-responsive">
+          <div class="col-xs-3 form-label-responsive">
             <%= f.label :email %>
           </div>
-          <div class="col-md-9">
+          <div class="col-xs-9">
             <div class="field">
               <%= f.text_field :email, class: 'form-control' %>
             </div>
@@ -145,10 +145,10 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 form-label-responsive">
+          <div class="col-xs-3 form-label-responsive">
             <%= f.label :listing_agent_id, "Listing Agent" %>
           </div>
-          <div class="col-md-4">
+          <div class="col-xs-4">
             <%= f.select(:listing_agent_id,
               options_for_select(current_user.company.users.collect {|u| [u.name, u.id]},
                 [@landlord.listing_agent ? @landlord.listing_agent.id : '']),
@@ -160,10 +160,10 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 form-label-responsive">
+          <div class="col-xs-3 form-label-responsive">
             <%= f.label :listing_agent_percentage, 'Listing agent %' %>
           </div>
-          <div class="col-md-4">
+          <div class="col-xs-9 col-md-4">
             <div class="field">
               <%= f.text_field :listing_agent_percentage, class: 'form-control' %>
             </div>
@@ -172,30 +172,32 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 form-label-responsive">
+          <div class="col-xs-3 form-label-responsive">
             <strong>Fee</strong>
           </div>
-          <div class="col-md-4">
-            <%= f.check_box :has_fee, class:"has-fee", checked: @landlord.has_fee %>
-            <%= f.label :has_fee %>
+          <div class="col-xs-9 col-md-4">
+            <div class="checkbox checkbox-warning checkbox-inline">
+              <%= f.check_box :has_fee, class:"has-fee styled", checked: @landlord.has_fee %>
+              <%= f.label :has_fee %>
+            </div>
           </div>
         </div>
 
         <br />
         <div class="row show-op">
-          <div class="col-md-3 form-label-responsive">
+          <div class="col-xs-3 form-label-responsive">
             <%= f.label :op_fee_percentage, 'Owner Pays %' %>
           </div>
-          <div class="col-md-4">
+          <div class="col-xs-9 col-md-4">
             <%= f.number_field :op_fee_percentage, class: 'form-control', min: 0, default: 95 %>
           </div>
         </div>
 
         <div class="row show-tp">
-          <div class="col-md-3 form-label-responsive">
+          <div class="col-xs-3 form-label-responsive">
             <%= f.label :tp_fee_percentage, 'Tenant Pays %' %>
           </div>
-          <div class="col-md-4">
+          <div class="col-xs-4">
             <%= f.number_field :tp_fee_percentage, class: 'form-control', min: 0, default: 95 %>
           </div>
         </div>

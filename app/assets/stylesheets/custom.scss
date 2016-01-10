@@ -32,6 +32,10 @@ textarea {
   margin-bottom: 10px;
 }
 
+.map-hr {
+  margin-top: 0 !important;
+}
+
 /* for pdfs, don't page break inside a row */
 table, tr, td, th, tbody, thead, tfoot {
   page-break-inside: avoid !important;
@@ -112,6 +116,10 @@ a:hover.btn-danger {
 .col-sm-left-padding {
   padding-left: 2 !important;
   padding-right: 0 !important;
+}
+
+.no-right-padding {
+  padding-right: 0;
 }
 
 .no-top-padding {
@@ -440,19 +448,27 @@ aside {
 /*********** Residential Units **********************************/
 
 .vertical-padding {
-  padding: 3px 0 3px 0;
+  //padding: 3px 0 3px 0;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 
 .horizontal-padding {
-  padding: 3px 0 3px 0;
+  //padding: 3px 0 3px 0;
+  padding-left: 3px;
+  padding-right: 3px;
 }
 
 vertical-padding-lg {
-  padding: 6px 0 6px 0;
+  //padding: 6px 0 6px 0;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 .vertical-margin-lg {
-  margin: 10px 0 10px 0 !important;
+  //margin: 10px 0 10px 0 !important;
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
 }
 
 .photo-inline {

@@ -3,18 +3,11 @@
 <%= form_for(@announcement) do |f| %>
 <div class="row">
   <div class="col-md-12">
-    <div class="panel panel-default">
-      <div class="panel-body no-vertical-padding">
+
         <%= render partial: 'shared/error_messages',
           locals: {model: @announcement} %>
 
-        <div class="row">
-          <div class="col-md-12 form-section-header">
-            <hr class="thin-line" />
-            <h4><%= current_user.company.name %> Announcement</h4>
-            <hr class="thin-line" />
-          </div>
-        </div>
+
 
         <br />
         <div class="row">
@@ -51,11 +44,6 @@
             </div>
           </div>
         </div>
-
-        <br />
-
-      </div>
-    </div>
 
   </div>
 </div>

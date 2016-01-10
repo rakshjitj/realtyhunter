@@ -30,10 +30,10 @@
           size: 30, class:'form-control' %>
       </div>
       <div class="col-xs-12 col-md-3 vertical-padding">
-        <label>
-          <%= check_box_tag(:checkbox_active, "", params[:active_only] == "true" ? true : false) %>
-          Has on-market units
-        </label>
+        <div class="checkbox checkbox-warning checkbox-inline">
+          <%= check_box_tag :checkbox_active, "", params[:active_only] == "true" ? true : false, class: 'styled' %>
+          <label for="checkbox_active">Has on-market units</label>
+        </div>
       </div>
     </div>
   <% end %><!-- form end -->
@@ -42,32 +42,32 @@
 <br />
 <div class="row">
   <div class="col-md-12">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover table-condensed">
+        <thead>
+          <tr>
+            <th data-sort="code" class="th-sortable">Code</th>
+            <th data-sort="name" class="th-sortable selected-sort">Name <i class="glyphicon glyphicon-triangle-bottom"></i></th>
+            <th>Mobile</th>
+            <th data-sort="active_unit_count" class="th-sortable" class="">
+              On-Market Units
+            </th>
+            <th data-sort="total_unit_count" class="th-sortable" class="">
+              Total Units
+            </th>
+            <th data-sort="last_unit_updated_at" class="th-sortable" class="">
+              Last Unit Updated
+            </th>
+            <th colspan="1"></th>
+          </tr>
+        </thead>
 
-    <table class="table table-striped table-hover table-condensed table-responsive">
-      <thead>
-        <tr>
-          <th data-sort="code" class="th-sortable">Code</th>
-          <th data-sort="name" class="th-sortable selected-sort">Name <i class="glyphicon glyphicon-triangle-bottom"></i></th>
-          <th>Mobile</th>
-          <th data-sort="active_unit_count" class="th-sortable" class="">
-            On-Market Units
-          </th>
-          <th data-sort="total_unit_count" class="th-sortable" class="">
-            Total Units
-          </th>
-          <th data-sort="last_unit_updated_at" class="th-sortable" class="">
-            Last Unit Updated
-          </th>
-          <th colspan="1"></th>
-        </tr>
-      </thead>
-
-      <tbody class="landlords_table_body">
-        <%# Template Dependency: landlords/landlord %>
-        <%= render @landlords %>
-      </tbody>
-    </table>
-
+        <tbody class="landlords_table_body">
+          <%# Template Dependency: landlords/landlord %>
+          <%= render @landlords %>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
