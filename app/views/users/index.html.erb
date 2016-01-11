@@ -10,7 +10,7 @@
 
 <div id="user-search-filters" data-search-path="<%= filter_users_path %>"></div>
 <%= form_tag users_path, :method => 'get' do %>
-<div class="row">
+<div class="row vertical-margin-lg">
   <div class="col-md-9">
     <div class="row vertical-padding">
       <div class="col-md-2">
@@ -24,7 +24,7 @@
           size: 30, class:'form-control' %>
       </div>
     </div>
-    <div class="row">
+    <div class="row vertical-margin-lg">
       <div class="col-md-2">
         <%= label_tag :status %>
       </div>
@@ -38,8 +38,8 @@
       </div>
     </div>
   </div>
-  <div class="col-md-3 vertical-align2 totals pull-right">
-    <%= @users.total_count %> Users found &nbsp;&nbsp;
+  <div class="col-md-3 vertical-align2 totals form-label-responsive">
+    <%= @users.total_count %> Users found<br>
     <%= render partial: 'shared/pagination', locals: {models: @users} %>
   </div>
 </div>

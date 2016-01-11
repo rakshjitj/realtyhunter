@@ -25,9 +25,9 @@
         </div>
         <div class="col-md-5 form-label-responsive">
           <% if current_user.is_company_admin? %>
-            <%= link_to 'Edit', edit_company_office_path(@office.company, @office) %> | 
+            <%= link_to 'Edit', edit_company_office_path(@office.company, @office) %> |
           <% end %>
-          <%= link_to 'All Offices', company_offices_path %> | 
+          <%= link_to 'All Offices', company_offices_path %> |
           <%= link_to 'View Company', company_path(@office.company) %>
         </div>
       </div>
@@ -41,7 +41,7 @@
         <strong>t</strong> | <%= @office.telephone %>
       </div>
       <div class="col-md-3 form-label-responsive">
-        <% if @office.fax %>
+        <% if !@office.fax.empty? %>
           <strong>f</strong> | <%= @office.fax %>
         <% end %>
       </div>
@@ -134,7 +134,7 @@
 
     <!-- tiny screens -->
     <div class="hidden-md hidden-lg">
-      <div class="row">      
+      <div class="row">
         <% if @agents.any? %>
           <% for i in 0..@agents.length-1 %>
             <% if i % 2 == 0 && i > 0 %>

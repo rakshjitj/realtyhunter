@@ -46,12 +46,6 @@
         </div>
       </div>
 
-      <div class="row vertical-padding">
-        <div class="col-xs-5 form-label-responsive">
-          <%= link_to 'Clear filters', forms_contact_us_path, class: 'btn btn-xs btn-default' %>
-        </div>
-      </div>
-
       <% end %>
     </div>
   </div>
@@ -84,7 +78,7 @@
 <%= form_tag forms_contact_us_path do %>
 <br />
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-6 vertical-margin-lg">
       <!-- will be a dropdown of either print pdf or email -->
       <div class="dropdown selected-listings">
         <button class="btn btn-warning btn-sm dropdown-toggle disabled" id="selected-listings-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="menu">
@@ -115,7 +109,7 @@
     </span>
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-6 vertical-margin-lg">
     <div class="form-label-responsive">
       <%= render partial: 'shared/pagination', locals: {models: @entries} %>
     </div>

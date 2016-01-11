@@ -237,8 +237,10 @@
                 <% end %>
 
                 <div class="col-sm-4">
-                  <%= b.check_box(class: "check_box checkbox-warning inline") %>&nbsp;
-                  <%= b.text.titleize %>
+                  <div class="checkbox checkbox-warning checkbox-inline">
+                    <%= b.check_box(class: "check_box checkbox-warning inline") %>
+                    <label><%= b.text.titleize %></label>
+                  </div>
                 </div>
 
               <% i = i+1 %>

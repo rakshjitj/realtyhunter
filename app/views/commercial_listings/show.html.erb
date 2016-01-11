@@ -128,96 +128,96 @@
 
 		    <br />
 		    <div class="row">
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Total Space</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <%= @commercial_unit.sq_footage %> SF
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Floor</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <%= @commercial_unit.floor %>
 				  </div>
 				</div>
 
 				<div class="row">
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Rent per Sq Ft</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <%= money_formatted(@commercial_unit.price_per_sq_ft) %> /SF/MONTH
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Building Size</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <%= @commercial_unit.building_size %> SF
 				  </div>
 				</div>
 
 				<div class="row">
-					<div class="col-md-3">
+					<div class="col-xs-6 col-md-3">
 				    <strong>Rental per Month</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <%= rent_formatted(@commercial_unit.unit.rent) %>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Total Lot Size</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <%= @commercial_unit.total_lot_size %>
 				  </div>
 
 				</div>
 
 				<div class="row">
-					<div class="col-md-3">
+					<div class="col-xs-6 col-md-3">
 				    <strong>Property Type</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <%= @commercial_unit.commercial_property_type.property_type %>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Min Divisible</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <%= @commercial_unit.minimum_divisible %> SF
 				  </div>
 				</div>
 
 				<div class="row">
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Property Sub-type</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <%= @commercial_unit.commercial_property_type.property_sub_type %>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Max Contiguous</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <%= @commercial_unit.maximum_contiguous %> SF
 				  </div>
 				</div>
 
 				<div class="row">
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Construction Status</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				  	<% if @commercial_unit.construction_status == "existing" %>
 				  		Existing
 				  	<% else %>
 				  		Under Construction/Proposed
 				  	<% end %>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Basement</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <% if @commercial_unit.has_basement? %>
 				    	<%= @commercial_unit.basement_sq_footage %> Sq Ft
 				    <% else %>
@@ -227,20 +227,20 @@
 				</div>
 
 				<div class="row">
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Can build to suit</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				  	<% if @commercial_unit.build_to_suit %>
 				    	Yes
 				    <% else %>
 				    	No
 				    <% end %>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Key Money</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <% if @commercial_unit.key_money_required? %>
 				    	<%= money_formatted(@commercial_unit.key_money_amt) %>
 				    <% else %>
@@ -250,50 +250,50 @@
 				</div>
 
 				<div class="row">
-					<div class="col-md-3">
+					<div class="col-xs-6 col-md-3">
 				    <strong>Lease Type</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				  	<%= @commercial_unit.lease_type.humanize.titleize %>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Date Available</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <%= @commercial_unit.unit.available_by %>
 				  </div>
 				</div>
 
 				<div class="row">
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Lease Term</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				  	<%= @commercial_unit.lease_term_months %> Months
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Building</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <%= link_to @commercial_unit.unit.building.street_address, @commercial_unit.unit.building %>
 				  </div>
 				</div>
 
 				<div class="row">
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Is Sublease?</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				  	<% if @commercial_unit.is_sublease %>
 				    	Yes
 				    <% else %>
 				    	No
 				    <% end %>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Landlord</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <% if current_user.is_management? %>
 							<%= link_to @commercial_unit.unit.building.landlord.code, @commercial_unit.unit.building.landlord %>
 						<% else %>
@@ -303,20 +303,20 @@
 				</div>
 
 				<div class="row">
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Liquor Eligible?</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				  	<% if @commercial_unit.liquor_eligible %>
 				    	Yes
 				    <% else %>
 				    	No
 				    <% end %>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Primary Agent #1</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				  	<% if @commercial_unit.unit.primary_agent %>
 	    				<%= link_to @commercial_unit.unit.primary_agent.name, @commercial_unit.unit.primary_agent %>
 	    			<% else %>
@@ -326,20 +326,20 @@
 				</div>
 
 				<div class="row">
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Has Ventilation?</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				  	<% if @commercial_unit.has_ventilation %>
 				    	Yes
 				    <% else %>
 				    	No
 				    <% end %>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Primary Agent #2</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				  	<% if @commercial_unit.unit.primary_agent2 %>
 	    				<%= link_to @commercial_unit.unit.primary_agent2.name, @commercial_unit.unit.primary_agent2 %>
 	    			<% else %>
@@ -349,16 +349,16 @@
 				</div>
 
 				<div class="row">
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <strong>Listing ID</strong>
 				  </div>
-				  <div class="col-md-3">
+				  <div class="col-xs-6 col-md-3">
 				    <%= @commercial_unit.unit.listing_id %>
 				  </div>
 				</div>

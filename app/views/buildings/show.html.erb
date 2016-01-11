@@ -25,14 +25,14 @@
 		  </div><!-- panel-heading -->
 		  <div class="panel-body">
 		  	<div class="row">
-		  		<div class="col-xs-12 col-md-6">
+		  		<div class="col-xs-12 col-md-6 vertical-margin-lg">
 		  			<%= link_to 'View all', buildings_path %>
 						<% if current_user.is_management? || current_user.is_listings_manager? %>
 							| <%= link_to 'Edit', edit_building_path(@building) %> |
 							<%= link_to 'Add a Unit', new_residential_listing_path(building_id: @building.id) %>
 						<% end %>
 		  		</div>
-		  		<div class="col-xs-12 col-md-6 form-label-responsive">
+		  		<div class="col-xs-12 col-md-6 form-label-responsive vertical-margin-lg">
 		  			<%= link_to 'Report Inaccuracy', inaccuracy_modal_building_path(@building),
 		  				class: "btn btn-sm btn-danger ",
 			      	data: {toggle: "modal", target: "#bldgInaccuracyModal"}, remote: true %>

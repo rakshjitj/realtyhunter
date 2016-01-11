@@ -23,28 +23,28 @@
     <div id="waterfall-search-filters" data-search-path="<%= filter_user_waterfalls_path %>">
 
     <%= form_tag user_waterfalls_path, :method => 'get' do %>
-      <div class="row vertical-padding vertical-align">
-        <div class="col-xs-1">
+      <div class="row">
+        <div class="col-md-1 vertical-margin-lg">
           <strong>Filter By:</strong>
         </div>
-        <div class="col-xs-3 col-sm-left-padding">
+        <div class="col-xs-5 col-md-3 col-sm-left-padding vertical-margin-lg">
           <%= autocomplete_field_tag :parent_agent, params[:parent_agent],
             autocomplete_user_name_user_waterfalls_path,
             update_elements: {},
             placeholder: "Agent",
             size: 25, class:'form-control' %>
         </div>
-        <div class="col-xs-3 col-sm-left-padding">
+        <div class="col-xs-6 col-md-3 col-sm-left-padding vertical-margin-lg">
           <%= autocomplete_field_tag :child_agent, params[:child_agent],
             autocomplete_user_name_user_waterfalls_path,
             update_elements: {},
             placeholder: "Waterfall Agent",
             size: 25, class:'form-control' %>
         </div>
-        <div class="col-xs-1 text-right">
+        <div class="col-xs-2 col-md-1 form-label-responsive vertical-margin-lg">
           <%= label_tag :level, "Tier:" %>
         </div>
-        <div class="col-xs-1 col-sm-left-padding">
+        <div class="col-xs-4 col-md-3 col-sm-left-padding vertical-margin-lg">
           <%= select_tag(:level,
             options_for_select([['Any',0], ['Level 1',1], ['Level 2',2], ['Level 3',3], ['Special Agreement', 4]],
             params[:level] ? params[:level] : "Any"),

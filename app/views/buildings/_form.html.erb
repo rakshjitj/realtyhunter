@@ -13,10 +13,10 @@
     <!-- ******************** second tabpanel - photos ******************** -->
     <div role="tabpanel" class="tab-pane fade" id="photos">
       <% if @building.id %>
-      
+
         <br />
 
-        <%= form_for(@building, :url => building_images_path(@building), 
+        <%= form_for(@building, :url => building_images_path(@building),
           html: {multipart: true, class: "dropzone", id: "building-dropzone"}, method: :post) do |f| %>
           <div class="fallback">
             <%= f.file_field :file %><br>
@@ -32,7 +32,7 @@
             <%= render 'images',  locals: { building: @building } %>
           </div>
         </div>
-      
+
       <% else %>
         <br />
         <strong>Save the basic info first!</strong>
@@ -46,14 +46,14 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 form-label-responsive">
+          <div class="col-xs-4 col-md-3 form-label-responsive">
             <%= f.label :landlord_id, "Landlord", class: 'required' %>
           </div>
-          <div class="col-md-9">
+          <div class="col-xs-8 col-md-9">
             <%= f.select(:landlord_id, options_for_select(current_user.company.landlords.order("code ASC").collect {|l| [l.code, l.id]},
               [@building.landlord ? @building.landlord.id : '']),
               {prompt: "Choose one..."},
-              required: true, 
+              required: true,
               class: 'form-control',
               include_blank: true) %>
           </div>
@@ -88,7 +88,7 @@
         </div>
       </div>
     </div>
-    
+
     <br />
     <div class="row">
       <div class="col-md-12">
@@ -100,15 +100,17 @@
       <div class="row">
         <% i = 0 %>
         <%= f.collection_check_boxes(:building_amenity_ids, current_user.company.building_amenities, :id, :name) do |b| %>
-          
+
           <% if i % 3 == 0 && i > 0 %>
             </div>
             <div class="row">
           <% end %>
 
           <div class="col-sm-4">
-            <%= b.check_box(class: "check_box") %>&nbsp;
-            <%= b.text.titleize %>
+            <div class="checkbox checkbox-warning checkbox-inline">
+              <%= b.check_box(class: "styled") %>
+              <label><%= b.text.titleize %></label>
+            </div>
           </div>
 
         <% i = i+1 %>
@@ -122,7 +124,7 @@
     <div class="row">
       <div class="col-xs-12">
         <!-- enter a new option -->
-        <%= f.text_field :custom_amenities, class: 'form-control vertical-margin-lg', 
+        <%= f.text_field :custom_amenities, class: 'form-control vertical-margin-lg',
           placeholder: "Or enter new amenities, comma separated" %>
       </div>
     </div>
@@ -137,61 +139,63 @@
       <div class="row">
         <% i = 0 %>
         <%= f.collection_check_boxes(:utility_ids, current_user.company.utilities, :id, :name) do |b| %>
-          
+
           <% if i % 3 == 0 && i > 0 %>
             </div>
             <div class="row">
           <% end %>
 
           <div class="col-sm-4">
-            <%= b.check_box(class: "check_box") %>&nbsp;
-            <%= b.text.titleize %>
+            <div class="checkbox checkbox-warning checkbox-inline">
+              <%= b.check_box(class: "styled") %>
+              <label><%= b.text.titleize %></label>
+            </div>
           </div>
 
         <% i = i+1 %>
         <% end %>
 
       </div><!-- row -->
-    
+
     <!-- cut -->
 
     <div class="row">
     <div class="col-xs-12">
         <!-- enter a new option -->
-        <%= f.text_field :custom_utilities, class: 'form-control vertical-margin-lg', 
+        <%= f.text_field :custom_utilities, class: 'form-control vertical-margin-lg',
           placeholder: "Or enter new utilities, comma separated" %>
       </div>
     </div>
 
     <br />
     <div class="row">
-      <div class="col-md-6">
-        <div class="field">
-          <%= f.label :pet_policy_id, class: 'required' %>
-          <%= f.select(:pet_policy_id, 
-            options_for_select(current_user.company.pet_policies.all.collect { |r| [r.name.titleize, r.id] }, 
-            [@building.pet_policy ? @building.pet_policy.id : '']),
-             {prompt: "Choose one..."},
-            :required => true, 
-            class: 'form-control',
-            :include_blank => true) %>
-        </div>
+      <div class="col-xs-4 col-md-3">
+        <%= f.label :pet_policy_id, class: 'required' %>
+      </div>
+      <div class="col-xs-8 col-md-6">
+        <%= f.select(:pet_policy_id,
+          options_for_select(current_user.company.pet_policies.all.collect { |r| [r.name.titleize, r.id] },
+          [@building.pet_policy ? @building.pet_policy.id : '']),
+           {prompt: "Choose one..."},
+          :required => true,
+          class: 'form-control',
+          :include_blank => true) %>
       </div>
     </div>
 
     <br />
     <div class="row">
-      <div class="col-md-6">
-        <div class="field">
-          <%= f.label :rental_term_id, "Rental Terms" %>
-          <%= f.select(:rental_term_id, options_for_select(current_user.company.rental_terms.all.collect { |r| [r.name.titleize, r.id] }, 
-            [@building.rental_term ? @building.rental_term.id : '']),
-             {prompt: "Choose one..."},
-            class: 'form-control',
-            :include_blank => true) %>
-          <%= f.text_field :custom_rental_term, class: 'form-control vertical-margin-lg', 
-            placeholder: "Or enter new custom rental term" %>
-        </div>
+      <div class="col-xs-4 col-md-3">
+        <%= f.label :rental_term_id, "Rental Terms" %>
+      </div>
+      <div class="col-xs-8 col-md-6">
+        <%= f.select(:rental_term_id, options_for_select(current_user.company.rental_terms.all.collect { |r| [r.name.titleize, r.id] },
+          [@building.rental_term ? @building.rental_term.id : '']),
+           {prompt: "Choose one..."},
+          class: 'form-control',
+          :include_blank => true) %>
+        <%= f.text_field :custom_rental_term, class: 'form-control vertical-margin-lg',
+          placeholder: "Or enter new custom rental term" %>
       </div>
 
     </div>

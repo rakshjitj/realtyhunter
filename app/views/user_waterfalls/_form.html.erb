@@ -10,45 +10,45 @@
   </div>
 </div>
 <div class="row row-sm-padding">
-  <div class="col-md-2">
-    <%= f.select(:parent_agent_id, 
+  <div class="col-md-2 vertical-margin-lg">
+    <%= f.select(:parent_agent_id,
       options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
-        [entry.parent_agent_id ? entry.parent_agent_id : '']), 
+        [entry.parent_agent_id ? entry.parent_agent_id : '']),
       {prompt: "Agent..."},
       class: 'form-control',
       include_blank: true, required: true) %>
   </div>
-  <div class="col-md-2">
+  <div class="col-md-2 vertical-margin-lg">
     <%= f.select(:agent_seniority_rate,
       options_for_select([['Senior - 50%', 50], ['Junior - 45%', 45], ['Associate - 40%', 40], ['Shower - 35%', 35]],
-        [entry.agent_seniority_rate ? entry.agent_seniority_rate : '']), 
+        [entry.agent_seniority_rate ? entry.agent_seniority_rate : '']),
       {prompt: "Agent Seniority..."},
       class: 'form-control',
       include_blank: true, required: true) %>
   </div>
-  <div class="col-md-3">
-    <%= f.select(:child_agent_id, 
+  <div class="col-md-3 vertical-margin-lg">
+    <%= f.select(:child_agent_id,
       options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
-        [entry.child_agent_id ? entry.child_agent_id : '']), 
+        [entry.child_agent_id ? entry.child_agent_id : '']),
       {prompt: "Waterfall Agent..."},
       class: 'form-control',
       include_blank: true, required: true) %>
   </div>
-  <div class="col-md-2">
-    <%= f.select(:level, 
+  <div class="col-md-2 vertical-margin-lg">
+    <%= f.select(:level,
       options_for_select([['Level 1', 1], ['Level 2',2], ['Level 3',3], ['Special Agreement', 4]],
-        [entry.level ? entry.level : '']), 
+        [entry.level ? entry.level : '']),
       {prompt: "Tier..."},
-      class:"form-control", 
+      class:"form-control",
       include_blank: true, required: true) %>
   </div>
-  <div class="col-md-1">
-    <%= f.number_field :rate, placeholder: "%", class: "form-control", 
+  <div class="col-md-1  vertical-margin-lg">
+    <%= f.number_field :rate, placeholder: "%", class: "form-control",
       required: true, step: 0.1 %>
   </div>
-  
-  <div class="col-md-1">
-    <%= f.submit "Save", class: "form-control save-btn" %>
+
+  <div class="col-md-1 vertical-margin-lg">
+    <%= f.submit "Save", class: "form-control btn-warning save-btn" %>
   </div>
 
 </div>
