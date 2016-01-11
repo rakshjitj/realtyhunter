@@ -19,9 +19,24 @@ module API
 			end
 
 			def show
-				@listing = ResidentialListing.find(params[:id])
+				# id in this case refers to the unit's listing id
+				listings = all_listings_search(@user.company_id, {id: params[:id]})
+				@pet_policies = Unit.get_pet_policies(listings)
+				@residential_amenities = ResidentialListing.get_amenities(listings)
+				@images = Unit.get_all_images(listings)
+				@primary_agents = Unit.get_primary_agents(listings)
+				@building_amenities = Building.get_amenities(listings)
+
+				render json: Listing.new({
+					listing: listings[0],
+					residential_amenities: @residential_amenities[listings[0].unit_id],
+					pet_policies: @pet_policies[listings[0].building_id],
+					primary_agents: @primary_agents[listings[0].primary_agent_id],
+					building_amenities: @building_amenities[listings[0].building_id],
+					images: @images[listings[0].unit_id]
+					})
 			end
-		
+
 		protected
 
 			def _is_valid_bool_value(val)
@@ -46,7 +61,7 @@ module API
 				elevator = _is_valid_bool_value(listing_params[:elevator])
 				# doorman
 				doorman = _is_valid_bool_value(listing_params[:doorman])
-				# laundry in building				
+				# laundry in building
 				laundry_in_building = _is_valid_bool_value(listing_params[:laundry_in_building])
 				# laundry in unit
 				laundry_in_unit = _is_valid_bool_value(listing_params[:laundry_in_unit])
@@ -67,7 +82,7 @@ module API
 						per_page = 500
 					end
 				end
-				
+
 				# calls our API::V1::NestioInterface module located under /lib
 				search_params = {
 					listing_type: @listing_type,
@@ -111,7 +126,7 @@ module API
 				elsif search_params[:listing_type] == "20" # sales
 					@listings = sales_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
-					
+
 				# commercial
 				elsif search_params[:listing_type] == "30" #commercial
 					@listings = commercial_search(@user.company_id, search_params)
@@ -133,9 +148,9 @@ module API
 				# by our API renderer
 				output = []
 				@listings.each do |l|
-					
+
 					output << Listing.new({
-						listing: l, 
+						listing: l,
 						residential_amenities: @residential_amenities[l.unit_id],
 						pet_policies: @pet_policies[l.building_id],
 						primary_agents: @primary_agents[l.primary_agent_id],
@@ -144,7 +159,7 @@ module API
 						})
 				end
 
-				@lb = ListingBlob.new({ 
+				@lb = ListingBlob.new({
 					items: output,
 					total_count: @listings.total_count,
 					total_pages: @listings.total_pages,
@@ -155,14 +170,14 @@ module API
 
 			# Never trust parameters from the scary internet, only allow the white list through.
     	def listing_params
-	      params.permit(:token, :pretty, :format, 
+	      params.permit(:token, :pretty, :format,
 	      	:listing_type, :layout, :bathrooms, :min_rent, :max_rent,
-	      	:cats_allowed, :dogs_allowed, :elevator, :doorman, :date_available_after, 
+	      	:cats_allowed, :dogs_allowed, :elevator, :doorman, :date_available_after,
 	      	:date_available_before, :laundry_in_building, :laundry_in_unit, :changed_at,
 	      	:has_photos, :featured, :sort, :sort_dir, :per_page, :page,
 	      	:neighborhoods, :geometry, :agents)
     	end
-		
+
 		end
 	end
 end

@@ -13,8 +13,8 @@ module API
 		# https://nestiolistings.com/api/v1/public/listings/?layout=10&min_rent=1500&max_rent=2000&key={API KEY}
 
 		# acceptable search params:
-		# listing_type, layout, bathrooms, min/max rent, cats/dogs_allowed, 
-		# elevator, doorman, date_available_after/before, laundry_in_building, 
+		# listing_type, layout, bathrooms, min/max rent, cats/dogs_allowed,
+		# elevator, doorman, date_available_after/before, laundry_in_building,
 		# laundry_in_unit, has_photos, featured, neighborhoods, geometry, agents,
 		# sort, sort_dir, per_page
 
@@ -50,10 +50,14 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 				.joins(building: :neighborhood)
 				.where('units.archived = false')
 				.where('units.status IN (?)', Unit.statuses["active"])
-				
-				listings = _restrict_on_unit_model(company_id, search_params, listings)
-				listings = _restrict_on_residential_model(company_id, search_params, listings)
-				listings = _sort_by(search_params, listings)
+
+				if !search_params[:id].empty?
+					listings = listings.where('units.listing_id = ?', search_params[:id])
+				else
+					listings = _restrict_on_unit_model(company_id, search_params, listings)
+					listings = _restrict_on_residential_model(company_id, search_params, listings)
+					listings = _sort_by(search_params, listings)
+				end
 
 				listings = listings
 					.select('units.building_unit', 'units.status', 'units.available_by',
@@ -62,26 +66,26 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'buildings.administrative_area_level_2_short',
 					'buildings.administrative_area_level_1_short',
 					'buildings.sublocality',
-					'buildings.street_number', 'buildings.route', 
+					'buildings.street_number', 'buildings.route',
 					'buildings.postal_code',
 					'buildings.lat',
 					'buildings.lng',
 					'neighborhoods.name as neighborhood_name',
 					'neighborhoods.borough as neighborhood_borough',
-					'residential_listings.id AS r_id', 
-					'residential_listings.lease_start', 'residential_listings.lease_end', 
-					'residential_listings.tp_fee_percentage', 'residential_listings.beds', 
+					'residential_listings.id AS r_id',
+					'residential_listings.lease_start', 'residential_listings.lease_end',
+					'residential_listings.tp_fee_percentage', 'residential_listings.beds',
 					'residential_listings.baths', 'residential_listings.description',
 					'commercial_listings.id as c_id',
-					'commercial_listings.lease_term_months', 
-					'commercial_listings.property_description', 
+					'commercial_listings.lease_term_months',
+					'commercial_listings.property_description',
 					'commercial_listings.floor',
 					'commercial_listings.sq_footage',
 					'units.id as unit_id',
 					'units.primary_agent_id',
 					'units.primary_agent2_id'
 				)
-				
+
 				listings
 			end
 
@@ -95,6 +99,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 				listings = _restrict_on_unit_model(company_id, search_params, listings)
 				listings = _sort_by(search_params, listings)
 
+
 				listings = listings
 					.select('units.building_unit', 'units.status', 'units.available_by',
 					'units.listing_id', 'units.updated_at', 'units.rent',
@@ -102,20 +107,20 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'buildings.administrative_area_level_2_short',
 					'buildings.administrative_area_level_1_short',
 					'buildings.sublocality',
-					'buildings.street_number', 'buildings.route', 
+					'buildings.street_number', 'buildings.route',
 					'buildings.postal_code',
 					'buildings.lat',
 					'buildings.lng',
 					'neighborhoods.name as neighborhood_name',
 					'neighborhoods.borough as neighborhood_borough',
-					'residential_listings.id AS r_id', 
-					'residential_listings.lease_start', 'residential_listings.lease_end', 
-					'residential_listings.tp_fee_percentage', 'residential_listings.beds', 
+					'residential_listings.id AS r_id',
+					'residential_listings.lease_start', 'residential_listings.lease_end',
+					'residential_listings.tp_fee_percentage', 'residential_listings.beds',
 					'residential_listings.baths', 'residential_listings.description',
 					'units.id as unit_id',
 					'units.primary_agent_id',
 					'units.primary_agent2_id',
-					'residential_listings.id AS r_id', 
+					'residential_listings.id AS r_id',
 				)
 
 				listings
@@ -130,7 +135,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 				listings = Unit.joins(:commercial_listing, building: :neighborhood)
 					.where('units.archived = false')
 					.where('units.status IN (?)', Unit.statuses["active"])
-					
+
 				# TODO: restrict by commercial params
 				listings = _restrict_on_unit_model(company_id, search_params, listings)
 				listings = _sort_by(search_params, listings)
@@ -149,8 +154,8 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'neighborhoods.name as neighborhood_name',
 					'neighborhoods.borough as neighborhood_borough',
 					'units.id as unit_id',
-					'commercial_listings.lease_term_months', 
-					'commercial_listings.property_description', 
+					'commercial_listings.lease_term_months',
+					'commercial_listings.property_description',
 					'commercial_listings.floor',
 					'commercial_listings.sq_footage',
 					'units.primary_agent_id',
@@ -169,7 +174,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 						if !feature_required
 							return listings
 						end
-						
+
 						# some fields need to be tranlated into our terminology
 						additonal_listings = []
 						if feature == 'laundry_in_building'
@@ -224,7 +229,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					if feature == "laundry_in_unit"
 						feature = "washer/dryer"
 					end
-					
+
 					# make sure feature is all lowercase
 					feature_record = ResidentialAmenity.where(company_id: company_id)
 						.where('name ILIKE ?', "%#{feature.downcase}%").first
@@ -245,7 +250,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 				end
 
 				# Filter our search by all fields relevent to the base Unit model:
-				# rent, available_by			
+				# rent, available_by
 				def _restrict_on_unit_model(company_id, search_params, listings)
 					# min rent
 					if search_params[:min_rent] && !search_params[:min_rent].empty?
@@ -272,7 +277,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					end
 					# laundry_in_building
 					listings = _search_by_bldg_amenity('laundry_in_building', company_id, listings, search_params)
-					
+
 					if search_params[:has_photos] && (search_params[:has_photos] == "true" || search_params[:has_photos] == "1")
 						#listings = listings.joins(unit: :images)
 						listings = listings.joins(:images)
@@ -408,6 +413,6 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					listings
 				end
 
-		end		
+		end
 	end
 end
