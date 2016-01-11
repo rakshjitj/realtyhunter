@@ -386,6 +386,3 @@ DEPENDENCIES
   wkhtmltopdf-binary-edge (~> 0.12.2.1)
   wkhtmltopdf-heroku (~> 2.12.2.1)
   wuparty
-
-BUNDLED WITH
-   1.10.2

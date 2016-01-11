@@ -2,7 +2,7 @@ class ListingSerializer < ActiveModel::Serializer
 	attributes :listing_type, :property_type, :commercial_use, :min_lease_term, 
 	:max_lease_term, :renter_fee, :bathrooms, :unit_amenities, :unit_description,
 	:floor, :layout, :bedrooms, :unit_number, :pets, :status, :building, :date_available,
-	:changed_at, :square_footage, :rent, :id
+	:changed_at, :square_footage, :rent, :id, :favorites, :show, :expose_address
 
 	attribute :building, serializer: BuildingSerializer
 
@@ -165,7 +165,6 @@ class ListingSerializer < ActiveModel::Serializer
 		end
 	end
 
-
 	def date_available
 		if object.listing.available_by
 			object.listing.available_by.strftime("%Y-%m-%d")
@@ -196,4 +195,27 @@ class ListingSerializer < ActiveModel::Serializer
 		object.listing.listing_id
 	end
 
+	def show
+		if is_residential
+			object.listing.r_show
+		elsif is_commercial
+			object.listing.c_show
+		end
+	end
+
+	def favorites
+		if is_residential
+			object.listing.r_favorites
+		elsif is_commercial
+			object.listing.c_favorites
+		end
+	end
+
+	def expose_address
+		if is_residential
+			object.listing.r_expose_address
+		elsif is_commercial
+			object.listing.c_expose_address
+		end
+	end
 end

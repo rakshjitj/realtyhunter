@@ -22,6 +22,9 @@ class CommercialListing < ActiveRecord::Base
   validates :property_description, presence: true
   validates :location_description, presence: true
 
+  # validates :favorites, presence: true
+  # validates :show, presence: true
+  # validates :expose_address, presence: true
 
   def archive
     self.unit.archived = true

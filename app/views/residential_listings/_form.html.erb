@@ -91,48 +91,95 @@
           :locals => {:model => @residential_unit} %>
 
           <br />
-          <div class="row vertical-margin-lg">
-            <%= f.fields_for @residential_unit.unit do |unit_form| %>
-              <div class="col-xs-3 col-md-2">
-                <%= unit_form.label :status, class: 'required' %>
+          <div class="row">
+            <div class="col-md-6 col-sm-6 pull-left">
+              <%= f.fields_for @residential_unit.unit do |unit_form| %>
+                <div class="col-xs-12 col-md-4 form-label-responsive">
+                  <%= unit_form.label :status, class: 'required' %>
+                </div>
+                <div class="col-xs-12 col-md-8">
+                  <div class="field">
+                    <%= unit_form.select :status,
+                      options_for_select(%w(Active Pending Off),
+                        [@residential_unit.unit.status.titleize]),
+                      {prompt: "Choose one..."},
+                      :required => true,
+                      class: "form-control" %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="col-md-6 col-sm-6">
+              <div class="col-md-6 form-label-responsive">
+                <%= f.label :show, "Show", class: 'required' %>
               </div>
-              <div class="col-xs-9 col-md-4">
-                <%= unit_form.select :status,
-                  options_for_select(%w(Active Pending Off),
-                    [@residential_unit.unit.status.titleize]),
+              <div class="col-md-6">
+                <%#= f.check_box :show, class:"show", checked: @residential_unit.show, :required => true %>
+                <%= f.radio_button :show, true, checked: (@residential_unit.show == true) %>
+                <%= f.label :show_true, "Yes" %>
+                <%= f.radio_button :show, false, checked: (@residential_unit.show == false) %>
+                <%= f.label :show_false, "No" %>
+              </div>
+            </div>
+        </div>
+       
+        <br />
+        <div class="row">
+          <div class="col-md-6 col-sm-6 pull-left">
+            <div class="col-xs-12 col-md-4 form-label-responsive">
+              <%= f.label :building_id, class: 'required' %>
+            </div>
+            <div class="col-xs-12 col-md-8">
+              <%= f.fields_for @residential_unit.unit do |unit_form| %>
+
+                <%= unit_form.select(:building_id,
+                  options_for_select(current_user.company.buildings.order("formatted_street_address ASC").collect {|b| [b.street_address, b.id]},
+                    [@residential_unit.unit.building ? @residential_unit.unit.building.id : '']),
                   {prompt: "Choose one..."},
-                  :required => true,
-                  class: "form-control" %>
-              </div>
-            <% end %>
+                  class: 'form-control',
+                  :include_blank => true) %>
+
+              <% end %>
+            </div>
           </div>
+          <div class="col-md-6 col-sm-6">
+            <div class="col-md-6 form-label-responsive">
+              <%= f.label :favorites, "Favorites", class: 'required' %>
+            </div>
+            <div class="col-md-6">
+              <%#= f.check_box :favorites, class:"favorites", checked: @residential_unit.favorites, :required => true %>
+              <%= f.radio_button :favorites, true, checked: (@residential_unit.favorites == true) %>
+              <%= f.label :favorites_true, "Yes" %>
+              <%= f.radio_button :favorites, false, checked: (@residential_unit.favorites == false) %>
+              <%= f.label :favorites_false, "No" %>
+            </div>
+          </div>          
         </div>
 
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-2">
-            <%= f.label :building_id, class: 'required' %>
+        <br />
+        <div class="row">
+          <div class="col-md-6 col-sm-6 pull-left">
+            <div class="col-md-4 form-label-responsive">
+              <%= f.label :building_unit, "Unit", class: 'required' %>
+            </div>
+            <div class="col-md-8">
+              <%= f.fields_for @residential_unit.unit do |unit_form| %>
+                <%= unit_form.text_field :building_unit, class: 'form-control', :required => true %>
+              <% end %>
+            </div>
           </div>
-          <div class="col-xs-9 col-md-4">
-            <%= f.fields_for @residential_unit.unit do |unit_form| %>
-
-              <%= unit_form.select(:building_id,
-                options_for_select(current_user.company.buildings.order("formatted_street_address ASC").collect {|b| [b.street_address, b.id]},
-                  [@residential_unit.unit.building ? @residential_unit.unit.building.id : '']),
-                {prompt: "Choose one..."},
-                class: 'form-control',
-                :include_blank => true) %>
-            <% end %>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-2">
-            <%= f.label :building_unit, "Unit", class: 'required' %>
-          </div>
-          <div class="col-xs-9 col-md-4">
-            <%= f.fields_for @residential_unit.unit do |unit_form| %>
-              <%= unit_form.text_field :building_unit, class: 'form-control', :required => true %>
-            <% end %>
+          <div class="col-md-6 col-sm-6">
+            <div class="col-md-6 form-label-responsive">
+              <%= f.label :expose_address, "Expose Address", class: 'required' %>
+            </div>
+            <div class="col-md-6">
+              <%#= f.check_box :expose_address, class:"expose_address", checked: @residential_unit.expose_address, :required => true %>
+              <%= f.radio_button :expose_address, true, checked: (@residential_unit.expose_address == true) %>
+              <%= f.label :expose_address_true, "Yes" %>
+              <%= f.radio_button :expose_address, false, checked: (@residential_unit.expose_address == false) %>
+              <%= f.label :expose_address_false, "No" %>
+            </div>
           </div>
         </div>
 

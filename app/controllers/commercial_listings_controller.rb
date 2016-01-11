@@ -373,7 +373,7 @@ class CommercialListingsController < ApplicationController
         :construction_status, :lease_term_months, :primary_agent_id,
         :rate_is_negotiable, :total_lot_size, :property_type, :commercial_property_type_id,
         :commercial_unit_id, :inaccuracy_description, :has_basement, :basement_sq_footage,
-        :has_ventilation, :key_money_required, :key_money_amt, :listing_title, :liquor_eligible,
+        :has_ventilation, :key_money_required, :key_money_amt, :listing_title, :liquor_eligible, :favorites, :show, :expose_address,
         :unit => [:building_unit, :rent, :available_by, :access_info, :status, :open_house, :oh_exclusive,
           :building_id, :primary_agent_id, :primary_agent2_id, :listing_agent_id, :exclusive ],
         )

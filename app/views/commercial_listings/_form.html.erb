@@ -117,6 +117,47 @@
 
         <div class="row vertical-margin-lg">
           <div class="col-md-4 form-label-responsive">
+            <%= f.label :show, "Show", class: 'required' %>
+          </div>
+          <div class="col-md-4">
+            <%#= f.check_box :show, class:"show", checked: @commercial_unit.show, :required => true %>
+            <%= f.radio_button :show, true, checked: (@commercial_unit.show == true) %>
+            <%= f.label :show_true, "Yes" %>
+            <%= f.radio_button :show, false, checked: (@commercial_unit.show == false) %>
+            <%= f.label :show_false, "No" %>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-md-4 form-label-responsive">            
+            <%= f.label :favorites, "Favorites", class: 'required' %>
+          </div>
+          <div class="col-md-4">
+            <%#= f.check_box :favorites, class:"favorites", checked: @commercial_unit.favorites, :required => true %>
+            <%= f.radio_button :favorites, true, checked: (@commercial_unit.favorites == true) %>
+            <%= f.label :favorites_true, "Yes" %>
+            <%= f.radio_button :favorites, false, checked: (@commercial_unit.favorites == false) %>
+            <%= f.label :favorites_false, "No" %>            
+          </div>
+        </div>
+        <br />
+
+        <div class="row">
+          <div class="col-md-4 form-label-responsive">            
+            <%= f.label :expose_address, "Expose Address", class: 'required' %>
+          </div>
+          <div class="col-md-4">
+            <%#= f.check_box :expose_address, class:"expose_address", checked: @commercial_unit.expose_address, :required => true %>
+            <%= f.radio_button :expose_address, true, checked: (@commercial_unit.expose_address == true) %>
+            <%= f.label :expose_address_true, "Yes" %>
+            <%= f.radio_button :expose_address, false, checked: (@commercial_unit.expose_address == false) %>
+            <%= f.label :expose_address_false, "No" %>            
+          </div>
+        </div>
+        <br />
+
+        <div class="row">
+          <div class="col-md-4 form-label-responsive">
             <%= f.label :property_type, "Property Type", class: 'required' %>
           </div>
           <div class="col-md-3">

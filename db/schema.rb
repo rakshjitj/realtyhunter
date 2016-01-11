@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160106004222) do
+ActiveRecord::Schema.define(version: 20160107081550) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,6 +129,9 @@ ActiveRecord::Schema.define(version: 20160106004222) do
     t.integer  "key_money_amt"
     t.string   "listing_title"
     t.integer  "lock_version",                default: 0,     null: false
+    t.boolean  "favorites",                   default: true
+    t.boolean  "show",                        default: true
+    t.boolean  "expose_address",              default: false
   end
 
   create_table "commercial_property_types", force: :cascade do |t|
@@ -382,6 +385,9 @@ ActiveRecord::Schema.define(version: 20160106004222) do
     t.integer  "unit_id"
     t.integer  "lock_version",      default: 0,     null: false
     t.integer  "roommates_id"
+    t.boolean  "favorites",         default: false
+    t.boolean  "show",              default: true
+    t.boolean  "expose_address",    default: false
   end
 
   add_index "residential_listings", ["roommates_id"], name: "index_residential_listings_on_roommates_id", using: :btree
@@ -499,12 +505,12 @@ ActiveRecord::Schema.define(version: 20160106004222) do
   end
 
   create_table "sales_listings", force: :cascade do |t|
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
-    t.integer  "unit_id"
     t.integer  "beds"
     t.float    "baths"
-    t.boolean  "tenant_occupied"
+    t.boolean  "tenant_occupied",           default: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.integer  "unit_id"
     t.string   "internal_notes"
     t.string   "public_description"
     t.string   "listing_type"
@@ -524,7 +530,7 @@ ActiveRecord::Schema.define(version: 20160106004222) do
     t.string   "school_district"
     t.string   "certificate_of_occupancy"
     t.string   "violation_search"
-    t.integer  "lock_version",              default: 0, null: false
+    t.integer  "lock_version",              default: 0,     null: false
   end
 
   create_table "units", force: :cascade do |t|
