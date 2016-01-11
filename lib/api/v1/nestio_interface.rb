@@ -51,7 +51,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 				.where('units.archived = false')
 				.where('units.status IN (?)', Unit.statuses["active"])
 
-				if !search_params[:id].empty?
+				if search_params[:id] && !search_params[:id].empty?
 					listings = listings.where('units.listing_id = ?', search_params[:id])
 				else
 					listings = _restrict_on_unit_model(company_id, search_params, listings)
