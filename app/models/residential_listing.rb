@@ -111,7 +111,8 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self.listings_by_neighborhood(user, listing_ids)
-    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord, :neighborhood]})
+    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord]})
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('companies.id = ?', user.company_id)
       .where('units.listing_id IN (?)', listing_ids)
       .select('buildings.formatted_street_address',
@@ -131,7 +132,8 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self.listings_by_id(user, listing_ids)
-    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord, :neighborhood]})
+    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord]})
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('companies.id = ?', user.company_id)
       .where('units.listing_id IN (?)', listing_ids)
       .select('buildings.formatted_street_address',
@@ -151,7 +153,8 @@ class ResidentialListing < ActiveRecord::Base
 
   def self.export_all(user_id)
     user = User.find(user_id)
-    ResidentialListing.joins(unit: [building: [:company, :landlord, :neighborhood]])
+    ResidentialListing.joins(unit: [building: [:company, :landlord]])
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address',
         'units.listing_id', 'units.building_unit', 'units.status','units.rent', 'units.archived',
@@ -177,7 +180,8 @@ class ResidentialListing < ActiveRecord::Base
   def self.search(params, user, building_id=nil)
     # TODO: add amenities back in
     # 'building_amenities.name AS bldg_amenity_name',
-    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord, :neighborhood]})
+    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord]})
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('units.archived = false')
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address',
@@ -504,7 +508,8 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self.for_buildings(bldg_ids, is_active=nil)
-    listings = ResidentialListing.joins(unit: {building: [:landlord, :neighborhood]})
+    listings = ResidentialListing.joins(unit: {building: :landlord})
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('buildings.id in (?)', bldg_ids)
       .where('units.archived = false')
       .select('buildings.formatted_street_address',
