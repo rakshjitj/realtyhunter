@@ -93,10 +93,10 @@
           <br />
           <div class="row vertical-margin-lg">            
             <%= f.fields_for @residential_unit.unit do |unit_form| %>
-              <div class="col-xs-12 col-md-2">
+              <div class="col-md-2">
                 <%= unit_form.label :status, class: 'required' %>
               </div>
-              <div class="col-xs-12 col-md-4">
+              <div class="col-md-4">
                 <div class="field">
                   <%= unit_form.select :status,
                     options_for_select(%w(Active Pending Off),
@@ -123,10 +123,10 @@
         </div>
        
         <div class="row vertical-margin-lg">          
-          <div class="col-xs-12 col-md-2">
+          <div class="col-md-2">
             <%= f.label :building_id, class: 'required' %>
           </div>
-          <div class="col-xs-12 col-md-4">
+          <div class="col-md-4">
             <div class="field">
               <%= f.fields_for @residential_unit.unit do |unit_form| %>
 
@@ -156,10 +156,10 @@
         </div>
 
         <div class="row vertical-margin-lg">          
-          <div class="col-xs-12 col-md-2">
+          <div class="col-md-2">
             <%= f.label :building_unit, "Unit", class: 'required' %>
           </div>
-          <div class="col-xs-12 col-md-4">
+          <div class="col-md-4">
             <div class="field">
               <%= f.fields_for @residential_unit.unit do |unit_form| %>
                 <%= unit_form.text_field :building_unit, class: 'form-control', :required => true %>
