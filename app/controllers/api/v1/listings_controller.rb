@@ -27,14 +27,18 @@ module API
 				@primary_agents = Unit.get_primary_agents(listings)
 				@building_amenities = Building.get_amenities(listings)
 
-				render json: Listing.new({
-					listing: listings[0],
-					residential_amenities: @residential_amenities[listings[0].unit_id],
-					pet_policies: @pet_policies[listings[0].building_id],
-					primary_agents: @primary_agents[listings[0].primary_agent_id],
-					building_amenities: @building_amenities[listings[0].building_id],
-					images: @images[listings[0].unit_id]
-					})
+				if !listings.empty?
+					render json: Listing.new({
+						listing: listings[0],
+						residential_amenities: @residential_amenities[listings[0].unit_id],
+						pet_policies: @pet_policies[listings[0].building_id],
+						primary_agents: @primary_agents[listings[0].primary_agent_id],
+						building_amenities: @building_amenities[listings[0].building_id],
+						images: @images[listings[0].unit_id]
+						})
+				else
+					render json: {}
+				end
 			end
 
 		protected
