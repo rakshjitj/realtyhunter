@@ -115,47 +115,6 @@
           <% end %>
         </div>
 
-        <div class="row vertical-margin-lg">
-          <div class="col-md-4 form-label-responsive">
-            <%= f.label :show, "Show", class: 'required' %>
-          </div>
-          <div class="col-md-4">
-            <%#= f.check_box :show, class:"show", checked: @commercial_unit.show, :required => true %>
-            <%= f.radio_button :show, true, checked: (@commercial_unit.show == true) %>
-            <%= f.label :show_true, "Yes" %>
-            <%= f.radio_button :show, false, checked: (@commercial_unit.show == false) %>
-            <%= f.label :show_false, "No" %>
-          </div>
-        </div>
-        <br />
-        <div class="row">
-          <div class="col-md-4 form-label-responsive">            
-            <%= f.label :favorites, "Favorites", class: 'required' %>
-          </div>
-          <div class="col-md-4">
-            <%#= f.check_box :favorites, class:"favorites", checked: @commercial_unit.favorites, :required => true %>
-            <%= f.radio_button :favorites, true, checked: (@commercial_unit.favorites == true) %>
-            <%= f.label :favorites_true, "Yes" %>
-            <%= f.radio_button :favorites, false, checked: (@commercial_unit.favorites == false) %>
-            <%= f.label :favorites_false, "No" %>            
-          </div>
-        </div>
-        <br />
-
-        <div class="row">
-          <div class="col-md-4 form-label-responsive">            
-            <%= f.label :expose_address, "Expose Address", class: 'required' %>
-          </div>
-          <div class="col-md-4">
-            <%#= f.check_box :expose_address, class:"expose_address", checked: @commercial_unit.expose_address, :required => true %>
-            <%= f.radio_button :expose_address, true, checked: (@commercial_unit.expose_address == true) %>
-            <%= f.label :expose_address_true, "Yes" %>
-            <%= f.radio_button :expose_address, false, checked: (@commercial_unit.expose_address == false) %>
-            <%= f.label :expose_address_false, "No" %>            
-          </div>
-        </div>
-        <br />
-
         <div class="row">
           <div class="col-md-4 form-label-responsive">
             <%= f.label :property_type, "Property Type", class: 'required' %>
@@ -460,7 +419,7 @@
 
         <div class="row vertical-margin-lg">
           <%= f.fields_for @commercial_unit.unit do |unit_form| %>
-          <div class="col-md-4 form-label-responsive">
+          <div class="col-md-4">
             <%= unit_form.label :access_info %>
           </div>
           <div class="col-md-8">
@@ -472,7 +431,7 @@
         </div>
 
         <div class="row vertical-margin-lg">
-          <div class="col-md-4 form-label-responsive">
+          <div class="col-md-4">
             <%= f.label :listing_title %>
           </div>
           <div class="col-md-8">
@@ -482,28 +441,90 @@
           </div>
         </div>
 
+
+
         <div class="row vertical-margin-lg">
-          <div class="col-md-4 form-label-responsive">
+          <div class="col-md-4">
             <%= f.label :property_description, class: 'required' %>
           </div>
           <div class="col-md-8">
-            <div class="field">
-              <small><em>Exclusive listings will display the full address when syndicated.
-              Must have a description AND assigned agent in order to be syndicated.</em></small><br />
-              <%= f.fields_for @commercial_unit.unit do |unit_form| %>
-                <div class="checkbox checkbox-warning checkbox-inline">
-                  <%= unit_form.check_box :exclusive, checked: @commercial_unit.unit.exclusive %>
-                  <%= f.label :exclusive, 'Exclusive listing' %>
-                </div>
-              <% end %>
+            <div class="row">
+              <div class="col-xs-12">
+                <small><em>Exclusive listings will display the full address when syndicated.
+                  Must have a description AND assigned agent in order to be syndicated.</em>
+                </small>
+                <br>
+                <%= f.fields_for @commercial_unit.unit do |unit_form| %>
+                  <div class="checkbox checkbox-warning checkbox-inline">
+                    <%= unit_form.check_box :exclusive, checked: @commercial_unit.unit.exclusive %>
+                    <%= f.label :exclusive, 'Exclusive listing' %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
 
-              <%= f.text_area :property_description, class: 'form-control', :required => true, rows: 5 %>
+            <div class="row">
+              <div class="col-xs-5 col-md-5">
+                <%= f.label :show, "Show", class: 'required' %>
+              </div>
+              <div class="col-xs-3 col-md-2">
+                <div class="radio radio-warning radio-inline">
+                  <%= f.radio_button :show, true, checked: @commercial_unit.show %>
+                  <%= f.label :show_true, "Yes" %>
+                </div>
+              </div>
+              <div class="col-xs-3 col-md-2">
+                <div class="radio radio-warning radio-inline">
+                  <%= f.radio_button :show, false, checked: !@commercial_unit.show %>
+                  <%= f.label :show_false, "No" %>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-5 col-md-5">
+                <%= f.label :favorites, "Favorites", class: 'required' %>
+              </div>
+              <div class="col-xs-3 col-md-2">
+                <div class="radio radio-warning radio-inline">
+                  <%= f.radio_button :favorites, true, checked: @commercial_unit.favorites %>
+                  <%= f.label :favorites_true, "Yes" %>
+                </div>
+              </div>
+              <div class="col-xs-3 col-md-2">
+                <div class="radio radio-warning radio-inline">
+                  <%= f.radio_button :favorites, false, checked: !@commercial_unit.favorites %>
+                  <%= f.label :favorites_false, "No" %>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-5 col-md-5">
+                <%= f.label :expose_address, "Expose Address", class: 'required' %>
+              </div>
+              <div class="col-xs-3 col-md-2">
+                <div class="radio radio-warning radio-inline">
+                  <%= f.radio_button :expose_address, true, checked: @commercial_unit.expose_address %>
+                  <%= f.label :expose_address_true, "Yes" %>
+                </div>
+              </div>
+              <div class="col-xs-3 col-md-2">
+                <div class="radio radio-warning radio-inline">
+                  <%= f.radio_button :expose_address, false, checked: !@commercial_unit.expose_address %>
+                  <%= f.label :expose_address_false, "No" %>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-xs-12">
+                <%= f.text_area :property_description, class: 'form-control', :required => true, rows: 5 %>
+              </div>
             </div>
           </div>
         </div>
 
         <div class="row vertical-margin-lg">
-          <div class="col-md-4 form-label-responsive">
+          <div class="col-md-4">
             <%= f.label :location_description, class: 'required' %>
           </div>
           <div class="col-md-8">
