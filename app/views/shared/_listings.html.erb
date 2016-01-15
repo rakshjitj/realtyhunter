@@ -6,11 +6,11 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
       <% if residential_units %>
-        <li role="residential-listings" class="active"><a href="#residential-listings" 
+        <li role="residential-listings" class="active"><a href="#residential-listings"
           aria-controls="residential-listings" role="tab" data-toggle="tab">Residential</a></li>
       <% end %>
       <% if commercial_units %>
-        <li role="commercial-listings"><a href="#commercial-listings" aria-controls="commercial-listings" 
+        <li role="commercial-listings"><a href="#commercial-listings" aria-controls="commercial-listings"
           role="tab" data-toggle="tab">Commercial</a></li>
       <% end %>
     </ul>
@@ -47,7 +47,7 @@
 
 					</div>
 
-          <%= render partial:'residential_listings/table', 
+          <%= render partial:'residential_listings/table',
             locals: { residential_units: residential_units, res_images: res_images} %>
 
           <div class="row">
@@ -61,7 +61,7 @@
         </div>
       <!-- ******************** second tabpanel - commercial ********************-->
         <div role="tabpanel" class="tab-pane fade" id="commercial-listings">
-          <%= render partial:'commercial_listings/table', 
+          <%= render partial:'commercial_listings/table',
             locals: { commercial_units: commercial_units, com_images: com_images } %>
         </div>
 
@@ -78,12 +78,12 @@
 </div><!-- row -->
 
 <!-- Email Modal -->
-<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" 
+<div class="modal fade modal-fullscreen" id="emailModal" tabindex="-1" role="dialog"
   aria-labelledby="emailModal" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
-        
+
         <%= form_tag(send_listings_residential_listings_path, remote: true) do %>
         <div class="row vertical-padding">
           <div class="col-md-12">
@@ -110,16 +110,16 @@
         <br />
         <div class="row vertical-padding">
           <div class="col-md-12">
-            
+
           </div>
         </div>
 
         <%= hidden_field_tag "residential_listing[listing_ids]" %>
-        
+
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp; 
+        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
         <%= submit_tag "Send Email", class:"btn btn-warning" %>
       </div>
 

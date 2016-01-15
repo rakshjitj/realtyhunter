@@ -1,7 +1,7 @@
 <%= form_for(residential_unit, url: send_inaccuracy_residential_listing_path(@residential_unit), remote: true) do |f| %>
 
 	<div class="modal-body">
-		<p>What's wrong at <%= @residential_unit.unit.building.street_address %> 
+		<p>What's wrong at <%= @residential_unit.unit.building.street_address %>
 		#<%= @residential_unit.unit.building_unit %>? The more detail you can provide, the better.</p>
 		<br />
 		<div class="field">

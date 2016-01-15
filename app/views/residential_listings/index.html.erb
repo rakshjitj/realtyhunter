@@ -295,7 +295,7 @@
     </div>
 
     <% if current_user.is_management? %>
-      <%= link_to 'Export to CSV', residential_listings_path(format: 'csv'),
+      <%= link_to 'Export to CSV', residential_listings_path(params.merge(format: 'csv')),
         class:"btn btn-sm btn-warning link-as-button" %>
     <% end %>
 
@@ -361,7 +361,7 @@
 <%= render 'modals' %>
 
 <!-- Neighborhood Modal -->
-<div class="modal fade" id="neighborhoodsModal" tabindex="-1" role="dialog"
+<div class="modal fade modal-fullscreen" id="neighborhoodsModal" tabindex="-1" role="dialog"
   aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -381,7 +381,7 @@
 </div>
 
 <!-- Features Modal -->
-<div class="modal fade" id="featuresModal" tabindex="-1" role="dialog"
+<div class="modal fade modal-fullscreen" id="featuresModal" tabindex="-1" role="dialog"
   aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
