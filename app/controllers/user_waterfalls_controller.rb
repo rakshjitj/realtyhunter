@@ -100,8 +100,8 @@ class UserWaterfallsController < ApplicationController
   	end
 
   	def custom_sort
-      sort_column = params[:sort_by] || "updated_at"
-      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
+      sort_column = params[:sort_by] || "parent_agent_name"
+      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
       # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order

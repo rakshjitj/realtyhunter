@@ -1,65 +1,64 @@
 Deals = {};
 
 (function() {
-	Deals.setupSortableColumns = function() {
+	Deals.sortOnColumnClick = function() {
 		$('#deals .th-sortable').click(function(e) {
-			e.preventDefault();
-
-			if ($(this).hasClass('selected-sort')) {
-				// switch sort order
-				var i = $('.selected-sort i');
-				if (i) {
-					if (i.hasClass('glyphicon glyphicon-triangle-bottom')) {
-						i.removeClass('glyphicon glyphicon-triangle-bottom').addClass('glyphicon glyphicon-triangle-top');
-						$(this).attr('data-direction', 'desc');
-					}
-					else if (i.hasClass('glyphicon glyphicon-triangle-top')) {
-						i.removeClass('glyphicon glyphicon-triangle-top').addClass('glyphicon glyphicon-triangle-bottom');
-						$(this).attr('data-direction', 'asc');
-					}
-				}
-			} else {
-				// remove selection from old row
-				$('.selected-sort').attr('data-direction', '');
-				$('th i').remove(); // remove arrows
-				$('.selected-sort').removeClass('selected-sort');
-				// select new column
-				$(this).addClass('selected-sort').append(' <i class="glyphicon glyphicon-triangle-bottom"></i>');
-				$(this).attr('data-direction', 'asc');
-			}
-
-			var sort_by_col = $(this).attr('data-sort');
-			var sort_direction = $(this).attr('data-direction');
-			Deals.doSearch(sort_by_col, sort_direction);
+			Common.sortOnColumnClick($(this), Deals.doSearch);
 		});
 	};
 
 	// for searching on the index page
-	Deals.doSearch = function (sort_by_col, sort_direction) {
+	Deals.doSearch = function (sortByCol, sortDirection) {
 		var search_path = $('#deals-search-filters').attr('data-search-path');
 
 	  Forms.showSpinner();
 
-	  $.ajax({
-	    url: search_path,
-	    data: {
-        //client_name: $('#deals #client_name').val(),
-        address: $('#deals #address').val(),
-        landlord_code: $('#deals #landlord_code').val(),
-        closed_date_start: $('#deals #closed_date_start').val(),
-        closed_date_end: $('#deals #closed_date_end').val(),
-        state: $('#deals #state').val(),
-        sort_by: sort_by_col,
-        direction: sort_direction,
-	    },
-	    dataType: 'script',
-	    success: function(data) {
-	    	Forms.hideSpinner();
-			},
-			error: function(data) {
-				Forms.hideSpinner();
-			}
-	  });
+	  if (!sortByCol) {
+      sortByCol = Common.getSearchParam('sort_by');
+    }
+    if (!sortDirection) {
+      sortDirection = Common.getSearchParam('direction');
+    }
+
+    var data = {
+      //client_name: $('#deals #client_name').val(),
+      address: $('#deals #address').val(),
+      landlord_code: $('#deals #landlord_code').val(),
+      closed_date_start: $('#deals #closed_date_start').val(),
+      closed_date_end: $('#deals #closed_date_end').val(),
+      state: $('#deals #state').val(),
+      sort_by: sortByCol,
+      direction: sortDirection,
+    };
+
+		var searchParams = [];
+    for(var key in data) {
+      if (data.hasOwnProperty(key) && data[key] && data[key].toLowerCase() !== 'any') {
+        searchParams.push(key + "=" + data[key]);
+      }
+    }
+    window.location.search = searchParams.join('&');
+
+	  // $.ajax({
+	  //   url: search_path,
+	  //   data: {
+   //      //client_name: $('#deals #client_name').val(),
+   //      address: $('#deals #address').val(),
+   //      landlord_code: $('#deals #landlord_code').val(),
+   //      closed_date_start: $('#deals #closed_date_start').val(),
+   //      closed_date_end: $('#deals #closed_date_end').val(),
+   //      state: $('#deals #state').val(),
+   //      sort_by: sortByCol,
+   //      direction: sortDirection,
+	  //   },
+	  //   dataType: 'script',
+	  //   success: function(data) {
+	  //   	Forms.hideSpinner();
+			// },
+			// error: function(data) {
+			// 	Forms.hideSpinner();
+			// }
+	  // });
 	};
 
 	Deals.timer;
@@ -86,27 +85,22 @@ Deals = {};
     });
 	};
 
-	Deals.initialize = function(){
+	Deals.initialize = function() {
+		if (!$('#deals').length) {
+			return;
+		}
+
 		document.addEventListener("page:restore", function() {
 		  Forms.hideSpinner();
 		});
 		Forms.hideSpinner();
 
-		// change all date input fields to auto-open the calendar
-		// $('.datepicker').datetimepicker({
-		//   viewMode: 'days',
-		//   format: 'MM/DD/YYYY',
-		//   allowInputToggle: true
-		// });
-		// if ($('#deals .datepicker').length) {
-		// 	$('#deals .datepicker').each(function(idx) {
-		// 		var available_by = $(this).attr('data-available-by');
-		// 		$(this).data("DateTimePicker").date(available_by);
-		// 	});
-		// }
-
 		// main index table
-		Deals.setupSortableColumns();
+		Deals.sortOnColumnClick();
+		Common.markSortingColumn();
+    if (Common.getSearchParam('sort_by') === '') {
+      Common.markSortingColumnByElem($('th[data-sort="closed_date"]'), 'desc')
+    }
 
 		$('.close').click(function() {
 			Forms.hideSpinner();

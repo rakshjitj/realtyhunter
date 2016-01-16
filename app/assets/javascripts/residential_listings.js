@@ -1,11 +1,10 @@
 ResidentialListings = {};
 
-// TODO: break this up by controller action
+// TODO: break this up by controller action?
 
 (function() {
 	// for searching on the index page
-	ResidentialListings.doSearch = function (sort_by_col, sort_direction) {
-		//console.log(sort_by_col, sort_direction);
+	ResidentialListings.doSearch = function (sortByCol, sortDirection) {
 		// sanitize invalid input before submitting
 	  if ($('#residential #neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
 	    $('#residential #neighborhood_ids').val('');
@@ -21,9 +20,14 @@ ResidentialListings = {};
 
 	  Listings.showSpinner();
 
-	  $.ajax({
-	    url: search_path,
-	    data: {
+    if (!sortByCol) {
+      sortByCol = Common.getSearchParam('sort_by');
+    }
+    if (!sortDirection) {
+      sortDirection = Common.getSearchParam('direction');
+    }
+
+    var data = {
         address: $('#residential #address').val(),
         unit: $('#residential #unit').val(),
         rent_min: $('#residential #rent_min').val(),
@@ -45,19 +49,31 @@ ResidentialListings = {};
         roomsharing_filter: $('#residential #roomsharing_filter').prop('checked'),
         unassigned_filter: $('#residential #unassigned_filter').prop('checked'),
         primary_agent_id:  $('#residential #primary_agent_id').val(),
-        sort_by: sort_by_col,
-        direction: sort_direction,
-	    },
-	    dataType: 'script',
-	    success: function(data) {
-	    	//console.log('SUCCESS:', data.responseText);
-	    	Listings.hideSpinner();
-			},
-			error: function(data) {
-				//console.log('ERROR:', data.responseText);
-				Listings.hideSpinner();
-			}
-	  });
+        sort_by: sortByCol,
+        direction: sortDirection,
+      };
+
+      var searchParams = [];
+      for(var key in data) {
+        if (data.hasOwnProperty(key) && data[key] && data[key].toLowerCase() !== 'any') {
+          searchParams.push(key + "=" + data[key]);
+        }
+      }
+      window.location.search = searchParams.join('&');
+
+	  // $.ajax({
+	  //   url: search_path,
+	  //   data: data,
+	  //   dataType: 'script',
+	  //   success: function(data) {
+	  //   	//console.log('SUCCESS:', data.responseText);
+	  //   	Listings.hideSpinner();
+			// },
+			// error: function(data) {
+			// 	//console.log('ERROR:', data.responseText);
+			// 	Listings.hideSpinner();
+			// }
+	  // });
 
 		ResidentialListings.passiveRealTimeUpdate();
 	};
@@ -236,36 +252,9 @@ ResidentialListings = {};
 	  });
 	};
 
-	ResidentialListings.setupSortableColumns = function() {
+  ResidentialListings.sortOnColumnClick = function() {
 		$('#residential .th-sortable').click(function(e) {
-			e.preventDefault();
-
-			if ($(this).hasClass('selected-sort')) {
-				// switch sort order
-				var i = $('.selected-sort i');
-				if (i) {
-					if (i.hasClass('glyphicon glyphicon-triangle-bottom')) {
-						i.removeClass('glyphicon glyphicon-triangle-bottom').addClass('glyphicon glyphicon-triangle-top');
-						$(this).attr('data-direction', 'desc');
-					}
-					else if (i.hasClass('glyphicon glyphicon-triangle-top')) {
-						i.removeClass('glyphicon glyphicon-triangle-top').addClass('glyphicon glyphicon-triangle-bottom');
-						$(this).attr('data-direction', 'asc');
-					}
-				}
-			} else {
-				// remove selection from old row
-				$('.selected-sort').attr('data-direction', '');
-				$('th i').remove(); // remove arrows
-				$('.selected-sort').removeClass('selected-sort');
-				// select new column
-				$(this).addClass('selected-sort').append(' <i class="glyphicon glyphicon-triangle-bottom"></i>');
-				$(this).attr('data-direction', 'asc');
-			}
-
-			var sort_by_col = $(this).attr('data-sort');
-			var sort_direction = $(this).attr('data-direction');
-			ResidentialListings.doSearch(sort_by_col, sort_direction);
+      Common.sortOnColumnClick($(this), ResidentialListings.doSearch);
 		});
 	};
 
@@ -413,6 +402,7 @@ ResidentialListings = {};
 		if (!$('#residential').length) {
 			return;
 		}
+
 		ResidentialListings.passiveRealTimeUpdate();
 		ResidentialListings.updateAnnouncements();
 
@@ -430,10 +420,13 @@ ResidentialListings = {};
 		});
 
 		// main index table
-		ResidentialListings.setupSortableColumns();
+		ResidentialListings.sortOnColumnClick();
+    Common.markSortingColumn();
+    if (Common.getSearchParam('sort_by') === '') {
+      Common.markSortingColumnByElem($('th[data-sort="updated_at"]'), 'desc')
+    }
 
 		$('.close').click(function() {
-			//console.log('detected click');
 			Listings.hideSpinner();
 		});
 

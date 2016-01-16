@@ -15,7 +15,7 @@ CommercialListings = {};
     });
   };
 
-  CommercialListings.doSearch = function(sort_by_col, sort_direction) {
+  CommercialListings.doSearch = function(sortByCol, sortDirection) {
     //console.log('before', $('#commercial #neighborhood_ids').val());
     Listings.showSpinner();
 
@@ -26,9 +26,14 @@ CommercialListings = {};
 
     var search_path = $('#com-search-filters').attr('data-search-path');
 
-    $.ajax({
-      url: search_path,
-      data: {
+    if (!sortByCol) {
+      sortByCol = Common.getSearchParam('sort_by');
+    }
+    if (!sortDirection) {
+      sortDirection = Common.getSearchParam('direction');
+    }
+
+    var data = {
         address: $('#commercial #address').val(),
         rent_min: $('#commercial #rent_min').val(),
         rent_max: $('#commercial #rent_max').val(),
@@ -40,51 +45,50 @@ CommercialListings = {};
         listing_id: $('#commercial #listing_id').val(),
         neighborhood_ids: $('#commercial #neighborhood_ids').val(),
         primary_agent_id:  $('#commercial #primary_agent_id').val(),
-        sort_by: sort_by_col,
-        direction: sort_direction,
-      },
-      dataType: "script",
-      success: function(data) {
-        Listings.hideSpinner();
-      },
-      error: function(data) {
-        Listings.hideSpinner();
+        sort_by: sortByCol,
+        direction: sortDirection,
+      };
+
+      var searchParams = [];
+      for(var key in data) {
+        if (data.hasOwnProperty(key) && data[key] && data[key].toLowerCase() !== 'any') {
+          searchParams.push(key + "=" + data[key]);
+        }
       }
-    });
+      window.location.search = searchParams.join('&');
+
+    // $.ajax({
+    //   url: search_path,
+    //   data: {
+    //     address: $('#commercial #address').val(),
+    //     rent_min: $('#commercial #rent_min').val(),
+    //     rent_max: $('#commercial #rent_max').val(),
+    //     sq_footage_min: $('#commercial #sq_footage_min').val(),
+    //     sq_footage_max: $('#commercial #sq_footage_max').val(),
+    //     landlord: $('#commercial #landlord').val(),
+    //     status: $('#commercial #status').val(),
+    //     commercial_property_type_id: $('#commercial #commercial_property_type_id').val(),
+    //     listing_id: $('#commercial #listing_id').val(),
+    //     neighborhood_ids: $('#commercial #neighborhood_ids').val(),
+    //     primary_agent_id:  $('#commercial #primary_agent_id').val(),
+    //     sort_by: sort_by_col,
+    //     direction: sort_direction,
+    //   },
+    //   dataType: "script",
+    //   success: function(data) {
+    //     Listings.hideSpinner();
+    //   },
+    //   error: function(data) {
+    //     Listings.hideSpinner();
+    //   }
+    // });
 
     CommercialListings.passiveRealTimeUpdate();
   };
 
-  CommercialListings.setupSortableColumns = function() {
+  CommercialListings.sortOnColumnClick = function() {
     $('#commercial .th-sortable').click(function(e) {
-      e.preventDefault();
-
-      if ($(this).hasClass('selected-sort')) {
-        // switch sort order
-        var i = $('.selected-sort i');
-        if (i) {
-          if (i.hasClass('glyphicon glyphicon-triangle-bottom')) {
-            i.removeClass('glyphicon glyphicon-triangle-bottom').addClass('glyphicon glyphicon-triangle-top');
-            $(this).attr('data-direction', 'desc');
-          }
-          else if (i.hasClass('glyphicon glyphicon-triangle-top')) {
-            i.removeClass('glyphicon glyphicon-triangle-top').addClass('glyphicon glyphicon-triangle-bottom');
-            $(this).attr('data-direction', 'asc');
-          }
-        }
-      } else {
-        // remove selection from old row
-        $('.selected-sort').attr('data-direction', '');
-        $('th i').remove(); // remove arrows
-        $('.selected-sort').removeClass('selected-sort');
-        // select new column
-        $(this).addClass('selected-sort').append(' <i class="glyphicon glyphicon-triangle-bottom"></i>');
-        $(this).attr('data-direction', 'asc');
-      }
-
-      var sort_by_col = $(this).attr('data-sort');
-      var sort_direction = $(this).attr('data-direction');
-      CommercialListings.doSearch(sort_by_col, sort_direction);
+      Common.sortOnColumnClick($(this), CommercialListings.doSearch);
     });
   };
 
@@ -323,6 +327,10 @@ CommercialListings = {};
 
   //call when typing or enter or focus leaving
   CommercialListings.initialize = function () {
+    if (!$('#commercial').length) {
+      return;
+    }
+
     document.addEventListener("page:restore", function() {
       CommercialListings.passiveRealTimeUpdate();
       Listings.hideSpinner();
@@ -333,7 +341,11 @@ CommercialListings = {};
     });
 
     // main index table
-    CommercialListings.setupSortableColumns();
+    CommercialListings.sortOnColumnClick();
+    Common.markSortingColumn();
+    if (Common.getSearchParam('sort_by') === '') {
+      Common.markSortingColumnByElem($('th[data-sort="updated_at"]'), 'desc')
+    }
 
     // edit/new form
     $('#commercial_listing_property_type').change(function(e) {

@@ -146,37 +146,65 @@ Roommates = {};
 	};
 
 	// for searching on the index page
-	Roommates.doSearch = function (sort_by_col, sort_direction) {
-		//console.log(sort_by_col, sort_direction);
+	Roommates.doSearch = function (sortByCol, sortDirection) {
 		var search_path = $('#room-search-filters').attr('data-search-path');
 
 	  Roommates.showSpinner();
 
-	  $.ajax({
-	    url: search_path,
-	    data: {
-        name: $('#roommates #name').val(),
-        referred_by: $('#roommates #referred_by').val(),
-        neighborhood_id: $('#roommates #neighborhood_id').val(),
-        submitted_date: $('#roommates #submitted_date').val(),
-        move_in_date: $('#roommates #move_in_date').val(),
-        monthly_budget: $('#roommates #monthly_budget').val(),
-        dogs_allowed: $('#roommates #dogs_allowed').val(),
-        cats_allowed: $('#roommates #cats_allowed').val(),
-        status: $('#roommates #status').val(),
-        sort_by: sort_by_col,
-        direction: sort_direction,
-	    },
-	    dataType: 'script',
-	    success: function(data) {
-	    	//console.log('SUCCESS:', data.responseText);
-	    	Roommates.hideSpinner();
-			},
-			error: function(data) {
-				//console.log('ERROR:', data.responseText);
-				Roommates.hideSpinner();
-			}
-	  });
+	  if (!sortByCol) {
+      sortByCol = Common.getSearchParam('sort_by');
+    }
+    if (!sortDirection) {
+      sortDirection = Common.getSearchParam('direction');
+    }
+
+    var data = {
+      name: $('#roommates #name').val(),
+      referred_by: $('#roommates #referred_by').val(),
+      neighborhood_id: $('#roommates #neighborhood_id').val(),
+      submitted_date: $('#roommates #submitted_date').val(),
+      move_in_date: $('#roommates #move_in_date').val(),
+      monthly_budget: $('#roommates #monthly_budget').val(),
+      dogs_allowed: $('#roommates #dogs_allowed').val(),
+      cats_allowed: $('#roommates #cats_allowed').val(),
+      status: $('#roommates #status').val(),
+      sort_by: sortByCol,
+      direction: sortDirection,
+    };
+
+    var searchParams = [];
+    for(var key in data) {
+      if (data.hasOwnProperty(key) && data[key] && data[key].toLowerCase() !== 'any') {
+        searchParams.push(key + "=" + data[key]);
+      }
+    }
+    window.location.search = searchParams.join('&');
+
+	  // $.ajax({
+	  //   url: search_path,
+	  //   data: {
+   //      name: $('#roommates #name').val(),
+   //      referred_by: $('#roommates #referred_by').val(),
+   //      neighborhood_id: $('#roommates #neighborhood_id').val(),
+   //      submitted_date: $('#roommates #submitted_date').val(),
+   //      move_in_date: $('#roommates #move_in_date').val(),
+   //      monthly_budget: $('#roommates #monthly_budget').val(),
+   //      dogs_allowed: $('#roommates #dogs_allowed').val(),
+   //      cats_allowed: $('#roommates #cats_allowed').val(),
+   //      status: $('#roommates #status').val(),
+   //      sort_by: sortByCol,
+   //      direction: sortDirection,
+	  //   },
+	  //   dataType: 'script',
+	  //   success: function(data) {
+	  //   	//console.log('SUCCESS:', data.responseText);
+	  //   	Roommates.hideSpinner();
+			// },
+			// error: function(data) {
+			// 	//console.log('ERROR:', data.responseText);
+			// 	Roommates.hideSpinner();
+			// }
+	  // });
 	};
 
 	// search as user types
@@ -200,36 +228,9 @@ Roommates = {};
 	  }
 	};
 
-	Roommates.setupSortableColumns = function() {
+	Roommates.sortOnColumnClick = function() {
 		$('#roommates .th-sortable').click(function(e) {
-			e.preventDefault();
-
-			if ($(this).hasClass('selected-sort')) {
-				// switch sort order
-				var i = $('.selected-sort i');
-				if (i) {
-					if (i.hasClass('glyphicon glyphicon-triangle-bottom')) {
-						i.removeClass('glyphicon glyphicon-triangle-bottom').addClass('glyphicon glyphicon-triangle-top');
-						$(this).attr('data-direction', 'desc');
-					}
-					else if (i.hasClass('glyphicon glyphicon-triangle-top')) {
-						i.removeClass('glyphicon glyphicon-triangle-top').addClass('glyphicon glyphicon-triangle-bottom');
-						$(this).attr('data-direction', 'asc');
-					}
-				}
-			} else {
-				// remove selection from old row
-				$('.selected-sort').attr('data-direction', '');
-				$('th i').remove(); // remove arrows
-				$('.selected-sort').removeClass('selected-sort');
-				// select new column
-				$(this).addClass('selected-sort').append(' <i class="glyphicon glyphicon-triangle-bottom"></i>');
-				$(this).attr('data-direction', 'asc');
-			}
-
-			var sort_by_col = $(this).attr('data-sort');
-			var sort_direction = $(this).attr('data-direction');
-			Roommates.doSearch(sort_by_col, sort_direction);
+			Common.sortOnColumnClick($(this), Roommates.doSearch);
 		});
 	};
 
@@ -285,13 +286,21 @@ Roommates = {};
 	};
 
 	Roommates.initialize = function() {
+		if (!$('#roommates').length) {
+			return;
+		}
+
 		document.addEventListener("page:restore", function() {
 		  Roommates.hideSpinner();
 		});
 		Roommates.hideSpinner();
 
 		// main index table
-		Roommates.setupSortableColumns();
+		Roommates.sortOnColumnClick();
+		Common.markSortingColumn();
+    if (Common.getSearchParam('sort_by') === '') {
+      Common.markSortingColumnByElem($('th[data-sort="submitted_date"]'), 'desc')
+    }
 
 		$('.close').click(function() {
 			//console.log('detected click');

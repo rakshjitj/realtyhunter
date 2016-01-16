@@ -27,59 +27,55 @@ Landlords = {};
     });
   };
 
-  Landlords.doSearch = function(sort_by_col, sort_direction) {
-    //console.log(sort_by_col, sort_direction);
+  Landlords.doSearch = function(sortByCol, sortDirection) {
     var search_path = $('#landlord-search-filters').attr('data-search-path');
-    $.ajax({
-      url: search_path,
-      data: {
-        filter: $('#filter').val(),
-        active_only: $('#checkbox_active').prop('checked'),
-        sort_by: sort_by_col,
-        direction: sort_direction,
-      },
-      dataType: "script",
-      success: function(data) {
-        //console.log('SUCCESS:', data.responseText);
-        Landlords.hideSpinner();
-      },
-      error: function(data) {
-        //console.log('ERROR:', data.responseText);
-        Landlords.hideSpinner();
+    Landlords.showSpinner();
+
+    if (!sortByCol) {
+      sortByCol = Common.getSearchParam('sort_by');
+    }
+    if (!sortDirection) {
+      sortDirection = Common.getSearchParam('direction');
+    }
+
+    var data = {
+      filter: $('#filter').val(),
+      active_only: $('#checkbox_active').prop('checked'),
+      sort_by: sortByCol,
+      direction: sortDirection,
+    };
+
+    var searchParams = [];
+    for(var key in data) {
+      if (data.hasOwnProperty(key) && data[key] && data[key].toLowerCase() !== 'any') {
+        searchParams.push(key + "=" + data[key]);
       }
-    });
+    }
+    window.location.search = searchParams.join('&');
+
+    // $.ajax({
+    //   url: search_path,
+    //   data: {
+    //     filter: $('#filter').val(),
+    //     active_only: $('#checkbox_active').prop('checked'),
+    //     sort_by: sortByCol,
+    //     direction: sortDirection,
+    //   },
+    //   dataType: "script",
+    //   success: function(data) {
+    //     //console.log('SUCCESS:', data.responseText);
+    //     Landlords.hideSpinner();
+    //   },
+    //   error: function(data) {
+    //     //console.log('ERROR:', data.responseText);
+    //     Landlords.hideSpinner();
+    //   }
+    // });
   };
 
-  Landlords.setupSortableColumns = function() {
+  Landlords.sortOnColumnClick = function() {
     $('#landlords .th-sortable').click(function(e) {
-      e.preventDefault();
-
-      if ($(this).hasClass('selected-sort')) {
-        // switch sort order
-        var i = $('.selected-sort i');
-        if (i) {
-          if (i.hasClass('glyphicon glyphicon-triangle-bottom')) {
-            i.removeClass('glyphicon glyphicon-triangle-bottom').addClass('glyphicon glyphicon-triangle-top');
-            $(this).attr('data-direction', 'desc');
-          }
-          else if (i.hasClass('glyphicon glyphicon-triangle-top')) {
-            i.removeClass('glyphicon glyphicon-triangle-top').addClass('glyphicon glyphicon-triangle-bottom');
-            $(this).attr('data-direction', 'asc');
-          }
-        }
-      } else {
-        // remove selection from old row
-        $('.selected-sort').attr('data-direction', '');
-        $('th i').remove(); // remove arrows
-        $('.selected-sort').removeClass('selected-sort');
-        // select new column
-        $(this).addClass('selected-sort').append(' <i class="glyphicon glyphicon-triangle-bottom"></i>');
-        $(this).attr('data-direction', 'asc');
-      }
-
-      var sort_by_col = $(this).attr('data-sort');
-      var sort_direction = $(this).attr('data-direction');
-      Landlords.doSearch(sort_by_col, sort_direction);
+      Common.sortOnColumnClick($(this), Landlords.doSearch);
     });
   };
 
@@ -88,7 +84,7 @@ Landlords = {};
   Landlords.throttledSearch = function() {
     Landlords.showSpinner();
 
-    clearTimeout(Landlords.timer);  //clear any interval on key up
+    clearTimeout(Landlords.timer); // clear any interval on key up
     Landlords.timer = setTimeout(Landlords.doSearch, 500);
   };
 
@@ -139,6 +135,9 @@ Landlords = {};
   };
 
   Landlords.initialize = function() {
+    if (!$('#landlords').length) {
+      return;
+    }
 
     document.addEventListener("page:restore", function() {
       Landlords.hideSpinner();
@@ -149,7 +148,11 @@ Landlords = {};
     });
 
     // main index table
-    Landlords.setupSortableColumns();
+    Landlords.sortOnColumnClick();
+    Common.markSortingColumn();
+    if (Common.getSearchParam('sort_by') === '') {
+      Common.markSortingColumnByElem($('th[data-sort="name"]'), 'asc')
+    }
 
     $('#landlords .has-fee').click(Landlords.toggleFeeOptions);
     Landlords.toggleFeeOptions();

@@ -1,65 +1,63 @@
 ContactUs = {};
 
 (function() {
-	ContactUs.setupSortableColumns = function() {
+	ContactUs.sortOnColumnClick = function() {
 		$('#contact-us .th-sortable').click(function(e) {
-			e.preventDefault();
-
-			if ($(this).hasClass('selected-sort')) {
-				// switch sort order
-				var i = $('.selected-sort i');
-				if (i) {
-					if (i.hasClass('glyphicon glyphicon-triangle-bottom')) {
-						i.removeClass('glyphicon glyphicon-triangle-bottom').addClass('glyphicon glyphicon-triangle-top');
-						$(this).attr('data-direction', 'desc');
-					}
-					else if (i.hasClass('glyphicon glyphicon-triangle-top')) {
-						i.removeClass('glyphicon glyphicon-triangle-top').addClass('glyphicon glyphicon-triangle-bottom');
-						$(this).attr('data-direction', 'asc');
-					}
-				}
-			} else {
-				// remove selection from old row
-				$('.selected-sort').attr('data-direction', '');
-				$('th i').remove(); // remove arrows
-				$('.selected-sort').removeClass('selected-sort');
-				// select new column
-				$(this).addClass('selected-sort').append(' <i class="glyphicon glyphicon-triangle-bottom"></i>');
-				$(this).attr('data-direction', 'asc');
-			}
-
-			var sort_by_col = $(this).attr('data-sort');
-			var sort_direction = $(this).attr('data-direction');
-			ContactUs.doSearch(sort_by_col, sort_direction);
+			Common.sortOnColumnClick($(this), ContactUs.doSearch);
 		});
 	};
 
 	// for searching on the index page
-	ContactUs.doSearch = function (sort_by_col, sort_direction) {
+	ContactUs.doSearch = function (sortByCol, sortDirection) {
 		//console.log(sort_by_col, sort_direction);
 		var search_path = $('#contact-us-search-filters').attr('data-search-path');
 
 	  Forms.showSpinner();
 
-	  $.ajax({
-	    url: search_path,
-	    data: {
-        name: $('#contact-us #name').val(),
-        submitted_date: $('#contact-us #submitted_date').val(),
-        status: $('#contact-us #status').val(),
-        min_price: $('#contact-us #min_price').val(),
-        max_price: $('#contact-us #max_price').val(),
-        sort_by: sort_by_col,
-        direction: sort_direction,
-	    },
-	    dataType: 'script',
-	    success: function(data) {
-	    	Forms.hideSpinner();
-			},
-			error: function(data) {
-				Forms.hideSpinner();
-			}
-	  });
+	  if (!sortByCol) {
+      sortByCol = Common.getSearchParam('sort_by');
+    }
+    if (!sortDirection) {
+      sortDirection = Common.getSearchParam('direction');
+    }
+
+    var data = {
+      name: $('#contact-us #name').val(),
+      submitted_date: $('#contact-us #submitted_date').val(),
+      status: $('#contact-us #status').val(),
+      min_price: $('#contact-us #min_price').val(),
+      max_price: $('#contact-us #max_price').val(),
+      sort_by: sortByCol,
+      direction: sortDirection,
+    };
+
+    var searchParams = [];
+    for(var key in data) {
+      if (data.hasOwnProperty(key) && data[key] && data[key].toLowerCase() !== 'any') {
+        searchParams.push(key + "=" + data[key]);
+      }
+    }
+    window.location.search = searchParams.join('&');
+
+	  // $.ajax({
+	  //   url: search_path,
+	  //   data: {
+   //      name: $('#contact-us #name').val(),
+   //      submitted_date: $('#contact-us #submitted_date').val(),
+   //      status: $('#contact-us #status').val(),
+   //      min_price: $('#contact-us #min_price').val(),
+   //      max_price: $('#contact-us #max_price').val(),
+   //      sort_by: sortByCol,
+   //      direction: sortDirection,
+	  //   },
+	  //   dataType: 'script',
+	  //   success: function(data) {
+	  //   	Forms.hideSpinner();
+			// },
+			// error: function(data) {
+			// 	Forms.hideSpinner();
+			// }
+	  // });
 	};
 
 	// search as user types
@@ -78,6 +76,9 @@ ContactUs = {};
 	};
 
 	ContactUs.initialize = function() {
+		if (!$('#contact-us').length) {
+			return;
+		}
 
 		document.addEventListener("page:restore", function() {
 		  Forms.hideSpinner();
@@ -85,7 +86,11 @@ ContactUs = {};
 		Forms.hideSpinner();
 
 		// main index table
-		ContactUs.setupSortableColumns();
+		ContactUs.sortOnColumnClick();
+		Common.markSortingColumn();
+    if (Common.getSearchParam('sort_by') === '') {
+      Common.markSortingColumnByElem($('th[data-sort="created_at"]'), 'desc')
+    }
 
 		$('.close').click(function() {
 			Forms.hideSpinner();

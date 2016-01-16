@@ -28,58 +28,53 @@ Buildings = {};
     });
   };
 
-  Buildings.filterBuildings = function(sort_by_col, sort_direction) {
+  Buildings.filterBuildings = function(sortByCol, sortDirection) {
+  	var search_path = $('#search-filters').attr('data-search-path');
+
     Buildings.showSpinner();
 
-  	var search_path = $('#search-filters').attr('data-search-path');
-    $.ajax({
-      url: search_path,
-      data: {
+    if (!sortByCol) {
+      sortByCol = Common.getSearchParam('sort_by');
+    }
+    if (!sortDirection) {
+      sortDirection = Common.getSearchParam('direction');
+    }
+
+    var data = {
         filter: $('#buildings #filter').val(),
         active_only: $('#buildings #checkbox_active').prop('checked'),
-        sort_by: sort_by_col,
-        direction: sort_direction,
-      },
-      dataType: "script",
-      success: function(data) {
-        Buildings.hideSpinner();
-      },
-      error: function(data) {
-        Buildings.hideSpinner();
+        sort_by: sortByCol,
+        direction: sortDirection,
+      };
+    var searchParams = [];
+    for(var key in data) {
+      if (data.hasOwnProperty(key) && data[key] && data[key].toLowerCase() !== 'any') {
+        searchParams.push(key + "=" + data[key]);
       }
-    });
+    }
+    window.location.search = searchParams.join('&');
+
+    // $.ajax({
+    //   url: search_path,
+    //   data: {
+    //     filter: $('#buildings #filter').val(),
+    //     active_only: $('#buildings #checkbox_active').prop('checked'),
+    //     sort_by: sortByCol,
+    //     direction: sortDirection,
+    //   },
+    //   dataType: "script",
+    //   success: function(data) {
+    //     Buildings.hideSpinner();
+    //   },
+    //   error: function(data) {
+    //     Buildings.hideSpinner();
+    //   }
+    // });
   };
 
-  Buildings.setupSortableColumns = function() {
+  Buildings.sortOnColumnClick = function() {
     $('#buildings .th-sortable').click(function(e) {
-      e.preventDefault();
-      
-      if ($(this).hasClass('selected-sort')) {
-        // switch sort order
-        var i = $('.selected-sort i');
-        if (i) {
-          if (i.hasClass('glyphicon glyphicon-triangle-bottom')) {
-            i.removeClass('glyphicon glyphicon-triangle-bottom').addClass('glyphicon glyphicon-triangle-top');
-            $(this).attr('data-direction', 'desc');
-          }
-          else if (i.hasClass('glyphicon glyphicon-triangle-top')) {
-            i.removeClass('glyphicon glyphicon-triangle-top').addClass('glyphicon glyphicon-triangle-bottom');
-            $(this).attr('data-direction', 'asc');
-          }
-        }
-      } else {
-        // remove selection from old row
-        $('.selected-sort').attr('data-direction', '');
-        $('th i').remove(); // remove arrows
-        $('.selected-sort').removeClass('selected-sort');
-        // select new column
-        $(this).addClass('selected-sort').append(' <i class="glyphicon glyphicon-triangle-bottom"></i>');
-        $(this).attr('data-direction', 'asc');
-      }
-
-      var sort_by_col = $(this).attr('data-sort');
-      var sort_direction = $(this).attr('data-direction');
-      Buildings.filterBuildings(sort_by_col, sort_direction);
+      Common.sortOnColumnClick($(this), Buildings.filterBuildings);
     });
   };
 
@@ -152,6 +147,9 @@ Buildings = {};
   // };
 
   Buildings.initialize = function() {
+    if (!$('#buildings').length) {
+      return;
+    }
 
     document.addEventListener("page:restore", function() {
       Buildings.hideSpinner();
@@ -162,10 +160,11 @@ Buildings = {};
     });
 
     // main index table
-    Buildings.setupSortableColumns();
-
-    // $('#buildings .has-fee').click(Buildings.toggleFeeOptions);
-    // Buildings.toggleFeeOptions();
+    Buildings.sortOnColumnClick();
+    Common.markSortingColumn();
+    if (Common.getSearchParam('sort_by') === '') {
+      Common.markSortingColumnByElem($('th[data-sort="formatted_street_address"]'), 'desc')
+    }
 
     // search filters
     $('#buildings #filter').bind('railsAutocomplete.select', Buildings.throttledBldgSearch);
@@ -195,7 +194,7 @@ Buildings = {};
       if (this.value == "New York, NY, USA") {
         this.value = '';
       }
-      
+
       // update neighborhood options from google results
 
       var sublocality = '';
@@ -210,7 +209,7 @@ Buildings = {};
         $.ajax({
           type: "GET",
           url: '/buildings/neighborhood_options',
-          data: { 
+          data: {
             sublocality: sublocality,
           },
           success: function(data) {
@@ -233,7 +232,7 @@ Buildings = {};
 
   	// disable auto discover
   	Dropzone.autoDiscover = false;
-   
+
   	// grap our upload form by its id
   	$("#building-dropzone").dropzone({
   		// restrict image size to a maximum 1MB
@@ -255,7 +254,7 @@ Buildings = {};
   		//when the remove button is clicked
   		removedfile: function(file){
   			// grap the id of the uploaded file we set earlier
-  			var id = $(file.previewTemplate).find('.dz-remove').attr('id'); 
+  			var id = $(file.previewTemplate).find('.dz-remove').attr('id');
   			var bldg_id = $(file.previewTemplate).find('.dz-remove').attr('bldg_id');
   			Buildings.removeBldgImage(id, bldg_id);
   			file.previewElement.remove();
@@ -276,13 +275,13 @@ Buildings = {};
       updated_order = []
       // set the updated positions
       Buildings.setPositions();
-  			
+
       // populate the updated_order array with the new task positions
       $('#buildings .img-thumbnail').each(function(i){
         updated_order.push({ id: $(this).data('id'), position: i+1 });
       });
   		//console.log(updated_order);
-      
+
       // send the updated order via ajax
       var bldg_id = $('#buildings').attr('data-bldg-id');
       $.ajax({
@@ -291,7 +290,7 @@ Buildings = {};
         data: { order: updated_order }
       });
     });
-  	
+
   };// end initialize
 
 })();

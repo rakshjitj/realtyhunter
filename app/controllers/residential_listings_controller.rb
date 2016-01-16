@@ -18,8 +18,7 @@ class ResidentialListingsController < ApplicationController
       format.csv do
         async_create_csv
         flash[:success] = "The CSV file will be emailed to you once it has been generated."
-        redirect_to residential_listings_url
-        #set_residential_listings_csv
+        #redirect_to residential_listings_url
         #headers['Content-Disposition'] = "attachment; filename=\"" +
         #  current_user.name + " - Residential Listings.csv\""
         #headers['Content-Type'] ||= 'text/csv'
@@ -378,12 +377,12 @@ class ResidentialListingsController < ApplicationController
     end
 
     # returns all data for export
-    def set_residential_listings_csv
-      @residential_units = ResidentialListing.export_all(current_user)
-      @residential_units = custom_sort
-      @agents = Unit.get_primary_agents(@residential_units)
-      @reverse_statuses = {'0': 'Active', '1': 'Pending', '2': 'Off'}
-    end
+    # def set_residential_listings_csv
+    #   @residential_units = ResidentialListing.export_all(current_user)
+    #   @residential_units = custom_sort
+    #   @agents = Unit.get_primary_agents(@residential_units)
+    #   @reverse_statuses = {'0': 'Active', '1': 'Pending', '2': 'Off'}
+    # end
 
     def async_create_csv
       # get IDs only and pass that along
@@ -420,7 +419,7 @@ class ResidentialListingsController < ApplicationController
     end
 
     def custom_sort
-      #puts "GOT #{params[:sort_by]} #{params[:direction]}"
+      # puts "GOT #{params[:sort_by]} #{params[:direction]}"
       sort_column = params[:sort_by] || "updated_at"
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
       # reset params so that view helper updates correctly

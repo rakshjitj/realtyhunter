@@ -2,7 +2,7 @@ UserWaterfalls = {};
 
 (function() {
 
-	// if the user has selected enough information, we can determine what 
+	// if the user has selected enough information, we can determine what
 	// the waterfall rate will be
 	UserWaterfalls.getRate = function() {
 		var search_path = $('#waterfall #get-rates-url').data('path');
@@ -77,40 +77,17 @@ UserWaterfalls = {};
 		$('#waterfall #user_waterfall_rate').val("");
 	};
 
-	UserWaterfalls.setupSortableColumns = function() {
+	UserWaterfalls.sortOnColumnClick = function() {
 		$('#waterfall .th-sortable').click(function(e) {
-			e.preventDefault();
-			
-			if ($(this).hasClass('selected-sort')) {
-				// switch sort order
-				var i = $('.selected-sort i');
-				if (i) {
-					if (i.hasClass('glyphicon glyphicon-triangle-bottom')) {
-						i.removeClass('glyphicon glyphicon-triangle-bottom').addClass('glyphicon glyphicon-triangle-top');
-						$(this).attr('data-direction', 'desc');
-					}
-					else if (i.hasClass('glyphicon glyphicon-triangle-top')) {
-						i.removeClass('glyphicon glyphicon-triangle-top').addClass('glyphicon glyphicon-triangle-bottom');
-						$(this).attr('data-direction', 'asc');
-					}
-				}
-			} else {
-				// remove selection from old row
-				$('.selected-sort').attr('data-direction', '');
-				$('th i').remove(); // remove arrows
-				$('.selected-sort').removeClass('selected-sort');
-				// select new column
-				$(this).addClass('selected-sort').append(' <i class="glyphicon glyphicon-triangle-bottom"></i>');
-				$(this).attr('data-direction', 'asc');
-			}
-
-			var sort_by_col = $(this).attr('data-sort');
-			var sort_direction = $(this).attr('data-direction');
-			UserWaterfalls.doSearch(sort_by_col, sort_direction);
+			Common.sortOnColumnClick($(this), UserWaterfalls.doSearch);
 		});
 	};
 
 	UserWaterfalls.initialize = function() {
+		if (!$('#waterfall').length) {
+			return;
+		}
+
 		document.addEventListener("page:restore", function() {
 		  Forms.hideSpinner();
 		});
@@ -128,7 +105,12 @@ UserWaterfalls = {};
 		$('#waterfall #child_agent').bind('railsAutocomplete.select', UserWaterfalls.throttledSearch);
 		$('#waterfall #level').change(UserWaterfalls.throttledSearch);
 
-		UserWaterfalls.setupSortableColumns();
+		UserWaterfalls.sortOnColumnClick();
+		Common.markSortingColumn();
+    if (Common.getSearchParam('sort_by') === '') {
+      Common.markSortingColumnByElem($('th[data-sort="parent_agent_name"]'), 'asc')
+    }
+
 		// adding a new entry
 		$('#waterfall #user_waterfall_parent_agent_id').change(UserWaterfalls.getRate);
 		$('#waterfall #user_waterfall_level').change(UserWaterfalls.getRate);

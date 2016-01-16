@@ -1,66 +1,66 @@
 Partner = {};
 
 (function() {
-	Partner.setupSortableColumns = function() {
+	Partner.sortOnColumnClick = function() {
 		$('#partner .th-sortable').click(function(e) {
-			e.preventDefault();
-
-			if ($(this).hasClass('selected-sort')) {
-				// switch sort order
-				var i = $('.selected-sort i');
-				if (i) {
-					if (i.hasClass('glyphicon glyphicon-triangle-bottom')) {
-						i.removeClass('glyphicon glyphicon-triangle-bottom').addClass('glyphicon glyphicon-triangle-top');
-						$(this).attr('data-direction', 'desc');
-					}
-					else if (i.hasClass('glyphicon glyphicon-triangle-top')) {
-						i.removeClass('glyphicon glyphicon-triangle-top').addClass('glyphicon glyphicon-triangle-bottom');
-						$(this).attr('data-direction', 'asc');
-					}
-				}
-			} else {
-				// remove selection from old row
-				$('.selected-sort').attr('data-direction', '');
-				$('th i').remove(); // remove arrows
-				$('.selected-sort').removeClass('selected-sort');
-				// select new column
-				$(this).addClass('selected-sort').append(' <i class="glyphicon glyphicon-triangle-bottom"></i>');
-				$(this).attr('data-direction', 'asc');
-			}
-
-			var sort_by_col = $(this).attr('data-sort');
-			var sort_direction = $(this).attr('data-direction');
-			Partner.doSearch(sort_by_col, sort_direction);
+			Common.sortOnColumnClick($(this), Partner.doSearch);
 		});
 	};
 
 	// for searching on the index page
-	Partner.doSearch = function (sort_by_col, sort_direction) {
+	Partner.doSearch = function (sortByCol, sortDirection) {
 		var search_path = $('#partner-search-filters').attr('data-search-path');
 
 	  Forms.showSpinner();
 
-	  $.ajax({
-	    url: search_path,
-	    data: {
-        name: $('#partner #name').val(),
-        submitted_date: $('#partner #submitted_date').val(),
-        status: $('#partner #status').val(),
-        address_street_address: $('#partner #address_street_address').val(),
-        number_of_bedrooms: $('#partner #number_of_bedrooms').val(),
-        move_in_date: $('#partner #move_in_date').val(),
-        renovated: $('#partner #renovated').val(),
-        sort_by: sort_by_col,
-        direction: sort_direction,
-	    },
-	    dataType: 'script',
-	    success: function(data) {
-	    	Forms.hideSpinner();
-			},
-			error: function(data) {
-				Forms.hideSpinner();
-			}
-	  });
+	  if (!sortByCol) {
+      sortByCol = Common.getSearchParam('sort_by');
+    }
+    if (!sortDirection) {
+      sortDirection = Common.getSearchParam('direction');
+    }
+
+    var data = {
+      name: $('#partner #name').val(),
+      submitted_date: $('#partner #submitted_date').val(),
+      status: $('#partner #status').val(),
+      address_street_address: $('#partner #address_street_address').val(),
+      number_of_bedrooms: $('#partner #number_of_bedrooms').val(),
+      move_in_date: $('#partner #move_in_date').val(),
+      renovated: $('#partner #renovated').val(),
+      sort_by: sortByCol,
+      direction: sortDirection,
+    };
+
+    var searchParams = [];
+    for(var key in data) {
+      if (data.hasOwnProperty(key) && data[key] && data[key].toLowerCase() !== 'any') {
+        searchParams.push(key + "=" + data[key]);
+      }
+    }
+    window.location.search = searchParams.join('&');
+
+	  // $.ajax({
+	  //   url: search_path,
+	  //   data: {
+   //      name: $('#partner #name').val(),
+   //      submitted_date: $('#partner #submitted_date').val(),
+   //      status: $('#partner #status').val(),
+   //      address_street_address: $('#partner #address_street_address').val(),
+   //      number_of_bedrooms: $('#partner #number_of_bedrooms').val(),
+   //      move_in_date: $('#partner #move_in_date').val(),
+   //      renovated: $('#partner #renovated').val(),
+   //      sort_by: sortByCol,
+   //      direction: sortDirection,
+	  //   },
+	  //   dataType: 'script',
+	  //   success: function(data) {
+	  //   	Forms.hideSpinner();
+			// },
+			// error: function(data) {
+			// 	Forms.hideSpinner();
+			// }
+	  // });
 	};
 
 	// search as user types
@@ -79,6 +79,9 @@ Partner = {};
 	};
 
 	Partner.initialize = function() {
+		if (!$('#partner').length) {
+			return;
+		}
 
 		document.addEventListener("page:restore", function() {
 		  Forms.hideSpinner();
@@ -86,7 +89,11 @@ Partner = {};
 		Forms.hideSpinner();
 
 		// main index table
-		Partner.setupSortableColumns();
+		Partner.sortOnColumnClick();
+		Common.markSortingColumn();
+		if (Common.getSearchParam('sort_by') === '') {
+      Common.markSortingColumnByElem($('th[data-sort="created_at"]'), 'desc')
+    }
 
 		$('.close').click(function() {
 			Forms.hideSpinner();
