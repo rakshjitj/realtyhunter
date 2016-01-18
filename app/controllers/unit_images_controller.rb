@@ -12,6 +12,8 @@ class UnitImagesController < ApplicationController
     # dropzone expects a json response code
     if @image.save(image_params)
       @unit.images << @image
+      update_listing_timestamp(@image)
+
       if params[:residential_listing_id] && !params[:residential_listing_id].empty?
         render json: { message: "success", fileID: @image.id, unitID: @unit.id, runitID: @unit.residential_listing.id },
           :status => 200
@@ -33,6 +35,7 @@ class UnitImagesController < ApplicationController
   # DELETE /images/1.json
   def destroy
     if @image
+      update_listing_timestamp(@image)
       @image.file = nil
       if @image.destroy
         render json: { message: "File deleted from server" }
@@ -50,6 +53,7 @@ class UnitImagesController < ApplicationController
     params[:order].each do |key,value|
       img = Image.find(value[:id])
       if img && img.priority != value[:position]
+        update_listing_timestamp(img)
         img.update_columns(priority: value[:position])
       end
     end
@@ -66,6 +70,16 @@ class UnitImagesController < ApplicationController
   # end
 
   private
+    def update_listing_timestamp(img)
+      if img.unit.residential_listing
+        img.unit.residential_listing.update(updated_at: Time.now)
+      elsif img.unit.commercial_listing
+        img.unit.commercial_listing.update(updated_at: Time.now)
+      elsif img.unit.sales_listing
+        img.unit.sales_listing.update(updated_at: Time.now)
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_image
       @image = Image.find(params[:id])

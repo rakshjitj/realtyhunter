@@ -1,6 +1,7 @@
 <div class="row">
 	<div class="col-md-8 col-md-offset-2">
-		<% provide(:title, 'Editing Unit') %>
+		<% provide(:title, @residential_unit.unit.building.street_address +
+				'#' + @residential_unit.unit.building_unit + ' - Editing') %>
 
 		<div class="page-header">
 		  <div class="row">
@@ -13,7 +14,7 @@
 		    </div>
 		  </div>
 		</div>
-	  	
+
 		<%= render 'form' %>
 
 	</div>
