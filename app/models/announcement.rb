@@ -31,7 +31,6 @@ class Announcement < ActiveRecord::Base
 
 	def broadcast(current_user)
 		# NOTE: We've decided to go with email instead of texting for now, to save on costs.
-		#client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN']
 		recipients = ['myspaceupdates@myspacenyc.com']
 	  AnnouncementMailer.send_broadcast(
       current_user, recipients, note).deliver_now

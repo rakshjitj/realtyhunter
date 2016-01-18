@@ -2,7 +2,7 @@ class ResidentialListingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource only: :create
   before_action :set_residential_listing, only: [:show, :edit, :duplicate_modal, :duplicate,
-    :take_off_modal, :take_off, :update, :delete_modal, :destroy,
+    :mark_app_submitted, :update, :delete_modal, :destroy,
     :inaccuracy_modal, :send_inaccuracy, :refresh_images, :refresh_documents]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
@@ -140,26 +140,12 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
-  # GET
-  # handles ajax call. uses latest data in modal
-  # Modal collects info and prep unit to be taken off the market
-  def take_off_modal
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  # PATCH ajax
-  # Takes a unit off the market
-  def take_off
-    new_end_date = residential_listing_params[:available_by]
-    if new_end_date
-      @residential_unit.take_off_market(new_end_date)
-    end
+  def mark_app_submitted
+    @residential_unit.unit.mark_app_submitted(current_user, 'residential', 'pending')
     set_residential_listings
-    respond_to do |format|
-      format.js
-    end
+    flash[:info] = 'Application submitted on ' +
+      @residential_unit.unit.building.street_address + ' and announcement sent!'
+    redirect_to request.referer
   end
 
   # sends listings info to clients

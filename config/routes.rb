@@ -113,8 +113,7 @@ Rails.application.routes.draw do
       post 'duplicate'
       get 'inaccuracy_modal'
       patch 'send_inaccuracy'
-      get 'take_off_modal'
-      patch 'take_off'
+      patch 'mark_app_submitted'
       get 'refresh_images'
       get 'refresh_documents'
     end
@@ -145,8 +144,7 @@ Rails.application.routes.draw do
       post 'duplicate'
       get 'inaccuracy_modal'
       patch 'send_inaccuracy'
-      get 'take_off_modal'
-      patch 'take_off'
+      patch 'mark_app_submitted'
       get 'refresh_images'
       get 'refresh_documents'
     end
@@ -192,6 +190,7 @@ Rails.application.routes.draw do
       patch 'send_inaccuracy'
       get 'refresh_images'
       get 'refresh_documents'
+      patch 'mark_app_submitted'
     end
     collection do
       get 'filter'
@@ -389,6 +388,7 @@ Rails.application.routes.draw do
   resources :announcements do
     member do
       get 'delete_modal'
+
     end
     collection do
       get :filter

@@ -40,7 +40,7 @@
 		  		</div>
 		  		<div class="col-sm-8 form-label-responsive vertical-padding">
 		  			<% if current_user.is_management? %>
-			  			<%= link_to 'Make Announcement', new_announcement_path(
+		  				<%= link_to 'Make Announcement', new_announcement_path(
 				  			{ address: @commercial_unit.unit.building.formatted_street_address }),
 				  			class: "btn btn-warning btn-sm link-as-button" %>
 				  	<% end %>

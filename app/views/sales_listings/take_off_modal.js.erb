@@ -1,7 +1,0 @@
-$('#unitTakeOffModal #placeholder-body').html("<%= j(render :partial => "take_off_modal_helper", locals: { sales_unit: @sales_unit }) %>");
-
-$('#unitTakeOffModal .submit-link').click( function(event) {
-	$('#unitTakeOffModal').modal('hide');
-});
-
-$('#unitTakeOffModal').modal('show');

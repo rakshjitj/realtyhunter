@@ -67,12 +67,18 @@
 		  				| <%= link_to 'Edit', edit_residential_listing_path(@residential_unit.id) %>
 			        | <%= link_to 'Duplicate', duplicate_modal_residential_listing_path(@residential_unit),
 			    				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
-			      	<!-- %= link_to 'Take off market', take_off_modal_residential_listing_path(@residential_unit),
-			      			data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %-->
 			      <% end %>
 			  	</div>
 			  	<div class="col-sm-8 form-label-responsive vertical-margin-lg">
 			  		<% if current_user.is_management? %>
+			  			<% if @residential_unit.unit.status == "active" %>
+				  			<%= form_for(@residential_unit,
+				  				url: mark_app_submitted_residential_listing_path(@residential_unit),
+				  				method: 'patch') do |f| %>
+					  			<%= f.submit 'Submit application', class: "btn btn-warning btn-sm" %>
+						  	<% end %>
+						  <% end %>
+
 				  		<%= link_to 'Make Announcement', new_announcement_path(
 				  			{ address: @residential_unit.unit.building.formatted_street_address }),
 				  			class: "btn btn-warning btn-sm link-as-button" %>

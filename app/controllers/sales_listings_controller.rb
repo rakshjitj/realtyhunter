@@ -156,26 +156,12 @@ class SalesListingsController < ApplicationController
     end
   end
 
-  # GET
-  # handles ajax call. uses latest data in modal
-  # Modal collects info and prep unit to be taken off the market
-  def take_off_modal
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  # PATCH ajax
-  # Takes a unit off the market
-  def take_off
-    new_end_date = sales_listing_params[:available_by]
-    if new_end_date
-      @sales_unit.take_off_market(new_end_date)
-    end
+  def mark_app_submitted
+    @sales_unit.unit.mark_app_submitted(current_user, 'sales', 'pending')
     set_sales_listings
-    respond_to do |format|
-      format.js
-    end
+    flash[:info] = 'Application submitted on ' +
+      @sales_unit.unit.building.street_address + ' and announcement sent!'
+    redirect_to request.referer
   end
 
   # GET

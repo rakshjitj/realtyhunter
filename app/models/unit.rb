@@ -92,6 +92,16 @@ class Unit < ActiveRecord::Base
     contacts = [primary_agent];
   end
 
+  def mark_app_submitted(user, category, status)
+    self.update(status: Unit.statuses[status])
+    announcement = Announcement.create({
+      category: Announcement.categories['residential'],
+      note: 'Application submitted on ' + self.building.street_address,
+      user_id: user.id
+      })
+    announcement.broadcast(user)
+  end
+
   private
     # TODO: code review - should only be set if none exists
     def generate_unique_id

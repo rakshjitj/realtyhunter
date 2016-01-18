@@ -141,26 +141,12 @@ class CommercialListingsController < ApplicationController
     end
   end
 
-  # GET
-  # handles ajax call. uses latest data in modal
-  # Modal collects info and prep unit to be taken off the market
-  def take_off_modal
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  # PATCH ajax
-  # Takes a unit off the market
-  def take_off
-    new_end_date = commercial_listing_params[:available_by]
-    if new_end_date
-      @commercial_unit.take_off_market(new_end_date)
-    end
-    set_commercial_listing
-    respond_to do |format|
-      format.js
-    end
+  def mark_app_submitted
+    @commercial_unit.unit.mark_app_submitted(current_user, 'commercial', 'offer_submitted')
+    set_commercial_listings
+    flash[:info] = 'Offer submitted on ' +
+      @commercial_unit.unit.building.street_address + ' and announcement sent!'
+    redirect_to request.referer
   end
 
   # PATCH/PUT /commercial_units/1
