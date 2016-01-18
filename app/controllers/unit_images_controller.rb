@@ -72,11 +72,11 @@ class UnitImagesController < ApplicationController
   private
     def update_listing_timestamp(img)
       if img.unit.residential_listing
-        img.unit.residential_listing.update(updated_at: Time.now)
+        img.unit.residential_listing.update_columns(updated_at: Time.now)
       elsif img.unit.commercial_listing
-        img.unit.commercial_listing.update(updated_at: Time.now)
+        img.unit.commercial_listing.update_columns(updated_at: Time.now)
       elsif img.unit.sales_listing
-        img.unit.sales_listing.update(updated_at: Time.now)
+        img.unit.sales_listing.update_columns(updated_at: Time.now)
       end
     end
 
