@@ -285,6 +285,14 @@ class User < ActiveRecord::Base
     self.has_role? :manager
   end
 
+  def is_photo_manager?
+    self.has_role? :photo_manager
+  end
+
+  def is_listings_manager?
+    has_role? :listings_manager
+  end
+
   # Many roles can be considered 'managerial' from
   # a staffing point of view. Any employees that work
   # in operations should have permission to edit
@@ -305,26 +313,6 @@ class User < ActiveRecord::Base
     end
 
     false
-    # if (has_role? :super_admin) ||
-    #   (has_role? :company_admin) ||
-    #   (has_role? :operations) ||
-    #   (has_role? :data_entry) ||
-    #   (has_role? :broker) ||
-    #   (has_role? :associate_broker) ||
-    #   (has_role? :manager) ||
-    #   (has_role? :closing_manager)
-    #   true
-    # else
-    #   false
-    # end
-  end
-
-  def is_listings_manager?
-    if has_role? :listings_manager
-      true
-    else
-      false
-    end
   end
 
   def make_manager

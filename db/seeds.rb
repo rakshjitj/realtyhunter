@@ -2,7 +2,7 @@
 # this is a non-functional user
 def define_roles
   @user = User.create({
-    email: 'topsecret@admin.com', 
+    email: 'topsecret@admin.com',
     name: "Roles Definition",
     password:"test123" });
   # Inactive Agent:
@@ -19,6 +19,8 @@ def define_roles
   @user.add_role :data_entry
   @user.add_role :manager
   @user.add_role :closing_manager
+  @user.add_role :listings_manager
+  @user.add_role :photo_manager
   @user.add_role :marketing
   @user.add_role :operations
   @user.add_role :company_admin
@@ -39,8 +41,8 @@ end
 # end
 
 @offices = Office.create!([
-  { company: @company, 
-    name: "Crown Heights", 
+  { company: @company,
+    name: "Crown Heights",
     telephone: "718.399.3444",
     fax: "718.399.3444",
 
@@ -56,8 +58,8 @@ end
     lng: '-73.9509791',
     place_id: 1,
     },
-  { company: @company, 
-    name: "Bushwick", 
+  { company: @company,
+    name: "Bushwick",
     telephone: "718.399.3444",
     fax: "718.399.3444",
 
@@ -73,8 +75,8 @@ end
     lng: '-73.9509791',
     place_id: 1,
     },
-  { company: @company, 
-    name: "Williamsburg", 
+  { company: @company,
+    name: "Williamsburg",
     telephone: "718.564.6300",
     fax: "718.564.6300",
 
@@ -90,8 +92,8 @@ end
     lng: '-73.9509791',
     place_id: 1,
     },
-  { company: @company, 
-    name: "Lefferts Gardens", 
+  { company: @company,
+    name: "Lefferts Gardens",
     telephone: "718.408.8881",
     fax: "718.408.8881",
 
@@ -107,8 +109,8 @@ end
     lng: '-73.9509791',
     place_id: 1,
     },
-  { company: @company, 
-    name: "Williamsburg - Leasing", 
+  { company: @company,
+    name: "Williamsburg - Leasing",
     telephone: "718.408.88810",
     fax: "555.555.5555",
 
@@ -155,15 +157,15 @@ end
 
 # give them agent access
 @api_only = User.create!(
-  { name: 'Blank Slate', 
-    email: 'admin@blankslate.com', 
-    password: 'blankslate', 
-    password_confirmation: 'blankslate', 
-    activated: true, 
+  { name: 'Blank Slate',
+    email: 'admin@blankslate.com',
+    password: 'blankslate',
+    password_confirmation: 'blankslate',
+    activated: true,
     activated_at: Time.zone.now,
-    approved: true, 
+    approved: true,
     approved_at: Time.zone.now,
-    company: @company, 
+    company: @company,
     office: @offices[0],
     employee_title: EmployeeTitle.find_by(name: 'agent'),
     mobile_phone_number: '666-666-6666'
@@ -172,15 +174,15 @@ end
 
 # super admin
 @super_admin = User.create!(
-  { name: 'Super Admin', 
-    email: 'admin@realtyhunter.com', 
-    password: @password, 
-    password_confirmation: @password, 
-    activated: true, 
+  { name: 'Super Admin',
+    email: 'admin@realtyhunter.com',
+    password: @password,
+    password_confirmation: @password,
+    activated: true,
     activated_at: Time.zone.now,
-    approved: true, 
+    approved: true,
     approved_at: Time.zone.now,
-    company: @company, 
+    company: @company,
     office: @offices[0],
     employee_title: EmployeeTitle.find_by(name: 'super admin'),
     mobile_phone_number: '666-666-6666'
@@ -188,15 +190,15 @@ end
 @super_admin.agent_types = ['residential', 'commercial']
 
 @company_admin1 = User.create!(
-  { name: 'Nir Mizrachi', 
-    email: 'nir@myspacenyc.com', 
-    password: @password, 
-    password_confirmation: @password, 
-    activated: true, 
+  { name: 'Nir Mizrachi',
+    email: 'nir@myspacenyc.com',
+    password: @password,
+    password_confirmation: @password,
+    activated: true,
     activated_at: Time.zone.now,
-    approved: true, 
+    approved: true,
     approved_at: Time.zone.now,
-    company: @company, 
+    company: @company,
     office: @offices[0],
     employee_title: EmployeeTitle.find_by(name: 'company admin'),
     mobile_phone_number: '929-258-7847'
@@ -221,9 +223,9 @@ define_roles
 #    password_confirmation: password,
 #    activated: true,
 #    activated_at: Time.zone.now,
-#    approved: true, 
+#    approved: true,
 #    approved_at: Time.zone.now,
-#    company: @company, 
+#    company: @company,
 #    office: @offices[0],
 #    employee_title: @employee_titles[1]
 #    )
@@ -239,8 +241,8 @@ define_roles
   })
 
 @landlord = Landlord.create!({
-  code: "Unassigned", 
-  name: "Unassigned", 
+  code: "Unassigned",
+  name: "Unassigned",
   office_phone: "777-777-7777",
   mobile: "777-777-7777",
   email: FFaker::Internet.email("Unassigned"),
@@ -262,7 +264,7 @@ define_roles
   lng: '-73.9509791',
   place_id: 1,
   notes: "Building has parking spots available, laundry in the basement.",
-  company: @company, 
+  company: @company,
   landlord: @landlord,
   neighborhood: @neighborhood,
   pet_policy: @company.pet_policies[2],
