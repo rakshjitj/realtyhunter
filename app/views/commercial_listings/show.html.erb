@@ -25,33 +25,28 @@
 		  </div><!-- panel-heading -->
 
 		  <div class="panel-body">
-		  	<div class="row">
-		  		<div class="col-sm-4">
-		  			<p>
-				  	  <%= link_to 'View all', commercial_listings_path %>
-		        	<!--%= link_to 'Print', print_modal_commercial_listing_path(@commercial_unit),
-		        		data: {toggle: "modal", target: "#printModal"}, remote: true %-->
-		        	<% if current_user.is_management? || current_user.is_listings_manager? %>
-					  		| <%= link_to 'Edit', edit_commercial_listing_path(@commercial_unit) %>
-					  		| <%= link_to 'Duplicate', duplicate_modal_commercial_listing_path(@commercial_unit),
-			      				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
-					  	<% end %>
-		        </p>
+		  	<% if current_user.is_management? || current_user.is_listings_manager? %>
+		  		<div class="row">
+		  			<div class="col-xs-12">
+				  		<%= link_to 'Edit', edit_commercial_listing_path(@commercial_unit) %>
+				  		| <%= link_to 'Duplicate', duplicate_modal_commercial_listing_path(@commercial_unit),
+		      				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
+		  			</div>
 		  		</div>
-		  		<div class="col-sm-8 form-label-responsive vertical-padding">
+		  	<% end %>
+		  	<div class="row">
+		  		<div class="col-xs-12 vertical-margin-lg">
 		  			<% if current_user.is_management? %>
 		  				<%= link_to 'Make Announcement', new_announcement_path(
 				  			{ address: @commercial_unit.unit.building.formatted_street_address }),
-				  			class: "btn btn-warning btn-sm link-as-button" %>
+				  			class: "btn btn-warning btn-sm link-as-button vertical-margin-sm" %>
 				  	<% end %>
 			  		<%= link_to 'Report Inaccuracy', inaccuracy_modal_commercial_listing_path(@commercial_unit),
-		  				class: "btn btn-danger btn-sm",
+		  				class: "btn btn-danger btn-sm vertical-margin-sm",
 		  				data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
 		  		</div>
 		  	</div><!-- row -->
 
-
-		  	<br />
 		  	<div class="row">
 		  		<div class="col-md-12">
 		  			<!-- begin photos -->

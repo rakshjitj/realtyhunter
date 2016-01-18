@@ -448,27 +448,28 @@ aside {
 /*********** Residential Units **********************************/
 
 .vertical-padding {
-  //padding: 3px 0 3px 0;
   padding-top: 3px;
   padding-bottom: 3px;
 }
 
 .horizontal-padding {
-  //padding: 3px 0 3px 0;
   padding-left: 3px;
   padding-right: 3px;
 }
 
 vertical-padding-lg {
-  //padding: 6px 0 6px 0;
   padding-top: 6px;
   padding-bottom: 6px;
 }
 
 .vertical-margin-lg {
-  //margin: 10px 0 10px 0 !important;
   margin-top: 10px !important;
   margin-bottom: 10px !important;
+}
+
+.vertical-margin-sm {
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
 }
 
 .photo-inline {
@@ -600,4 +601,8 @@ label.required:after {
 
 .vertical-align2 {
   vertical-align: center;
+}
+
+.inline {
+  display: inline-block;
 }

@@ -56,30 +56,28 @@
 			</div><!-- panel heading -->
 
 			<div class="panel-body">
-		  	<div class="row">
-			  	<div class="col-sm-4 vertical-padding">
-			  		<%= link_to 'View all', sales_listings_path %>
-			  		<% if current_user.is_management? %>
-		  				| <%= link_to 'Edit', edit_sales_listing_path(@sales_unit.id) %>
+				<% if current_user.is_management? %>
+		  		<div class="row">
+			  		<div class="col-xs-12 vertical-margin-lg">
+		  				<%= link_to 'Edit', edit_sales_listing_path(@sales_unit.id) %>
 			        | <%= link_to 'Duplicate', duplicate_modal_sales_listing_path(@sales_unit),
 			    				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
-			      	<!-- %= link_to 'Take off market', take_off_modal_sales_listing_path(@sales_unit),
-			      			data: {toggle: "modal", target: "#unitTakeOffModal"}, remote: true %-->
-			      <% end %>
+			    	</div>
 			  	</div>
-			  	<div class="col-sm-8 form-label-responsive vertical-padding">
+			  <% end %>
+			  <div class="row">
+			  	<div class="col-xs-12">
 			  		<% if current_user.is_management? %>
 				  		<%= link_to 'Make Announcement', new_announcement_path(
 				  			{ address: @sales_unit.unit.building.formatted_street_address }),
-				  			class: "btn btn-warning btn-sm link-as-button" %>
+				  			class: "btn btn-warning btn-sm link-as-button vertical-margin-sm" %>
 				  	<% end %>
 			  		<%= link_to 'Report Inaccuracy', inaccuracy_modal_sales_listing_path(@sales_unit),
-		  				class: "btn btn-danger btn-sm",
+		  				class: "btn btn-danger btn-sm vertical-margin-sm",
 		  				data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
 		  		</div>
 		    </div>
 
-	    	<br />
 	    	<div class="row">
 	    		<div class="col-md-12">
 	    			<!-- begin photos -->
