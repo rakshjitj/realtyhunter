@@ -22,30 +22,51 @@ UserWaterfalls = {};
 	};
 
 	// for searching on the index page
-	UserWaterfalls.doSearch = function (sort_by_col, sort_direction) {
-		//console.log(sort_by_col, sort_direction);
+	UserWaterfalls.doSearch = function (sortByCol, sortDirection) {
 		var search_path = $('#waterfall-search-filters').attr('data-search-path');
 	  Forms.showSpinner();
 
-	  $.ajax({
-	    url: search_path,
-	    data: {
-        parent_agent: $('#waterfall #parent_agent').val(),
-        child_agent: $('#waterfall #child_agent').val(),
-        level: $('#waterfall #level').val(),
-        sort_by: sort_by_col,
-        direction: sort_direction,
-	    },
-	    dataType: 'script',
-	    success: function(data) {
-	    	//console.log('SUCCESS:', data.responseText);
-	    	Forms.hideSpinner();
-			},
-			error: function(data) {
-				//console.log('ERROR:', data.responseText);
-				Forms.hideSpinner();
-			}
-	  });
+	  if (!sortByCol) {
+      sortByCol = Common.getSearchParam('sort_by');
+    }
+    if (!sortDirection) {
+      sortDirection = Common.getSearchParam('direction');
+    }
+
+    var data = {
+      parent_agent: $('#waterfall #parent_agent').val(),
+      child_agent: $('#waterfall #child_agent').val(),
+      level: $('#waterfall #level').val(),
+      sort_by: sortByCol,
+      direction: sortDirection,
+    };
+
+	  var searchParams = [];
+    for(var key in data) {
+      if (data.hasOwnProperty(key) && data[key]) {
+        searchParams.push(key + "=" + data[key]);
+      }
+    }
+    window.location.search = searchParams.join('&');
+	  // $.ajax({
+	  //   url: search_path,
+	  //   data: {
+   //      parent_agent: $('#waterfall #parent_agent').val(),
+   //      child_agent: $('#waterfall #child_agent').val(),
+   //      level: $('#waterfall #level').val(),
+   //      sort_by: sortByCol,
+   //      direction: sortDirection,
+	  //   },
+	  //   dataType: 'script',
+	  //   success: function(data) {
+	  //   	//console.log('SUCCESS:', data.responseText);
+	  //   	Forms.hideSpinner();
+			// },
+			// error: function(data) {
+			// 	//console.log('ERROR:', data.responseText);
+			// 	Forms.hideSpinner();
+			// }
+	  // });
 	};
 
 	// search as user types

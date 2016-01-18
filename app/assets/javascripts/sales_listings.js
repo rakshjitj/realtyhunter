@@ -50,7 +50,7 @@ SalesListings = {};
 
     var searchParams = [];
     for(var key in data) {
-      if (data.hasOwnProperty(key) && data[key] && data[key].toLowerCase() !== 'any') {
+      if (data.hasOwnProperty(key) && data[key]) {
         searchParams.push(key + "=" + data[key]);
       }
     }
