@@ -123,7 +123,6 @@ class ResidentialListing < ActiveRecord::Base
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by')
       .to_a.group_by(&:neighborhood_name)
-      #'residential_listings.for_roomsharing',
     running_list
   end
 
@@ -146,8 +145,7 @@ class ResidentialListing < ActiveRecord::Base
     running_list
   end
 
-  def self.export_all(user_id, params)
-    user = User.find(user_id)
+  def self.export_all(user, params)
     running_list = ResidentialListing.joins(unit: [building: [:company, :landlord]])
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('companies.id = ?', user.company_id)
@@ -171,6 +169,12 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self._filter_query(running_list, user, params)
+    params.delete('direction')
+    params.delete('sort_by')
+    params.delete('controller')
+    params.delete('action')
+    params.delete('format')
+
     if !params && !building_id
       return running_list
     #elsif !params && building_id
@@ -231,10 +235,13 @@ class ResidentialListing < ActiveRecord::Base
     end
 
     # search neighborhoods
+    puts "BEFORE #{params.inspect}"
     if params[:neighborhood_ids]
+      puts "FILTERING QUERY!!!"
       neighborhood_ids = params[:neighborhood_ids][0, 256]
       neighborhoods = neighborhood_ids.split(",").select{|i| !i.strip.empty?}
-      #puts "**** #{neighborhoods.inspect}"
+      puts "**** #{neighborhoods.inspect}"
+      logger.info "**** #{neighborhoods.inspect}"
       if neighborhoods.length > 0 # ignore empty selection
         running_list = running_list
          .where('neighborhood_id IN (?)', neighborhoods)
@@ -752,7 +759,7 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self.to_csv(user, params)
-    listings = ResidentialListing.export_all(user, params) #ResidentialListing.export_all(user_id)
+    listings = ResidentialListing.export_all(user, params)
     agents = Unit.get_primary_agents(listings)
     reverse_statuses = {'0': 'Active', '1': 'Pending', '2': 'Off'}
 
