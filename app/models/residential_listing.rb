@@ -573,7 +573,7 @@ class ResidentialListing < ActiveRecord::Base
     end
   end
 
-  def self.to_csv(user, params)
+  def self.to_csv(params, user)
     listings = ResidentialListing.search(params, user) #ResidentialListing.export_all(user_id)
     agents = Unit.get_primary_agents(listings)
     reverse_statuses = {'0': 'Active', '1': 'Pending', '2': 'Off'}
