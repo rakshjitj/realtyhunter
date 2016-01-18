@@ -573,8 +573,8 @@ class ResidentialListing < ActiveRecord::Base
     end
   end
 
-  def self.to_csv(user_id)
-    listings = ResidentialListing.export_all(user_id)
+  def self.to_csv(user, params)
+    listings = ResidentialListing.search(params, user) #ResidentialListing.export_all(user_id)
     agents = Unit.get_primary_agents(listings)
     reverse_statuses = {'0': 'Active', '1': 'Pending', '2': 'Off'}
 
@@ -589,7 +589,6 @@ class ResidentialListing < ActiveRecord::Base
       csv << attributes
 
       listings.each do |listing|
-        #csv << attributes.map{ |attr| listing.send(attr) }
         csv << [listing.formatted_street_address, listing.building_unit, listing.neighborhood_name,
           listing.exclusive, listing.can_roomshare,
           listing.beds, listing.baths, listing.notes, listing.description, listing.lease_start, listing.lease_end,

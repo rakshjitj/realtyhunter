@@ -18,6 +18,10 @@ class ResidentialListingsController < ApplicationController
       format.csv do
         async_create_csv
         flash[:success] = "The CSV file will be emailed to you once it has been generated."
+        params.delete('controller')
+        params.delete('action')
+        params.delete('format')
+        redirect_to residential_listings_path(params)
         #redirect_to residential_listings_url
         #headers['Content-Disposition'] = "attachment; filename=\"" +
         #  current_user.name + " - Residential Listings.csv\""
@@ -386,7 +390,7 @@ class ResidentialListingsController < ApplicationController
 
     def async_create_csv
       # get IDs only and pass that along
-      Resque.enqueue(GenerateResidentialCSV, current_user.id)
+      Resque.enqueue(GenerateResidentialCSV, current_user.id, params)
     end
 
     def do_search
