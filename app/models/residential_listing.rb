@@ -146,6 +146,7 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self.export_all(user, params)
+    params = params.symbolize_keys
     running_list = ResidentialListing.joins(unit: [building: [:company, :landlord]])
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('companies.id = ?', user.company_id)
@@ -163,6 +164,32 @@ class ResidentialListing < ActiveRecord::Base
         'residential_listings.updated_at',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code AS landlord_code','landlords.id AS landlord_id')
+
+    running_list = ResidentialListing._filter_query(running_list, user, params)
+    running_list
+  end
+
+  # takes in a hash of search options
+  # can be formatted_street_address, landlord
+  # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max,
+  # neighborhoods, has_outdoor_space, features, pet_policy, ...
+  def self.search(params, user, building_id=nil)
+    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord]})
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+      .where('units.archived = false')
+      .where('companies.id = ?', user.company_id)
+      .select('buildings.formatted_street_address',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
+        'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
+        'units.building_unit', 'units.status','units.rent', 'residential_listings.beds',
+        'units.primary_agent_id', 'units.primary_agent2_id',
+        'beds || \'/\' || baths as bed_and_baths',
+        'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
+        'residential_listings.id', 'residential_listings.baths','units.access_info',
+        'residential_listings.has_fee', 'residential_listings.updated_at',
+        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
+        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        'units.listing_id', 'units.available_by', 'units.public_url')
 
     running_list = ResidentialListing._filter_query(running_list, user, params)
     running_list
@@ -354,207 +381,6 @@ class ResidentialListing < ActiveRecord::Base
     running_list
   end
 
-  # takes in a hash of search options
-  # can be formatted_street_address, landlord
-  # status, unit, bed_min, bed_max, bath_min, bath_max, rent_min, rent_max,
-  # neighborhoods, has_outdoor_space, features, pet_policy, ...
-  def self.search(params, user, building_id=nil)
-    # TODO: add amenities back in
-    # 'building_amenities.name AS bldg_amenity_name',
-    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord]})
-      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
-      .where('units.archived = false')
-      .where('companies.id = ?', user.company_id)
-      .select('buildings.formatted_street_address',
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
-        'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
-        'units.building_unit', 'units.status','units.rent', 'residential_listings.beds',
-        'units.primary_agent_id', 'units.primary_agent2_id',
-        'beds || \'/\' || baths as bed_and_baths',
-        'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
-        'residential_listings.id', 'residential_listings.baths','units.access_info',
-        'residential_listings.has_fee', 'residential_listings.updated_at',
-        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
-        'landlords.code AS landlord_code','landlords.id AS landlord_id',
-        'units.listing_id', 'units.available_by', 'units.public_url')
-    # if !params && !building_id
-    #   return running_list
-    # #elsif !params && building_id
-    #   # TODO
-    #   #running_list = running_list.where(building_id: building_id)
-    #   #return running_list
-    # end
-
-    # # only admins are allowed to view off-market units
-    # if !user.is_management?
-    #  running_list = running_list.where.not('status = ?', Unit.statuses['off'])
-    # end
-
-    # # all search params come in as strings from the url
-    # # clear out any invalid search params
-    # params.delete_if{ |k,v| (!v || v == 0 || v.empty?) }
-
-    # # search by address (building)
-    # if params[:address]
-    #   # cap query string length for security reasons
-    #   address = params[:address][0, 500]
-    #   running_list =
-    #    running_list.where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
-    # end
-
-    # # search by unit
-    # if params[:unit]
-    #   # cap query string length for security reasons
-    #   address = params[:unit][0, 50]
-    #   running_list = running_list.where("building_unit ILIKE ?", "%#{params[:unit]}%")
-    # end
-
-    # # search by status
-    # if params[:status]
-    #   status = params[:status].downcase
-    #   included = ['active + pending', 'active', 'pending', 'off'].include?(status)
-    #   if included
-    #     if status == 'active + pending'
-    #       running_list = running_list.where("status = ? or status = ?",
-    #         Unit.statuses["active"], Unit.statuses["pending"])
-    #     else
-    #       running_list = running_list.where("status = ?", Unit.statuses[status])
-    #     end
-    #   end
-    # end
-
-    # # search by rent
-    # if params[:rent_min] && params[:rent_max]
-    #   rent_min = params[:rent_min].to_i
-    #   rent_max = params[:rent_max].to_i
-    #   running_list = running_list.where("rent >= ? AND rent <= ?", rent_min, rent_max)
-    # elsif params[:rent_min] && !params[:rent_max]
-    #   rent_min = params[:rent_min].to_i
-    #   running_list = running_list.where("rent >= ?", rent_min)
-    # elsif !params[:rent_min] && params[:rent_max]
-    #   rent_max = params[:rent_max].to_i
-    #   running_list = running_list.where("rent <= ?", rent_max)
-    # end
-
-    # # search neighborhoods
-    # if params[:neighborhood_ids]
-    #   neighborhood_ids = params[:neighborhood_ids][0, 256]
-    #   neighborhoods = neighborhood_ids.split(",").select{|i| !i.strip.empty?}
-    #   #puts "**** #{neighborhoods.inspect}"
-    #   if neighborhoods.length > 0 # ignore empty selection
-    #     running_list = running_list
-    #      .where('neighborhood_id IN (?)', neighborhoods)
-    #   end
-    # end
-
-    # if params[:building_feature_ids]
-    #   features = params[:building_feature_ids][0, 256]
-    #   features = features.split(",").select{|i| !i.empty?}
-    #     bldg_ids = Building.joins(:building_amenities).where('building_amenity_id IN (?)', features).map(&:id)
-    #     running_list = running_list.where("building_id IN (?)", bldg_ids)
-    # end
-
-    # # search landlord code
-    # if params[:landlord]
-    #   running_list = running_list
-    #   .where("code ILIKE ?", "%#{params[:landlord]}%")
-    # end
-
-    # # search pet policy
-    # if params[:pet_policy_shorthand]
-    #   pp = params[:pet_policy_shorthand].downcase
-    #   policies = nil
-    #   if pp == "none"
-    #     policies = PetPolicy.where(name: "no pets", company: user.company)
-    #   elsif pp == "cats only"
-    #     policies = PetPolicy.policies_that_allow_cats(user.company, true)
-    #   elsif pp == "dogs only"
-    #     policies = PetPolicy.policies_that_allow_dogs(user.company, true)
-    #   end
-
-    #   if policies
-    #     running_list = running_list#.joins(building: :pet_policy)
-    #       .where('pet_policy_id IN (?)', policies.ids)
-    #   end
-    # end
-
-    # if !params[:available_starting].blank?
-    #   running_list = running_list.where('available_by > ?', params[:available_starting]);
-    # end
-    # if !params[:available_before].blank?
-    #   running_list = running_list.where('available_by < ?', params[:available_before]);
-    # end
-
-    # # search beds
-    # # clean up search terms first
-    # params.delete('bed_min') if params[:bed_min] == 'Any'
-    # params.delete('bed_max') if params[:bed_max] == 'Any'
-    # if !params[:bed_min].blank?
-    #   if params[:bed_min].downcase == 'studio/loft'
-    #     params[:bed_min] = 0
-    #   end
-    #   running_list = running_list.where("beds >= ?", params[:bed_min])
-    # end
-    # if !params[:bed_max].blank?
-    #   if params[:bed_max].downcase == 'studio/loft'
-    #     params[:bed_max] = 0
-    #   end
-    #   running_list = running_list.where("beds <= ?", params[:bed_max])
-    # end
-
-    # # search baths
-    # params.delete('bath_min') if params[:bath_min] == 'Any'
-    # params.delete('bath_max') if params[:bath_max] == 'Any'
-    # if params[:bath_min] && params[:bath_max]
-    #   running_list = running_list.where("baths >= ? AND baths <= ?", params[:bath_min], params[:bath_max])
-    # elsif params[:bath_min] && !params[:bath_max]
-    #   running_list = running_list.where("baths >= ?", params[:bath_min])
-    # elsif !params[:bath_min] && params[:bath_max]
-    #   running_list = running_list.where("baths <= ?", params[:bath_max])
-    # end
-
-    # # search by brokers fee
-    # if params[:has_fee]
-    #   has_fee = params[:has_fee].downcase
-    #   included = %w[yes no].include?(has_fee)
-    #   if included
-    #     running_list = running_list.where(has_fee: has_fee == "yes")
-    #   end
-    # end
-
-    # # search features
-    # if params[:unit_feature_ids]
-    #   # sanitize input
-    #   features = params[:unit_feature_ids][0, 256]
-    #   features = features.split(",").select{|i| !i.empty?}
-    #   running_list = running_list.joins(:residential_amenities)
-    #     .where('residential_amenity_id IN (?)', features)
-    # end
-
-    # # roomsharing only
-    # if params[:roomsharing_filter] == 'true'
-    #   # roomsharing apartments are defined as 'apartments with 3+ bedrooms'
-    #   #running_list = running_list.where(for_roomsharing: true)
-    #   running_list = running_list.where('beds >= 3');
-    # end
-
-    # # unassigned listings only
-    # if params[:unassigned_filter] == 'true'
-    #   running_list = running_list.where(
-    #     'units.primary_agent_id IS NULL AND units.primary_agent2_id IS NULL')
-    # end
-
-    # # primary agent
-    # if !params[:primary_agent_id].blank?
-    #   running_list = running_list.where('units.primary_agent_id = ? OR units.primary_agent2_id = ?',
-    #     params[:primary_agent_id], params[:primary_agent_id])
-    # end
-    running_list = ResidentialListing._filter_query(running_list, user, params)
-
-    running_list
-  end
-
-  # TODO: run this in the background. See Image class for stub
   def deep_copy_imgs(dst_id)
     #@src = ResidentialListing.find(src_id)
     @dst = ResidentialListing.find(dst_id)
