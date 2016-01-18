@@ -116,7 +116,7 @@ ContactUs = {};
 			if (action in Forms.indexMenuActions) Forms.indexMenuActions[action]();
 		});
 
-		Forms.detectPhoneNumbers();
+		Common.detectPhoneNumbers();
 	};
 
 })();
