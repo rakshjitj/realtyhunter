@@ -79,11 +79,13 @@
 			  	<div class="col-sm-12 vertical-margin-lg">
 			  		<% if current_user.is_management? %>
 			  			<% if @residential_unit.unit.status == "active" %>
-				  			<%= form_for(@residential_unit,
+			  				<%= form_for(@residential_unit,
 				  				url: mark_app_submitted_residential_listing_path(@residential_unit),
 				  				method: 'patch',
 				  				html: {class: "form-inline inline"}) do |f| %>
-					  			<%= f.submit 'Submit application', class: "btn btn-warning btn-sm vertical-margin-sm" %>
+					  			<%= f.submit 'Submit application',
+						  				class: "btn btn-warning btn-sm vertical-margin-sm",
+						  				data: { confirm: "Are you sure you want to put in an application on #{@residential_unit.street_address_and_unit}?" } %>
 						  	<% end %>
 						  <% end %>
 
