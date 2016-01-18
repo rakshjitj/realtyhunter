@@ -56,12 +56,17 @@
 			</div><!-- panel heading -->
 
 			<div class="panel-body">
-				<% if current_user.is_management? %>
+				<% if current_user.is_management? || current_user.is_listings_manager? || current_user.is_photo_manager? %>
 		  		<div class="row">
 			  		<div class="col-xs-12 vertical-margin-lg">
-		  				<%= link_to 'Edit', edit_sales_listing_path(@sales_unit.id) %>
-			        | <%= link_to 'Duplicate', duplicate_modal_sales_listing_path(@sales_unit),
-			    				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
+			  			<%= link_to 'All units', sales_listings_path %> |
+			  			<% if !current_user.is_photo_manager? %>
+			  				<%= link_to 'Edit', edit_sales_listing_path(@sales_unit.id) %>
+				        | <%= link_to 'Duplicate', duplicate_modal_sales_listing_path(@sales_unit),
+				    				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
+				    	<% else %>
+				    		<%= link_to 'Manage photos', edit_sales_listing_path(@sales_unit.id) %>
+				    	<% end %>
 			    	</div>
 			  	</div>
 			  <% end %>

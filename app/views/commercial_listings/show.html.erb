@@ -25,12 +25,17 @@
 		  </div><!-- panel-heading -->
 
 		  <div class="panel-body">
-		  	<% if current_user.is_management? || current_user.is_listings_manager? %>
+		  	<% if current_user.is_management? || current_user.is_listings_manager? || current_user.is_photo_manager? %>
 		  		<div class="row">
 		  			<div class="col-xs-12">
-				  		<%= link_to 'Edit', edit_commercial_listing_path(@commercial_unit) %>
-				  		| <%= link_to 'Duplicate', duplicate_modal_commercial_listing_path(@commercial_unit),
-		      				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
+		  				<%= link_to 'All units', commercial_listings_path %> |
+		  				<% if !current_user.is_photo_manager? %>
+					  		<%= link_to 'Edit', edit_commercial_listing_path(@commercial_unit) %>
+					  		| <%= link_to 'Duplicate', duplicate_modal_commercial_listing_path(@commercial_unit),
+			      				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
+			      	<% else %>
+			      		<%= link_to 'Manage photos', edit_commercial_listing_path(@commercial_unit) %>
+			      	<% end %>
 		  			</div>
 		  		</div>
 		  	<% end %>

@@ -63,6 +63,7 @@
 				<% if current_user.is_management? || current_user.is_listings_manager? || current_user.is_photo_manager? %>
 			  	<div class="row">
 				  	<div class="col-sm-12">
+				  		<%= link_to 'All units', residential_listings_path %> |
 				  		<% if !current_user.is_photo_manager? %>
 			  				<%= link_to 'Edit', edit_residential_listing_path(@residential_unit.id) %>
 				        | <%= link_to 'Duplicate', duplicate_modal_residential_listing_path(@residential_unit),

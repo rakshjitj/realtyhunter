@@ -4,9 +4,13 @@
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
-  <li role="presentation" class="active"><a href="#basic-info" aria-controls="basic-info" role="tab" data-toggle="tab">Basic Info</a></li>
-  <li role="photos"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
-  <li role="photos"><a href="#documents" aria-controls="documents" role="tab" data-toggle="tab">Documents</a></li>
+  <% if !current_user.is_photo_manager? %>
+    <li role="presentation" class="active"><a href="#basic-info" aria-controls="basic-info" role="tab" data-toggle="tab">Basic Info</a></li>
+    <li role="photos"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+    <li role="photos"><a href="#documents" aria-controls="documents" role="tab" data-toggle="tab">Documents</a></li>
+  <% else %>
+    <li role="photos" class="active"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+  <% end %>
 </ul>
 
 <div class="panel panel-default">
@@ -14,571 +18,606 @@
 
   <div class="tab-content">
     <!-- ******************** third tabpanel - documents ******************** -->
-    <div role="tabpanel" class="tab-pane fade" id="documents">
+    <% if !current_user.is_photo_manager? %>
+      <div role="tabpanel" class="tab-pane fade" id="documents">
 
-      <% if @commercial_unit && @commercial_unit.id %>
+        <% if @commercial_unit && @commercial_unit.id %>
 
-        <br />
-        <%= form_for(@commercial_unit, :url => commercial_listing_documents_path(@commercial_unit),
-          html: {multipart: true, class: "dropzone", id: "cunit-dropzone-docs"}, method: :post) do |f| %>
-          <div class="fallback">
-            <%= f.file_field :file %><br>
-            <%= f.submit "Upload" %>
-          </div>
-        <% end %>
-
-        <br />
-        <div class="row">
-          <div class="col-md-12">
-            <p><strong>Edit current documents (drag to reorder):</strong></p>
-            <div class="documents sortable">
-              <% if @commercial_unit.unit.documents.length > 0 %>
-                <%= render 'documents',  locals: { commercial_unit: @commercial_unit } %>
-              <% else %>
-                <p>(No files uploaded yet.)</p>
-              <% end %>
-            </div>
-          </div>
-        </div>
-
-      <% else %>
-        <br />
-        <strong>Save the basic info first!</strong>
-      <% end %>
-
-    </div><!-- end tabpanel docs -->
-
-    <!-- ******************** second tabpanel - photos ******************** -->
-    <div role="tabpanel" class="tab-pane fade" id="photos">
-
-      <% if @commercial_unit && @commercial_unit.id %>
-
-        <br />
-        <%= form_for(@commercial_unit, :url => commercial_listing_unit_images_path(@commercial_unit),
-          html: {multipart: true, class: "dropzone", id: "cunit-dropzone"}, method: :post) do |f| %>
-          <div class="fallback">
-            <%= f.file_field :file %><br>
-            <%= f.submit "Upload" %>
-          </div>
-        <% end %>
-
-        <br />
-        <div class="row">
-          <div class="col-md-12">
-            <p><strong>Edit current photos (drag to reorder):</strong></p>
-            <div class="images sortable">
-              <% if @commercial_unit.unit.images.length > 0 %>
-                <%= render 'images',  locals: { commercial_unit: @commercial_unit } %>
-              <% else %>
-                <p>(No photos uploaded yet.)</p>
-              <% end %>
-            </div>
-          </div>
-        </div>
-
-      <% else %>
-        <br />
-        <strong>Save the basic info first!</strong>
-      <% end %>
-
-    </div><!-- end tabpanel photos -->
-    <!-- ******************** first tabpanel - basic info ********************-->
-    <div role="tabpanel" class="tab-pane fade in active" id="basic-info">
-      <%= form_for(@commercial_unit) do |f| %>
-      <%= f.hidden_field :lock_version %>
-      <%= render :partial => 'shared/error_messages',
-        :locals => {:model => @commercial_unit} %>
-        <div class="row">
-          <div class="col-md-12 form-section-header">
-            <h4>Listing Status</h4>
-            <hr class="thin-line" />
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <%= f.fields_for @commercial_unit.unit do |unit_form| %>
-            <div class="col-md-4 form-label-responsive">
-              <%= unit_form.label :status, class: 'required' %>
-            </div>
-            <div class="col-md-5">
-              <div class="field">
-
-                <%= unit_form.select :status,
-                  options_for_select(['Active', 'Offer Submitted', 'Offer Accepted', 'Binder Signed', 'Off Market for Lease Execution', 'Off'],
-                    [@commercial_unit.unit.status.titleize]),
-                  {prompt: "Choose one..."},
-                  :required => true,
-                  class: "form-control" %>
-
-              </div>
+          <br />
+          <%= form_for(@commercial_unit, :url => commercial_listing_documents_path(@commercial_unit),
+            html: {multipart: true, class: "dropzone", id: "cunit-dropzone-docs"}, method: :post) do |f| %>
+            <div class="fallback">
+              <%= f.file_field :file %><br>
+              <%= f.submit "Upload" %>
             </div>
           <% end %>
-        </div>
 
-        <div class="row">
-          <div class="col-md-4 form-label-responsive">
-            <%= f.label :property_type, "Property Type", class: 'required' %>
-          </div>
-          <div class="col-md-3">
-            <div class="field">
-              <%= f.select(:property_type,
-                options_for_select(@property_types.collect {|b| [b.property_type]},
-                [@commercial_unit.commercial_property_type ? @commercial_unit.commercial_property_type.property_type : '']),
-                {},
-                {:size => 8,
-                  class: 'form-control',
-                  data: {
-                  }
-                }) %>
-                <!-- "update-subtype-path": update_subtype_commercial_listing_path(@commercial_unit), -->
-            </div>
-          </div>
-          <div class="col-md-5">
-            <div class="field">
-              <!-- gets updated when property_type changes -->
-              <%= render partial: 'commercial_listings/sub_types_select',
-                locals:{ commercial_unit:@commercial_unit, property_sub_types: @property_sub_types} %>
-            </div>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-md-4 form-label-responsive">
-            <%= f.label :construction_status, "Construction Status", class: 'required' %>
-          </div>
-          <div class="col-md-8">
-            <div class="radio radio-warning radio-info radio-inline">
-              <%= f.radio_button :construction_status, "existing",
-                checked: (@commercial_unit.construction_status == "existing") %>
-              <%= f.label :construction_status_existing, "Existing" %>
-            </div>
-            <div class="radio radio-warning radio-info radio-inline">
-              <%= f.radio_button :construction_status, "under_construction",
-                checked: (@commercial_unit.construction_status == "under_construction") %>
-              <%= f.label :construction_status_under_construction, "Under Construction" %>
-            </div>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-4 col-md-4 form-label-responsive">
-            <%= f.label :build_to_suit %>
-          </div>
-          <div class="col-xs-3 col-md-3">
-            <div class="checkbox checkbox-warning checkbox-inline">
-              <%= f.check_box :build_to_suit, class: 'styled', checked: @commercial_unit.build_to_suit %>
-              <label></label>
-            </div>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-4 col-md-4 form-label-responsive">
-            <%= f.label :primary_agent_id, "Primary Agent #1" %>
-          </div>
-          <div class="col-xs-8 col-md-4">
-            <%= f.fields_for @commercial_unit.unit do |unit_form| %>
-              <%= unit_form.select(:primary_agent_id,
-                options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
-                  [@commercial_unit.unit.primary_agent ? @commercial_unit.unit.primary_agent.id : '']),
-                {prompt: "Choose one..."},
-                class: 'form-control',
-                :include_blank => true) %>
-            <% end %>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-4 col-md-4 form-label-responsive">
-            <%= f.label :primary_agent_id2, "Primary Agent #2" %>
-          </div>
-          <div class="col-xs-8 col-md-4">
-            <%= f.fields_for @commercial_unit.unit do |unit_form| %>
-              <%= unit_form.select(:primary_agent2_id,
-                options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
-                  [@commercial_unit.unit.primary_agent2 ? @commercial_unit.unit.primary_agent2.id : '']),
-                {prompt: "Choose one..."},
-                class: 'form-control',
-                :include_blank => true) %>
-            <% end %>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-md-12 form-section-header">
-            <hr class="thin-line" />
-            <h4>Space Details</h4>
-            <hr class="thin-line" />
-          </div>
-        </div>
-
-        <%= f.fields_for @commercial_unit.unit do |unit_form| %>
-          <div class="row vertical-margin-lg">
-            <div class="col-xs-3 col-md-4 form-label-responsive">
-              <%= unit_form.label :building_id, class: 'required' %>
-            </div>
-            <div class="col-xs-9 col-md-8">
-              <div class="field">
-                <!-- TODO: turn this into an autocomplete field -->
-                <%= unit_form.select(:building_id,
-                  options_for_select(current_user.company.buildings.order("formatted_street_address ASC").collect {|b| [b.street_address, b.id]},
-                    [@commercial_unit.unit.building ? @commercial_unit.unit.building.id : '']),
-                  {prompt: "Choose one..."},
-                  class: 'form-control',
-                  :include_blank => true) %>
-              </div>
-            </div>
-          </div>
-
-          <div class="row vertical-margin-lg">
-            <div class="col-xs-3 col-md-4 form-label-responsive">
-              <%= unit_form.label :building_unit, "Suite/Unit" %>
-            </div>
-            <div class="col-xs-9 col-md-2">
-              <div class="field">
-                <%= unit_form.text_field :building_unit, class: 'form-control' %>
-              </div>
-            </div>
-          </div>
-        <% end %>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-4 form-label-responsive">
-            <%= f.label :floor %>
-          </div>
-          <div class="col-xs-9 col-md-2">
-            <div class="field">
-              <%= f.text_field :floor, class: 'form-control' %>
-            </div>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-4 form-label-responsive">
-            <%= f.label :sq_footage, 'Space Available (SF)' %>
-          </div>
-          <div class="col-xs-9 col-md-2">
-            <div class="field">
-              <%= f.number_field :sq_footage, class: 'form-control' %>
-            </div>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <%= f.fields_for @commercial_unit.unit do |unit_form| %>
-          <div class="col-xs-3 col-md-4 form-label-responsive">
-            <%= unit_form.label :rent, 'Rental rate', class: 'required' %>
-          </div>
-          <div class="col-xs-9 col-md-3">
-            <div class="checkbox checkbox-warning checkbox-inline">
-              <%= f.check_box :rate_is_negotiable, checked: @commercial_unit.rate_is_negotiable %>&nbsp;
-              <%= f.label :rate_is_negotiable %>
-            </div>
-            <%= unit_form.number_field :rent, class: 'form-control', :required => true %>
-          </div>
-          <% end %>
-        </div>
-
-        <%= f.fields_for @commercial_unit.unit do |unit_form| %>
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-4 form-label-responsive">
-            <%= unit_form.label :available_by, 'Date available' %>
-          </div>
-          <div class="col-xs-9 col-md-4">
-            <div class="field">
-              <div class='input-group date datepicker'>
-                <%= unit_form.text_field :available_by,
-                  class:"form-control", placeholder: "Available" %>
-                <label class="input-group-addon btn" for="date">
-                  <span class="fa fa-calendar open-datepicker"></span>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <% end %>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-4 form-label-responsive">
-            <%= f.label :lease_type, class: 'required' %>
-          </div>
-          <div class="col-xs-9 col-md-4">
-            <div class="field">
-              <%= f.select :lease_type,
-                options_for_select(CommercialListing.lease_types.collect { |s| [s[0].humanize.titleize, s[0]] },
-                  [@commercial_unit.lease_type]),
-                {prompt: "Choose one..."},
-                :required => true,
-                class: "form-control" %>
-            </div>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-4 form-label-responsive">
-            <%= f.label :is_sublease, 'Sublease?' %>
-          </div>
-          <div class="col-xs-9 col-md-1">
-            <div class="checkbox checkbox-warning checkbox-inline">
-              <%= f.check_box :is_sublease, class: 'form-control', checked: @commercial_unit.is_sublease %>
-              <label></label>
-            </div>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-4 form-label-responsive">
-            <%= f.label :minimum_divisible, 'Minimum Divisible (SF)' %>
-          </div>
-          <div class="col-xs-9 col-md-2">
-            <div class="field">
-              <%= f.number_field :minimum_divisible, class: 'form-control' %>
-            </div>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-4 form-label-responsive">
-            <%= f.label :maximum_contiguous, 'Maximum Contiguous (SF)' %>
-          </div>
-          <div class="col-xs-9 col-md-2">
-            <div class="field">
-              <%= f.number_field :maximum_contiguous, class: 'form-control' %>
-            </div>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-4 form-label-responsive">
-            <%= f.label :lease_term_months, 'Lease Term (Months)' %>
-          </div>
-          <div class="col-xs-9 col-md-2">
-            <div class="field">
-              <%= f.number_field :lease_term_months, class: 'form-control' %>
-            </div>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-4 form-label-responsive">
-            <%= f.label :liquor_eligible %>
-          </div>
-          <div class="col-xs-9 col-md-2">
-            <div class="checkbox checkbox-warning checkbox-inline">
-              <%= f.check_box :liquor_eligible, checked: @commercial_unit.liquor_eligible %>
-              <label></label>
-            </div>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-4 form-label-responsive">
-            <%= f.label :has_ventilation %>
-          </div>
-          <div class="col-xs-9 col-md-2">
-            <div class="checkbox checkbox-warning checkbox-inline">
-              <%= f.check_box :has_ventilation, checked: @commercial_unit.has_ventilation %>
-              <label></label>
-            </div>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-4 form-label-responsive">
-            <%= f.label "Basement Details" %>
-          </div>
-          <div class="col-xs-9 col-md-3">
-            <div class="checkbox checkbox-warning checkbox-inline">
-              <%= f.check_box :has_basement, checked: @commercial_unit.has_basement %>
-              <%= f.label :has_basement %>
-            </div>
-            <%= f.text_field :basement_sq_footage, class: 'form-control', placeholder: 'Sq Footage' %>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-4 form-label-responsive">
-            <%= f.label "Key Money" %>
-          </div>
-          <div class="col-xs-9 col-md-3">
-            <div class="checkbox checkbox-warning checkbox-inline">
-              <%= f.check_box :key_money_required, checked: @commercial_unit.key_money_required %>
-              <%= f.label :key_money_required, "Required" %>
-            </div>
-            <%= f.text_field :key_money_amt, class: 'form-control', placeholder: 'Amount Required' %>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-md-12 form-section-header">
-            <hr class="thin-line" />
-            <h4>Property Info</h4>
-            <hr class="thin-line" />
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <%= f.fields_for @commercial_unit.unit do |unit_form| %>
-          <div class="col-md-4">
-            <%= unit_form.label :access_info %>
-          </div>
-          <div class="col-md-8">
-            <div class="field">
-              <%= unit_form.text_area :access_info, class: 'form-control', rows: 5 %>
-            </div>
-          </div>
-          <% end %>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-md-4">
-            <%= f.label :listing_title %>
-          </div>
-          <div class="col-md-8">
-            <div class="field">
-              <%= f.text_field :listing_title, class: 'form-control' %>
-            </div>
-          </div>
-        </div>
-
-
-
-        <div class="row vertical-margin-lg">
-          <div class="col-md-4">
-            <%= f.label :property_description, class: 'required' %>
-          </div>
-          <div class="col-md-8">
-            <div class="row">
-              <div class="col-xs-12">
-                <small><em>Exclusive listings will display the full address when syndicated.
-                  Must have a description AND assigned agent in order to be syndicated.</em>
-                </small>
-                <br>
-                <%= f.fields_for @commercial_unit.unit do |unit_form| %>
-                  <div class="checkbox checkbox-warning checkbox-inline">
-                    <%= unit_form.check_box :exclusive, checked: @commercial_unit.unit.exclusive %>
-                    <%= f.label :exclusive, 'Exclusive listing' %>
-                  </div>
+          <br />
+          <div class="row">
+            <div class="col-md-12">
+              <p><strong>Edit current documents (drag to reorder):</strong></p>
+              <div class="documents sortable">
+                <% if @commercial_unit.unit.documents.length > 0 %>
+                  <%= render 'documents',  locals: { commercial_unit: @commercial_unit } %>
+                <% else %>
+                  <p>(No files uploaded yet.)</p>
                 <% end %>
               </div>
             </div>
+          </div>
 
-            <div class="row">
-              <div class="col-xs-5 col-md-5">
-                <%= f.label :show, "Show", class: 'required' %>
+        <% else %>
+          <br />
+          <strong>Save the basic info first!</strong>
+        <% end %>
+
+      </div><!-- end tabpanel docs -->
+    <% end %>
+
+    <!-- ******************** second tabpanel - photos ******************** -->
+    <% if !current_user.is_photo_manager? %>
+      <div role="tabpanel" class="tab-pane fade" id="photos">
+
+        <% if @commercial_unit && @commercial_unit.id %>
+
+          <br />
+          <%= form_for(@commercial_unit, :url => commercial_listing_unit_images_path(@commercial_unit),
+            html: {multipart: true, class: "dropzone", id: "cunit-dropzone"}, method: :post) do |f| %>
+            <div class="fallback">
+              <%= f.file_field :file %><br>
+              <%= f.submit "Upload" %>
+            </div>
+          <% end %>
+
+          <br />
+          <div class="row">
+            <div class="col-md-12">
+              <p><strong>Edit current photos (drag to reorder):</strong></p>
+              <div class="images sortable">
+                <% if @commercial_unit.unit.images.length > 0 %>
+                  <%= render 'images',  locals: { commercial_unit: @commercial_unit } %>
+                <% else %>
+                  <p>(No photos uploaded yet.)</p>
+                <% end %>
               </div>
-              <div class="col-xs-3 col-md-2">
-                <div class="radio radio-warning radio-inline">
-                  <%= f.radio_button :show, true, checked: @commercial_unit.show %>
-                  <%= f.label :show_true, "Yes" %>
+            </div>
+          </div>
+
+        <% else %>
+          <br />
+          <strong>Save the basic info first!</strong>
+        <% end %>
+
+      </div><!-- end tabpanel photos -->
+    <% else %>
+      <div role="tabpanel" class="tab-pane fade in active" id="photos">
+
+        <% if @commercial_unit && @commercial_unit.id %>
+
+          <br />
+          <%= form_for(@commercial_unit, :url => commercial_listing_unit_images_path(@commercial_unit),
+            html: {multipart: true, class: "dropzone", id: "cunit-dropzone"}, method: :post) do |f| %>
+            <div class="fallback">
+              <%= f.file_field :file %><br>
+              <%= f.submit "Upload" %>
+            </div>
+          <% end %>
+
+          <br />
+          <div class="row">
+            <div class="col-md-12">
+              <p><strong>Edit current photos (drag to reorder):</strong></p>
+              <div class="images sortable">
+                <% if @commercial_unit.unit.images.length > 0 %>
+                  <%= render 'images',  locals: { commercial_unit: @commercial_unit } %>
+                <% else %>
+                  <p>(No photos uploaded yet.)</p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+        <% else %>
+          <br />
+          <strong>Save the basic info first!</strong>
+        <% end %>
+
+      </div><!-- end tabpanel photos -->
+    <% end %>
+    <!-- ******************** first tabpanel - basic info ********************-->
+    <% if !current_user.is_photo_manager? %>
+      <div role="tabpanel" class="tab-pane fade in active" id="basic-info">
+        <%= form_for(@commercial_unit) do |f| %>
+        <%= f.hidden_field :lock_version %>
+        <%= render :partial => 'shared/error_messages',
+          :locals => {:model => @commercial_unit} %>
+          <div class="row">
+            <div class="col-md-12 form-section-header">
+              <h4>Listing Status</h4>
+              <hr class="thin-line" />
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <%= f.fields_for @commercial_unit.unit do |unit_form| %>
+              <div class="col-md-4 form-label-responsive">
+                <%= unit_form.label :status, class: 'required' %>
+              </div>
+              <div class="col-md-5">
+                <div class="field">
+
+                  <%= unit_form.select :status,
+                    options_for_select(['Active', 'Offer Submitted', 'Offer Accepted', 'Binder Signed', 'Off Market for Lease Execution', 'Off'],
+                      [@commercial_unit.unit.status.titleize]),
+                    {prompt: "Choose one..."},
+                    :required => true,
+                    class: "form-control" %>
+
                 </div>
               </div>
-              <div class="col-xs-3 col-md-2">
-                <div class="radio radio-warning radio-inline">
-                  <%= f.radio_button :show, false, checked: !@commercial_unit.show %>
-                  <%= f.label :show_false, "No" %>
+            <% end %>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4 form-label-responsive">
+              <%= f.label :property_type, "Property Type", class: 'required' %>
+            </div>
+            <div class="col-md-3">
+              <div class="field">
+                <%= f.select(:property_type,
+                  options_for_select(@property_types.collect {|b| [b.property_type]},
+                  [@commercial_unit.commercial_property_type ? @commercial_unit.commercial_property_type.property_type : '']),
+                  {},
+                  {:size => 8,
+                    class: 'form-control',
+                    data: {
+                    }
+                  }) %>
+                  <!-- "update-subtype-path": update_subtype_commercial_listing_path(@commercial_unit), -->
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="field">
+                <!-- gets updated when property_type changes -->
+                <%= render partial: 'commercial_listings/sub_types_select',
+                  locals:{ commercial_unit:@commercial_unit, property_sub_types: @property_sub_types} %>
+              </div>
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-md-4 form-label-responsive">
+              <%= f.label :construction_status, "Construction Status", class: 'required' %>
+            </div>
+            <div class="col-md-8">
+              <div class="radio radio-warning radio-info radio-inline">
+                <%= f.radio_button :construction_status, "existing",
+                  checked: (@commercial_unit.construction_status == "existing") %>
+                <%= f.label :construction_status_existing, "Existing" %>
+              </div>
+              <div class="radio radio-warning radio-info radio-inline">
+                <%= f.radio_button :construction_status, "under_construction",
+                  checked: (@commercial_unit.construction_status == "under_construction") %>
+                <%= f.label :construction_status_under_construction, "Under Construction" %>
+              </div>
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-4 col-md-4 form-label-responsive">
+              <%= f.label :build_to_suit %>
+            </div>
+            <div class="col-xs-3 col-md-3">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= f.check_box :build_to_suit, class: 'styled', checked: @commercial_unit.build_to_suit %>
+                <label></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-4 col-md-4 form-label-responsive">
+              <%= f.label :primary_agent_id, "Primary Agent #1" %>
+            </div>
+            <div class="col-xs-8 col-md-4">
+              <%= f.fields_for @commercial_unit.unit do |unit_form| %>
+                <%= unit_form.select(:primary_agent_id,
+                  options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
+                    [@commercial_unit.unit.primary_agent ? @commercial_unit.unit.primary_agent.id : '']),
+                  {prompt: "Choose one..."},
+                  class: 'form-control',
+                  :include_blank => true) %>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-4 col-md-4 form-label-responsive">
+              <%= f.label :primary_agent_id2, "Primary Agent #2" %>
+            </div>
+            <div class="col-xs-8 col-md-4">
+              <%= f.fields_for @commercial_unit.unit do |unit_form| %>
+                <%= unit_form.select(:primary_agent2_id,
+                  options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
+                    [@commercial_unit.unit.primary_agent2 ? @commercial_unit.unit.primary_agent2.id : '']),
+                  {prompt: "Choose one..."},
+                  class: 'form-control',
+                  :include_blank => true) %>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-md-12 form-section-header">
+              <hr class="thin-line" />
+              <h4>Space Details</h4>
+              <hr class="thin-line" />
+            </div>
+          </div>
+
+          <%= f.fields_for @commercial_unit.unit do |unit_form| %>
+            <div class="row vertical-margin-lg">
+              <div class="col-xs-3 col-md-4 form-label-responsive">
+                <%= unit_form.label :building_id, class: 'required' %>
+              </div>
+              <div class="col-xs-9 col-md-8">
+                <div class="field">
+                  <!-- TODO: turn this into an autocomplete field -->
+                  <%= unit_form.select(:building_id,
+                    options_for_select(current_user.company.buildings.order("formatted_street_address ASC").collect {|b| [b.street_address, b.id]},
+                      [@commercial_unit.unit.building ? @commercial_unit.unit.building.id : '']),
+                    {prompt: "Choose one..."},
+                    class: 'form-control',
+                    :include_blank => true) %>
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-xs-5 col-md-5">
-                <%= f.label :favorites, "Favorites", class: 'required' %>
+
+            <div class="row vertical-margin-lg">
+              <div class="col-xs-3 col-md-4 form-label-responsive">
+                <%= unit_form.label :building_unit, "Suite/Unit" %>
               </div>
-              <div class="col-xs-3 col-md-2">
-                <div class="radio radio-warning radio-inline">
-                  <%= f.radio_button :favorites, true, checked: @commercial_unit.favorites %>
-                  <%= f.label :favorites_true, "Yes" %>
-                </div>
-              </div>
-              <div class="col-xs-3 col-md-2">
-                <div class="radio radio-warning radio-inline">
-                  <%= f.radio_button :favorites, false, checked: !@commercial_unit.favorites %>
-                  <%= f.label :favorites_false, "No" %>
+              <div class="col-xs-9 col-md-2">
+                <div class="field">
+                  <%= unit_form.text_field :building_unit, class: 'form-control' %>
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-xs-5 col-md-5">
-                <%= f.label :expose_address, "Expose Address", class: 'required' %>
+          <% end %>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4 form-label-responsive">
+              <%= f.label :floor %>
+            </div>
+            <div class="col-xs-9 col-md-2">
+              <div class="field">
+                <%= f.text_field :floor, class: 'form-control' %>
               </div>
-              <div class="col-xs-3 col-md-2">
-                <div class="radio radio-warning radio-inline">
-                  <%= f.radio_button :expose_address, true, checked: @commercial_unit.expose_address %>
-                  <%= f.label :expose_address_true, "Yes" %>
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4 form-label-responsive">
+              <%= f.label :sq_footage, 'Space Available (SF)' %>
+            </div>
+            <div class="col-xs-9 col-md-2">
+              <div class="field">
+                <%= f.number_field :sq_footage, class: 'form-control' %>
+              </div>
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <%= f.fields_for @commercial_unit.unit do |unit_form| %>
+            <div class="col-xs-3 col-md-4 form-label-responsive">
+              <%= unit_form.label :rent, 'Rental rate', class: 'required' %>
+            </div>
+            <div class="col-xs-9 col-md-3">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= f.check_box :rate_is_negotiable, checked: @commercial_unit.rate_is_negotiable %>&nbsp;
+                <%= f.label :rate_is_negotiable %>
+              </div>
+              <%= unit_form.number_field :rent, class: 'form-control', :required => true %>
+            </div>
+            <% end %>
+          </div>
+
+          <%= f.fields_for @commercial_unit.unit do |unit_form| %>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4 form-label-responsive">
+              <%= unit_form.label :available_by, 'Date available' %>
+            </div>
+            <div class="col-xs-9 col-md-4">
+              <div class="field">
+                <div class='input-group date datepicker'>
+                  <%= unit_form.text_field :available_by,
+                    class:"form-control", placeholder: "Available" %>
+                  <label class="input-group-addon btn" for="date">
+                    <span class="fa fa-calendar open-datepicker"></span>
+                  </label>
                 </div>
               </div>
-              <div class="col-xs-3 col-md-2">
-                <div class="radio radio-warning radio-inline">
-                  <%= f.radio_button :expose_address, false, checked: !@commercial_unit.expose_address %>
-                  <%= f.label :expose_address_false, "No" %>
+            </div>
+          </div>
+          <% end %>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4 form-label-responsive">
+              <%= f.label :lease_type, class: 'required' %>
+            </div>
+            <div class="col-xs-9 col-md-4">
+              <div class="field">
+                <%= f.select :lease_type,
+                  options_for_select(CommercialListing.lease_types.collect { |s| [s[0].humanize.titleize, s[0]] },
+                    [@commercial_unit.lease_type]),
+                  {prompt: "Choose one..."},
+                  :required => true,
+                  class: "form-control" %>
+              </div>
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4 form-label-responsive">
+              <%= f.label :is_sublease, 'Sublease?' %>
+            </div>
+            <div class="col-xs-9 col-md-1">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= f.check_box :is_sublease, class: 'form-control', checked: @commercial_unit.is_sublease %>
+                <label></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4 form-label-responsive">
+              <%= f.label :minimum_divisible, 'Minimum Divisible (SF)' %>
+            </div>
+            <div class="col-xs-9 col-md-2">
+              <div class="field">
+                <%= f.number_field :minimum_divisible, class: 'form-control' %>
+              </div>
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4 form-label-responsive">
+              <%= f.label :maximum_contiguous, 'Maximum Contiguous (SF)' %>
+            </div>
+            <div class="col-xs-9 col-md-2">
+              <div class="field">
+                <%= f.number_field :maximum_contiguous, class: 'form-control' %>
+              </div>
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4 form-label-responsive">
+              <%= f.label :lease_term_months, 'Lease Term (Months)' %>
+            </div>
+            <div class="col-xs-9 col-md-2">
+              <div class="field">
+                <%= f.number_field :lease_term_months, class: 'form-control' %>
+              </div>
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4 form-label-responsive">
+              <%= f.label :liquor_eligible %>
+            </div>
+            <div class="col-xs-9 col-md-2">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= f.check_box :liquor_eligible, checked: @commercial_unit.liquor_eligible %>
+                <label></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4 form-label-responsive">
+              <%= f.label :has_ventilation %>
+            </div>
+            <div class="col-xs-9 col-md-2">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= f.check_box :has_ventilation, checked: @commercial_unit.has_ventilation %>
+                <label></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4 form-label-responsive">
+              <%= f.label "Basement Details" %>
+            </div>
+            <div class="col-xs-9 col-md-3">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= f.check_box :has_basement, checked: @commercial_unit.has_basement %>
+                <%= f.label :has_basement %>
+              </div>
+              <%= f.text_field :basement_sq_footage, class: 'form-control', placeholder: 'Sq Footage' %>
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4 form-label-responsive">
+              <%= f.label "Key Money" %>
+            </div>
+            <div class="col-xs-9 col-md-3">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= f.check_box :key_money_required, checked: @commercial_unit.key_money_required %>
+                <%= f.label :key_money_required, "Required" %>
+              </div>
+              <%= f.text_field :key_money_amt, class: 'form-control', placeholder: 'Amount Required' %>
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-md-12 form-section-header">
+              <hr class="thin-line" />
+              <h4>Property Info</h4>
+              <hr class="thin-line" />
+            </div>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <%= f.fields_for @commercial_unit.unit do |unit_form| %>
+            <div class="col-md-4">
+              <%= unit_form.label :access_info %>
+            </div>
+            <div class="col-md-8">
+              <div class="field">
+                <%= unit_form.text_area :access_info, class: 'form-control', rows: 5 %>
+              </div>
+            </div>
+            <% end %>
+          </div>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-md-4">
+              <%= f.label :listing_title %>
+            </div>
+            <div class="col-md-8">
+              <div class="field">
+                <%= f.text_field :listing_title, class: 'form-control' %>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="row vertical-margin-lg">
+            <div class="col-md-4">
+              <%= f.label :property_description, class: 'required' %>
+            </div>
+            <div class="col-md-8">
+              <div class="row">
+                <div class="col-xs-12">
+                  <small><em>Exclusive listings will display the full address when syndicated.
+                    Must have a description AND assigned agent in order to be syndicated.</em>
+                  </small>
+                  <br>
+                  <%= f.fields_for @commercial_unit.unit do |unit_form| %>
+                    <div class="checkbox checkbox-warning checkbox-inline">
+                      <%= unit_form.check_box :exclusive, checked: @commercial_unit.unit.exclusive %>
+                      <%= f.label :exclusive, 'Exclusive listing' %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-5 col-md-5">
+                  <%= f.label :show, "Show", class: 'required' %>
+                </div>
+                <div class="col-xs-3 col-md-2">
+                  <div class="radio radio-warning radio-inline">
+                    <%= f.radio_button :show, true, checked: @commercial_unit.show %>
+                    <%= f.label :show_true, "Yes" %>
+                  </div>
+                </div>
+                <div class="col-xs-3 col-md-2">
+                  <div class="radio radio-warning radio-inline">
+                    <%= f.radio_button :show, false, checked: !@commercial_unit.show %>
+                    <%= f.label :show_false, "No" %>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-5 col-md-5">
+                  <%= f.label :favorites, "Favorites", class: 'required' %>
+                </div>
+                <div class="col-xs-3 col-md-2">
+                  <div class="radio radio-warning radio-inline">
+                    <%= f.radio_button :favorites, true, checked: @commercial_unit.favorites %>
+                    <%= f.label :favorites_true, "Yes" %>
+                  </div>
+                </div>
+                <div class="col-xs-3 col-md-2">
+                  <div class="radio radio-warning radio-inline">
+                    <%= f.radio_button :favorites, false, checked: !@commercial_unit.favorites %>
+                    <%= f.label :favorites_false, "No" %>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-5 col-md-5">
+                  <%= f.label :expose_address, "Expose Address", class: 'required' %>
+                </div>
+                <div class="col-xs-3 col-md-2">
+                  <div class="radio radio-warning radio-inline">
+                    <%= f.radio_button :expose_address, true, checked: @commercial_unit.expose_address %>
+                    <%= f.label :expose_address_true, "Yes" %>
+                  </div>
+                </div>
+                <div class="col-xs-3 col-md-2">
+                  <div class="radio radio-warning radio-inline">
+                    <%= f.radio_button :expose_address, false, checked: !@commercial_unit.expose_address %>
+                    <%= f.label :expose_address_false, "No" %>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <%= f.text_area :property_description, class: 'form-control', :required => true, rows: 5 %>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="row">
-              <div class="col-xs-12">
-                <%= f.text_area :property_description, class: 'form-control', :required => true, rows: 5 %>
+          <div class="row vertical-margin-lg">
+            <div class="col-md-4">
+              <%= f.label :location_description, class: 'required' %>
+            </div>
+            <div class="col-md-8">
+              <div class="field">
+                <%= f.text_area :location_description, class: 'form-control', :required => true, rows: 5 %>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="row vertical-margin-lg">
-          <div class="col-md-4">
-            <%= f.label :location_description, class: 'required' %>
-          </div>
-          <div class="col-md-8">
-            <div class="field">
-              <%= f.text_area :location_description, class: 'form-control', :required => true, rows: 5 %>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-5 col-md-4 form-label-responsive">
+              <%= f.label :building_size, 'Total Building Size (SF)', class: 'required' %>
             </div>
-          </div>
-        </div>
+            <div class="col-xs-7 col-md-2">
+              <div class="field">
 
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-5 col-md-4 form-label-responsive">
-            <%= f.label :building_size, 'Total Building Size (SF)', class: 'required' %>
-          </div>
-          <div class="col-xs-7 col-md-2">
-            <div class="field">
-
-              <%= f.number_field :building_size, class: 'form-control', :required => true %>
-            </div>
-          </div>
-        </div>
-
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-5 col-md-4 form-label-responsive">
-            <%= f.label :total_lot_size, 'Total Lot Size', class: 'required' %>
-          </div>
-          <div class="col-xs-7 col-md-2">
-            <div class="field">
-              <%= f.number_field :total_lot_size, class: 'form-control', :required => true %>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-12"><hr />
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-4 form-label-responsive">
-            <div class="actions">
-              <%= f.submit 'Save Data', class:"btn btn-warning" %>
+                <%= f.number_field :building_size, class: 'form-control', :required => true %>
+              </div>
             </div>
           </div>
 
-        </div>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-5 col-md-4 form-label-responsive">
+              <%= f.label :total_lot_size, 'Total Lot Size', class: 'required' %>
+            </div>
+            <div class="col-xs-7 col-md-2">
+              <div class="field">
+                <%= f.number_field :total_lot_size, class: 'form-control', :required => true %>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12"><hr />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4 form-label-responsive">
+              <div class="actions">
+                <%= f.submit 'Save Data', class:"btn btn-warning" %>
+              </div>
+            </div>
+
+          </div>
+        <% end %>
+      </div>
+    <!--/div-->
+        <!--/div--><!-- end tabpanel home -->
       <% end %>
-    </div>
-  </div>
-
-
-
-
-
-      </div><!-- end tabpanel home -->
     </div><!-- tab content -->
 
   </div><!-- panelbody -->

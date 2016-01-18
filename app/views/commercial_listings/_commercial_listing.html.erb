@@ -51,13 +51,17 @@
       <% end %>
     </td>
 
-    <% if current_user.is_management? || current_user.is_listings_manager? %>
+    <% if current_user.is_management? || current_user.is_listings_manager? || current_user.is_photo_manager? %>
       <td>
-        <%= link_to 'Edit', edit_commercial_listing_path(commercial_listing) %><br />
-        <%= link_to 'Delete', delete_modal_commercial_listing_path(commercial_listing),
-          data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
-        <%= link_to 'Announcement', new_announcement_path(
-          { address: commercial_listing.formatted_street_address }) %>
+        <% if !current_user.is_photo_manager? %>
+          <%= link_to 'Edit', edit_commercial_listing_path(commercial_listing) %>
+          <br /><%= link_to 'Delete', delete_modal_commercial_listing_path(commercial_listing),
+            data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
+          <br /><%= link_to 'Announcement', new_announcement_path(
+            { address: commercial_listing.formatted_street_address }) %>
+        <% else %>
+          <%= link_to 'Manage photos', edit_commercial_listing_path(commercial_listing) %>
+        <% end %>
       </td>
     <% end %>
   </tr>
