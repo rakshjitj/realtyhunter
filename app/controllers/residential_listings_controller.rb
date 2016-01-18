@@ -22,10 +22,6 @@ class ResidentialListingsController < ApplicationController
         params.delete('action')
         params.delete('format')
         redirect_to residential_listings_path(params)
-        #redirect_to residential_listings_url
-        #headers['Content-Disposition'] = "attachment; filename=\"" +
-        #  current_user.name + " - Residential Listings.csv\""
-        #headers['Content-Type'] ||= 'text/csv'
       end
     end
   end
@@ -379,14 +375,6 @@ class ResidentialListingsController < ApplicationController
       @res_images = ResidentialListing.get_images(@residential_units)
       @announcement_items = Announcement.search({limit: 4})
     end
-
-    # returns all data for export
-    # def set_residential_listings_csv
-    #   @residential_units = ResidentialListing.export_all(current_user)
-    #   @residential_units = custom_sort
-    #   @agents = Unit.get_primary_agents(@residential_units)
-    #   @reverse_statuses = {'0': 'Active', '1': 'Pending', '2': 'Off'}
-    # end
 
     def async_create_csv
       # get IDs only and pass that along

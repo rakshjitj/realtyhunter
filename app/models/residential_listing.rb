@@ -143,31 +143,29 @@ class ResidentialListing < ActiveRecord::Base
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by', 'units.public_url')
-      #'residential_listings.for_roomsharing',
     running_list
   end
 
-  def self.export_all(user_id)
-    user = User.find(user_id)
-    ResidentialListing.joins(unit: [building: [:company, :landlord]])
-      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
-      .where('companies.id = ?', user.company_id)
-      .select('buildings.formatted_street_address',
-        'units.listing_id', 'units.building_unit', 'units.status','units.rent', 'units.archived',
-        'units.available_by', 'units.public_url', 'units.access_info', 'units.exclusive',
-        'units.primary_agent_id', 'units.primary_agent2_id',
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
-        'buildings.lat', 'buildings.lng',
-        'residential_listings.beds', 'residential_listings.baths', 'residential_listings.notes',
-        'residential_listings.description', 'residential_listings.lease_start',
-        'residential_listings.lease_end', 'residential_listings.has_fee',
-        'residential_listings.op_fee_percentage','residential_listings.tp_fee_percentage',
-        'residential_listings.tenant_occupied', 'residential_listings.created_at',
-        'residential_listings.updated_at',
-        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
-        'landlords.code AS landlord_code','landlords.id AS landlord_id')
-#'residential_listings.for_roomsharing',
-  end
+  # def self.export_all(user_id)
+  #   user = User.find(user_id)
+  #   ResidentialListing.joins(unit: [building: [:company, :landlord]])
+  #     .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+  #     .where('companies.id = ?', user.company_id)
+  #     .select('buildings.formatted_street_address',
+  #       'units.listing_id', 'units.building_unit', 'units.status','units.rent', 'units.archived',
+  #       'units.available_by', 'units.public_url', 'units.access_info', 'units.exclusive',
+  #       'units.primary_agent_id', 'units.primary_agent2_id',
+  #       'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
+  #       'buildings.lat', 'buildings.lng',
+  #       'residential_listings.beds', 'residential_listings.baths', 'residential_listings.notes',
+  #       'residential_listings.description', 'residential_listings.lease_start',
+  #       'residential_listings.lease_end', 'residential_listings.has_fee',
+  #       'residential_listings.op_fee_percentage','residential_listings.tp_fee_percentage',
+  #       'residential_listings.tenant_occupied', 'residential_listings.created_at',
+  #       'residential_listings.updated_at',
+  #       'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
+  #       'landlords.code AS landlord_code','landlords.id AS landlord_id')
+  # end
 
   # takes in a hash of search options
   # can be formatted_street_address, landlord
@@ -184,6 +182,7 @@ class ResidentialListing < ActiveRecord::Base
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent', 'residential_listings.beds',
+        'units.primary_agent_id', 'units.primary_agent2_id',
         'beds || \'/\' || baths as bed_and_baths',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
@@ -191,8 +190,6 @@ class ResidentialListing < ActiveRecord::Base
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.listing_id', 'units.available_by', 'units.public_url')
-      # unit.building.street_number + ' ' + unit.building.route
-      #'residential_listings.for_roomsharing',
     if !params && !building_id
       return running_list
     #elsif !params && building_id
