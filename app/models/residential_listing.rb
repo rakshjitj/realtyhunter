@@ -196,8 +196,8 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self._filter_query(running_list, user, params)
-    params.delete('direction')
-    params.delete('sort_by')
+    # params.delete('direction')
+    # params.delete('sort_by')
     params.delete('controller')
     params.delete('action')
     params.delete('format')
@@ -262,13 +262,9 @@ class ResidentialListing < ActiveRecord::Base
     end
 
     # search neighborhoods
-    puts "BEFORE #{params.inspect}"
     if params[:neighborhood_ids]
-      puts "FILTERING QUERY!!!"
       neighborhood_ids = params[:neighborhood_ids][0, 256]
       neighborhoods = neighborhood_ids.split(",").select{|i| !i.strip.empty?}
-      puts "**** #{neighborhoods.inspect}"
-      logger.info "**** #{neighborhoods.inspect}"
       if neighborhoods.length > 0 # ignore empty selection
         running_list = running_list
          .where('neighborhood_id IN (?)', neighborhoods)
@@ -419,7 +415,6 @@ class ResidentialListing < ActiveRecord::Base
         self.deep_copy_imgs(residential_unit_dup.id)
       end
 
-      #building.increment_memcache_iterator
       #puts "NEW UNIT NUM #{residential_unit_dup.unit.building_unit}"
       residential_unit_dup
     else

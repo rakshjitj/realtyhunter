@@ -397,7 +397,7 @@ class ResidentialListingsController < ApplicationController
     end
 
     def custom_sort
-      # puts "GOT #{params[:sort_by]} #{params[:direction]}"
+      # puts "GOT ---#{params.inspect} #{params[:sort_by]} --- #{params[:direction]}---"
       sort_column = params[:sort_by] || "updated_at"
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
       # reset params so that view helper updates correctly
