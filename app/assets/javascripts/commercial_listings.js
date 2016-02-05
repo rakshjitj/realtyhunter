@@ -4,7 +4,6 @@ CommercialListings = {};
 
   CommercialListings.updatePropertySubTypes = function (ptype) {
     var id = $('#commercial').attr('data-unit-id');
-    // console.log('got path ', id);
     $.ajax({
       url: "/commercial_listings/update_subtype",
       data: {
@@ -16,7 +15,7 @@ CommercialListings = {};
   };
 
   CommercialListings.doSearch = function(sortByCol, sortDirection) {
-    //console.log('before', $('#commercial #neighborhood_ids').val());
+    // console.log('before', $('#commercial #neighborhood_ids').val());
     Listings.showSpinner();
 
     // sanitize invalid input before submitting
@@ -49,39 +48,13 @@ CommercialListings = {};
         direction: sortDirection,
       };
 
-      var searchParams = [];
-      for(var key in data) {
-        if (data.hasOwnProperty(key) && data[key]) {
-          searchParams.push(key + "=" + data[key]);
-        }
+    var searchParams = [];
+    for(var key in data) {
+      if (data.hasOwnProperty(key) && data[key]) {
+        searchParams.push(key + "=" + data[key]);
       }
-      window.location.search = searchParams.join('&');
-
-    // $.ajax({
-    //   url: search_path,
-    //   data: {
-    //     address: $('#commercial #address').val(),
-    //     rent_min: $('#commercial #rent_min').val(),
-    //     rent_max: $('#commercial #rent_max').val(),
-    //     sq_footage_min: $('#commercial #sq_footage_min').val(),
-    //     sq_footage_max: $('#commercial #sq_footage_max').val(),
-    //     landlord: $('#commercial #landlord').val(),
-    //     status: $('#commercial #status').val(),
-    //     commercial_property_type_id: $('#commercial #commercial_property_type_id').val(),
-    //     listing_id: $('#commercial #listing_id').val(),
-    //     neighborhood_ids: $('#commercial #neighborhood_ids').val(),
-    //     primary_agent_id:  $('#commercial #primary_agent_id').val(),
-    //     sort_by: sort_by_col,
-    //     direction: sort_direction,
-    //   },
-    //   dataType: "script",
-    //   success: function(data) {
-    //     Listings.hideSpinner();
-    //   },
-    //   error: function(data) {
-    //     Listings.hideSpinner();
-    //   }
-    // });
+    }
+    window.location.search = searchParams.join('&');
 
     CommercialListings.passiveRealTimeUpdate();
   };
@@ -314,7 +287,6 @@ CommercialListings = {};
         $('.img').each(function(i) {
           updated_order.push({ id: $(this).data('id'), position: i });
         });
-        //console.log(updated_order);
         // send the updated order via ajax
         var unit_id = $('#commercial').attr('data-unit-id');
         $.ajax({
@@ -325,12 +297,32 @@ CommercialListings = {};
     });
   };
 
-  //call when typing or enter or focus leaving
-  CommercialListings.initialize = function () {
-    if (!$('#commercial').length) {
-      return;
+  CommercialListings.initEditor = function() {
+    // edit/new form
+    $('#commercial_listing_property_type').change(function(e) {
+      var optionSelected = $("option:selected", this);
+      var textSelected   = optionSelected.text();
+      CommercialListings.updatePropertySubTypes(textSelected);
+    });
+
+    var ptype = $('#commercial').attr('data-property-type');
+    if (ptype) {
+      CommercialListings.updatePropertySubTypes(ptype);
     }
 
+    var available_by = $('#commercial .datepicker').attr('data-available-by');
+    if (available_by) {
+      $('#commercial .datepicker').data("DateTimePicker").date(available_by);
+    }
+
+    // for drag n dropping photos/documents
+    // disable auto discover
+    Dropzone.autoDiscover = false;
+    CommercialListings.initializeImageDropzone();
+    CommercialListings.initializeDocumentsDropzone();
+  }
+
+  CommercialListings.initIndex = function() {
     document.addEventListener("page:restore", function() {
       CommercialListings.passiveRealTimeUpdate();
       Listings.hideSpinner();
@@ -347,24 +339,7 @@ CommercialListings = {};
       Common.markSortingColumnByElem($('th[data-sort="updated_at"]'), 'desc')
     }
 
-    // edit/new form
-    $('#commercial_listing_property_type').change(function(e) {
-      var optionSelected = $("option:selected", this);
-      var textSelected   = optionSelected.text();
-      //console.log(textSelected);
-      CommercialListings.updatePropertySubTypes(textSelected);
-    });
 
-    var ptype = $('#commercial').attr('data-property-type');
-    if (ptype) {
-      //console.log(ptype);
-      CommercialListings.updatePropertySubTypes(ptype);
-    }
-
-    var available_by = $('#commercial .datepicker').attr('data-available-by');
-    if (available_by) {
-      $('#commercial .datepicker').data("DateTimePicker").date(available_by);
-    }
 
     if ($('#c-big-map').length > 0) {
       if(ResidentialListings.map) ResidentialListings.map.remove();
@@ -418,14 +393,8 @@ CommercialListings = {};
       if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();
     });
 
-    // for drag n dropping photos/documents
-    // disable auto discover
-    Dropzone.autoDiscover = false;
-    CommercialListings.initializeImageDropzone();
-    CommercialListings.initializeDocumentsDropzone();
-
     CommercialListings.passiveRealTimeUpdate();
-  };
+  }
 
 })();
 
@@ -435,4 +404,20 @@ $(document).on('keyup',function(evt) {
   }
 });
 
-$(document).ready(CommercialListings.initialize);
+$(document).ready(function() {
+  // if (!$('#commercial').length) {
+  //   return;
+  // }
+  // CommercialListings.initialize
+
+  var url = window.location.pathname;
+  var commercial = url.indexOf('commercial_listings') > -1;
+  var editPage = url.indexOf('edit') > -1;
+  if (commercial) {
+    if (editPage) {
+      CommercialListings.initEditor();
+    } else {
+      CommercialListings.initIndex();
+    }
+  }
+});
