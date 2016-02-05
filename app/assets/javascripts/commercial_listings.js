@@ -383,11 +383,6 @@ $(document).on('keyup',function(evt) {
 });
 
 $(document).ready(function() {
-  // if (!$('#commercial').length) {
-  //   return;
-  // }
-  // CommercialListings.initialize
-
   var url = window.location.pathname;
   var commercial = url.indexOf('commercial_listings') > -1;
   var editPage = url.indexOf('edit') > -1;

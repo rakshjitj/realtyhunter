@@ -363,138 +363,130 @@ ResidentialListings = {};
     });
   };
 
-	ResidentialListings.initialize = function() {
-		if (!$('#residential').length) {
-			return;
-		}
+  ResidentialListings.initEditor = function() {
+    $('#residential .has-fee').click(ResidentialListings.toggleFeeOptions);
+    ResidentialListings.toggleFeeOptions();
+    // when creating a new listing, inherit TP/OP from building's landlord
+    $('#residential #residential_listing_unit_building_id').change(ResidentialListings.inheritFeeOptions);
 
-		ResidentialListings.passiveRealTimeUpdate();
-		ResidentialListings.updateAnnouncements();
+    // make sure datepicker is formatted before setting initial date below
+    // use in residential/edit, on photos tab
+    $('.datepicker').datetimepicker({
+      viewMode: 'days',
+      format: 'MM/DD/YYYY',
+      allowInputToggle: true
+    });
+    var available_by = $('#residential .datepicker').attr('data-available-by');
+    if (available_by) {
+      $('#residential .datepicker').data("DateTimePicker").date(available_by);
+    }
 
+    // for drag n dropping photos/docs
+    // disable auto discover
+    Dropzone.autoDiscover = false;
+    ResidentialListings.initializeImageDropzone();
+    ResidentialListings.initializeDocumentsDropzone();
+  }
 
-		// hide spinner on main index when first pulling up the page
-		document.addEventListener("page:restore", function() {
-		  Listings.hideSpinner();
-		  ResidentialListings.passiveRealTimeUpdate();
-		  ResidentialListings.updateAnnouncements();
-		});
-		Listings.hideSpinner();
+  ResidentialListings.initIndex = function() {
+    ResidentialListings.passiveRealTimeUpdate();
+    ResidentialListings.updateAnnouncements();
 
-		$('#residential a').click(function() {
-			Listings.showSpinner();
-		});
+    // hide spinner on main index when first pulling up the page
+    document.addEventListener("page:restore", function() {
+      Listings.hideSpinner();
+      ResidentialListings.passiveRealTimeUpdate();
+      ResidentialListings.updateAnnouncements();
+    });
+    Listings.hideSpinner();
 
-		// main index table
-		ResidentialListings.sortOnColumnClick();
+    $('#residential a').click(function() {
+      Listings.showSpinner();
+    });
+
+    // main index table
+    ResidentialListings.sortOnColumnClick();
     Common.markSortingColumn();
     if (Common.getSearchParam('sort_by') === '') {
       Common.markSortingColumnByElem($('th[data-sort="updated_at"]'), 'desc')
     }
 
-		$('.close').click(function() {
-			Listings.hideSpinner();
-		});
+    $('.close').click(function() {
+      Listings.hideSpinner();
+    });
 
-		$('#residential .has-fee').click(ResidentialListings.toggleFeeOptions);
-		// when editing form
-		ResidentialListings.toggleFeeOptions();
-		// when creating a new listing, inherit TP/OP from building's landlord
-		$('#residential #residential_listing_unit_building_id').change(ResidentialListings.inheritFeeOptions);
+    // index filtering
+    $('#residential input').keydown(ResidentialListings.preventEnter);
+    $('#residential #address').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
+    $('#residential #address').change(ResidentialListings.throttledSearch);
+    $('#residential #unit').change(ResidentialListings.throttledSearch);
+    $('#residential #rent_min').change(ResidentialListings.throttledSearch);
+    $('#residential #rent_max').change(ResidentialListings.throttledSearch);
+    $('#residential #bed_min').change(ResidentialListings.throttledSearch);
+    $('#residential #bed_max').change(ResidentialListings.throttledSearch);
+    $('#residential #bath_min').change(ResidentialListings.throttledSearch);
+    $('#residential #bath_max').change(ResidentialListings.throttledSearch);
+    $('#residential #landlord').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
+    $('#residential #landlord').change(ResidentialListings.throttledSearch);
+    $('#residential #available_starting').blur(ResidentialListings.throttledSearch);
+    $('#residential #available_before').blur(ResidentialListings.throttledSearch);
+    $('#residential #pet_policy_shorthand').change(ResidentialListings.throttledSearch);
+    $('#residential #status').change(ResidentialListings.throttledSearch);
+    $('#residential #features').change(ResidentialListings.throttledSearch);
+    $('#residential #has_fee').change(ResidentialListings.throttledSearch);
+    $('#residential #neighborhood_ids').change(ResidentialListings.throttledSearch);
+    $('#residential #unit_feature_ids').change(ResidentialListings.throttledSearch);
+    $('#residential #building_feature_ids').change(ResidentialListings.throttledSearch);
+    $('#residential #roomsharing_filter').change(ResidentialListings.throttledSearch);
+    $('#residential #unassigned_filter').change(ResidentialListings.throttledSearch);
+    $('#residential #primary_agent_id').change(ResidentialListings.throttledSearch);
 
-		// index filtering
-		$('#residential input').keydown(ResidentialListings.preventEnter);
-		$('#residential #address').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
-	  $('#residential #address').change(ResidentialListings.throttledSearch);
-	  $('#residential #unit').change(ResidentialListings.throttledSearch);
-	  $('#residential #rent_min').change(ResidentialListings.throttledSearch);
-	  $('#residential #rent_max').change(ResidentialListings.throttledSearch);
-	  $('#residential #bed_min').change(ResidentialListings.throttledSearch);
-	  $('#residential #bed_max').change(ResidentialListings.throttledSearch);
-	  $('#residential #bath_min').change(ResidentialListings.throttledSearch);
-	  $('#residential #bath_max').change(ResidentialListings.throttledSearch);
-	  $('#residential #landlord').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
-	  $('#residential #landlord').change(ResidentialListings.throttledSearch);
-	  $('#residential #available_starting').blur(ResidentialListings.throttledSearch);
-	  $('#residential #available_before').blur(ResidentialListings.throttledSearch);
-	  $('#residential #pet_policy_shorthand').change(ResidentialListings.throttledSearch);
-	  $('#residential #status').change(ResidentialListings.throttledSearch);
-	  $('#residential #features').change(ResidentialListings.throttledSearch);
-	  $('#residential #has_fee').change(ResidentialListings.throttledSearch);
-	  $('#residential #neighborhood_ids').change(ResidentialListings.throttledSearch);
-	  $('#residential #unit_feature_ids').change(ResidentialListings.throttledSearch);
-	  $('#residential #building_feature_ids').change(ResidentialListings.throttledSearch);
-	  $('#residential #roomsharing_filter').change(ResidentialListings.throttledSearch);
-	  $('#residential #unassigned_filter').change(ResidentialListings.throttledSearch);
-	  $('#residential #primary_agent_id').change(ResidentialListings.throttledSearch);
+    // remove individual features by clicking on 'x' button
+    $('#residential').on('click', '.remove-unit-feature',     ResidentialListings.removeUnitFeature);
+    $('#residential').on('click', '.remove-building-feature', ResidentialListings.removeBuildingFeature);
+    $('#residential').on('click', '.remove-neighborhood',     ResidentialListings.removeNeighborhood);
 
-	  // remove individual features by clicking on 'x' button
-	  //$('#residential .remove-unit-feature').click(ResidentialListings.removeUnitFeature);
-	  //$('#residential .remove-building-feature').click(ResidentialListings.removeBuildingFeature);
-	  $('#residential').on('click', '.remove-unit-feature',     ResidentialListings.removeUnitFeature);
-	  $('#residential').on('click', '.remove-building-feature', ResidentialListings.removeBuildingFeature);
-	  $('#residential').on('click', '.remove-neighborhood',     ResidentialListings.removeNeighborhood);
+    // index page - selecting listings menu dropdown
+    $('#residential #emailListings').click(Listings.sendMessage);
+    $('#residential #assignListings').click(Listings.assignPrimaryAgent);
+    $('#residential #unassignListings').click(Listings.unassignPrimaryAgent);
+    $('#residential tbody').on('click', 'i', Listings.toggleListingSelection);
+    $('#residential .select-all-listings').click(Listings.selectAllListings);
+    $('#residential .selected-listings-menu').on('click', 'a', function() {
+      var action = $(this).data('action');
+      if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();
+    });
 
-		// index page - selecting listings menu dropdown
-		$('#residential #emailListings').click(Listings.sendMessage);
-		$('#residential #assignListings').click(Listings.assignPrimaryAgent);
-		$('#residential #unassignListings').click(Listings.unassignPrimaryAgent);
-		$('#residential tbody').on('click', 'i', Listings.toggleListingSelection);
-		$('#residential .select-all-listings').click(Listings.selectAllListings);
-		$('#residential .selected-listings-menu').on('click', 'a', function() {
-			var action = $(this).data('action');
-			if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();
-		});
-
-		// // make sure datepicker is formatted before setting initial date below
-		// use in residential/edit, on photos tab
-		$('.datepicker').datetimepicker({
-		  viewMode: 'days',
-		  format: 'MM/DD/YYYY',
-		  allowInputToggle: true
-		});
-		var available_by = $('#residential .datepicker').attr('data-available-by');
-		if (available_by) {
-			$('#residential .datepicker').data("DateTimePicker").date(available_by);
-		}
-
-		if ($('#r-big-map').length > 0) {
+    if ($('#r-big-map').length > 0) {
       if(ResidentialListings.map) ResidentialListings.map.remove();
       if(CommercialListings.map) CommercialListings.map.remove();
       if(SalesListings.map) SalesListings.map.remove();
-			// mapbox
-			L.mapbox.accessToken = $('#mapbox-token').attr('data-mapbox-token');
-	    ResidentialListings.map = L.mapbox.map('r-big-map', 'rakelblujeans.8594241c', { zoomControl: false })
-	    	.setView([40.6739591, -73.9570342], 13);
-			new L.Control.Zoom({ position: 'topright' }).addTo(ResidentialListings.map);
-	    //map.removeLayer(marker)
-	    //var markerLayer = L.mapbox.featureLayer().addTo(map);
-	    ResidentialListings.overlays = L.layerGroup().addTo(ResidentialListings.map);
-	    ResidentialListings.updateOverviewMap();
-		}
+      // mapbox
+      L.mapbox.accessToken = $('#mapbox-token').attr('data-mapbox-token');
+      ResidentialListings.map = L.mapbox.map('r-big-map', 'rakelblujeans.8594241c', { zoomControl: false })
+        .setView([40.6739591, -73.9570342], 13);
+      new L.Control.Zoom({ position: 'topright' }).addTo(ResidentialListings.map);
+      ResidentialListings.overlays = L.layerGroup().addTo(ResidentialListings.map);
+      ResidentialListings.updateOverviewMap();
+    }
 
-		// google map on show page
-		var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
-		$("#runit-panel").geocomplete({
-	  	map: "#map_canvas",
-	  	location: bldg_address,
-	  	details: ".details"
-	  }).bind("geocode:result", function(event, result){
-	    //console.log(result);
-	  }).bind("geocode:error", function(event, result){
-	    //console.log("[ERROR]: " + result);
-	  });
-
-	  // for drag n dropping photos/docs
-		// disable auto discover
-		Dropzone.autoDiscover = false;
-	 	ResidentialListings.initializeImageDropzone();
-	 	ResidentialListings.initializeDocumentsDropzone();
+    // google map on show page
+    var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
+    $("#runit-panel").geocomplete({
+      map: "#map_canvas",
+      location: bldg_address,
+      details: ".details"
+    }).bind("geocode:result", function(event, result){
+      //console.log(result);
+    }).bind("geocode:error", function(event, result){
+      //console.log("[ERROR]: " + result);
+    });
 
     // activate tooltips
     $('[data-toggle="tooltip"]').tooltip();
 
-		Common.detectPhoneNumbers();
-	};
+    Common.detectPhoneNumbers();
+  }
 
 })();
 
@@ -504,4 +496,17 @@ $(document).on('keyup',function(evt) {
   }
 });
 
-$(document).ready(ResidentialListings.initialize);
+$(document).ready(function() {
+  var url = window.location.pathname;
+  var residential = url.indexOf('residential_listings') > -1;
+  var editPage = url.indexOf('edit') > -1;
+  var newPage = url.indexOf('new') > -1;
+  if (residential) {
+    // new and edit pages both render the same form template, so init them using the same code
+    if (editPage || newPage) {
+      ResidentialListings.initEditor();
+    } else {
+      ResidentialListings.initIndex();
+    }
+  }
+});

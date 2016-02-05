@@ -29,7 +29,7 @@ class Building < ActiveRecord::Base
 	# borough
 	#:sublocality can be blank
 	# city
-	validates :administrative_area_level_2_short, presence: true, length: {maximum: 100}
+	validates :administrative_area_level_2_short, allow_blank: true, length: {maximum: 100}
 	# state
 	validates :administrative_area_level_1_short, presence: true, length: {maximum: 100}
 	validates :postal_code, presence: true, length: {maximum: 15}
