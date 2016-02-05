@@ -192,7 +192,6 @@ ResidentialListings = {};
 	  } else {
 	  	dataPoints = JSON.parse($('#r-big-map').attr('data-map-points'));
 	  }
-	  var features = [];
 	  Object.keys(dataPoints).forEach(function(key, index) {
 	    // draw each marker + load with data
 	    var info = dataPoints[key];
@@ -208,17 +207,10 @@ ResidentialListings = {};
       markers.addLayer(marker);
 		});
 
-		var geojson = {
-			'type': 'FeatureCollection',
-			'features': features
-		};
-
-    //markerLayer.setGeoJSON(geojson);
-    var geoJsonLayer = L.geoJson(geojson);
-    //geoJsonLayer.clearLayers();
-    markers.addLayer(geoJsonLayer);
- 		ResidentialListings.map.addLayer(markers);
-    ResidentialListings.map.fitBounds(markers.getBounds());
+    if (dataPoints.length) {
+   		ResidentialListings.map.addLayer(markers);
+      ResidentialListings.map.fitBounds(markers.getBounds());
+    }
 	};
 
 	ResidentialListings.toggleFeeOptions = function(event) {

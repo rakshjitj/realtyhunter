@@ -140,7 +140,7 @@ CommercialListings = {};
     } else {
       dataPoints = JSON.parse($('#c-big-map').attr('data-map-points'));
     }
-    var features = [];
+
     Object.keys(dataPoints).forEach(function(key, index) {
       // draw each marker + load with data
       var info = dataPoints[key];
@@ -154,34 +154,12 @@ CommercialListings = {};
       });
       marker.bindPopup(content);
       markers.addLayer(marker);
-      // var feature = {
-     //    type: 'Feature',
-     //    properties: {
-     //        title: key,
-     //        'marker-color': '#f86767',
-     //        'description': CommercialListings.buildContentString(key, info),
-     //        'marker-size': 'small'
-     //    },
-     //    geometry: {
-     //        type: 'Point',
-     //        coordinates: [info.lng, info.lat]
-     //    }
-      // };
-
-      // features.push(feature);
     });
 
-    var geojson = {
-      'type': 'FeatureCollection',
-      'features': features
-    };
-
-    //markerLayer.setGeoJSON(geojson);
-    var geoJsonLayer = L.geoJson(geojson);
-    //geoJsonLayer.clearLayers();
-    markers.addLayer(geoJsonLayer);
-    CommercialListings.map.addLayer(markers);
-    CommercialListings.map.fitBounds(markers.getBounds());
+    if (dataPoints.length) {
+      CommercialListings.map.addLayer(markers);
+      CommercialListings.map.fitBounds(markers.getBounds());
+    }
   };
 
   CommercialListings.initializeDocumentsDropzone = function() {

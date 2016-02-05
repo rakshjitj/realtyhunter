@@ -318,7 +318,6 @@ SalesListings = {};
 	  } else {
 	  	dataPoints = JSON.parse($('#s-big-map').attr('data-map-points'));
 	  }
-	  var features = [];
 	  Object.keys(dataPoints).forEach(function(key, index) {
 	    // draw each marker + load with data
 	    var info = dataPoints[key];
@@ -334,17 +333,10 @@ SalesListings = {};
       markers.addLayer(marker);
 		});
 
-		var geojson = {
-			'type': 'FeatureCollection',
-			'features': features
-		};
-
-    //markerLayer.setGeoJSON(geojson);
-    var geoJsonLayer = L.geoJson(geojson);
-    //geoJsonLayer.clearLayers();
-    markers.addLayer(geoJsonLayer);
- 		SalesListings.map.addLayer(markers);
-    SalesListings.map.fitBounds(markers.getBounds());
+    if (dataPoints.length) {
+   		SalesListings.map.addLayer(markers);
+      SalesListings.map.fitBounds(markers.getBounds());
+    }
 	};
 
 	SalesListings.initialize = function() {
