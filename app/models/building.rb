@@ -93,15 +93,16 @@ class Building < ActiveRecord::Base
         'buildings.total_unit_count',
         'buildings.active_unit_count')
 
-    return @running_list if !query_str
-
-    @terms = query_str.split(" ")
-    @terms.each do |term|
-      @running_list = @running_list.where('buildings.formatted_street_address ILIKE ? OR buildings.sublocality ILIKE ?', "%#{term}%", "%#{term}%")
+    if query_str
+      @terms = query_str.split(" ")
+      @terms.each do |term|
+        @running_list = @running_list.where('buildings.formatted_street_address ILIKE ? OR buildings.sublocality ILIKE ?', "%#{term}%", "%#{term}%")
+      end
     end
 
     if active_only == "true"
-      @running_list = @running_list.joins(:units).where("units.status != ? ", Unit.statuses["off"])
+      # @running_list = @running_list.joins(:units).where("units.status != ? ", Unit.statuses["off"])
+      @running_list = @running_list.where('buildings.active_unit_count > 0')
     end
 
     @running_list

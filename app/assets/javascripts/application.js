@@ -28,6 +28,8 @@
 //= require jquery.mousewheel.min
 
 $(document).ready(function() {
+	Common.detectPhoneNumbers();
+
 	// change all date input fields to auto-open the calendar
 	$('.datepicker').datetimepicker({
 	  viewMode: 'days',

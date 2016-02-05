@@ -107,11 +107,12 @@ Landlords = {};
     }
   };
 
-  Landlords.initialize = function() {
-    if (!$('#landlords').length) {
-      return;
-    }
+  Landlords.initEditor = function() {
+    $('#landlords .has-fee').click(Landlords.toggleFeeOptions);
+    Landlords.toggleFeeOptions();
+  }
 
+  Landlords.initIndex = function() {
     document.addEventListener("page:restore", function() {
       Landlords.hideSpinner();
     });
@@ -126,9 +127,6 @@ Landlords = {};
     if (Common.getSearchParam('sort_by') === '') {
       Common.markSortingColumnByElem($('th[data-sort="name"]'), 'asc')
     }
-
-    $('#landlords .has-fee').click(Landlords.toggleFeeOptions);
-    Landlords.toggleFeeOptions();
 
     var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
 
@@ -149,9 +147,8 @@ Landlords = {};
     $('#landlords #filter').change(Landlords.throttledSearch);
     $('#landlords #checkbox_active').click(Landlords.throttledSearch);
     $('#landlords #listings_checkbox_active').click(Landlords.filterListings);
+  }
 
-    Common.detectPhoneNumbers();
-  };
 })();
 
 $(document).on('keyup',function(evt) {
@@ -160,4 +157,18 @@ $(document).on('keyup',function(evt) {
   }
 });
 
-$(document).ready(Landlords.initialize);
+$(document).ready(function () {
+  // Landlords.initialize
+  var url = window.location.pathname;
+  var landlords = url.indexOf('landlords') > -1;
+  var editPage = url.indexOf('edit') > -1;
+  var newPage = url.indexOf('new') > -1;
+  if (landlords) {
+    // new and edit pages both render the same form template, so init them using the same code
+    if (editPage || newPage) {
+      Landlords.initEditor();
+    } else {
+      Landlords.initIndex();
+    }
+  }
+});

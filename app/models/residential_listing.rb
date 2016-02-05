@@ -196,8 +196,6 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self._filter_query(running_list, user, params)
-    # params.delete('direction')
-    # params.delete('sort_by')
     params.delete('controller')
     params.delete('action')
     params.delete('format')

@@ -108,8 +108,6 @@ Careers = {};
 			var action = $(this).data('action');
 			if (action in Forms.indexMenuActions) Forms.indexMenuActions[action]();
 		});
-
-		Common.detectPhoneNumbers();
 	};
 
 })();

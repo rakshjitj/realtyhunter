@@ -58,7 +58,7 @@ class Landlord < ActiveRecord::Base
 
     if params[:active_only] == "true"
     	# misnamed. this actually means active + pending
-    	running_list = running_list.joins(buildings: :units).where.not("status = ?", Unit.statuses["off"]).uniq
+      running_list = running_list.where('active_unit_count > 0')
     end
 
     running_list

@@ -53,23 +53,6 @@ Buildings = {};
       }
     }
     window.location.search = searchParams.join('&');
-
-    // $.ajax({
-    //   url: search_path,
-    //   data: {
-    //     filter: $('#buildings #filter').val(),
-    //     active_only: $('#buildings #checkbox_active').prop('checked'),
-    //     sort_by: sortByCol,
-    //     direction: sortDirection,
-    //   },
-    //   dataType: "script",
-    //   success: function(data) {
-    //     Buildings.hideSpinner();
-    //   },
-    //   error: function(data) {
-    //     Buildings.hideSpinner();
-    //   }
-    // });
   };
 
   Buildings.sortOnColumnClick = function() {
@@ -135,22 +118,72 @@ Buildings = {};
     });
   };
 
-  // Buildings.toggleFeeOptions = function(event) {
-  //   var isChecked = $('#buildings .has-fee').prop('checked');
-  //   if (isChecked) {
-  //     $('#buildings .show-op').addClass('hide');
-  //     $('#buildings .show-tp').removeClass('hide');
-  //   } else {
-  //     $('#buildings .show-op').removeClass('hide');
-  //     $('#buildings .show-tp').addClass('hide');
-  //   }
-  // };
+  Buildings.initEditor = function() {
+        // editing photos
 
-  Buildings.initialize = function() {
-    if (!$('#buildings').length) {
-      return;
-    }
+    // disable auto discover
+    Dropzone.autoDiscover = false;
 
+    // grap our upload form by its id
+    $("#building-dropzone").dropzone({
+      // restrict image size to a maximum 1MB
+      //maxFilesize: 4,
+      //paramName: "upload[image]",
+      // show remove links on each image upload
+      addRemoveLinks: true,
+      // if the upload was successful
+      success: function(file, response){
+        // find the remove button link of the uploaded file and give it an id
+        // based of the fileID response from the server
+        $(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
+        $(file.previewTemplate).find('.dz-remove').attr('bldg_id', response.bldgID);
+        // add the dz-success class (the green tick sign)
+        $(file.previewElement).addClass("dz-success");
+        $.getScript('/buildings/' + response.bldgID + '/refresh_images')
+        file.previewElement.remove();
+      },
+      //when the remove button is clicked
+      removedfile: function(file){
+        // grap the id of the uploaded file we set earlier
+        var id = $(file.previewTemplate).find('.dz-remove').attr('id');
+        var bldg_id = $(file.previewTemplate).find('.dz-remove').attr('bldg_id');
+        Buildings.removeBldgImage(id, bldg_id);
+        file.previewElement.remove();
+      }
+    });
+
+    Buildings.updateRemoveImgLinks();
+
+    $('.carousel-indicators > li:first-child').addClass('active');
+    $('.carousel-inner > .item:first-child').addClass('active')
+
+    Buildings.setPositions();
+    Buildings.makeSortable();
+
+    // after the order changes
+    $('#buildings .sortable').sortable().bind('sortupdate', function(e, ui) {
+      // array to store new order
+      updated_order = []
+      // set the updated positions
+      Buildings.setPositions();
+
+      // populate the updated_order array with the new task positions
+      $('#buildings .img-thumbnail').each(function(i){
+        updated_order.push({ id: $(this).data('id'), position: i+1 });
+      });
+      //console.log(updated_order);
+
+      // send the updated order via ajax
+      var bldg_id = $('#buildings').attr('data-bldg-id');
+      $.ajax({
+        type: "PUT",
+        url: '/buildings/' + bldg_id + '/images/sort',
+        data: { order: updated_order }
+      });
+    });
+  }
+
+  Buildings.initIndex = function() {
     document.addEventListener("page:restore", function() {
       Buildings.hideSpinner();
     });
@@ -177,16 +210,16 @@ Buildings = {};
     var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
     // google maps
     $("#bldg_panel").geocomplete({
-    	map: "#map_canvas",
-    	location: bldg_address,
-    	details: ".details"
+      map: "#map_canvas",
+      location: bldg_address,
+      details: ".details"
     }).bind("geocode:result", function(event, result){
       //console.log(result);
     }).bind("geocode:error", function(event, result){
       //console.log("[ERROR]: " + result);
     });
 
-  	$(".autocomplete-input").geocomplete({
+    $(".autocomplete-input").geocomplete({
       map: "#map_canvas",
       location: bldg_address,
       details: ".details"
@@ -196,7 +229,6 @@ Buildings = {};
       }
 
       // update neighborhood options from google results
-
       var sublocality = '';
       for (var i =0; i<result["address_components"].length; i++) {
         if (result["address_components"][i]["types"][1] == "sublocality") {
@@ -225,73 +257,9 @@ Buildings = {};
       }
 
     }).bind("geocode:error", function(event, result){
-    	//console.log("[ERROR]: " + result);
+      //console.log("[ERROR]: " + result);
     });
-
-  	// editing photos
-
-  	// disable auto discover
-  	Dropzone.autoDiscover = false;
-
-  	// grap our upload form by its id
-  	$("#building-dropzone").dropzone({
-  		// restrict image size to a maximum 1MB
-  		//maxFilesize: 4,
-  		//paramName: "upload[image]",
-  		// show remove links on each image upload
-  		addRemoveLinks: true,
-  		// if the upload was successful
-  		success: function(file, response){
-  			// find the remove button link of the uploaded file and give it an id
-  			// based of the fileID response from the server
-  			$(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
-  			$(file.previewTemplate).find('.dz-remove').attr('bldg_id', response.bldgID);
-  			// add the dz-success class (the green tick sign)
-  			$(file.previewElement).addClass("dz-success");
-  			$.getScript('/buildings/' + response.bldgID + '/refresh_images')
-  			file.previewElement.remove();
-  		},
-  		//when the remove button is clicked
-  		removedfile: function(file){
-  			// grap the id of the uploaded file we set earlier
-  			var id = $(file.previewTemplate).find('.dz-remove').attr('id');
-  			var bldg_id = $(file.previewTemplate).find('.dz-remove').attr('bldg_id');
-  			Buildings.removeBldgImage(id, bldg_id);
-  			file.previewElement.remove();
-  		}
-  	});
-
-  	Buildings.updateRemoveImgLinks();
-
-  	$('.carousel-indicators > li:first-child').addClass('active');
-  	$('.carousel-inner > .item:first-child').addClass('active')
-
-    Buildings.setPositions();
-    Buildings.makeSortable();
-
-    // after the order changes
-    $('#buildings .sortable').sortable().bind('sortupdate', function(e, ui) {
-      // array to store new order
-      updated_order = []
-      // set the updated positions
-      Buildings.setPositions();
-
-      // populate the updated_order array with the new task positions
-      $('#buildings .img-thumbnail').each(function(i){
-        updated_order.push({ id: $(this).data('id'), position: i+1 });
-      });
-  		//console.log(updated_order);
-
-      // send the updated order via ajax
-      var bldg_id = $('#buildings').attr('data-bldg-id');
-      $.ajax({
-        type: "PUT",
-        url: '/buildings/' + bldg_id + '/images/sort',
-        data: { order: updated_order }
-      });
-    });
-
-  };// end initialize
+  }
 
 })();
 
@@ -301,4 +269,17 @@ $(document).on('keyup',function(evt) {
   }
 });
 
-$(document).ready(Buildings.initialize);
+$(document).ready(function () {
+  var url = window.location.pathname;
+  var buildings = url.indexOf('buildings') > -1;
+  var editPage = url.indexOf('edit') > -1;
+  var newPage = url.indexOf('new') > -1;
+  if (buildings) {
+    // new and edit pages both render the same form template, so init them using the same code
+    if (editPage || newPage) {
+      Buildings.initEditor();
+    } else {
+      Buildings.initIndex();
+    }
+  }
+});

@@ -320,8 +320,6 @@ Roommates = {};
 		if (available_by) {
 			$('#roommates .datepicker').data("DateTimePicker").date(available_by);
 		}
-
-		Common.detectPhoneNumbers();
 	};
 
 })();

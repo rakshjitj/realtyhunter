@@ -484,8 +484,6 @@ ResidentialListings = {};
 
     // activate tooltips
     $('[data-toggle="tooltip"]').tooltip();
-
-    Common.detectPhoneNumbers();
   }
 
 })();
