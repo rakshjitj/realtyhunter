@@ -391,8 +391,10 @@ $(document).ready(function() {
   var url = window.location.pathname;
   var commercial = url.indexOf('commercial_listings') > -1;
   var editPage = url.indexOf('edit') > -1;
+  var newPage = url.indexOf('new') > -1;
   if (commercial) {
-    if (editPage) {
+    // new and edit pages both render the same form template, so init them using the same code
+    if (editPage || newPage) {
       CommercialListings.initEditor();
     } else {
       CommercialListings.initIndex();
