@@ -161,45 +161,6 @@ ResidentialListings = {};
 	  return contentString;
 	};
 
-	ResidentialListings.map;
-	ResidentialListings.overlays;
-
-	ResidentialListings.updateOverviewMap = function(in_data) {
-		ResidentialListings.overlays.clearLayers();
-    var markers = new L.MarkerClusterGroup({
-    	maxClusterRadius: 30 // lean towards showing more individual markers
-    }).addTo(ResidentialListings.overlays);//{ showCoverageOnHover: false });
-
-    var dataPoints;
-	  // if updating from an ajax call, in_data will hava content.
-	  // we load data from a data attribute on page load, but that remains cached forever -
-	  // it will not update with subsequent ajax calls.
-	  if (in_data) {
-	  	dataPoints = JSON.parse(in_data);
-	  } else {
-	  	dataPoints = JSON.parse($('#r-big-map').attr('data-map-points'));
-	  }
-	  Object.keys(dataPoints).forEach(function(key, index) {
-	    // draw each marker + load with data
-	    var info = dataPoints[key];
-	    var content = ResidentialListings.buildContentString(key, info);
-	    var marker = L.marker(new L.LatLng(info.lat, info.lng), {
-	      icon: L.mapbox.marker.icon({
-	      	'marker-size': 'small',
-	      	'marker-color': '#f86767'
-	      }),
-	      'title': key,
-	    });
-	    marker.bindPopup(content);
-      markers.addLayer(marker);
-		});
-
-    if (dataPoints.length) {
-   		ResidentialListings.map.addLayer(markers);
-      ResidentialListings.map.fitBounds(markers.getBounds());
-    }
-	};
-
 	ResidentialListings.toggleFeeOptions = function(event) {
 		var isChecked = $('#residential .has-fee').prop('checked');
 		if (isChecked) {
@@ -513,18 +474,7 @@ ResidentialListings = {};
       if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();
     });
 
-    if ($('#r-big-map').length > 0) {
-      if(ResidentialListings.map) ResidentialListings.map.remove();
-      if(CommercialListings.map) CommercialListings.map.remove();
-      if(SalesListings.map) SalesListings.map.remove();
-      // mapbox
-      L.mapbox.accessToken = $('#mapbox-token').attr('data-mapbox-token');
-      ResidentialListings.map = L.mapbox.map('r-big-map', 'rakelblujeans.8594241c', { zoomControl: false })
-        .setView([40.6739591, -73.9570342], 13);
-      new L.Control.Zoom({ position: 'topright' }).addTo(ResidentialListings.map);
-      ResidentialListings.overlays = L.layerGroup().addTo(ResidentialListings.map);
-      ResidentialListings.updateOverviewMap();
-    }
+    RHMapbox.initMapbox('r-big-map', ResidentialListings.buildContentString);
 
     // activate tooltips
     $('[data-toggle="tooltip"]').tooltip();

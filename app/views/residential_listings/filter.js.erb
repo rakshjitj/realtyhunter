@@ -4,6 +4,6 @@ $('.residential_units_table_body').html("<%= escape_javascript (render :partial 
 
 $('.pagination').html("<%= escape_javascript (render :partial => 'shared/pagination', locals: {:models => @residential_units}) %>");
 
-ResidentialListings.updateOverviewMap("<%= escape_javascript(@map_infos).to_s.html_safe %>");
+ResidentialListings.updateOverviewMap("<%= escape_javascript(@map_infos).to_s.html_safe %>", ResidentialListings.buildContentString);
 
 $('#residential .announcements').html("<%= j(render partial: "residential_listings/announcements", locals: { announcements: @announcement_items }) %>");

@@ -109,9 +109,6 @@ CommercialListings = {};
     }
   };
 
-  CommercialListings.map;
-  CommercialListings.overlays;
-
   // for giant google map
   CommercialListings.buildContentString = function (key, info) {
     var contentString = '<strong>' + key + '</strong><br />';
@@ -134,43 +131,6 @@ CommercialListings = {};
       }
     }
     return contentString;
-  };
-
-  CommercialListings.updateOverviewMap = function(in_data) {
-    CommercialListings.overlays.clearLayers();
-    var markers = new L.MarkerClusterGroup({
-      maxClusterRadius: 30 // lean towards showing more individual markers
-    }).addTo(CommercialListings.overlays);//{ showCoverageOnHover: false });
-
-    var dataPoints;
-    // if updating from an ajax call, in_data will hava content.
-    // we load data from a data attribute on page load, but that remains cached forever -
-    // it will not update with subsequent ajax calls.
-    if (in_data) {
-      dataPoints = JSON.parse(in_data);
-    } else {
-      dataPoints = JSON.parse($('#c-big-map').attr('data-map-points'));
-    }
-
-    Object.keys(dataPoints).forEach(function(key, index) {
-      // draw each marker + load with data
-      var info = dataPoints[key];
-      var content = CommercialListings.buildContentString(key, info);
-      var marker = L.marker(new L.LatLng(info.lat, info.lng), {
-        icon: L.mapbox.marker.icon({
-          'marker-size': 'small',
-          'marker-color': '#f86767'
-        }),
-        'title': key,
-      });
-      marker.bindPopup(content);
-      markers.addLayer(marker);
-    });
-
-    if (dataPoints.length) {
-      CommercialListings.map.addLayer(markers);
-      CommercialListings.map.fitBounds(markers.getBounds());
-    }
   };
 
   CommercialListings.initializeDocumentsDropzone = function() {
@@ -325,19 +285,7 @@ CommercialListings = {};
       Common.markSortingColumnByElem($('th[data-sort="updated_at"]'), 'desc')
     }
 
-    if ($('#c-big-map').length > 0) {
-      if(ResidentialListings.map) ResidentialListings.map.remove();
-      if(CommercialListings.map) CommercialListings.map.remove();
-      if(SalesListings.map) SalesListings.map.remove();
-      // mapbox
-      L.mapbox.accessToken = $('#mapbox-token').attr('data-mapbox-token');
-      CommercialListings.map = L.mapbox.map('c-big-map', 'rakelblujeans.8594241c', { zoomControl: false })
-          .setView([40.6739591, -73.9570342], 13);
-
-      new L.Control.Zoom({ position: 'topright' }).addTo(CommercialListings.map);
-      CommercialListings.overlays = L.layerGroup().addTo(CommercialListings.map);
-      CommercialListings.updateOverviewMap();
-    }
+    RHMapbox.initMapbox('c-big-map', CommercialListings.buildContentString);
 
     $('#commercial input').keydown(CommercialListings.preventEnter);
     $('#commercial #address').bind('railsAutocomplete.select', CommercialListings.throttledSearch);

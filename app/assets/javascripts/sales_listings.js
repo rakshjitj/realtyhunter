@@ -240,7 +240,7 @@ SalesListings = {};
   	SalesListings.throttledSearch();
   };
 
-	// for giant google map
+	// for giant map
 	SalesListings.buildContentString = function (key, info) {
 	  var contentString = '<strong>' + key + '</strong><br />'; //<hr />';
 	  for (var i=0; i<info['units'].length; i++) {
@@ -254,9 +254,6 @@ SalesListings = {};
 	  }
 	  return contentString;
 	};
-
-	SalesListings.map;
-	SalesListings.overlays;
 
 	SalesListings.setPositions = function() {
 	  // loop through and give each task a data-pos
@@ -500,18 +497,7 @@ SalesListings = {};
 			$('#sales .datepicker').data("DateTimePicker").date(available_by);
 		}
 
-		if ($('#s-big-map').length > 0) {
-			// mapbox
-			L.mapbox.accessToken = $('#mapbox-token').attr('data-mapbox-token');
-	    SalesListings.map = L.mapbox.map('s-big-map', 'rakelblujeans.8594241c', { zoomControl: false })
-	    	.setView([40.6739591, -73.9570342], 13);
-
-			new L.Control.Zoom({ position: 'topright' }).addTo(SalesListings.map);
-	    //map.removeLayer(marker)
-	    //var markerLayer = L.mapbox.featureLayer().addTo(map);
-	    SalesListings.overlays = L.layerGroup().addTo(SalesListings.map);
-	    SalesListings.updateOverviewMap();
-		}
+    RHMapbox.initMapbox('s-big-map', SalesListings.buildContentString);
 
 	  // index page - selecting listings menu dropdown
     $('#sales #emailListings').click(Listings.sendMessage);

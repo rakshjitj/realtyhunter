@@ -3,4 +3,4 @@ $('.pagination').html("<%= escape_javascript (render :partial => 'shared/paginat
 
 $('.totals').html("<%= @commercial_units.total_count %> Units found");
 
-CommercialListings.updateOverviewMap("<%= escape_javascript(@map_infos).to_s.html_safe %>");
+CommercialListings.updateOverviewMap("<%= escape_javascript(@map_infos).to_s.html_safe %>", CommercialListings.buildContentString);
