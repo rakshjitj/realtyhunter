@@ -431,7 +431,12 @@
 	    				<strong class="exclusive-listing">Myspace Exclusive!</strong>
 	    				<br />
 	    			<% end %>
-	    			<%= @residential_unit.description %>
+	    			<% if !escape_once(@residential_unit.description).blank? %>
+            	<%= h raw sanitize @residential_unit.description,
+            			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span) %>
+            <% else %>
+              -None specified-
+            <% end %>
 	    		</div>
 	    	</div>
 

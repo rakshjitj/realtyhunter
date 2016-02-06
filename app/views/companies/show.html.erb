@@ -33,10 +33,16 @@
     </div>
 
     <div class="col-xs-12 col-md-6">
-      <p><a href="<%= url_with_protocol(@company.website) %>" target="_blank"> <%= @company.website %> </a></p>
+      <p>
+        <a href="<%= url_with_protocol(@company.website) %>" target="_blank">
+          <%= @company.website %>
+        </a>
+      </p>
 
       <% if @company.offices.empty? %>
-        <p>No offices added yet. Why don't you <%= link_to "create one?", new_company_office_path(@company) %></p>
+        <p>No offices added yet. Why don't you
+          <%= link_to "create one?", new_company_office_path(@company) %>
+        </p>
 
       <% else %>
 
@@ -46,6 +52,7 @@
           <%= office.telephone %>
           </p>
         <% end %>
+
       <% end %>
     </div>
 
@@ -56,16 +63,20 @@
   <a data-toggle="modal" data-target="#tcModal">Terms & Conditions</a>
 
   <!-- Modal -->
-  <div class="modal fade modal-fullscreen" id="ppModal" tabindex="-1" role="dialog" aria-labelledby="ppModalLabel">
+  <div class="modal fade modal-fullscreen" id="ppModal" tabindex="-1" role="dialog"
+      aria-labelledby="ppModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
           <h4 class="modal-title" id="ppModalLabel">Privacy Policy</h4>
         </div>
         <div class="modal-body">
           <% if !escape_once(@company.privacy_policy).blank? %>
-            <%= h raw sanitize @company.privacy_policy, tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li) %>
+            <%= h raw sanitize @company.privacy_policy,
+                tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span) %>
           <% else %>
             Sorry, none specified.
           <% end %>
@@ -78,16 +89,20 @@
   </div>
 
   <!-- Modal -->
-  <div class="modal fade modal-fullscreen" id="tcModal" tabindex="-1" role="dialog" aria-labelledby="tcModalLabel">
+  <div class="modal fade modal-fullscreen" id="tcModal" tabindex="-1" role="dialog"
+      aria-labelledby="tcModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
           <h4 class="modal-title" id="tcModalLabel">Terms &amp; Conditions</h4>
         </div>
         <div class="modal-body">
           <% if !escape_once(@company.terms_conditions).blank? %>
-            <%= h raw sanitize @company.terms_conditions, tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li) %>
+            <%= h raw sanitize @company.terms_conditions,
+                tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span) %>
           <% else %>
             Sorry, none specified.
           <% end %>

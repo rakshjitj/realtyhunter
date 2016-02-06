@@ -5,11 +5,27 @@
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
   <% if !current_user.is_photo_manager? %>
-    <li role="presentation" class="active"><a href="#basic-info" aria-controls="basic-info" role="tab" data-toggle="tab">Basic Info</a></li>
-    <li role="photos"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
-    <li role="photos"><a href="#documents" aria-controls="documents" role="tab" data-toggle="tab">Documents</a></li>
+    <li role="presentation" class="active">
+      <a href="#basic-info" aria-controls="basic-info" role="tab" data-toggle="tab">
+        Basic Info
+      </a>
+    </li>
+    <li role="photos">
+      <a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">
+        Photos
+      </a>
+    </li>
+    <li role="photos">
+      <a href="#documents" aria-controls="documents" role="tab" data-toggle="tab">
+        Documents
+      </a>
+    </li>
   <% else %>
-    <li role="photos" class="active"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+    <li role="photos" class="active">
+      <a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">
+        Photos
+      </a>
+    </li>
   <% end %>
 </ul>
 
@@ -24,8 +40,9 @@
         <% if @commercial_unit && @commercial_unit.id %>
 
           <br />
-          <%= form_for(@commercial_unit, :url => commercial_listing_documents_path(@commercial_unit),
-            html: {multipart: true, class: "dropzone", id: "cunit-dropzone-docs"}, method: :post) do |f| %>
+          <%= form_for(@commercial_unit, url: commercial_listing_documents_path(@commercial_unit),
+              html: {multipart: true, class: "dropzone", id: "cunit-dropzone-docs"},
+              method: :post) do |f| %>
             <div class="fallback">
               <%= f.file_field :file %><br>
               <%= f.submit "Upload" %>
@@ -61,8 +78,10 @@
         <% if @commercial_unit && @commercial_unit.id %>
 
           <br />
-          <%= form_for(@commercial_unit, :url => commercial_listing_unit_images_path(@commercial_unit),
-            html: {multipart: true, class: "dropzone", id: "cunit-dropzone"}, method: :post) do |f| %>
+          <%= form_for(@commercial_unit,
+              :url => commercial_listing_unit_images_path(@commercial_unit),
+              html: {multipart: true, class: "dropzone", id: "cunit-dropzone"},
+              method: :post) do |f| %>
             <div class="fallback">
               <%= f.file_field :file %><br>
               <%= f.submit "Upload" %>
@@ -95,8 +114,10 @@
         <% if @commercial_unit && @commercial_unit.id %>
 
           <br />
-          <%= form_for(@commercial_unit, :url => commercial_listing_unit_images_path(@commercial_unit),
-            html: {multipart: true, class: "dropzone", id: "cunit-dropzone"}, method: :post) do |f| %>
+          <%= form_for(@commercial_unit,
+              :url => commercial_listing_unit_images_path(@commercial_unit),
+              html: {multipart: true, class: "dropzone", id: "cunit-dropzone"},
+              method: :post) do |f| %>
             <div class="fallback">
               <%= f.file_field :file %><br>
               <%= f.submit "Upload" %>
@@ -147,8 +168,9 @@
                 <div class="field">
 
                   <%= unit_form.select :status,
-                    options_for_select(['Active', 'Offer Submitted', 'Offer Accepted', 'Binder Signed', 'Off Market for Lease Execution', 'Off'],
-                      [@commercial_unit.unit.status.titleize]),
+                      options_for_select(['Active', 'Offer Submitted',
+                        'Offer Accepted', 'Binder Signed', 'Off Market for Lease Execution', 'Off'],
+                        [@commercial_unit.unit.status.titleize]),
                     {prompt: "Choose one..."},
                     :required => true,
                     class: "form-control" %>
@@ -173,14 +195,14 @@
                     data: {
                     }
                   }) %>
-                  <!-- "update-subtype-path": update_subtype_commercial_listing_path(@commercial_unit), -->
               </div>
             </div>
             <div class="col-md-5">
               <div class="field">
                 <!-- gets updated when property_type changes -->
                 <%= render partial: 'commercial_listings/sub_types_select',
-                  locals:{ commercial_unit:@commercial_unit, property_sub_types: @property_sub_types} %>
+                    locals:{ commercial_unit:@commercial_unit,
+                    property_sub_types: @property_sub_types} %>
               </div>
             </div>
           </div>
@@ -209,7 +231,8 @@
             </div>
             <div class="col-xs-3 col-md-3">
               <div class="checkbox checkbox-warning checkbox-inline">
-                <%= f.check_box :build_to_suit, class: 'styled', checked: @commercial_unit.build_to_suit %>
+                <%= f.check_box :build_to_suit, class: 'styled',
+                    checked: @commercial_unit.build_to_suit %>
                 <label></label>
               </div>
             </div>
@@ -314,7 +337,8 @@
             </div>
             <div class="col-xs-9 col-md-3">
               <div class="checkbox checkbox-warning checkbox-inline">
-                <%= f.check_box :rate_is_negotiable, checked: @commercial_unit.rate_is_negotiable %>&nbsp;
+                <%= f.check_box :rate_is_negotiable,
+                    checked: @commercial_unit.rate_is_negotiable %>&nbsp;
                 <%= f.label :rate_is_negotiable %>
               </div>
               <%= unit_form.number_field :rent, class: 'form-control', :required => true %>
@@ -363,7 +387,8 @@
             </div>
             <div class="col-xs-9 col-md-1">
               <div class="checkbox checkbox-warning checkbox-inline">
-                <%= f.check_box :is_sublease, class: 'form-control', checked: @commercial_unit.is_sublease %>
+                <%= f.check_box :is_sublease, class: 'form-control',
+                    checked: @commercial_unit.is_sublease %>
                 <label></label>
               </div>
             </div>
@@ -435,7 +460,8 @@
                 <%= f.check_box :has_basement, checked: @commercial_unit.has_basement %>
                 <%= f.label :has_basement %>
               </div>
-              <%= f.text_field :basement_sq_footage, class: 'form-control', placeholder: 'Sq Footage' %>
+              <%= f.text_field :basement_sq_footage, class: 'form-control',
+                  placeholder: 'Sq Footage' %>
             </div>
           </div>
 
@@ -448,7 +474,8 @@
                 <%= f.check_box :key_money_required, checked: @commercial_unit.key_money_required %>
                 <%= f.label :key_money_required, "Required" %>
               </div>
-              <%= f.text_field :key_money_amt, class: 'form-control', placeholder: 'Amount Required' %>
+              <%= f.text_field :key_money_amt, class: 'form-control',
+                  placeholder: 'Amount Required' %>
             </div>
           </div>
 
@@ -499,7 +526,8 @@
                   <br>
                   <%= f.fields_for @commercial_unit.unit do |unit_form| %>
                     <div class="checkbox checkbox-warning checkbox-inline">
-                      <%= unit_form.check_box :exclusive, checked: @commercial_unit.unit.exclusive %>
+                      <%= unit_form.check_box :exclusive,
+                          checked: @commercial_unit.unit.exclusive %>
                       <%= f.label :exclusive, 'Exclusive listing' %>
                     </div>
                   <% end %>
@@ -546,21 +574,27 @@
                 </div>
                 <div class="col-xs-3 col-md-2">
                   <div class="radio radio-warning radio-inline">
-                    <%= f.radio_button :expose_address, true, checked: @commercial_unit.expose_address %>
+                    <%= f.radio_button :expose_address, true,
+                        checked: @commercial_unit.expose_address %>
                     <%= f.label :expose_address_true, "Yes" %>
                   </div>
                 </div>
                 <div class="col-xs-3 col-md-2">
                   <div class="radio radio-warning radio-inline">
-                    <%= f.radio_button :expose_address, false, checked: !@commercial_unit.expose_address %>
+                    <%= f.radio_button :expose_address, false,
+                        checked: !@commercial_unit.expose_address %>
                     <%= f.label :expose_address_false, "No" %>
                   </div>
                 </div>
               </div>
-
+              <br>
+              <br>
               <div class="row">
                 <div class="col-xs-12">
-                  <%= f.text_area :property_description, class: 'form-control', :required => true, rows: 5 %>
+                  <%= f.bootsy_area :property_description, class: 'form-control',
+                      rows: 15,
+                      editor_options: { image: false } %>
+                  <br>
                 </div>
               </div>
             </div>
@@ -572,7 +606,9 @@
             </div>
             <div class="col-md-8">
               <div class="field">
-                <%= f.text_area :location_description, class: 'form-control', :required => true, rows: 5 %>
+                <%= f.bootsy_area :location_description, class: 'form-control',
+                      rows: 15,
+                      editor_options: { image: false } %>
               </div>
             </div>
           </div>

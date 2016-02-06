@@ -386,7 +386,12 @@
 	    				<strong class="exclusive-listing">Myspace Exclusive!</strong>
 	    				<br />
 	    			<% end %>
-		    		<%= @commercial_unit.property_description %>
+		    		<% if !escape_once(@commercial_unit.property_description).blank? %>
+            	<%= h raw sanitize @commercial_unit.property_description,
+            			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span) %>
+            <% else %>
+              -None specified-
+            <% end %>
 					</div>
 				</div>
 
@@ -394,7 +399,12 @@
 				<div class="row">
 					<div class="col-md-12">
 						<h3>Location Description</h3>
-		    		<%= @commercial_unit.location_description %>
+		    		<% if !escape_once(@commercial_unit.location_description).blank? %>
+            	<%= h raw sanitize @commercial_unit.location_description,
+            			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span) %>
+            <% else %>
+              -None specified-
+            <% end %>
 					</div>
 				</div>
 

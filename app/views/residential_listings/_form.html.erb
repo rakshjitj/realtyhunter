@@ -385,9 +385,14 @@
                 </div>
               </div>
             </div>
+            <br>
+            <br>
             <div class="row">
               <div class="col-xs-12">
-                <%= f.text_area :description, class: 'form-control', rows: 6 %>
+                <%= f.bootsy_area :description, class: 'form-control',
+                    rows: 15,
+                    editor_options: { image: false } %>
+                <br>
               </div>
             </div>
           </div>
