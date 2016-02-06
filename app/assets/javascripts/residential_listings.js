@@ -336,9 +336,6 @@ ResidentialListings = {};
 
     DropZoneHelper.updateRemoveDocLinks('residential', 'residential_listings');
 
-    // $('.carousel-indicators > li:first-child').addClass('active');
-    // $('.carousel-inner > .item:first-child').addClass('active');
-
     DropZoneHelper.setPositions('residential', 'documents');
     DropZoneHelper.makeSortable('residential', 'documents');
 
@@ -484,6 +481,9 @@ ResidentialListings = {};
 
     // activate tooltips
     $('[data-toggle="tooltip"]').tooltip();
+
+    $('.carousel-indicators > li:first-child').addClass('active');
+    $('.carousel-inner > .item:first-child').addClass('active');
   }
 
 })();

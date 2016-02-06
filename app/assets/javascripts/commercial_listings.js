@@ -190,9 +190,6 @@ CommercialListings = {};
 
     DropZoneHelper.updateRemoveDocLinks('commercial', 'commercial_listings');
 
-    // $('.carousel-indicators > li:first-child').addClass('active');
-    // $('.carousel-inner > .item:first-child').addClass('active');
-
     DropZoneHelper.setPositions('commercial', 'documents');
     DropZoneHelper.makeSortable('commercial', 'documents');
 
@@ -372,6 +369,9 @@ CommercialListings = {};
     });
 
     CommercialListings.passiveRealTimeUpdate();
+
+    $('.carousel-indicators > li:first-child').addClass('active');
+    $('.carousel-inner > .item:first-child').addClass('active');
   }
 
 })();

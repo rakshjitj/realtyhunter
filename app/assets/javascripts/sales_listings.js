@@ -162,9 +162,6 @@ SalesListings = {};
 
     DropZoneHelper.updateRemoveDocLinks('sales', 'sales_listings');
 
-    // $('.carousel-indicators > li:first-child').addClass('active');
-    // $('.carousel-inner > .item:first-child').addClass('active');
-
     DropZoneHelper.setPositions('sales', 'documents');
     DropZoneHelper.makeSortable('sales', 'documents');
 
@@ -439,6 +436,9 @@ SalesListings = {};
     SalesListings.initializeDocumentsDropzone();
 
     SalesListings.passiveRealTimeUpdate();
+
+    $('.carousel-indicators > li:first-child').addClass('active');
+    $('.carousel-inner > .item:first-child').addClass('active');
   };
 
 })();
