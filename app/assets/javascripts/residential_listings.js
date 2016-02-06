@@ -478,10 +478,13 @@ ResidentialListings = {};
 
     // activate tooltips
     $('[data-toggle="tooltip"]').tooltip();
-    $('.carousel-indicators > li:first-child').addClass('active');
-    $('.carousel-inner > .item:first-child').addClass('active');
 
-	};
+    $('.flip-banner').click(function() {
+      $('.card-wrapper').toggleClass('flipped');
+      $('.card.back').toggleClass('flipped');
+      $('.card.front').toggleClass('flipped');
+    });
+  }
 
 })();
 

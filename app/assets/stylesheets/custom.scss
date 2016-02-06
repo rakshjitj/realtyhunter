@@ -4,9 +4,15 @@ $navbarCollapseWidth: 1150px;
 @import "bootstrap";
 
 /* universal */
+html {
+  height: 100%;
+  width: 100%;
+}
 
 body {
   padding-top: 60px;
+  min-height:100vw;
+  width: 100%;
 }
 
 /* Don't print link hrefs */
@@ -324,11 +330,9 @@ aside {
   height: 400px;
 }
 
-#r-big-map {
-  width: 100%;
-  height: 600px;
-  margin: 0;
-  padding: 0;
+.mobile-container {
+  position: relative;
+  perspective: 800px;
 }
 
 #c-big-map {
