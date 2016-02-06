@@ -4,12 +4,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= full_title(yield(:title)) %></title>
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-  <!-- used for main residential listings page -->
-  <script src='https://api.mapbox.com/mapbox.js/v2.2.1/mapbox.js'></script>
-  <link href='https://api.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet' />
-  <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
-  <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
-  <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+
+  <% if action_name == 'index' &&
+        controller.controller_name == 'residential_listings' ||
+        controller.controller_name == 'commercial_listings' ||
+        controller.controller_name == 'sales_listings' %>
+    <!-- used for listings index pages -->
+    <script src='https://api.mapbox.com/mapbox.js/v2.2.1/mapbox.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet' />
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+  <% end %>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': true %>
   <%= csrf_meta_tags %>
@@ -39,7 +45,7 @@
 <body>
 
 <div id="mapbox-token" data-mapbox-token="<%= ENV['MAPBOX_TOKEN'] %>"></div>
-<div id="main-container" class="container-fluid">
+<div id="main-container">
 
 	<header class="navbar navbar-fixed-top navbar-inverse">
   <div class="container-fluid">
@@ -53,9 +59,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <!--%= link_to "Home", root_path, class: 'navbar-brand' %-->
       </div>
-
 
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">

@@ -55,7 +55,7 @@ RHMapbox = {};
       L.mapbox.accessToken = $('#mapbox-token').attr('data-mapbox-token');
       RHMapbox.map = L.mapbox.map(RHMapbox.htmlID, 'rakelblujeans.8594241c', { zoomControl: false })
         .setView([40.6739591, -73.9570342], 13);
-      new L.Control.Zoom({ position: 'topright' }).addTo(RHMapbox.map);
+      // new L.Control.Zoom({ position: 'topright' }).addTo(RHMapbox.map);
       RHMapbox.overlays = L.layerGroup().addTo(RHMapbox.map);
       RHMapbox.updateOverviewMap(null, buildContentStringFn);
 
@@ -86,6 +86,8 @@ RHMapbox = {};
       });
       // NOTE: If the user chooses not to allow their location
       // to be shared, do not display any pin.
+
+      RHMapbox.map.invalidateSize();
     }
   }
 

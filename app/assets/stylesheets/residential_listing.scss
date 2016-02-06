@@ -41,3 +41,79 @@
   word-wrap: break-word !important;
   white-space: normal !important;
 }
+
+.card-wrapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: -10px;
+  left: 0;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+  transform-origin: right center;
+}
+
+.card-wrapper.flipped {
+  transform: rotateY( 180deg );
+  transform: translateX( -100% ) rotateY( -180deg );
+}
+
+.card {
+  margin: 0;
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  -webkit-transition-property: opacity;
+  -webkit-transition-timing-function: linear;
+  -webkit-transition-duration: 0.2s;
+}
+
+.card#front {
+  background: red;
+  backface-visibility: hidden;
+  opacity: 1;
+}
+.card.front.flipped {
+  opacity: 0;
+}
+
+.card.back {
+  background: blue;
+  transform: rotateY( 180deg );
+  backface-visibility: hidden;
+  opacity: 0;
+}
+.card.back.flipped {
+  opacity: 1;
+}
+
+#r-big-map {
+  width: 100%;
+  backface-visibility: hidden;
+
+  @media (min-width:768px) {
+    height: 600px;
+    margin: 0;
+    padding: 0;
+  }
+  @media (max-width:768px) {
+    min-height: 150vw;
+    height: 150vw;
+  }
+}
+
+.flip-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 40px;
+  background-color: #FFF8C6;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+}
+

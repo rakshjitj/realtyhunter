@@ -420,6 +420,12 @@ ResidentialListings = {};
 
     // activate tooltips
     $('[data-toggle="tooltip"]').tooltip();
+
+    $('.flip-banner').click(function() {
+      $('.card-wrapper').toggleClass('flipped');
+      $('.card.back').toggleClass('flipped');
+      $('.card.front').toggleClass('flipped');
+    });
   }
 
 })();
