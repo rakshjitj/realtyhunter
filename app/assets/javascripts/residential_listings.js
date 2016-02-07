@@ -422,6 +422,7 @@ ResidentialListings = {};
     $('[data-toggle="tooltip"]').tooltip();
 
     $('.flip-banner').click(function() {
+      console.log('clicked flip banner');
       $('.card-wrapper').toggleClass('flipped');
       $('.card.back').toggleClass('flipped');
       $('.card.front').toggleClass('flipped');
