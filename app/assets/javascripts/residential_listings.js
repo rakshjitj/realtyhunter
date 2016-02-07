@@ -484,6 +484,13 @@ ResidentialListings = {};
       $('.card.back').toggleClass('flipped');
       $('.card.front').toggleClass('flipped');
     });
+
+    // RHMapbox.resizeMap();
+    // $(window).resize(RHMapbox.resizeMap);
+    // var width = $(window).width();
+    // if (width < 768) {
+    //   $('#r-big-map').css('height', 'calc(100vh-105px)');
+    // }
   }
 
 })();

@@ -8,22 +8,34 @@
   <div class="card-wrapper">
 
     <div class="card front">
-      <!-- map, full screen on mobile -->
-      <div id="r-big-map" data-map-points="<%= @map_infos %>"></div>
-      <!-- announcements banner  -->
-      <div class="flip-banner">
-        New Announcements
+      <div class="card-contents">
+
+        <div class="flip-banner">
+          <em>New Announcements</em>
+        </div>
+
+        <!-- map, full screen on mobile -->
+        <div id="r-big-map" data-map-points="<%= @map_infos %>"></div>
+
+        <div class="footer-mobile-residential">
+          <div class="nav-button-wrapper">
+            <div class="nav-button"><i class="fa fa-filter fa-3x"></i></div>
+            <div class="nav-button"><i class="fa fa-bell fa-3x"></i></div>
+            <div class="nav-button"><i class="fa fa-compass fa-3x"></i></div>
+            <div class="nav-button"><i class="fa fa-list fa-3x"></i></div>
+          </div>
+        </div>
       </div>
-      <!-- footer -->
     </div>
 
-
     <div class="card back">
-      <div class="flip-banner flipped">
-        Back to map
+      <div class="card-contents">
+        <div class="flip-banner flipped">
+          <em>Back to map</em>
+        </div>
+        <!-- unread announcements -->
+        New apt listed n stuff<br> yadda yadda...
       </div>
-      <!-- render unread announcements -->
-      New apt listed n stuff<br> yadda yadda...
     </div>
 
 

@@ -87,8 +87,17 @@ RHMapbox = {};
       // NOTE: If the user chooses not to allow their location
       // to be shared, do not display any pin.
 
-      RHMapbox.map.invalidateSize();
+      // RHMapbox.map.invalidateSize();
     }
+  }
+
+  RHMapbox.resizeMap = function() {
+    var width = $(window).width();
+    if (width < 768) {
+      $('#' + RHMapbox.htmlID).css('width', width);
+      $('#' + RHMapbox.htmlID).css('height', 'calc(' + $(window).height() + '- 105px)');
+    }
+    RHMapbox.map.invalidateSize();
   }
 
 })();
