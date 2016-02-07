@@ -86,8 +86,6 @@ RHMapbox = {};
       });
       // NOTE: If the user chooses not to allow their location
       // to be shared, do not display any pin.
-
-      // RHMapbox.map.invalidateSize();
     }
   }
 
