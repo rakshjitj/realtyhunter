@@ -480,18 +480,25 @@ ResidentialListings = {};
     $('[data-toggle="tooltip"]').tooltip();
 
     $('.flip-banner').click(function() {
-      console.log('clicked flip banner');
       $('.card-wrapper').toggleClass('flipped');
       $('.card.back').toggleClass('flipped');
       $('.card.front').toggleClass('flipped');
     });
 
-    // RHMapbox.resizeMap();
-    // $(window).resize(RHMapbox.resizeMap);
-    // var width = $(window).width();
-    // if (width < 768) {
-    //   $('#r-big-map').css('height', 'calc(100vh-105px)');
-    // }
+    $('.js-mobile-filters').click(function(e) {
+      var isVisible = $('.mobile-filters.card-visible').length;
+      if (isVisible) {
+        $('.front').show();
+        $('.card-visible').removeClass('card-visible');
+      } else {
+        $('.mobile-filters').addClass('card-visible');
+        $('.front').hide();
+        // $('.back').hide();
+      }
+
+      e.preventDefault();
+      e.stopPropagation();
+    });
   }
 
 })();
