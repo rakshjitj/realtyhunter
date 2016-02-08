@@ -87,18 +87,22 @@
 .card.front {
   backface-visibility: hidden;
   opacity: 1;
+  /*display: block;*/
 }
 .card.front.flipped {
   opacity: 0;
+  /*display: none;*/
 }
 
 .card.back {
   transform: rotateY( 180deg );
   backface-visibility: hidden;
   opacity: 0;
+  /*display: none;*/
 }
 .card.back.flipped {
   opacity: 1;
+  /*display: block;*/
 }
 
 #r-big-map {
@@ -117,8 +121,16 @@
   }
 }
 
-.announcements-container {
+.card-middle {
   order: 2;
+}
+
+.announcements-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-announcement {
   flex: 1;
 }
 
@@ -158,10 +170,4 @@
   background-color: #eb9114 !important;
   color: black;
   text-align: center;
-  /*text-decoration: none;*/
-}
-
-
-.mobile-filters {
-
 }

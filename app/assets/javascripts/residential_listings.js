@@ -483,6 +483,10 @@ ResidentialListings = {};
       $('.card-wrapper').toggleClass('flipped');
       $('.card.back').toggleClass('flipped');
       $('.card.front').toggleClass('flipped');
+
+      //if ($('.card.front.flipped').length) {
+        $('#r-big-map').toggle();
+      //}
     });
 
     $('.js-mobile-filters').click(function(e) {
@@ -493,7 +497,6 @@ ResidentialListings = {};
       } else {
         $('.mobile-filters').addClass('card-visible');
         $('.front').hide();
-        // $('.back').hide();
       }
 
       e.preventDefault();
