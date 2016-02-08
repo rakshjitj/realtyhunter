@@ -314,8 +314,6 @@ CommercialListings = {};
       Common.markSortingColumnByElem($('th[data-sort="updated_at"]'), 'desc')
     }
 
-
-
     if ($('#c-big-map').length > 0) {
       if(ResidentialListings.map) ResidentialListings.map.remove();
       if(CommercialListings.map) CommercialListings.map.remove();
@@ -336,10 +334,10 @@ CommercialListings = {};
       map: "#map_canvas",
       location: bldg_address,
       details: ".details"
-    }).bind("geocode:result", function(event, result){
-      //console.log(result);
-    }).bind("geocode:error", function(event, result){
-      //console.log("[ERROR]: " + result);
+    }).bind("geocode:result", function(event, result) {
+      console.log(result);
+    }).bind("geocode:error", function(event, result) {
+      console.log("[ERROR]: " + result);
     });
 
     $('#commercial input').keydown(CommercialListings.preventEnter);

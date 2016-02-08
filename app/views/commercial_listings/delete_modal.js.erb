@@ -4,6 +4,7 @@ $('#unitDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', @commerci
 $('#unitDeleteModal #delete-link').click( function(event) {
 	$('#unitDeleteModal').modal('hide');
 	event.preventDefault();
+  Listings.hideSpinner();
 });
 
 $('#unitDeleteModal').modal('show');

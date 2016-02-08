@@ -13,7 +13,12 @@
 				  			<%= @commercial_unit.street_address_and_unit %>
 				  		</h1>
 				  		<p>
-			  				<%= @commercial_unit.unit.building.neighborhood.name %>, <%= @commercial_unit.unit.building.sublocality %>, <%= @commercial_unit.unit.building.administrative_area_level_2_short %> <%= @commercial_unit.unit.building.postal_code %>
+				  			<% if @commercial_unit.unit.building.neighborhood %>
+				  				<%= @commercial_unit.unit.building.neighborhood.name %>,
+				  			<% end %>
+				  			<%= @commercial_unit.unit.building.sublocality %>,
+	  						<%= @commercial_unit.unit.building.administrative_area_level_2_short %>
+	  						<%= @commercial_unit.unit.building.postal_code %>
 			  			</p>
 			  		</div>
 			  		<div class="col-md-6 right">

@@ -181,33 +181,8 @@ Buildings = {};
         data: { order: updated_order }
       });
     });
-  }
 
-  Buildings.initIndex = function() {
-    document.addEventListener("page:restore", function() {
-      Buildings.hideSpinner();
-    });
-    Buildings.hideSpinner();
-    $('#buildings a').click(function() {
-      Buildings.showSpinner();
-    });
-
-    // main index table
-    Buildings.sortOnColumnClick();
-    Common.markSortingColumn();
-    if (Common.getSearchParam('sort_by') === '') {
-      Common.markSortingColumnByElem($('th[data-sort="formatted_street_address"]'), 'desc')
-    }
-
-    // search filters
-    $('#buildings #filter').bind('railsAutocomplete.select', Buildings.throttledBldgSearch);
-    $('#buildings #filter').keydown(Buildings.preventEnter);
-    $('#buildings #filter').change(Buildings.throttledBldgSearch);
-    // toggle between active and inactive units
-    $('#buildings #checkbox_active').click(Buildings.throttledBldgSearch);
-    $('#buildings #listings_checkbox_active').click(Buildings.filterListings);
-
-    var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
+     var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
     // google maps
     $("#bldg_panel").geocomplete({
       map: "#map_canvas",
@@ -259,6 +234,31 @@ Buildings = {};
     }).bind("geocode:error", function(event, result){
       //console.log("[ERROR]: " + result);
     });
+  }
+
+  Buildings.initIndex = function() {
+    document.addEventListener("page:restore", function() {
+      Buildings.hideSpinner();
+    });
+    Buildings.hideSpinner();
+    $('#buildings a').click(function() {
+      Buildings.showSpinner();
+    });
+
+    // main index table
+    Buildings.sortOnColumnClick();
+    Common.markSortingColumn();
+    if (Common.getSearchParam('sort_by') === '') {
+      Common.markSortingColumnByElem($('th[data-sort="formatted_street_address"]'), 'desc')
+    }
+
+    // search filters
+    $('#buildings #filter').bind('railsAutocomplete.select', Buildings.throttledBldgSearch);
+    $('#buildings #filter').keydown(Buildings.preventEnter);
+    $('#buildings #filter').change(Buildings.throttledBldgSearch);
+    // toggle between active and inactive units
+    $('#buildings #checkbox_active').click(Buildings.throttledBldgSearch);
+    $('#buildings #listings_checkbox_active').click(Buildings.filterListings);
   }
 
 })();
