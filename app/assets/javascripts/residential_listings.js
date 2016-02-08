@@ -467,18 +467,6 @@ ResidentialListings = {};
       ResidentialListings.updateOverviewMap();
     }
 
-    // google map on show page
-    var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
-    $("#runit-panel").geocomplete({
-      map: "#map_canvas",
-      location: bldg_address,
-      details: ".details"
-    }).bind("geocode:result", function(event, result){
-      //console.log(result);
-    }).bind("geocode:error", function(event, result){
-      //console.log("[ERROR]: " + result);
-    });
-
     // activate tooltips
     $('[data-toggle="tooltip"]').tooltip();
 

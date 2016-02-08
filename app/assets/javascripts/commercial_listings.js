@@ -328,18 +328,6 @@ CommercialListings = {};
       CommercialListings.updateOverviewMap();
     }
 
-    // google map on show page
-    var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
-    $("#cunit-panel").geocomplete({
-      map: "#map_canvas",
-      location: bldg_address,
-      details: ".details"
-    }).bind("geocode:result", function(event, result) {
-      console.log(result);
-    }).bind("geocode:error", function(event, result) {
-      console.log("[ERROR]: " + result);
-    });
-
     $('#commercial input').keydown(CommercialListings.preventEnter);
     $('#commercial #address').bind('railsAutocomplete.select', CommercialListings.throttledSearch);
     $('#commercial #address').change(CommercialListings.throttledSearch);
