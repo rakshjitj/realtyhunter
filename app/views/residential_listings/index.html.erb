@@ -35,14 +35,16 @@
       </div>
     </div>
 
-    <div class="card back">
+    <div class="card back card-visible">
       <div class="card-contents">
         <div class="flip-banner flipped">
           <em>Back to map</em>
         </div>
-        <div class="announcements-container">
-          <!-- unread announcements -->
-          New apt listed n stuff<br> yadda yadda...
+        <div class="card-middle">
+          <div class="announcements-wrapper">
+            <%= render 'residential_listings/announcements_mobile',
+            locals: {announcement_items: @announcement_items} %>
+          </div>
         </div>
       </div>
     </div>

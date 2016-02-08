@@ -1,0 +1,53 @@
+<% is_event = Announcement.categories[announcement.category] == Announcement.categories['event'] %>
+<% is_residential = Announcement.categories[announcement.category] == Announcement.categories['residential'] %>
+<% is_commercial = Announcement.categories[announcement.category] == Announcement.categories['commercial'] %>
+<% is_sales = Announcement.categories[announcement.category] == Announcement.categories['sales'] %>
+
+<% if is_event %>
+  <div class="well announcement event-announcement">
+<% elsif is_residential %>
+  <div class="well announcement residential-announcement">
+<% elsif is_commercial %>
+  <div class="well announcement commercial-announcement">
+<% elsif is_sales %>
+  <div class="well announcement sales-announcement">
+<% end %>
+
+  <!-- if we are on any other page, this announcement should turn into a
+    link that takes you to announcements/index -->
+  <% if params[:action] != 'index' %>
+
+  <% end %>
+
+    <!-- we are on the /residential_listings/index -->
+    <!-- we are somewhere under /announcements -->
+    <div class="padding-left-sm padding-top inside-well">
+      <a href="/announcements">
+      <p>
+        <% if shorten_text %>
+          <%= h raw sanitize trim_announcement("#{announcement.note.gsub(/\n/, '<br>') } - #{announcement.sender_name}"), tags: %w(br) %>
+        <% else %>
+          <%= h raw sanitize announcement.note.gsub(/\n/, '<br>'), tags: %w(br) %> - <%= announcement.sender_name %>
+        <% end %>
+      </p>
+      </a>
+    </div>
+    <div class="padding-top text-right">
+      <small><em class="padding-right"><%= time_ago_in_words(announcement.updated_at) %></em></small>
+
+      <% if params[:controller] == 'announcements' &&
+          (current_user.is_management? || current_user.is_listings_manager?) %>
+        <br>
+        <small><em class="padding-right">
+          <%= link_to 'Delete', delete_modal_announcement_path(announcement),
+              data: { toggle: "modal", target: "#annDeleteModal"}, remote: true %>
+        </em></small>
+      <% end %>
+    </div>
+
+  <!-- end link_to -->
+  <% if params[:action] != 'announcements' %>
+    </a>
+  <% end %>
+
+</div>
