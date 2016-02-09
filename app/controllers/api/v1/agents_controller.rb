@@ -50,6 +50,7 @@ module API
 
 			def show
 				@agent = User.find(params[:id])
+				render json: @agent
 			end
 
 		protected

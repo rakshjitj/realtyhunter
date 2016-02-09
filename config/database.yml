@@ -9,14 +9,15 @@ default: &default
   pool: 5
   timeout: 5000
   # username: myspace
-  username: postgres
   # password: Myspace722!
+  username: postgres
   password: root
   host: localhost
   # port: 5433
   port: 5432
 
 # development:
+#   adapter: postgresql
 #   url: "postgres://ikwtqpfcsmvqkg:7dfJ_Ygg7VclI7BFygNjjAfRCy@ec2-54-235-145-226.compute-1.amazonaws.com:5432/d6p9h0rklvj5q"
 
 development:
