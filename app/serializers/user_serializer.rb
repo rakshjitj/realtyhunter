@@ -5,7 +5,13 @@ class UserSerializer < ActiveModel::Serializer
   attribute :updated_at, key: :changed_at
 
   def title
-  	if object.employee_title.name == "agent"
+    if object.respond_to?(:title)
+      employee_title_name = object.title
+    else
+      employee_title_name = object.employee_title.name
+    end
+
+  	if employee_title_name == "agent"
 			"Licensed Real-Estate Agent"
 		else
 			"Other"
