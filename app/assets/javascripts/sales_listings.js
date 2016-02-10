@@ -339,6 +339,75 @@ SalesListings = {};
     }
 	};
 
+  SalesListings.commissionAmount = function() {
+      if($('#sales_listing_cyof_true').is(":checked")){   
+      $("#sales_listing_commission_amount").val('0');
+      $("#sales_listing_commission_amount").attr("readonly", "readonly"); 
+    }
+    $('input[name="sales_listing[cyof]"]').change(function(){   
+      if($(this).attr("id")=="sales_listing_cyof_true"){      
+        $("#sales_listing_commission_amount").val('0');
+        $("#sales_listing_commission_amount").attr("readonly", "readonly");      
+      }
+      else
+      {     
+        $("#sales_listing_commission_amount").val('');
+        $("#sales_listing_commission_amount").removeAttr("readonly");      
+      }
+    });   
+  };
+
+  SalesListings.rlsnyValidation = function() {
+    if($('#sales_listing_rlsny').is(":checked")){   
+      $("#sales_listing_floor_number").attr("required", true);
+      $("#sales_listing_total_room_count").attr("required", true);
+      $("#sales_listing_condition").attr("required", true);
+      $("#sales_listing_showing_instruction").attr("required", true);
+      $("#sales_listing_commission_amount").attr("required", true);
+
+      $('label[for="sales_listing_floor_number"]').addClass("required");
+      $('label[for="sales_listing_total_room_count"]').addClass("required");
+      $('label[for="sales_listing_condition"]').addClass("required");
+      $('label[for="sales_listing_showing_instruction"]').addClass("required");
+      $('label[for="sales_listing_commission_amount"]').addClass("required");
+      $('label[for="sales_listing_cyof"]').addClass("required");
+      $('label[for="sales_listing_share_with_brokers"]').addClass("required");  
+    }
+    $('input[name="sales_listing[rlsny]"]').change(function(){    
+      if($(this).is(":checked")){     
+        $("#sales_listing_floor_number").attr("required", true);      
+        $("#sales_listing_total_room_count").attr("required", true);
+        $("#sales_listing_condition").attr("required", true);
+        $("#sales_listing_showing_instruction").attr("required", true);
+        $("#sales_listing_commission_amount").attr("required", true);
+
+        $('label[for="sales_listing_floor_number"]').addClass("required");
+        $('label[for="sales_listing_total_room_count"]').addClass("required");
+        $('label[for="sales_listing_condition"]').addClass("required");
+        $('label[for="sales_listing_showing_instruction"]').addClass("required");
+        $('label[for="sales_listing_commission_amount"]').addClass("required");
+        $('label[for="sales_listing_cyof"]').addClass("required");
+        $('label[for="sales_listing_share_with_brokers"]').addClass("required");      
+      }
+      else
+      {     
+        $("#sales_listing_floor_number").removeAttr("required");
+        $("#sales_listing_total_room_count").removeAttr("required");
+        $("#sales_listing_condition").removeAttr("required");
+        $("#sales_listing_showing_instruction").removeAttr("required");
+        $("#sales_listing_commission_amount").removeAttr("required");
+
+        $('label[for="sales_listing_floor_number"]').removeClass("required");
+        $('label[for="sales_listing_total_room_count"]').removeClass("required");
+        $('label[for="sales_listing_condition"]').removeClass("required");
+        $('label[for="sales_listing_showing_instruction"]').removeClass("required");
+        $('label[for="sales_listing_commission_amount"]').removeClass("required");
+        $('label[for="sales_listing_cyof"]').removeClass("required");
+        $('label[for="sales_listing_share_with_brokers"]').removeClass("required");       
+      }
+    });
+  };
+
 	SalesListings.initialize = function() {
     if (!$('#sales').length) {
       return;
@@ -392,6 +461,9 @@ SalesListings = {};
 	  $('#sales .remove-building-feature').click(SalesListings.removeBuildingFeature);
 	  $('#sales .remove-neighborhood').click(SalesListings.removeNeighborhood);
 
+    SalesListings.commissionAmount();
+    SalesListings.rlsnyValidation();
+    
 		var available_by = $('#sales .datepicker').attr('data-available-by');
 		if (available_by) {
 			$('#sales .datepicker').data("DateTimePicker").date(available_by);
@@ -438,7 +510,7 @@ SalesListings = {};
 	 	SalesListings.initializeImageDropzone();
     SalesListings.initializeDocumentsDropzone();
 
-    SalesListings.passiveRealTimeUpdate();
+    SalesListings.passiveRealTimeUpdate();    
   };
 
 })();
