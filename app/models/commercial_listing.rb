@@ -83,7 +83,8 @@ class CommercialListing < ActiveRecord::Base
   end
 
    def self.export_all(user)
-    CommercialListing.joins([:commercial_property_type, unit: [building: [:company, :landlord, :neighborhood]]])
+    CommercialListing.joins([:commercial_property_type, unit: [building: [:company, :landlord]]])
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
@@ -107,7 +108,8 @@ class CommercialListing < ActiveRecord::Base
     end
 
   def self.search(params, user, building_id=nil)
-    running_list = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord, :neighborhood]}])
+    running_list = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord]}])
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('units.archived = false')
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address',
