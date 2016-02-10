@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160107081550) do
+ActiveRecord::Schema.define(version: 20160210080541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -379,15 +379,24 @@ ActiveRecord::Schema.define(version: 20160107081550) do
     t.boolean  "has_fee"
     t.integer  "op_fee_percentage"
     t.integer  "tp_fee_percentage"
-    t.boolean  "tenant_occupied",   default: false
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.boolean  "tenant_occupied",     default: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.integer  "unit_id"
-    t.integer  "lock_version",      default: 0,     null: false
+    t.integer  "lock_version",        default: 0,     null: false
     t.integer  "roommates_id"
-    t.boolean  "favorites",         default: false
-    t.boolean  "show",              default: true
-    t.boolean  "expose_address",    default: false
+    t.boolean  "favorites",           default: false
+    t.boolean  "show",                default: true
+    t.boolean  "expose_address",      default: false
+    t.integer  "floor_number"
+    t.integer  "total_room_count"
+    t.string   "condition"
+    t.string   "showing_instruction"
+    t.decimal  "commission_amount"
+    t.boolean  "cyof",                default: false
+    t.date     "rented_date"
+    t.boolean  "rlsny",               default: false
+    t.boolean  "share_with_brokers",  default: false
   end
 
   add_index "residential_listings", ["roommates_id"], name: "index_residential_listings_on_roommates_id", using: :btree
@@ -531,6 +540,15 @@ ActiveRecord::Schema.define(version: 20160107081550) do
     t.string   "certificate_of_occupancy"
     t.string   "violation_search"
     t.integer  "lock_version",              default: 0,     null: false
+    t.integer  "floor_number"
+    t.integer  "total_room_count"
+    t.string   "condition"
+    t.string   "showing_instruction"
+    t.decimal  "commission_amount"
+    t.boolean  "cyof",                      default: false
+    t.date     "rented_date"
+    t.boolean  "rlsny",                     default: false
+    t.boolean  "share_with_brokers",        default: false
   end
 
   create_table "units", force: :cascade do |t|

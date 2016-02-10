@@ -2,7 +2,9 @@ class ListingSerializer < ActiveModel::Serializer
 	attributes :listing_type, :property_type, :commercial_use, :min_lease_term, 
 	:max_lease_term, :renter_fee, :bathrooms, :unit_amenities, :unit_description,
 	:floor, :layout, :bedrooms, :unit_number, :pets, :status, :building, :date_available,
-	:changed_at, :square_footage, :rent, :id, :favorites, :show, :expose_address
+	:changed_at, :square_footage, :rent, :id, :favorites, :show, :expose_address,
+	:floor_number, :total_room_count, :condition, :showing_instruction, :commission_amount,
+	:cyof, :rented_date, :rlsny, :share_with_brokers
 
 	attribute :building, serializer: BuildingSerializer
 
@@ -216,6 +218,78 @@ class ListingSerializer < ActiveModel::Serializer
 			object.listing.r_expose_address
 		elsif is_commercial
 			object.listing.c_expose_address
+		end
+	end
+
+	def floor_number
+		if is_residential
+			object.listing.floor_number
+		else
+			nil
+		end
+	end
+
+	def total_room_count
+		if is_residential
+			object.listing.total_room_count
+		else
+			nil
+		end
+	end
+
+	def condition
+		if is_residential
+			object.listing.condition
+		else
+			nil
+		end
+	end
+
+	def showing_instruction
+		if is_residential
+			object.listing.showing_instruction
+		else
+			nil
+		end
+	end
+
+	def commission_amount
+		if is_residential
+			object.listing.commission_amount
+		else
+			nil
+		end
+	end
+
+	def cyof
+		if is_residential
+			object.listing.cyof
+		else
+			nil
+		end
+	end
+
+	def rented_date
+		if is_residential
+			object.listing.rented_date
+		else
+			nil
+		end
+	end
+
+	def rlsny
+		if is_residential
+			object.listing.rlsny
+		else
+			nil
+		end
+	end
+
+	def share_with_brokers
+		if is_residential
+			object.listing.share_with_brokers
+		else
+			nil
 		end
 	end
 end

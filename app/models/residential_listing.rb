@@ -608,6 +608,11 @@ class ResidentialListing < ActiveRecord::Base
     end
   end
 
+  def set_rented_date
+    self.rented_date = Date.today
+    self.save
+  end
+
   private
     def process_custom_amenities
       if custom_amenities
