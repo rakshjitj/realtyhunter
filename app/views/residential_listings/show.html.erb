@@ -336,7 +336,93 @@
 						DOM, total floors, total units, year built, lot, block, community district, school district -->
 					<!-- Landlord info -->
 
+			<br />
+			<div class="row">
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-xs-7">
+			    			<strong>RLSNY:</strong>
+			    		</div>
+			    		<div class="col-xs-5">
+			    			<%= @residential_unit.rlsny ? "Yes" : "No" %>
+			    		</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-7">
+			    			<strong>Floor Number:</strong>
+			    		</div>
+			    		<div class="col-xs-5">
+			    			<%= @residential_unit.floor_number %>
+			    		</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-7">
+			    			<strong>Total Room Count:</strong>
+			    		</div>
+			    		<div class="col-xs-5">
+			    			<%= @residential_unit.total_room_count %>
+			    		</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-7">
+			    			<strong>Condition:</strong>
+			    		</div>
+			    		<div class="col-xs-5">
+			    			<%= @residential_unit.condition %>
+			    		</div>
+					</div>
+		    	</div>
+		    	<div class="col-md-6">
+		    		<div class="row">
+						<div class="col-xs-7">
+			    			<strong>Showing Instruction:</strong>
+			    		</div>
+			    		<div class="col-xs-5">
+			    			<%= @residential_unit.showing_instruction %>
+			    		</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-7">
+			    			<strong>Commission Amount:</strong>
+			    		</div>
+			    		<div class="col-xs-5">
+			    			<%= @residential_unit.commission_amount %>
+			    		</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-7">
+			    			<strong>CYOF:</strong>
+			    		</div>
+			    		<div class="col-xs-5">
+			    			<%= @residential_unit.cyof ? "Yes" : "No" %>
+			    		</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-7">
+			    			<strong>Share w/ Brokers:</strong>
+			    		</div>
+			    		<div class="col-xs-5">
+			    			<%= @residential_unit.share_with_brokers ? "Yes" : "No" %>
+			    		</div>
+					</div>
+		    	</div>
+			</div>
 
+			<br />
+			<div class="row">
+				<div class="col-md-4">					
+	    			<strong>Show:</strong>		    		
+	    			<%= @residential_unit.show ? "Yes" : "No" %>		    		
+				</div>
+				<div class="col-md-4">					
+	    			<strong>Favorites:</strong>		    		
+	    			<%= @residential_unit.favorites ? "Yes" : "No" %>		    		
+				</div>
+				<div class="col-md-4">											
+	    			<strong>Expose Address:</strong>			    		
+	    			<%= @residential_unit.expose_address ? "Yes" : "No" %>			    		
+				</div>	    		
+	    	</div>
 
 	    	<br />
 	    	<div class="row">

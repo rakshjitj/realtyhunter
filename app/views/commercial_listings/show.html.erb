@@ -379,6 +379,22 @@
 
 				<br />
 				<div class="row">
+					<div class="col-md-4">					
+		    			<strong>Show:</strong>		    		
+		    			<%= @commercial_unit.show ? "Yes" : "No" %>		    		
+					</div>
+					<div class="col-md-4">					
+		    			<strong>Favorites:</strong>		    		
+		    			<%= @commercial_unit.favorites ? "Yes" : "No" %>		    		
+					</div>
+					<div class="col-md-4">											
+		    			<strong>Expose Address:</strong>			    		
+		    			<%= @commercial_unit.expose_address ? "Yes" : "No" %>			    		
+					</div>	    		
+		    	</div>
+	    	
+				<br />
+				<div class="row">
 					<div class="col-md-12">
 						<h3>Property Description</h3>
 						<p><strong><%= @commercial_unit.listing_title %></strong></p>
