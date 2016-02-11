@@ -87,6 +87,7 @@ CommercialListings = {};
   // refresh the page every so often. We want to make sure they are
   // always viewing the latest data.
   CommercialListings.passiveRealTimeUpdate = function() {
+    // don't trigger this on the show page (<URL>/commercial_listings/<ID<)
     if ($('#commercial').length > 0) {
       CommercialListings.clearTimer();
       // update every few minutes
@@ -373,6 +374,7 @@ $(document).ready(function() {
   var commercial = url.indexOf('commercial_listings') > -1;
   var editPage = url.indexOf('edit') > -1;
   var newPage = url.indexOf('new') > -1;
+  // var showPage = url.end
   if (commercial) {
     // new and edit pages both render the same form template, so init them using the same code
     if (editPage || newPage) {

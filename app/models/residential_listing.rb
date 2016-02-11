@@ -107,8 +107,7 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self.listings_by_neighborhood(user, listing_ids)
-    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord]})
-      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord, :neighborhood]})
       .where('companies.id = ?', user.company_id)
       .where('units.listing_id IN (?)', listing_ids)
       .select('buildings.formatted_street_address',

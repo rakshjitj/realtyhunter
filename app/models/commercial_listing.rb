@@ -26,8 +26,9 @@ class CommercialListing < ActiveRecord::Base
   end
 
   def self.find_unarchived(id)
+    # .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+
     CommercialListing.joins(unit: [building: :landlord])
-      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where(id: id)
       .where('units.archived = false')
       .first
@@ -291,7 +292,8 @@ class CommercialListing < ActiveRecord::Base
   end
 
   def self.for_buildings(bldg_ids, is_active=nil)
-    listings = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord, :neighborhood]}])
+    listings = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord]}])
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('units.archived = false')
       .where('buildings.id in (?)', bldg_ids)
       .select('buildings.formatted_street_address',
@@ -333,7 +335,8 @@ class CommercialListing < ActiveRecord::Base
   end
 
   def self.for_units(unit_ids, is_active=nil)
-    listings = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord, :neighborhood]}])
+    listings = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord]}])
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('units.archived = false')
       .where('units.id in (?)', unit_ids)
       .select('buildings.formatted_street_address',
@@ -357,7 +360,8 @@ class CommercialListing < ActiveRecord::Base
   end
 
   def self.listings_by_id(user, listing_ids)
-    running_list = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord, :neighborhood]}])
+    running_list = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord]}])
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('companies.id = ?', user.company_id)
       .where('units.listing_id IN (?)', listing_ids)
       .where('units.archived = false')

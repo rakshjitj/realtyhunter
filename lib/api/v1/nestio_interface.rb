@@ -47,7 +47,8 @@ module API
 			def all_listings_search(company_id, search_params)
 				listings = Unit.joins('left join residential_listings on units.id = residential_listings.unit_id
 left join commercial_listings on units.id = commercial_listings.unit_id')
-				.joins(building: :neighborhood)
+				.joins(:building)
+				.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
 				.where('units.archived = false')
 				.where('units.status IN (?)', Unit.statuses["active"])
 
@@ -95,7 +96,8 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 
 			def residential_search(company_id, search_params)
 				listings = Unit
-					.joins(:residential_listing, building: :neighborhood)
+					.joins(:residential_listing, :building)
+					.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
 					.where('units.archived = false')
 					.where('units.status IN (?)', Unit.statuses["active"])
 
@@ -138,7 +140,8 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 			end
 
 			def commercial_search(company_id, search_params)
-				listings = Unit.joins(:commercial_listing, building: :neighborhood)
+				listings = Unit.joins(:commercial_listing, :building)
+					.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
 					.where('units.archived = false')
 					.where('units.status IN (?)', Unit.statuses["active"])
 
