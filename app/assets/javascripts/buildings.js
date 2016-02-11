@@ -119,8 +119,6 @@ Buildings = {};
   };
 
   Buildings.initEditor = function() {
-        // editing photos
-
     // disable auto discover
     Dropzone.autoDiscover = false;
 
@@ -182,7 +180,7 @@ Buildings = {};
       });
     });
 
-     var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
+    var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
     // google maps
     $("#bldg_panel").geocomplete({
       map: "#map_canvas",

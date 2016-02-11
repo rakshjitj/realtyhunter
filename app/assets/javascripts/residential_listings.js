@@ -61,21 +61,7 @@ ResidentialListings = {};
       }
       window.location.search = searchParams.join('&');
 
-	  // $.ajax({
-	  //   url: search_path,
-	  //   data: data,
-	  //   dataType: 'script',
-	  //   success: function(data) {
-	  //   	//console.log('SUCCESS:', data.responseText);
-	  //   	Listings.hideSpinner();
-			// },
-			// error: function(data) {
-			// 	//console.log('ERROR:', data.responseText);
-			// 	Listings.hideSpinner();
-			// }
-	  // });
-
-		ResidentialListings.passiveRealTimeUpdate();
+	 	ResidentialListings.passiveRealTimeUpdate();
 	};
 
 	ResidentialListings.removeUnitFeature = function (event) {
@@ -139,8 +125,9 @@ ResidentialListings = {};
 	// refresh the page every so often. We want to make sure they are
 	// always viewing the latest data.
 	ResidentialListings.passiveRealTimeUpdate = function() {
+    ResidentialListings.clearTimer();
+    // don't update on the show page
 		if ($('#residential').length) {
-			ResidentialListings.clearTimer();
 			// update every few minutes
 		  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 60 * 10 * 1000);
 		}
@@ -483,6 +470,8 @@ $(document).on('keyup',function(evt) {
 });
 
 $(document).ready(function() {
+  ResidentialListings.clearTimer();
+
   var url = window.location.pathname;
   var residential = url.indexOf('residential_listings') > -1;
   var editPage = url.indexOf('edit') > -1;

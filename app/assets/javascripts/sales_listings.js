@@ -56,41 +56,6 @@ SalesListings = {};
     }
     window.location.search = searchParams.join('&');
 
-	  // $.ajax({
-	  //   url: search_path,
-	  //   data: {
-   //      address: $('#sales #address').val(),
-   //      unit: $('#sales #unit').val(),
-   //      price_min: $('#sales #price_min').val(),
-   //      price_max: $('#sales #price_max').val(),
-   //      bed_min: $('#sales #bed_min').val(),
-   //      bed_max: $('#sales #bed_max').val(),
-   //      bath_min: $('#sales #bath_min').val(),
-   //      bath_max: $('#sales #bath_max').val(),
-   //      landlord: $('#sales #landlord').val(),
-   //      pet_policy_shorthand: $('#sales #pet_policy_shorthand').val(),
-   //      available_starting: $('#sales #available_starting').val(),
-   //      available_before: $('#sales #available_before').val(),
-   //      status: $('#sales #status').val(),
-   //      features: $('#sales #features').val(),
-   //      has_fee: $('#sales #has_fee').val(),
-   //      neighborhood_ids: $('#sales #neighborhood_ids').val(),
-   //      unit_feature_ids: $('#sales #unit_feature_ids').val(),
-   //      building_feature_ids: $('#sales #building_feature_ids').val(),
-   //      sort_by: sortByCol,
-   //      direction: sortDirection,
-	  //   },
-	  //   dataType: 'script',
-	  //   success: function(data) {
-	  //   	//console.log('SUCCESS:', data.responseText);
-	  //   	Listings.hideSpinner();
-			// },
-			// error: function(data) {
-			// 	//console.log('ERROR:', data.responseText);
-			// 	Listings.hideSpinner();
-			// }
-	  // });
-
 		SalesListings.passiveRealTimeUpdate();
 	};
 
@@ -112,9 +77,10 @@ SalesListings = {};
   // refresh the page every so often. We want to make sure they are
   // always viewing the latest data.
   SalesListings.passiveRealTimeUpdate = function() {
+    SalesListings.clearTimer();
+    // don't update on the show page
   	if ($('#sales').length > 0) {
-	    SalesListings.clearTimer();
-			// update every few minutes
+	    // update every few minutes
 	    SalesListings.timer = setTimeout(SalesListings.doSearch, 60 * 3 * 1000);
 	  }
   };
@@ -336,12 +302,74 @@ SalesListings = {};
     }
 	};
 
-	SalesListings.initialize = function() {
-    if (!$('#sales').length) {
-      return;
+  SalesListings.initEditor = function() {
+    var available_by = $('#sales .datepicker').attr('data-available-by');
+    if (available_by) {
+      $('#sales .datepicker').data("DateTimePicker").date(available_by);
     }
 
-		document.addEventListener("page:restore", function() {
+    // for drag n dropping photos
+    // disable auto discover
+    Dropzone.autoDiscover = false;
+    SalesListings.initializeImageDropzone();
+    SalesListings.initializeDocumentsDropzone();
+
+    var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
+    // google maps
+    $("#bldg_panel").geocomplete({
+      map: "#map_canvas",
+      location: bldg_address,
+      details: ".details"
+    }).bind("geocode:result", function(event, result){
+      //console.log(result);
+    }).bind("geocode:error", function(event, result){
+      //console.log("[ERROR]: " + result);
+    });
+
+    $(".autocomplete-input").geocomplete({
+      map: "#map_canvas",
+      location: bldg_address,
+      details: ".details"
+    }).bind("geocode:result", function(event, result){
+      if (this.value == "New York, NY, USA") {
+        this.value = '';
+      }
+
+      // update neighborhood options from google results
+      var sublocality = '';
+      for (var i =0; i<result["address_components"].length; i++) {
+        if (result["address_components"][i]["types"][1] == "sublocality") {
+          sublocality = result["address_components"][i]["short_name"];
+        }
+      }
+
+      // if no neighborhood already set, update neighborhood from google results
+      if ($('#neighborhood').val() == "") {
+        $.ajax({
+          type: "GET",
+          url: '/sales_listings/neighborhood_options',
+          data: {
+            sublocality: sublocality,
+          },
+          success: function(data) {
+            for (var i =0; i<result["address_components"].length; i++) {
+              if (result["address_components"][i]["types"][0] == "neighborhood") {
+                var nabe = result["address_components"][i]["short_name"];
+                //console.log(nabe);
+                $('#neighborhood').val(nabe);
+              }
+            }
+          }
+        });
+      }
+
+    }).bind("geocode:error", function(event, result){
+      //console.log("[ERROR]: " + result);
+    });
+  }
+
+	SalesListings.initIndex = function() {
+    document.addEventListener("page:restore", function() {
 			SalesListings.passiveRealTimeUpdate();
 		  Listings.hideSpinner();
 		});
@@ -407,18 +435,6 @@ SalesListings = {};
 	    SalesListings.updateOverviewMap();
 		}
 
-		// google map on show page
-		var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
-		$("#sunit-panel").geocomplete({
-	  	map: "#map_canvas",
-	  	location: bldg_address,
-	  	details: ".details"
-	  }).bind("geocode:result", function(event, result){
-	    //console.log(result);
-	  }).bind("geocode:error", function(event, result){
-	    //console.log("[ERROR]: " + result);
-	  });
-
 	  // index page - selecting listings menu dropdown
     $('#sales #emailListings').click(Listings.sendMessage);
     $('#sales tbody').on('click', 'i', Listings.toggleListingSelection);
@@ -427,13 +443,6 @@ SalesListings = {};
       var action = $(this).data('action');
       if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();
     });
-
-
-	  // for drag n dropping photos
-		// disable auto discover
-		Dropzone.autoDiscover = false;
-	 	SalesListings.initializeImageDropzone();
-    SalesListings.initializeDocumentsDropzone();
 
     SalesListings.passiveRealTimeUpdate();
 
@@ -449,4 +458,19 @@ $(document).on('keyup',function(evt) {
   }
 });
 
-$(document).ready(SalesListings.initialize);
+$(document).ready(function() {
+  SalesListings.clearTimer();
+
+  var url = window.location.pathname;
+  var sales = url.indexOf('sales_listings') > -1;
+  var editPage = url.indexOf('edit') > -1;
+  var newPage = url.indexOf('new') > -1;
+  if (sales) {
+    // new and edit pages both render the same form template, so init them using the same code
+    if (editPage || newPage) {
+      SalesListings.initEditor();
+    } else {
+      SalesListings.initIndex();
+    }
+  }
+});

@@ -51,7 +51,8 @@
       <% end %>
     </td>
 
-    <% if current_user.is_management? || current_user.is_listings_manager? || current_user.is_photo_manager? %>
+    <% if current_user.is_management? || current_user.is_listings_manager? ||
+          current_user.is_photo_manager? %>
       <td>
         <% if !current_user.is_photo_manager? %>
           <%= link_to 'Edit', edit_commercial_listing_path(commercial_listing) %>

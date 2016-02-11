@@ -1,10 +1,10 @@
 <br />
 <div class="row">
   <div class="col-md-3 form-label-responsive">
-    <%= label_tag :neighborhood, "Neighborhood", class: 'required' %>
+    <%= label_tag :neighborhood, "Neighborhood" %>
   </div>
   <div class="col-md-9">
-  <%= select_tag(:neighborhood, 
+  <%= select_tag(:neighborhood,
     options_for_select(Neighborhood.for_borough(@sales_unit.unit.building.sublocality).collect {|n| [n.name]},
     [@sales_unit.unit.building.neighborhood ? @sales_unit.unit.building.neighborhood.name : '']),
     {prompt: "Choose one...",

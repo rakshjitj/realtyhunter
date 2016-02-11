@@ -51,9 +51,10 @@
       <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
     <% end %>
   </td>
-  <% if current_user.is_management? || current_user.is_listings_manager? || current_user.is_photo_manager? %>
+  <% if current_user.is_management? || current_user.is_listings_manager? ||
+        current_user.is_photo_manager? %>
     <td>
-      <% if !current_user.is_photo_manager %>
+      <% if !current_user.is_photo_manager? %>
         <%= link_to 'Edit', edit_sales_listing_path(sales_listing) %>
         <br /><%= link_to 'Delete', delete_modal_sales_listing_path(sales_listing),
           data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
