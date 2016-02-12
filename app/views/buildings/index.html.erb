@@ -29,11 +29,27 @@
         placeholder: "Filter by address",
         size: 25, class:'form-control' %>
     </div>
-    <div class="col-xs-12 col-md-4 vertical-padding">
-      <div class="checkbox checkbox-warning checkbox-inline">
-        <%= check_box_tag(:checkbox_active, "", params[:active_only] == "true" ? true : false) %>
-        <label>Has on-market units</label>
-      </div>
+    <div class="col-xs-12 col-md-4 vertical-padding form-label-responsive">
+      <label>Buildings with units that have this status:</label>
+    </div>
+    <div class="col-xs-12 col-md-2 vertical-padding">
+      <%= params %>
+      <% if current_user.is_management? || current_user.is_listings_manager? %>
+        <%= select_tag(:status,
+          options_for_select(['Any', 'Active/Pending', 'Active', 'Pending', 'Off'],
+          params[:status] ? params[:status].titleize : "Any"), class: 'form-control') %>
+      <% else %>
+        <%= select_tag(:status,
+          options_for_select(['Any', 'Active/Pending', 'Active', 'Pending'],
+          params[:status] ? params[:status].titleize : "Any"), class: 'form-control') %>
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 vertical-padding">
+      <span class="totals">
+        &nbsp;&nbsp;<%= @buildings.total_count %> Buildings found
+      </span>
     </div>
   </div>
   <% end %><!-- end form -->

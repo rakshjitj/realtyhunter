@@ -42,7 +42,7 @@ Buildings = {};
 
     var data = {
         filter: $('#buildings #filter').val(),
-        active_only: $('#buildings #checkbox_active').prop('checked'),
+        status: $('#buildings #status').val(),
         sort_by: sortByCol,
         direction: sortDirection,
       };
@@ -255,7 +255,7 @@ Buildings = {};
     $('#buildings #filter').keydown(Buildings.preventEnter);
     $('#buildings #filter').change(Buildings.throttledBldgSearch);
     // toggle between active and inactive units
-    $('#buildings #checkbox_active').click(Buildings.throttledBldgSearch);
+    $('#buildings #status').change(Buildings.throttledBldgSearch);
     $('#buildings #listings_checkbox_active').click(Buildings.filterListings);
   }
 

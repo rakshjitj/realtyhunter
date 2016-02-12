@@ -77,7 +77,7 @@ class Building < ActiveRecord::Base
     Image.where(building_id: bldg_ids, priority: 0).index_by(&:building_id)
   end
 
-	def self.search(query_str, active_only)
+	def self.search(query_str, status)
     @running_list = Building.joins(:landlord)
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('buildings.archived = false')
@@ -100,9 +100,18 @@ class Building < ActiveRecord::Base
       end
     end
 
-    if active_only == "true"
-      # @running_list = @running_list.joins(:units).where("units.status != ? ", Unit.statuses["off"])
-      @running_list = @running_list.where('buildings.active_unit_count > 0')
+    if !status.nil?
+      status_lowercase = status.downcase
+      if status_lowercase != 'any'
+        if status_lowercase == 'active/pending'
+          @running_list = @running_list.joins(:units)
+              .where("units.status IN (?) ",
+                [Unit.statuses['active'], Unit.statuses['pending']]).uniq
+        else
+          @running_list = @running_list.joins(:units)
+              .where("units.status = ? ", Unit.statuses[status_lowercase]).uniq
+        end
+      end
     end
 
     @running_list
