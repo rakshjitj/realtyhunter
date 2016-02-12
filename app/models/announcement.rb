@@ -25,7 +25,6 @@ class Announcement < ActiveRecord::Base
     if !params[:category_filter].blank?
       entries = entries.where('announcements.category = ?', Announcement.categories[params[:category_filter].downcase]);
     end
-
     entries
   end
 

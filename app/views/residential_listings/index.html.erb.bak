@@ -1,0 +1,399 @@
+<% provide(:title, 'Residential Listings') %>
+
+<div id="residential">
+<div id="section-name" data-name="residential_listings">
+
+<%= render partial: "residential_listings/announcements", locals: { announcements: @announcement_items } %>
+
+<div class="row row-relative">
+  <div class="col-md-6">
+    <h1>Rental Listings</h1>
+  </div>
+  <div class="col-md-6 form-label-responsive bottom-align-text">
+    <% if current_user.is_management? || current_user.is_listings_manager? %>
+      <%= link_to 'Make Announcement', new_announcement_path,
+        class: "btn btn-warning btn-sm link-as-button" %>
+      <%= link_to 'Add a Deal', new_deal_path, class: 'btn btn-warning btn-sm link-as-button' %>
+      <%= link_to 'Add a unit', new_residential_listing_path, class: 'btn btn-warning btn-sm link-as-button' %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row vertical-align">
+  <div class="col-md-3">
+
+    <i class="fa fa-spinner fa-pulse fa-5x res-spinner-desktop listings-spinner-desktop"></i>
+
+    <div id="res-search-filters" data-search-path="<%= filter_residential_listings_path %>">
+      <%= form_tag residential_listings_path, :method => 'get' do %>
+        <div class="row vertical-margin-lg">
+          <div class="col-xs-3">
+            <%= label_tag(:address, "Address") %>
+          </div>
+          <div class="col-xs-8 col-sm-left-padding">
+          <%= autocomplete_field_tag :address, params[:address],
+              autocomplete_building_formatted_street_address_residential_listings_path,
+              update_elements: {},
+              placeholder: "123 Main St",
+              class:'form-control' %>
+          </div>
+        </div>
+        <div class="row vertical-padding">
+          <div class="col-xs-3">
+            <%= label_tag(:unit, "Unit") %>
+          </div>
+          <div class="col-xs-4 col-sm-left-padding">
+            <%= text_field_tag :unit, params[:unit], size: 5, class:"form-control" %>
+          </div>
+        </div>
+        <div class="row vertical-padding">
+          <div class="col-xs-3">
+            <%= label_tag(:unit, "Rent") %>
+          </div>
+          <div class="col-xs-4 col-sm-left-padding">
+            <%= number_field_tag :rent_min, params[:rent_min], placeholder: "$ min",
+              min: 0, max: 1000000, class:"form-control" %>
+          </div>
+          <div class="col-xs-4 col-sm-left-padding">
+            <%= number_field_tag :rent_max, params[:rent_max], placeholder: "$ max",
+              min: 0, max: 1000000, class:"form-control" %>
+          </div>
+        </div>
+        <div class="row vertical-padding">
+          <div class="col-xs-3">
+            <%= label_tag(:unit, "Beds") %>
+          </div>
+          <div class="col-xs-4 col-sm-left-padding">
+            <%= select_tag(:bed_min,
+              options_for_select(%w(Any Studio/Loft 1 2 3 4 5 6 7 8 9 10),
+              params[:bed_min]), class: 'form-control') %>
+          </div>
+          <div class="col-xs-4 col-sm-left-padding">
+            <%= select_tag(:bed_max,
+              options_for_select(%w(Any Studio/Loft 1 2 3 4 5 6 7 8 9 10),
+              params[:bed_max]), class: 'form-control') %>
+          </div>
+        </div>
+        <div class="row vertical-padding">
+          <div class="col-xs-3">
+            <%= label_tag(:unit, "Baths") %>
+          </div>
+          <div class="col-xs-4 col-sm-left-padding">
+            <%= select_tag(:bath_min,
+              options_for_select(%w(Any 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 5.5 6 6.5 7 7.5 8 8.5 9 9.5 10),
+              params[:bath_min]), class: 'form-control') %>
+            <!--%= number_field_tag :bath_min, params[:bath_min], min: 0, max: 10, interval: 0.5,
+              placeholder: " min", class:"form-control" %-->
+          </div>
+          <div class="col-xs-4 col-sm-left-padding">
+            <%= select_tag(:bath_max,
+              options_for_select(%w(Any 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 5.5 6 6.5 7 7.5 8 8.5 9 9.5 10),
+              params[:bath_max]), class: 'form-control') %>
+            <!--%= number_field_tag :bath_max, params[:bath_max], min: 0, max: 10, interval: 0.5,
+              placeholder: " max", class:"form-control" %-->
+          </div>
+        </div>
+        <div class="row vertical-padding">
+          <div class="col-xs-4">
+            <%= label_tag(:landlord, "Landlord ") %>
+          </div>
+          <div class="col-xs-7 col-sm-left-padding">
+            <%= autocomplete_field_tag :landlord, params[:landlord],
+              autocomplete_landlord_code_residential_listings_path,
+              update_elements: {},
+              placeholder: "code",
+              size: 30, class:'form-control' %>
+          </div>
+        </div>
+        <div class="row vertical-padding">
+          <div class="col-xs-4">
+            <%= label_tag :status, "Status" %>
+          </div>
+          <div class="col-xs-7 col-sm-left-padding">
+            <% if current_user.is_management? || current_user.is_listings_manager? %>
+              <%= select_tag(:status,
+                options_for_select(['Any', 'Active + Pending', 'Active', 'Pending', 'Off'],
+                params[:status] ? params[:status].titleize : "Active"), class: 'form-control') %>
+            <% else %>
+              <%= select_tag(:status,
+                options_for_select(['Any', 'Active + Pending', 'Active', 'Pending'],
+                params[:status] ? params[:status].titleize : "Active"), class: 'form-control') %>
+            <% end %>
+          </div>
+        </div>
+        <div class="row vertical-padding">
+          <div class="col-xs-4">
+            <%= label_tag :has_fee, "Broker's Fee" %>
+          </div>
+          <div class="col-xs-7 col-sm-left-padding">
+            <%= select_tag(:has_fee,
+              options_for_select(%w(Any Yes No), params[:has_fee]), class: 'form-control') %>
+          </div>
+        </div>
+        <div class="row vertical-padding">
+          <div class="col-xs-4">
+            <%= label_tag :pet_policy_shorthand, "Pet policy" %>
+          </div>
+          <div class="col-xs-7 col-sm-left-padding">
+            <%= select_tag(:pet_policy_shorthand,
+              options_for_select(["Any", "Cats Only", "Dogs Only", "None"],
+              [params[:pet_policy_shorthand] ? params[:pet_policy_shorthand].titleize : "Any"]),
+              class: 'form-control') %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-xs-4">
+            <%= label_tag :primary_agent_id, "Agent" %>
+          </div>
+          <div class="col-xs-7 col-sm-left-padding">
+            <%= select_tag(:primary_agent_id,
+              options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
+                  [params[:primary_agent_id] ? params[:primary_agent_id].titleize : "Any"]),
+                {prompt: "Choose one...",
+                class: 'form-control'}) %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-xs-12">
+            <strong>Available</strong>
+          </div>
+        </div>
+        <div class="row vertical-padding">
+          <div class="col-xs-6 col-sm-left-padding">
+            <div class='input-group date datepicker'>
+              <%= text_field_tag :available_starting, params[:available_starting],
+                placeholder: "start", class:"form-control", size:30 %>
+              <label class="input-group-addon btn" for="date">
+                <span class="fa fa-calendar open-datepicker"></span>
+              </label>
+            </div>
+          </div>
+          <div class="col-xs-5 col-sm-left-padding">
+            <div class='input-group date datepicker'>
+              <%= text_field_tag :available_before, params[:available_before],
+                placeholder: "by", class:"form-control" %>
+              <label class="input-group-addon btn" for="date">
+                <span class="fa fa-calendar open-datepicker"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-xs-6">
+            <div class="checkbox checkbox-warning inline">
+              <%= check_box_tag :roomsharing_filter, "", params[:roomsharing_filter] == "true" ? true : false,
+                  class: 'styled' %>
+              <label for="roomsharing_filter">
+                Roomshares
+              </label>
+            </div>
+          </div>
+          <% if current_user.is_management? %>
+            <div class="col-xs-6">
+              <div class="checkbox checkbox-warning inline">
+                <%= check_box_tag :unassigned_filter, "", params[:unassigned_filter] == "true" ? true : false,
+                    class: 'styled' %>
+                <label for="unassigned_filter">
+                  Unassigned
+                </label>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <br />
+        <div class="row vertical-padding">
+          <div class="col-xs-12">
+            <%= link_to 'Neighborhoods', neighborhoods_modal_residential_listings_path,
+              data: {toggle: "modal", target: "#neighborhoodsModal"}, remote: true,
+              class: "link-as-button btn btn-sm btn-warning" %>
+            <div id="selected_neighborhoods" class="vertical-padding">
+              <!-- gets written over by neighborhood_modal.js.erb -->
+              <% @selected_neighborhoods.each do |f| %>
+                <%= link_to "",
+                  class: "btn btn-sm btn-default remove-neighborhood", remote: "true", data: {id:f.id} do %>
+                  <%= f.name %> <span class="glyphicon glyphicon-remove"></span>
+                <% end %>
+              <% end %>
+            </div>
+            <%= hidden_field_tag :neighborhood_ids, params[:neighborhood_ids] %>
+          </div>
+        </div>
+        <div class="row vertical-padding">
+          <div class="col-xs-12">
+            <%= link_to 'Features', features_modal_residential_listings_path,
+              data: {toggle: "modal", target: "#featuresModal"}, remote: true,
+              class: "link-as-button btn btn-sm btn-warning" %>
+
+            <div id="selected_features" class="vertical-padding">
+              <!-- gets written over by features_modal.js.erb -->
+              <% @unit_features.each do |f| %>
+                <%= link_to "",
+                  class: "btn btn-sm btn-default remove-unit-feature", remote: "true", data: {id:f.id} do %>
+                  <%= f.name %> <span class="glyphicon glyphicon-remove"></span>
+                <% end %>
+              <% end %>
+              <!-- gets written over by features_modal.js.erb -->
+              <% @bldg_features.each do |f| %>
+                <%= link_to "",
+                  class: "btn btn-sm btn-default remove-building-feature", remote: "true", data: {id:f.id} do %>
+                  <%= f.name %> <span class="glyphicon glyphicon-remove"></span>
+                <% end %>
+              <% end %>
+            </div>
+
+            <%= hidden_field_tag :unit_feature_ids, params[:unit_feature_ids] %>
+            <%= hidden_field_tag :building_feature_ids, params[:building_feature_ids] %>
+
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%= render 'map_overall_view' %>
+</div>
+
+<div class="hidden-xs hidden-sm">
+  <hr class="map-hr">
+</div>
+
+<%= form_tag print_list_residential_listings_path do %>
+<div class="row">
+  <div class="col-md-6 vertical-margin-lg">
+    <!-- will be a dropdown of either print pdf or email -->
+    <div class="dropdown selected-listings">
+      <button class="btn btn-warning btn-sm dropdown-toggle disabled" id="selected-listings-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="menu">
+        0 Selected Listings
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu selected-listings-menu" aria-labelledby="selected-listings-dropdown">
+        <% if current_user.is_management? %>
+          <li role="presentation"><a class="list-item-sm-padding" id="assignListings" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#unitAssignModal">
+          <i class="fa fa-fw fa-child"></i> Assign Agent</a></li>
+
+          <li role="presentation"><a class="list-item-sm-padding" id="unassignListings" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#unitUnassignModal">
+          <i class="fa fa-fw fa-child"></i> Unassign Agent</a></li>
+        <% end %>
+
+        <li role="presentation"><a class="list-item-sm-padding" id="emailListings" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#emailModal">
+          <i class="fa fa-fw fa-envelope"></i> Email</a></li>
+
+        <li role="presentation"><a class="list-item-sm-padding" data-action="listingsSheet" role="menuitem" tabindex="-1">
+          <i class="fa fa-fw fa-file-text"></i> Show Sheet</a></li>
+
+        <li role="presentation"><a class="list-item-sm-padding" data-action="internalListingsSheet" role="menuitem" tabindex="-1">
+          <i class="fa fa-fw fa-list"></i> Internal Listings Sheet</a></li>
+      </ul>
+    </div>
+
+    <% if current_user.is_management? %>
+      <%= link_to 'Export to CSV', residential_listings_path(params.merge(format: 'csv').symbolize_keys),
+        class:"btn btn-sm btn-warning link-as-button" %>
+    <% end %>
+
+    <span class="totals">
+      &nbsp;&nbsp;<%= @residential_units.total_count %> Units found
+    </span>
+  </div>
+
+  <div class="col-md-6 vertical-margin-lg">
+    <div class="form-label-responsive">
+      <%= render partial: 'shared/pagination', locals: {models: @residential_units} %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="">
+      <table class="table table-striped table-hover table-condensed">
+        <thead>
+          <tr>
+            <th style="min-width: 45px;">
+              <!-- checkboxes -->
+              <i data-action="selectAllUnits" class="select-all-listings fa fa-square-o fa-lg"></i>
+            </th>
+            <th><!-- first image --></th>
+            <th data-sort="formatted_street_address" class="th-sortable">Address</th>
+            <th data-sort="building_unit" class="th-sortable">Unit</th>
+            <th data-sort="bed_and_baths" class="th-sortable">Beds/Baths</th>
+            <th data-sort="rent" class="th-sortable">Price</th>
+            <th data-sort="available_by" class="th-sortable">Available</th>
+            <th style="min-width: 20%;">Access</th>
+            <th data-sort="landlord_code" class="th-sortable">Landlord</th>
+            <th data-sort="updated_at" class="th-sortable">Updated</th>
+            <th data-sort="status" class="th-sortable">Status</th>
+            <% if current_user.is_management? || current_user.is_listings_manager? %>
+              <th colspan="1"></th>
+            <% end %>
+          </tr>
+        </thead>
+
+
+        <tbody class="residential_units_table_body">
+          <%= render partial: 'residential_listings/residential_listing',
+          collection: @residential_units, locals: {res_images: @res_images} %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<% end %><!-- form -->
+
+<div class="row">
+  <div class="col-md-12 form-label-responsive">
+    <%= render partial: 'shared/pagination', locals: {models: @residential_units} %>
+  </div>
+</div>
+
+
+
+<%# Template Dependency: residential_listings/modals %>
+<%= render 'modals' %>
+
+<!-- Neighborhood Modal -->
+<div class="modal fade modal-fullscreen" id="neighborhoodsModal" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="neighborhood-modal-title">Select Neighborhoods</h4>
+      </div>
+      <div class="modal-body">
+        <div id="placeholder-body"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning btn-close" data-dismiss="modal">Done</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Features Modal -->
+<div class="modal fade modal-fullscreen" id="featuresModal" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="neighborhood-modal-title">Select Features</h4>
+      </div>
+      <div class="modal-body">
+        <div id="placeholder-body"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning btn-close" data-dismiss="modal">Done</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div>

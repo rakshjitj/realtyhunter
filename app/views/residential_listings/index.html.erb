@@ -7,11 +7,14 @@
 <div class="mobile-container hidden-md hidden-lg">
   <div class="card-wrapper">
 
-    <div class="card front card-visible">
+    <div class="card main card-visible">
       <div class="card-contents">
-
-        <div class="flip-banner">
-          <em>New Announcements</em>
+        <div class="card-nav">
+          <div class="card-nav-inner">
+            <div class="middle js-show-announcements">
+              <h4>View Announcements</h4>
+            </div>
+          </div>
         </div>
 
         <!-- map, full screen on mobile -->
@@ -32,14 +35,115 @@
 
     <div class="card mobile-filters">
       <div class="card-contents">
-        filters n stuff
+        <div class="card-nav">
+          <div class="card-nav-inner">
+            <div class="left js-close-mobile-filters">
+              <a class="close-link"><i class="fa fa-close fa-2x close-link"></i></a>
+            </div>
+            <div class="middle">
+              <h4>Mobile Filters</h4>
+            </div>
+            <div class="right js-run-search">
+              <a class="search-link">Search</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-middle">
+          <div class="row vertical-padding">
+            <div class="col-xs-3">
+              <%= label_tag(:unit, "Rent", class: "field-label") %>
+            </div>
+            <div class="col-xs-4 col-sm-left-padding">
+              <%= number_field_tag :rent_min, params[:rent_min], placeholder: "$ min",
+                min: 0, max: 1000000, class:"form-control" %>
+            </div>
+            <div class="col-xs-4 col-sm-left-padding">
+              <%= number_field_tag :rent_max, params[:rent_max], placeholder: "$ max",
+                min: 0, max: 1000000, class:"form-control" %>
+            </div>
+          </div>
+          <div class="row vertical-padding">
+            <div class="col-xs-3">
+              <%= label_tag(:unit, "Beds", class: "field-label") %>
+            </div>
+            <div class="col-xs-4 col-sm-left-padding">
+              <%= select_tag(:bed_min,
+                options_for_select(%w(Any Studio/Loft 1 2 3 4 5 6 7 8 9 10),
+                params[:bed_min]), class: 'form-control') %>
+            </div>
+            <div class="col-xs-4 col-sm-left-padding">
+              <%= select_tag(:bed_max,
+                options_for_select(%w(Any Studio/Loft 1 2 3 4 5 6 7 8 9 10),
+                params[:bed_max]), class: 'form-control') %>
+            </div>
+          </div>
+          <div class="row vertical-padding">
+            <div class="col-xs-3">
+              <%= label_tag(:unit, "Baths", class: "field-label") %>
+            </div>
+            <div class="col-xs-4 col-sm-left-padding">
+              <%= select_tag(:bath_min,
+                options_for_select(%w(Any 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 5.5 6 6.5 7 7.5 8 8.5 9 9.5 10),
+                params[:bath_min]), class: 'form-control') %>
+            </div>
+            <div class="col-xs-4 col-sm-left-padding">
+              <%= select_tag(:bath_max,
+                options_for_select(%w(Any 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 5.5 6 6.5 7 7.5 8 8.5 9 9.5 10),
+                params[:bath_max]), class: 'form-control') %>
+            </div>
+          </div>
+          <div class="row vertical-padding">
+            <div class="col-xs-3">
+              <%= label_tag :status, "Status", class: "field-label" %>
+            </div>
+            <div class="col-xs-8 col-sm-left-padding">
+              <% if current_user.is_management? || current_user.is_listings_manager? %>
+                <%= select_tag(:status,
+                  options_for_select(['Any', 'Active + Pending', 'Active', 'Pending', 'Off'],
+                  params[:status] ? params[:status].titleize : "Active"), class: 'form-control') %>
+              <% else %>
+                <%= select_tag(:status,
+                  options_for_select(['Any', 'Active + Pending', 'Active', 'Pending'],
+                  params[:status] ? params[:status].titleize : "Active"), class: 'form-control') %>
+              <% end %>
+            </div>
+          </div>
+          <div class="row vertical-padding">
+            <div class="col-xs-12">
+              <%= label_tag :status, "Neighborhood", class: "field-label" %>
+            </div>
+          </div>
+          <div class="row vertical-padding">
+            <div class="col-xs-12">
+              <select id="neighborhood-select-multiple" multiple="multiple">
+                <% @neighborhoods.each do |borough, list| %>
+                  <optgroup label="<%= borough %>">
+                    <% list.each do |neighborhood| %>
+                      <option value="<%= neighborhood.id %>"><%= neighborhood.name %></option>
+                    <% end %>
+                  </optgroup>
+                <% end %>
+              </select>
+            </div>
+          </div>
+
       </div>
     </div>
 
-    <div class="card back card-visible">
+    <div class="card announcements">
       <div class="card-contents">
-        <div class="flip-banner flipped">
-          <em>Back to map</em>
+        <div class="card-nav">
+          <div class="card-nav-inner">
+            <div class="left">
+
+            </div>
+            <div class="middle js-show-main">
+              <h4>Back to Map</h4>
+            </div>
+            <div class="right">
+            </div>
+          </div>
         </div>
         <div class="card-middle">
           <div class="announcements-wrapper">

@@ -42,6 +42,11 @@
   white-space: normal !important;
 }
 
+
+
+
+
+
 .card-wrapper {
   position: absolute;
   top: -10px;
@@ -50,25 +55,26 @@
   height: calc(100vh - 50px);
   overflow: hidden;
 
-  transform-style: preserve-3d;
+  /*transform-style: preserve-3d;
   transition: transform 1s;
-  transform-origin: right center;
+  transform-origin: right center;*/
 }
 
-.card-wrapper.flipped {
+/*.card-wrapper.flipped {
   transform: rotateY( 180deg );
   transform: translateX( -100% ) rotateY( -180deg );
-}
+}*/
 
 .card {
   position: absolute;
   top: 0;
-  left: 0;
+  left: 100000px;
   visibility: hidden;
 }
 
 .card-visible {
   visibility: visible;
+  left: 0;
 }
 .card-contents {
   display: flex;
@@ -84,25 +90,21 @@
   -webkit-transition-duration: 0.2s;
 }
 
-.card.front {
+.card.main {
   backface-visibility: hidden;
-  opacity: 1;
-  /*display: block;*/
+  /*opacity: 1;*/
 }
-.card.front.flipped {
-  opacity: 0;
-  /*display: none;*/
+.card.main.flipped {
+  /*opacity: 0;*/
 }
 
-.card.back {
-  transform: rotateY( 180deg );
+.card.announcements {
+  /*transform: rotateY( 180deg );*/
   backface-visibility: hidden;
-  opacity: 0;
-  /*display: none;*/
+  /*opacity: 0;*/
 }
-.card.back.flipped {
-  opacity: 1;
-  /*display: block;*/
+.card.announcements.flipped {
+  /*opacity: 1;*/
 }
 
 #r-big-map {
@@ -134,15 +136,60 @@
   flex: 1;
 }
 
-.flip-banner {
-  flex-basis: 40px;
+.card-nav {
+  flex-basis: 50px;
   order: 1;
   width: 100vw;
-  height: 40px;
-  background-color: #FFF8C6;
-  text-align: center;
-  padding: 10px;
+  height: 60px;
+  background-color: #eb9114;
+}
+
+.card-nav-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 5px;
+  a {
+    color: white;
+  }
+}
+
+.left {
+  flex: 1;
   cursor: pointer;
+  text-align: left;
+}
+.middle {
+  flex: 1;
+  text-align: center;
+}
+.right {
+  flex: 1;
+  cursor: pointer;
+  text-align: right;
+}
+
+.close-link {
+  padding-left: 10px;
+  text-decoration: none;
+}
+.search-link {
+  padding-right: 20px;
+  font-size: 1.5em;
+  text-decoration: none;
+}
+
+.mobile-filters {
+  background-color: #D3D3D3;
+
+  .field-label {
+    font-size: 2em;
+  }
+
+  .row {
+    margin-top: 10px;
+    margin-left: 5px;
+  }
 }
 
 .footer-wrapper {

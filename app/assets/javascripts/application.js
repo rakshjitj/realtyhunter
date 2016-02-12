@@ -26,6 +26,7 @@
 //= require moment
 //= require bootstrap-datetimepicker
 //= require jquery.mousewheel.min
+//= require bootstrap-multiselect
 
 $(document).ready(function() {
 	// change all date input fields to auto-open the calendar

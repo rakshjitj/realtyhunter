@@ -353,6 +353,11 @@ class ResidentialListingsController < ApplicationController
     end
 
     def set_residential_listings
+      @neighborhoods = Neighborhood.unarchived
+          .where(state: current_user.office.administrative_area_level_1_short)
+          .to_a
+          .group_by(&:borough)
+
       do_search
       custom_sort
       # display all found listings on the map
