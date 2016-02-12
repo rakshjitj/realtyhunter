@@ -428,7 +428,7 @@ class SalesListingsController < ApplicationController
           :building_size, :block_taxes, :lot_taxes, :water_sewer, :insurance,
           :school_district, :certificate_of_occupancy, :violation_search, :tenant_occupied,
           :internal_notes, :public_description,
-          :floor_number, :total_room_count, :condition, :showing_instruction, :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
+          :floor, :total_room_count, :condition, :showing_instruction, :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
           
           :unit => [:building_unit, :rent, :available_by, :access_info, :status,
             :open_house, :oh_exclusive,

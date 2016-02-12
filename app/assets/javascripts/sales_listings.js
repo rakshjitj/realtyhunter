@@ -359,13 +359,13 @@ SalesListings = {};
 
   SalesListings.rlsnyValidation = function() {
     if($('#sales_listing_rlsny').is(":checked")){   
-      $("#sales_listing_floor_number").attr("required", true);
+      $("#sales_listing_floor").attr("required", true);
       $("#sales_listing_total_room_count").attr("required", true);
       $("#sales_listing_condition").attr("required", true);
       $("#sales_listing_showing_instruction").attr("required", true);
       $("#sales_listing_commission_amount").attr("required", true);
 
-      $('label[for="sales_listing_floor_number"]').addClass("required");
+      $('label[for="sales_listing_floor"]').addClass("required");
       $('label[for="sales_listing_total_room_count"]').addClass("required");
       $('label[for="sales_listing_condition"]').addClass("required");
       $('label[for="sales_listing_showing_instruction"]').addClass("required");
@@ -375,13 +375,13 @@ SalesListings = {};
     }
     $('input[name="sales_listing[rlsny]"]').change(function(){    
       if($(this).is(":checked")){     
-        $("#sales_listing_floor_number").attr("required", true);      
+        $("#sales_listing_floor").attr("required", true);      
         $("#sales_listing_total_room_count").attr("required", true);
         $("#sales_listing_condition").attr("required", true);
         $("#sales_listing_showing_instruction").attr("required", true);
         $("#sales_listing_commission_amount").attr("required", true);
 
-        $('label[for="sales_listing_floor_number"]').addClass("required");
+        $('label[for="sales_listing_floor"]').addClass("required");
         $('label[for="sales_listing_total_room_count"]').addClass("required");
         $('label[for="sales_listing_condition"]').addClass("required");
         $('label[for="sales_listing_showing_instruction"]').addClass("required");
@@ -391,13 +391,13 @@ SalesListings = {};
       }
       else
       {     
-        $("#sales_listing_floor_number").removeAttr("required");
+        $("#sales_listing_floor").removeAttr("required");
         $("#sales_listing_total_room_count").removeAttr("required");
         $("#sales_listing_condition").removeAttr("required");
         $("#sales_listing_showing_instruction").removeAttr("required");
         $("#sales_listing_commission_amount").removeAttr("required");
 
-        $('label[for="sales_listing_floor_number"]').removeClass("required");
+        $('label[for="sales_listing_floor"]').removeClass("required");
         $('label[for="sales_listing_total_room_count"]').removeClass("required");
         $('label[for="sales_listing_condition"]').removeClass("required");
         $('label[for="sales_listing_showing_instruction"]').removeClass("required");

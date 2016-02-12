@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160210080541) do
+ActiveRecord::Schema.define(version: 20160212061041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -388,7 +388,7 @@ ActiveRecord::Schema.define(version: 20160210080541) do
     t.boolean  "favorites",           default: false
     t.boolean  "show",                default: true
     t.boolean  "expose_address",      default: false
-    t.integer  "floor_number"
+    t.integer  "floor"
     t.integer  "total_room_count"
     t.string   "condition"
     t.string   "showing_instruction"
@@ -540,7 +540,7 @@ ActiveRecord::Schema.define(version: 20160210080541) do
     t.string   "certificate_of_occupancy"
     t.string   "violation_search"
     t.integer  "lock_version",              default: 0,     null: false
-    t.integer  "floor_number"
+    t.integer  "floor"
     t.integer  "total_room_count"
     t.string   "condition"
     t.string   "showing_instruction"

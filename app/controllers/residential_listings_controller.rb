@@ -420,7 +420,7 @@ class ResidentialListingsController < ApplicationController
         :has_fee, :op_fee_percentage, :tp_fee_percentage,
         :available_starting, :available_before, :custom_amenities,
         :roomsharing_filter, :unassigned_filter, :primary_agent_id, :favorites, :show, :expose_address,
-        :floor_number, :total_room_count, :condition, :showing_instruction, :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
+        :floor, :total_room_count, :condition, :showing_instruction, :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
         :unit => [:building_unit, :rent, :available_by, :access_info, :status,
           :open_house, :oh_exclusive, :exclusive,
           :building_id, :primary_agent_id, :listing_agent_id ],

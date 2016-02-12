@@ -383,13 +383,13 @@ ResidentialListings = {};
 
 	ResidentialListings.rlsnyValidation = function() {
 		if($('#residential_listing_rlsny').is(":checked")){		
-			$("#residential_listing_floor_number").attr("required", true);
+			$("#residential_listing_floor").attr("required", true);
 			$("#residential_listing_total_room_count").attr("required", true);
 			$("#residential_listing_condition").attr("required", true);
 			$("#residential_listing_showing_instruction").attr("required", true);
 			$("#residential_listing_commission_amount").attr("required", true);
 
-			$('label[for="residential_listing_floor_number"]').addClass("required");
+			$('label[for="residential_listing_floor"]').addClass("required");
 			$('label[for="residential_listing_total_room_count"]').addClass("required");
 			$('label[for="residential_listing_condition"]').addClass("required");
 			$('label[for="residential_listing_showing_instruction"]').addClass("required");
@@ -399,13 +399,13 @@ ResidentialListings = {};
 		}
 		$('input[name="residential_listing[rlsny]"]').change(function(){		
 			if($(this).is(":checked")){			
-				$("#residential_listing_floor_number").attr("required", true);			
+				$("#residential_listing_floor").attr("required", true);			
 				$("#residential_listing_total_room_count").attr("required", true);
 				$("#residential_listing_condition").attr("required", true);
 				$("#residential_listing_showing_instruction").attr("required", true);
 				$("#residential_listing_commission_amount").attr("required", true);
 
-				$('label[for="residential_listing_floor_number"]').addClass("required");
+				$('label[for="residential_listing_floor"]').addClass("required");
 				$('label[for="residential_listing_total_room_count"]').addClass("required");
 				$('label[for="residential_listing_condition"]').addClass("required");
 				$('label[for="residential_listing_showing_instruction"]').addClass("required");
@@ -415,13 +415,13 @@ ResidentialListings = {};
 			}
 			else
 			{			
-				$("#residential_listing_floor_number").removeAttr("required");
+				$("#residential_listing_floor").removeAttr("required");
 				$("#residential_listing_total_room_count").removeAttr("required");
 				$("#residential_listing_condition").removeAttr("required");
 				$("#residential_listing_showing_instruction").removeAttr("required");
 				$("#residential_listing_commission_amount").removeAttr("required");
 
-				$('label[for="residential_listing_floor_number"]').removeClass("required");
+				$('label[for="residential_listing_floor"]').removeClass("required");
 				$('label[for="residential_listing_total_room_count"]').removeClass("required");
 				$('label[for="residential_listing_condition"]').removeClass("required");
 				$('label[for="residential_listing_showing_instruction"]').removeClass("required");
