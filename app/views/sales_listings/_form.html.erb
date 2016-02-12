@@ -539,10 +539,10 @@
           </div>
 
           <div class="row vertical-margin-lg">
-            <div class="col-xs-3 col-md-2">            
+            <div class="col-md-3 form-label-responsive">            
               <%= f.label :rlsny, "RLSNY" %>
             </div>
-            <div class="col-xs-9 col-md-4">
+            <div class="col-md-9">
               <div class="checkbox checkbox-warning checkbox-inline ">
                 <%= f.check_box :rlsny, class:"rlsny", checked: @sales_unit.rlsny %>
                 <label></label>
@@ -551,28 +551,28 @@
           </div>
 
           <div class="row vertical-margin-lg">
-            <div class="col-xs-3 col-md-2">
+            <div class="col-md-3 form-label-responsive">
               <%= f.label :floor %>
             </div>
-            <div class="col-xs-9 col-md-4">
+            <div class="col-md-9">
               <%= f.number_field :floor, class: 'form-control' %>
             </div>
           </div>
 
           <div class="row vertical-margin-lg">
-            <div class="col-xs-3 col-md-2">
+            <div class="col-md-3 form-label-responsive">
               <%= f.label :total_room_count %>
             </div>
-            <div class="col-xs-9 col-md-4">
+            <div class="col-md-9">
               <%= f.number_field :total_room_count, class: 'form-control' %>
             </div>
           </div>
 
           <div class="row vertical-margin-lg">
-            <div class="col-xs-3 col-md-2">
+            <div class="col-md-3 form-label-responsive">
               <%= f.label :condition %>
             </div>
-            <div class="col-xs-9 col-md-4">            
+            <div class="col-md-9">            
                 <%= f.select(:condition,
                   options_for_select(["New Mint", "Excellent", "Good", "Fair", "Wreck", "Estate"], @sales_unit.condition), {prompt: "Choose one..."},
                   class: 'form-control',
@@ -581,28 +581,28 @@
           </div>
 
           <div class="row vertical-margin-lg">
-            <div class="col-xs-3 col-md-2">
+            <div class="col-md-3 form-label-responsive">
               <%= f.label :showing_instruction %>
             </div>
-            <div class="col-xs-9 col-md-4">
+            <div class="col-md-9">
               <%= f.text_field :showing_instruction, class: 'form-control' %>
             </div>
           </div>
 
           <div class="row vertical-margin-lg">
-            <div class="col-xs-3 col-md-2">
+            <div class="col-md-3 form-label-responsive">
               <%= f.label :commission_amount %>
             </div>
-            <div class="col-xs-9 col-md-4">
+            <div class="col-md-9">
               <%= f.number_field :commission_amount, class: 'form-control', :step => 'any' %>
             </div>
           </div>
 
           <div class="row vertical-margin-lg">
-            <div class="col-xs-3 col-md-2">            
+            <div class="col-md-3 form-label-responsive">            
               <%= f.label :cyof, "CYOF" %>
             </div>
-            <div class="col-xs-9 col-md-4">                      
+            <div class="col-md-9">                      
               <div class="radio radio-warning radio-inline">
                 <%= f.radio_button :cyof, true, checked: @sales_unit.cyof %>
                 <%= f.label :cyof_true, "Yes" %>
@@ -615,10 +615,10 @@
           </div>
 
           <div class="row vertical-margin-lg">
-            <div class="col-xs-3 col-md-2">            
+            <div class="col-md-3 form-label-responsive">            
               <%= f.label :share_with_brokers, "Share w/ Brokers" %>
             </div>
-             <div class="col-xs-9 col-md-4">            
+             <div class="col-md-9">            
               <div class="radio radio-warning radio-inline">
                 <%= f.radio_button :share_with_brokers, true, checked: @sales_unit.share_with_brokers %>
                 <%= f.label :share_with_brokers_true, "Yes" %>

@@ -459,11 +459,11 @@
         </div>
 
         <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-2">            
+          <div class="col-xs-3 col-md-4">            
             <%= f.label :rlsny, "RLSNY" %>
           </div>
-          <div class="col-xs-9 col-md-4">
-            <div class="checkbox checkbox-warning checkbox-inline ">
+          <div class="col-xs-9 col-md-7">
+            <div class="checkbox checkbox-warning checkbox-inline">
               <%= f.check_box :rlsny, class:"rlsny", checked: @residential_unit.rlsny %>
               <label></label>
             </div>                      
@@ -471,28 +471,28 @@
         </div>
 
         <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-2">
+          <div class="col-xs-3 col-md-4">
             <%= f.label :floor %>
           </div>
-          <div class="col-xs-9 col-md-4">
+          <div class="col-xs-9 col-md-7">
             <%= f.number_field :floor, class: 'form-control' %>
           </div>
         </div>
 
         <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-2">
+          <div class="col-xs-3 col-md-4">
             <%= f.label :total_room_count %>
           </div>
-          <div class="col-xs-9 col-md-4">
+          <div class="col-xs-9 col-md-7">
             <%= f.number_field :total_room_count, class: 'form-control' %>
           </div>
         </div>
 
         <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-2">
+          <div class="col-xs-3 col-md-4">
             <%= f.label :condition %>
           </div>
-          <div class="col-xs-9 col-md-4">            
+          <div class="col-xs-9 col-md-7">            
               <%= f.select(:condition,
                 options_for_select(["New Mint", "Excellent", "Good", "Fair", "Wreck", "Estate"], @residential_unit.condition), {prompt: "Choose one..."},
                 class: 'form-control',
@@ -501,28 +501,28 @@
         </div>
 
         <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-2">
+          <div class="col-xs-3 col-md-4">
             <%= f.label :showing_instruction %>
           </div>
-          <div class="col-xs-9 col-md-4">
+          <div class="col-xs-9 col-md-7">
             <%= f.text_field :showing_instruction, class: 'form-control' %>
           </div>
         </div>
 
         <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-2">
+          <div class="col-xs-3 col-md-4">
             <%= f.label :commission_amount %>
           </div>
-          <div class="col-xs-9 col-md-4">
+          <div class="col-xs-9 col-md-7">
             <%= f.number_field :commission_amount, class: 'form-control', :step => 'any' %>
           </div>
         </div>
 
         <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-2">            
+          <div class="col-xs-3 col-md-4">            
             <%= f.label :cyof, "CYOF" %>
           </div>
-          <div class="col-xs-9 col-md-4">                      
+          <div class="col-xs-9 col-md-7">                      
             <div class="radio radio-warning radio-inline">
               <%= f.radio_button :cyof, true, checked: @residential_unit.cyof %>
               <%= f.label :cyof_true, "Yes" %>
@@ -535,10 +535,10 @@
         </div>
 
         <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-2">            
+          <div class="col-xs-3 col-md-4">            
             <%= f.label :share_with_brokers, "Share w/ Brokers" %>
           </div>
-           <div class="col-xs-9 col-md-4">            
+           <div class="col-xs-9 col-md-7">            
             <div class="radio radio-warning radio-inline">
               <%= f.radio_button :share_with_brokers, true, checked: @residential_unit.share_with_brokers %>
               <%= f.label :share_with_brokers_true, "Yes" %>
