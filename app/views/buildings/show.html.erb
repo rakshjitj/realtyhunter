@@ -174,7 +174,12 @@
 				</p>
 
 				<br />
-				<div id="map_canvas" data-address="<%= @building.formatted_street_address %>"></div>
+				<iframe id="map_canvas"
+				  frameborder="0"
+				  src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_MAPS_KEY'] %>
+				    &q=<%= @building.formatted_street_address %>"
+				  allowfullscreen>
+				</iframe>
 
 		  </div>
 		</div>
