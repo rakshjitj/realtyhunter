@@ -119,8 +119,6 @@ Rails.application.routes.draw do
     end
     collection do
       get 'filter'
-      get 'neighborhoods_modal'
-      get 'features_modal'
       get 'fee_options'
       get 'print_list'
       get 'print_modal'

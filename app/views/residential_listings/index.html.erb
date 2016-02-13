@@ -1,6 +1,6 @@
 <% provide(:title, 'Residential Listings') %>
 
-<div id="residential">
+<div id="residential-mobile">
 <div id="section-name" data-name="residential_listings">
 
 <div class="mobile-container hidden-md hidden-lg">
@@ -42,8 +42,8 @@
             <div class="middle">
               <h4>Mobile Filters</h4>
             </div>
-            <div class="right js-run-search">
-              <a class="search-link">Search</a>
+            <div class="right js-clear-filters">
+              <a class="clear-link">Clear</a>
             </div>
           </div>
         </div>
@@ -51,7 +51,19 @@
         <div class="card-middle">
           <div class="row vertical-padding">
             <div class="col-xs-3">
-              <%= label_tag(:unit, "Rent", class: "field-label") %>
+              <%= label_tag(:address, "Address", class: 'field-label-sm') %>
+            </div>
+            <div class="col-xs-8 col-sm-left-padding">
+            <%= autocomplete_field_tag :address, params[:address],
+                autocomplete_building_formatted_street_address_residential_listings_path,
+                update_elements: {},
+                placeholder: "123 Main St",
+                class:'form-control' %>
+            </div>
+          </div>
+          <div class="row vertical-padding">
+            <div class="col-xs-3">
+              <%= label_tag(:unit, "Rent", class: "field-label-sm") %>
             </div>
             <div class="col-xs-4 col-sm-left-padding">
               <%= number_field_tag :rent_min, params[:rent_min], placeholder: "$ min",
@@ -64,7 +76,7 @@
           </div>
           <div class="row vertical-padding">
             <div class="col-xs-3">
-              <%= label_tag(:unit, "Beds", class: "field-label") %>
+              <%= label_tag(:unit, "Beds", class: "field-label-sm") %>
             </div>
             <div class="col-xs-4 col-sm-left-padding">
               <%= select_tag(:bed_min,
@@ -79,7 +91,7 @@
           </div>
           <div class="row vertical-padding">
             <div class="col-xs-3">
-              <%= label_tag(:unit, "Baths", class: "field-label") %>
+              <%= label_tag(:unit, "Baths", class: "field-label-sm") %>
             </div>
             <div class="col-xs-4 col-sm-left-padding">
               <%= select_tag(:bath_min,
@@ -94,28 +106,41 @@
           </div>
           <div class="row vertical-padding">
             <div class="col-xs-3">
-              <%= label_tag :status, "Status", class: "field-label" %>
+              <%= label_tag :status, "Status", class: "field-label-sm" %>
             </div>
             <div class="col-xs-8 col-sm-left-padding">
               <% if current_user.is_management? || current_user.is_listings_manager? %>
                 <%= select_tag(:status,
                   options_for_select(['Any', 'Active + Pending', 'Active', 'Pending', 'Off'],
-                  params[:status] ? params[:status].titleize : "Active"), class: 'form-control') %>
+                  params[:status] ? params[:status].titleize : "Active"),
+                  class: 'form-control') %>
               <% else %>
                 <%= select_tag(:status,
                   options_for_select(['Any', 'Active + Pending', 'Active', 'Pending'],
-                  params[:status] ? params[:status].titleize : "Active"), class: 'form-control') %>
+                  params[:status] ? params[:status].titleize : "Active"),
+                  class: 'form-control') %>
               <% end %>
             </div>
           </div>
           <div class="row vertical-padding">
-            <div class="col-xs-12">
-              <%= label_tag :status, "Neighborhood", class: "field-label" %>
+            <div class="col-xs-3">
+              <%= label_tag :pet_policy_shorthand, "Pets", class: 'field-label-sm' %>
+            </div>
+            <div class="col-xs-8 col-sm-left-padding">
+              <%= select_tag(:pet_policy_shorthand,
+                options_for_select(["Any", "Cats Only", "Dogs Only", "None"],
+                [params[:pet_policy_shorthand] ? params[:pet_policy_shorthand].titleize : "Any"]),
+                class: 'form-control') %>
             </div>
           </div>
           <div class="row vertical-padding">
             <div class="col-xs-12">
-              <select id="neighborhood-select-multiple" multiple="multiple">
+              <%= label_tag :status, "Neighborhoods", class: "field-label-sm" %>
+            </div>
+          </div>
+          <div class="row vertical-padding">
+            <div class="col-xs-11 selectize-wrapper">
+              <select id="neighborhood-select-multiple">
                 <% @neighborhoods.each do |borough, list| %>
                   <optgroup label="<%= borough %>">
                     <% list.each do |neighborhood| %>
@@ -126,7 +151,36 @@
               </select>
             </div>
           </div>
-
+          <div class="row vertical-padding">
+            <div class="col-xs-12">
+              <%= label_tag :status, "Unit Features", class: "field-label-sm" %>
+            </div>
+          </div>
+          <div class="row vertical-padding">
+            <div class="col-xs-11 selectize-wrapper">
+              <select id="unit-amenities-select-multiple">
+                <% @unit_amenities.each do |amenity| %>
+                  <option value="<%= amenity.id %>"><%= amenity.name.titleize %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+          <div class="row vertical-padding">
+            <div class="col-xs-12">
+              <%= label_tag :status, "Building Features", class: "field-label-sm" %>
+            </div>
+          </div>
+          <div class="row vertical-padding end-of-page-padding">
+            <div class="col-xs-11 selectize-wrapper">
+              <select id="building-amenities-select-multiple">
+                <optgroup label="Building">
+                  <% @building_amenities.each do |amenity| %>
+                    <option value="<%= amenity.id %>"><%= amenity.name.titleize %></option>
+                  <% end %>
+                </optgroup>
+              </select>
+            </div>
+          </div>
       </div>
     </div>
 
