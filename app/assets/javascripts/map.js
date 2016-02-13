@@ -53,9 +53,15 @@ RHMapbox = {};
       }
 
       L.mapbox.accessToken = $('#mapbox-token').attr('data-mapbox-token');
-      RHMapbox.map = L.mapbox.map(RHMapbox.htmlID, 'rakelblujeans.8594241c', { zoomControl: false })
-        .setView([40.6739591, -73.9570342], 13);
-      // new L.Control.Zoom({ position: 'topright' }).addTo(RHMapbox.map);
+      RHMapbox.map = L.mapbox.map(RHMapbox.htmlID, 'rakelblujeans.8594241c', {
+          zoomControl: false,
+          dragging: true,
+          touchZoom: true,
+          doubleClickZoom: true,
+          scrollWheelZoom: true,
+          tap: true
+        });
+        // .setView([40.6739591, -73.9570342], 13);
       RHMapbox.overlays = L.layerGroup().addTo(RHMapbox.map);
       RHMapbox.updateOverviewMap(null, buildContentStringFn);
 
@@ -65,7 +71,7 @@ RHMapbox = {};
       // See this chart of compatibility for details:
       // http://caniuse.com/#feat=geolocation
       RHMapbox.geolocationLayer = L.mapbox.featureLayer().addTo(RHMapbox.map);
-      RHMapbox.map.locate();
+      RHMapbox.map.locate({setView: true, maxZoom: 13});
 
       // Once we've got a position, zoom and center the map
       // on it, and add a single marker.
@@ -82,20 +88,20 @@ RHMapbox = {};
             'marker-symbol': 'star'
           }
         });
-        RHMapbox.map.panTo(e.latlng);
+        // RHMapbox.map.panTo(e.latlng);
       });
       // NOTE: If the user chooses not to allow their location
       // to be shared, do not display any pin.
     }
   }
 
-  RHMapbox.resizeMap = function() {
-    var width = $(window).width();
-    if (width < 768) {
-      $('#' + RHMapbox.htmlID).css('width', width);
-      $('#' + RHMapbox.htmlID).css('height', 'calc(' + $(window).height() + '- 105px)');
-    }
-    RHMapbox.map.invalidateSize();
-  }
+  // RHMapbox.resizeMap = function() {
+  //   var width = $(window).width();
+  //   if (width < 768) {
+  //     $('#' + RHMapbox.htmlID).css('width', width);
+  //     $('#' + RHMapbox.htmlID).css('height', 'calc(' + $(window).height() + '- 105px)');
+  //   }
+  //   RHMapbox.map.invalidateSize();
+  // }
 
 })();
