@@ -1,3 +1,4 @@
+# url looks like <base_url>/syndication/1/trulia
 xml.instruct! :xml, :version => "1.0"
 
 xml.hotPadsItems version:"2.1" do
