@@ -430,13 +430,14 @@ ResidentialListings = {};
       ResidentialListings.showCard('main', e);
     });
 
-    $('.js-clear-filters').click(function(e) {
-      ResidentialListings.showCard('main', e);
-    })
-
-    $('.js-close-mobile-filters').click(function(e) {
+    $('.js-run-search').click(function(e) {
       ResidentialListings.showCard('main', e);
       ResidentialListings.throttledSearch();
+    })
+
+    $('.js-cancel-search').click(function(e) {
+      ResidentialListings.showCard('main', e);
+
     })
 
     $('.js-mobile-filters').click(function(e) {

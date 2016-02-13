@@ -67,19 +67,24 @@
 
 .card {
   position: absolute;
-  top: 0;
-  left: 100000px;
+  // top: 10000px;
+  // left: 100000px;
   visibility: hidden;
+  display: none;
+  width: 100vw;
+  overflow: hidden;
 }
 
 .card-visible {
   visibility: visible;
-  left: 0;
+  display: block;
+  // left: 0;
+  // top: 0;
 }
 .card-contents {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 100vw;
   height: calc(100vh - 50px);
   overflow: scroll;
 
@@ -92,6 +97,7 @@
 
 .card.main {
   backface-visibility: hidden;
+  // overflow: none;
   /*opacity: 1;*/
 }
 .card.main.flipped {
@@ -111,6 +117,8 @@
   order: 2;
   flex: 1;
   width: 100%;
+  overflow: hidden;
+
   backface-visibility: hidden;
   @media (min-width:768px) {
     height: 600px;
@@ -137,16 +145,17 @@
 }
 
 .card-nav {
-  flex-basis: 50px;
   order: 1;
+  flex-basis: 50px;
   width: 100vw;
-  height: 60px;
   background-color: #eda800;
+  font-size: 1.5em;
 }
 
 .card-nav-inner {
   display: flex;
   flex-direction: row;
+  min-height: 50px;
   align-items: center;
   padding-top: 5px;
   a {
@@ -169,13 +178,12 @@
   text-align: right;
 }
 
-.close-link {
+.link-run-search {
   padding-left: 10px;
   text-decoration: none;
 }
-.clear-link {
+.link-cancel-search {
   padding-right: 20px;
-  font-size: 1.5em;
   text-decoration: none;
 }
 

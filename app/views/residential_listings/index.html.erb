@@ -8,13 +8,6 @@
 
     <div class="card main card-visible">
       <div class="card-contents">
-        <div class="card-nav">
-          <div class="card-nav-inner">
-            <div class="middle js-show-announcements">
-              <h4>View Announcements</h4>
-            </div>
-          </div>
-        </div>
 
         <!-- map, full screen on mobile -->
         <div id="r-big-map" data-map-points="<%= @map_infos %>"></div>
@@ -36,14 +29,14 @@
       <div class="card-contents">
         <div class="card-nav">
           <div class="card-nav-inner">
-            <div class="left js-close-mobile-filters">
-              <a class="close-link"><i class="fa fa-close fa-2x close-link"></i></a>
+            <div class="left js-run-search">
+              <a class="link-run-search">Search</a>
             </div>
             <div class="middle">
               <h4>Mobile Filters</h4>
             </div>
-            <div class="right js-clear-filters">
-              <a class="clear-link">Clear</a>
+            <div class="right js-cancel-search">
+              <a class="link-cancel-search">Cancel</a>
             </div>
           </div>
         </div>
