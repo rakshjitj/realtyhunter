@@ -443,9 +443,8 @@ ResidentialListings = {};
       ResidentialListings.throttledSearch();
     })
 
-    $('.js-cancel-search').click(function(e) {
+    $('.js-show-map').click(function(e) {
       ResidentialListings.showCard('main', e);
-
     })
 
     $('.js-mobile-filters').click(function(e) {
