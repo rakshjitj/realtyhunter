@@ -25,6 +25,11 @@ body {
   }
 }
 
+.margin-vertical {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 section {
   overflow: auto;
 }
@@ -93,9 +98,19 @@ a:hover.btn-danger {
 }
 
 .container-fluid {
-  width: 82%; // !important;
   max-width: 1200px !important;
   min-width: 400px !important;
+
+  @media (max-width:414px) {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+.title-logo {
+  @media (max-width:414px) {
+    padding: 15px;
+  }
 }
 
 .datepicker {
@@ -313,10 +328,6 @@ aside {
 }
 
 @media (max-width:768px) {
-  // .mobile-toggle-map{
-  //   display: none;
-  // }
-
   .form-label-responsive {
     text-align: left;
   }

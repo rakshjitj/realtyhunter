@@ -1,0 +1,181 @@
+<div id="residential-mobile">
+  <div id="section-name" data-name="residential_listings">
+
+    <div class="mobile-container hidden-md hidden-lg">
+      <div class="card-wrapper">
+
+        <div class="card main card-visible">
+          <div class="card-contents">
+
+            <div id="r-big-map-mobile" data-map-points="<%= @map_infos %>"></div>
+
+            <%= render 'residential_listings/mobile_footer' %>
+          </div>
+        </div>
+
+        <div class="card announcements">
+          <div class="card-contents">
+            <div class="card-middle">
+              <div class="announcements-wrapper"></div>
+            </div>
+            <%= render 'residential_listings/mobile_footer' %>
+          </div>
+        </div>
+
+        <div class="card mobile-filters">
+          <div class="card-contents">
+            <div class="card-nav">
+              <div class="card-nav-inner">
+                <div class="left js-run-search">
+                  <a class="link-run-search">Search</a>
+                </div>
+                <div class="middle">
+                  <h4>Mobile Filters</h4>
+                </div>
+                <div class="right js-reset-filters">
+                  <a class='link-reset-filters'>Reset</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-middle">
+              <div class="row vertical-padding">
+                <div class="col-xs-3">
+                  <%= label_tag(:address, "Address", class: 'field-label-sm') %>
+                </div>
+                <div class="col-xs-8 col-sm-left-padding">
+                <%= autocomplete_field_tag :address, params[:address],
+                    autocomplete_building_formatted_street_address_residential_listings_path,
+                    update_elements: {},
+                    placeholder: "123 Main St",
+                    class:'form-control' %>
+                </div>
+              </div>
+              <div class="row vertical-padding">
+                <div class="col-xs-3">
+                  <%= label_tag(:unit, "Rent", class: "field-label-sm") %>
+                </div>
+                <div class="col-xs-4 col-sm-left-padding">
+                  <%= number_field_tag :rent_min, params[:rent_min], placeholder: "$ min",
+                    min: 0, max: 1000000, class:"form-control" %>
+                </div>
+                <div class="col-xs-4 col-sm-left-padding">
+                  <%= number_field_tag :rent_max, params[:rent_max], placeholder: "$ max",
+                    min: 0, max: 1000000, class:"form-control" %>
+                </div>
+              </div>
+              <div class="row vertical-padding">
+                <div class="col-xs-3">
+                  <%= label_tag(:unit, "Beds", class: "field-label-sm") %>
+                </div>
+                <div class="col-xs-4 col-sm-left-padding">
+                  <%= select_tag(:bed_min,
+                    options_for_select(%w(Any Studio/Loft 1 2 3 4 5 6 7 8 9 10),
+                    params[:bed_min]), class: 'form-control') %>
+                </div>
+                <div class="col-xs-4 col-sm-left-padding">
+                  <%= select_tag(:bed_max,
+                    options_for_select(%w(Any Studio/Loft 1 2 3 4 5 6 7 8 9 10),
+                    params[:bed_max]), class: 'form-control') %>
+                </div>
+              </div>
+              <div class="row vertical-padding">
+                <div class="col-xs-3">
+                  <%= label_tag(:unit, "Baths", class: "field-label-sm") %>
+                </div>
+                <div class="col-xs-4 col-sm-left-padding">
+                  <%= select_tag(:bath_min,
+                    options_for_select(%w(Any 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 5.5 6 6.5 7 7.5 8 8.5 9 9.5 10),
+                    params[:bath_min]), class: 'form-control') %>
+                </div>
+                <div class="col-xs-4 col-sm-left-padding">
+                  <%= select_tag(:bath_max,
+                    options_for_select(%w(Any 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 5.5 6 6.5 7 7.5 8 8.5 9 9.5 10),
+                    params[:bath_max]), class: 'form-control') %>
+                </div>
+              </div>
+              <div class="row vertical-padding">
+                <div class="col-xs-3">
+                  <%= label_tag :status, "Status", class: "field-label-sm" %>
+                </div>
+                <div class="col-xs-8 col-sm-left-padding">
+                  <% if current_user.is_management? || current_user.is_listings_manager? %>
+                    <%= select_tag(:status,
+                      options_for_select(['Any', 'Active + Pending', 'Active', 'Pending', 'Off'],
+                      params[:status] ? params[:status].titleize : "Active"),
+                      class: 'form-control') %>
+                  <% else %>
+                    <%= select_tag(:status,
+                      options_for_select(['Any', 'Active + Pending', 'Active', 'Pending'],
+                      params[:status] ? params[:status].titleize : "Active"),
+                      class: 'form-control') %>
+                  <% end %>
+                </div>
+              </div>
+              <div class="row vertical-padding">
+                <div class="col-xs-3">
+                  <%= label_tag :pet_policy_shorthand, "Pets", class: 'field-label-sm' %>
+                </div>
+                <div class="col-xs-8 col-sm-left-padding">
+                  <%= select_tag(:pet_policy_shorthand,
+                    options_for_select(["Any", "Cats Only", "Dogs Only", "None"],
+                    [params[:pet_policy_shorthand] ? params[:pet_policy_shorthand].titleize : "Any"]),
+                    class: 'form-control') %>
+                </div>
+              </div>
+              <div class="row vertical-padding">
+                <div class="col-xs-12">
+                  <%= label_tag :status, "Neighborhoods", class: "field-label-sm" %>
+                </div>
+              </div>
+              <div class="row vertical-padding">
+                <div class="col-xs-11 selectize-wrapper">
+                  <select id="neighborhood-select-multiple">
+                    <% @neighborhoods.each do |borough, list| %>
+                      <optgroup label="<%= borough %>">
+                        <% list.each do |neighborhood| %>
+                          <option value="<%= neighborhood.id %>"><%= neighborhood.name %></option>
+                        <% end %>
+                      </optgroup>
+                    <% end %>
+                  </select>
+                </div>
+              </div>
+              <div class="row vertical-padding">
+                <div class="col-xs-12">
+                  <%= label_tag :status, "Unit Features", class: "field-label-sm" %>
+                </div>
+              </div>
+              <div class="row vertical-padding">
+                <div class="col-xs-11 selectize-wrapper">
+                  <select id="unit-amenities-select-multiple">
+                    <% @unit_amenities.each do |amenity| %>
+                      <option value="<%= amenity.id %>"><%= amenity.name.titleize %></option>
+                    <% end %>
+                  </select>
+                </div>
+              </div>
+              <div class="row vertical-padding">
+                <div class="col-xs-12">
+                  <%= label_tag :status, "Building Features", class: "field-label-sm" %>
+                </div>
+              </div>
+              <div class="row vertical-padding">
+                <div class="col-xs-11 selectize-wrapper">
+                  <select id="building-amenities-select-multiple">
+                    <optgroup label="Building">
+                      <% @building_amenities.each do |amenity| %>
+                        <option value="<%= amenity.id %>"><%= amenity.name.titleize %></option>
+                      <% end %>
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+              <div class="row vertical-padding end-of-page-padding"></div>
+            </div><!-- here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

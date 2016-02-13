@@ -1,8 +1,4 @@
-
-.margin-vertical {
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
+/********* desktop *****************/
 
 .roommate_icon
 {
@@ -43,9 +39,7 @@
 }
 
 
-
-
-
+/********* mobile *****************/
 
 .card-wrapper {
   position: absolute;
@@ -117,23 +111,29 @@
 }
 
 #r-big-map {
+  //@media (min-width:414px) {
+  height: 600px;
+  margin: 0;
+  padding: 0;
+  //}
+}
+
+#r-big-map-mobile {
+  // @media (min-width:414px) {
+  //   height: 600px;
+  //   margin: 0;
+  //   padding: 0;
+  // }
+  // @media (max-width:414px) {
+  min-height: 100vw;
+  height: 100vw;
   order: 2;
   flex: 1;
   width: 100%;
-  overflow: hidden;
-
   backface-visibility: hidden;
-  @media (min-width:768px) {
-    height: 600px;
-    margin: 0;
-    padding: 0;
-  }
-  @media (max-width:768px) {
-    min-height: 100vw;
-    height: 100vw;
-  }
+  overflow: hidden;
+  //}
 }
-
 .card-middle {
   order: 2;
   flex-grow: 2;

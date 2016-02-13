@@ -371,6 +371,8 @@ class ResidentialListingsController < ApplicationController
       end
 
       @residential_units = ResidentialListing.search(params, current_user, params[:building_id])
+
+      @announcement_items = Announcement.search({limit: 4})
     end
 
     def custom_sort

@@ -1,6 +1,10 @@
 Common = {};
 
 (function() {
+  Common.onMobileDevice = function() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
   // any phone #'s listed in 'access info' on main index pg should
   // be automatically detected
   Common.detectPhoneNumbers = function () {
