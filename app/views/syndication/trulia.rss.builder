@@ -27,7 +27,7 @@ xml.hotPadsItems version:"2.1" do
 			#xml.country "USA"
 			xml.latitude listing.lat
 			xml.longitude listing.lng
-			# must be full time 
+			# must be full time
 			xml.lastUpdated listing.updated_at.strftime('%FT%T%:z')
 			# TODO: only accepts 1 contact on residential listings
 			if @primary_agents[listing.primary_agent_id]
@@ -48,12 +48,15 @@ xml.hotPadsItems version:"2.1" do
 			# 		xml.appointmentRequired
 			# 	end
 			# end
-			xml.previewMessage listing.description ? listing.description[0..255] : listing.description
-			xml.description listing.description
+
+			tmp_descrip = h raw sanitize listing.description, tags: %w()
+
+			xml.previewMessage tmp_descrip ? tmp_descrip[0..255] : tmp_descrip
+			xml.description tmp_descrip
 			xml.terms # TODO
 			# terms>One year lease, then month to month. Deposit equals first month's rent</terms>
 			xml.leaseTerm "OneYear"
-			xml.website listing.public_url 
+			xml.website listing.public_url
 			#xml.virtual_tour_url
 
 			if @building_amenities[listing.building_id]
@@ -81,7 +84,7 @@ xml.hotPadsItems version:"2.1" do
 							xml.tag rm
 						end
 					end
-					
+
 				end
 			end
 
@@ -142,7 +145,7 @@ xml.hotPadsItems version:"2.1" do
 			xml.price listing.rent
 			xml.pricingFrequency "MONTH"
 			#xml.HOA-FEE
-			#xml.deposit 
+			#xml.deposit
 			xml.numBedrooms listing.beds
 			if listing.baths
 				xml.numFullBaths listing.baths.to_i

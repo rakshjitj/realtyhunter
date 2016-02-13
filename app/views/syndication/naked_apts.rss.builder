@@ -1,3 +1,4 @@
+# url looks like <base_url>/syndication/1/naked_apts
 xml.instruct! :xml, :version => "1.0"
 xml.streeteasy :version => "1.6" do
   xml.properties do
@@ -46,7 +47,7 @@ xml.streeteasy :version => "1.6" do
 				 	if !listing.has_fee
 				 		xml.noFee
 				 	end
-				
+
 					if listing.exclusive
 						xml.exclusive
 					end
@@ -56,11 +57,11 @@ xml.streeteasy :version => "1.6" do
 					xml.availableOn listing.available_by # rentals only
 
 					if listing.r_id
-						xml.description listing.description
+						xml.description h raw sanitize listing.description, tags: %w()
 					elsif listing.c_id
-						xml.description listing.property_description
+						xml.description h raw sanitize listing.property_description, tags: %w()
 					end
-					
+
 					xml.propertyType "rental"
 
 					# 	if @pet_policies[listing.building_id]
@@ -71,7 +72,7 @@ xml.streeteasy :version => "1.6" do
 
 					# streeteasy has their own approved list of amenities
 					# doorman, gym, pool, elevator, garage, parking, balcony, storage, patio, fireplace
-					# washerDryer, dishwasher, furnished, pets, other					
+					# washerDryer, dishwasher, furnished, pets, other
 					xml.amenities do
 
 						@other_amenities = []
@@ -160,10 +161,10 @@ xml.streeteasy :version => "1.6" do
 				end # details
 
 				# TODO: open houses
-				
+
 				if @primary_agents[listing.primary_agent_id]
 					xml.agents do
-						@primary_agents[listing.primary_agent_id].each do |agent| 
+						@primary_agents[listing.primary_agent_id].each do |agent|
 							xml.agent id: agent.id
 							xml.name agent.name
 							xml.company @company.name
@@ -180,7 +181,7 @@ xml.streeteasy :version => "1.6" do
 					  		xml.fax agent.office_fax
 					  	end
 						end
-						# @primary_agents[listing.primary_agent2_id].each do |agent| 
+						# @primary_agents[listing.primary_agent2_id].each do |agent|
 						# 	xml.agent id: agent.id
 						# 	xml.name agent.name
 						# 	xml.company @company.name
