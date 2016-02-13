@@ -24,7 +24,6 @@ ResidentialListings = {};
 
     var data = {
         address: $('#address').val(),
-        unit: $('#unit').val(),
         rent_min: $('#rent_min').val(),
         rent_max: $('#rent_max').val(),
         bed_min: $('#bed_min').val(),
@@ -384,52 +383,6 @@ ResidentialListings = {};
     $('#residential').remove();
     $('#residential-mobile input').keydown(ResidentialListings.preventEnter);
 
-    ResidentialListings.selectedNeighborhoodIds = getURLParameterByName('neighborhood_ids');
-    if (ResidentialListings.selectedNeighborhoodIds) {
-      ResidentialListings.selectedNeighborhoodIds =
-          ResidentialListings.selectedNeighborhoodIds.split(',');
-    }
-
-    $('#neighborhood-select-multiple').selectize({
-      plugins: ['remove_button'],
-      hideSelected: true,
-      maxItems: 100,
-      items: ResidentialListings.selectedNeighborhoodIds,
-      onChange: function(value) {
-        ResidentialListings.selectedNeighborhoodIds = value;
-      }
-    });
-
-    ResidentialListings.selectedUnitAmenityIds = getURLParameterByName('unit_feature_ids');
-    if (ResidentialListings.selectedUnitAmenityIds) {
-      ResidentialListings.selectedUnitAmenityIds =
-          ResidentialListings.selectedUnitAmenityIds.split(',');
-    }
-    $('#unit-amenities-select-multiple').selectize({
-      plugins: ['remove_button'],
-      hideSelected: true,
-      maxItems: 100,
-      items: ResidentialListings.selectedUnitAmenityIds,
-      onChange: function(value) {
-        ResidentialListings.selectedUnitAmenityIds = value;
-      }
-    });
-
-    ResidentialListings.selectedBuildingAmenityIds = getURLParameterByName('building_feature_ids');
-    if (ResidentialListings.selectedBuildingAmenityIds) {
-      ResidentialListings.selectedBuildingAmenityIds =
-          ResidentialListings.selectedBuildingAmenityIds.split(',');
-    }
-    $('#building-amenities-select-multiple').selectize({
-      plugins: ['remove_button'],
-      hideSelected: true,
-      maxItems: 100,
-      items: ResidentialListings.selectedBuildingAmenityIds,
-      onChange: function(value) {
-        ResidentialListings.selectedBuildingAmenityIds = value;
-      }
-    });
-
     $('.js-show-announcements').click(function() {
       ResidentialListings.showCard('announcements');
       ResidentialListings.queryAnnouncements(100);
@@ -498,6 +451,10 @@ ResidentialListings = {};
       Listings.hideSpinner();
     });
 
+    $('#neighborhood-select-multiple').change(ResidentialListings.throttledSearch);
+    $('#unit-amenities-select-multiple').change(ResidentialListings.throttledSearch);
+    $('#building-amenities-select-multiple').change(ResidentialListings.throttledSearch);
+
     // just above main listings table - selecting listings menu dropdown
     $('#residential #emailListings').click(Listings.sendMessage);
     $('#residential #assignListings').click(Listings.assignPrimaryAgent);
@@ -519,7 +476,6 @@ ResidentialListings = {};
     $('#residential input').keydown(ResidentialListings.preventEnter);
     $('#residential #address').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
     $('#residential #address').change(ResidentialListings.throttledSearch);
-    $('#residential #unit').change(ResidentialListings.throttledSearch);
     $('#residential #rent_min').change(ResidentialListings.throttledSearch);
     $('#residential #rent_max').change(ResidentialListings.throttledSearch);
     $('#residential #bed_min').change(ResidentialListings.throttledSearch);
@@ -537,6 +493,51 @@ ResidentialListings = {};
     $('#residential #unassigned_filter').change(ResidentialListings.throttledSearch);
     $('#residential #primary_agent_id').change(ResidentialListings.throttledSearch);
 
+    ResidentialListings.selectedNeighborhoodIds = getURLParameterByName('neighborhood_ids');
+    if (ResidentialListings.selectedNeighborhoodIds) {
+      ResidentialListings.selectedNeighborhoodIds =
+          ResidentialListings.selectedNeighborhoodIds.split(',');
+    }
+
+    $('#neighborhood-select-multiple').selectize({
+      plugins: ['remove_button'],
+      hideSelected: true,
+      maxItems: 100,
+      items: ResidentialListings.selectedNeighborhoodIds,
+      onChange: function(value) {
+        ResidentialListings.selectedNeighborhoodIds = value;
+      }
+    });
+
+    ResidentialListings.selectedUnitAmenityIds = getURLParameterByName('unit_feature_ids');
+    if (ResidentialListings.selectedUnitAmenityIds) {
+      ResidentialListings.selectedUnitAmenityIds =
+          ResidentialListings.selectedUnitAmenityIds.split(',');
+    }
+    $('#unit-amenities-select-multiple').selectize({
+      plugins: ['remove_button'],
+      hideSelected: true,
+      maxItems: 100,
+      items: ResidentialListings.selectedUnitAmenityIds,
+      onChange: function(value) {
+        ResidentialListings.selectedUnitAmenityIds = value;
+      }
+    });
+
+    ResidentialListings.selectedBuildingAmenityIds = getURLParameterByName('building_feature_ids');
+    if (ResidentialListings.selectedBuildingAmenityIds) {
+      ResidentialListings.selectedBuildingAmenityIds =
+          ResidentialListings.selectedBuildingAmenityIds.split(',');
+    }
+    $('#building-amenities-select-multiple').selectize({
+      plugins: ['remove_button'],
+      hideSelected: true,
+      maxItems: 100,
+      items: ResidentialListings.selectedBuildingAmenityIds,
+      onChange: function(value) {
+        ResidentialListings.selectedBuildingAmenityIds = value;
+      }
+    });
 
     // google map on show page
     var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
