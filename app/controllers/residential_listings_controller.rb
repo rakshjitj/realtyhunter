@@ -38,36 +38,6 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
-  # GET
-  # handles ajax call. uses latest data in modal
-  def neighborhoods_modal
-    # TODO: as we onboard more locations,
-    # will need to come up with a more robust solution here
-    @neighborhoods = Neighborhood.unarchived
-    .where(state: current_user.office.administrative_area_level_1_short)
-    .to_a
-    .group_by(&:borough)
-
-    respond_to do |format|
-      format.js
-      format.html do
-        # catch-all
-        redirect_to residential_listings_url
-      end
-    end
-  end
-
-  # GET
-  # handles ajax call. uses latest data in modal
-  def features_modal
-    @building_amenities = BuildingAmenity.where(company: current_user.company)
-    @unit_amenities = ResidentialAmenity.where(company: current_user.company)
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
   # GET /residential_units/1
   # GET /residential_units/1.json
   def show
@@ -357,6 +327,9 @@ class ResidentialListingsController < ApplicationController
           .where(state: current_user.office.administrative_area_level_1_short)
           .to_a
           .group_by(&:borough)
+
+      @building_amenities = BuildingAmenity.where(company: current_user.company)
+      @unit_amenities = ResidentialAmenity.where(company: current_user.company)
 
       do_search
       custom_sort

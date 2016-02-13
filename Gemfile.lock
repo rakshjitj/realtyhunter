@@ -63,8 +63,6 @@ GEM
     bootstrap-kaminari-views (0.0.5)
       kaminari (>= 0.13)
       rails (>= 3.1)
-    bootstrap-multiselect-rails (0.9.9)
-      rails (>= 4.0.0)
     bootstrap-sass (3.3.6)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
@@ -285,6 +283,7 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    selectize-rails (0.12.1)
     sinatra (1.4.6)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -338,7 +337,6 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   better_errors
   bootstrap-kaminari-views
-  bootstrap-multiselect-rails
   bootstrap-sass (~> 3.3.4)
   bootstrap3-datetimepicker-rails (~> 4.14.30)
   bootsy
@@ -380,6 +378,7 @@ DEPENDENCIES
   rollbar (~> 1.2.7)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
+  selectize-rails
   spring
   stackprof
   turbolinks

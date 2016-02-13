@@ -81,7 +81,7 @@
   flex-direction: column;
   width: 100%;
   height: calc(100vh - 50px);
-  overflow: hidden;
+  overflow: scroll;
 
   backface-visibility: hidden !important;
   -webkit-backface-visibility: hidden !important;
@@ -141,7 +141,7 @@
   order: 1;
   width: 100vw;
   height: 60px;
-  background-color: #eb9114;
+  background-color: #eda800;
 }
 
 .card-nav-inner {
@@ -173,7 +173,7 @@
   padding-left: 10px;
   text-decoration: none;
 }
-.search-link {
+.clear-link {
   padding-right: 20px;
   font-size: 1.5em;
   text-decoration: none;
@@ -186,10 +186,22 @@
     font-size: 2em;
   }
 
+  .field-label-sm {
+    font-size: 1.75em;
+  }
+
   .row {
     margin-top: 10px;
     margin-left: 5px;
   }
+
+  .end-of-page-padding {
+    margin-bottom: 100px;
+  }
+}
+
+.selectize-wrapper {
+  padding-right: 0 !important;
 }
 
 .footer-wrapper {
@@ -201,7 +213,7 @@
   flex-basis: 65px;
   height: 65px;
   width: 100%;
-  background: #696969;
+  background: #eda800;
 }
 
 .footer-mobile-residential > .nav-button-wrapper {
@@ -214,7 +226,8 @@
   height: 65px;
   margin: 0;
   padding: 10px 0 10px 0;
-  background-color: #eb9114 !important;
+  background-color: #eda800 !important;
   color: black;
   text-align: center;
 }
+

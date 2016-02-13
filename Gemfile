@@ -71,7 +71,8 @@ gem 'bootsy'
 # wufoo
 gem 'wuparty'
 #gem "brakeman", :require => false
-gem 'bootstrap-multiselect-rails'
+#gem 'bootstrap-multiselect-rails'
+gem "selectize-rails"
 
 group :production do
 	gem 'rails_12factor' # related to serving static assets
