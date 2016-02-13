@@ -437,6 +437,7 @@ ResidentialListings = {};
     });
 
     RHMapbox.initMapbox('r-big-map', ResidentialListings.buildContentString);
+    RHMapbox.centerOnMe();
 
     // activate tooltips
     $('[data-toggle="tooltip"]').tooltip();
@@ -504,8 +505,24 @@ ResidentialListings = {};
       ResidentialListings.throttledSearch();
     })
 
+    $('.js-reset-filters').click(function(e) {
+      $('#address').val('');
+      $('#rent_min').val('');
+      $('#rent_max').val('');
+      $('#bed_min').val('Any');
+      $('#bed_max').val('Any');
+      $('#bath_min').val('Any');
+      $('#bath_max').val('Any');
+      $('#status').val('Active');
+      $('#pet_policy_shorthand').val('Any');
+      $('#neighborhood-select-multiple')[0].selectize.clear();
+      $('#unit-amenities-select-multiple')[0].selectize.clear();
+      $('#building-amenities-select-multiple')[0].selectize.clear();
+    })
+
     $('.js-show-map').click(function(e) {
       ResidentialListings.showCard('main', e);
+      RHMapbox.centerOnMe();
     })
 
     $('.js-mobile-filters').click(function(e) {

@@ -71,7 +71,6 @@ RHMapbox = {};
       // See this chart of compatibility for details:
       // http://caniuse.com/#feat=geolocation
       RHMapbox.geolocationLayer = L.mapbox.featureLayer().addTo(RHMapbox.map);
-      RHMapbox.map.locate({setView: true, maxZoom: 13});
 
       // Once we've got a position, zoom and center the map
       // on it, and add a single marker.
@@ -95,6 +94,9 @@ RHMapbox = {};
     }
   }
 
+  RHMapbox.centerOnMe = function() {
+    RHMapbox.map.locate({setView: true, maxZoom: 15});
+  }
   // RHMapbox.resizeMap = function() {
   //   var width = $(window).width();
   //   if (width < 768) {
