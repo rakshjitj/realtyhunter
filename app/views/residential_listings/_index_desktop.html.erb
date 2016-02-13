@@ -38,14 +38,6 @@
           </div>
           <div class="row vertical-padding">
             <div class="col-xs-3">
-              <%= label_tag(:unit, "Unit") %>
-            </div>
-            <div class="col-xs-4 col-sm-left-padding">
-              <%= text_field_tag :unit, params[:unit], size: 5, class:"form-control" %>
-            </div>
-          </div>
-          <div class="row vertical-padding">
-            <div class="col-xs-3">
               <%= label_tag(:unit, "Rent") %>
             </div>
             <div class="col-xs-4 col-sm-left-padding">
@@ -202,15 +194,37 @@
             <% end %>
           </div>
 
-          <br />
           <div class="row vertical-padding">
-            <div class="col-xs-12">
-              Neighborhoods
+            <div class="col-xs-11 selectize-wrapper">
+              <select id="neighborhood-select-multiple" placeholder="Neighborhoods...">
+                <% @neighborhoods.each do |borough, list| %>
+                  <optgroup label="<%= borough %>">
+                    <% list.each do |neighborhood| %>
+                      <option value="<%= neighborhood.id %>"><%= neighborhood.name %></option>
+                    <% end %>
+                  </optgroup>
+                <% end %>
+              </select>
             </div>
           </div>
           <div class="row vertical-padding">
-            <div class="col-xs-12">
-              Features
+            <div class="col-xs-11 selectize-wrapper">
+              <select id="unit-amenities-select-multiple" placeholder="Unit features...">
+                <% @unit_amenities.each do |amenity| %>
+                  <option value="<%= amenity.id %>"><%= amenity.name.titleize %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+          <div class="row vertical-padding">
+            <div class="col-xs-11 selectize-wrapper">
+              <select id="building-amenities-select-multiple" placeholder="Building features...">
+                <optgroup label="Building">
+                  <% @building_amenities.each do |amenity| %>
+                    <option value="<%= amenity.id %>"><%= amenity.name.titleize %></option>
+                  <% end %>
+                </optgroup>
+              </select>
             </div>
           </div>
         <% end %>
