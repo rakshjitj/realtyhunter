@@ -1,3 +1,4 @@
+# url looks like <base_url>/syndication/1/streeteasy
 xml.instruct! :xml, :version => "1.0"
 xml.streeteasy :version => "1.6" do
   xml.properties do
