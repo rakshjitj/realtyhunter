@@ -248,7 +248,7 @@ class ResidentialListingsController < ApplicationController
   end
 
   def update_announcements
-    @announcement_items = Announcement.search({limit: 4})
+    @announcement_items = Announcement.search({limit: params[:limit]})
   end
 
   def assign_modal
@@ -337,7 +337,6 @@ class ResidentialListingsController < ApplicationController
       # only get data + images for paginated responses
       @residential_units = @residential_units.page params[:page]
       @res_images = ResidentialListing.get_images(@residential_units)
-      @announcement_items = Announcement.search({limit: 4})
     end
 
     def async_create_csv

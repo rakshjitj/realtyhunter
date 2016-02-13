@@ -133,12 +133,14 @@
 
 .card-middle {
   order: 2;
+  flex-grow: 2;
+  overflow: auto;
 }
 
-.announcements-wrapper {
-  display: flex;
-  flex-direction: column;
-}
+// .announcements-wrapper {
+//   display: flex;
+//   flex-direction: column;
+// }
 
 .mobile-announcement {
   flex: 1;
@@ -219,7 +221,7 @@
 .footer-mobile-residential {
   order: 3;
   flex-basis: 65px;
-  height: 65px;
+  min-height: 65px;
   width: 100%;
   background: #eda800;
 }
