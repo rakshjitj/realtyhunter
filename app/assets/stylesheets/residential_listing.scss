@@ -54,6 +54,9 @@
   width: 100%;
   height: calc(100vh - 50px);
   overflow: hidden;
+  ::-webkit-scrollbar {
+      display: none;
+  }
 
   /*transform-style: preserve-3d;
   transition: transform 1s;
@@ -184,7 +187,13 @@
   padding-left: 10px;
   text-decoration: none;
 }
+
 .link-cancel-search {
+  padding-right: 20px;
+  text-decoration: none;
+}
+
+.link-reset-filters {
   padding-right: 20px;
   text-decoration: none;
 }

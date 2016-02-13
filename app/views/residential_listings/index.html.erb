@@ -35,8 +35,8 @@
             <div class="middle">
               <h4>Mobile Filters</h4>
             </div>
-            <div class="right js-show-map">
-              <a class="link-cancel-search">Cancel</a>
+            <div class="right js-reset-filters">
+              <a class='link-reset-filters'>Reset</a>
             </div>
           </div>
         </div>
@@ -163,7 +163,7 @@
               <%= label_tag :status, "Building Features", class: "field-label-sm" %>
             </div>
           </div>
-          <div class="row vertical-padding end-of-page-padding">
+          <div class="row vertical-padding">
             <div class="col-xs-11 selectize-wrapper">
               <select id="building-amenities-select-multiple">
                 <optgroup label="Building">
@@ -173,6 +173,9 @@
                 </optgroup>
               </select>
             </div>
+          </div>
+          <div class="row vertical-padding end-of-page-padding">
+
           </div>
       </div>
     </div>
