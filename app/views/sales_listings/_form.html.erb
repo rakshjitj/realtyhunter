@@ -544,7 +544,7 @@
             </div>
             <div class="col-md-9">
               <div class="checkbox checkbox-warning checkbox-inline ">
-                <%= f.check_box :rlsny, class:"rlsny", checked: @sales_unit.rlsny %>
+                <%= f.check_box :rlsny, class:"rlsny", checked: @sales_unit ? @sales_unit.rlsny : false %>
                 <label></label>
               </div>
             </div>
