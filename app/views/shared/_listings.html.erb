@@ -36,12 +36,20 @@
                     <i class="fa fa-fw fa-list"></i> Internal Listings Sheet</a></li>
                 </ul>
               </div>
-
 					  </div>
+
+            <div class="col-md-1">
+              <label>Status:</label>
+            </div>
             <div class="col-md-2">
-              <%= form_tag "#", method: 'get' do %>
-                <%= check_box_tag(:listings_checkbox_active, class: "checkbox inline") %>
-                <%= label_tag :listings_checkbox_active, "On-market units only" %>
+              <% if current_user.is_management? || current_user.is_listings_manager? %>
+                <%= select_tag(:status_listings,
+                  options_for_select(['Any', 'Active/Pending', 'Active', 'Pending', 'Off'],
+                  params[:status_listings] ? params[:status_listings].titleize : "Active/Pending"), class: 'form-control') %>
+              <% else %>
+                <%= select_tag(:status_listings,
+                  options_for_select(['Any', 'Active/Pending', 'Active', 'Pending'],
+                  params[:status_listings] ? params[:status_listings].titleize : "Active/Pending"), class: 'form-control') %>
               <% end %>
             </div>
 

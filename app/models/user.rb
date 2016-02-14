@@ -56,25 +56,34 @@ class User < ActiveRecord::Base
     BCrypt::Password.create(string, cost: cost)
   end
 
-  # primary units only currently
-  def residential_units(active_only=false)
-    ids = []
-    if active_only
-      ids = self.primary_units.active.map(&:id) + self.primary2_units.active.map(&:id)
-    else
-      ids = self.primary_units.map(&:id) + self.primary2_units.active.map(&:id)
+  def _get_listings_by_status(listings, status)
+    if !status.nil?
+      status_lowercase = status.downcase
+      if status_lowercase != 'any'
+        if status_lowercase == 'active/pending'
+          listings = listings
+              .where("units.status IN (?) ",
+                [Unit.statuses['active'], Unit.statuses['pending']]).uniq
+        else
+          listings = listings
+              .where("units.status = ? ", Unit.statuses[status_lowercase]).uniq
+        end
+      end
     end
+    listings
+  end
 
+  # primary units only currently
+  def residential_units(status=nil)
+    ids = self._get_listings_by_status(self.primary_units, status).map(&:id) +
+        self._get_listings_by_status(self.primary2_units, status).map(&:id)
     ResidentialListing.for_units(ids)
   end
 
   # primary units only currently
-  def commercial_units(active_only=false)
-    if active_only
-      ids = self.primary_units.active.map(&:id) + self.primary2_units.active.map(&:id)
-    else
-      ids = self.primary_units.map(&:id) + self.primary2_units.active.map(&:id)
-    end
+  def commercial_units(status=nil)
+    ids = self._get_listings_by_status(self.primary_units, status).map(&:id) +
+        self._get_listings_by_status(self.primary2_units, status).map(&:id)
     CommercialListing.for_units(ids)
   end
 

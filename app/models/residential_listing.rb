@@ -506,7 +506,7 @@ class ResidentialListing < ActiveRecord::Base
     map_infos.to_json
   end
 
-  def self.for_buildings(bldg_ids, is_active=nil)
+  def self.for_buildings(bldg_ids, status=nil)
     listings = ResidentialListing.joins(unit: {building: :landlord})
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('buildings.id in (?)', bldg_ids)
@@ -524,8 +524,18 @@ class ResidentialListing < ActiveRecord::Base
       .order('residential_listings.updated_at desc')
       #'residential_listings.for_roomsharing',
 
-    if is_active
-      listings = listings.where.not("status = ?", Unit.statuses["off"])
+    if !status.nil?
+      status_lowercase = status.downcase
+      if status_lowercase != 'any'
+        if status_lowercase == 'active/pending'
+          listings = listings
+              .where("units.status IN (?) ",
+                [Unit.statuses['active'], Unit.statuses['pending']]).uniq
+        else
+          listings = listings
+              .where("units.status = ? ", Unit.statuses[status_lowercase]).uniq
+        end
+      end
     end
 
     unit_ids = listings.map(&:unit_id)
@@ -534,7 +544,7 @@ class ResidentialListing < ActiveRecord::Base
     return listings, images
   end
 
-  def self.for_units(unit_ids, is_active=nil)
+  def self.for_units(unit_ids, status=nil)
     listings = ResidentialListing.joins(unit: {building: [:landlord, :neighborhood]})
       .where('units.id in (?)', unit_ids)
       .where('units.archived = false')
@@ -550,8 +560,18 @@ class ResidentialListing < ActiveRecord::Base
         'units.available_by', 'units.listing_id')
       #'residential_listings.for_roomsharing',
 
-    if is_active
-      listings = listings.where.not("status = ?", Unit.statuses["off"])
+    if !status.nil?
+      status_lowercase = status.downcase
+      if status_lowercase != 'any'
+        if status_lowercase == 'active/pending'
+          listings = listings
+              .where("units.status IN (?) ",
+                [Unit.statuses['active'], Unit.statuses['pending']]).uniq
+        else
+          listings = listings
+              .where("units.status = ? ", Unit.statuses[status_lowercase]).uniq
+        end
+      end
     end
 
     unit_ids = listings.map(&:unit_id)

@@ -78,7 +78,7 @@ class Building < ActiveRecord::Base
   end
 
 	def self.search(query_str, status)
-    @running_list = Building.joins(:landlord)
+    running_list = Building.joins(:landlord)
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('buildings.archived = false')
       .select(
@@ -96,7 +96,7 @@ class Building < ActiveRecord::Base
     if query_str
       @terms = query_str.split(" ")
       @terms.each do |term|
-        @running_list = @running_list.where('buildings.formatted_street_address ILIKE ? OR buildings.sublocality ILIKE ?', "%#{term}%", "%#{term}%")
+        running_list = running_list.where('buildings.formatted_street_address ILIKE ? OR buildings.sublocality ILIKE ?', "%#{term}%", "%#{term}%")
       end
     end
 
@@ -104,17 +104,17 @@ class Building < ActiveRecord::Base
       status_lowercase = status.downcase
       if status_lowercase != 'any'
         if status_lowercase == 'active/pending'
-          @running_list = @running_list.joins(:units)
+          running_list = running_list.joins(:units)
               .where("units.status IN (?) ",
                 [Unit.statuses['active'], Unit.statuses['pending']]).uniq
         else
-          @running_list = @running_list.joins(:units)
+          running_list = running_list.joins(:units)
               .where("units.status = ? ", Unit.statuses[status_lowercase]).uniq
         end
       end
     end
 
-    @running_list
+    running_list
 	end
 
 	def amenities_to_s
@@ -145,12 +145,12 @@ class Building < ActiveRecord::Base
     BuildingMailer.inaccuracy_reported(self, reporter).deliver_now
   end
 
-  def residential_units(active_only=false)
-    ResidentialListing.for_buildings([id], active_only)
+  def residential_units(status=nil)
+    ResidentialListing.for_buildings([id], status)
   end
 
-  def commercial_units(active_only=false)
-    CommercialListing.for_buildings([id], active_only)
+  def commercial_units(status=nil)
+    CommercialListing.for_buildings([id], status)
   end
 
   # Used in our API. Takes in a list of units

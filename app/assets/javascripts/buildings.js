@@ -14,15 +14,13 @@ Buildings = {};
     $.ajax({
       url: search_path,
       data: {
-        active_only: $('#buildings #listings_checkbox_active').prop('checked')
+        status_listings: $('#buildings #status_listings').val(),
       },
       dataType: "script",
       success: function(data) {
-        //console.log('SUCCESS:', data.responseText);
         Buildings.hideSpinner();
       },
       error: function(data) {
-        //console.log('ERROR:', data.responseText);
         Buildings.hideSpinner();
       }
     });
@@ -254,9 +252,8 @@ Buildings = {};
     $('#buildings #filter').bind('railsAutocomplete.select', Buildings.throttledBldgSearch);
     $('#buildings #filter').keydown(Buildings.preventEnter);
     $('#buildings #filter').change(Buildings.throttledBldgSearch);
-    // toggle between active and inactive units
     $('#buildings #status').change(Buildings.throttledBldgSearch);
-    $('#buildings #listings_checkbox_active').click(Buildings.filterListings);
+    $('#buildings #status_listings').change(Buildings.filterListings);
   }
 
 })();

@@ -7,7 +7,7 @@ Users = {};
     $.ajax({
       url: search_path,
       data: {
-        active_only: $('#users #listings_checkbox_active').prop('checked')
+        status_listings: $('#users #status_listings').val(),
       },
       dataType: "script",
       success: function(data) {
@@ -65,7 +65,7 @@ Users = {};
     $('#users #name_email').bind('railsAutocomplete.select', Users.throttledSearch);
     $('#users #name_email').change(Users.throttledSearch);
     $('#users #status').change(Users.throttledSearch);
-    $('#users #listings_checkbox_active').click(Users.filterListings);
+    $('#users #status_listings').change(Users.filterListings);
 
     // $('#companies_select').change(function() {
     //   $.ajax({
@@ -82,7 +82,6 @@ Users = {};
     // if the user is currently an agent, display the select input with suboptions
   	var agent_title_name = $('#user_employee_title_id').attr('data-agent-title-name');
   	var user_title_name = $('#user_employee_title_id').attr('data-user-title-name');
-  	//console.log(agent_title_name, user_title_name);
   	if (agent_title_name == user_title_name) {
       $('.agent-type').show();
     } else {

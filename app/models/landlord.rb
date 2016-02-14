@@ -56,9 +56,19 @@ class Landlord < ActiveRecord::Base
 	    end
 	  end
 
-    if params[:active_only] == "true"
-    	# misnamed. this actually means active + pending
-      running_list = running_list.where('active_unit_count > 0')
+    status = params[:status]
+    if !status.nil?
+      status_lowercase = status.downcase
+      if status_lowercase != 'any'
+        if status_lowercase == 'active/pending'
+          running_list = running_list.joins(buildings: :units)
+              .where("units.status IN (?) ",
+                [Unit.statuses['active'], Unit.statuses['pending']]).uniq
+        else
+          running_list = running_list.joins(buildings: :units)
+              .where("units.status = ? ", Unit.statuses[status_lowercase]).uniq
+        end
+      end
     end
 
     running_list
@@ -71,21 +81,22 @@ class Landlord < ActiveRecord::Base
 
 	def self.search(params)
 		running_list = Landlord.unarchived
-			.select('landlords.id', 'landlords.code', 'landlords.name',
+    running_list = self._search(running_list, params)
+		running_list = running_list.select('landlords.id', 'landlords.code', 'landlords.name',
 				'landlords.updated_at', 'landlords.mobile',
 				'landlords.active_unit_count', 'landlords.total_unit_count',
 				'landlords.last_unit_updated_at')
-		self._search(running_list, params)
+
 	end
 
-	def residential_units(active_only=false)
+	def residential_units(status=nil)
     bldg_ids = self.building_ids
-    ResidentialListing.for_buildings(bldg_ids, active_only)
+    ResidentialListing.for_buildings(bldg_ids, status)
   end
 
-  def commercial_units(active_only=false)
+  def commercial_units(status=nil)
   	bldg_ids = self.building_ids
-    CommercialListing.for_buildings(bldg_ids, active_only)
+    CommercialListing.for_buildings(bldg_ids, status)
   end
 
 	private

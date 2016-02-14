@@ -15,7 +15,7 @@ Landlords = {};
     $.ajax({
       url: search_path,
       data: {
-        active_only: $('#landlords #listings_checkbox_active').prop('checked')
+        status_listings: $('#landlords #status_listings').val(),
       },
       dataType: "script",
       success: function(data) {
@@ -40,7 +40,7 @@ Landlords = {};
 
     var data = {
       filter: $('#filter').val(),
-      active_only: $('#checkbox_active').prop('checked'),
+      status: $('#status').val(),
       sort_by: sortByCol,
       direction: sortDirection,
     };
@@ -52,25 +52,6 @@ Landlords = {};
       }
     }
     window.location.search = searchParams.join('&');
-
-    // $.ajax({
-    //   url: search_path,
-    //   data: {
-    //     filter: $('#filter').val(),
-    //     active_only: $('#checkbox_active').prop('checked'),
-    //     sort_by: sortByCol,
-    //     direction: sortDirection,
-    //   },
-    //   dataType: "script",
-    //   success: function(data) {
-    //     //console.log('SUCCESS:', data.responseText);
-    //     Landlords.hideSpinner();
-    //   },
-    //   error: function(data) {
-    //     //console.log('ERROR:', data.responseText);
-    //     Landlords.hideSpinner();
-    //   }
-    // });
   };
 
   Landlords.sortOnColumnClick = function() {
@@ -145,8 +126,8 @@ Landlords = {};
     $('#landlords #filter').bind('railsAutocomplete.select', Landlords.throttledSearch);
     $('#landlords #filter').keydown(Landlords.preventEnter);
     $('#landlords #filter').change(Landlords.throttledSearch);
-    $('#landlords #checkbox_active').click(Landlords.throttledSearch);
-    $('#landlords #listings_checkbox_active').click(Landlords.filterListings);
+    $('#landlords #status').change(Landlords.throttledSearch);
+    $('#landlords #status_listings').change(Landlords.filterListings);
   }
 
 })();
@@ -158,7 +139,6 @@ $(document).on('keyup',function(evt) {
 });
 
 $(document).ready(function () {
-  // Landlords.initialize
   var url = window.location.pathname;
   var landlords = url.indexOf('landlords') > -1;
   var editPage = url.indexOf('edit') > -1;

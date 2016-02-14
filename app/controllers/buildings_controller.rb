@@ -167,10 +167,9 @@ class BuildingsController < ApplicationController
     end
 
     def set_units
-      active_only = params[:active_only] == "true"
-      @residential_units, @res_images = @building.residential_units(active_only)
+      @residential_units, @res_images = @building.residential_units(params[:status_listings])
       @residential_units = @residential_units.page params[:page]
-      @commercial_units, @com_images = @building.commercial_units(active_only)
+      @commercial_units, @com_images = @building.commercial_units(params[:status_listings])
       @commercial_units = @commercial_units.page params[:page]
     end
 
@@ -220,8 +219,8 @@ class BuildingsController < ApplicationController
     # Need to take in additional params here. Can't rename them, or the geocode plugin
     # will not map to them correctly
     def building_params
-      params.permit(:sort_by, :direction, :filter, :active_only, :status, :street_number, :route,
-        :intersection, :neighborhood,
+      params.permit(:sort_by, :direction, :filter, :status, :status_listings, :street_number,
+        :route, :intersection, :neighborhood,
         :sublocality, :administrative_area_level_2_short,
         :administrative_area_level_1_short,
         :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id, :file,

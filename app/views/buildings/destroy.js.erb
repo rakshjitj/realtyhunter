@@ -1,2 +1,3 @@
 $('.buildings_table_body').html("<%= escape_javascript (render :partial => @buildings) %>");
 Buildings.hideSpinner();
+$('.totals').html("<%= @buildings.total_count %> Buildings found");

@@ -280,10 +280,10 @@ class UsersController < ApplicationController
     end
 
     def set_units
-      active_only = params[:active_only] == "true"
-      @residential_units, @res_images = @user.residential_units(active_only)
+      params[:status_listings] = !params[:status_listings].nil? ? params[:status_listings] : 'active/pending'
+      @residential_units, @res_images = @user.residential_units(params[:status_listings])
       @residential_units = @residential_units.page params[:page]
-      @commercial_units, @com_images = @user.commercial_units(active_only)
+      @commercial_units, @com_images = @user.commercial_units(params[:status_listings])
       @commercial_units = @commercial_units.page params[:page]
     end
 

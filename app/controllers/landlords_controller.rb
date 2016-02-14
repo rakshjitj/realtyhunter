@@ -116,10 +116,9 @@ class LandlordsController < ApplicationController
     end
 
     def set_units
-      active_only = params[:active_only] == "true"
-      @residential_units, @res_images = @landlord.residential_units(active_only)
+      @residential_units, @res_images = @landlord.residential_units(params[:status_listings])
       @residential_units = @residential_units.page params[:page]
-      @commercial_units, @com_images = @landlord.commercial_units(active_only)
+      @commercial_units, @com_images = @landlord.commercial_units(params[:status_listings])
       @commercial_units = @commercial_units.page params[:page]
     end
 
@@ -139,9 +138,7 @@ class LandlordsController < ApplicationController
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      #if Landlord.column_names.include?(params[:sort_by])
       @landlords = @landlords.order(sort_column + ' ' + sort_order)
-      #end
       @landlords
     end
 
@@ -158,8 +155,8 @@ class LandlordsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def landlord_params
 
-      params.permit(:sort_by, :filter, :agent_filter, :active_only, :street_number, :route,
-        :neighborhood, :sublocality, :administrative_area_level_2_short,
+      params.permit(:sort_by, :filter, :agent_filter, :status, :status_listings,:street_number,
+        :route, :neighborhood, :sublocality, :administrative_area_level_2_short,
         :administrative_area_level_1_short, :postal_code, :country_short, :lat, :lng, :place_id,
         :landlord => [:lock_version, :code, :name, :contact_name, :mobile, :office_phone, :fax,
           :email, :website, :formatted_street_address, :notes,

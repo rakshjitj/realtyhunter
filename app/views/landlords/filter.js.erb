@@ -1,2 +1,3 @@
 $('.landlords_table_body').html("<%= escape_javascript (render :partial => @landlords) %>");
 $('.pagination').html("<%= escape_javascript (render :partial => 'shared/pagination', :locals => {:models => @landlords}) %>");
+$('.totals').html("<%= @landlords.total_count %> Landlords found");
