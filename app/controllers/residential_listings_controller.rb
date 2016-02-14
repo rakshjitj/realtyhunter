@@ -142,6 +142,7 @@ class ResidentialListingsController < ApplicationController
 
   def mark_app_submitted
     @residential_unit.unit.mark_app_submitted(current_user, 'residential', 'pending')
+    @residential_unit.set_rented_date
     set_residential_listings
     flash[:info] = 'Application submitted on ' +
       @residential_unit.unit.building.street_address + ' and announcement sent!'
@@ -419,6 +420,7 @@ class ResidentialListingsController < ApplicationController
         :has_fee, :op_fee_percentage, :tp_fee_percentage,
         :available_starting, :available_before, :custom_amenities,
         :roomsharing_filter, :unassigned_filter, :primary_agent_id, :favorites, :show, :expose_address,
+        :floor, :total_room_count, :condition, :showing_instruction, :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
         :unit => [:building_unit, :rent, :available_by, :access_info, :status,
           :open_house, :oh_exclusive, :exclusive,
           :building_id, :primary_agent_id, :listing_agent_id ],

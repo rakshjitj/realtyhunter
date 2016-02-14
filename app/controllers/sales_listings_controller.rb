@@ -158,6 +158,7 @@ class SalesListingsController < ApplicationController
 
   def mark_app_submitted
     @sales_unit.unit.mark_app_submitted(current_user, 'sales', 'pending')
+    @sales_unit.unit.set_rented_date
     set_sales_listings
     flash[:info] = 'Application submitted on ' +
       @sales_unit.unit.building.street_address + ' and announcement sent!'
@@ -417,7 +418,7 @@ class SalesListingsController < ApplicationController
         :neighborhood, :formatted_street_address,
         :sublocality, :administrative_area_level_2_short,
         :administrative_area_level_1_short,
-        :postal_code, :country_short, :lat, :lng, :place_id,
+        :postal_code, :country_short, :lat, :lng, :place_id,        
 
         sales_listing: [
           :lock_version,
@@ -427,7 +428,8 @@ class SalesListingsController < ApplicationController
           :building_size, :block_taxes, :lot_taxes, :water_sewer, :insurance,
           :school_district, :certificate_of_occupancy, :violation_search, :tenant_occupied,
           :internal_notes, :public_description,
-
+          :floor, :total_room_count, :condition, :showing_instruction, :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
+          
           :unit => [:building_unit, :rent, :available_by, :access_info, :status,
             :open_house, :oh_exclusive,
             :building_id, :primary_agent_id, :listing_agent_id],

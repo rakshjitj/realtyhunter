@@ -302,21 +302,91 @@ SalesListings = {};
     }
 	};
 
+  SalesListings.commissionAmount = function() {
+    if($('#sales_listing_cyof_true').is(":checked")){
+      $("#sales_listing_commission_amount").val('0');
+      $("#sales_listing_commission_amount").attr("readonly", "readonly");
+    }
+    $('input[name="sales_listing[cyof]"]').change(function(){
+      if($(this).attr("id")=="sales_listing_cyof_true"){
+        $("#sales_listing_commission_amount").val('0');
+        $("#sales_listing_commission_amount").attr("readonly", "readonly");
+      }
+      else
+      {
+        $("#sales_listing_commission_amount").val('');
+        $("#sales_listing_commission_amount").removeAttr("readonly");
+      }
+    });
+  };
+
+  SalesListings.rlsnyValidation = function() {
+    if($('#sales_listing_rlsny').is(":checked")){
+      $("#sales_listing_floor").attr("required", true);
+      $("#sales_listing_total_room_count").attr("required", true);
+      $("#sales_listing_condition").attr("required", true);
+      $("#sales_listing_showing_instruction").attr("required", true);
+      $("#sales_listing_commission_amount").attr("required", true);
+
+      $('label[for="sales_listing_floor"]').addClass("required");
+      $('label[for="sales_listing_total_room_count"]').addClass("required");
+      $('label[for="sales_listing_condition"]').addClass("required");
+      $('label[for="sales_listing_showing_instruction"]').addClass("required");
+      $('label[for="sales_listing_commission_amount"]').addClass("required");
+      $('label[for="sales_listing_cyof"]').addClass("required");
+      $('label[for="sales_listing_share_with_brokers"]').addClass("required");
+    }
+    $('input[name="sales_listing[rlsny]"]').change(function(){
+      if($(this).is(":checked")){
+        $("#sales_listing_floor").attr("required", true);
+        $("#sales_listing_total_room_count").attr("required", true);
+        $("#sales_listing_condition").attr("required", true);
+        $("#sales_listing_showing_instruction").attr("required", true);
+        $("#sales_listing_commission_amount").attr("required", true);
+
+        $('label[for="sales_listing_floor"]').addClass("required");
+        $('label[for="sales_listing_total_room_count"]').addClass("required");
+        $('label[for="sales_listing_condition"]').addClass("required");
+        $('label[for="sales_listing_showing_instruction"]').addClass("required");
+        $('label[for="sales_listing_commission_amount"]').addClass("required");
+        $('label[for="sales_listing_cyof"]').addClass("required");
+        $('label[for="sales_listing_share_with_brokers"]').addClass("required");
+      }
+      else
+      {
+        $("#sales_listing_floor").removeAttr("required");
+        $("#sales_listing_total_room_count").removeAttr("required");
+        $("#sales_listing_condition").removeAttr("required");
+        $("#sales_listing_showing_instruction").removeAttr("required");
+        $("#sales_listing_commission_amount").removeAttr("required");
+
+        $('label[for="sales_listing_floor"]').removeClass("required");
+        $('label[for="sales_listing_total_room_count"]').removeClass("required");
+        $('label[for="sales_listing_condition"]').removeClass("required");
+        $('label[for="sales_listing_showing_instruction"]').removeClass("required");
+        $('label[for="sales_listing_commission_amount"]').removeClass("required");
+        $('label[for="sales_listing_cyof"]').removeClass("required");
+        $('label[for="sales_listing_share_with_brokers"]').removeClass("required");
+      }
+    });
+  };
+
   SalesListings.initEditor = function() {
+    // make sure datepicker is formatted before setting initial date below
+    $('.datepicker').datetimepicker({
+      viewMode: 'days',
+      format: 'MM/DD/YYYY',
+      allowInputToggle: true
+    });
+
     var available_by = $('#sales .datepicker').attr('data-available-by');
     if (available_by) {
       $('#sales .datepicker').data("DateTimePicker").date(available_by);
     }
 
-    // for drag n dropping photos
-    // disable auto discover
-    Dropzone.autoDiscover = false;
-    SalesListings.initializeImageDropzone();
-    SalesListings.initializeDocumentsDropzone();
-
     var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
     // google maps
-    $("#bldg_panel").geocomplete({
+    $("#map_panel").geocomplete({
       map: "#map_canvas",
       location: bldg_address,
       details: ".details"
@@ -347,7 +417,7 @@ SalesListings = {};
       if ($('#neighborhood').val() == "") {
         $.ajax({
           type: "GET",
-          url: '/sales_listings/neighborhood_options',
+          url: '/buildings/neighborhood_options',
           data: {
             sublocality: sublocality,
           },
@@ -366,7 +436,13 @@ SalesListings = {};
     }).bind("geocode:error", function(event, result){
       //console.log("[ERROR]: " + result);
     });
-  }
+
+    // for drag n dropping photos
+    // disable auto discover
+    Dropzone.autoDiscover = false;
+    SalesListings.initializeImageDropzone();
+    SalesListings.initializeDocumentsDropzone();
+  };
 
 	SalesListings.initIndex = function() {
     document.addEventListener("page:restore", function() {
@@ -386,7 +462,6 @@ SalesListings = {};
     }
 
 		$('.close').click(function() {
-			//console.log('detected click');
 			Listings.hideSpinner();
 		});
 
@@ -416,6 +491,9 @@ SalesListings = {};
 	  $('#sales .remove-unit-feature').click(SalesListings.removeUnitFeature);
 	  $('#sales .remove-building-feature').click(SalesListings.removeBuildingFeature);
 	  $('#sales .remove-neighborhood').click(SalesListings.removeNeighborhood);
+
+    SalesListings.commissionAmount();
+    SalesListings.rlsnyValidation();
 
 		var available_by = $('#sales .datepicker').attr('data-available-by');
 		if (available_by) {

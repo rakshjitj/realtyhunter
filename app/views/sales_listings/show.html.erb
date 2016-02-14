@@ -149,7 +149,12 @@
 	    		</div>
 	    	</div><!-- row -->
 
-	    	<br />
+	    	<div class="row">
+					<div class="col-md-6">
+						<br>
+						<h4>Listing Data</h4>
+					</div>
+				</div>
 	    	<div class="row">
 	    		<div class="col-md-6">
 	    			<div class="row">
@@ -327,7 +332,84 @@
 	    	<!-- TODO: integrate with dept of buildings to get
 						DOM, total floors, total units, year built, lot, block, community district, school district -->
 
-				<br />
+			<div class="row">
+				<div class="col-md-6">
+					<br>
+					<h4>REBNY Information</h4>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-xs-5">
+			    			<strong>RLSNY:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @sales_unit.rlsny ? "Yes" : "No" %>
+			    		</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5">
+			    			<strong>Floor:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @sales_unit.floor %>
+			    		</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5">
+			    			<strong>Total Room Count:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @sales_unit.total_room_count %>
+			    		</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5">
+			    			<strong>Condition:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @sales_unit.condition %>
+			    		</div>
+					</div>
+		    	</div>
+		    	<div class="col-md-6">
+		    		<div class="row">
+						<div class="col-xs-5">
+			    			<strong>Showing Instruction:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @sales_unit.showing_instruction %>
+			    		</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5">
+			    			<strong>Commission Amount:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @sales_unit.commission_amount %>
+			    		</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5">
+			    			<strong>CYOF:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @sales_unit.cyof ? "Yes" : "No" %>
+			    		</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5">
+			    			<strong>Share w/ Brokers:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @sales_unit.share_with_brokers ? "Yes" : "No" %>
+			    		</div>
+					</div>
+		    	</div>
+			</div>
+
+			<br />
 	    	<div class="row">
 	    		<div class="col-xs-12 col-md-3">
 	    			<strong>Certificate of Occupancy:</strong>

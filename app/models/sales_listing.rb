@@ -474,6 +474,11 @@ class SalesListing < ActiveRecord::Base
       .to_a.group_by(&:unit_id)
   end
 
+  def set_rented_date
+    self.rented_date = Date.today
+    self.save
+  end
+  
   private
     def process_custom_amenities
       if custom_amenities

@@ -347,6 +347,75 @@ ResidentialListings = {};
     });
   };
 
+  ResidentialListings.commissionAmount = function() {
+      if($('#residential_listing_cyof_true').is(":checked")){
+      $("#residential_listing_commission_amount").val('0');
+      $("#residential_listing_commission_amount").attr("readonly", "readonly");
+    }
+    $('input[name="residential_listing[cyof]"]').change(function(){
+      if($(this).attr("id")=="residential_listing_cyof_true"){
+        $("#residential_listing_commission_amount").val('0');
+        $("#residential_listing_commission_amount").attr("readonly", "readonly");
+      }
+      else
+      {
+        $("#residential_listing_commission_amount").val('');
+        $("#residential_listing_commission_amount").removeAttr("readonly");
+      }
+    });
+  };
+
+  ResidentialListings.rlsnyValidation = function() {
+    if($('#residential_listing_rlsny').is(":checked")){
+      $("#residential_listing_floor").attr("required", true);
+      $("#residential_listing_total_room_count").attr("required", true);
+      $("#residential_listing_condition").attr("required", true);
+      $("#residential_listing_showing_instruction").attr("required", true);
+      $("#residential_listing_commission_amount").attr("required", true);
+
+      $('label[for="residential_listing_floor"]').addClass("required");
+      $('label[for="residential_listing_total_room_count"]').addClass("required");
+      $('label[for="residential_listing_condition"]').addClass("required");
+      $('label[for="residential_listing_showing_instruction"]').addClass("required");
+      $('label[for="residential_listing_commission_amount"]').addClass("required");
+      $('label[for="residential_listing_cyof"]').addClass("required");
+      $('label[for="residential_listing_share_with_brokers"]').addClass("required");
+    }
+    $('input[name="residential_listing[rlsny]"]').change(function(){
+      if($(this).is(":checked")){
+        $("#residential_listing_floor").attr("required", true);
+        $("#residential_listing_total_room_count").attr("required", true);
+        $("#residential_listing_condition").attr("required", true);
+        $("#residential_listing_showing_instruction").attr("required", true);
+        $("#residential_listing_commission_amount").attr("required", true);
+
+        $('label[for="residential_listing_floor"]').addClass("required");
+        $('label[for="residential_listing_total_room_count"]').addClass("required");
+        $('label[for="residential_listing_condition"]').addClass("required");
+        $('label[for="residential_listing_showing_instruction"]').addClass("required");
+        $('label[for="residential_listing_commission_amount"]').addClass("required");
+        $('label[for="residential_listing_cyof"]').addClass("required");
+        $('label[for="residential_listing_share_with_brokers"]').addClass("required");
+      }
+      else
+      {
+        $("#residential_listing_floor").removeAttr("required");
+        $("#residential_listing_total_room_count").removeAttr("required");
+        $("#residential_listing_condition").removeAttr("required");
+        $("#residential_listing_showing_instruction").removeAttr("required");
+        $("#residential_listing_commission_amount").removeAttr("required");
+
+        $('label[for="residential_listing_floor"]').removeClass("required");
+        $('label[for="residential_listing_total_room_count"]').removeClass("required");
+        $('label[for="residential_listing_condition"]').removeClass("required");
+        $('label[for="residential_listing_showing_instruction"]').removeClass("required");
+        $('label[for="residential_listing_commission_amount"]').removeClass("required");
+        $('label[for="residential_listing_cyof"]').removeClass("required");
+        $('label[for="residential_listing_share_with_brokers"]').removeClass("required");
+      }
+    });
+  };
+
   ResidentialListings.initEditor = function() {
     $('#residential .has-fee').click(ResidentialListings.toggleFeeOptions);
     ResidentialListings.toggleFeeOptions();
@@ -456,10 +525,12 @@ ResidentialListings = {};
 
     // activate tooltips
     $('[data-toggle="tooltip"]').tooltip();
-
     $('.carousel-indicators > li:first-child').addClass('active');
     $('.carousel-inner > .item:first-child').addClass('active');
-  }
+
+		ResidentialListings.commissionAmount();
+		ResidentialListings.rlsnyValidation();
+	};
 
 })();
 
