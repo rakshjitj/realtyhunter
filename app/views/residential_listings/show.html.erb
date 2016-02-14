@@ -173,7 +173,12 @@
 	    		</div>
 	    	</div><!-- row -->
 
-	    	<br />
+	    	<div class="row">
+					<div class="col-md-6">
+						<br>
+						<h4>Unit Details</h4>
+					</div>
+				</div>
 	    	<div class="row">
 	    		<div class="col-md-6">
 	    			<div class="row">
@@ -334,9 +339,13 @@
 
 	    	<!-- TODO: integrate with dept of buildings to get
 						DOM, total floors, total units, year built, lot, block, community district, school district -->
-					<!-- Landlord info -->
 
-			<br />
+			<div class="row">
+				<div class="col-md-6">
+					<br>
+					<h4>REBNY Information</h4>
+				</div>
+			</div>
 			<div class="row">
 				<div class="col-md-6">
 					<div class="row">
@@ -410,18 +419,18 @@
 
 			<br />
 			<div class="row">
-				<div class="col-md-4">					
-	    			<strong>Show:</strong>		    		
-	    			<%= @residential_unit.show ? "Yes" : "No" %>		    		
+				<div class="col-md-4">
+	    			<strong>Show:</strong>
+	    			<%= @residential_unit.show ? "Yes" : "No" %>
 				</div>
-				<div class="col-md-4">					
-	    			<strong>Favorites:</strong>		    		
-	    			<%= @residential_unit.favorites ? "Yes" : "No" %>		    		
+				<div class="col-md-4">
+	    			<strong>Favorites:</strong>
+	    			<%= @residential_unit.favorites ? "Yes" : "No" %>
 				</div>
-				<div class="col-md-4">											
-	    			<strong>Expose Address:</strong>			    		
-	    			<%= @residential_unit.expose_address ? "Yes" : "No" %>			    		
-				</div>	    		
+				<div class="col-md-4">
+	    			<strong>Expose Address:</strong>
+	    			<%= @residential_unit.expose_address ? "Yes" : "No" %>
+				</div>
 	    	</div>
 
 	    	<br />
