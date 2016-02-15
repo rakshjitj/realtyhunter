@@ -110,18 +110,6 @@ CommercialListings = {};
 
   // for giant google map
   CommercialListings.buildContentString = function (key, info) {
-    // var contentString = '<strong>' + key + '</strong><br />'; //<hr />';
-    // for (var i=0; i<info['units'].length; i++) {
-    //   contentString += '<a href="https://myspace-realty-monster.herokuapp.com/commercial_listings/' + info['units'][i].id + '">#' + info['units'][i].building_unit + '</a> ' + info['units'][i].beds + ' bd / '
-    //     + info['units'][i].baths + ' baths $' + info['units'][i].rent + '<br />';
-    //   if (i == 5) {
-    //     contentString += '<a href="https://myspace-realty-monster.herokuapp.com/commercial_listings?building_id=' + info['building_id'] + '">View more...</a>';
-    //     break;
-    //   }
-    // }
-    // return contentString;
-
-
     var slideshowContent = '';
     var contentString = '<strong>' + key + '</strong><br />';
 
@@ -144,9 +132,15 @@ CommercialListings = {};
       var shouldHighlightRow = imgCount == 1 && info['units'].length > 1;
       contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">' +
           '<a href="https://myspace-realty-monster.herokuapp.com/commercial_listings/' +
-          unit.id + '">#' + unit.property_type + '</a> ' +
-          unit.sq_footage + ' Sq Ft, $' +
-          unit.rent + '</div>';
+          unit.id + '">';
+          if (unit.building_unit) {
+            contentString += '#' + unit.building_unit + ' ';
+          }
+          contentString += unit.property_type + ', ';
+          if (unit.sq_footage) {
+            contentString += unit.sq_footage + ' Sq Ft ';
+          }
+          contentString += '$' + unit.rent + '</a></div>';
       if (i == 5) {
         contentString += '<div class="contentRow">' +
         '<a href="https://myspace-realty-monster.herokuapp.com/commercial_listings?building_id='
