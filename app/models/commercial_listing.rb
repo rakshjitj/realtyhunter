@@ -272,11 +272,11 @@ class CommercialListing < ActiveRecord::Base
         lat: cunit.lat,
         lng: cunit.lng }
       unit_info = {
-        id: cunits[i].id,
-        building_unit: cunits[i].building_unit,
-        rent: cunits[i].rent,
-        property_type: cunits[i].property_sub_type,
-        sq_footage: cunits[i].sq_footage
+        id: cunit.id,
+        building_unit: cunit.building_unit,
+        rent: cunit.rent,
+        property_type: cunit.property_category,
+        sq_footage: cunit.sq_footage
        }
 
       if map_infos.has_key?(street_address)
