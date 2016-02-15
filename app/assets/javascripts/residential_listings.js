@@ -138,9 +138,9 @@ ResidentialListings = {};
       var shouldHighlightRow = imgCount == 1 && info['units'].length > 1;
 	    contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
         + '<a href="https://myspace-realty-monster.herokuapp.com/residential_listings/'
-        + unit.id + '">#' + unit.building_unit + '</a> '
+        + unit.id + '">#' + unit.building_unit
         + unit.beds + ' bd / '
-	      + unit.baths + ' baths $' + unit.rent + '</div>';
+	      + unit.baths + ' baths $' + unit.rent + '</a></div>';
 	    if (i == 5) {
 	      contentString += '<div class="contentRow"><a href="https://myspace-realty-monster.herokuapp.com/residential_listings?building_id='
           + info['building_id'] + '">View more...</a></div>';
