@@ -472,7 +472,7 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   # collect the data we will need to access from our giant map view
-  def self.set_location_data(runits)
+  def self.set_location_data(runits, images)
     map_infos = {}
     for i in 0..runits.length-1
       runit = runits[i]
@@ -492,7 +492,12 @@ class ResidentialListing < ActiveRecord::Base
         building_unit: runit.building_unit,
         beds: runit.beds,
         baths: runit.baths,
-        rent: runit.rent }
+        rent: runit.rent
+        }
+
+      if images[runit.unit_id]
+        unit_info['image'] = images[runit.unit_id].file.url(:thumb)
+      end
 
       if map_infos.has_key?(street_address)
         map_infos[street_address]['units'] << unit_info
@@ -500,7 +505,6 @@ class ResidentialListing < ActiveRecord::Base
         bldg_info['units'] = [unit_info]
         map_infos[street_address] = bldg_info
       end
-
     end
 
     map_infos.to_json
@@ -522,7 +526,6 @@ class ResidentialListing < ActiveRecord::Base
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by', 'units.listing_id')
       .order('residential_listings.updated_at desc')
-      #'residential_listings.for_roomsharing',
 
     if !status.nil?
       status_lowercase = status.downcase

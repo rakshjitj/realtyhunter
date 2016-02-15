@@ -334,10 +334,12 @@ class ResidentialListingsController < ApplicationController
       do_search
       custom_sort
       # display all found listings on the map
-      @map_infos = ResidentialListing.set_location_data(@residential_units.to_a)
+
+      # note: we are loading waaaay more images now... monitor page load time
+      @res_images = ResidentialListing.get_images(@residential_units)
+      @map_infos = ResidentialListing.set_location_data(@residential_units.to_a, @res_images)
       # only get data + images for paginated responses
       @residential_units = @residential_units.page params[:page]
-      @res_images = ResidentialListing.get_images(@residential_units)
     end
 
     def async_create_csv

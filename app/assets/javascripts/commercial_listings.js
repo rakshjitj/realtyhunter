@@ -111,26 +111,65 @@ CommercialListings = {};
 
   // for giant google map
   CommercialListings.buildContentString = function (key, info) {
+    // var contentString = '<strong>' + key + '</strong><br />'; //<hr />';
+    // for (var i=0; i<info['units'].length; i++) {
+    //   contentString += '<a href="https://myspace-realty-monster.herokuapp.com/commercial_listings/' + info['units'][i].id + '">#' + info['units'][i].building_unit + '</a> ' + info['units'][i].beds + ' bd / '
+    //     + info['units'][i].baths + ' baths $' + info['units'][i].rent + '<br />';
+    //   if (i == 5) {
+    //     contentString += '<a href="https://myspace-realty-monster.herokuapp.com/commercial_listings?building_id=' + info['building_id'] + '">View more...</a>';
+    //     break;
+    //   }
+    // }
+    // return contentString;
+
+
+    var slideshowContent = '';
     var contentString = '<strong>' + key + '</strong><br />';
+
+    var firstImageAdded = false;
+    var imgCount = 0;
     for (var i=0; i<info['units'].length; i++) {
-      var unit = info['units'][i];
-      contentString += '<a href="https://myspace-realty-monster.herokuapp.com/commercial_listings/'+
-          unit.id + '">';
-      if (unit.building_unit) {
-        contentString += '#' + unit.building_unit + ' ';
+
+      unit = info['units'][i];
+
+      if (unit.image) {
+        slideshowContent += '<div class="image' + (!firstImageAdded ? ' active' : '') + '">' +
+            '<a href="https://myspace-realty-monster.herokuapp.com/commercial_listings/' +
+            unit.id + '">' +
+            '<img src="' + unit.image + '" />' +
+            '</div>';
+        firstImageAdded = true;
+        imgCount++;
       }
-      contentString += unit.property_type + ', ';
-      if (unit.sq_footage) {
-        contentString += unit.sq_footage + ' Sq Ft ';
-      }
-      contentString += '$' + unit.rent + '</a>';
+
+      var shouldHighlightRow = imgCount == 1 && info['units'].length > 1;
+      contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">' +
+          '<a href="https://myspace-realty-monster.herokuapp.com/commercial_listings/' +
+          unit.id + '">#' + unit.property_type + '</a> ' +
+          unit.sq_footage + ' Sq Ft, $' +
+          unit.rent + '</div>';
       if (i == 5) {
-        contentString += '<a href="https://myspace-realty-monster.herokuapp.com/commercial_listings?building_id=' +
-            info['building_id'] + '">View more...</a>';
+        contentString += '<div class="contentRow">' +
+        '<a href="https://myspace-realty-monster.herokuapp.com/commercial_listings?building_id='
+        + info['building_id'] + '">View more...</a></div>';
         break;
       }
     }
-    return contentString;
+
+    output =
+      '<div class="slideshow">' +
+        slideshowContent +
+      '</div>';
+    if (imgCount > 1) {
+      output += '<div class="cycle">' +
+        '<a href="#" class="prev">&laquo; Previous</a>' +
+        '<a href="#" class="next">Next &raquo;</a>' +
+        '</div>';
+    }
+    output += '<div class="content">' +
+      contentString +
+      '</div>';
+    return '<div class="popup">' + output + '</div>';
   };
 
   CommercialListings.initializeDocumentsDropzone = function() {
