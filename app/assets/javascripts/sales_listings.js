@@ -242,18 +242,6 @@ SalesListings = {};
 
 	// for giant map
 	SalesListings.buildContentString = function (key, info) {
-	  // var contentString = '<strong>' + key + '</strong><br />'; //<hr />';
-	  // for (var i=0; i<info['units'].length; i++) {
-	  //   contentString += '<a href="https://myspace-realty-monster.herokuapp.com/sales_listings/' +
-   //        info['units'][i].id + '">'
-	  //   	+ info['units'][i].beds + ' bd / '
-	  //     + info['units'][i].baths + ' baths</a> $' + info['units'][i].rent + '<br />';
-	  //   if (i == 5) {
-	  //     contentString += '<a href="https://myspace-realty-monster.herokuapp.com/sales_listings?building_id=' + info['building_id'] + '">View more...</a>';
-	  //     break;
-	  //   }
-	  // }
-	  // return contentString;
     var slideshowContent = '';
     var contentString = '<strong>' + key + '</strong><br />';
 
@@ -275,7 +263,7 @@ SalesListings = {};
       var shouldHighlightRow = imgCount == 1 && info['units'].length > 1;
       contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
         + '<a href="https://myspace-realty-monster.herokuapp.com/sales_listings/'
-        + unit.id + '">#' + unit.building_unit
+        + unit.id + '">#' + unit.building_unit + ' ' +
         + unit.beds + ' bd / '
         + unit.baths + ' baths $' + unit.rent + '</a></div>';
       if (i == 5) {
