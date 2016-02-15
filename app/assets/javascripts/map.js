@@ -7,6 +7,8 @@ RHMapbox = {};
   RHMapbox.htmlID;
 
   RHMapbox.updateOverviewMap = function(in_data, buildContentStringFn) {
+    var info = document.getElementById('info');
+
     RHMapbox.overlays.clearLayers();
     var markers = new L.MarkerClusterGroup({
       maxClusterRadius: 20 // lean towards showing more individual markers
@@ -21,24 +23,29 @@ RHMapbox = {};
     } else {
       dataPoints = JSON.parse($('#' + RHMapbox.htmlID).attr('data-map-points'));
     }
+
     Object.keys(dataPoints).forEach(function(key, index) {
       // draw each marker + load with data
       var info = dataPoints[key];
       var content = buildContentStringFn(key, info);
+
       var marker = L.marker(new L.LatLng(info.lat, info.lng), {
         icon: L.mapbox.marker.icon({
-          'marker-size': 'small',
           'marker-color': '#f86767'
         }),
         'title': key,
       });
-      marker.bindPopup(content);
+      // console.log('JUST BEFORE', content);
+      marker.bindPopup(content, {
+        closeButton: false,
+        // minWidth: 100
+      });
       markers.addLayer(marker);
     });
 
-    if (dataPoints.length) {
+    if (Object.keys(dataPoints).length) {
       RHMapbox.map.addLayer(markers);
-      RHMapbox.map.fitBounds(markers.getBounds());
+      // RHMapbox.map.fitBounds(markers.getBounds());
     }
   };
 
@@ -91,6 +98,42 @@ RHMapbox = {};
       });
       // NOTE: If the user chooses not to allow their location
       // to be shared, do not display any pin.
+
+      // when a marker is open and prev/next are clicked, cycle throw slidehow of images
+      $('#' + htmlID).on('click', '.popup .cycle a', function() {
+        var $slideshow = $('.slideshow'),
+            $newSlide,
+            $content = $('.content'),
+            $newContentRow;
+
+        if ($(this).hasClass('prev')) {
+            $newSlide = $slideshow.find('.active').prev();
+            if ($newSlide.index() < 0) {
+              $newSlide = $('.image').last();
+            }
+            $newContentRow = $content.find('.active').prev();
+            if ($newContentRow.index() < 0) {
+              $newContentRow = $('.contentRow').last();
+            }
+        } else {
+            $newSlide = $slideshow.find('.active').next();
+            if ($newSlide.index() < 0) {
+              $newSlide = $('.image').first();
+            }
+            $newContentRow = $content.find('.active').next();
+            if ($newContentRow.index() < 0) {
+              $newContentRow = $('.contentRow').first();
+            }
+        }
+
+        $slideshow.find('.active').removeClass('active').hide();
+        $newSlide.addClass('active').show();
+        $content.find('.active').removeClass('active');
+        $newContentRow.addClass('active').show();
+
+        return false;
+      });
+
     }
   }
 

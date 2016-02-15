@@ -337,9 +337,10 @@ class SalesListingsController < ApplicationController
         .where('units.archived = false')
         .where('units.status = ?', Unit.statuses["active"])
         .count
-      @map_infos = SalesListing.set_location_data(@sales_units.to_a)
-      @sales_units = @sales_units.page params[:page]
       @res_images = SalesListing.get_images(@sales_units)
+      @map_infos = SalesListing.set_location_data(@sales_units.to_a, @res_images)
+      @sales_units = @sales_units.page params[:page]
+
     end
 
     # returns all data for export
