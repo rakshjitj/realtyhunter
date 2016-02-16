@@ -442,6 +442,9 @@ SalesListings = {};
     Dropzone.autoDiscover = false;
     SalesListings.initializeImageDropzone();
     SalesListings.initializeDocumentsDropzone();
+
+    SalesListings.commissionAmount();
+    SalesListings.rlsnyValidation();
   };
 
 	SalesListings.initIndex = function() {
@@ -490,10 +493,7 @@ SalesListings = {};
 	  // remove individual features by clicking on 'x' button
 	  $('#sales .remove-unit-feature').click(SalesListings.removeUnitFeature);
 	  $('#sales .remove-building-feature').click(SalesListings.removeBuildingFeature);
-	  $('#sales .remove-neighborhood').click(SalesListings.removeNeighborhood);
-
-    SalesListings.commissionAmount();
-    SalesListings.rlsnyValidation();
+	  $('#sales .remove-neighborhood').click(SalesListings.removeNeighborhood);    
 
 		var available_by = $('#sales .datepicker').attr('data-available-by');
 		if (available_by) {

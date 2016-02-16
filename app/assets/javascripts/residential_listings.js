@@ -439,6 +439,9 @@ ResidentialListings = {};
     Dropzone.autoDiscover = false;
     ResidentialListings.initializeImageDropzone();
     ResidentialListings.initializeDocumentsDropzone();
+
+    ResidentialListings.commissionAmount();
+    ResidentialListings.rlsnyValidation();
   }
 
   ResidentialListings.initIndex = function() {
@@ -528,8 +531,6 @@ ResidentialListings = {};
     $('.carousel-indicators > li:first-child').addClass('active');
     $('.carousel-inner > .item:first-child').addClass('active');
 
-		ResidentialListings.commissionAmount();
-		ResidentialListings.rlsnyValidation();
 	};
 
 })();
