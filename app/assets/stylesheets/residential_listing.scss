@@ -38,6 +38,16 @@
   white-space: normal !important;
 }
 
+/********* both *****************/
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-even-item {
+  flex: 1;
+}
 
 /********* mobile *****************/
 
