@@ -153,6 +153,14 @@ class Building < ActiveRecord::Base
     CommercialListing.for_buildings([id], status)
   end
 
+  # used in API, syndication
+  def self.get_pet_policies(list)
+    bldg_ids = list.map(&:building_id)
+    Building.joins(:pet_policy).where(id: bldg_ids)
+      .select('buildings.id', 'pet_policies.name as pet_policy_name')
+      .to_a.group_by(&:id)
+  end
+
   # Used in our API. Takes in a list of units
   def self.get_amenities(list_of_units)
     building_ids = list_of_units.map(&:building_id)

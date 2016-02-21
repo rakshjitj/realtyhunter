@@ -53,35 +53,34 @@ class Unit < ActiveRecord::Base
     Image.where(unit_id: unit_ids).to_a.group_by(&:unit_id)
   end
 
-  # Used by Nestio API
   def self.get_primary_agents(list)
-    agent_ids = list.map(&:primary_agent_id) + list.map(&:primary_agent2_id)
-    User.joins(:office).where(id: agent_ids)
+    agent_ids = list.map(&:primary_agent_id).select{|l| l if !l.nil?} +
+        list.map(&:primary_agent2_id).select{|l| l if !l.nil?}
+
+    User.joins(:office)
+      .joins('inner join units on users.id = units.primary_agent_id OR users.id = units.primary_agent2_id')
+      .where(id: agent_ids)
       .select('users.id', 'name', 'email', 'mobile_phone_number', 'phone_number', 'public_url',
-        'offices.telephone AS office_telephone', 'offices.fax AS office_fax')
-      .to_a.group_by(&:id)
+        'offices.telephone AS office_telephone', 'offices.fax AS office_fax', 'units.id as unit_id')
+      .to_a.group_by(&:unit_id)
   end
 
-  # Used by streeteasy API
+  # Used by syndication
   def self.get_primary_agents_and_images(list)
-    agent_ids = list.map(&:primary_agent_id) + list.map(&:primary_agent2_id)
-    users = User.joins(:office).where(id: agent_ids)
-      .select('users.id', 'name', 'email', 'mobile_phone_number', 'phone_number', 'public_url',
-        'offices.telephone AS office_telephone', 'offices.fax AS office_fax')
-      .to_a.group_by(&:id)
+    agent_ids = list.map(&:primary_agent_id).select{|l| l if !l.nil?} +
+        list.map(&:primary_agent2_id).select{|l| l if !l.nil?}
 
+    users = User
+      .joins(:office)
+      .joins('inner join units on users.id = units.primary_agent_id OR users.id = units.primary_agent2_id')
+      .where(id: agent_ids)
+      .select('users.id', 'name', 'email', 'mobile_phone_number', 'phone_number', 'public_url',
+        'offices.telephone AS office_telephone', 'offices.fax AS office_fax', 'units.id as unit_id')
+      .to_a.group_by(&:unit_id)
 
     images = Image.where(user_id: agent_ids).index_by(&:user_id)
 
     return [users, images]
-  end
-
-  # Used by API
-  def self.get_pet_policies(list)
-    bldg_ids = list.map(&:building_id)
-    Building.joins(:pet_policy).where(id: bldg_ids)
-      .select('buildings.id', 'pet_policies.name as pet_policy_name')
-      .to_a.group_by(&:id)
   end
 
   # mainly for use in our API. Returns list of any

@@ -616,7 +616,7 @@ class ResidentialListing < ActiveRecord::Base
           listing.exclusive, listing.can_roomshare,
           listing.beds, listing.baths, listing.notes, listing.description, listing.lease_start, listing.lease_end,
           listing.has_fee, listing.op_fee_percentage, listing.tp_fee_percentage, listing.tenant_occupied,
-          listing.primary_agent_id ? agents[listing.primary_agent_id][0].name : '',
+          agents[listing.unit_id] ? agents[listing.unit_id].map {|a| a.name }.join(', ') : '',
           listing.listing_id, listing.landlord_code, listing.rent,
           listing.available_by, listing.access_info,
           reverse_statuses[listing.status.to_s.to_sym],

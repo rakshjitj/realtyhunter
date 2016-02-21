@@ -6,7 +6,7 @@
   'Lease Term (Months)', 'Is Rate Negotiable?', 'Total Lot Size', 'Property Sub-type',
   'Liquor Eligible?', 'Has Basement?', 'Basement Sq Ft', 'Has Ventilation?', 'Key Money Required?',
   'Key Money Amount',
-  'Primary Agent #1', 'Primary Agent #2', 'Listing ID', 'Landlord', 'Price', 'Available', 'Access', 'Status', 'Created At', 'Updated At', 'Archived',
+  'Primary Agents', 'Listing ID', 'Landlord', 'Price', 'Available', 'Access', 'Status', 'Created At', 'Updated At', 'Archived',
 	] -%>
 
 <%= CSV.generate_line headers %>
@@ -19,8 +19,7 @@
       listing.total_lot_size, listing.property_sub_type,
       listing.liquor_eligible, listing.has_basement, listing.basement_sq_footage, listing.has_ventilation,
       listing.key_money_required, listing.key_money_amt,
-      listing.primary_agent_id ? @agents[listing.primary_agent_id][0].name : '',
-      listing.primary_agent2_id ? @agents[listing.primary_agent2_id][0].name : '',
+      @agents[listing.unit_id] ? @agents[listing.unit_id].map {|a| a.name }.join(', ') : '',
       listing.listing_id, listing.landlord_code,
       listing.rent,
       listing.available_by, listing.access_info,

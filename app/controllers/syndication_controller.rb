@@ -3,7 +3,7 @@ class SyndicationController < ApplicationController
   skip_before_action :logged_in_user
   protect_from_forgery with: :null_session
   include SyndicationInterface
-  
+
   def naked_apts
     set_listings
     respond_to do |format|
@@ -35,8 +35,8 @@ class SyndicationController < ApplicationController
       elsif syndication_params[:action] == 'trulia'
         @listings = trulia_listings(@company.id, syndication_params)
       end
-          
-      @pet_policies = Unit.get_pet_policies(@listings)
+
+      @pet_policies = Building.get_pet_policies(@listings)
       @residential_amenities = ResidentialListing.get_amenities(@listings)
       @building_amenities = Building.get_amenities(@listings)
       @images = Unit.get_all_images(@listings)

@@ -1,5 +1,5 @@
 class ListingSerializer < ActiveModel::Serializer
-	attributes :listing_type, :property_type, :commercial_use, :min_lease_term, 
+	attributes :listing_type, :property_type, :commercial_use, :min_lease_term,
 	:max_lease_term, :renter_fee, :bathrooms, :unit_amenities, :unit_description,
 	:floor, :layout, :bedrooms, :unit_number, :pets, :status, :building, :date_available,
 	:changed_at, :square_footage, :rent, :id, :favorites, :show, :expose_address,
@@ -27,7 +27,7 @@ class ListingSerializer < ActiveModel::Serializer
 		if object.primary_agents
 			object
 	      .primary_agents
-	      .map { |x| ActiveModel::Serializer::Adapter::Attributes.new(PrimaryAgentSerializer.new(x)).as_json }			
+	      .map { |x| ActiveModel::Serializer::Adapter::Attributes.new(PrimaryAgentSerializer.new(x)).as_json }
 		end
 	end
 
@@ -118,7 +118,7 @@ class ListingSerializer < ActiveModel::Serializer
 	end
 
 	def floor
-		if is_residential			
+		if is_residential
 			object.listing.r_floor
 		elsif is_commercial
 			object.listing.c_floor
@@ -219,7 +219,7 @@ class ListingSerializer < ActiveModel::Serializer
 		elsif is_commercial
 			object.listing.c_expose_address
 		end
-	end	
+	end
 
 	def total_room_count
 		if is_residential

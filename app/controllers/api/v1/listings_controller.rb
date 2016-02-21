@@ -21,7 +21,7 @@ module API
 			def show
 				# id in this case refers to the unit's listing id
 				listings = all_listings_search(@user.company_id, {id: params[:id]})
-				@pet_policies = Unit.get_pet_policies(listings)
+				@pet_policies = Building.get_pet_policies(listings)
 				@residential_amenities = ResidentialListing.get_amenities(listings)
 				@images = Unit.get_all_images(listings)
 				@primary_agents = Unit.get_primary_agents(listings)
@@ -32,7 +32,7 @@ module API
 						listing: listings[0],
 						residential_amenities: @residential_amenities[listings[0].unit_id],
 						pet_policies: @pet_policies[listings[0].building_id],
-						primary_agents: @primary_agents[listings[0].primary_agent_id],
+						primary_agents: @primary_agents[listings[0].unit_id],
 						building_amenities: @building_amenities[listings[0].building_id],
 						images: @images[listings[0].unit_id]
 						})
@@ -123,7 +123,7 @@ module API
 				if search_params[:listing_type] == "10" # residential
 					@listings = residential_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
-					@pet_policies = Unit.get_pet_policies(@listings)
+					@pet_policies = Building.get_pet_policies(@listings)
 					@residential_amenities = ResidentialListing.get_amenities(@listings)
 
 				# sales
@@ -140,14 +140,13 @@ module API
 					@listings = all_listings_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
 					@residential_amenities = ResidentialListing.get_amenities(@listings)
-					@pet_policies = Unit.get_pet_policies(@listings)
+					@pet_policies = Building.get_pet_policies(@listings)
 
 				end
 
 				@images = Unit.get_all_images(@listings)
 				@primary_agents = Unit.get_primary_agents(@listings)
 				@building_amenities = Building.get_amenities(@listings)
-
 				# repackage into a format that's easily digestible
 				# by our API renderer
 				output = @listings.map do |l|
@@ -155,7 +154,7 @@ module API
 						listing: l,
 						residential_amenities: @residential_amenities[l.unit_id],
 						pet_policies: @pet_policies[l.building_id],
-						primary_agents: @primary_agents[l.primary_agent_id],
+						primary_agents: @primary_agents[l.unit_id],
 						building_amenities: @building_amenities[l.building_id],
 						images: @images[l.unit_id]
 						})

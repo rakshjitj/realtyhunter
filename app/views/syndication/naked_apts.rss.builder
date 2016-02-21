@@ -46,7 +46,7 @@ xml.streeteasy :version => "1.6" do
 				 	if !listing.has_fee
 				 		xml.noFee
 				 	end
-				
+
 					if listing.exclusive
 						xml.exclusive
 					end
@@ -60,7 +60,7 @@ xml.streeteasy :version => "1.6" do
 					elsif listing.c_id
 						xml.description listing.property_description
 					end
-					
+
 					xml.propertyType "rental"
 
 					# 	if @pet_policies[listing.building_id]
@@ -71,7 +71,7 @@ xml.streeteasy :version => "1.6" do
 
 					# streeteasy has their own approved list of amenities
 					# doorman, gym, pool, elevator, garage, parking, balcony, storage, patio, fireplace
-					# washerDryer, dishwasher, furnished, pets, other					
+					# washerDryer, dishwasher, furnished, pets, other
 					xml.amenities do
 
 						@other_amenities = []
@@ -160,10 +160,10 @@ xml.streeteasy :version => "1.6" do
 				end # details
 
 				# TODO: open houses
-				
-				if @primary_agents[listing.primary_agent_id]
+
+				if @primary_agents[listing.unit_id]
 					xml.agents do
-						@primary_agents[listing.primary_agent_id].each do |agent| 
+						@primary_agents[listing.unit_id].each do |agent|
 							xml.agent id: agent.id
 							xml.name agent.name
 							xml.company @company.name
@@ -180,23 +180,6 @@ xml.streeteasy :version => "1.6" do
 					  		xml.fax agent.office_fax
 					  	end
 						end
-						# @primary_agents[listing.primary_agent2_id].each do |agent| 
-						# 	xml.agent id: agent.id
-						# 	xml.name agent.name
-						# 	xml.company @company.name
-						# 	if @agent_images[agent.id]
-						# 		xml.photo @agent_images[agent.id].file.url(:original)
-						# 	end
-						#   xml.url agent.public_url
-					 #  	xml.email agent.email
-					 #  	xml.lead_email agent.email
-					 #  	xml.phone_numbers do
-					 #  		xml.main agent.mobile_phone_number
-					 #  		xml.office agent.office_telephone
-					 #  		xml.cell agent.mobile_phone_number
-					 #  		xml.fax agent.office_fax
-					 #  	end
-						# end
 					end
 				end
 

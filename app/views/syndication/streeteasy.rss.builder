@@ -4,9 +4,10 @@ xml.streeteasy :version => "1.6" do
 
 	  @listings.each do |listing|
 
-	  	# NOTE: this is super hacky. We should filter this out before sending 
+	  	# NOTE: this is super hacky. We should filter this out before sending
 	  	# to the view.
-	  	if @primary_agents[listing.primary_agent_id][0].name == @company.name
+	  	if @primary_agents[listing.unit_id].length &&
+	  				@primary_agents[listing.unit_id][0].name == @company.name
 	  		# skip our generic catch-all account
 	  		next
 	  	end
@@ -53,7 +54,7 @@ xml.streeteasy :version => "1.6" do
 				 	if !listing.has_fee
 				 		xml.noFee
 				 	end
-				
+
 					if listing.exclusive
 						xml.exclusive
 					end
@@ -67,7 +68,7 @@ xml.streeteasy :version => "1.6" do
 					elsif listing.c_id
 						xml.description listing.property_description
 					end
-					
+
 					xml.propertyType "rental"
 
 					# 	if @pet_policies[listing.building_id]
@@ -78,7 +79,7 @@ xml.streeteasy :version => "1.6" do
 
 					# streeteasy has their own approved list of amenities
 					# doorman, gym, pool, elevator, garage, parking, balcony, storage, patio, fireplace
-					# washerDryer, dishwasher, furnished, pets, other					
+					# washerDryer, dishwasher, furnished, pets, other
 					xml.amenities do
 
 						@other_amenities = []
@@ -167,10 +168,10 @@ xml.streeteasy :version => "1.6" do
 				end # details
 
 				# TODO: open houses
-				
-				if @primary_agents[listing.primary_agent_id]
+
+				if !@primary_agents[listing.unit_id].empty?
 					xml.agents do
-						@primary_agents[listing.primary_agent_id].each do |agent| 
+						@primary_agents[listing.unit_id].each do |agent|
 							xml.agent id: agent.id do
 								xml.name agent.name
 								xml.company @company.name
