@@ -80,8 +80,8 @@ ResidentialListings = {};
 
 	// update the announcements every 60 seconds
 	ResidentialListings.updateAnnouncements = function() {
-		//console.log('updateAnnouncements ', $('#residential').length);
-		if ($('#residential .announcement').length) {
+		//console.log('updateAnnouncements ', $('.residential').length);
+		if ($('.announcement').length) {
 			//console.log('updating ann');
 			ResidentialListings.queryAnnouncements();
 
@@ -93,12 +93,9 @@ ResidentialListings = {};
 	// refresh the page every so often. We want to make sure they are
 	// always viewing the latest data.
 	ResidentialListings.passiveRealTimeUpdate = function() {
-    ResidentialListings.clearTimer();
-    // don't update on the show page
-		if ($('#residential').length) {
-			// update every few minutes
-		  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 60 * 10 * 1000);
-		}
+		ResidentialListings.clearTimer();
+		// update every few minutes
+	  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 60 * 10 * 1000);
 	};
 
 	// search as user types
@@ -165,18 +162,18 @@ ResidentialListings = {};
 	};
 
 	ResidentialListings.toggleFeeOptions = function(event) {
-		var isChecked = $('#residential .has-fee').prop('checked');
+		var isChecked = $('.has-fee').prop('checked');
 		if (isChecked) {
-			$('#residential .show-op').addClass('hide');
-			$('#residential .show-tp').removeClass('hide');
+			$('.show-op').addClass('hide');
+			$('.show-tp').removeClass('hide');
 		} else {
-			$('#residential .show-op').removeClass('hide');
-			$('#residential .show-tp').addClass('hide');
+			$('.show-op').removeClass('hide');
+			$('.show-tp').addClass('hide');
 		}
 	};
 
 	ResidentialListings.inheritFeeOptions = function() {
-		bldg_id = $('#residential #residential_listing_unit_building_id').val();
+		bldg_id = $('#residential_listing_unit_building_id').val();
 
 		$.ajax({
 			type: 'GET',
@@ -190,13 +187,13 @@ ResidentialListings = {};
 	ResidentialListings.setPositions = function() {
 	  // loop through and give each task a data-pos
 	  // attribute that holds its position in the DOM
-	  $('#residential .img-thumbnail').each(function(i) {
+	  $('.img-thumbnail').each(function(i) {
 	    $(this).attr("data-pos", i+1);
 	  });
 	};
 
   ResidentialListings.sortOnColumnClick = function() {
-		$('#residential .th-sortable').click(function(e) {
+		$('.th-sortable').click(function(e) {
       Common.sortOnColumnClick($(this), ResidentialListings.doSearch);
 		});
 	};
@@ -238,7 +235,7 @@ ResidentialListings = {};
     DropZoneHelper.makeSortable('residential', 'images');
 
     // after the order changes
-    $('#residential .sortable').sortable().bind('sortupdate', function(e, ui) {
+    $('.sortable').sortable().bind('sortupdate', function(e, ui) {
         // array to store new order
         updated_order = []
         // set the updated positions
@@ -290,7 +287,7 @@ ResidentialListings = {};
     DropZoneHelper.makeSortable('residential', 'documents');
 
     // after the order changes
-    $('#residential .documents.sortable').sortable().bind('sortupdate', function(e, ui) {
+    $('..documents.sortable').sortable().bind('sortupdate', function(e, ui) {
         // array to store new order
         updated_order = []
         // set the updated positions
@@ -380,10 +377,10 @@ ResidentialListings = {};
   };
 
   ResidentialListings.initEditor = function() {
-    $('#residential .has-fee').click(ResidentialListings.toggleFeeOptions);
+    $('.has-fee').click(ResidentialListings.toggleFeeOptions);
     ResidentialListings.toggleFeeOptions();
     // when creating a new listing, inherit TP/OP from building's landlord
-    $('#residential #residential_listing_unit_building_id').change(ResidentialListings.inheritFeeOptions);
+    $('#residential_listing_unit_building_id').change(ResidentialListings.inheritFeeOptions);
 
     // make sure datepicker is formatted before setting initial date below
     // use in residential/edit, on photos tab
@@ -392,9 +389,9 @@ ResidentialListings = {};
       format: 'MM/DD/YYYY',
       allowInputToggle: true
     });
-    var available_by = $('#residential .datepicker').attr('data-available-by');
+    var available_by = $('.datepicker').attr('data-available-by');
     if (available_by) {
-      $('#residential .datepicker').data("DateTimePicker").date(available_by);
+      $('.datepicker').data("DateTimePicker").date(available_by);
     }
 
     // for drag n dropping photos/docs
@@ -414,8 +411,9 @@ ResidentialListings = {};
     }
   }
 
+  // called on index & show pages
   ResidentialListings.initMobileIndex = function() {
-    $('#residential').remove();
+    $('#residential-desktop').remove();
     $('#residential-mobile input').keydown(ResidentialListings.preventEnter);
 
     $('.js-show-announcements').click(function() {
@@ -456,10 +454,14 @@ ResidentialListings = {};
       ResidentialListings.showCard('mobile-filters', e);
     });
 
-    RHMapbox.initMapbox('r-big-map-mobile', ResidentialListings.buildContentString);
-    RHMapbox.centerOnMe();
+    // only on index, not show page
+    if ($('#r-big-map-mobile').length) {
+      RHMapbox.initMapbox('r-big-map-mobile', ResidentialListings.buildContentString);
+     RHMapbox.centerOnMe();
+   }
   }
 
+  // called on index & show pages
   ResidentialListings.initDesktopIndex = function() {
     $('#residential-mobile').remove();
     ResidentialListings.enablePassiveUpdates();
@@ -471,7 +473,7 @@ ResidentialListings = {};
     });
     Listings.hideSpinner();
 
-    $('#residential a').click(function() {
+    $('a').click(function() {
       Listings.showSpinner();
     });
 
@@ -491,12 +493,12 @@ ResidentialListings = {};
     $('#building-amenities-select-multiple').change(ResidentialListings.throttledSearch);
 
     // just above main listings table - selecting listings menu dropdown
-    $('#residential #emailListings').click(Listings.sendMessage);
-    $('#residential #assignListings').click(Listings.assignPrimaryAgent);
-    $('#residential #unassignListings').click(Listings.unassignPrimaryAgent);
-    $('#residential tbody').on('click', 'i', Listings.toggleListingSelection);
-    $('#residential .select-all-listings').click(Listings.selectAllListings);
-    $('#residential .selected-listings-menu').on('click', 'a', function() {
+    $('#emailListings').click(Listings.sendMessage);
+    $('#assignListings').click(Listings.assignPrimaryAgent);
+    $('#unassignListings').click(Listings.unassignPrimaryAgent);
+    $('tbody').on('click', 'i', Listings.toggleListingSelection);
+    $('.select-all-listings').click(Listings.selectAllListings);
+    $('.selected-listings-menu').on('click', 'a', function() {
       var action = $(this).data('action');
       if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();
     });
@@ -507,26 +509,33 @@ ResidentialListings = {};
     RHMapbox.initMapbox('r-big-map', ResidentialListings.buildContentString);
   }
 
+  // called on index & show pages
   ResidentialListings.initIndex = function() {
-    $('#residential input').keydown(ResidentialListings.preventEnter);
-    $('#residential #address').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
-    $('#residential #address').change(ResidentialListings.throttledSearch);
-    $('#residential #rent_min').change(ResidentialListings.throttledSearch);
-    $('#residential #rent_max').change(ResidentialListings.throttledSearch);
-    $('#residential #bed_min').change(ResidentialListings.throttledSearch);
-    $('#residential #bed_max').change(ResidentialListings.throttledSearch);
-    $('#residential #bath_min').change(ResidentialListings.throttledSearch);
-    $('#residential #bath_max').change(ResidentialListings.throttledSearch);
-    $('#residential #landlord').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
-    $('#residential #landlord').change(ResidentialListings.throttledSearch);
-    $('#residential #available_starting').blur(ResidentialListings.throttledSearch);
-    $('#residential #available_before').blur(ResidentialListings.throttledSearch);
-    $('#residential #pet_policy_shorthand').change(ResidentialListings.throttledSearch);
-    $('#residential #status').change(ResidentialListings.throttledSearch);
-    $('#residential #has_fee').change(ResidentialListings.throttledSearch);
-    $('#residential #roomsharing_filter').change(ResidentialListings.throttledSearch);
-    $('#residential #unassigned_filter').change(ResidentialListings.throttledSearch);
-    $('#residential #primary_agent_id').change(ResidentialListings.throttledSearch);
+    if (Common.onMobileDevice()) {
+      ResidentialListings.initMobileIndex();
+    } else {
+      ResidentialListings.initDesktopIndex();
+    }
+
+    $('input').keydown(ResidentialListings.preventEnter);
+    $('#address').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
+    $('#address').change(ResidentialListings.throttledSearch);
+    $('#rent_min').change(ResidentialListings.throttledSearch);
+    $('#rent_max').change(ResidentialListings.throttledSearch);
+    $('#bed_min').change(ResidentialListings.throttledSearch);
+    $('#bed_max').change(ResidentialListings.throttledSearch);
+    $('#bath_min').change(ResidentialListings.throttledSearch);
+    $('#bath_max').change(ResidentialListings.throttledSearch);
+    $('#landlord').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
+    $('#landlord').change(ResidentialListings.throttledSearch);
+    $('#available_starting').blur(ResidentialListings.throttledSearch);
+    $('#available_before').blur(ResidentialListings.throttledSearch);
+    $('#pet_policy_shorthand').change(ResidentialListings.throttledSearch);
+    $('#status').change(ResidentialListings.throttledSearch);
+    $('#has_fee').change(ResidentialListings.throttledSearch);
+    $('#roomsharing_filter').change(ResidentialListings.throttledSearch);
+    $('#unassigned_filter').change(ResidentialListings.throttledSearch);
+    $('#primary_agent_id').change(ResidentialListings.throttledSearch);
 
     ResidentialListings.selectedNeighborhoodIds = getURLParameterByName('neighborhood_ids');
     if (ResidentialListings.selectedNeighborhoodIds) {
@@ -574,6 +583,9 @@ ResidentialListings = {};
       }
     });
 
+  }
+
+  ResidentialListings.initShow = function() {
     // google map on show page
     var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
     $("#runit-panel").geocomplete({
@@ -585,12 +597,6 @@ ResidentialListings = {};
     }).bind("geocode:error", function(event, result){
       //console.log("[ERROR]: " + result);
     });
-
-    if (Common.onMobileDevice()) {
-      ResidentialListings.initMobileIndex();
-    } else {
-      ResidentialListings.initDesktopIndex();
-    }
   }
 
   ResidentialListings.showCard = function(cardName, e) {
@@ -614,18 +620,16 @@ $(document).on('keyup',function(evt) {
 });
 
 $(document).ready(function() {
-  ResidentialListings.clearTimer();
+  var editPage = $('.residential_listings.edit').length;
+  var newPage = $('.residential_listings.new').length;
+  var indexPage = $('.residential_listings.index').length;
 
-  var url = window.location.pathname;
-  var residential = url.indexOf('residential_listings') > -1;
-  var editPage = url.indexOf('edit') > -1;
-  var newPage = url.indexOf('new') > -1;
-  if (residential) {
-    // new and edit pages both render the same form template, so init them using the same code
-    if (editPage || newPage) {
-      ResidentialListings.initEditor();
-    } else {
-      ResidentialListings.initIndex();
-    }
+  // new and edit pages both render the same form template, so init them using the same code
+  if (editPage || newPage) {
+    ResidentialListings.initEditor();
+  } else if (indexPage) {
+    ResidentialListings.initIndex();
+  } else {
+    ResidentialListings.initShow();
   }
 });
