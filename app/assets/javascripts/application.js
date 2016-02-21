@@ -65,6 +65,7 @@ $(document).ready(function() {
 	  $(".modal-backdrop").addClass("modal-backdrop-fullscreen");
 	});
 
+	Common.detectPhoneNumbers();
 });
 
 $(window).unload(function() {

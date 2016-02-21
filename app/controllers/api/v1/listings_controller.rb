@@ -150,10 +150,8 @@ module API
 
 				# repackage into a format that's easily digestible
 				# by our API renderer
-				output = []
-				@listings.each do |l|
-
-					output << Listing.new({
+				output = @listings.map do |l|
+					Listing.new({
 						listing: l,
 						residential_amenities: @residential_amenities[l.unit_id],
 						pet_policies: @pet_policies[l.building_id],

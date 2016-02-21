@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160212061041) do
+ActiveRecord::Schema.define(version: 20160221204927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,6 +134,8 @@ ActiveRecord::Schema.define(version: 20160212061041) do
     t.boolean  "expose_address",              default: false
   end
 
+  add_index "commercial_listings", ["unit_id"], name: "index_commercial_listings_on_unit_id", using: :btree
+
   create_table "commercial_property_types", force: :cascade do |t|
     t.integer  "company_id"
     t.string   "property_type"
@@ -245,6 +247,8 @@ ActiveRecord::Schema.define(version: 20160212061041) do
     t.integer  "rotation",          default: 0, null: false
   end
 
+  add_index "images", ["building_id"], name: "index_images_on_building_id", using: :btree
+  add_index "images", ["unit_id"], name: "index_images_on_unit_id", using: :btree
   add_index "images", ["user_id"], name: "index_images_on_user_id", using: :btree
 
   create_table "landlords", force: :cascade do |t|
@@ -400,6 +404,7 @@ ActiveRecord::Schema.define(version: 20160212061041) do
   end
 
   add_index "residential_listings", ["roommates_id"], name: "index_residential_listings_on_roommates_id", using: :btree
+  add_index "residential_listings", ["unit_id"], name: "index_residential_listings_on_unit_id", using: :btree
 
   create_table "roles", force: :cascade do |t|
     t.string   "name"
@@ -551,6 +556,8 @@ ActiveRecord::Schema.define(version: 20160212061041) do
     t.boolean  "share_with_brokers",        default: false
   end
 
+  add_index "sales_listings", ["unit_id"], name: "index_sales_listings_on_unit_id", using: :btree
+
   create_table "units", force: :cascade do |t|
     t.boolean  "archived",               default: false
     t.integer  "listing_id"
@@ -584,6 +591,7 @@ ActiveRecord::Schema.define(version: 20160212061041) do
   add_index "units", ["residential_listing_id"], name: "index_units_on_residential_listing_id", using: :btree
   add_index "units", ["sales_listing_id"], name: "index_units_on_sales_listing_id", using: :btree
   add_index "units", ["status"], name: "index_units_on_status", using: :btree
+  add_index "units", ["updated_at", "status", "archived"], name: "index_units_on_updated_at_and_status_and_archived", using: :btree
   add_index "units", ["updated_at"], name: "index_units_on_updated_at", using: :btree
 
   create_table "user_waterfalls", force: :cascade do |t|
@@ -635,6 +643,7 @@ ActiveRecord::Schema.define(version: 20160212061041) do
   add_index "users", ["employee_title_id"], name: "index_users_on_employee_title_id", using: :btree
   add_index "users", ["manager_id"], name: "index_users_on_manager_id", using: :btree
   add_index "users", ["name"], name: "index_users_on_name", using: :btree
+  add_index "users", ["office_id"], name: "index_users_on_office_id", using: :btree
   add_index "users", ["roommates_id"], name: "index_users_on_roommates_id", using: :btree
 
   create_table "users_roles", id: false, force: :cascade do |t|

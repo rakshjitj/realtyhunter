@@ -57,7 +57,7 @@ class Unit < ActiveRecord::Base
   def self.get_primary_agents(list)
     agent_ids = list.map(&:primary_agent_id) + list.map(&:primary_agent2_id)
     User.joins(:office).where(id: agent_ids)
-      .select('id', 'name', 'email', 'mobile_phone_number', 'phone_number', 'public_url',
+      .select('users.id', 'name', 'email', 'mobile_phone_number', 'phone_number', 'public_url',
         'offices.telephone AS office_telephone', 'offices.fax AS office_fax')
       .to_a.group_by(&:id)
   end
@@ -66,7 +66,7 @@ class Unit < ActiveRecord::Base
   def self.get_primary_agents_and_images(list)
     agent_ids = list.map(&:primary_agent_id) + list.map(&:primary_agent2_id)
     users = User.joins(:office).where(id: agent_ids)
-      .select('id', 'name', 'email', 'mobile_phone_number', 'phone_number', 'public_url',
+      .select('users.id', 'name', 'email', 'mobile_phone_number', 'phone_number', 'public_url',
         'offices.telephone AS office_telephone', 'offices.fax AS office_fax')
       .to_a.group_by(&:id)
 
