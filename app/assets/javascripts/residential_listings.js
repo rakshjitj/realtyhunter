@@ -515,16 +515,19 @@ ResidentialListings = {};
 
   ResidentialListings.initShow = function() {
     // google map on show page
-    var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
-    $("#runit-panel").geocomplete({
-      map: "#map_canvas",
-      location: bldg_address,
-      details: ".details"
-    }).bind("geocode:result", function(event, result){
-      //console.log(result);
-    }).bind("geocode:error", function(event, result){
-      //console.log("[ERROR]: " + result);
-    });
+    // var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
+    // $("#google-map-tab").geocomplete({
+    //   map: "#map_canvas",
+    //   location: bldg_address,
+    //   details: ".details"
+    // }).bind("geocode:result", function(event, result){
+    //   //console.log(result);
+    // }).bind("geocode:error", function(event, result){
+    //   //console.log("[ERROR]: " + result);
+    // });
+
+    $('.carousel-indicators > li:first-child').addClass('active');
+    $('.carousel-inner > .item:first-child').addClass('active');
   }
 
   ResidentialListings.showCard = function(cardName, e) {

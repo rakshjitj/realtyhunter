@@ -1,27 +1,42 @@
 <% provide(:title, @residential_unit.street_address_and_unit) %>
 
-
-
 <div class="row">
   <div class="col-xs-12 col-md-8 col-md-offset-2">
-  	<br/>
-  	<br/>
   	<div id="runit-panel" class="panel panel-default">
   		<div class="panel-heading hidden-md hidden-lg">
 		    <div class="panel-title">
 		    	<div class="row">
 			  		<div class="col-xs-12 col-md-7">
-				  		<h2><%= @residential_unit.street_address_and_unit %>
-				  		<% if @residential_unit.can_roomshare %> (RS)<% end %>
+				  		<h2 class="center">
+				  			<%= @residential_unit.street_address_and_unit %>
+				  			<% if @residential_unit.can_roomshare %> (RS)<% end %>
 				  		</h2>
-				  		<h3>
-				  			<%= rent_formatted(@residential_unit.unit.rent) %> &nbsp;&nbsp;&nbsp;
-				  			<%= beds_as_str(@residential_unit) %> / <%= baths_as_str(@residential_unit) %>
-				  		</h3>
-				  		<p>
-			  				<%= small_header(@residential_unit) %><br />
-			  				<%= render 'market_status' %> <br />Available <%= @residential_unit.unit.available_by %>
+				  		<p class="center">
+			  				<%= small_header(@residential_unit) %>
 			  			</p>
+
+				  		<span class="flex-row">
+				  			<span class="flex-even-item">
+				  				<h3>
+				  					<%= rent_formatted(@residential_unit.unit.rent) %>
+				  				</h3>
+				  			</span>
+				  			<span class="flex-even-item">
+				  			<h3>
+				  				<%= beds_as_str(@residential_unit) %> / <%= baths_as_str(@residential_unit) %>
+				  			</h3>
+				  			</span>
+				  		</span>
+
+			  			<span class="flex-row">
+				  			<span class="flex-even-item">
+			  					<%= render 'market_status' %>
+			  				</span>
+			  				<span class="flex-even-item">
+			  					Available <%= @residential_unit.unit.available_by %>
+			  				</span>
+			  			</span>
+
 			  		</div>
 
 			  	</div><!-- row -->
@@ -197,18 +212,19 @@
 	    			</div>
 	    			<div class="row">
 	    				<div class="col-xs-5">
-			    			<strong>Beds/Baths:</strong>
-			    		</div>
-			    		<div class="col-xs-7">
-			    			<%= @residential_unit.beds %> / <%= trim_zeros(@residential_unit.baths) %>
-			    		</div>
-	    			</div>
-	    			<div class="row">
-	    				<div class="col-xs-5">
 			    			<strong>Price:</strong>
 			    		</div>
 			    		<div class="col-xs-7">
 			    			<%= rent_formatted(@residential_unit.unit.rent) %>
+			    		</div>
+
+	    			</div>
+	    			<div class="row">
+	    				<div class="col-xs-5">
+			    			<strong>Beds/Baths:</strong>
+			    		</div>
+			    		<div class="col-xs-7">
+			    			<%= @residential_unit.beds %> / <%= trim_zeros(@residential_unit.baths) %>
 			    		</div>
 	    			</div>
 	    			<div class="row">
@@ -337,108 +353,123 @@
 					<!-- Landlord info -->
 
 
-
-	    	<br />
-	    	<div class="row">
-	    		<div class="col-xs-12 col-md-3">
-	    			<strong>Access info:</strong>
-	    		</div>
-	    		<div class="col-xs-12 col-md-9">
-	    			<%= occupancy_status(@residential_unit) %>
-	    			<div class="access-info">
-		    			<%= @residential_unit.unit.access_info %>
+				<% if @residential_unit.unit.access_info %>
+		    	<br />
+		    	<div class="row">
+		    		<div class="col-xs-12 col-md-3">
+		    			<strong>Access info:</strong>
 		    		</div>
-	    		</div>
-	    	</div>
+		    		<div class="col-xs-12 col-md-9">
+		    			<strong class="exclusive-listing"><%= occupancy_status(@residential_unit) %></strong>
+		    			<div class="access-info">
+			    			<%= @residential_unit.unit.access_info %>
+			    		</div>
+		    		</div>
+		    	</div>
+		    <% end %>
 
-	    	<br />
-	    	<div class="row">
-	    		<div class="col-xs-12 col-md-3">
-	    			<strong>Open House:</strong>
-	    		</div>
-	    		<div class="col-xs-12 col-md-9">
-	    			<%= open_house(@residential_unit) %>
-	    		</div>
-	    	</div>
+		    <% if @residential_unit.unit.open_house.length > 0 %>
+		    	<br />
+		    	<div class="row">
+		    		<div class="col-xs-12 col-md-3">
+		    			<strong>Open House:</strong>
+		    		</div>
+		    		<div class="col-xs-12 col-md-9">
+		    			<%= open_house(@residential_unit) %>
+		    		</div>
+		    	</div>
+	    	<% end %>
 
 	    	<!-- Building info -->
-	    	<br />
-	    	<div class="row">
-	    		<div class="col-xs-12 col-md-3">
-	    			<strong>Building Amenities:</strong>
-	    		</div>
-	    		<div class="col-xs-12 col-md-9">
-	    			<%= @residential_unit.unit.building.amenities_to_s %>
-	    		</div>
-	    	</div>
+	    	<% bldg_amenities = @residential_unit.unit.building.amenities_to_s %>
+	    	<% if bldg_amenities.length > 0 %>
+		    	<br />
+		    	<div class="row">
+		    		<div class="col-xs-12 col-md-3">
+		    			<strong>Building Amenities:</strong>
+		    		</div>
+		    		<div class="col-xs-12 col-md-9">
+		    			<%= bldg_amenities %>
+		    		</div>
+		    	</div>
+		    <% end %>
 
 	    	<!-- Unit info -->
-	    	<br />
-	    	<div class="row">
-	    		<div class="col-xs-12 col-md-3">
-	    			<strong>Unit Amenities:</strong>
-	    		</div>
-	    		<div class="col-xs-12 col-md-9">
-	    			<%= @residential_unit.amenities_to_s %>
-	    		</div>
-	    	</div>
+	    	<% unit_amenities = @residential_unit.amenities_to_s %>
+	    	<% if unit_amenities.length > 0 %>
+		    	<br />
+		    	<div class="row">
+		    		<div class="col-xs-12 col-md-3">
+		    			<strong>Unit Amenities:</strong>
+		    		</div>
+		    		<div class="col-xs-12 col-md-9">
+		    			<%= unit_amenities %>
+		    		</div>
+		    	</div>
+		    <% end %>
 
-	    	<br />
-	    	<div class="row">
-	    		<div class="col-xs-12 col-md-12">
-	    			<strong>Landlord Notes:</strong>
-	    		</div>
-	    	</div>
-	    	<div class="row">
-	    		<div class="col-xs-12 col-md-12">
-	    			<%= @residential_unit.unit.building.landlord.notes %>
-	    		</div>
-	    	</div>
+		    <% if @residential_unit.unit.building.landlord.notes.length > 0 %>
+		    	<br />
+		    	<div class="row">
+		    		<div class="col-xs-12 col-md-12">
+		    			<strong>Landlord Notes:</strong>
+		    		</div>
+		    	</div>
+		    	<div class="row">
+		    		<div class="col-xs-12 col-md-12">
+		    			<%= @residential_unit.unit.building.landlord.notes %>
+		    		</div>
+		    	</div>
+		    <% end %>
 
-	    	<br />
-	    	<div class="row">
-	    		<div class="col-xs-12 col-md-12">
-	    			<strong>Building Notes:</strong>
-	    		</div>
-	    	</div>
-	    	<div class="row">
-	    		<div class="col-xs-12 col-md-12">
-	    			<%= @residential_unit.unit.building.notes %>
-	    		</div>
-	    	</div>
+		    <% if @residential_unit.unit.building.notes.length > 0 %>
+		    	<br />
+		    	<div class="row">
+		    		<div class="col-xs-12 col-md-12">
+		    			<strong>Building Notes:</strong>
+		    		</div>
+		    	</div>
+		    	<div class="row">
+		    		<div class="col-xs-12 col-md-12">
+		    			<%= @residential_unit.unit.building.notes %>
+		    		</div>
+		    	</div>
+		    <% end %>
 
-	    	<br />
-	    	<div class="row">
-	    		<div class="col-xs-12 col-md-12">
-	    			<strong>Private unit notes:</strong>
-	    		</div>
-	    	</div>
-	    	<div class="row">
-	    		<div class="col-xs-12 col-md-12">
-	    			<%= @residential_unit.notes %>
-	    		</div>
-	    	</div>
+		    <% if @residential_unit.notes.length > 0 %>
+		    	<br />
+		    	<div class="row">
+		    		<div class="col-xs-12 col-md-12">
+		    			<strong>Private unit notes:</strong>
+		    		</div>
+		    	</div>
+		    	<div class="row">
+		    		<div class="col-xs-12 col-md-12">
+		    			<%= @residential_unit.notes %>
+		    		</div>
+		    	</div>
+		    <% end %>
 
-				<br />
-	    	<div class="row">
-	    		<div class="col-xs-12 col-md-12">
-	    			<strong>Public Unit Description:</strong>
-	    		</div>
-	    	</div>
-	    	<div class="row">
-	    		<div class="col-xs-12 col-md-12">
-	    			<% if @residential_unit.unit.exclusive? %>
-	    				<strong class="exclusive-listing">Myspace Exclusive!</strong>
-	    				<br />
-	    			<% end %>
-	    			<% if !escape_once(@residential_unit.description).blank? %>
-            	<%= h raw sanitize @residential_unit.description,
-            			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span) %>
-            <% else %>
-              -None specified-
-            <% end %>
-	    		</div>
-	    	</div>
+		    <% if @residential_unit.description.length > 0 %>
+					<br />
+		    	<div class="row">
+		    		<div class="col-xs-12 col-md-12">
+		    			<strong>Public Unit Description:</strong>
+		    		</div>
+		    	</div>
+		    	<div class="row">
+		    		<div class="col-xs-12 col-md-12">
+		    			<% if @residential_unit.unit.exclusive? %>
+		    				<strong class="exclusive-listing">Myspace Exclusive!</strong>
+		    				<br />
+		    			<% end %>
+		    			<% if !escape_once(@residential_unit.description).blank? %>
+	            	<%= h raw sanitize @residential_unit.description,
+	            			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span) %>
+	            <% end %>
+		    		</div>
+		    	</div>
+		    <% end %>
 
 	    	<% if @residential_unit.unit.documents.count > 0 %>
 	    	<br />
@@ -506,7 +537,13 @@
 	    			<div class="tab-content">
 				      <!-- ******************** first tablpanel - google maps ******************** -->
 				      <div role="tabpanel" class="tab-pane fade in active" id="google-map-tab">
-				      	<div id="map_canvas" data-address="<%= @residential_unit.unit.building.formatted_street_address %>"></div>
+				      	<iframe id="map_canvas"
+				      		data-address="<%= @residential_unit.unit.building.formatted_street_address %>"
+                  frameborder="0"
+                  src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_MAPS_KEY'] %>
+                    &q=<%= @residential_unit.unit.building.formatted_street_address %>"
+                  allowfullscreen>
+                </iframe>
 				      </div><!-- end tabpanel - google maps -->
 				      <!-- ******************** first tabpanel - walkscore ********************-->
 				      <div role="tabpanel" class="tab-pane fade center" id="walkscore">
