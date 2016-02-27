@@ -533,12 +533,11 @@
 								      <!-- ******************** first tablpanel - google maps ******************** -->
 								      <div role="tabpanel" class="tab-pane fade in active" id="google-map-tab">
 								      	<iframe id="map_canvas"
-								      		data-address="<%= @residential_unit.unit.building.formatted_street_address %>"
-				                  frameborder="0"
-				                  src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_MAPS_KEY'] %>
-				                    &q=<%= @residential_unit.unit.building.formatted_street_address %>"
-				                  allowfullscreen>
-				                </iframe>
+												  frameborder="0"
+												  src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_MAPS_KEY'] %>
+												    &q=<%= @residential_unit.unit.building.formatted_street_address %>"
+												  allowfullscreen>
+												</iframe>
 								      </div><!-- end tabpanel - google maps -->
 								      <!-- ******************** first tabpanel - walkscore ********************-->
 								      <div role="tabpanel" class="tab-pane fade center" id="walkscore">
