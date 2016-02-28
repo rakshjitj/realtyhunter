@@ -1,6 +1,6 @@
 <div class="row row-list-view <%= cycle("even", "odd") %>">
   <!-- thumbnail image -->
-  <div class="col-xs-3">
+  <div class="col-image">
     <% if @res_images[residential_listing.unit_id] %>
       <%= link_to(image_tag(@res_images[residential_listing.unit_id].file.url(:thumb),
           alt: @res_images[residential_listing.unit_id].file.url(:thumb)),
@@ -13,7 +13,7 @@
   </div>
 
   <!-- data -->
-  <div class="col-xs-9">
+  <div class="col-info">
     <!-- 1st row: address -->
     <div class="row">
       <div class="col-xs-12">
@@ -26,12 +26,14 @@
         <% end %>
       </div>
     </div>
-    <!-- 2nd row: price -->
+    <!-- 2nd row: price, beds/baths -->
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-6">
+        <%= beds_as_str(residential_listing) %> / <%= baths_as_str(residential_listing) %>
+      </div>
+      <div class="col-xs-5 text-right">
         <%= rent_formatted(residential_listing.rent) %>
       </div>
     </div>
-
   </div>
 </div>

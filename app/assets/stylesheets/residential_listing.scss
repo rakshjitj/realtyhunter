@@ -250,6 +250,20 @@
 
 .row-list-view {
   min-height: 100px;
+  display: flex;
+  flex-direction: row;
+  flex-basis: 100px;
+}
+.col-image {
+  order: 1;
+  width: 100px;
+  flex: 1;
+}
+
+.col-info {
+  order: 2;
+  margin-left: 15px;
+  flex-grow: 2;
 }
 
 .even {
