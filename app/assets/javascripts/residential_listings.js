@@ -344,19 +344,32 @@ ResidentialListings = {};
     $('#residential-desktop').remove();
     $('#residential-mobile input').keydown(ResidentialListings.preventEnter);
 
+    $('.js-show-mobile-filters').click(function(e) {
+      ResidentialListings.showCard('mobile-filters', e);
+    });
+
     $('.js-show-announcements').click(function() {
       ResidentialListings.showCard('announcements');
       ResidentialListings.queryAnnouncements(100);
     });
 
-    $('.js-show-main').click(function(e) {
+    $('.js-show-map').click(function(e) {
       ResidentialListings.showCard('main', e);
+      RHMapbox.centerOnMe();
+    });
+
+    $('.js-show-list-view').click(function(e) {
+      ResidentialListings.showCard('list-view', e);
     });
 
     $('.js-run-search').click(function(e) {
       ResidentialListings.showCard('main', e);
       ResidentialListings.throttledSearch();
-    })
+    });
+
+    $('.js-show-main').click(function(e) {
+      ResidentialListings.showCard('main', e);
+    });
 
     $('.js-reset-filters').click(function(e) {
       $('#address').val('');
@@ -372,15 +385,6 @@ ResidentialListings = {};
       $('#unit-amenities-select-multiple')[0].selectize.clear();
       $('#building-amenities-select-multiple')[0].selectize.clear();
     })
-
-    $('.js-show-map').click(function(e) {
-      ResidentialListings.showCard('main', e);
-      RHMapbox.centerOnMe();
-    })
-
-    $('.js-mobile-filters').click(function(e) {
-      ResidentialListings.showCard('mobile-filters', e);
-    });
 
     // only on index, not show page
     if ($('#r-big-map-mobile').length) {
@@ -525,8 +529,9 @@ ResidentialListings = {};
 
   ResidentialListings.showCard = function(cardName, e) {
     $('.card.main').removeClass('card-visible');
-    $('.card.announcements').removeClass('card-visible');
     $('.card.mobile-filters').removeClass('card-visible');
+    $('.card.announcements').removeClass('card-visible');
+    $('.card.list-view').removeClass('card-visible');
     $('.card.' + cardName).addClass('card-visible');
 
     if (e) {

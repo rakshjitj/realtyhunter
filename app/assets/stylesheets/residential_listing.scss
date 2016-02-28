@@ -61,21 +61,10 @@
   ::-webkit-scrollbar {
       display: none;
   }
-
-  /*transform-style: preserve-3d;
-  transition: transform 1s;
-  transform-origin: right center;*/
 }
-
-/*.card-wrapper.flipped {
-  transform: rotateY( 180deg );
-  transform: translateX( -100% ) rotateY( -180deg );
-}*/
 
 .card {
   position: absolute;
-  // top: 10000px;
-  // left: 100000px;
   visibility: hidden;
   display: none;
   width: 100vw;
@@ -85,9 +74,8 @@
 .card-visible {
   visibility: visible;
   display: block;
-  // left: 0;
-  // top: 0;
 }
+
 .card-contents {
   display: flex;
   flex-direction: column;
@@ -95,65 +83,45 @@
   height: calc(100vh - 50px);
   overflow: scroll;
 
-  backface-visibility: hidden !important;
-  -webkit-backface-visibility: hidden !important;
+  // backface-visibility: hidden !important;
+  // -webkit-backface-visibility: hidden !important;
   -webkit-transition-property: opacity;
   -webkit-transition-timing-function: linear;
   -webkit-transition-duration: 0.2s;
 }
 
 .card.main {
-  backface-visibility: hidden;
-  // overflow: none;
-  /*opacity: 1;*/
+  // backface-visibility: hidden;
 }
 .card.main.flipped {
-  /*opacity: 0;*/
 }
 
 .card.announcements {
-  /*transform: rotateY( 180deg );*/
-  backface-visibility: hidden;
-  /*opacity: 0;*/
+  // backface-visibility: hidden;
 }
 .card.announcements.flipped {
-  /*opacity: 1;*/
 }
 
 #r-big-map {
-  //@media (min-width:414px) {
   height: 600px;
   margin: 0;
   padding: 0;
-  //}
 }
 
 #r-big-map-mobile {
-  // @media (min-width:414px) {
-  //   height: 600px;
-  //   margin: 0;
-  //   padding: 0;
-  // }
-  // @media (max-width:414px) {
   min-height: 100vw;
   height: 100vw;
   order: 2;
   flex: 1;
   width: 100%;
-  backface-visibility: hidden;
+  // backface-visibility: hidden;
   overflow: hidden;
-  //}
 }
 .card-middle {
   order: 2;
   flex-grow: 2;
   overflow: auto;
 }
-
-// .announcements-wrapper {
-//   display: flex;
-//   flex-direction: column;
-// }
 
 .mobile-announcement {
   flex: 1;
@@ -278,6 +246,18 @@
   background-color: #eda800 !important;
   color: black;
   text-align: center;
+}
+
+.row-list-view {
+  min-height: 100px;
+}
+
+.even {
+  background-color: white;
+}
+
+.odd {
+  background-color: #F2F2F2;
 }
 
 /******* show ******************/
