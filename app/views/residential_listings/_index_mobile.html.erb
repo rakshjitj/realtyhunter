@@ -6,9 +6,8 @@
 
         <div class="card main card-visible">
           <div class="card-contents">
-
             <div id="r-big-map-mobile" data-map-points="<%= @map_infos %>"></div>
-            <%= render 'residential_listings/mobile_footer' %>
+            <%= render 'residential_listings/footer_index_mobile' %>
           </div>
         </div>
 
@@ -17,7 +16,25 @@
             <div class="card-middle">
               <div class="announcements-wrapper"></div>
             </div>
-            <%= render 'residential_listings/mobile_footer' %>
+            <%= render 'residential_listings/footer_index_mobile' %>
+          </div>
+        </div>
+
+        <div class="card list-view">
+          <div class="card-contents">
+            <div class="card-nav">
+              <div class="card-nav-inner">
+                <div class="middle">
+                  <h4>Rentals</h4>
+                </div>
+              </div>
+            </div>
+            <div class="card-middle">
+              <%= render partial: 'residential_listings/residential_listing_mobile_list_view',
+                  collection: @residential_units, as: :residential_listing,
+                  locals: {res_images: @res_images} %>
+            </div>
+            <%= render 'residential_listings/footer_index_mobile' %>
           </div>
         </div>
 
