@@ -382,7 +382,12 @@ aside {
 
 .pagination {
   margin-bottom: 10px;
-  color: white !important;
+  a {
+    color: white !important;
+  }
+  @media (max-width:440px) {
+    font-size: 1em !important;
+  }
 }
 
 .thin-line {
