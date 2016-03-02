@@ -59,8 +59,8 @@
             locals: { residential_units: residential_units, res_images: res_images} %>
 
           <div class="row">
-					  <div class="col-md-12">
-              <div class="listing-pagination">
+					  <div class="col-sm-4 col-sm-offset-4">
+              <div class="listing-pagination res">
                <%= render partial: 'shared/pagination', locals: {models: residential_units} %>
               </div>
 					  </div>
@@ -71,15 +71,16 @@
         <div role="tabpanel" class="tab-pane fade" id="commercial-listings">
           <%= render partial:'commercial_listings/table',
             locals: { commercial_units: commercial_units, com_images: com_images } %>
+
+          <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+              <div class="listing-pagination com">
+                <%= render partial: 'shared/pagination', locals: {models: commercial_units} %>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="row">
-				  <div class="col-md-12">
-            <div class="listing-pagination">
-  				  	<%= render partial: 'shared/pagination', locals: {models: commercial_units} %>
-            </div>
-				  </div>
-				</div>
     </div>
 
   </div><!-- col -->
