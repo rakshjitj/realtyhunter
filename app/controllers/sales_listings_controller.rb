@@ -414,7 +414,7 @@ class SalesListingsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def sales_listing_params
       data = params.permit(
-        :sort_by, :direction, :filter,
+        :sort_by, :direction, :page, :filter,
         :beds, :baths, :include_photos, :inaccuracy_description,
         :available_starting, :available_before,
         :street_number, :route, :intersection,

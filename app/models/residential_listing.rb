@@ -372,7 +372,7 @@ class ResidentialListing < ActiveRecord::Base
         params[:primary_agent_id], params[:primary_agent_id])
     end
 
-    running_list
+    running_list.uniq
   end
 
   def deep_copy_imgs(dst_id)

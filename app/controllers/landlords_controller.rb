@@ -160,7 +160,7 @@ class LandlordsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def landlord_params
 
-      params.permit(:sort_by, :filter, :agent_filter, :active_only, :street_number, :route,
+      params.permit(:sort_by, :filter, :page, :agent_filter, :active_only, :street_number, :route,
         :neighborhood, :sublocality, :administrative_area_level_2_short,
         :administrative_area_level_1_short, :postal_code, :country_short, :lat, :lng, :place_id,
         :landlord => [:lock_version, :code, :name, :contact_name, :mobile, :office_phone, :fax,

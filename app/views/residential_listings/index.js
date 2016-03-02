@@ -1,3 +1,4 @@
+
 // Append new data
 $("<%=j render partial: 'residential_listings/residential_listing', collection: @residential_units, locals: {res_images: @res_images} %>")
   .appendTo($(".infinite-table-res"));

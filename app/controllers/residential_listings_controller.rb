@@ -334,7 +334,6 @@ class ResidentialListingsController < ApplicationController
       do_search
       custom_sort
       # display all found listings on the map
-
       # note: we are loading waaaay more images now... monitor page load time
       @res_images = ResidentialListing.get_images(@residential_units)
       @map_infos = ResidentialListing.set_location_data(@residential_units.to_a, @res_images)
