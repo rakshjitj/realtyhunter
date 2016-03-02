@@ -15,6 +15,9 @@ class SalesListingsController < ApplicationController
       format.html do
         set_sales_listings
       end
+      format.js do
+        set_sales_listings
+      end
       format.csv do
         set_sales_listings_csv
         headers['Content-Disposition'] = "attachment; filename=\"" +

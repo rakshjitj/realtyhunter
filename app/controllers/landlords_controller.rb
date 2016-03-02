@@ -13,6 +13,9 @@ class LandlordsController < ApplicationController
       format.html do
         set_landlords
       end
+      format.js do
+        set_landlords
+      end
       format.csv do
         set_landlords_csv
         headers['Content-Disposition'] = "attachment; filename=\"landlords-list.csv\""

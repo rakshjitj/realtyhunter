@@ -6,7 +6,6 @@
 
 <!--%= controller.action_name %-->
 <% if !models.last_page? %>
-<!--% if models.length > 0 %-->
   <p class="pagination btn btn-warning btn-lg btn-block" role="button">
     <%= link_to_next_page(models, 'Load More', remote: true, params: {action: controller.action_name == 'filter' ? 'index' : controller.action_name}) %>
   </p>

@@ -13,6 +13,7 @@ class BuildingsController < ApplicationController
 
     respond_to do |format|
       format.html
+      format.js
       format.csv do
         headers['Content-Disposition'] = "attachment; filename=\"buildings-list.csv\""
         headers['Content-Type'] ||= 'text/csv'
