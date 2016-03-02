@@ -183,7 +183,7 @@ module Forms
 	  	end
 
 	  	def partner_params
-	  		data = params.permit(:sort_by, :direction, :filter, :name, :status,
+	  		data = params.permit(:sort_by, :direction, :page, :filter, :name, :status,
 	  			:entry_ids, :submitted_date, :address_street_address,
 	  			:move_in_date, :renovated, :number_of_bedrooms, :id,
 	  			email_modal: [:title, :message, :recipients])

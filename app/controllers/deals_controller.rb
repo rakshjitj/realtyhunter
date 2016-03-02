@@ -12,6 +12,9 @@ class DealsController < ApplicationController
       format.html do
         set_deals
       end
+      format.js do
+        set_deals
+      end
       format.csv do
         set_deals_csv
         headers['Content-Disposition'] = "attachment; filename=\"deals-list.csv\""
@@ -143,8 +146,8 @@ class DealsController < ApplicationController
     end
 
     def deal_params
-    	data = params.permit(:sort_by, :direction, :address, :agent, :closed_date_start, :closed_date_end,
-        :landlord_code, :state,
+    	data = params.permit(:sort_by, :direction, :page, :address, :agent, :closed_date_start,
+        :closed_date_end, :landlord_code, :state,
     		deal: [:lock_version, :price, :client, :lease_term, :lease_start_date, :lease_expiration_date,
     			:closed_date, :move_in_date, :commission, :deal_notes, :listing_type, :is_sale_deal,
     			:unit_id, :user_id, :building_unit, :building_id, :landlord_code, :state])

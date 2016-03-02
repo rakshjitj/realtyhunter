@@ -54,37 +54,31 @@
       <%= text_field_tag :name, params[:search], placeholder: "name", size: 50 %>
     <% end %>
   </div>
-  <div class="hidden-xs hidden-sm col-md-offset-6 form-label-responsive">
-    <%= render partial: 'shared/pagination', locals: {models: @companies} %>
-  </div>
 </div>
 
 <br />
 <div class="row">
   <div class="col-md-12">
-    <div class="table-responsive">
-      <table class="table table-striped table-hover table-condensed">
-        <thead>
-          <tr>
-            <th>Logo</th>
-            <th>Name</th>
-            <th># Offices</th>
-            <th># Employees</th>
-            <th colspan="1"></th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover table-condensed infinite-table">
+      <thead>
+        <tr>
+          <th>Logo</th>
+          <th>Name</th>
+          <th># Offices</th>
+          <th># Employees</th>
+          <th colspan="1"></th>
+        </tr>
+      </thead>
 
-        <tbody class="companies_table_body">
-          <%# Template Dependency: companies/company %>
-          <%= render @companies %>
-        </tbody>
-      </table>
-    </div>
+      <tbody class="companies_table_body">
+        <%= render @companies %>
+      </tbody>
+    </table>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-md-offset-6 form-label-responsive">
+  <div class="col-sm-4 col-sm-offset-4">
     <%= render partial: 'shared/pagination', locals: {models: @companies} %>
   </div>
 </div>

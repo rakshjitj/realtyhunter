@@ -117,7 +117,7 @@ class OfficesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def office_params
-      params.permit(:direction, :filter, :street_number, :route,
+      params.permit(:direction, :filter, :page, :street_number, :route,
         :sublocality, :administrative_area_level_2_short, :administrative_area_level_1_short,
         :postal_code, :country_short, :lat, :lng, :place_id,
         :office => [:formatted_street_address, :name, :telephone, :street_address, :city,
