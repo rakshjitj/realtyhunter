@@ -27,6 +27,7 @@
 //= require bootstrap-datetimepicker
 //= require jquery.mousewheel.min
 //= require selectize
+//= require jquery.infinite-pages
 
 function getURLParameterByName(name, url) {
   if (!url) url = window.location.href;

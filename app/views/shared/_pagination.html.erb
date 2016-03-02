@@ -1,5 +1,9 @@
 <!-- if we are filtering, don't route to that action. route back to main controller listing -->
-<% if models.length > 0 %>
-	<%= paginate models, params: {action: controller.action_name == 'filter' ? 'index' : controller.action_name}, 
-		:theme => 'twitter-bootstrap-3', :pagination_class => "pagination-sm" %>
-<% end %>
+<!--% if models.length > 0 %-->
+	<!--%= paginate models, params: {action: controller.action_name == 'filter' ? 'index' : controller.action_name},
+		:theme => 'twitter-bootstrap-3', :pagination_class => "pagination-sm" %-->
+<!--% end %-->
+
+<p class="pagination btn btn-warning btn-lg btn-block" role="button">
+  <%= link_to_next_page(models, 'Load More', remote: true, params: {action: controller.action_name == 'filter' ? 'index' : controller.action_name}) %>
+</p>

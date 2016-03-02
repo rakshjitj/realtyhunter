@@ -8,11 +8,12 @@ class ResidentialListingsController < ApplicationController
   autocomplete :landlord, :code, full: true
   etag { current_user.id }
 
-  # GET /residential_units
-  # GET /residential_units.json
   def index
     respond_to do |format|
       format.html do
+        set_residential_listings
+      end
+      format.js do
         set_residential_listings
       end
       format.csv do

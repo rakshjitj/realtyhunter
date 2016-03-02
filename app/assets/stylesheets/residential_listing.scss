@@ -38,69 +38,22 @@
   white-space: normal !important;
 }
 
-/********* both *****************/
+/********* both desktop and mobile *****************/
 
-.flex-row {
-  display: flex;
-  flex-direction: row;
-}
-
-.flex-even-item {
-  flex: 1;
-}
 
 /********* mobile *****************/
 
-.card-wrapper {
-  position: absolute;
-  top: -10px;
-  left: 0;
-  width: 100%;
-  height: calc(100vh - 50px);
-  overflow: hidden;
-  ::-webkit-scrollbar {
-      display: none;
-  }
-}
-
-.card {
-  position: absolute;
-  visibility: hidden;
-  display: none;
-  width: 100vw;
-  overflow: hidden;
-}
-
-.card-visible {
-  visibility: visible;
-  display: block;
-}
-
-.card-contents {
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
-  height: calc(100vh - 50px);
-  overflow: scroll;
-
-  // backface-visibility: hidden !important;
-  // -webkit-backface-visibility: hidden !important;
-  -webkit-transition-property: opacity;
-  -webkit-transition-timing-function: linear;
-  -webkit-transition-duration: 0.2s;
-}
-
-.card.main {
+//.card.main {
   // backface-visibility: hidden;
-}
-.card.main.flipped {
-}
+//}
+// .card.main.flipped {
+// }
 
-.card.announcements {
+//.card.announcements {
   // backface-visibility: hidden;
-}
-.card.announcements.flipped {
-}
+//}
+// .card.announcements.flipped {
+// }
 
 #r-big-map {
   height: 600px;
