@@ -30,6 +30,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'bootstrap-sass', '~> 3.3.4'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
+gem 'jquery-infinite-pages'
 gem 'autoprefixer-rails'
 # for handling single image uploads
 gem "paperclip"

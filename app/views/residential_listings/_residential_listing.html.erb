@@ -6,7 +6,7 @@
     </td>
 
     <!-- ****** IMAGE ****************************************** -->
-    <td>
+    <td class="img-col">
       <% if @res_images[residential_listing.unit_id] %>
         <%= link_to(image_tag(@res_images[residential_listing.unit_id].file.url(:thumb),
           alt: @res_images[residential_listing.unit_id].file.url(:thumb)), residential_listing) %>
