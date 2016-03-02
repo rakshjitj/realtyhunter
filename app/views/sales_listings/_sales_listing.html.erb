@@ -5,7 +5,7 @@
   </td>
 
   <!-- ****** IMAGE ****************************************** -->
-  <td class="img-col">
+  <td class="img-col" style="max-width: 150px;">
     <% if @res_images[sales_listing.unit_id] %>
       <%= link_to(image_tag(@res_images[sales_listing.unit_id].file.url(:thumb), :class => 'img-responsive',
         alt: @res_images[sales_listing.unit_id].file.url(:thumb)), sales_listing) %>
