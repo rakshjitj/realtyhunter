@@ -42,37 +42,35 @@
 <br />
 <div class="row">
   <div class="col-md-12">
-    <div class="table-responsive">
-      <table class="table table-striped table-hover table-condensed">
-        <thead>
-          <tr>
-            <th data-sort="code" class="th-sortable">Code</th>
-            <th data-sort="name" class="th-sortable">Name</th>
-            <th>Mobile</th>
-            <th data-sort="active_unit_count" class="th-sortable" class="">
-              On-Market Units
-            </th>
-            <th data-sort="total_unit_count" class="th-sortable" class="">
-              Total Units
-            </th>
-            <th data-sort="last_unit_updated_at" class="th-sortable" class="">
-              Last Unit Updated
-            </th>
-            <th colspan="1"></th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover table-condensed infinite-table">
+      <thead>
+        <tr>
+          <th data-sort="code" class="th-sortable">Code</th>
+          <th data-sort="name" class="th-sortable">Name</th>
+          <th>Mobile</th>
+          <th data-sort="active_unit_count" class="th-sortable" class="">
+            On-Market Units
+          </th>
+          <th data-sort="total_unit_count" class="th-sortable" class="">
+            Total Units
+          </th>
+          <th data-sort="last_unit_updated_at" class="th-sortable" class="">
+            Last Unit Updated
+          </th>
+          <th colspan="1"></th>
+        </tr>
+      </thead>
 
-        <tbody class="landlords_table_body">
-          <%# Template Dependency: landlords/landlord %>
-          <%= render @landlords %>
-        </tbody>
-      </table>
-    </div>
+      <tbody class="landlords_table_body">
+        <%# Template Dependency: landlords/landlord %>
+        <%= render @landlords %>
+      </tbody>
+    </table>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-md-6 col-md-offset-6 form-label-responsive">
+  <div class="col-sm-4 col-sm-offset-4">
     <%= render partial: 'shared/pagination', locals: {models: @landlords} %>
   </div>
 </div>
