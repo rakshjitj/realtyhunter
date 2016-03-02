@@ -9,8 +9,8 @@ class Image < ActiveRecord::Base
     styles: lambda { |a| {
       thumb: {
         geometry: '100x100>',
-        rotation: a.instance.rotation,
-        #processors: [:rotator]
+        rotation: a.instance.rotation
+        #processors: [:rotator]        
       },
       # square: {
       #   geometry: '200x200#',
@@ -22,18 +22,22 @@ class Image < ActiveRecord::Base
       # },
       large: {
         geometry: '2500x2500>',
-        rotation: a.instance.rotation,
+        rotation: a.instance.rotation
         #processors: [:rotator]
       },
       original: {
-        convert_options: '-auto-orient'
+        convert_options: '-auto-orient',
+        watermark_path: "#{Rails.root}/public/watermark-logo.png"
       }
     }},
     #default_url: Rails.root + "/images/:style/missing.png",
     only_process: [:thumb],
     convert_options: { all: '-auto-orient' },
     source_file_options: { all: '-auto-orient' },
-    processors: [:rotator]
+    # processors: [:rotator, :watermark]
+    processors: lambda { |p|
+      p.apply_processors
+    }
 
     # styles: {
     #   original: {convert_options: '-auto-orient'},
@@ -46,6 +50,14 @@ class Image < ActiveRecord::Base
   process_in_background :file, processing_image_url: :processing_image_fallback,
     #processing_image_url: Rails.root + "/images/:style/image_uploading.jpg",
     only_process: [:large, :original]
+
+  def apply_processors
+    if self.user_id.present? or self.company_id.present?
+      [:rotator]
+    else      
+      [:rotator, :watermark]
+    end
+  end
 
   def processing_image_fallback
     options = file.options
