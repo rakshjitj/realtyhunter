@@ -5,8 +5,7 @@ Listings.hideSpinner();
 
 // Update pagination link
 <% if @users.last_page? %>
-  $('.pagination').remove();
+  $('.pagination-wrapper').remove();
 <% else %>
-  $('.pagination')
-    .html("<%=j link_to_next_page(@users, 'Load More', remote: true) %>");
+  $('.pagination-wrapper').html("<%=j (render :partial => 'shared/pagination', locals: {:models => @users}) %>");
 <% end %>

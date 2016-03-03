@@ -1,5 +1,5 @@
 $('.roommates_table_body').html("<%= escape_javascript (render :partial => @roommates) %>");
 
-$('.pagination').html("<%= escape_javascript (render :partial => 'shared/pagination', locals: {:models => @roommates}) %>");
+$('.pagination-wrapper').html("<%= escape_javascript (render :partial => 'shared/pagination', locals: {:models => @roommates}) %>");
 
 $('.totals').html("<%= @roommates.total_count %> Roomates found");

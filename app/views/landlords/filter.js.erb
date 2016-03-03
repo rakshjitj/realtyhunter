@@ -1,2 +1,2 @@
 $('.landlords_table_body').html("<%= escape_javascript (render :partial => @landlords) %>");
-$('.pagination').html("<%= escape_javascript (render :partial => 'shared/pagination', :locals => {:models => @landlords}) %>");
+$('.pagination-wrapper').html("<%= escape_javascript (render :partial => 'shared/pagination', :locals => {:models => @landlords}) %>");

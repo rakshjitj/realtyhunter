@@ -5,8 +5,7 @@ Buildings.hideSpinner();
 
 // Update pagination link
 <% if @entries.last_page? %>
-  $('.pagination').remove();
+  $('.pagination-wrapper').remove();
 <% else %>
-  $('.pagination')
-    .html("<%=j link_to_next_page(@entries, 'Load More', remote: true) %>");
+  $('.pagination-wrapper').html("<%=j (render :partial => 'shared/pagination', locals: {:models => @entries}) %>");
 <% end %>

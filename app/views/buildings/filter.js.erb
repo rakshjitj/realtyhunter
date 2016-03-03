@@ -1,2 +1,2 @@
 $('.buildings_table_body').html("<%= escape_javascript (render :partial => @buildings) %>");
-$('.pagination').html("<%= escape_javascript (render :partial => 'shared/pagination', :locals => {:models => @buildings}) %>");
+$('.pagination-wrapper').html("<%= escape_javascript (render :partial => 'shared/pagination', :locals => {:models => @buildings}) %>");

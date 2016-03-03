@@ -5,8 +5,7 @@ Listings.hideSpinner();
 
 // Update pagination link
 <% if @commercial_units.last_page? %>
-  $('.pagination').remove();
+  $('.pagination-wrapper').remove();
 <% else %>
-  $('.pagination')
-    .html("<%=j link_to_next_page(@commercial_units, 'Load More', remote: true) %>");
+  $('.pagination-wrapper').html("<%=j (render :partial => 'shared/pagination', locals: {:models => @commercial_units}) %>");
 <% end %>

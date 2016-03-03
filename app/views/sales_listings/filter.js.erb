@@ -1,6 +1,6 @@
 $('.sales_units_table_body').html("<%= escape_javascript (render :partial => @sales_units) %>");
 
-$('.pagination').html("<%= escape_javascript (render :partial => 'shared/pagination', locals: {:models => @sales_units}) %>");
+$('.pagination-wrapper').html("<%= escape_javascript (render :partial => 'shared/pagination', locals: {:models => @sales_units}) %>");
 
 SalesListings.updateOverviewMap("<%= escape_javascript(@map_infos).to_s.html_safe %>", SalesListings.buildContentString);
 

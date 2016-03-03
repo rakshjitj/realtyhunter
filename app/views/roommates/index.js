@@ -5,8 +5,7 @@ Roommates.hideSpinner();
 
 // Update pagination link
 <% if @roommates.last_page? %>
-  $('.pagination').remove();
+  $('.pagination-wrapper').remove();
 <% else %>
-  $('.pagination')
-    .html("<%=j link_to_next_page(@roommates, 'Load More', remote: true) %>");
+  $('.pagination-wrapper').html("<%=j (render :partial => 'shared/pagination', locals: {:models => @roommates}) %>");
 <% end %>
