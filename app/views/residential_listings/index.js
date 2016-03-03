@@ -1,5 +1,5 @@
 // Append new data
-if ($('.residential-desktop').length) {
+if ($('#residential-desktop').length) {
   $("<%=j render partial: 'residential_listings/residential_listing', collection: @residential_units, locals: {res_images: @res_images} %>")
     .appendTo($(".infinite-table-res"));
 } else {
@@ -10,8 +10,7 @@ Listings.hideSpinner();
 
 // Update pagination link
 <% if @residential_units.last_page? %>
-  $('.pagination').remove();
+  $('.pagination-wrapper').remove();
 <% else %>
-  $('.pagination')
-    .html("<%=j link_to_next_page(@residential_units, 'Load More', remote: true) %>");
+  $('.pagination-wrapper').html("<%=j (render :partial => 'shared/pagination', locals: {:models => @residential_units}) %>");
 <% end %>

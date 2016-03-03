@@ -4,8 +4,7 @@ $("<%=j render @companies %>")
 
 // Update pagination link
 <% if @companies.last_page? %>
-  $('.pagination').remove();
+  $('.pagination-wrapper').remove();
 <% else %>
-  $('.pagination')
-    .html("<%=j link_to_next_page(@companies, 'Load More', remote: true) %>");
+  $('.pagination-wrapper').html("<%=j (render :partial => 'shared/pagination', locals: {:models => @companies}) %>");
 <% end %>

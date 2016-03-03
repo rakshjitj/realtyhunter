@@ -5,8 +5,7 @@ Forms.hideSpinner();
 
 // Update pagination link
 <% if @deals.last_page? %>
-  $('.pagination').remove();
+  $('.pagination-wrapper').remove();
 <% else %>
-  $('.pagination')
-    .html("<%=j link_to_next_page(@deals, 'Load More', remote: true) %>");
+  $('.pagination-wrapper').html("<%=j (render :partial => 'shared/pagination', locals: {:models => @deals}) %>");
 <% end %>
