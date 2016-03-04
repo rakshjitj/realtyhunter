@@ -152,6 +152,7 @@ class ResidentialListingsController < ApplicationController
   # PATCH ajax
   # Takes a unit off the market
   def print_public
+
     ids = params[:listing_ids].split(',')
     @neighborhood_group = ResidentialListing.listings_by_neighborhood(current_user, ids)
 

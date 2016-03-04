@@ -114,7 +114,8 @@ class SalesListing < ActiveRecord::Base
   end
 
   def self.listings_by_neighborhood(user, listing_ids)
-    running_list = SalesListing.joins(unit: {building: [:company, :neighborhood]})
+    running_list = SalesListing.joins(unit: {building: [:company]})
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('companies.id = ?', user.company_id)
       .where('units.listing_id IN (?)', listing_ids)
       .select('buildings.formatted_street_address AS formatted_street_address2',
@@ -482,7 +483,7 @@ class SalesListing < ActiveRecord::Base
     self.rented_date = Date.today
     self.save
   end
-  
+
   private
     def process_custom_amenities
       if custom_amenities
