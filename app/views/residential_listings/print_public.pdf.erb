@@ -1,8 +1,8 @@
 <!-- display company info -->
 <div class="row">
   <div class="col-xs-9">
-    <%= image_tag current_user.company.image.file.url(:thumb), :class => 'photo-inline pdf-company-logo', 
-      alt: current_user.company.image.file.url(:thumb), align:"left" %>    
+    <%= image_tag current_user.company.image.file.url(:thumb), :class => 'photo-inline pdf-company-logo',
+      alt: current_user.company.image.file.url(:thumb), align:"left" %>
     <h3>
       <%= current_user.company.name %> Listings<br />
       <small><%= Time.now.strftime("%B %d, %Y") %></small><br />
@@ -17,7 +17,7 @@
     <% if !current_user.mobile_phone_number.blank? %>
       <br /><%= link_to "tel:" + current_user.mobile_phone_number, current_user.mobile_phone_number %>
     <% end %>
-    
+
   </div>
 </div>
 
@@ -68,12 +68,12 @@
               <% if listing.unit.building.pet_policy %>
                 <%= pet_policy(listing) %>
               <% else %>
-                None specified
+                N/A
               <% end %>
             </td>
           </tr>
         <% end %>
-      </table>  
+      </table>
 
     </div>
   </div>
