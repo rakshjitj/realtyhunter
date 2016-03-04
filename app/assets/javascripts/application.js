@@ -78,6 +78,21 @@ $(document).ready(function() {
 	});
 
 	Common.detectPhoneNumbers();
+
+  // navbar
+  var sideslider = $('[data-toggle=collapse-side]');
+  var sel = sideslider.attr('data-target');
+  var sel2 = sideslider.attr('data-target-2');
+  sideslider.click(function(event){
+    $(sel).toggleClass('in');
+    $(sel2).toggleClass('out');
+  });
+
+  if (Common.onMobileDevice()) {
+    $('.navbar-desktop').remove();
+  } else {
+    $('.navbar-mobile').remove();
+  }
 });
 
 $(window).unload(function() {

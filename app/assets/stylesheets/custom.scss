@@ -99,6 +99,7 @@ a:hover.btn-danger {
 }
 
 .container-fluid {
+  position: relative;
   max-width: 1200px !important;
   min-width: 400px !important;
 
@@ -106,6 +107,14 @@ a:hover.btn-danger {
     margin: 0 !important;
     padding: 0 !important;
   }
+}
+
+// should always appear below navbar
+.main-content {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  right: 0;
 }
 
 .title-logo {
