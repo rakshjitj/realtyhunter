@@ -21,7 +21,7 @@
 
 .card-wrapper {
   position: absolute;
-  top: -10px;
+  top: 0px;
   left: 0;
   width: 100%;
   height: calc(100vh - 50px);
@@ -51,8 +51,6 @@
   height: calc(100vh - 50px);
   overflow: scroll;
 
-  // backface-visibility: hidden !important;
-  // -webkit-backface-visibility: hidden !important;
   -webkit-transition-property: opacity;
   -webkit-transition-timing-function: linear;
   -webkit-transition-duration: 0.2s;

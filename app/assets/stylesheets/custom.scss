@@ -117,6 +117,12 @@ a:hover.btn-danger {
   right: 0;
 }
 
+.mobile-container {
+  position: relative;
+  perspective: 800px;
+  top: -50px;
+}
+
 .title-logo {
   @media (max-width:414px) {
     padding: 15px;
@@ -352,11 +358,6 @@ aside {
 #map_canvas {
   width: 100%;
   height: 400px;
-}
-
-.mobile-container {
-  position: relative;
-  perspective: 800px;
 }
 
 #c-big-map {

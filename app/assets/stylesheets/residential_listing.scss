@@ -157,7 +157,7 @@
 .mobile-show-page-wrap {
   height: calc(100vh - 62px);
   overflow: scroll;
-  margin-bottom: -62px; /* the bottom margin is the negative value of the footer's height */
+  margin-bottom: -100px; /* the bottom margin is the negative value of the footer's height */
 }
 
 .mobile-show-bottom-spacer {
