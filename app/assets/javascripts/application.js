@@ -106,4 +106,3 @@ $(window).unload(function() {
   CommercialListings.clearTimer();
   SalesListings.clearTimer();
 });
-

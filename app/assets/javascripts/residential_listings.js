@@ -56,7 +56,11 @@ ResidentialListings = {};
       }
       window.location.search = searchParams.join('&');
 
+<<<<<<< HEAD
 	 	ResidentialListings.passiveRealTimeUpdate();
+=======
+		ResidentialListings.passiveRealTimeUpdate();
+>>>>>>> 4489f56082d082cd678113055e1f190e531ac621
 	};
 
 	ResidentialListings.clearAnnouncementsTimer = function() {
