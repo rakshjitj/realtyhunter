@@ -219,8 +219,10 @@ class ResidentialListingsController < ApplicationController
   def send_inaccuracy
     @residential_unit.inaccuracy_description = residential_listing_params[:inaccuracy_description]
     @residential_unit.send_inaccuracy_report(current_user)
+    flash[:success] = "Report submitted! Thank you."
     respond_to do |format|
-      format.js { flash[:success] = "Report submitted! Thank you." }
+      format.html { redirect_to @residential_unit }
+      format.js { }
     end
   end
 

@@ -52,12 +52,12 @@
 
   <div id="main-container">
     <div class="main-content">
-    	<!-- error msgs -->
-      <div id="notices">
-        <%= render 'layouts/notices' %>
-      </div>
 
       <div class="container-fluid">
+        <div id="notices">
+          <%= render 'layouts/notices' %>
+        </div>
+
       	<%= yield %>
       </div>
     	<!--%= debug(params) if Rails.env.development? %-->

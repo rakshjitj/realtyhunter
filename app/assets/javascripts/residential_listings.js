@@ -22,8 +22,6 @@ ResidentialListings = {};
       sortDirection = Common.getSearchParam('direction');
     }
 
-    // asdf
-
     var data = {
         address: $('#address').val(),
         rent_min: $('#rent_min').val(),
@@ -56,11 +54,7 @@ ResidentialListings = {};
       }
       window.location.search = searchParams.join('&');
 
-<<<<<<< HEAD
 	 	ResidentialListings.passiveRealTimeUpdate();
-=======
-		ResidentialListings.passiveRealTimeUpdate();
->>>>>>> 4489f56082d082cd678113055e1f190e531ac621
 	};
 
 	ResidentialListings.clearAnnouncementsTimer = function() {
@@ -111,7 +105,6 @@ ResidentialListings = {};
 		ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 500);
 	};
 
-	// change enter key to tab
 	ResidentialListings.preventEnter = function (event) {
 	  if (event.keyCode == 13) {
 	    return false;
@@ -232,7 +225,6 @@ ResidentialListings = {};
     });
 
     DropZoneHelper.updateRemoveImgLinks('residential', 'residential_listings');
-    //DropZoneHelper.updateRotateImgLinks('residential', 'residential_listings');
 
     $('.carousel-indicators > li:first-child').addClass('active');
     $('.carousel-inner > .item:first-child').addClass('active');
@@ -293,7 +285,7 @@ ResidentialListings = {};
     DropZoneHelper.makeSortable('residential', 'documents');
 
     // after the order changes
-    $('..documents.sortable').sortable().bind('sortupdate', function(e, ui) {
+    $('.documents.sortable').sortable().bind('sortupdate', function(e, ui) {
         // array to store new order
         updated_order = []
         // set the updated positions
@@ -314,12 +306,12 @@ ResidentialListings = {};
   };
 
   ResidentialListings.commissionAmount = function() {
-      if($('#residential_listing_cyof_true').is(":checked")){
+    if ($('#residential_listing_cyof_true').is(":checked")) {
       $("#residential_listing_commission_amount").val('0');
       $("#residential_listing_commission_amount").attr("readonly", "readonly");
     }
-    $('input[name="residential_listing[cyof]"]').change(function(){
-      if($(this).attr("id")=="residential_listing_cyof_true"){
+    $('input[name="residential_listing[cyof]"]').change(function() {
+      if ($(this).attr("id")=="residential_listing_cyof_true") {
         $("#residential_listing_commission_amount").val('0');
         $("#residential_listing_commission_amount").attr("readonly", "readonly");
       }
@@ -332,7 +324,7 @@ ResidentialListings = {};
   };
 
   ResidentialListings.rlsnyValidation = function() {
-    if($('#residential_listing_rlsny').is(":checked")){
+    if ($('#residential_listing_rlsny').is(":checked")) {
       $("#residential_listing_floor").attr("required", true);
       $("#residential_listing_total_room_count").attr("required", true);
       $("#residential_listing_condition").attr("required", true);
@@ -347,8 +339,8 @@ ResidentialListings = {};
       $('label[for="residential_listing_cyof"]').addClass("required");
       $('label[for="residential_listing_share_with_brokers"]').addClass("required");
     }
-    $('input[name="residential_listing[rlsny]"]').change(function(){
-      if($(this).is(":checked")){
+    $('input[name="residential_listing[rlsny]"]').change(function() {
+      if ($(this).is(":checked")) {
         $("#residential_listing_floor").attr("required", true);
         $("#residential_listing_total_room_count").attr("required", true);
         $("#residential_listing_condition").attr("required", true);
@@ -388,6 +380,7 @@ ResidentialListings = {};
     // when creating a new listing, inherit TP/OP from building's landlord
     $('#residential_listing_unit_building_id').change(ResidentialListings.inheritFeeOptions);
 
+    // TODO: need this still?
     // make sure datepicker is formatted before setting initial date below
     // use in residential/edit, on photos tab
     $('.datepicker').datetimepicker({
@@ -411,7 +404,7 @@ ResidentialListings = {};
   }
 
   ResidentialListings.enablePassiveUpdates = function() {
-    if(!Common.onMobileDevice()) {
+    if (!Common.onMobileDevice()) {
       ResidentialListings.passiveRealTimeUpdate();
       ResidentialListings.updateAnnouncements();
     }
@@ -494,7 +487,7 @@ ResidentialListings = {};
       Common.markSortingColumnByElem($('th[data-sort="updated_at"]'), 'desc')
     }
 
-    $('.residential-desktop  .close').click(function() {
+    $('.residential-desktop .close').click(function() {
       Listings.hideSpinner();
     });
 
