@@ -194,8 +194,6 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
-  # DELETE /residential_units/1
-  # DELETE /residential_units/1.json
   def destroy
     @residential_unit.archive
     set_residential_listings

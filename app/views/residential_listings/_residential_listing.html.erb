@@ -123,9 +123,9 @@
           <br>
           <%= link_to 'Duplicate', duplicate_modal_residential_listing_path(residential_listing),
             data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
-          <br>
-          <%= link_to 'Announcement', new_announcement_path(
-            { address: residential_listing.formatted_street_address }) %>
+          <!--br>
+          < % = link_to 'Announcement', new_announcement_path(
+            { address: residential_listing.formatted_street_address }) %-->
         <% else %>
           <%= link_to 'Manage Photos', edit_residential_listing_path(residential_listing) %>
         <% end %>

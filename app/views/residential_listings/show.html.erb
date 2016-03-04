@@ -399,7 +399,7 @@
 						    	</div>
 						    <% end %>
 
-						    <% if @residential_unit.unit.building.landlord.notes.length > 0 %>
+						    <% if !@residential_unit.unit.building.landlord.notes.blank? %>
 						    	<br />
 						    	<div class="row">
 						    		<div class="col-xs-12 col-md-12">
@@ -413,7 +413,7 @@
 						    	</div>
 						    <% end %>
 
-						    <% if @residential_unit.unit.building.notes.length > 0 %>
+						    <% if !@residential_unit.unit.building.notes.blank? %>
 						    	<br />
 						    	<div class="row">
 						    		<div class="col-xs-12 col-md-12">
@@ -427,7 +427,7 @@
 						    	</div>
 						    <% end %>
 
-						    <% if @residential_unit.notes.length > 0 %>
+						    <% if !@residential_unit.notes.blank? %>
 						    	<br />
 						    	<div class="row">
 						    		<div class="col-xs-12 col-md-12">
@@ -441,7 +441,7 @@
 						    	</div>
 						    <% end %>
 
-						    <% if @residential_unit.description.length > 0 %>
+						    <% if !@residential_unit.description.blank? %>
 									<br />
 						    	<div class="row">
 						    		<div class="col-xs-12 col-md-12">
