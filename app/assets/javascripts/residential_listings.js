@@ -22,6 +22,8 @@ ResidentialListings = {};
       sortDirection = Common.getSearchParam('direction');
     }
 
+    // asdf
+
     var data = {
         address: $('#address').val(),
         rent_min: $('#rent_min').val(),
