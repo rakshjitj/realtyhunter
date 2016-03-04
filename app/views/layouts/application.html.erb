@@ -46,159 +46,23 @@
 <body class="<%= controller_name %> <%= action_name %>">
 
 <div id="mapbox-token" data-mapbox-token="<%= ENV['MAPBOX_TOKEN'] %>"></div>
-<div id="main-container">
+  <%= render 'layouts/navbar_mobile' %>
+  <%= render 'layouts/navbar_desktop' %>
 
-	<header class="navbar navbar-fixed-top navbar-inverse">
-  <div class="container-fluid">
-    <%= link_to "RealtyHunter", current_user ? user_home_path : root_path, id: "logo",
-        class: 'title-logo' %>
-    <% if logged_in? %>
-    <nav>
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
+  <div id="main-container">
+    <div class="main-content">
+    	<!-- error msgs -->
+      <div id="notices">
+        <%= render 'layouts/notices' %>
       </div>
 
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-right">
-            <li><%= link_to "Rentals", residential_listings_path %></li>
-            <li><%= link_to "Commercial", commercial_listings_path %></li>
-            <li><%= link_to "Sales", sales_listings_path %></li>
+      <div class="container-fluid">
+      	<%= yield %>
+      </div>
+    	<!--%= debug(params) if Rails.env.development? %-->
+    </div>
 
-            <% if current_user.has_role? :roomsharing %>
-
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                Roommates List
-                <% if unread_roommates_count > 0 %>
-                  <span class="roommates_badge badge"><%= unread_roommates_count %></span>
-                <% end %>
-                <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><%= link_to "Roommates List", roommates_path %></li>
-                  <li><%= link_to "Roommates", new_roommate_path %></li>
-                </ul>
-              </li>
-            <% else %>
-              <li><%= link_to "Roommates", new_roommate_path %></li>
-            <% end %>
-
-            <li><%= link_to "Buildings", buildings_path %></li>
-
-            <% if current_user.is_management? %>
-              <li><%= link_to "Landlords", landlords_path %></li>
-              <li><%= link_to "Deals", deals_path %></li>
-            <% end %>
-
-            <!-- COMPANY ADMIN -->
-            <% if !current_user.is_external_vendor? %>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <%= current_user.company.name %>
-                  <% if total_unread_forms_count > 0 && current_user.is_management? %>
-                    <span class="total_forms_badge badge"><%= total_unread_forms_count %></span>
-                  <% end %>
-                  <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><%= link_to "Company", company_path(current_user.company) %></li>
-                  <li><%= link_to "Offices", company_offices_path(current_user.company) %></li>
-                  <li><%= link_to "Managers", managers_company_path(current_user.company) %></li>
-                  <li><%= link_to "Coworkers", employees_company_path(current_user.company) %></li>
-
-                  <% if current_user.is_company_admin? %>
-                    <li><%= link_to "Waterfall", user_waterfalls_path %></li>
-                  <% end %>
-                  <% if current_user.is_management? || current_user.is_listings_manager? %>
-                    <li><%= link_to "Announcements", new_announcement_path %></li>
-                    <li role="separator" class="divider"></li>
-
-                    <li class="dropdown-header">WuFoo Forms</li>
-                    <li>
-                      <%= link_to forms_careers_path do %>
-                        Careers <% if unread_careers_count > 0 %>
-                          <span class="careers_badge badge"><%= unread_careers_count %></span>
-                        <% end %>
-                      <% end %>
-                    </li>
-                    <li>
-                      <%= link_to forms_contact_us_path do %>
-                        Contact Us <% if unread_contact_us_count > 0 %>
-                          <span class="contact_us_badge badge"><%= unread_contact_us_count %></span>
-                        <% end %>
-                      <% end %>
-                    </li>
-                    <li>
-                      <%= link_to forms_partner_index_path do %>
-                        Partner With Us <% if unread_partner_count > 0 %>
-                          <span class="partner_badge badge"><%= unread_partner_count %></span>
-                        <% end %>
-                      <% end %>
-                    </li>
-                    <!--li>< % = link_to "Residential Listing", forms_residential_listings_path % ></li-->
-                    <!--li>< % = link_to "Commercial Listing", forms_commercial_listings_path % ></li-->
-
-                  <% end %>
-                </ul>
-              </li>
-            <% end %>
-
-            <!-- SUPER ADMIN -->
-            <% if (logged_in?) && (current_user.has_role? :super_admin) %>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                Administrator Menu <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><%= link_to "Companies", companies_path %></li>
-                <li><%= link_to "Users", users_path %></li>
-              </ul>
-              </li>
-            <% end %>
-
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <%= current_user.name.titleize %> <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-
-                <li><%= link_to "Profile", current_user %></li>
-                <li><%= link_to "My Waterfall", user_waterfall_path(current_user) %></li>
-                <% if current_user.is_manager? %>
-                  <li><%= link_to "My Team Members", subordinates_user_path(current_user) %></li>
-                <% end %>
-                <% if current_user.is_management? %>
-                  <li><%= link_to "Add New Member", admin_new_users_path %></li>
-                <% elsif current_user.is_company_admin? %>
-                  <li><%= link_to "Add Office", new_company_office_path(current_user.company) %></li>
-                <% end %>
-                <li class="divider"></li>
-                <li>
-                  <%= link_to "Log out", logout_path, method: "delete" %>
-                </li>
-              </ul>
-            </li>
-        </ul>
-      </div><!-- collapse -->
-    </nav>
-    <% end %><!-- if logged_in? -->
   </div>
-  </header>
-
-	<!-- error msgs -->
-  <div id="notices">
-    <%= render 'layouts/notices' %>
-  </div>
-
-  <div class="container-fluid">
-  	<%= yield %>
-  </div>
-	<!--%= debug(params) if Rails.env.development? %-->
-</div>
-
 </body>
 </html>
 

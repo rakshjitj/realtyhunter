@@ -405,7 +405,7 @@ ResidentialListings = {};
     });
     Listings.hideSpinner();
 
-    $('a').click(function() {
+    $('.residential-desktop a').click(function() {
       Listings.showSpinner();
     });
 
@@ -416,7 +416,7 @@ ResidentialListings = {};
       Common.markSortingColumnByElem($('th[data-sort="updated_at"]'), 'desc')
     }
 
-    $('.close').click(function() {
+    $('.residential-desktop  .close').click(function() {
       Listings.hideSpinner();
     });
 
