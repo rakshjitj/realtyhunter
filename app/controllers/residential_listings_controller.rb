@@ -39,12 +39,9 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
-  # GET /residential_units/1
-  # GET /residential_units/1.json
   def show
   end
 
-  # GET /residential_units/new
   def new
     @residential_unit = ResidentialListing.new
     @residential_unit.unit = Unit.new
@@ -56,13 +53,10 @@ class ResidentialListingsController < ApplicationController
     @panel_title = "Add a listing"
   end
 
-  # GET /residential_units/1/edit
   def edit
     @panel_title = "Edit listing"
   end
 
-  # POST /residential_units
-  # POST /residential_units.json
   def create
     ret1 = nil
     ResidentialListing.transaction do
@@ -138,36 +132,22 @@ class ResidentialListingsController < ApplicationController
   def print_private
     ids = params[:listing_ids].split(',')
     @neighborhood_group = ResidentialListing.listings_by_neighborhood(current_user, ids)
-
-    #respond_to do |format|
-    #  format.pdf do
-        render pdf: current_user.company.name + ' - Private Listings - ' + Date.today.strftime("%b%d%Y"),
-          template: "/residential_listings/print_private.pdf.erb",
-          orientation: 'Landscape',
-          layout:   "/layouts/pdf_layout.html"
-    #  end
-    #end
+    render pdf: current_user.company.name + ' - Private Listings - ' + Date.today.strftime("%b%d%Y"),
+      template: "/residential_listings/print_private.pdf.erb",
+      orientation: 'Landscape',
+      layout:   "/layouts/pdf_layout.html"
   end
 
-  # PATCH ajax
-  # Takes a unit off the market
   def print_public
-
     ids = params[:listing_ids].split(',')
     @neighborhood_group = ResidentialListing.listings_by_neighborhood(current_user, ids)
 
-    #respond_to do |format|
-    #  format.pdf do
-        render pdf: current_user.company.name + ' - Public Listings - ' + Date.today.strftime("%b%d%Y"),
-          template: "/residential_listings/print_public.pdf.erb",
-          orientation: 'Landscape',
-          layout:   "/layouts/pdf_layout.html"
-    #  end
-    #end
+    render pdf: current_user.company.name + ' - Public Listings - ' + Date.today.strftime("%b%d%Y"),
+      template: "/residential_listings/print_public.pdf.erb",
+      orientation: 'Landscape',
+      layout:   "/layouts/pdf_layout.html"
   end
 
-  # PATCH/PUT /residential_units/1
-  # PATCH/PUT /residential_units/1.json
   def update
     ret1 = nil
     ret2 = nil
@@ -386,12 +366,10 @@ class ResidentialListingsController < ApplicationController
       # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      # if sorting by an actual db column, use order
       @residential_units = @residential_units.order(sort_column + ' ' + sort_order)
       @residential_units
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def residential_listing_params
       data = params[:residential_listing].permit(
         :lock_version,

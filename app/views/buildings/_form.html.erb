@@ -109,7 +109,7 @@
           <div class="col-sm-4">
             <div class="checkbox checkbox-warning checkbox-inline">
               <%= b.check_box(class: "styled") %>
-              <label><%= b.text.titleize %></label>
+              <%= b.label {b.text.titleize} %>
             </div>
           </div>
 
@@ -148,7 +148,7 @@
           <div class="col-sm-4">
             <div class="checkbox checkbox-warning checkbox-inline">
               <%= b.check_box(class: "styled") %>
-              <label><%= b.text.titleize %></label>
+              <%= b.label {b.text.titleize} %>
             </div>
           </div>
 

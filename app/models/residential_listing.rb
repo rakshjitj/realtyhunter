@@ -618,14 +618,16 @@ class ResidentialListing < ActiveRecord::Base
 
       listings.each do |listing|
         csv << [listing.formatted_street_address, listing.building_unit, listing.neighborhood_name,
-          listing.exclusive, listing.can_roomshare,
-          listing.beds, listing.baths, listing.notes, listing.description, listing.lease_start, listing.lease_end,
-          listing.has_fee, listing.op_fee_percentage, listing.tp_fee_percentage, listing.tenant_occupied,
+          listing.exclusive ? 'Yes' : 'No', listing.can_roomshare ? 'Yes' : 'No',
+          listing.beds, listing.baths, listing.notes, listing.description, listing.lease_start,
+          listing.lease_end,
+          listing.has_fee ? 'Yes' : 'No', listing.op_fee_percentage, listing.tp_fee_percentage,
+          listing.tenant_occupied ? 'Yes' : 'No',
           agents[listing.unit_id] ? agents[listing.unit_id].map {|a| a.name }.join(', ') : '',
           listing.listing_id, listing.landlord_code, listing.rent,
           listing.available_by, listing.access_info,
           reverse_statuses[listing.status.to_s.to_sym],
-          listing.created_at, listing.updated_at, listing.archived]
+          listing.created_at, listing.updated_at, listing.archived ? 'Yes' : 'No']
       end
     end
   end

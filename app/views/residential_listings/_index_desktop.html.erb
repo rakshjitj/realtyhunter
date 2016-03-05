@@ -4,10 +4,18 @@
   <%= render partial: "residential_listings/announcements", locals: { announcements: @announcement_items } %>
 
   <div class="row row-relative">
-    <div class="col-md-6">
+    <div class="col-xs-6">
       <h1>Rental Listings</h1>
     </div>
-    <div class="col-md-6 form-label-responsive bottom-align-text">
+    <div class="hidden-xs hidden-sm col-xs-6 form-label-responsive page-header-buttons">
+      <% if current_user.is_management? || current_user.is_listings_manager? %>
+        <%= link_to 'Make Announcement', new_announcement_path,
+          class: "btn btn-warning btn-sm link-as-button" %>
+        <%= link_to 'Add a Deal', new_deal_path, class: 'btn btn-warning btn-sm link-as-button' %>
+        <%= link_to 'Add a unit', new_residential_listing_path, class: 'btn btn-warning btn-sm link-as-button' %>
+      <% end %>
+    </div>
+    <div class="hidden-md hidden-lg col-xs-5 col-sm-left-padding form-label-responsive page-header-buttons">
       <% if current_user.is_management? || current_user.is_listings_manager? %>
         <%= link_to 'Make Announcement', new_announcement_path,
           class: "btn btn-warning btn-sm link-as-button" %>
@@ -17,13 +25,15 @@
     </div>
   </div>
 
-  <div class="row vertical-align">
+  <br>
+
+  <div class="row">
     <div class="col-md-3">
 
       <i class="fa fa-spinner fa-pulse fa-5x res-spinner-desktop listings-spinner-desktop"></i>
 
       <div id="res-search-filters" data-search-path="<%= filter_residential_listings_path %>">
-        <%= form_tag residential_listings_path, :method => 'get' do %>
+        <%= form_tag residential_listings_path, method: 'get' do %>
           <div class="row vertical-margin-lg">
             <div class="col-xs-3">
               <%= label_tag(:address, "Address") %>
@@ -231,7 +241,9 @@
       </div>
     </div>
 
-    <%= render 'map_overall_view' %>
+    <div class="col-md-9 hidden-xs hidden-sm">
+      <div id="r-big-map" data-map-points="<%= @map_infos %>"></div>
+    </div>
   </div>
 
   <div class="hidden-xs hidden-sm">
@@ -303,7 +315,6 @@
               <% end %>
             </tr>
           </thead>
-
 
           <tbody class="residential_units_table_body">
             <%= render partial: 'residential_listings/residential_listing',

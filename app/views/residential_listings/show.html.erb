@@ -22,7 +22,7 @@
 								  					<%= rent_formatted(@residential_unit.unit.rent) %>
 								  				</h3>
 								  			</span>
-								  			<span class="flex-even-item">
+								  			<span class="flex-even-item text-right">
 								  			<h3>
 								  				<%= beds_as_str(@residential_unit) %> / <%= baths_as_str(@residential_unit) %>
 								  			</h3>
@@ -33,7 +33,7 @@
 								  			<span class="flex-even-item">
 							  					<%= render 'market_status' %>
 							  				</span>
-							  				<span class="flex-even-item">
+							  				<span class="flex-even-item text-right">
 							  					Available <%= @residential_unit.unit.available_by %>
 							  				</span>
 							  			</span>
@@ -43,7 +43,7 @@
 							  </div><!-- panel title -->
 							</div><!-- panel heading -->
 
-						  <div class="panel-heading hidden-xs hidden-sm ">
+						  <div class="panel-heading hidden-xs hidden-sm">
 						    <div class="panel-title">
 						    	<div class="row">
 							  		<div class="col-xs-12 col-md-7">
@@ -55,19 +55,18 @@
 							  				<%= small_header(@residential_unit) %>
 							  			</p>
 							  		</div>
-							  		<div class="col-xs-12 col-md-5 form-label-responsive">
+							  		<div class="col-xs-12 col-md-5 text-right">
 							  			<h1><%= rent_formatted(@residential_unit.unit.rent) %></h1>
 							  			<p>
 								  			<%= beds_as_str(@residential_unit) %>/ <%= baths_as_str(@residential_unit) %>
 							  			</p>
-
 							  		</div>
 							  	</div><!-- row -->
 							  	<div class="row">
 							  		<div class="col-xs-7">
 							  			<p><%= render 'market_status' %></p>
 							  		</div>
-							  		<div class="col-xs-5 form-label-responsive">
+							  		<div class="col-xs-5 text-right">
 							  			<p>Available <%= @residential_unit.unit.available_by %></p>
 							  		</div>
 							  	</div>
@@ -213,7 +212,6 @@
 							    		<div class="col-xs-7">
 							    			<%= rent_formatted(@residential_unit.unit.rent) %>
 							    		</div>
-
 					    			</div>
 					    			<div class="row">
 					    				<div class="col-xs-5">
@@ -359,7 +357,7 @@
 						    	</div>
 						    <% end %>
 
-						    <% if @residential_unit.unit.open_house.length > 0 %>
+						    <% if @residential_unit.unit.open_house.blank? %>
 						    	<br />
 						    	<div class="row">
 						    		<div class="col-xs-12 col-md-3">
@@ -373,7 +371,7 @@
 
 					    	<!-- Building info -->
 					    	<% bldg_amenities = @residential_unit.unit.building.amenities_to_s %>
-					    	<% if bldg_amenities.length > 0 %>
+					    	<% if !bldg_amenities.blank? %>
 						    	<br />
 						    	<div class="row">
 						    		<div class="col-xs-12 col-md-3">
@@ -387,7 +385,7 @@
 
 					    	<!-- Unit info -->
 					    	<% unit_amenities = @residential_unit.amenities_to_s %>
-					    	<% if unit_amenities.length > 0 %>
+					    	<% if !unit_amenities.blank? %>
 						    	<br />
 						    	<div class="row">
 						    		<div class="col-xs-12 col-md-3">
@@ -528,7 +526,7 @@
 					    			<div class="tab-content">
 								      <!-- ******************** first tablpanel - google maps ******************** -->
 								      <div role="tabpanel" class="tab-pane fade in active" id="google-map-tab">
-								      	<iframe id="map_canvas"
+								      	<iframe id="map-canvas"
 												  frameborder="0"
 												  src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_MAPS_KEY'] %>
 												    &q=<%= @residential_unit.unit.building.formatted_street_address %>"
@@ -560,10 +558,11 @@
 					    	<div class="row inaccuracy-report">
 					    		<div class="col-xs-12">
 						    		<h3>Inaccuracy Report</h3>
-						    		<%= form_for(@residential_unit, url: send_inaccuracy_residential_listing_path(@residential_unit)) do |f| %>
+						    		<%= form_for(@residential_unit,
+						    				url: send_inaccuracy_residential_listing_path(@residential_unit)) do |f| %>
 											<div class="modal-body2">
-												<p>Something wrong at <%= @residential_unit.unit.building.street_address %>
-												#<%= @residential_unit.unit.building_unit %>? The more detail you can provide, the better.</p>
+												<p>Something wrong at <%= @residential_unit.street_address_and_unit %>?
+												The more detail you can provide, the better.</p>
 												<br>
 											  <%= f.text_area :inaccuracy_description, rows: 5, class: 'form-control' %>
 											</div>

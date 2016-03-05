@@ -7,10 +7,7 @@ class CommercialListingsController < ApplicationController
   autocomplete :landlord, :code, full: true
   etag { current_user.id }
 
-  # GET /commercial_units
-  # GET /commercial_units.json
   def index
-
     respond_to do |format|
       format.html do
         set_commercial_listings
@@ -38,29 +35,9 @@ class CommercialListingsController < ApplicationController
     end
   end
 
-  # GET
-  # handles ajax call. uses latest data in modal
-  def neighborhoods_modal
-    @neighborhoods = Neighborhood.unarchived
-    .where(state: current_user.office.administrative_area_level_1_short)
-    .to_a
-    .group_by(&:borough)
-
-    respond_to do |format|
-      format.js
-      format.html do
-        # catch-all
-        redirect_to commercial_listings_url
-      end
-    end
-  end
-
-  # GET /commercial_units/1
-  # GET /commercial_units/1.json
   def show
   end
 
-  # GET /commercial_units/new
   def new
     @commercial_unit = CommercialListing.new
     @commercial_unit.unit = Unit.new
@@ -74,7 +51,6 @@ class CommercialListingsController < ApplicationController
     set_property_types
   end
 
-  # GET /commercial_units/1/edit
   def edit
     @panel_title = "Edit listing"
     set_property_types
@@ -92,8 +68,6 @@ class CommercialListingsController < ApplicationController
     end
   end
 
-  # POST /commercial_units
-  # POST /commercial_units.json
   def create
     ret1 = nil
     ret2 = nil
@@ -152,8 +126,6 @@ class CommercialListingsController < ApplicationController
     redirect_to request.referer
   end
 
-  # PATCH/PUT /commercial_units/1
-  # PATCH/PUT /commercial_units/1.json
   def update
     ret1 = nil
     ret2 = nil
@@ -181,8 +153,6 @@ class CommercialListingsController < ApplicationController
     end
   end
 
-  # DELETE /commercial_units/1
-  # DELETE /commercial_units/1.json
   def destroy
     @commercial_unit.archive
     set_commercial_listings
@@ -206,13 +176,14 @@ class CommercialListingsController < ApplicationController
   def send_inaccuracy
     @commercial_unit.inaccuracy_description = commercial_listing_params[:inaccuracy_description]
     @commercial_unit.send_inaccuracy_report(current_user)
+    flash[:success] = "Report submitted! Thank you."
     respond_to do |format|
-      format.js { flash[:notice] = "Report submitted! Thank you." }
+      format.html { redirect_to @commercial_unit }
+      format.js { }
     end
   end
 
   # GET /refresh_images
-  # ajax call
   def refresh_images
     respond_to do |format|
       format.js
@@ -220,7 +191,6 @@ class CommercialListingsController < ApplicationController
   end
 
   # GET
-  # ajax call
   def refresh_documents
     respond_to do |format|
       format.js
@@ -237,7 +207,6 @@ class CommercialListingsController < ApplicationController
       layout:   "/layouts/pdf_layout.html"
   end
 
-  # PATCH ajax
   # Takes a unit off the market
   def print_public
     ids = params[:listing_ids].split(',')
@@ -282,6 +251,11 @@ class CommercialListingsController < ApplicationController
     end
 
     def set_commercial_listings
+      @neighborhoods = Neighborhood.unarchived
+          .where(state: current_user.office.administrative_area_level_1_short)
+          .to_a
+          .group_by(&:borough)
+
       do_search
       @commercial_units = custom_sort
 
@@ -338,7 +312,6 @@ class CommercialListingsController < ApplicationController
       # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      # if sorting by an actual db column, use order
       if sort_column == 'landlord_code'
         @commercial_units = @commercial_units.order("LOWER(code) " + sort_order)
       else

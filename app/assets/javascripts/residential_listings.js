@@ -1,7 +1,5 @@
 ResidentialListings = {};
 
-// TODO: break this up by controller action?
-
 (function() {
   ResidentialListings.timer;
   ResidentialListings.announcementsTimer;
@@ -11,11 +9,11 @@ ResidentialListings = {};
 
 	// for searching on the index page
 	ResidentialListings.doSearch = function (sortByCol, sortDirection) {
-	  var search_path = $('#res-search-filters').attr('data-search-path');
-
 	  Listings.showSpinner();
 
-    if (!sortByCol) {
+    var search_path = $('#res-search-filters').attr('data-search-path');
+
+	  if (!sortByCol) {
       sortByCol = Common.getSearchParam('sort_by');
     }
     if (!sortDirection) {
@@ -54,7 +52,7 @@ ResidentialListings = {};
       }
       window.location.search = searchParams.join('&');
 
-	 	ResidentialListings.passiveRealTimeUpdate();
+	 	ResidentialListings.enablePassiveUpdates();
 	};
 
 	ResidentialListings.clearAnnouncementsTimer = function() {
@@ -70,6 +68,7 @@ ResidentialListings = {};
 	};
 
   ResidentialListings.queryAnnouncements = function(limit) {
+    console.log('res announce');
     $.ajax({
       url: '/residential_listings/update_announcements',
       data: {
@@ -88,6 +87,13 @@ ResidentialListings = {};
 			ResidentialListings.announcementsTimer = setTimeout(ResidentialListings.updateAnnouncements, 60 * 1 * 1000);
 		}
 	};
+
+  ResidentialListings.enablePassiveUpdates = function() {
+    if (!Common.onMobileDevice()) {
+      ResidentialListings.passiveRealTimeUpdate();
+      ResidentialListings.updateAnnouncements();
+    }
+  }
 
 	// if a user remains on this page for an extended amount of time,
 	// refresh the page every so often. We want to make sure they are
@@ -183,13 +189,13 @@ ResidentialListings = {};
 		});
 	};
 
-	ResidentialListings.setPositions = function() {
-	  // loop through and give each task a data-pos
-	  // attribute that holds its position in the DOM
-	  $('.img-thumbnail').each(function(i) {
-	    $(this).attr("data-pos", i+1);
-	  });
-	};
+	// ResidentialListings.setPositions = function() {
+	//   // loop through and give each task a data-pos
+	//   // attribute that holds its position in the DOM
+	//   $('.img-thumbnail').each(function(i) {
+	//     $(this).attr("data-pos", i+1);
+	//   });
+	// };
 
   ResidentialListings.sortOnColumnClick = function() {
 		$('.th-sortable').click(function(e) {
@@ -403,13 +409,6 @@ ResidentialListings = {};
     ResidentialListings.rlsnyValidation();
   }
 
-  ResidentialListings.enablePassiveUpdates = function() {
-    if (!Common.onMobileDevice()) {
-      ResidentialListings.passiveRealTimeUpdate();
-      ResidentialListings.updateAnnouncements();
-    }
-  }
-
   ResidentialListings.showCard = function(cardName, e) {
     $('.card.main').removeClass('card-visible');
     $('.card.mobile-filters').removeClass('card-visible');
@@ -477,7 +476,6 @@ ResidentialListings = {};
    }
   }
 
-  // called on index & show pages
   ResidentialListings.initDesktopIndex = function() {
     $('#residential-mobile').remove();
     ResidentialListings.enablePassiveUpdates();
@@ -487,8 +485,8 @@ ResidentialListings = {};
       Listings.hideSpinner();
       ResidentialListings.enablePassiveUpdates();
     });
-    Listings.hideSpinner();
 
+    Listings.hideSpinner();
     $('.residential-desktop a').click(function() {
       Listings.showSpinner();
     });

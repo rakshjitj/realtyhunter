@@ -3,26 +3,35 @@
 <div id="commercial">
 <div id="section-name" data-name="commercial_listings">
 
-
 <div class="row row-relative">
-  <div class="col-md-6">
+  <div class="col-xs-6">
     <h1>Commercial Listings</h1>
   </div>
-  <div class="col-md-6 form-label-responsive">
+  <div class="hidden-xs hidden-sm col-xs-6 form-label-responsive page-header-buttons">
     <% if current_user.is_management? || current_user.is_listings_manager? %>
+      <%= link_to 'Add a Deal', new_deal_path, class: 'btn btn-warning btn-sm link-as-button' %>
+      <%= link_to 'Make Announcement', new_announcement_path, class: "btn btn-warning btn-sm link-as-button" %>
+      <%= link_to 'Add a unit', new_commercial_listing_path, class:"btn btn-sm btn-warning link-as-button" %>
+    <% end %>
+  </div>
+  <div class="hidden-md hidden-lg col-xs-5 col-sm-left-padding form-label-responsive page-header-buttons">
+    <% if current_user.is_management? || current_user.is_listings_manager? %>
+      <%= link_to 'Add a Deal', new_deal_path, class: 'btn btn-warning btn-sm link-as-button' %>
       <%= link_to 'Make Announcement', new_announcement_path, class: "btn btn-warning btn-sm link-as-button" %>
       <%= link_to 'Add a unit', new_commercial_listing_path, class:"btn btn-sm btn-warning link-as-button" %>
     <% end %>
   </div>
 </div>
 
-<div class="row ">
+<br>
+
+<div class="row">
   <div class="col-md-3">
     <i class="fa fa-spinner fa-pulse fa-5x res-spinner-desktop listings-spinner-desktop"></i>
 
     <div id="com-search-filters" data-search-path="<%= filter_commercial_listings_path %>">
 
-    <%= form_tag commercial_listings_path, :method => 'get' do %>
+    <%= form_tag commercial_listings_path, method: 'get' do %>
         <div class="row vertical-margin-lg">
           <div class="col-xs-3">
             <%= label_tag(:address, "Address") %>
@@ -141,37 +150,33 @@
           </div>
         </div>
 
-        <br />
         <div class="row vertical-padding">
-          <div class="col-xs-12">
-            <%= link_to 'Neighborhoods', neighborhoods_modal_commercial_listings_path,
-              data: {toggle: "modal", target: "#neighborhoodsModal"}, remote: true,
-              class: "link-as-button btn btn-sm btn-warning" %>
-            <div id="selected_neighborhoods" class="vertical-padding">
-              <!-- gets written over by neighborhood_modal.js.erb -->
-              <% @selected_neighborhoods.each do |f| %>
-                <%= link_to "",
-                  class: "btn btn-sm btn-default remove-neighborhood", remote: "true", data: {id:f.id} do %>
-                  <%= f.name %> <span class="glyphicon glyphicon-remove"></span>
-                <% end %>
+          <div class="col-xs-11 selectize-wrapper">
+            <select id="neighborhood-select-multiple" placeholder="Neighborhoods...">
+              <% @neighborhoods.each do |borough, list| %>
+                <optgroup label="<%= borough %>">
+                  <% list.each do |neighborhood| %>
+                    <option value="<%= neighborhood.id %>"><%= neighborhood.name %></option>
+                  <% end %>
+                </optgroup>
               <% end %>
-            </div>
-            <%= hidden_field_tag :neighborhood_ids, params[:neighborhood_ids] %>
+            </select>
           </div>
         </div>
-
       <% end %>
     </div>
   </div>
 
-  <%= render 'map_overall_view' %>
+  <div class="col-md-9 hidden-xs hidden-sm">
+    <div id="c-big-map" data-map-points="<%= @map_infos %>"></div>
+  </div>
 </div>
 
 <div class="hidden-xs hidden-sm">
   <hr class="map-hr">
 </div>
-<%= form_tag print_list_commercial_listings_path do %>
 
+<%= form_tag print_list_commercial_listings_path do %>
 <div class="row">
   <div class="col-md-6 vertical-margin-lg">
     <!-- will be a dropdown of either print pdf or email -->
@@ -234,15 +239,13 @@
   </div>
 </div>
 
-  <div class="row">
-    <div class="col-md-6 vertical-margin-lg">
-      <div class="col-sm-4 col-sm-offset-4 pagination-wrapper">
-        <%= render partial: 'shared/pagination', locals: {models: @commercial_units} %>
-      </div>
-    </div>
-  </div>
-
 <% end %><!-- form -->
+
+<div class="row">
+  <div class="col-sm-4 col-sm-offset-4 pagination-wrapper">
+    <%= render partial: 'shared/pagination', locals: {models: @commercial_units} %>
+  </div>
+</div>
 
 <!-- Email Modal -->
 <div class="modal fade modal-fullscreen" id="emailModal" tabindex="-1" role="dialog"
@@ -309,26 +312,6 @@
       <div class="modal-footer">
         <button class="delete-btn">Placeholder</button>
         <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- Neighborhood Modal -->
-<div class="modal fade modal-fullscreen" id="neighborhoodsModal" tabindex="-1" role="dialog"
-  aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="neighborhood-modal-title">Select Neighborhoods</h4>
-      </div>
-      <div class="modal-body">
-        <div id="placeholder-body"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary btn-close" data-dismiss="modal">Done</button>
       </div>
 
     </div>

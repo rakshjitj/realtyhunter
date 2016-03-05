@@ -276,8 +276,10 @@ class SalesListingsController < ApplicationController
   def send_inaccuracy
     @sales_unit.inaccuracy_description = sales_listing_params[:inaccuracy_description]
     @sales_unit.send_inaccuracy_report(current_user)
+    flash[:success] = "Report submitted! Thank you."
     respond_to do |format|
-      format.js { flash[:notice] = "Report submitted! Thank you." }
+      format.html { redirect_to @sales_unit }
+      format.js { }
     end
   end
 
@@ -422,7 +424,7 @@ class SalesListingsController < ApplicationController
         :neighborhood, :formatted_street_address,
         :sublocality, :administrative_area_level_2_short,
         :administrative_area_level_1_short,
-        :postal_code, :country_short, :lat, :lng, :place_id,        
+        :postal_code, :country_short, :lat, :lng, :place_id,
 
         sales_listing: [
           :lock_version,
@@ -433,7 +435,7 @@ class SalesListingsController < ApplicationController
           :school_district, :certificate_of_occupancy, :violation_search, :tenant_occupied,
           :internal_notes, :public_description,
           :floor, :total_room_count, :condition, :showing_instruction, :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
-          
+
           :unit => [:building_unit, :rent, :available_by, :access_info, :status,
             :open_house, :oh_exclusive,
             :building_id, :primary_agent_id, :listing_agent_id],

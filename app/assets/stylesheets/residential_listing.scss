@@ -38,7 +38,7 @@
   white-space: normal !important;
 }
 
-#basic-info .row.vertical-margin-lg {
+#residential #basic-info .row.vertical-margin-lg {
   margin-left: 15px;
 }
 
@@ -47,20 +47,6 @@
 
 /********* mobile *****************/
 
-#r-big-map {
-  height: 600px;
-  margin: 0;
-  padding: 0;
-}
-
-#r-big-map-mobile {
-  min-height: 100vw;
-  height: 100vw;
-  order: 2;
-  flex: 1;
-  width: 100%;
-  overflow: hidden;
-}
 .card-middle {
   order: 2;
   flex-grow: 2;

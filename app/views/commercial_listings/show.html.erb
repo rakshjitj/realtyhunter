@@ -1,14 +1,42 @@
 <% provide(:title, @commercial_unit.unit.building.street_address) %>
-
 <div class="row">
-  <div class="col-md-8 col-md-offset-2">
-		<br/>
-  	<br/>
+  <div class="col-xs-12 col-md-8 col-md-offset-2">
 		<div id="cunit-panel" class="panel panel-default">
-		  <div class="panel-heading">
+
+		  <div class="panel-heading hidden-md hidden-lg">
 		    <div class="panel-title">
 		    	<div class="row">
-			  		<div class="col-md-6">
+			  		<div class="col-xs-12 col-md-7">
+			  			<h2 class="center">
+				  			<%= @commercial_unit.street_address_and_unit %>
+				  		</h2>
+				  		<p class="center">
+				  			<% if @commercial_unit.unit.building.neighborhood %>
+				  				<%= @commercial_unit.unit.building.neighborhood.name %>,
+				  			<% end %>
+				  			<%= @commercial_unit.unit.building.sublocality %>
+	  						<%= @commercial_unit.unit.building.postal_code %>
+			  			</p>
+
+				  		<span class="flex-row">
+				  			<span class="flex-even-item">
+				  				<h3><%= money_formatted(@commercial_unit.price_per_sq_ft) %>/SF/Month</h3>
+				  			</span>
+				  			<span class="flex-even-item text-right">
+				  			<h3>
+				  				<%= @commercial_unit.sq_footage %> SF | <%= @commercial_unit.commercial_property_type.property_type %>
+				  			</h3>
+				  			</span>
+				  		</span>
+				  	</div><!-- col -->
+			    </div><!-- row -->
+		    </div><!-- panel-title -->
+		  </div><!-- panel-heading -->
+
+		  <div class="panel-heading hidden-xs hidden-sm">
+		    <div class="panel-title">
+		    	<div class="row">
+			  		<div class="col-xs-12 col-md-7">
 			  			<h1>
 				  			<%= @commercial_unit.street_address_and_unit %>
 				  		</h1>
@@ -20,11 +48,13 @@
 	  						<%= @commercial_unit.unit.building.postal_code %>
 			  			</p>
 			  		</div>
-			  		<div class="col-md-6 right">
-			  			<h1><%= money_formatted(@commercial_unit.price_per_sq_ft) %>/SF/Month</h1>
-				  		<p><%= @commercial_unit.sq_footage %> SF | <%= @commercial_unit.commercial_property_type.property_type %></p>
-			  		</div>
-			    </div>
+						<div class="col-xs-12 col-md-5 text-right">
+		  				<h1><%= money_formatted(@commercial_unit.price_per_sq_ft) %>/SF/Month</h1>
+		  				<p>
+		  					<%= @commercial_unit.sq_footage %> SF | <%= @commercial_unit.commercial_property_type.property_type %>
+		  				</p>
+				  	</div><!-- col -->
+			    </div><!-- row -->
 		    </div><!-- panel-title -->
 		  </div><!-- panel-heading -->
 
@@ -50,9 +80,6 @@
 				  			{ address: @commercial_unit.unit.building.formatted_street_address }),
 				  			class: "btn btn-warning btn-sm link-as-button vertical-margin-sm" %>
 				  	<% end %>
-			  		<%= link_to 'Report Inaccuracy', inaccuracy_modal_commercial_listing_path(@commercial_unit),
-		  				class: "btn btn-danger btn-sm vertical-margin-sm",
-		  				data: {toggle: "modal", target: "#unitInaccuracyModal"}, remote: true %>
 		  		</div>
 		  	</div><!-- row -->
 
@@ -132,247 +159,285 @@
 
 		    <br />
 		    <div class="row">
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Total Space</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <%= @commercial_unit.sq_footage %> SF
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Floor</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <%= @commercial_unit.floor %>
-				  </div>
-				</div>
 
-				<div class="row">
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Rent per Sq Ft</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <%= money_formatted(@commercial_unit.price_per_sq_ft) %> /SF/MONTH
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Building Size</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <%= @commercial_unit.building_size %> SF
-				  </div>
-				</div>
+		    	<!-- first column -->
+		    	<div class="col-md-6">
+		    		<div class="row">
+						  <div class="col-xs-6">
+						    <strong>Total Space</strong>
+						  </div>
+						  <div class="col-xs-6">
+						    <%= @commercial_unit.sq_footage %> SF
+						  </div>
+						</div>
 
-				<div class="row">
-					<div class="col-xs-6 col-md-3">
-				    <strong>Rental per Month</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <%= rent_formatted(@commercial_unit.unit.rent) %>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Total Lot Size</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <%= @commercial_unit.total_lot_size %>
-				  </div>
+						<div class="row">
+						  <div class="col-xs-6">
+						    <strong>Rent per Sq Ft</strong>
+						  </div>
+						  <div class="col-xs-6">
+						    <%= money_formatted(@commercial_unit.price_per_sq_ft) %> /SF/MONTH
+						  </div>
+						</div>
 
-				</div>
+						<div class="row">
+							<div class="col-xs-6">
+						    <strong>Rental per Month</strong>
+						  </div>
+						  <div class="col-xs-6">
+						    <%= rent_formatted(@commercial_unit.unit.rent) %>
+						  </div>
+						</div>
 
-				<div class="row">
-					<div class="col-xs-6 col-md-3">
-				    <strong>Property Type</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <%= @commercial_unit.commercial_property_type.property_type %>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Min Divisible</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <%= @commercial_unit.minimum_divisible %> SF
-				  </div>
-				</div>
+						<div class="row">
+							<div class="col-xs-6">
+						    <strong>Property Type</strong>
+						  </div>
+						  <div class="col-xs-6">
+						    <%= @commercial_unit.commercial_property_type.property_type %>
+						  </div>
+						</div>
 
-				<div class="row">
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Property Sub-type</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <%= @commercial_unit.commercial_property_type.property_sub_type %>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Max Contiguous</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <%= @commercial_unit.maximum_contiguous %> SF
-				  </div>
-				</div>
+						<div class="row">
+						  <div class="col-xs-6">
+						    <strong>Property Sub-type</strong>
+						  </div>
+						  <div class="col-xs-6">
+						    <%= @commercial_unit.commercial_property_type.property_sub_type %>
+						  </div>
+						</div>
 
-				<div class="row">
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Construction Status</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				  	<% if @commercial_unit.construction_status == "existing" %>
-				  		Existing
-				  	<% else %>
-				  		Under Construction/Proposed
-				  	<% end %>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Basement</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <% if @commercial_unit.has_basement? %>
-				    	<%= @commercial_unit.basement_sq_footage %> Sq Ft
-				    <% else %>
-				    	None
-				    <% end %>
-				  </div>
-				</div>
+						<div class="row">
+						  <div class="col-xs-6">
+						    <strong>Construction Status</strong>
+						  </div>
+						  <div class="col-xs-6">
+						  	<% if @commercial_unit.construction_status == "existing" %>
+						  		Existing
+						  	<% else %>
+						  		Under Construction/Proposed
+						  	<% end %>
+						  </div>
+						</div>
 
-				<div class="row">
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Can build to suit</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				  	<% if @commercial_unit.build_to_suit %>
-				    	Yes
-				    <% else %>
-				    	No
-				    <% end %>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Key Money</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <% if @commercial_unit.key_money_required? %>
-				    	<%= money_formatted(@commercial_unit.key_money_amt) %>
-				    <% else %>
-				    	None
-				    <% end %>
-				  </div>
-				</div>
+						<div class="row">
+						  <div class="col-xs-6">
+						    <strong>Can build to suit</strong>
+						  </div>
+						  <div class="col-xs-6">
+						  	<% if @commercial_unit.build_to_suit %>
+						    	Yes
+						    <% else %>
+						    	No
+						    <% end %>
+						  </div>
+						</div>
 
-				<div class="row">
-					<div class="col-xs-6 col-md-3">
-				    <strong>Lease Type</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				  	<%= @commercial_unit.lease_type.humanize.titleize %>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Date Available</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <%= @commercial_unit.unit.available_by %>
-				  </div>
-				</div>
+						<div class="row">
+							<div class="col-xs-6">
+						    <strong>Lease Type</strong>
+						  </div>
+						  <div class="col-xs-6">
+						  	<%= @commercial_unit.lease_type.humanize.titleize %>
+						  </div>
+						</div>
 
-				<div class="row">
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Lease Term</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				  	<%= @commercial_unit.lease_term_months %> Months
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Building</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <%= link_to @commercial_unit.unit.building.street_address, @commercial_unit.unit.building %>
-				  </div>
-				</div>
+						<div class="row">
+						  <div class="col-xs-6">
+						    <strong>Lease Term</strong>
+						  </div>
+						  <div class="col-xs-6">
+						  	<%= @commercial_unit.lease_term_months %> Months
+						  </div>
+						</div>
 
-				<div class="row">
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Is Sublease?</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				  	<% if @commercial_unit.is_sublease %>
-				    	Yes
-				    <% else %>
-				    	No
-				    <% end %>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Landlord</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <% if current_user.is_management? %>
-							<%= link_to @commercial_unit.unit.building.landlord.code, @commercial_unit.unit.building.landlord %>
-						<% else %>
-							<%= @commercial_unit.unit.building.landlord.code %>
-						<% end %>
-				  </div>
-				</div>
+						<div class="row">
+						  <div class="col-xs-6">
+						    <strong>Is Sublease?</strong>
+						  </div>
+						  <div class="col-xs-6">
+						  	<% if @commercial_unit.is_sublease %>
+						    	Yes
+						    <% else %>
+						    	No
+						    <% end %>
+						  </div>
+						</div>
 
-				<div class="row">
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Liquor Eligible?</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				  	<% if @commercial_unit.liquor_eligible %>
-				    	Yes
-				    <% else %>
-				    	No
-				    <% end %>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Primary Agent #1</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				  	<% if @commercial_unit.unit.primary_agent %>
-	    				<%= link_to @commercial_unit.unit.primary_agent.name, @commercial_unit.unit.primary_agent %>
-	    			<% else %>
-	    				None
-	    			<% end %>
-				  </div>
-				</div>
+						<div class="row">
+						  <div class="col-xs-6">
+						    <strong>Liquor Eligible?</strong>
+						  </div>
+						  <div class="col-xs-6">
+						  	<% if @commercial_unit.liquor_eligible %>
+						    	Yes
+						    <% else %>
+						    	No
+						    <% end %>
+						  </div>
+						</div>
 
-				<div class="row">
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Has Ventilation?</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				  	<% if @commercial_unit.has_ventilation %>
-				    	Yes
-				    <% else %>
-				    	No
-				    <% end %>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Primary Agent #2</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				  	<% if @commercial_unit.unit.primary_agent2 %>
-	    				<%= link_to @commercial_unit.unit.primary_agent2.name, @commercial_unit.unit.primary_agent2 %>
-	    			<% else %>
-	    				None
-	    			<% end %>
-				  </div>
-				</div>
+						<div class="row">
+						  <div class="col-xs-6">
+						    <strong>Has Ventilation?</strong>
+						  </div>
+						  <div class="col-xs-6">
+						  	<% if @commercial_unit.has_ventilation %>
+						    	Yes
+						    <% else %>
+						    	No
+						    <% end %>
+						  </div>
+						</div>
+					</div>
 
-				<div class="row">
-				  <div class="col-xs-6 col-md-3">
+					<!-- second column -->
+					<div class="col-md-6">
+		    		<div class="row">
+						  <div class="col-xs-6">
+						    <strong>Floor</strong>
+						  </div>
+						  <div class="col-xs-6">
+						    <%= @commercial_unit.floor %>
+						  </div>
+			    	</div>
 
-				  </div>
-				  <div class="col-xs-6 col-md-3">
+				    <div class="row">
+						  <div class="col-xs-6">
+						    <strong>Building Size</strong>
+						  </div>
+						  <div class="col-xs-6">
+						    <%= @commercial_unit.building_size %> SF
+						  </div>
+						</div>
 
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <strong>Listing ID</strong>
-				  </div>
-				  <div class="col-xs-6 col-md-3">
-				    <%= @commercial_unit.unit.listing_id %>
-				  </div>
-				</div>
+						<div class="row">
+							<div class="col-xs-6">
+						    <strong>Total Lot Size</strong>
+						  </div>
+						  <div class="col-xs-6">
+						    <%= @commercial_unit.total_lot_size %>
+						  </div>
+						</div>
+
+						<div class="row">
+							<div class="col-xs-6">
+						    <strong>Min Divisible</strong>
+						  </div>
+						  <div class="col-xs-6">
+						    <%= @commercial_unit.minimum_divisible %> SF
+						  </div>
+						</div>
+
+						<div class="row">
+							<div class="col-xs-6">
+						    <strong>Max Contiguous</strong>
+						  </div>
+						  <div class="col-xs-6">
+						    <%= @commercial_unit.maximum_contiguous %> SF
+						  </div>
+						</div>
+
+						<div class="row">
+							<div class="col-xs-6">
+						    <strong>Basement</strong>
+						  </div>
+						  <div class="col-xs-6">
+						    <% if @commercial_unit.has_basement? %>
+						    	<%= @commercial_unit.basement_sq_footage %> Sq Ft
+						    <% else %>
+						    	None
+						    <% end %>
+						  </div>
+						</div>
+
+						<div class="row">
+							<div class="col-xs-6">
+						    <strong>Key Money</strong>
+						  </div>
+						  <div class="col-xs-6">
+						    <% if @commercial_unit.key_money_required? %>
+						    	<%= money_formatted(@commercial_unit.key_money_amt) %>
+						    <% else %>
+						    	None
+						    <% end %>
+						  </div>
+						</div>
+
+						<div class="row">
+						 <div class="col-xs-6">
+						    <strong>Date Available</strong>
+						  </div>
+						  <div class="col-xs-6">
+						    <%= @commercial_unit.unit.available_by %>
+						  </div>
+						</div>
+
+						<div class="row">
+							<div class="col-xs-6">
+						    <strong>Building</strong>
+						  </div>
+						  <div class="col-xs-6">
+						    <%= link_to @commercial_unit.unit.building.street_address, @commercial_unit.unit.building %>
+						  </div>
+						</div>
+
+						<div class="row">
+							<div class="col-xs-6">
+						    <strong>Landlord</strong>
+						  </div>
+						  <div class="col-xs-6">
+						    <% if current_user.is_management? %>
+									<%= link_to @commercial_unit.unit.building.landlord.code, @commercial_unit.unit.building.landlord %>
+								<% else %>
+									<%= @commercial_unit.unit.building.landlord.code %>
+								<% end %>
+						  </div>
+						</div>
+
+						<div class="row">
+							<div class="col-xs-6">
+						    <strong>Primary Agent #1</strong>
+						  </div>
+						  <div class="col-xs-6">
+						  	<% if @commercial_unit.unit.primary_agent %>
+			    				<%= link_to @commercial_unit.unit.primary_agent.name, @commercial_unit.unit.primary_agent %>
+			    			<% else %>
+			    				None
+			    			<% end %>
+						  </div>
+						</div>
+
+						<div class="row">
+							<div class="col-xs-6">
+						    <strong>Primary Agent #2</strong>
+						  </div>
+						  <div class="col-xs-6">
+						  	<% if @commercial_unit.unit.primary_agent2 %>
+			    				<%= link_to @commercial_unit.unit.primary_agent2.name, @commercial_unit.unit.primary_agent2 %>
+			    			<% else %>
+			    				None
+			    			<% end %>
+						  </div>
+						</div>
+
+						<div class="row">
+							<div class="col-xs-6">
+						    <strong>Listing ID</strong>
+						  </div>
+						  <div class="col-xs-6">
+						    <%= @commercial_unit.unit.listing_id %>
+						  </div>
+						</div>
+					</div><!-- end col -->
+				</div><!-- row -->
 
 				<br />
 				<div class="row">
-					<div class="col-md-3">
+					<div class="col-sm-3">
 						<strong>Access Info</strong>
 					</div>
-					<div class="col-md-3">
+					<div class="col-sm-9">
 						<% if !@commercial_unit.unit.access_info.blank? %>
 							<%= @commercial_unit.unit.access_info %>
 						<% else %>
@@ -381,52 +446,40 @@
 					</div>
 				</div>
 
-				<br />
-				<div class="row">
-					<div class="col-md-4">					
-		    			<strong>Show:</strong>		    		
-		    			<%= @commercial_unit.show ? "Yes" : "No" %>		    		
+				<% if !@commercial_unit.property_description.blank? %>
+					<br />
+					<div class="row">
+						<div class="col-md-12">
+							<h3>Property Description</h3>
+							<p><strong><%= @commercial_unit.listing_title %></strong></p>
+							<% if @commercial_unit.unit.exclusive? %>
+		    				<strong class="exclusive-listing">Myspace Exclusive!</strong>
+		    				<br />
+		    			<% end %>
+			    		<% if !escape_once(@commercial_unit.property_description).blank? %>
+	            	<%= h raw sanitize @commercial_unit.property_description,
+	            			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span) %>
+	            <% else %>
+	              -None specified-
+	            <% end %>
+						</div>
 					</div>
-					<div class="col-md-4">					
-		    			<strong>Favorites:</strong>		    		
-		    			<%= @commercial_unit.favorites ? "Yes" : "No" %>		    		
-					</div>
-					<div class="col-md-4">											
-		    			<strong>Expose Address:</strong>			    		
-		    			<%= @commercial_unit.expose_address ? "Yes" : "No" %>			    		
-					</div>	    		
-		    	</div>
-	    	
-				<br />
-				<div class="row">
-					<div class="col-md-12">
-						<h3>Property Description</h3>
-						<p><strong><%= @commercial_unit.listing_title %></strong></p>
-						<% if @commercial_unit.unit.exclusive? %>
-	    				<strong class="exclusive-listing">Myspace Exclusive!</strong>
-	    				<br />
-	    			<% end %>
-		    		<% if !escape_once(@commercial_unit.property_description).blank? %>
-            	<%= h raw sanitize @commercial_unit.property_description,
-            			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span) %>
-            <% else %>
-              -None specified-
-            <% end %>
-					</div>
-				</div>
+				<% end %>
 
-				<br />
-				<div class="row">
-					<div class="col-md-12">
-						<h3>Location Description</h3>
-		    		<% if !escape_once(@commercial_unit.location_description).blank? %>
-            	<%= h raw sanitize @commercial_unit.location_description,
-            			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span) %>
-            <% else %>
-              -None specified-
-            <% end %>
+				<% if !@commercial_unit.location_description.blank? %>
+					<br />
+					<div class="row">
+						<div class="col-md-12">
+							<h3>Location Description</h3>
+			    		<% if !escape_once(@commercial_unit.location_description).blank? %>
+	            	<%= h raw sanitize @commercial_unit.location_description,
+	            			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span) %>
+	            <% else %>
+	              -None specified-
+	            <% end %>
+						</div>
 					</div>
-				</div>
+				<% end %>
 
 		    <% if @commercial_unit.unit.documents.count > 0 %>
 		    <br />
@@ -460,7 +513,7 @@
 	    			<div class="tab-content">
 				      <!-- ******************** first tablpanel - google maps ******************** -->
 				      <div role="tabpanel" class="tab-pane fade in active" id="google-map-tab">
-				      	<iframe id="map_canvas"
+				      	<iframe id="map-canvas"
 								  frameborder="0"
 								  src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_MAPS_KEY'] %>&q=<%= @commercial_unit.unit.building.formatted_street_address %>"
 								  allowfullscreen>
@@ -485,6 +538,25 @@
 
 	    		</div>
 	    	</div><!-- row -->
+
+	    	<br>
+	    	<div class="row inaccuracy-report">
+	    		<div class="col-xs-12">
+		    		<h3>Inaccuracy Report</h3>
+		    		<%= form_for(@commercial_unit,
+		    				url: send_inaccuracy_commercial_listing_path(@commercial_unit)) do |f| %>
+							<div class="modal-body2">
+								<p>Something wrong at <%= @commercial_unit.street_address_and_unit %>?
+								The more detail you can provide, the better.</p>
+								<br>
+							  <%= f.text_area :inaccuracy_description, rows: 5, class: 'form-control' %>
+							</div>
+							<div class="modal-footer">
+								<%= f.submit 'Send', class: 'btn btn-danger submit-link' %>
+							</div>
+						<% end %>
+		    	</div>
+		    </div>
 
 		  </div><!-- panel-body-->
 		</div><!-- panel -->

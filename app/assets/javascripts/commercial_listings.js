@@ -1,6 +1,8 @@
 CommercialListings = {};
 
 (function() {
+  CommercialListings.timer;
+  CommercialListings.selectedNeighborhoodIds = null;
 
   CommercialListings.updatePropertySubTypes = function (ptype) {
     var id = $('#commercial').attr('data-unit-id');
@@ -15,14 +17,7 @@ CommercialListings = {};
   };
 
   CommercialListings.doSearch = function(sortByCol, sortDirection) {
-    // console.log('before', $('#commercial #neighborhood_ids').val());
     Listings.showSpinner();
-
-    // sanitize invalid input before submitting
-    if ($('#commercial #neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
-      $('#commercial #neighborhood_ids').val('');
-    }
-
     var search_path = $('#com-search-filters').attr('data-search-path');
 
     if (!sortByCol) {
@@ -42,7 +37,7 @@ CommercialListings = {};
         status: $('#commercial #status').val(),
         commercial_property_type_id: $('#commercial #commercial_property_type_id').val(),
         listing_id: $('#commercial #listing_id').val(),
-        neighborhood_ids: $('#commercial #neighborhood_ids').val(),
+        neighborhood_ids: CommercialListings.selectedNeighborhoodIds,
         primary_agent_id:  $('#commercial #primary_agent_id').val(),
         sort_by: sortByCol,
         direction: sortDirection,
@@ -56,26 +51,8 @@ CommercialListings = {};
     }
     window.location.search = searchParams.join('&');
 
-    CommercialListings.passiveRealTimeUpdate();
+    CommercialListings.enablePassiveUpdates();
   };
-
-  CommercialListings.sortOnColumnClick = function() {
-    $('#commercial .th-sortable').click(function(e) {
-      Common.sortOnColumnClick($(this), CommercialListings.doSearch);
-    });
-  };
-
-  CommercialListings.removeNeighborhood = function (event) {
-    event.preventDefault();
-    var feature_id = $(this).attr('data-id');
-    var idx = $('#commercial #neighborhood_ids').val().indexOf(feature_id);
-    $('#commercial #neighborhood_ids').val( $('#commercial #neighborhood_ids').val().replace(feature_id, '') );
-    $(this).remove();
-    CommercialListings.throttledSearch();
-  };
-
-  // search as user types
-  CommercialListings.timer;
 
   CommercialListings.clearTimer = function() {
     if (CommercialListings.timer) {
@@ -83,16 +60,20 @@ CommercialListings = {};
     }
   };
 
+  CommercialListings.enablePassiveUpdates = function() {
+    if (!Common.onMobileDevice()) {
+      CommercialListings.passiveRealTimeUpdate();
+    }
+  }
+
   // if a user remains on this page for an extended amount of time,
   // refresh the page every so often. We want to make sure they are
   // always viewing the latest data.
   CommercialListings.passiveRealTimeUpdate = function() {
     // don't trigger this on the show page (<URL>/commercial_listings/<ID<)
-    if ($('#commercial').length > 0) {
-      CommercialListings.clearTimer();
-      // update every few minutes
-      CommercialListings.timer = setTimeout(CommercialListings.doSearch, 60 * 3 * 1000);
-    }
+    CommercialListings.clearTimer();
+    // update every few minutes
+    CommercialListings.timer = setTimeout(CommercialListings.doSearch, 60 * 3 * 1000);
   };
 
   // search as user types
@@ -102,7 +83,6 @@ CommercialListings = {};
     timer = setTimeout(CommercialListings.doSearch, 500);
   };
 
-  // change enter key to tab
   CommercialListings.preventEnter = function(event) {
     if (event.keyCode == 13) {
       return false;
@@ -166,55 +146,9 @@ CommercialListings = {};
     return '<div class="popup">' + output + '</div>';
   };
 
-  CommercialListings.initializeDocumentsDropzone = function() {
-    // grap our upload form by its id
-    $("#cunit-dropzone-docs").dropzone({
-      // show remove links on each image upload
-      addRemoveLinks: true,
-      // if the upload was successful
-      success: function(file, response){
-        // find the remove button link of the uploaded file and give it an id
-        // based of the fileID response from the server
-        $(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
-        $(file.previewTemplate).find('.dz-remove').attr('unit_id', response.cunitID);
-        // add the dz-success class (the green tick sign)
-        $(file.previewElement).addClass("dz-success");
-        $.getScript('/commercial_listings/' + response.cunitID + '/refresh_documents')
-        file.previewElement.remove();
-      },
-      //when the remove button is clicked
-      removedfile: function(file){
-        // grap the id of the uploaded file we set earlier
-        var id = $(file.previewTemplate).find('.dz-remove').attr('id');
-        var unit_id = $(file.previewTemplate).find('.dz-remove').attr('unit_id');
-        DropZoneHelper.removeDocument(id, unit_id, 'commercial_listings');
-        file.previewElement.remove();
-      }
-    });
-
-    DropZoneHelper.updateRemoveDocLinks('commercial', 'commercial_listings');
-
-    DropZoneHelper.setPositions('commercial', 'documents');
-    DropZoneHelper.makeSortable('commercial', 'documents');
-
-    // after the order changes
-    $('#commercial .documents.sortable').sortable().bind('sortupdate', function(e, ui) {
-        // array to store new order
-        updated_order = []
-        // set the updated positions
-        DropZoneHelper.setPositions('commercial', 'documents');
-
-        // populate the updated_order array with the new task positions
-        $('.doc').each(function(i){
-          updated_order.push({ id: $(this).data('id'), position: i });
-        });
-        // send the updated order via ajax
-        var unit_id = $('#commercial').attr('data-unit-id');
-        $.ajax({
-          type: "PUT",
-          url: '/commercial_listings/' + unit_id + '/documents/sort',
-          data: { order: updated_order }
-        });
+  CommercialListings.sortOnColumnClick = function() {
+    $('#commercial .th-sortable').click(function(e) {
+      Common.sortOnColumnClick($(this), CommercialListings.doSearch);
     });
   };
 
@@ -276,6 +210,58 @@ CommercialListings = {};
     });
   };
 
+  CommercialListings.initializeDocumentsDropzone = function() {
+    // grap our upload form by its id
+    $("#cunit-dropzone-docs").dropzone({
+      // show remove links on each image upload
+      addRemoveLinks: true,
+      // if the upload was successful
+      success: function(file, response){
+        // find the remove button link of the uploaded file and give it an id
+        // based of the fileID response from the server
+        $(file.previewTemplate).find('.dz-remove').attr('id', response.fileID);
+        $(file.previewTemplate).find('.dz-remove').attr('unit_id', response.cunitID);
+        // add the dz-success class (the green tick sign)
+        $(file.previewElement).addClass("dz-success");
+        $.getScript('/commercial_listings/' + response.cunitID + '/refresh_documents')
+        file.previewElement.remove();
+      },
+      //when the remove button is clicked
+      removedfile: function(file){
+        // grap the id of the uploaded file we set earlier
+        var id = $(file.previewTemplate).find('.dz-remove').attr('id');
+        var unit_id = $(file.previewTemplate).find('.dz-remove').attr('unit_id');
+        DropZoneHelper.removeDocument(id, unit_id, 'commercial_listings');
+        file.previewElement.remove();
+      }
+    });
+
+    DropZoneHelper.updateRemoveDocLinks('commercial', 'commercial_listings');
+
+    DropZoneHelper.setPositions('commercial', 'documents');
+    DropZoneHelper.makeSortable('commercial', 'documents');
+
+    // after the order changes
+    $('#commercial .documents.sortable').sortable().bind('sortupdate', function(e, ui) {
+        // array to store new order
+        updated_order = []
+        // set the updated positions
+        DropZoneHelper.setPositions('commercial', 'documents');
+
+        // populate the updated_order array with the new task positions
+        $('.doc').each(function(i){
+          updated_order.push({ id: $(this).data('id'), position: i });
+        });
+        // send the updated order via ajax
+        var unit_id = $('#commercial').attr('data-unit-id');
+        $.ajax({
+          type: "PUT",
+          url: '/commercial_listings/' + unit_id + '/documents/sort',
+          data: { order: updated_order }
+        });
+    });
+  };
+
   CommercialListings.initEditor = function() {
     // edit/new form
     $('#commercial_listing_property_type').change(function(e) {
@@ -289,6 +275,7 @@ CommercialListings = {};
       CommercialListings.updatePropertySubTypes(ptype);
     }
 
+    // TODO: need this still?
     var available_by = $('#commercial .datepicker').attr('data-available-by');
     if (available_by) {
       $('#commercial .datepicker').data("DateTimePicker").date(available_by);
@@ -302,10 +289,13 @@ CommercialListings = {};
   }
 
   CommercialListings.initIndex = function() {
+    CommercialListings.enablePassiveUpdates();
+
     document.addEventListener("page:restore", function() {
-      CommercialListings.passiveRealTimeUpdate();
       Listings.hideSpinner();
+      CommercialListings.enablePassiveUpdates();
     });
+
     Listings.hideSpinner();
     $('#commercial a').click(function() {
       Listings.showSpinner();
@@ -317,6 +307,18 @@ CommercialListings = {};
     if (Common.getSearchParam('sort_by') === '') {
       Common.markSortingColumnByElem($('th[data-sort="updated_at"]'), 'desc')
     }
+    $('#neighborhood-select-multiple').change(CommercialListings.throttledSearch);
+
+    // index page - selecting listings menu dropdown
+    $('#commercial #emailListings').click(Listings.sendMessage);
+    $('#commercial tbody').on('click', 'i', Listings.toggleListingSelection);
+    $('#commercial .select-all-listings').click(Listings.selectAllListings);
+    $('#commercial .selected-listings-menu').on('click', 'a', function() {
+      var action = $(this).data('action');
+      if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();
+    });
+
+    CommercialListings.enablePassiveUpdates();
 
     RHMapbox.initMapbox('c-big-map', CommercialListings.buildContentString);
 
@@ -330,24 +332,28 @@ CommercialListings = {};
     $('#commercial #landlord').bind('railsAutocomplete.select', CommercialListings.throttledSearch);
     $('#commercial #landlord').change(CommercialListings.throttledSearch);
     $('#commercial #status').change(CommercialListings.throttledSearch);
-    $('#commercial #neighborhood_ids').change(CommercialListings.throttledSearch);
     $('#commercial #commercial_property_type_id').change(CommercialListings.throttledSearch);
     $('#commercial #listing_id').change(CommercialListings.throttledSearch);
     $('#commercial #primary_agent_id').change(CommercialListings.throttledSearch);
 
-    $('#commercial').on('click', '.remove-neighborhood', CommercialListings.removeNeighborhood);
+    CommercialListings.selectedNeighborhoodIds = getURLParameterByName('neighborhood_ids');
+    if (CommercialListings.selectedNeighborhoodIds) {
+      CommercialListings.selectedNeighborhoodIds =
+          CommercialListings.selectedNeighborhoodIds.split(',');
+    }
 
-    // index page - selecting listings menu dropdown
-    $('#commercial #emailListings').click(Listings.sendMessage);
-    $('#commercial tbody').on('click', 'i', Listings.toggleListingSelection);
-    $('#commercial .select-all-listings').click(Listings.selectAllListings);
-    $('#commercial .selected-listings-menu').on('click', 'a', function() {
-      var action = $(this).data('action');
-      if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();
+    $('#neighborhood-select-multiple').selectize({
+      plugins: ['remove_button'],
+      hideSelected: true,
+      maxItems: 100,
+      items: CommercialListings.selectedNeighborhoodIds,
+      onChange: function(value) {
+        CommercialListings.selectedNeighborhoodIds = value;
+      }
     });
+  }
 
-    CommercialListings.passiveRealTimeUpdate();
-
+  CommercialListings.initShow = function() {
     $('.carousel-indicators > li:first-child').addClass('active');
     $('.carousel-inner > .item:first-child').addClass('active');
   }
@@ -363,17 +369,15 @@ $(document).on('keyup',function(evt) {
 $(document).ready(function() {
   CommercialListings.clearTimer();
 
-  var url = window.location.pathname;
-  var commercial = url.indexOf('commercial_listings') > -1;
-  var editPage = url.indexOf('edit') > -1;
-  var newPage = url.indexOf('new') > -1;
-  // var showPage = url.end
-  if (commercial) {
-    // new and edit pages both render the same form template, so init them using the same code
-    if (editPage || newPage) {
-      CommercialListings.initEditor();
-    } else {
-      CommercialListings.initIndex();
-    }
+  var editPage = $('.commercial_listings.edit').length;
+  var newPage = $('.commercial_listings.new').length;
+  var indexPage = $('.commercial_listings.index').length;
+  // new and edit pages both render the same form template, so init them using the same code
+  if (editPage || newPage) {
+    CommercialListings.initEditor();
+  } else if (indexPage) {
+    CommercialListings.initIndex();
+  } else {
+    CommercialListings.initShow();
   }
 });
