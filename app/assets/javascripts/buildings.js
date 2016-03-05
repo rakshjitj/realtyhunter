@@ -201,14 +201,14 @@ Buildings = {};
 
       // update neighborhood options from google results
       var sublocality = '';
-      for (var i =0; i<result["address_components"].length; i++) {
-        if (result["address_components"][i]["types"][1] == "sublocality") {
-          sublocality = result["address_components"][i]["short_name"];
+      for (var i =0; i<result.address_components.length; i++) {
+        if (result.address_components[i].types[1] === "sublocality") {
+          sublocality = result.address_components[i].short_name;
         }
       }
 
       // if no neighborhood already set, update neighborhood from google results
-      if ($('#neighborhood').val() == "") {
+      // if ($('#neighborhood').val() === null) {
         $.ajax({
           type: "GET",
           url: '/buildings/neighborhood_options',
@@ -216,16 +216,16 @@ Buildings = {};
             sublocality: sublocality,
           },
           success: function(data) {
-            for (var i =0; i<result["address_components"].length; i++) {
-              if (result["address_components"][i]["types"][0] == "neighborhood") {
-                var nabe = result["address_components"][i]["short_name"];
+            for (var i =0; i<result.address_components.length; i++) {
+              if (result.address_components[i].types[0] === "neighborhood") {
+                var nabe = result.address_components[i].short_name;
                 //console.log(nabe);
                 $('#neighborhood').val(nabe);
               }
             }
           }
         });
-      }
+      // }
 
     }).bind("geocode:error", function(event, result){
       //console.log("[ERROR]: " + result);

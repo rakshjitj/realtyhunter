@@ -189,14 +189,6 @@ ResidentialListings = {};
 		});
 	};
 
-	// ResidentialListings.setPositions = function() {
-	//   // loop through and give each task a data-pos
-	//   // attribute that holds its position in the DOM
-	//   $('.img-thumbnail').each(function(i) {
-	//     $(this).attr("data-pos", i+1);
-	//   });
-	// };
-
   ResidentialListings.sortOnColumnClick = function() {
 		$('.th-sortable').click(function(e) {
       Common.sortOnColumnClick($(this), ResidentialListings.doSearch);
@@ -518,7 +510,7 @@ ResidentialListings = {};
     });
 
     // activate tooltips
-    $('[data-toggle="tooltip"]').tooltip();
+    // $('[data-toggle="tooltip"]').tooltip();
 
     RHMapbox.initMapbox('r-big-map', ResidentialListings.buildContentString);
   }
@@ -618,6 +610,8 @@ $(document).on('keyup',function(evt) {
 });
 
 $(document).ready(function() {
+  ResidentialListings.clearTimer();
+
   var editPage = $('.residential_listings.edit').length;
   var newPage = $('.residential_listings.new').length;
   var indexPage = $('.residential_listings.index').length;

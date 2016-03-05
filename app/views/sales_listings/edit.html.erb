@@ -4,14 +4,14 @@
 	<div class="col-md-8 col-md-offset-2">
 		<div class="page-header">
 		  <div class="row">
-		    <div class="col-md-8">
+		    <div class="col-sm-8">
 		      <h1><%= @sales_unit.unit.building.street_address %>
-		      	<% if @sales_unit.unit.building_unit %>
+		      	<% if !@sales_unit.unit.building_unit.blank? %>
 		      		<small>#<%= @sales_unit.unit.building_unit %></small>
 		      	<% end %>
 		      </h1>
 		    </div>
-		    <div class="col-md-4 page-header-buttons-lg form-label-responsive">
+		    <div class="col-sm-4 page-header-buttons-lg form-label-responsive">
 					<%= link_to 'Show', @sales_unit %>
 					| <%= link_to 'All units', sales_listings_path %>
 		    </div>

@@ -3,7 +3,7 @@
 
   <%= render partial: "residential_listings/announcements", locals: { announcements: @announcement_items } %>
 
-  <div class="row row-relative">
+  <div class="row">
     <div class="col-xs-6">
       <h1>Rental Listings</h1>
     </div>
@@ -237,6 +237,7 @@
               </select>
             </div>
           </div>
+
         <% end %>
       </div>
     </div>
@@ -292,36 +293,34 @@
 
   <div class="row">
     <div class="col-md-12">
-      <div class="">
-        <table class="table table-striped table-hover table-condensed infinite-table-res">
-          <thead>
-            <tr>
-              <th style="min-width: 45px;">
-                <!-- checkboxes -->
-                <i data-action="selectAllUnits" class="select-all-listings fa fa-square-o fa-lg"></i>
-              </th>
-              <th style="max-width: 105px;"><!-- first image --></th>
-              <th data-sort="formatted_street_address" class="th-sortable">Address</th>
-              <th data-sort="building_unit" class="th-sortable">Unit</th>
-              <th data-sort="bed_and_baths" class="th-sortable">Beds/Baths</th>
-              <th data-sort="rent" class="th-sortable">Price</th>
-              <th data-sort="available_by" class="th-sortable">Available</th>
-              <th style="min-width: 20%;">Access</th>
-              <th data-sort="landlord_code" class="th-sortable">Landlord</th>
-              <th data-sort="updated_at" class="th-sortable">Updated</th>
-              <th data-sort="status" class="th-sortable">Status</th>
-              <% if current_user.is_management? || current_user.is_listings_manager? %>
-                <th colspan="1"></th>
-              <% end %>
-            </tr>
-          </thead>
+      <table class="table table-striped table-hover table-condensed infinite-table-res">
+        <thead>
+          <tr>
+            <th style="min-width: 45px;">
+              <!-- checkboxes -->
+              <i data-action="selectAllUnits" class="select-all-listings fa fa-square-o fa-lg"></i>
+            </th>
+            <th style="max-width: 105px;"><!-- first image --></th>
+            <th data-sort="formatted_street_address" class="th-sortable">Address</th>
+            <th data-sort="building_unit" class="th-sortable">Unit</th>
+            <th data-sort="bed_and_baths" class="th-sortable">Beds/Baths</th>
+            <th data-sort="rent" class="th-sortable">Price</th>
+            <th data-sort="available_by" class="th-sortable">Available</th>
+            <th style="min-width: 20%;">Access</th>
+            <th data-sort="landlord_code" class="th-sortable">Landlord</th>
+            <th data-sort="updated_at" class="th-sortable">Updated</th>
+            <th data-sort="status" class="th-sortable">Status</th>
+            <% if current_user.is_management? || current_user.is_listings_manager? %>
+              <th colspan="1"></th>
+            <% end %>
+          </tr>
+        </thead>
 
-          <tbody class="residential_units_table_body">
-            <%= render partial: 'residential_listings/residential_listing',
-            collection: @residential_units, locals: {res_images: @res_images} %>
-          </tbody>
-        </table>
-      </div>
+        <tbody class="residential_units_table_body">
+          <%= render partial: 'residential_listings/residential_listing',
+          collection: @residential_units, locals: {res_images: @res_images} %>
+        </tbody>
+      </table>
     </div>
   </div>
 

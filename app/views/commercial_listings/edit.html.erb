@@ -6,7 +6,7 @@
 			<div class="row">
 		    <div class="col-sm-8">
 		    	<h1><%= @commercial_unit.unit.building.street_address %>
-		    	<% if @commercial_unit.unit.building_unit %>
+		    	<% if !@commercial_unit.unit.building_unit.blank? %>
 			    	<small>#<%= @commercial_unit.unit.building_unit %></small>
 			    <% end %>
 			   	</h1>

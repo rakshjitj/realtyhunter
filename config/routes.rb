@@ -151,7 +151,7 @@ Rails.application.routes.draw do
       get 'neighborhoods_modal'
       get 'features_modal'
       get 'fee_options'
-
+      get 'neighborhood_options'
       get 'print_list'
       get 'print_modal'
       get 'print_public'

@@ -132,6 +132,7 @@ class ResidentialListingsController < ApplicationController
   def print_private
     ids = params[:listing_ids].split(',')
     @neighborhood_group = ResidentialListing.listings_by_neighborhood(current_user, ids)
+
     render pdf: current_user.company.name + ' - Private Listings - ' + Date.today.strftime("%b%d%Y"),
       template: "/residential_listings/print_private.pdf.erb",
       orientation: 'Landscape',

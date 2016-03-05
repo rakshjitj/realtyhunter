@@ -2,14 +2,12 @@ class SalesListingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource only: :create
   before_action :set_sales_listing, except: [:new, :create, :index, :filter,
-    :print_list, :neighborhoods_modal, :features_modal,
+    :print_list, :neighborhoods_modal, :features_modal, :neighborhood_options,
     :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood, :fee_options]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
   etag { current_user.id }
 
-  # GET /sales_units
-  # GET /sales_units.json
   def index
     respond_to do |format|
       format.html do
@@ -35,40 +33,9 @@ class SalesListingsController < ApplicationController
     end
   end
 
-  # GET
-  # handles ajax call. uses latest data in modal
-  def neighborhoods_modal
-    @neighborhoods = Neighborhood.unarchived
-    .where(city: current_user.office.administrative_area_level_2_short)
-    .to_a
-    .group_by(&:borough)
-
-    # @neighborhoods.each do |borough, list|
-    #   puts list.inspect
-    # end
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  # GET
-  # handles ajax call. uses latest data in modal
-  def features_modal
-    @building_amenities = BuildingAmenity.where(company: current_user.company)
-    @unit_amenities = SalesAmenity.where(company: current_user.company)
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  # GET /sales_units/1
-  # GET /sales_units/1.json
   def show
   end
 
-  # GET /sales_units/new
   def new
     @sales_unit = SalesListing.new
     @sales_unit.unit = Unit.new
@@ -81,13 +48,10 @@ class SalesListingsController < ApplicationController
     @panel_title = "Add a listing"
   end
 
-  # GET /sales_units/1/edit
   def edit
     @panel_title = "Edit listing"
   end
 
-  # POST /sales_units
-  # POST /sales_units.json
   def create
     new_unit = nil
     new_bldg = nil
@@ -181,14 +145,10 @@ class SalesListingsController < ApplicationController
     ids = params[:listing_ids].split(',')
     @neighborhood_group = SalesListing.listings_by_neighborhood(current_user, ids)
 
-    #respond_to do |format|
-    #  format.pdf do
-        render pdf: current_user.company.name + ' - Private Sales Listings - ' + Date.today.strftime("%b%d%Y"),
-          template: "/sales_listings/print_private.pdf.erb",
-          orientation: 'Landscape',
-          layout:   "/layouts/pdf_layout.html"
-    #  end
-    #end
+    render pdf: current_user.company.name + ' - Private Sales Listings - ' + Date.today.strftime("%b%d%Y"),
+      template: "/sales_listings/print_private.pdf.erb",
+      orientation: 'Landscape',
+      layout:   "/layouts/pdf_layout.html"
   end
 
   # PATCH ajax
@@ -197,18 +157,12 @@ class SalesListingsController < ApplicationController
     ids = params[:listing_ids].split(',')
     @neighborhood_group = SalesListing.listings_by_neighborhood(current_user, ids)
 
-    #respond_to do |format|
-    #  format.pdf do
-        render pdf: current_user.company.name + ' - Public Sales Listings - ' + Date.today.strftime("%b%d%Y"),
-          template: "/sales_listings/print_public.pdf.erb",
-          orientation: 'Landscape',
-          layout:   "/layouts/pdf_layout.html"
-    #  end
-    #end
+    render pdf: current_user.company.name + ' - Public Sales Listings - ' + Date.today.strftime("%b%d%Y"),
+      template: "/sales_listings/print_public.pdf.erb",
+      orientation: 'Landscape',
+      layout:   "/layouts/pdf_layout.html"
   end
 
-  # PATCH/PUT /sales_units/1
-  # PATCH/PUT /sales_units/1.json
   def update
     ret1 = nil
     ret2 = nil
@@ -236,8 +190,6 @@ class SalesListingsController < ApplicationController
     end
   end
 
-  # DELETE /sales_units/1
-  # DELETE /sales_units/1.json
   def destroy
     @sales_unit.archive
     set_sales_listings
@@ -283,7 +235,6 @@ class SalesListingsController < ApplicationController
     end
   end
 
-  # GET /refresh_images
   # ajax call
   def refresh_images
     respond_to do |format|
@@ -291,7 +242,6 @@ class SalesListingsController < ApplicationController
     end
   end
 
-  # GET
   # ajax call
   def refresh_documents
     respond_to do |format|
@@ -317,6 +267,7 @@ class SalesListingsController < ApplicationController
 
     respond_to do |format|
       format.js
+      format.json
     end
   end
 
@@ -337,6 +288,13 @@ class SalesListingsController < ApplicationController
     end
 
     def set_sales_listings
+      @neighborhoods = Neighborhood.unarchived
+          .where(state: current_user.office.administrative_area_level_1_short)
+          .to_a
+          .group_by(&:borough)
+      @building_amenities = BuildingAmenity.where(company: current_user.company)
+      @unit_amenities = ResidentialAmenity.where(company: current_user.company)
+
       do_search
       @sales_units = custom_sort
       @count_all = SalesListing.joins(:unit)

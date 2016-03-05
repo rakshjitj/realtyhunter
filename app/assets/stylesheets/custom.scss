@@ -110,11 +110,11 @@ a:hover.btn-danger {
 // should always appear below navbar
 .main-content {
   position: absolute;
-  top: 100px;
+  top: 50px;
   left: 0;
   right: 0;
   @media (max-width:1150px) {
-    top: 50px;
+    top: 20px;
   }
 }
 

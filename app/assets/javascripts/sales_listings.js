@@ -1,22 +1,16 @@
 SalesListings = {};
 
 (function() {
+  SalesListings.timer;
+  SalesListings.selectedNeighborhoodIds = null;
+  SalesListings.selectedUnitAmenityIds = null;
+  SalesListings.selectedBuildingAmenityIds = null;
+
 	// for searching on the index page
 	SalesListings.doSearch = function (sortByCol, sortDirection) {
+    Listings.showSpinner();
+
     var search_path = $('#sales-search-filters').attr('data-search-path');
-
-		Listings.showSpinner();
-
-		// sanitize invalid input before submitting
-	  if ($('#sales #neighborhood_ids').val() == "{:id=>\"neighborhood_ids\"}") {
-	    $('#sales #neighborhood_ids').val('');
-	  }
-	  if ($('#sales #building_feature_ids').val() == "{:id=>\"building_feature_ids\"}") {
-	    $('#sales #building_feature_ids').val('');
-	  }
-	  if ($('#sales #unit_feature_ids').val() == "{:id=>\"unit_feature_ids\"}") {
-	    $('#sales #unit_feature_ids').val('');
-	  }
 
     if (!sortByCol) {
       sortByCol = Common.getSearchParam('sort_by');
@@ -41,9 +35,9 @@ SalesListings = {};
       status: $('#sales #status').val(),
       features: $('#sales #features').val(),
       has_fee: $('#sales #has_fee').val(),
-      neighborhood_ids: $('#sales #neighborhood_ids').val(),
-      unit_feature_ids: $('#sales #unit_feature_ids').val(),
-      building_feature_ids: $('#sales #building_feature_ids').val(),
+      neighborhood_ids: SalesListings.selectedNeighborhoodIds,
+      unit_feature_ids: SalesListings.selectedUnitAmenityIds,
+      building_feature_ids: SalesListings.selectedBuildingAmenityIds,
       sort_by: sortByCol,
       direction: sortDirection,
     };
@@ -59,30 +53,25 @@ SalesListings = {};
 		SalesListings.passiveRealTimeUpdate();
 	};
 
-	SalesListings.sortOnColumnClick = function() {
-		$('#sales .th-sortable').click(function(e) {
-      Common.sortOnColumnClick($(this), SalesListings.doSearch);
-		});
-	};
-
-	SalesListings.timer;
-
 	SalesListings.clearTimer = function() {
 		if (SalesListings.timer) {
       clearTimeout(SalesListings.timer);
     }
 	};
 
+  SalesListings.enablePassiveUpdates = function() {
+    if (!Common.onMobileDevice()) {
+      SalesListings.passiveRealTimeUpdate();
+    }
+  }
+
 	// if a user remains on this page for an extended amount of time,
   // refresh the page every so often. We want to make sure they are
   // always viewing the latest data.
   SalesListings.passiveRealTimeUpdate = function() {
     SalesListings.clearTimer();
-    // don't update on the show page
-  	if ($('#sales').length > 0) {
-	    // update every few minutes
-	    SalesListings.timer = setTimeout(SalesListings.doSearch, 60 * 3 * 1000);
-	  }
+    // update every few minutes
+	  SalesListings.timer = setTimeout(SalesListings.doSearch, 60 * 10 * 1000);
   };
 
   // search as user types
@@ -99,6 +88,61 @@ SalesListings = {};
 	    return false;
 	  }
 	};
+
+  // for giant map
+  SalesListings.buildContentString = function (key, info) {
+    var slideshowContent = '';
+    var contentString = '<strong>' + key + '</strong><br />';
+
+    var firstImageAdded = false;
+    var imgCount = 0;
+    for (var i=0; i<info['units'].length; i++) {
+
+      unit = info['units'][i];
+
+      if (unit.image) {
+        slideshowContent += '<div class="image' + (!firstImageAdded ? ' active' : '') + '">' +
+            '<a href="https://myspace-realty-monster.herokuapp.com/sales_listings/'+ unit.id +
+            '"><img src="' + unit.image + '" /></a>' +
+            '</div>';
+        firstImageAdded = true;
+        imgCount++;
+      }
+
+      var shouldHighlightRow = imgCount == 1 && info['units'].length > 1;
+      contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
+        + '<a href="https://myspace-realty-monster.herokuapp.com/sales_listings/'
+        + unit.id + '">#' + unit.building_unit + ' ' +
+        + unit.beds + ' bd / '
+        + unit.baths + ' baths $' + unit.rent + '</a></div>';
+      if (i == 5) {
+        contentString += '<div class="contentRow"><a href="https://myspace-realty-monster.herokuapp.com/sales_listings?building_id='
+          + info['building_id'] + '">View more...</a></div>';
+        break;
+      }
+    }
+
+    output =
+      '<div class="slideshow">' +
+        slideshowContent +
+      '</div>';
+    if (imgCount > 1) {
+      output += '<div class="cycle">' +
+        '<a href="#" class="prev">&laquo; Previous</a>' +
+        '<a href="#" class="next">Next &raquo;</a>' +
+        '</div>';
+    }
+    output += '<div class="content">' +
+      contentString +
+      '</div>';
+    return '<div class="popup">' + output + '</div>';
+  };
+
+  SalesListings.sortOnColumnClick = function() {
+    $('#sales .th-sortable').click(function(e) {
+      Common.sortOnColumnClick($(this), SalesListings.doSearch);
+    });
+  };
 
 	SalesListings.initializeDocumentsDropzone = function() {
     // grap our upload form by its id
@@ -211,127 +255,41 @@ SalesListings = {};
     });
   };
 
-	SalesListings.removeUnitFeature = function (event) {
-  	event.preventDefault();
-	  var feature_id = $(this).attr('data-id');
-  	var idx = $('#sales #unit_feature_ids').val().indexOf(feature_id);
-  	//console.log(feature_id, idx, feature_id.length, $('#unit_feature_ids').val());
-  	$('#sales #unit_feature_ids').val( $('#sales #unit_feature_ids').val().replace(feature_id, '') );
-  	//console.log('new val is', $('#unit_feature_ids').val() );
-  	$(this).remove();
-  	SalesListings.throttledSearch();
-  };
+	// SalesListings.updateOverviewMap = function(in_data) {
+	// 	SalesListings.overlays.clearLayers();
+ //    var markers = new L.MarkerClusterGroup({
+ //    	maxClusterRadius: 30 // lean towards showing more individual markers
+ //    }).addTo(SalesListings.overlays);
 
-  SalesListings.removeBuildingFeature = function (event) {
-  	event.preventDefault();
-	  var feature_id = $(this).attr('data-id');
-  	var idx = $('#sales #building_feature_ids').val().indexOf(feature_id);
-  	$('#sales #building_feature_ids').val( $('#sales #building_feature_ids').val().replace(feature_id, '') );
-  	$(this).remove();
-  	SalesListings.throttledSearch();
-  };
+ //    var dataPoints;
+	//   // if updating from an ajax call, in_data will hava content.
+	//   // we load data from a data attribute on page load, but that remains cached forever -
+	//   // it will not update with subsequent ajax calls.
+	//   if (in_data) {
+	//   	dataPoints = JSON.parse(in_data);
+	//   } else {
+	//   	dataPoints = JSON.parse($('#s-big-map').attr('data-map-points'));
+	//   }
+	//   Object.keys(dataPoints).forEach(function(key, index) {
+	//     // draw each marker + load with data
+	//     var info = dataPoints[key];
+	//     var content = SalesListings.buildContentString(key, info);
+	//     var marker = L.marker(new L.LatLng(info.lat, info.lng), {
+	//       icon: L.mapbox.marker.icon({
+	//       	'marker-size': 'small',
+	//       	'marker-color': '#f86767'
+	//       }),
+	//       'title': key,
+	//     });
+	//     marker.bindPopup(content);
+ //      markers.addLayer(marker);
+	// 	});
 
-  SalesListings.removeNeighborhood = function (event) {
-  	event.preventDefault();
-	  var feature_id = $(this).attr('data-id');
-  	var idx = $('#sales #neighborhood_ids').val().indexOf(feature_id);
-  	$('#sales #neighborhood_ids').val( $('#sales #neighborhood_ids').val().replace(feature_id, '') );
-  	$(this).remove();
-  	SalesListings.throttledSearch();
-  };
-
-	// for giant map
-	SalesListings.buildContentString = function (key, info) {
-    var slideshowContent = '';
-    var contentString = '<strong>' + key + '</strong><br />';
-
-    var firstImageAdded = false;
-    var imgCount = 0;
-    for (var i=0; i<info['units'].length; i++) {
-
-      unit = info['units'][i];
-
-      if (unit.image) {
-        slideshowContent += '<div class="image' + (!firstImageAdded ? ' active' : '') + '">' +
-            '<a href="https://myspace-realty-monster.herokuapp.com/sales_listings/'+ unit.id +
-            '"><img src="' + unit.image + '" /></a>' +
-            '</div>';
-        firstImageAdded = true;
-        imgCount++;
-      }
-
-      var shouldHighlightRow = imgCount == 1 && info['units'].length > 1;
-      contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
-        + '<a href="https://myspace-realty-monster.herokuapp.com/sales_listings/'
-        + unit.id + '">#' + unit.building_unit + ' ' +
-        + unit.beds + ' bd / '
-        + unit.baths + ' baths $' + unit.rent + '</a></div>';
-      if (i == 5) {
-        contentString += '<div class="contentRow"><a href="https://myspace-realty-monster.herokuapp.com/sales_listings?building_id='
-          + info['building_id'] + '">View more...</a></div>';
-        break;
-      }
-    }
-
-    output =
-      '<div class="slideshow">' +
-        slideshowContent +
-      '</div>';
-    if (imgCount > 1) {
-      output += '<div class="cycle">' +
-        '<a href="#" class="prev">&laquo; Previous</a>' +
-        '<a href="#" class="next">Next &raquo;</a>' +
-        '</div>';
-    }
-    output += '<div class="content">' +
-      contentString +
-      '</div>';
-    return '<div class="popup">' + output + '</div>';
-	};
-
-	SalesListings.setPositions = function() {
-	  // loop through and give each task a data-pos
-	  // attribute that holds its position in the DOM
-	  $('#sales .img-thumbnail').each(function(i) {
-	    $(this).attr("data-pos", i+1);
-	  });
-	};
-
-	SalesListings.updateOverviewMap = function(in_data) {
-		SalesListings.overlays.clearLayers();
-    var markers = new L.MarkerClusterGroup({
-    	maxClusterRadius: 30 // lean towards showing more individual markers
-    }).addTo(SalesListings.overlays);
-
-    var dataPoints;
-	  // if updating from an ajax call, in_data will hava content.
-	  // we load data from a data attribute on page load, but that remains cached forever -
-	  // it will not update with subsequent ajax calls.
-	  if (in_data) {
-	  	dataPoints = JSON.parse(in_data);
-	  } else {
-	  	dataPoints = JSON.parse($('#s-big-map').attr('data-map-points'));
-	  }
-	  Object.keys(dataPoints).forEach(function(key, index) {
-	    // draw each marker + load with data
-	    var info = dataPoints[key];
-	    var content = SalesListings.buildContentString(key, info);
-	    var marker = L.marker(new L.LatLng(info.lat, info.lng), {
-	      icon: L.mapbox.marker.icon({
-	      	'marker-size': 'small',
-	      	'marker-color': '#f86767'
-	      }),
-	      'title': key,
-	    });
-	    marker.bindPopup(content);
-      markers.addLayer(marker);
-		});
-
-    if (dataPoints.length) {
-   		SalesListings.map.addLayer(markers);
-      SalesListings.map.fitBounds(markers.getBounds());
-    }
-	};
+ //    if (dataPoints.length) {
+ //   		SalesListings.map.addLayer(markers);
+ //      SalesListings.map.fitBounds(markers.getBounds());
+ //    }
+	// };
 
   SalesListings.commissionAmount = function() {
     if($('#sales_listing_cyof_true').is(":checked")){
@@ -403,32 +361,22 @@ SalesListings = {};
   };
 
   SalesListings.initEditor = function() {
+    // TODO: still need this?
     // make sure datepicker is formatted before setting initial date below
     $('.datepicker').datetimepicker({
       viewMode: 'days',
       format: 'MM/DD/YYYY',
       allowInputToggle: true
     });
-
     var available_by = $('#sales .datepicker').attr('data-available-by');
     if (available_by) {
       $('#sales .datepicker').data("DateTimePicker").date(available_by);
     }
 
-    var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
-    // google maps
-    $("#map_panel").geocomplete({
-      map: "#map_canvas",
-      location: bldg_address,
-      details: ".details"
-    }).bind("geocode:result", function(event, result){
-      //console.log(result);
-    }).bind("geocode:error", function(event, result){
-      //console.log("[ERROR]: " + result);
-    });
-
+    // for address autocompletion in form
+    var bldg_address = $('#map-canvas').attr('data-address') ? $('#map-canvas').attr('data-address') : 'New York, NY, USA';
     $(".autocomplete-input").geocomplete({
-      map: "#map_canvas",
+      map: "#map-canvas",
       location: bldg_address,
       details: ".details"
     }).bind("geocode:result", function(event, result){
@@ -438,32 +386,33 @@ SalesListings = {};
 
       // update neighborhood options from google results
       var sublocality = '';
-      for (var i =0; i<result["address_components"].length; i++) {
-        if (result["address_components"][i]["types"][1] == "sublocality") {
-          sublocality = result["address_components"][i]["short_name"];
+      for (var i =0; i<result.address_components.length; i++) {
+        if (result.address_components[i].types &&
+            result.address_components[i].types[1] === "sublocality") {
+          sublocality = result.address_components[i]["short_name"];
         }
       }
 
       // if no neighborhood already set, update neighborhood from google results
-      if ($('#neighborhood').val() == "") {
+      //if ($('#neighborhood').val() === null) {
         $.ajax({
           type: "GET",
-          url: '/buildings/neighborhood_options',
+          url: '/sales_listings/neighborhood_options',
           data: {
             sublocality: sublocality,
           },
+          dataType: "script",
           success: function(data) {
-            for (var i =0; i<result["address_components"].length; i++) {
-              if (result["address_components"][i]["types"][0] == "neighborhood") {
-                var nabe = result["address_components"][i]["short_name"];
-                //console.log(nabe);
+            for (var i =0; i<result.address_components.length; i++) {
+              if (result.address_components[i].types[0] === "neighborhood") {
+                var nabe = result.address_components[i].short_name;
+                console.log('new nabe', nabe);
                 $('#neighborhood').val(nabe);
               }
             }
           }
         });
-      }
-
+      //}
     }).bind("geocode:error", function(event, result){
       //console.log("[ERROR]: " + result);
     });
@@ -480,9 +429,10 @@ SalesListings = {};
 
 	SalesListings.initIndex = function() {
     document.addEventListener("page:restore", function() {
-			SalesListings.passiveRealTimeUpdate();
-		  Listings.hideSpinner();
+			Listings.hideSpinner();
+      SalesListings.passiveRealTimeUpdate();
 		});
+
 		Listings.hideSpinner();
 		$('#sales a').click(function() {
 			Listings.showSpinner();
@@ -498,6 +448,12 @@ SalesListings = {};
 		$('.close').click(function() {
 			Listings.hideSpinner();
 		});
+
+    $('#neighborhood-select-multiple').change(SalesListings.throttledSearch);
+    $('#unit-amenities-select-multiple').change(SalesListings.throttledSearch);
+    $('#building-amenities-select-multiple').change(SalesListings.throttledSearch);
+
+    RHMapbox.initMapbox('s-big-map', SalesListings.buildContentString);
 
 		// index filtering
 		$('#sales input').keydown(SalesListings.preventEnter);
@@ -526,12 +482,56 @@ SalesListings = {};
 	  $('#sales .remove-building-feature').click(SalesListings.removeBuildingFeature);
 	  $('#sales .remove-neighborhood').click(SalesListings.removeNeighborhood);
 
+    SalesListings.selectedNeighborhoodIds = getURLParameterByName('neighborhood_ids');
+    if (SalesListings.selectedNeighborhoodIds) {
+      SalesListings.selectedNeighborhoodIds =
+          SalesListings.selectedNeighborhoodIds.split(',');
+    }
+
+    $('#neighborhood-select-multiple').selectize({
+      plugins: ['remove_button'],
+      hideSelected: true,
+      maxItems: 100,
+      items: SalesListings.selectedNeighborhoodIds,
+      onChange: function(value) {
+        SalesListings.selectedNeighborhoodIds = value;
+      }
+    });
+
+    SalesListings.selectedUnitAmenityIds = getURLParameterByName('unit_feature_ids');
+    if (SalesListings.selectedUnitAmenityIds) {
+      SalesListings.selectedUnitAmenityIds =
+          SalesListings.selectedUnitAmenityIds.split(',');
+    }
+    $('#unit-amenities-select-multiple').selectize({
+      plugins: ['remove_button'],
+      hideSelected: true,
+      maxItems: 100,
+      items: SalesListings.selectedUnitAmenityIds,
+      onChange: function(value) {
+        SalesListings.selectedUnitAmenityIds = value;
+      }
+    });
+
+    SalesListings.selectedBuildingAmenityIds = getURLParameterByName('building_feature_ids');
+    if (SalesListings.selectedBuildingAmenityIds) {
+      SalesListings.selectedBuildingAmenityIds =
+          SalesListings.selectedBuildingAmenityIds.split(',');
+    }
+    $('#building-amenities-select-multiple').selectize({
+      plugins: ['remove_button'],
+      hideSelected: true,
+      maxItems: 100,
+      items: SalesListings.selectedBuildingAmenityIds,
+      onChange: function(value) {
+        SalesListings.selectedBuildingAmenityIds = value;
+      }
+    });
+
 		var available_by = $('#sales .datepicker').attr('data-available-by');
 		if (available_by) {
 			$('#sales .datepicker').data("DateTimePicker").date(available_by);
 		}
-
-    RHMapbox.initMapbox('s-big-map', SalesListings.buildContentString);
 
 	  // index page - selecting listings menu dropdown
     $('#sales #emailListings').click(Listings.sendMessage);
@@ -543,10 +543,12 @@ SalesListings = {};
     });
 
     SalesListings.passiveRealTimeUpdate();
+  };
 
+  SalesListings.initShow = function() {
     $('.carousel-indicators > li:first-child').addClass('active');
     $('.carousel-inner > .item:first-child').addClass('active');
-  };
+  }
 
 })();
 
@@ -559,16 +561,16 @@ $(document).on('keyup',function(evt) {
 $(document).ready(function() {
   SalesListings.clearTimer();
 
-  var url = window.location.pathname;
-  var sales = url.indexOf('sales_listings') > -1;
-  var editPage = url.indexOf('edit') > -1;
-  var newPage = url.indexOf('new') > -1;
-  if (sales) {
-    // new and edit pages both render the same form template, so init them using the same code
-    if (editPage || newPage) {
-      SalesListings.initEditor();
-    } else {
-      SalesListings.initIndex();
-    }
+  var editPage = $('.sales_listings.edit').length;
+  var newPage = $('.sales_listings.new').length;
+  var indexPage = $('.sales_listings.index').length;
+
+  // new and edit pages both render the same form template, so init them using the same code
+  if (editPage || newPage) {
+    SalesListings.initEditor();
+  } else if (indexPage) {
+    SalesListings.initIndex();
+  } else {
+    SalesListings.initShow();
   }
 });
