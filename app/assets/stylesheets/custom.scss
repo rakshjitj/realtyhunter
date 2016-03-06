@@ -110,11 +110,11 @@ a:hover.btn-danger {
 // should always appear below navbar
 .main-content {
   position: absolute;
-  top: 50px;
+  top: 100px;
   left: 0;
   right: 0;
   @media (max-width:1150px) {
-    top: 20px;
+    top: 50px;
   }
 }
 
@@ -518,25 +518,28 @@ vertical-padding-lg {
 
 .page-header-buttons {
   margin: 20px 0 10px 0;
-  @media (max-width:768px) {
-    margin: 0;
-  }
+  // @media (max-width:768px) {
+  //   margin: 0;
+  // }
 }
 
 .page-header-buttons-lg {
   margin: 40px 0 10px 0;
-  @media (max-width:768px) {
-    margin: 0;
-  }
+  // @media (max-width:768px) {
+  //   margin: 0;
+  // }
 }
 
+// buildings
 .index-spinner-desktop {
+  display: block;
   position: absolute;
   left: 15%;
-  top: 20%;
+  top: 18%;
   z-index: 1;
 }
 
+// landlords
 .ll-spinner-desktop {
   position: absolute;
   left: 15%;

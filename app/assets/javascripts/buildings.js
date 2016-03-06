@@ -1,12 +1,14 @@
 Buildings = {};
 
 (function() {
+  Buildings.timer;
+
   Buildings.showSpinner = function() {
-    $('#buildings .index-spinner-desktop').show();
+    $('.index-spinner-desktop').show();
   };
 
   Buildings.hideSpinner = function() {
-    $('#buildings .index-spinner-desktop').hide();
+    $('.index-spinner-desktop').hide();
   };
 
   Buildings.filterListings = function(event) {
@@ -18,18 +20,16 @@ Buildings = {};
       },
       dataType: "script",
       success: function(data) {
-        Buildings.hideSpinner();
       },
       error: function(data) {
-        Buildings.hideSpinner();
       }
     });
   };
 
   Buildings.filterBuildings = function(sortByCol, sortDirection) {
-  	var search_path = $('#search-filters').attr('data-search-path');
-
     Buildings.showSpinner();
+
+  	var search_path = $('#search-filters').attr('data-search-path');
 
     if (!sortByCol) {
       sortByCol = Common.getSearchParam('sort_by');
@@ -39,11 +39,11 @@ Buildings = {};
     }
 
     var data = {
-        filter: $('#buildings #filter').val(),
-        status: $('#buildings #status').val(),
-        sort_by: sortByCol,
-        direction: sortDirection,
-      };
+      filter: $('#buildings #filter').val(),
+      status: $('#buildings #status').val(),
+      sort_by: sortByCol,
+      direction: sortDirection,
+    };
     var searchParams = [];
     for(var key in data) {
       if (data.hasOwnProperty(key) && data[key]) {
@@ -60,7 +60,6 @@ Buildings = {};
   };
 
   // search as user types
-  Buildings.timer;
   Buildings.throttledBldgSearch = function() {
     clearTimeout(Buildings.timer);  //clear any interval on key up
     Buildings.timer = setTimeout(Buildings.filterBuildings, 500);
@@ -149,9 +148,6 @@ Buildings = {};
     });
 
     Buildings.updateRemoveImgLinks();
-
-    $('.carousel-indicators > li:first-child').addClass('active');
-    $('.carousel-inner > .item:first-child').addClass('active')
 
     Buildings.setPositions();
     Buildings.makeSortable();
@@ -249,13 +245,17 @@ Buildings = {};
     }
 
     // search filters
+    $('#buildings input').keydown(Buildings.preventEnter);
     $('#buildings #filter').bind('railsAutocomplete.select', Buildings.throttledBldgSearch);
-    $('#buildings #filter').keydown(Buildings.preventEnter);
     $('#buildings #filter').change(Buildings.throttledBldgSearch);
     $('#buildings #status').change(Buildings.throttledBldgSearch);
     $('#buildings #status_listings').change(Buildings.filterListings);
   }
 
+  Buildings.initShow = function () {
+    $('.carousel-indicators > li:first-child').addClass('active');
+    $('.carousel-inner > .item:first-child').addClass('active')
+  }
 })();
 
 $(document).on('keyup',function(evt) {
@@ -265,16 +265,16 @@ $(document).on('keyup',function(evt) {
 });
 
 $(document).ready(function () {
-  var url = window.location.pathname;
-  var buildings = url.indexOf('buildings') > -1;
-  var editPage = url.indexOf('edit') > -1;
-  var newPage = url.indexOf('new') > -1;
-  if (buildings) {
-    // new and edit pages both render the same form template, so init them using the same code
-    if (editPage || newPage) {
-      Buildings.initEditor();
-    } else {
-      Buildings.initIndex();
-    }
+  var editPage = $('.buildings.edit').length;
+  var newPage = $('.buildings.new').length;
+  var indexPage = $('.buildings.index').length;
+  var showPage = $('.buildings.index').length;
+  // new and edit pages both render the same form template, so init them using the same code
+  if (editPage || newPage) {
+    Buildings.initEditor();
+  } else if (indexPage) {
+    Buildings.initIndex();
+  } else if (showPage) {
+    Buildings.initShow();
   }
 });
