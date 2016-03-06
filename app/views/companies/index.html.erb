@@ -1,49 +1,14 @@
-<script>
-  //call when typing or enter or focus leaving
-  function initialize() {
-
-    function doSearch(event) {
-      $.ajax({
-        url: "<%= filter_companies_path %>",
-        data: {
-          search_params: {
-            name: $('#name').val()
-          }
-        },
-        dataType: "script"
-      });
-    };
-
-    // search as user types
-    var timer;
-    function throttledSearch() {
-      clearInterval(timer);  //clear any interval on key up
-      timer = setTimeout(doSearch, 500);
-    };
-
-    // change enter key to tab
-    function preventEnter(event) {
-      if (event.keyCode == 13) {
-        return false;
-      }
-    };
-
-    $('input').keydown(preventEnter);
-    $('#name').keyup(throttledSearch);
-  };
-
-  $(document).ready(initialize);
-</script>
-
 <% provide(:title, 'Companies') %>
-<div class="page-header">
-  <div class="row">
-    <div class="col-md-6">
-      <h1>Companies</h1>
-    </div>
-    <div class="col-md-6 form-label-responsive">
-      <%= link_to 'Add a Company', new_company_path %>
-    </div>
+
+<div class="row">
+  <div class="col-md-6">
+    <h1>Companies</h1>
+  </div>
+  <div class="hidden-xs hidden-sm col-sm-6 form-label-responsive page-header-buttons">
+    <%= link_to 'Add a Company', new_company_path %>
+  </div>
+  <div class="hidden-md hidden-lg col-sm-6 col-sm-left-padding form-label-responsive page-header-buttons">
+    <%= link_to 'Add a Company', new_company_path %>
   </div>
 </div>
 

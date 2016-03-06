@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160227202120) do
+ActiveRecord::Schema.define(version: 20160306042401) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -169,6 +169,7 @@ ActiveRecord::Schema.define(version: 20160227202120) do
     t.integer  "wufoo_partner_forms_id"
     t.integer  "wufoo_listings_forms_id"
     t.integer  "wufoo_career_forms_id"
+    t.integer  "lock_version",              default: 0,     null: false
   end
 
   add_index "companies", ["building_amenities_id"], name: "index_companies_on_building_amenities_id", using: :btree

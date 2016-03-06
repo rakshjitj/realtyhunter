@@ -1,21 +1,19 @@
 <% provide(:title, 'Editing Company') %>
 
-
 <div class="row">
 	<div class="col-md-6 col-md-offset-3">
-
 		<div class="page-header">
 		  <div class="row">
 		    <div class="col-md-7">
 		      <h1><small>Editing</small> <%= @company.name %></h1>
 		    </div>
-		    <div class="col-md-5 form-label-responsive">
+		    <div class="col-md-5 page-header-buttons-lg form-label-responsive">
 		      <%= link_to 'Show', @company %> |
 		      <%= link_to 'Offices', company_offices_path(@company) %>
 		    </div>
 		  </div>
 		</div>
-		
+
 		<%= render 'form' %>
 
 	</div>

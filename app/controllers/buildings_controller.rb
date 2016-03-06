@@ -152,9 +152,6 @@ class BuildingsController < ApplicationController
   protected
 
    def correct_stale_record_version
-      # @building.reload.attributes = building_params[:building].reject do |attrb, value|
-      #  attrb.to_sym == :lock_version
-      # end
       @building.reload
       params[:building].delete('lock_version')
    end
