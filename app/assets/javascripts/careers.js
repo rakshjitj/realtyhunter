@@ -112,4 +112,8 @@ Careers = {};
 
 })();
 
-$(document).ready(Careers.initialize);
+$(document).ready(function() {
+  if ($('.careers').length) {
+    Careers.initialize();
+  }
+});

@@ -330,4 +330,8 @@ $(document).on('keyup',function(evt) {
   }
 });
 
-$(document).ready(Roommates.initialize);
+$(document).ready(function() {
+  if ($('.roommates').length) {
+    Roommates.initialize();
+  }
+});

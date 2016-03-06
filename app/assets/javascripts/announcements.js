@@ -72,4 +72,8 @@ Announcements = {};
 
 })();
 
-$(document).ready(Announcements.initialize);
+$(document).ready(function() {
+	if ($('.announcements').length) {
+		Announcements.initialize();
+	}
+});
