@@ -1,0 +1,105 @@
+<div class="row vertical-margin-lg">
+  <div class="col-xs-3 col-md-3"><label>Monday</label></div>
+  <div class="col-xs-1 col-md-1">
+    <div class="checkbox checkbox-warning checkbox-inline">
+      <%= f.check_box :open_house_mon, class: "open_house_hours", id: "mon", checked: @residential_unit ? @residential_unit.open_house_mon : false %>
+      <label></label>
+    </div>
+  </div>
+  <div class="col-xs-4 col-md-4">
+    <%= f.select(:open_house_mon_from, options_for_select(ResidentialListing::OPEN_HOUSE_HOURS, @residential_unit.open_house_mon_from), {include_blank: "Choose hour..."}, class: 'form-control', disabled: !@residential_unit.open_house_mon) %>
+  </div>
+  <div class="col-xs-4 col-md-4">
+    <%= f.select(:open_house_mon_to, options_for_select(ResidentialListing::OPEN_HOUSE_HOURS, @residential_unit.open_house_mon_to), {include_blank: "Choose hour..."}, class: 'form-control', disabled: !@residential_unit.open_house_mon) %>
+  </div>
+</div>
+<div class="row vertical-margin-lg">
+  <div class="col-xs-3 col-md-3"><label>Tuesday</label></div>
+  <div class="col-xs-1 col-md-1">
+    <div class="checkbox checkbox-warning checkbox-inline">
+      <%= f.check_box :open_house_tue, class: "open_house_hours", id: "tue", checked: @residential_unit ? @residential_unit.open_house_tue : false %>
+      <label></label>
+    </div>
+  </div>
+  <div class="col-xs-4 col-md-4">
+    <%= f.select(:open_house_tue_from, options_for_select(ResidentialListing::OPEN_HOUSE_HOURS, @residential_unit.open_house_tue_from), {include_blank: "Choose hour..."}, class: 'form-control', disabled: !@residential_unit.open_house_tue) %>
+  </div>
+  <div class="col-xs-4 col-md-4">
+    <%= f.select(:open_house_tue_to, options_for_select(ResidentialListing::OPEN_HOUSE_HOURS, @residential_unit.open_house_tue_to), {include_blank: "Choose hour..."}, class: 'form-control', disabled: !@residential_unit.open_house_tue) %>
+  </div>
+</div>
+<div class="row vertical-margin-lg">
+  <div class="col-xs-3 col-md-3"><label>Wednesday</label></div>
+  <div class="col-xs-1 col-md-1">
+    <div class="checkbox checkbox-warning checkbox-inline">
+      <%= f.check_box :open_house_wed, class: "open_house_hours", id: "wed", checked: @residential_unit ? @residential_unit.open_house_wed : false %>
+      <label></label>
+    </div>
+  </div>
+  <div class="col-xs-4 col-md-4">
+    <%= f.select(:open_house_wed_from, options_for_select(ResidentialListing::OPEN_HOUSE_HOURS, @residential_unit.open_house_wed_from), {include_blank: "Choose hour..."}, class: 'form-control', disabled: !@residential_unit.open_house_wed) %>
+  </div>
+  <div class="col-xs-4 col-md-4">
+    <%= f.select(:open_house_wed_to, options_for_select(ResidentialListing::OPEN_HOUSE_HOURS, @residential_unit.open_house_wed_to), {include_blank: "Choose hour..."}, class: 'form-control', disabled: !@residential_unit.open_house_wed) %>
+  </div>
+</div>
+<div class="row vertical-margin-lg">
+  <div class="col-xs-3 col-md-3"><label>Thursday</label></div>
+  <div class="col-xs-1 col-md-1">
+    <div class="checkbox checkbox-warning checkbox-inline">
+      <%= f.check_box :open_house_thu, class: "open_house_hours", id: "thu", checked: @residential_unit ? @residential_unit.open_house_thu : false %>
+      <label></label>
+    </div>
+  </div>
+  <div class="col-xs-4 col-md-4">
+    <%= f.select(:open_house_thu_from, options_for_select(ResidentialListing::OPEN_HOUSE_HOURS, @residential_unit.open_house_thu_from), {include_blank: "Choose hour..."}, class: 'form-control', disabled: !@residential_unit.open_house_thu) %>
+  </div>
+  <div class="col-xs-4 col-md-4">
+    <%= f.select(:open_house_thu_to, options_for_select(ResidentialListing::OPEN_HOUSE_HOURS, @residential_unit.open_house_thu_to), {include_blank: "Choose hour..."}, class: 'form-control', disabled: !@residential_unit.open_house_thu) %>
+  </div>
+</div>
+<div class="row vertical-margin-lg">
+  <div class="col-xs-3 col-md-3"><label>Friday</label></div>
+  <div class="col-xs-1 col-md-1">
+    <div class="checkbox checkbox-warning checkbox-inline">
+      <%= f.check_box :open_house_fri, class: "open_house_hours", id: "fri", checked: @residential_unit ? @residential_unit.open_house_fri : false %>
+      <label></label>
+    </div>
+  </div>
+  <div class="col-xs-4 col-md-4">
+    <%= f.select(:open_house_fri_from, options_for_select(ResidentialListing::OPEN_HOUSE_HOURS, @residential_unit.open_house_fri_from), {include_blank: "Choose hour..."}, class: 'form-control', disabled: !@residential_unit.open_house_fri) %>
+  </div>
+  <div class="col-xs-4 col-md-4">
+    <%= f.select(:open_house_fri_to, options_for_select(ResidentialListing::OPEN_HOUSE_HOURS, @residential_unit.open_house_fri_to), {include_blank: "Choose hour..."}, class: 'form-control', disabled: !@residential_unit.open_house_fri) %>
+  </div>
+</div>
+<div class="row vertical-margin-lg">
+  <div class="col-xs-3 col-md-3"><label>Saturday</label></div>
+  <div class="col-xs-1 col-md-1">
+    <div class="checkbox checkbox-warning checkbox-inline">
+      <%= f.check_box :open_house_sat, class: "open_house_hours", id: "sat", checked: @residential_unit ? @residential_unit.open_house_sat : false %>
+      <label></label>
+    </div>
+  </div>
+  <div class="col-xs-4 col-md-4">
+    <%= f.select(:open_house_sat_from, options_for_select(ResidentialListing::OPEN_HOUSE_HOURS, @residential_unit.open_house_sat_from), {include_blank: "Choose hour..."}, class: 'form-control', disabled: !@residential_unit.open_house_sat) %>
+  </div>
+  <div class="col-xs-4 col-md-4">
+    <%= f.select(:open_house_sat_to, options_for_select(ResidentialListing::OPEN_HOUSE_HOURS, @residential_unit.open_house_sat_to), {include_blank: "Choose hour..."}, class: 'form-control', disabled: !@residential_unit.open_house_sat) %>
+  </div>
+</div>
+<div class="row vertical-margin-lg">
+  <div class="col-xs-3 col-md-3"><label>Sunday</label></div>
+  <div class="col-xs-1 col-md-1">
+    <div class="checkbox checkbox-warning checkbox-inline">
+      <%= f.check_box :open_house_sun, class: "open_house_hours", id: "sun", checked: @residential_unit ? @residential_unit.open_house_sun : false %>
+      <label></label>
+    </div>
+  </div>
+  <div class="col-xs-4 col-md-4">
+    <%= f.select(:open_house_sun_from, options_for_select(ResidentialListing::OPEN_HOUSE_HOURS, @residential_unit.open_house_sun_from), {include_blank: "Choose hour..."}, class: 'form-control', disabled: !@residential_unit.open_house_sun) %>
+  </div>
+  <div class="col-xs-4 col-md-4">
+    <%= f.select(:open_house_sun_to, options_for_select(ResidentialListing::OPEN_HOUSE_HOURS, @residential_unit.open_house_sun_to), {include_blank: "Choose hour..."}, class: 'form-control', disabled: !@residential_unit.open_house_sun) %>
+  </div>
+</div>

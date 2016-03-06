@@ -268,6 +268,7 @@
 							    			<%= pet_policy(@residential_unit) %>
 							    		</div>
 					    			</div>
+
 					    			<div class="row">
 					    				<div class="col-xs-5">
 							    			<strong>Landlord:</strong>
@@ -355,17 +356,162 @@
 						    	</div>
 						    <% end %>
 
-						    <% if @residential_unit.unit.open_house.blank? %>
-						    	<br />
-						    	<div class="row">
-						    		<div class="col-xs-12 col-md-3">
-						    			<strong>Open House:</strong>
-						    		</div>
-						    		<div class="col-xs-12 col-md-9">
-						    			<%= open_house(@residential_unit) %>
-						    		</div>
-						    	</div>
-					    	<% end %>
+					    	<% if (@residential_unit.open_house_mon_from.present? || @residential_unit.open_house_mon_to.present?) || (@residential_unit.open_house_tue_from.present? || @residential_unit.open_house_tue_to.present?) || (@residential_unit.open_house_wed_from.present? || @residential_unit.open_house_wed_to.present?) || (@residential_unit.open_house_thu_from.present? || @residential_unit.open_house_thu_to.present?) || (@residential_unit.open_house_fri_from.present? || @residential_unit.open_house_fri_to.present?) || (@residential_unit.open_house_sat_from.present? || @residential_unit.open_house_sat_to.present?) || (@residential_unit.open_house_sun_from.present? || @residential_unit.open_house_sun_to.present?) %>
+									<!-- Open House Schedule Section - START -->
+									<div class="row">
+										<div class="col-md-6">
+											<br>
+											<h4>Open House Schedule</h4>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<% if @residential_unit.open_house_mon_from.present? %>
+												<div class="row">
+													<div class="col-xs-5">
+										    			<strong>Monday From:</strong>
+										    		</div>
+										    		<div class="col-xs-7">
+										    			<%= @residential_unit.open_house_mon_from %>
+										    		</div>
+												</div>
+											<% end %>
+											<% if @residential_unit.open_house_tue_from.present? %>
+												<div class="row">
+													<div class="col-xs-5">
+										    			<strong>Tuesday From:</strong>
+										    		</div>
+										    		<div class="col-xs-7">
+										    			<%= @residential_unit.open_house_tue_from %>
+										    		</div>
+												</div>
+											<% end %>
+											<% if @residential_unit.open_house_wed_from.present? %>
+												<div class="row">
+													<div class="col-xs-5">
+										    			<strong>Wednesday From:</strong>
+										    		</div>
+										    		<div class="col-xs-7">
+										    			<%= @residential_unit.open_house_wed_from %>
+										    		</div>
+												</div>
+											<% end %>
+											<% if @residential_unit.open_house_thu_from.present? %>
+												<div class="row">
+													<div class="col-xs-5">
+										    			<strong>Thursday From:</strong>
+										    		</div>
+										    		<div class="col-xs-7">
+										    			<%= @residential_unit.open_house_thu_from %>
+										    		</div>
+												</div>
+											<% end %>
+											<% if @residential_unit.open_house_fri_from.present? %>
+												<div class="row">
+													<div class="col-xs-5">
+										    			<strong>Friday From:</strong>
+										    		</div>
+										    		<div class="col-xs-7">
+										    			<%= @residential_unit.open_house_fri_from %>
+										    		</div>
+												</div>
+											<% end %>
+											<% if @residential_unit.open_house_sat_from.present? %>
+												<div class="row">
+													<div class="col-xs-5">
+										    			<strong>Saturday From:</strong>
+										    		</div>
+										    		<div class="col-xs-7">
+										    			<%= @residential_unit.open_house_sat_from %>
+										    		</div>
+												</div>
+											<% end %>
+											<% if @residential_unit.open_house_sun_from.present? %>
+												<div class="row">
+													<div class="col-xs-5">
+										    			<strong>Sunday From:</strong>
+										    		</div>
+										    		<div class="col-xs-7">
+										    			<%= @residential_unit.open_house_sun_from %>
+										    		</div>
+												</div>
+											<% end %>
+								    	</div>
+								    	<div class="col-md-6">
+								    		<% if @residential_unit.open_house_mon_to.present? %>
+									    		<div class="row">
+													<div class="col-xs-5">
+										    			<strong>Monday To:</strong>
+										    		</div>
+										    		<div class="col-xs-7">
+										    			<%= @residential_unit.open_house_mon_to %>
+										    		</div>
+												</div>
+											<% end %>
+											<% if @residential_unit.open_house_tue_to.present? %>
+												<div class="row">
+													<div class="col-xs-5">
+										    			<strong>Tuesday To:</strong>
+										    		</div>
+										    		<div class="col-xs-7">
+										    			<%= @residential_unit.open_house_tue_to %>
+										    		</div>
+												</div>
+											<% end %>
+											<% if @residential_unit.open_house_wed_to.present? %>
+												<div class="row">
+													<div class="col-xs-5">
+										    			<strong>Wednesday To:</strong>
+										    		</div>
+										    		<div class="col-xs-7">
+										    			<%= @residential_unit.open_house_wed_to %>
+										    		</div>
+												</div>
+											<% end %>
+											<% if @residential_unit.open_house_thu_to.present? %>
+												<div class="row">
+													<div class="col-xs-5">
+										    			<strong>Thursday To:</strong>
+										    		</div>
+										    		<div class="col-xs-7">
+										    			<%= @residential_unit.open_house_thu_to %>
+										    		</div>
+												</div>
+											<% end %>
+											<% if @residential_unit.open_house_fri_to.present? %>
+												<div class="row">
+													<div class="col-xs-5">
+										    			<strong>Friday To:</strong>
+										    		</div>
+										    		<div class="col-xs-7">
+										    			<%= @residential_unit.open_house_fri_to %>
+										    		</div>
+												</div>
+											<% end %>
+											<% if @residential_unit.open_house_sat_to.present? %>
+												<div class="row">
+													<div class="col-xs-5">
+										    			<strong>Saturday To:</strong>
+										    		</div>
+										    		<div class="col-xs-7">
+										    			<%= @residential_unit.open_house_sat_to %>
+										    		</div>
+												</div>
+											<% end %>
+											<% if @residential_unit.open_house_sun_to.present? %>
+												<div class="row">
+													<div class="col-xs-5">
+										    			<strong>Sunday To:</strong>
+										    		</div>
+										    		<div class="col-xs-7">
+										    			<%= @residential_unit.open_house_sun_to %>
+										    		</div>
+												</div>
+											<% end %>
+								    	</div>
+									</div>
+									<!-- Open House Schedule Section - END -->
+								<% end %>
 
 					    	<!-- Building info -->
 					    	<% bldg_amenities = @residential_unit.unit.building.amenities_to_s %>

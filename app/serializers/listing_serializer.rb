@@ -4,7 +4,11 @@ class ListingSerializer < ActiveModel::Serializer
 	:floor, :layout, :bedrooms, :unit_number, :pets, :status, :building, :date_available,
 	:changed_at, :square_footage, :rent, :id, :favorites, :show, :expose_address,
 	:total_room_count, :condition, :showing_instruction, :commission_amount,
-	:cyof, :rented_date, :rlsny, :share_with_brokers
+	:cyof, :rented_date, :rlsny, :share_with_brokers, 
+	:open_house_mon_from, :open_house_mon_to, :open_house_tue_from, :open_house_tue_to,
+    :open_house_wed_from, :open_house_wed_to, :open_house_thu_from, :open_house_thu_to,
+    :open_house_fri_from, :open_house_fri_to, :open_house_sat_from, :open_house_sat_to,
+    :open_house_sun_from, :open_house_sun_to
 
 	attribute :building, serializer: BuildingSerializer
 
@@ -280,6 +284,118 @@ class ListingSerializer < ActiveModel::Serializer
 	def share_with_brokers
 		if is_residential
 			object.listing.share_with_brokers
+		else
+			nil
+		end
+	end
+
+	def open_house_mon_from
+		if is_residential
+			object.listing.open_house_mon_from
+		else
+			nil
+		end
+	end
+
+	def open_house_mon_to
+		if is_residential
+			object.listing.open_house_mon_to
+		else
+			nil
+		end
+	end
+
+	def open_house_tue_from
+		if is_residential
+			object.listing.open_house_tue_from
+		else
+			nil
+		end
+	end
+
+	def open_house_tue_to
+		if is_residential
+			object.listing.open_house_tue_to
+		else
+			nil
+		end
+	end
+
+	def open_house_wed_from
+		if is_residential
+			object.listing.open_house_wed_from
+		else
+			nil
+		end
+	end
+
+	def open_house_wed_to
+		if is_residential
+			object.listing.open_house_wed_to
+		else
+			nil
+		end
+	end
+
+	def open_house_thu_from
+		if is_residential
+			object.listing.open_house_thu_from
+		else
+			nil
+		end
+	end
+
+	def open_house_thu_to
+		if is_residential
+			object.listing.open_house_thu_to
+		else
+			nil
+		end
+	end
+
+	def open_house_fri_from
+		if is_residential
+			object.listing.open_house_fri_from
+		else
+			nil
+		end
+	end
+
+	def open_house_fri_to
+		if is_residential
+			object.listing.open_house_fri_to
+		else
+			nil
+		end
+	end
+
+	def open_house_sat_from
+		if is_residential
+			object.listing.open_house_sat_from
+		else
+			nil
+		end
+	end
+
+	def open_house_sat_to
+		if is_residential
+			object.listing.open_house_sat_to
+		else
+			nil
+		end
+	end
+
+	def open_house_sun_from
+		if is_residential
+			object.listing.open_house_sun_from
+		else
+			nil
+		end
+	end
+
+	def open_house_sun_to
+		if is_residential
+			object.listing.open_house_sun_to
 		else
 			nil
 		end

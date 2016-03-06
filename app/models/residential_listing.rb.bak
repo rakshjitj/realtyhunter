@@ -109,8 +109,7 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self.listings_by_neighborhood(user, listing_ids)
-    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord]})
-      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord, :neighborhood]})
       .where('companies.id = ?', user.company_id)
       .where('units.listing_id IN (?)', listing_ids)
       .select('buildings.formatted_street_address',
@@ -374,7 +373,7 @@ class ResidentialListing < ActiveRecord::Base
         params[:primary_agent_id], params[:primary_agent_id])
     end
 
-    running_list.uniq
+    running_list
   end
 
   def deep_copy_imgs(dst_id)
@@ -475,7 +474,7 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   # collect the data we will need to access from our giant map view
-  def self.set_location_data(runits, images)
+  def self.set_location_data(runits)
     map_infos = {}
     for i in 0..runits.length-1
       runit = runits[i]
@@ -495,12 +494,7 @@ class ResidentialListing < ActiveRecord::Base
         building_unit: runit.building_unit,
         beds: runit.beds,
         baths: runit.baths,
-        rent: runit.rent
-        }
-
-      if images[runit.unit_id]
-        unit_info['image'] = images[runit.unit_id].file.url(:thumb)
-      end
+        rent: runit.rent }
 
       if map_infos.has_key?(street_address)
         map_infos[street_address]['units'] << unit_info
@@ -508,6 +502,7 @@ class ResidentialListing < ActiveRecord::Base
         bldg_info['units'] = [unit_info]
         map_infos[street_address] = bldg_info
       end
+
     end
 
     map_infos.to_json
@@ -529,6 +524,7 @@ class ResidentialListing < ActiveRecord::Base
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by', 'units.listing_id')
       .order('residential_listings.updated_at desc')
+      #'residential_listings.for_roomsharing',
 
     if !status.nil?
       status_lowercase = status.downcase
@@ -551,8 +547,7 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self.for_units(unit_ids, status=nil)
-    listings = ResidentialListing.joins(unit: {building: [:landlord]})
-      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+    listings = ResidentialListing.joins(unit: {building: [:landlord, :neighborhood]})
       .where('units.id in (?)', unit_ids)
       .where('units.archived = false')
       .select('buildings.formatted_street_address',
@@ -620,16 +615,14 @@ class ResidentialListing < ActiveRecord::Base
 
       listings.each do |listing|
         csv << [listing.formatted_street_address, listing.building_unit, listing.neighborhood_name,
-          listing.exclusive ? 'Yes' : 'No', listing.can_roomshare ? 'Yes' : 'No',
-          listing.beds, listing.baths, listing.notes, listing.description, listing.lease_start,
-          listing.lease_end,
-          listing.has_fee ? 'Yes' : 'No', listing.op_fee_percentage, listing.tp_fee_percentage,
-          listing.tenant_occupied ? 'Yes' : 'No',
+          listing.exclusive, listing.can_roomshare,
+          listing.beds, listing.baths, listing.notes, listing.description, listing.lease_start, listing.lease_end,
+          listing.has_fee, listing.op_fee_percentage, listing.tp_fee_percentage, listing.tenant_occupied,
           agents[listing.unit_id] ? agents[listing.unit_id].map {|a| a.name }.join(', ') : '',
           listing.listing_id, listing.landlord_code, listing.rent,
           listing.available_by, listing.access_info,
           reverse_statuses[listing.status.to_s.to_sym],
-          listing.created_at, listing.updated_at, listing.archived ? 'Yes' : 'No']
+          listing.created_at, listing.updated_at, listing.archived]
       end
     end
   end

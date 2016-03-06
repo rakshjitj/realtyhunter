@@ -251,6 +251,19 @@
         </div>
 
         <div class="row vertical-margin-lg">
+          <div class="col-md-2">
+            <label>Open House Schedule</label>
+          </div>
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-xs-12">
+                <%= render partial: 'open_house_schedule',  locals: { f: f } %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
             <%= f.label :lease_start, "Lease Duration", class: 'required' %>
           </div>

@@ -95,7 +95,7 @@ class ResidentialListingsController < ApplicationController
 
     if residential_unit_dup.valid?
       @residential_unit = residential_unit_dup
-      render :js => "window.location.pathname = '#{residential_listing_path(@residential_unit)}'"
+      render js: "window.location.pathname = '#{residential_listing_path(@residential_unit)}'"
     else
       # TODO: not sure how to handle this best...
       flash[:warning] = "Duplication failed!"
@@ -382,10 +382,17 @@ class ResidentialListingsController < ApplicationController
         :available_starting, :available_before, :custom_amenities,
         :roomsharing_filter, :unassigned_filter, :primary_agent_id, :favorites, :show, :expose_address,
         :floor, :total_room_count, :condition, :showing_instruction, :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
-        :unit => [:building_unit, :rent, :available_by, :access_info, :status,
+        :open_house_mon, :open_house_mon_from, :open_house_mon_to,
+        :open_house_tue, :open_house_tue_from, :open_house_tue_to,
+        :open_house_wed, :open_house_wed_from, :open_house_wed_to,
+        :open_house_thu, :open_house_thu_from, :open_house_thu_to,
+        :open_house_fri, :open_house_fri_from, :open_house_fri_to,
+        :open_house_sat, :open_house_sat_from, :open_house_sat_to,
+        :open_house_sun, :open_house_sun_from, :open_house_sun_to,
+        unit: [:building_unit, :rent, :available_by, :access_info, :status,
           :open_house, :oh_exclusive, :exclusive,
           :building_id, :primary_agent_id, :listing_agent_id ],
-        :residential_amenity_ids => []
+        residential_amenity_ids: []
         )
 
       if data[:unit]

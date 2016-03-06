@@ -402,6 +402,27 @@ ActiveRecord::Schema.define(version: 20160306042401) do
     t.date     "rented_date"
     t.boolean  "rlsny",               default: false
     t.boolean  "share_with_brokers",  default: false
+    t.boolean  "open_house_mon",      default: false
+    t.string   "open_house_mon_from"
+    t.string   "open_house_mon_to"
+    t.boolean  "open_house_tue",      default: false
+    t.string   "open_house_tue_from"
+    t.string   "open_house_tue_to"
+    t.boolean  "open_house_wed",      default: false
+    t.string   "open_house_wed_from"
+    t.string   "open_house_wed_to"
+    t.boolean  "open_house_thu",      default: false
+    t.string   "open_house_thu_from"
+    t.string   "open_house_thu_to"
+    t.boolean  "open_house_fri",      default: false
+    t.string   "open_house_fri_from"
+    t.string   "open_house_fri_to"
+    t.boolean  "open_house_sat",      default: false
+    t.string   "open_house_sat_from"
+    t.string   "open_house_sat_to"
+    t.boolean  "open_house_sun",      default: false
+    t.string   "open_house_sun_from"
+    t.string   "open_house_sun_to"
   end
 
   add_index "residential_listings", ["roommates_id"], name: "index_residential_listings_on_roommates_id", using: :btree

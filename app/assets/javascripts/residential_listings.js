@@ -372,6 +372,23 @@ ResidentialListings = {};
     });
   };
 
+  ResidentialListings.openHouseSchedule = function() {
+    $('.open_house_hours').change(function(){
+      var cb_id = ($(this).attr('id'));
+      if($('input[name="residential_listing[open_house_'+cb_id+']"]').is(":checked")){
+        $("#residential_listing_open_house_"+cb_id+"_from").removeAttr("disabled");
+        $("#residential_listing_open_house_"+cb_id+"_to").removeAttr("disabled");
+      }
+      else
+      {
+        $("#residential_listing_open_house_"+cb_id+"_from").attr("disabled", "disabled");
+        $("#residential_listing_open_house_"+cb_id+"_to").attr("disabled", "disabled");
+        // $("#residential_listing_open_house_"+cb_id+"_from").val('');
+        // $("#residential_listing_open_house_"+cb_id+"_to").val('');
+      }
+    });
+  };
+
   ResidentialListings.initEditor = function() {
     $('.has-fee').click(ResidentialListings.toggleFeeOptions);
     ResidentialListings.toggleFeeOptions();
@@ -399,6 +416,7 @@ ResidentialListings = {};
 
     ResidentialListings.commissionAmount();
     ResidentialListings.rlsnyValidation();
+    ResidentialListings.openHouseSchedule();
   }
 
   ResidentialListings.showCard = function(cardName, e) {
