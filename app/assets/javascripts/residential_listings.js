@@ -68,7 +68,7 @@ ResidentialListings = {};
 	};
 
   ResidentialListings.queryAnnouncements = function(limit) {
-    console.log('res announce');
+    // console.log('res announce');
     $.ajax({
       url: '/residential_listings/update_announcements',
       data: {
