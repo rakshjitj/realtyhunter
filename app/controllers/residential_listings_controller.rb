@@ -187,11 +187,11 @@ class ResidentialListingsController < ApplicationController
 
   # GET
   # handles ajax call. uses latest data in modal
-  def inaccuracy_modal
-    respond_to do |format|
-      format.js
-    end
-  end
+  # def inaccuracy_modal
+  #   respond_to do |format|
+  #     format.js
+  #   end
+  # end
 
   # PATCH
   # triggers email to staff notifying them of the inaccuracy

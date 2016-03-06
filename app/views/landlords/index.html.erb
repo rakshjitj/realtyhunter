@@ -1,52 +1,57 @@
-
 <% provide(:title, 'Landlords') %>
 
-<div class="page-header">
-  <div class="row">
-    <div class="col-md-6">
-      <h1>Landlords</h1>
-    </div>
-    <div class="col-md-6 form-label-responsive">
-      <%= link_to 'Add a Landlord', new_landlord_path, class: 'btn btn-warning btn-sm link-as-button' %>
-      <%= link_to 'Download CSV', landlords_path(format: :csv), class: 'btn btn-warning btn-sm link-as-button' %>
-    </div>
+<div class="row">
+  <div class="col-md-6">
+    <h1>Landlords</h1>
+  </div>
+  <div class="hidden-xs hidden-sm col-sm-6 form-label-responsive page-header-buttons">
+    <%= link_to 'Add a Landlord', new_landlord_path, class: 'btn btn-warning btn-sm link-as-button' %>
+    <%= link_to 'Download CSV', landlords_path(format: :csv), class: 'btn btn-warning btn-sm link-as-button' %>
+  </div>
+  <div class="hidden-md hidden-lg col-sm-6 col-sm-left-padding form-label-responsive page-header-buttons">
+    <%= link_to 'Add a Landlord', new_landlord_path, class: 'btn btn-warning btn-sm link-as-button' %>
+    <%= link_to 'Download CSV', landlords_path(format: :csv), class: 'btn btn-warning btn-sm link-as-button' %>
   </div>
 </div>
 
 <!-- put this here so that clicking on the buttons above won't trigger the spinner -->
 <div id="landlords">
+  <div class="row">
+    <div class="col-xs-12">
 
-<div id="landlord-search-filters" data-search-path="<%= filter_landlords_path %>">
+      <i class="fa fa-spinner fa-pulse fa-4x ll-spinner-desktop"></i>
 
-  <i class="fa fa-spinner fa-pulse fa-4x ll-spinner-desktop"></i>
+      <div id="landlord-search-filters" data-search-path="<%= filter_landlords_path %>">
+      <%= form_tag landlords_path, :method => 'get' do %>
+        <div class="row">
+          <div class="col-xs-12 col-md-4 vertical-padding">
+            <%= autocomplete_field_tag :filter, params[:filter],
+              autocomplete_landlord_code_landlords_path,
+              update_elements: {},
+              placeholder: "Filter by code",
+              size: 30, class:'form-control' %>
+          </div>
+          <div class="col-xs-12 col-md-offset-2 col-md-4 form-label-responsive">
+            <label class="vertical-padding">Landlords with units that have this status:</label>
+          </div>
+          <div class="col-xs-12 col-md-2">
+            <% if current_user.is_management? || current_user.is_listings_manager? %>
+              <%= select_tag(:status,
+                options_for_select(['Any', 'Active/Pending', 'Active', 'Pending', 'Off'],
+                params[:status] ? params[:status].titleize : "Any"), class: 'form-control') %>
+            <% else %>
+              <%= select_tag(:status,
+                options_for_select(['Any', 'Active/Pending', 'Active', 'Pending'],
+                params[:status] ? params[:status].titleize : "Any"), class: 'form-control') %>
+            <% end %>
+          </div>
 
-  <%= form_tag landlords_path, :method => 'get' do %>
-    <div class="row">
-      <div class="col-xs-12 col-md-4 vertical-padding">
-        <%= autocomplete_field_tag :filter, params[:filter],
-          autocomplete_landlord_code_landlords_path,
-          update_elements: {},
-          placeholder: "Filter by code",
-          size: 30, class:'form-control' %>
-      </div>
-      <div class="col-xs-12 col-md-offset-2 col-md-4 vertical-padding form-label-responsive">
-        <label>Landlords with units that have this status:</label>
-      </div>
-      <div class="col-xs-12 col-md-2 vertical-padding">
-        <% if current_user.is_management? || current_user.is_listings_manager? %>
-          <%= select_tag(:status,
-            options_for_select(['Any', 'Active/Pending', 'Active', 'Pending', 'Off'],
-            params[:status] ? params[:status].titleize : "Any"), class: 'form-control') %>
-        <% else %>
-          <%= select_tag(:status,
-            options_for_select(['Any', 'Active/Pending', 'Active', 'Pending'],
-            params[:status] ? params[:status].titleize : "Any"), class: 'form-control') %>
-        <% end %>
-      </div>
-
+        </div>
+      <% end %><!-- form end -->
     </div>
-  <% end %><!-- form end -->
+  </div>
 </div>
+
 <div class="row">
   <div class="col-xs-12 vertical-padding">
     <span class="totals">

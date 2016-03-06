@@ -123,18 +123,20 @@ class BuildingsController < ApplicationController
 
   # GET
   # handles ajax call. uses latest data in modal
-  def inaccuracy_modal
-    respond_to do |format|
-      format.js
-    end
-  end
+  # def inaccuracy_modal
+  #   respond_to do |format|
+  #     format.js
+  #   end
+  # end
 
   # triggers email to staff notifying them of the inaccuracy
   def send_inaccuracy
     @building.inaccuracy_description = building_params[:inaccuracy_description]
     @building.send_inaccuracy_report(current_user)
+    flash[:success] = "Report submitted! Thank you."
     respond_to do |format|
-      format.js { flash[:notice] = "Report submitted! Thank you." }
+      format.html { redirect_to @building }
+      format.js {  }
     end
   end
 

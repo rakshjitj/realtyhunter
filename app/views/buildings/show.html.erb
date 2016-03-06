@@ -32,11 +32,11 @@
 							<%= link_to 'Add a Unit', new_residential_listing_path(building_id: @building.id) %>
 						<% end %>
 		  		</div>
-		  		<div class="col-xs-12 col-md-6 form-label-responsive vertical-margin-lg">
-		  			<%= link_to 'Report Inaccuracy', inaccuracy_modal_building_path(@building),
+		  		<!-- <div class="col-xs-12 col-md-6 form-label-responsive vertical-margin-lg">
+		  			< % = link_to 'Report Inaccuracy', inaccuracy_modal_building_path(@building),
 		  				class: "btn btn-sm btn-danger ",
-			      	data: {toggle: "modal", target: "#bldgInaccuracyModal"}, remote: true %>
-		  		</div>
+			      	data: {toggle: "modal", target: "#bldgInaccuracyModal"}, remote: true % >
+		  		</div> -->
 		  	</div><!-- row -->
 
 		  	<!-- begin photos -->
@@ -188,17 +188,61 @@
 			<br />
     	<div class="row">
     		<div class="col-md-12">
-					<iframe id="map-canvas"
-					  frameborder="0"
-					  src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_MAPS_KEY'] %>
-					    &q=<%= @building.formatted_street_address %>"
-					  allowfullscreen>
-					</iframe>
-				</div>
-			</div>
+    			<!-- Nav tabs -->
+			    <ul class="nav nav-tabs" role="tablist">
+			      <li role="google-map-tab" class="active"><a href="#google-map-tab" aria-controls="google-map-tab"
+			      	role="tab" data-toggle="tab">Map</a></li>
+			      <li role="walkscore"><a href="#walkscore" aria-controls="walkscore" role="tab" data-toggle="tab">Walkscore</a></li>
+			    </ul>
 
-		  </div>
-		</div>
+    			<div class="tab-content">
+			      <!-- ******************** first tablpanel - google maps ******************** -->
+			      <div role="tabpanel" class="tab-pane fade in active" id="google-map-tab">
+			      	<iframe id="map-canvas"
+							  frameborder="0"
+							  src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_MAPS_KEY'] %>
+							    &q=<%= @building.formatted_street_address %>"
+							  allowfullscreen>
+							</iframe>
+			      </div><!-- end tabpanel - google maps -->
+			      <!-- ******************** first tabpanel - walkscore ********************-->
+			      <div role="tabpanel" class="tab-pane fade center" id="walkscore">
+			      	<script type='text/javascript'>
+								var ws_wsid = 'e4004727da4a47a2bcb676b7abf930b6';
+								var ws_address = '<%= @building.formatted_street_address %>';
+								var ws_width = '600';
+								var ws_height = '444';
+								var ws_layout = 'horizontal';
+								var ws_commute = 'true';
+								var ws_transit_score = 'true';
+								var ws_map_modules = 'all';
+								</script><style type='text/css'>#ws-walkscore-tile{position:relative;text-align:left}#ws-walkscore-tile *{float:none;}#ws-foottext, #ws-footer a,#ws-footer a:link{font:11px/14px Verdana,Arial,Helvetica,sans-serif;margin-right:6px;white-space:nowrap;padding:0;color:#000;font-weight:bold;text-decoration:none}#ws-footer a:hover{color:#000;text-decoration:none}#ws-footer a:active{color:#b14900}</style><div id='ws-walkscore-tile'><div id='ws-footer' style='position:absolute;top:426px;left:8px;width:588px'><form id='ws-form'><span id='ws-foottext' style='float: left;'>Score <a id='ws-a' href='https://www.redfin.com/how-walk-score-works' target='_blank'>Your Home</a>: </span><input type='text' id='ws-street' style='position:absolute;top:0px;left:170px;width:386px' /><input type='image' id='ws-go' src='//cdn2.walk.sc/2/images/tile/go-btn.gif' height='15' width='26' border='0' alt='get my Walk Score' style='position:absolute;top:0px;right:0px' /></form></div></div><script type='text/javascript' src='https://www.walkscore.com/tile/show-walkscore-tile.php'></script>
+
+  					</div><!-- end tabpanel - walkscore -->
+  				</div>
+  			</div>
+  		</div>
+
+			<br>
+    	<div class="row inaccuracy-report">
+    		<div class="col-xs-12">
+	    		<h3>Inaccuracy Report</h3>
+	    		<%= form_for(@building,
+	    				url: send_inaccuracy_building_path(@building)) do |f| %>
+						<div class="modal-body2">
+							<p>Something wrong at <%= @building.street_address %>?
+							The more detail you can provide, the better.</p>
+							<br>
+						  <%= f.text_area :inaccuracy_description, rows: 5, class: 'form-control' %>
+						</div>
+						<div class="modal-footer">
+							<%= f.submit 'Send', class: 'btn btn-danger submit-link' %>
+						</div>
+					<% end %>
+	    	</div>
+	    </div>
+
+
 
 	</div>
 </div>
@@ -211,21 +255,6 @@
 		commercial_units: @commercial_units,
 		com_images: @com_images
 	} %>
-</div>
-
-<!-- Inaccuracy Modal -->
-<div class="modal fade modal-fullscreen" id="bldgInaccuracyModal" tabindex="-1" role="dialog"
-  aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Report Building Inaccuracy</h4>
-      </div>
-      <div id="placeholder-body"></div>
-
-    </div>
-  </div>
 </div>
 
 </div><!-- buildings -->
