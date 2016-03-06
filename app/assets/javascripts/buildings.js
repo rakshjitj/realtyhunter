@@ -16,7 +16,7 @@ Buildings = {};
     $.ajax({
       url: search_path,
       data: {
-        status_listings: $('#buildings #status_listings').val(),
+        status_listings: $('#status_listings').val(),
       },
       dataType: "script",
       success: function(data) {
@@ -39,8 +39,8 @@ Buildings = {};
     }
 
     var data = {
-      filter: $('#buildings #filter').val(),
-      status: $('#buildings #status').val(),
+      filter: $('#filter').val(),
+      status: $('#status').val(),
       sort_by: sortByCol,
       direction: sortDirection,
     };
@@ -73,14 +73,6 @@ Buildings = {};
     }
   };
 
-  Buildings.setPositions = function() {
-    // loop through and give each task a data-pos
-    // attribute that holds its position in the DOM
-    $('#buildings .img-thumbnail').each(function(i) {
-        $(this).attr("data-pos", i+1);
-    });
-  };
-
   Buildings.removeBldgImage = function (id, building_id) {
     // make a DELETE ajax request to delete the file
     $.ajax({
@@ -93,15 +85,6 @@ Buildings = {};
       error: function(data) {
         //console.log('ERROR:', data);
       }
-    });
-  };
-
-  Buildings.makeSortable = function() {
-    // call sortable on our div with the sortable class
-    $('#buildings .sortable').sortable({
-      forcePlaceholderSize: true,
-      placeholderClass: 'col col-xs-2 border border-maroon',
-      dragImage: null
     });
   };
 
@@ -149,15 +132,15 @@ Buildings = {};
 
     Buildings.updateRemoveImgLinks();
 
-    Buildings.setPositions();
-    Buildings.makeSortable();
+    DropZoneHelper.setPositions('buildings', 'images');
+    DropZoneHelper.makeSortable('buildings', 'images');
 
     // after the order changes
     $('#buildings .sortable').sortable().bind('sortupdate', function(e, ui) {
       // array to store new order
       updated_order = []
       // set the updated positions
-      Buildings.setPositions();
+      DropZoneHelper.setPositions('buildings', 'images');
 
       // populate the updated_order array with the new task positions
       $('#buildings .img-thumbnail').each(function(i){
@@ -174,10 +157,10 @@ Buildings = {};
       });
     });
 
-    var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
+    var bldg_address = $('#map-canvas').attr('data-address') ? $('#map-canvas').attr('data-address') : 'New York, NY, USA';
     // google maps
     $("#bldg_panel").geocomplete({
-      map: "#map_canvas",
+      map: "#map-canvas",
       location: bldg_address,
       details: ".details"
     }).bind("geocode:result", function(event, result){
@@ -187,7 +170,7 @@ Buildings = {};
     });
 
     $(".autocomplete-input").geocomplete({
-      map: "#map_canvas",
+      map: "#map-canvas",
       location: bldg_address,
       details: ".details"
     }).bind("geocode:result", function(event, result){
@@ -245,16 +228,16 @@ Buildings = {};
     }
 
     // search filters
-    $('#buildings input').keydown(Buildings.preventEnter);
-    $('#buildings #filter').bind('railsAutocomplete.select', Buildings.throttledBldgSearch);
-    $('#buildings #filter').change(Buildings.throttledBldgSearch);
-    $('#buildings #status').change(Buildings.throttledBldgSearch);
-    $('#buildings #status_listings').change(Buildings.filterListings);
+    $('input').keydown(Buildings.preventEnter);
+    $('#filter').bind('railsAutocomplete.select', Buildings.throttledBldgSearch);
+    $('#filter').change(Buildings.throttledBldgSearch);
+    $('#status').change(Buildings.throttledBldgSearch);
   }
 
   Buildings.initShow = function () {
     $('.carousel-indicators > li:first-child').addClass('active');
-    $('.carousel-inner > .item:first-child').addClass('active')
+    $('.carousel-inner > .item:first-child').addClass('active');
+    $('#status_listings').change(Buildings.filterListings);
   }
 })();
 
@@ -268,7 +251,7 @@ $(document).ready(function () {
   var editPage = $('.buildings.edit').length;
   var newPage = $('.buildings.new').length;
   var indexPage = $('.buildings.index').length;
-  var showPage = $('.buildings.index').length;
+  var showPage = $('.buildings.show').length;
   // new and edit pages both render the same form template, so init them using the same code
   if (editPage || newPage) {
     Buildings.initEditor();

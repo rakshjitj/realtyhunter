@@ -20,9 +20,9 @@
         <div role="tabpanel" class="tab-pane fade in active" id="residential-listings">
         	<br />
         	<div class="row">
-					  <div class="col-md-2">
+					  <!-- <div class="col-md-2">
               <!-- will be a dropdown of either print pdf or email -->
-              <div class="dropdown selected-listings">
+              <!-- <div class="dropdown selected-listings">
                 <button class="btn btn-warning btn-sm dropdown-toggle disabled" id="selected-listings-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="menu">
                   0 Selected Listings
                   <span class="caret"></span>
@@ -36,10 +36,10 @@
                     <i class="fa fa-fw fa-list"></i> Internal Listings Sheet</a></li>
                 </ul>
               </div>
-					  </div>
+					  </div> -->
 
-            <div class="col-md-1">
-              <label>Status:</label>
+            <div class="col-md-2">
+              <label>Filter By Status:</label>
             </div>
             <div class="col-md-2">
               <% if current_user.is_management? || current_user.is_listings_manager? %>

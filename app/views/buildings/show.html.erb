@@ -1,28 +1,28 @@
 <% provide(:title, @building.formatted_street_address) %>
+
 <div id="buildings">
+<div id="section-name" data-name="buildings">
 
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
-  	<br />
-  	<br />
 		<div id="bldg_panel" class="panel panel-default">
+
 		  <div class="panel-heading">
 		  	<div class="panel-title">
 			  	<div class="row">
-		  			<div class="col-md-12">
-		  				<h1><%= @building.street_address %></h1>
-		  			</div>
-		  		</div>
-		  		<div class="row">
-		  			<div class="col-md-6">
-		  				<p><%= @building.active_unit_count %> available units on the market.
+		  			<div class="col-md-12 col-md-7">
+		  				<h2 class="center">
+		  					<%= @building.street_address %>
+		  				</h2>
+		  				<p class="center">
+		  					<%= @building.active_unit_count %> available units on the market.
 								<%= @building.total_unit_count %> total units.
 							</p>
 		  			</div>
-
 		  		</div>
 			  </div><!-- panel-title -->
-		  </div><!-- panel-heading -->
+			</div><!-- panel-heading -->
+
 		  <div class="panel-body">
 		  	<div class="row">
 		  		<div class="col-xs-12 col-md-6 vertical-margin-lg">
@@ -37,12 +37,10 @@
 		  				class: "btn btn-sm btn-danger ",
 			      	data: {toggle: "modal", target: "#bldgInaccuracyModal"}, remote: true %>
 		  		</div>
-		  	</div>
+		  	</div><!-- row -->
 
-		      <br />
 		  	<!-- begin photos -->
 		  	<% if @building.images.any? %>
-
 
 					<div id="building-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
 					  <!-- Wrapper for slides -->
@@ -85,101 +83,119 @@
 			  <!-- end photos -->
 
 			  <br />
-		  	<p>
-				  <strong>Street Address:</strong>
-				  <%= @building.formatted_street_address %>
-				</p>
-
-				<% if @building.neighborhood %>
-					<p>
-					  <strong>Neighborhood:</strong>
-					  <%= @building.neighborhood.name %>
+			  <div class="row">
+			  	<div class="col-xs-12 col-xs-offset-1">
+			  	<p>
+					  <strong>Street Address:</strong>
+					  <%= @building.formatted_street_address %>
 					</p>
-				<% end %>
 
-				<p>
-				  <strong>Building Notes:</strong>
-				  <%= @building.notes %>
-				</p>
-
-				<% if @building.landlord %>
-				<p>
-				  <strong>Landlord Code:</strong>
-				  <% if current_user.is_management? %>
-					  <%= link_to @building.landlord.code, landlord_path(@building.landlord) %>
-					<% else %>
-						<%= @building.landlord.code %>
+					<% if @building.neighborhood %>
+						<p>
+						  <strong>Neighborhood:</strong>
+						  <%= @building.neighborhood.name %>
+						</p>
 					<% end %>
-				</p>
-				<% end %>
 
-				<p>
-				  <strong>Building-Level Amenities:</strong>
-				  <%= @building.amenities_to_s %>
-				</p>
+					<% if !@building.notes.blank? %>
+						<p>
+						  <strong>Building Notes:</strong>
+						  <%= @building.notes %>
+						</p>
+					<% end %>
 
-        <p>
-        	<strong>Rental Terms:</strong>
-        	<% if @building.rental_term %>
-        		<%= @building.rental_term.name.titleize %>
-        	<% end %>
-        </p>
+					<% if @building.landlord %>
+						<p>
+						  <strong>Landlord Code:</strong>
+						  <% if current_user.is_management? %>
+							  <%= link_to @building.landlord.code, landlord_path(@building.landlord) %>
+							<% else %>
+								<%= @building.landlord.code %>
+							<% end %>
+						</p>
+					<% end %>
 
-        <% if @building.pet_policy %>
+					<% if !@building.amenities_to_s.blank? %>
+						<p>
+						  <strong>Building-Level Amenities:</strong>
+						  <%= @building.amenities_to_s %>
+						</p>
+					<% end %>
+
+					<% if @building.rental_term %>
+		        <p>
+		        	<strong>Rental Terms:</strong>
+		        	<% if @building.rental_term %>
+		        		<%= @building.rental_term.name.titleize %>
+		        	<% end %>
+		        </p>
+		      <% end %>
+
+	        <% if @building.pet_policy %>
+						<p>
+		    			<strong>Pet Policy:</strong>
+		    			<%= @building.pet_policy.name.titleize %>
+						</p>
+					<% end %>
+
+					<% if !@building.utilities_to_s.blank? %>
+						<p>
+						  <strong>Utilities:</strong>
+						  <%= @building.utilities_to_s %>
+						</p>
+					<% end %>
+
+					<% if @building.landlord%>
+						<!-- Broker's Fee -->
+		        <p>
+		    		<% if @building.landlord.has_fee %>
+		    			<strong>Tenant Pays:</strong>
+		    			<% if @building.landlord.tp_fee_percentage %>
+			    			<%= @building.landlord.tp_fee_percentage %>%
+			    		<% else %>
+			    			(no amount specified)
+			    		<% end %>
+
+		    		<!-- No Broker's Fee -->
+		    		<% else %>
+		    			<strong>OP Pays:</strong>
+		    			<% if @building.landlord.op_fee_percentage %>
+			    			<%= @building.landlord.op_fee_percentage %>%
+			    		<% else %>
+			    			(no amount specified)
+			    		<% end %>
+
+		    		<% end %>
+		    	<% end %>
+	    		</p>
+
 					<p>
-	    			<strong>Pet Policy:</strong>
-	    			<%= @building.pet_policy.name.titleize %>
+					  <strong>Created:</strong>
+					  <%= @building.created_at %>
 					</p>
-				<% end %>
-				<p>
-				  <strong>Utilities:</strong>
-				  <%= @building.utilities_to_s %>
-				</p>
+					<p>
+					  <strong>Last Updated:</strong>
+					  <%= @building.updated_at %>
+					</p>
+					<p>
+					  <strong>Last Unit Updated:</strong>
+					  <%= @building.last_unit_updated_at %>
+					</p>
 
-				<% if @building.landlord%>
-					<!-- Broker's Fee -->
-	        <p>
-	    		<% if @building.landlord.has_fee %>
-	    			<strong>Tenant Pays:</strong>
-	    			<% if @building.landlord.tp_fee_percentage %>
-		    			<%= @building.landlord.tp_fee_percentage %>%
-		    		<% else %>
-		    			(no amount specified)
-		    		<% end %>
+				</div>
+			</div>
 
-	    		<!-- No Broker's Fee -->
-	    		<% else %>
-	    			<strong>OP Pays:</strong>
-	    			<% if @building.landlord.op_fee_percentage %>
-		    			<%= @building.landlord.op_fee_percentage %>%
-		    		<% else %>
-		    			(no amount specified)
-		    		<% end %>
-
-	    		<% end %>
-	    	<% end %>
-    		</p>
-
-				<p>
-				  <strong>Created:</strong>
-				  <%= @building.created_at %>
-				</p>
-				<p>
-				  <strong>Last Updated:</strong>
-				  <%= @building.updated_at %>
-				</p>
-				<p>
-				  <strong>Last Unit Updated:</strong>
-				  <%= @building.last_unit_updated_at %>
-				</p>
-
-				<br />
-				<iframe id="map_canvas"
-				  frameborder="0"
-				  src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_MAPS_KEY'] %>
-				    &q=<%= @building.formatted_street_address %>"
-				  allowfullscreen>
-				</iframe>
+			<br />
+    	<div class="row">
+    		<div class="col-md-12">
+					<iframe id="map-canvas"
+					  frameborder="0"
+					  src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_MAPS_KEY'] %>
+					    &q=<%= @building.formatted_street_address %>"
+					  allowfullscreen>
+					</iframe>
+				</div>
+			</div>
 
 		  </div>
 		</div>
