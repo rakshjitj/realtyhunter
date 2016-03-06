@@ -17,9 +17,9 @@
     <i class="fa fa-spinner fa-pulse fa-5x forms-spinner-desktop"></i>
 
     <div id="contact-us-search-filters" data-search-path="<%= filter_forms_contact_us_path %>">
-      <%= form_tag forms_contact_us_path, :method => 'get' do %>
+      <%= form_tag forms_contact_us_path, method: 'get' do %>
         <div class="row vertical-padding">
-          <div class="col-xs-5 form-label-responsive">
+          <div class="col-xs-2 col-sm-3 col-md-5 form-label-responsive">
             <%= label_tag :name, 'Name' %>
           </div>
           <div class="col-xs-7 col-sm-left-padding">
@@ -32,8 +32,8 @@
         </div>
 
       <div class="row vertical-padding">
-        <div class="col-xs-5 form-label-responsive">
-          <%= label_tag(:submitted_date) %>
+        <div class="col-xs-2 col-sm-3 col-md-5 form-label-responsive">
+          <%= label_tag(:submitted_date, 'Submitted On') %>
         </div>
         <div class="col-xs-7 col-sm-left-padding">
           <div class='input-group date datepicker'>
@@ -52,7 +52,7 @@
   <div class="col-xs-12 col-md-4">
 
     <div class="row vertical-padding">
-      <div class="col-xs-5 form-label-responsive">
+      <div class="col-xs-2 col-sm-3 col-md-5 form-label-responsive">
         <%= label_tag(:min_price, "Min Price >= ") %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
@@ -62,7 +62,7 @@
     </div>
 
     <div class="row vertical-padding">
-      <div class="col-xs-5 form-label-responsive">
+      <div class="col-xs-2 col-sm-3 col-md-5 form-label-responsive">
         <%= label_tag(:max_price, "Max Price <=") %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
