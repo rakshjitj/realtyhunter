@@ -3,7 +3,7 @@ require 'csv'
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  skip_authorize_resource :only => :logged_in_user
+  skip_authorize_resource only: :logged_in_user
   before_action :logged_in_user
   #before_action :set_locale
   before_action ->{ @remote_ip = request.headers['REMOTE_ADDR'] }
@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
     def stale_record_recovery_action
       flash.now[:danger] = "Another user has made a change to that record "+
         "since you accessed the edit form. Try again."
-      render :edit, :status => :conflict
+      render :edit, status: :conflict
     end
 
   private

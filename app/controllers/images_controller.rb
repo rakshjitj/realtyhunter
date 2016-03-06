@@ -13,11 +13,11 @@ class ImagesController < ApplicationController
     @image.building = @building
     if @image.save(image_params)
       @image.building.update_columns(updated_at: Time.now)
-      render json: { message: "success", fileID: @image.id, bldgID: @building.id }, :status => 200
+      render json: { message: "success", fileID: @image.id, bldgID: @building.id }, status: 200
     else
       #  you need to send an error header, otherwise Dropzone
       #  will not interpret the response as an error:
-      render json: { error: @image.errors.full_messages.join(',')}, :status => 400
+      render json: { error: @image.errors.full_messages.join(',')}, status: 400
     end
   end
 
@@ -47,7 +47,7 @@ class ImagesController < ApplicationController
         img.building.update_columns(updated_at: Time.now)
       end
     end
-    render :nothing => true
+    render nothing: true
   end
 
   private

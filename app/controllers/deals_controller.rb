@@ -1,6 +1,6 @@
 class DealsController < ApplicationController
   load_and_authorize_resource
-  skip_load_resource :only => :create
+  skip_load_resource only: :create
   before_action :set_deal, except: [:index, :new, :create, :filter,
     :autocomplete_building_formatted_street_address, :autocomplete_landlord_code,
     :get_units]
@@ -115,7 +115,7 @@ class DealsController < ApplicationController
       @landlord = Landlord.where(code: @deal.landlord_code).limit(1).first
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that deal is not active."
-      redirect_to :action => 'index'
+      redirect_to action: 'index'
   	end
 
 		def set_deals

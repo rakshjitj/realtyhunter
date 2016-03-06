@@ -1,6 +1,6 @@
 class AnnouncementsController < ApplicationController
 	load_and_authorize_resource
-  skip_load_resource :only => :create
+  skip_load_resource only: :create
   #before_action :set_announcement, only: [:index, :new, :create]
 
   def new

@@ -2,29 +2,29 @@ class DocumentsController < ApplicationController
   before_action :set_document, only: [:destroy]
   before_action :set_unit, except: [:destroy]
   etag { current_user.id }
-  
+
   # POST /documents
   # POST /documents.json
   def create
     @document = @unit.documents.build(document_params)
-    
+
     # dropzone expects a json response code
     if @document.save(document_params)
       @unit.documents << @document
       if params[:residential_listing_id] && !params[:residential_listing_id].empty?
         render json: { message: "success", fileID: @document.id, unitID: @unit.id, runitID: @unit.residential_listing.id },
-          :status => 200
+          status: 200
       elsif params[:commercial_listing_id] && !params[:commercial_listing_id].empty?
         render json: { message: "success", fileID: @document.id, unitID: @unit.id, cunitID: @unit.commercial_listing.id },
-          :status => 200
+          status: 200
       elsif params[:sales_listing_id] && !params[:sales_listing_id].empty?
         render json: { message: "success", fileID: @document.id, unitID: @unit.id, sunitID: @unit.sales_listing.id },
-          :status => 200
+          status: 200
       end
-    else 
+    else
       #  you need to send an error header, otherwise Dropzone
       #  will not interpret the response as an error:
-      render json: { error: @document.errors.full_messages.join(',')}, :status => 400
+      render json: { error: @document.errors.full_messages.join(',')}, status: 400
     end
   end
 
@@ -49,7 +49,7 @@ class DocumentsController < ApplicationController
       end
     end
 
-    render :nothing => true
+    render nothing: true
   end
 
   private
