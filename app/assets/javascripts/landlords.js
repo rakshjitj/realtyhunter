@@ -139,16 +139,16 @@ $(document).on('keyup',function(evt) {
 });
 
 $(document).ready(function () {
-  var url = window.location.pathname;
-  var landlords = url.indexOf('landlords') > -1;
-  var editPage = url.indexOf('edit') > -1;
-  var newPage = url.indexOf('new') > -1;
-  if (landlords) {
-    // new and edit pages both render the same form template, so init them using the same code
-    if (editPage || newPage) {
-      Landlords.initEditor();
-    } else {
-      Landlords.initIndex();
-    }
-  }
+  var editPage = $('.landlords.edit').length;
+  var newPage = $('.landlords.new').length;
+  var indexPage = $('.landlords.index').length;
+  var showPage = $('.landlords.show').length;
+  // new and edit pages both render the same form template, so init them using the same code
+  if (editPage || newPage) {
+    Landlords.initEditor();
+  } else if (indexPage) {
+    Landlords.initIndex();
+  } // else if (showPage) {
+    // not yet needed
+  // }
 });
