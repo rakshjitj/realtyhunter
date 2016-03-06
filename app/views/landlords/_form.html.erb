@@ -6,8 +6,7 @@
   <div class="col-md-12">
     <div class="panel panel-default">
       <div class="panel-body no-vertical-padding">
-        <%= render :partial => 'shared/error_messages',
-          :locals => {:model => @landlord} %>
+        <%= render partial: 'shared/error_messages', locals: {model: @landlord} %>
 
         <div class="row">
           <div class="col-md-12 form-section-header">
@@ -101,10 +100,10 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 form-label-responsive">
+          <div class="col-xs-3 form-label-responsive">
             <%= f.label :website %>
           </div>
-          <div class="col-md-9">
+          <div class="col-xs-9">
             <div class="field">
               <%= f.text_field :website, class: 'form-control' %>
             </div>
@@ -113,10 +112,10 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 form-label-responsive">
+          <div class="col-xs-3 form-label-responsive">
             <%= f.label :formatted_street_address, "Street Address" %>
           </div>
-          <div class="col-md-9">
+          <div class="col-xs-9">
             <div class="field">
               <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input', placeholder: "123 Main St" %>
             </div>
@@ -124,19 +123,14 @@
         </div>
 
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-xs-12">
             <p>Visually confirm the building's location:</p>
+            <div id="map-canvas" data-address="<%= @landlord.formatted_street_address %>"></div>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-12">
-            <div id="map_canvas" data-address="<% @landlord.formatted_street_address %>"></div><br />
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-12 form-section-header">
+          <div class="col-xs-12 form-section-header">
             <hr class="thin-line" />
             <h4>Additional Info</h4>
             <hr class="thin-line" />
@@ -204,7 +198,7 @@
 
         <br />
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-xs-12">
             <%= f.label :update_source, "Source of updates" %><br />
             <%= f.text_area :update_source, class: 'form-control', rows: 2 %>
           </div>
@@ -212,7 +206,7 @@
 
         <br />
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-xs-12">
             <%= f.label :notes, "Notes (will be shared on listings)" %><br />
             <%= f.text_area :notes, class: 'form-control', rows: 4 %>
           </div>
@@ -220,7 +214,7 @@
 
         <br />
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-xs-12">
             <%= f.label :key_pick_up_location, "Key Pickup Location" %><br>
             <%= f.text_area :key_pick_up_location, class: 'form-control', rows: 2 %>
           </div>
@@ -228,42 +222,41 @@
 
         <br />
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-xs-12">
             <%= f.label :management_info, "Additional Management Info" %><br>
             <%= f.text_area :management_info, class: 'form-control', rows: 4 %>
           </div>
         </div>
 
-        <br />
-        <div class="row">
-          <div class="col-md-12">
+        <br>
+        <div class="row vertical-margin-lg">
+          <div class="col-md-6 col-md-offset-3">
             <div class="actions">
-              <%= f.submit "Update Landlord", class: 'btn btn-warning' %>
+              <%= f.submit 'Update', class:"btn btn-warning btn-block" %>
             </div>
           </div>
         </div>
+        <br />
 
-          <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
-          <div class="details field">
-            <%= f.hidden_field :street_number, name: "street_number" %>
-            <%= f.hidden_field :route, name: "route" %>
-            <%= f.hidden_field :neighborhood, name:"neighborhood" %>
-            <%= f.hidden_field :sublocality, name:"sublocality" %>
-            <%= f.hidden_field :administrative_area_level_2_short, name:"administrative_area_level_2_short" %>
-            <%= f.hidden_field :administrative_area_level_1_short, name:"administrative_area_level_1_short" %>
-            <%= f.hidden_field :postal_code, name:"postal_code" %>
-            <%= f.hidden_field :country_short, name:"country_short" %>
-            <%= f.hidden_field :lat, name:"lat" %>
-            <%= f.hidden_field :lng, name:"lng" %>
-            <%= f.hidden_field :place_id, name:"place_id" %>
-          </div>
+        <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
+        <div class="details field">
+          <%= f.hidden_field :street_number, name: "street_number" %>
+          <%= f.hidden_field :route, name: "route" %>
+          <%= f.hidden_field :neighborhood, name:"neighborhood" %>
+          <%= f.hidden_field :sublocality, name:"sublocality" %>
+          <%= f.hidden_field :administrative_area_level_2_short, name:"administrative_area_level_2_short" %>
+          <%= f.hidden_field :administrative_area_level_1_short, name:"administrative_area_level_1_short" %>
+          <%= f.hidden_field :postal_code, name:"postal_code" %>
+          <%= f.hidden_field :country_short, name:"country_short" %>
+          <%= f.hidden_field :lat, name:"lat" %>
+          <%= f.hidden_field :lng, name:"lng" %>
+          <%= f.hidden_field :place_id, name:"place_id" %>
+        </div>
 
+      </div><!-- panel body -->
+    </div><!-- panel -->
+  </div><!-- col -->
+</div><!-- row -->
 
-      </div>
-    </div>
-
-  </div>
-</div>
 <% end %>
-
 </div>

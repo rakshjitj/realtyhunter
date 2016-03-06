@@ -622,3 +622,9 @@ label.required:after {
 .inline {
   display: inline-block;
 }
+
+#landlords .panel-body,
+#buildings .panel-body {
+  padding-bottom: 0;
+}
+

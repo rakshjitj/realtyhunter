@@ -65,7 +65,8 @@
             <%= f.label :formatted_street_address, "Street Address", class: 'required' %>
           </div>
           <div class="col-md-9">
-            <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input', placeholder: "123 Main St" %>
+            <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input',
+                placeholder: "123 Main St" %>
           </div>
         </div>
 
@@ -74,7 +75,6 @@
         </div>
 
     <div class="field">
-      <br/>
       <p>Visually confirm the building's location:</p>
       <div id="map-canvas" data-address="<%= @building.formatted_street_address %>"></div>
     </div>

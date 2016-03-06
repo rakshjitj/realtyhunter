@@ -85,167 +85,166 @@
 			  <br />
 			  <div class="row">
 			  	<div class="col-xs-12 col-xs-offset-1">
-			  	<p>
-					  <strong>Street Address:</strong>
-					  <%= @building.formatted_street_address %>
-					</p>
-
-					<% if @building.neighborhood %>
-						<p>
-						  <strong>Neighborhood:</strong>
-						  <%= @building.neighborhood.name %>
+				  	<p>
+						  <strong>Street Address:</strong>
+						  <%= @building.formatted_street_address %>
 						</p>
-					<% end %>
 
-					<% if !@building.notes.blank? %>
-						<p>
-						  <strong>Building Notes:</strong>
-						  <%= @building.notes %>
-						</p>
-					<% end %>
+						<% if @building.neighborhood %>
+							<p>
+							  <strong>Neighborhood:</strong>
+							  <%= @building.neighborhood.name %>
+							</p>
+						<% end %>
 
-					<% if @building.landlord %>
-						<p>
-						  <strong>Landlord Code:</strong>
-						  <% if current_user.is_management? %>
-							  <%= link_to @building.landlord.code, landlord_path(@building.landlord) %>
-							<% else %>
-								<%= @building.landlord.code %>
-							<% end %>
-						</p>
-					<% end %>
+						<% if !@building.notes.blank? %>
+							<p>
+							  <strong>Building Notes:</strong>
+							  <%= @building.notes %>
+							</p>
+						<% end %>
 
-					<% if !@building.amenities_to_s.blank? %>
-						<p>
-						  <strong>Building-Level Amenities:</strong>
-						  <%= @building.amenities_to_s %>
-						</p>
-					<% end %>
+						<% if @building.landlord %>
+							<p>
+							  <strong>Landlord Code:</strong>
+							  <% if current_user.is_management? %>
+								  <%= link_to @building.landlord.code, landlord_path(@building.landlord) %>
+								<% else %>
+									<%= @building.landlord.code %>
+								<% end %>
+							</p>
+						<% end %>
 
-					<% if @building.rental_term %>
-		        <p>
-		        	<strong>Rental Terms:</strong>
-		        	<% if @building.rental_term %>
-		        		<%= @building.rental_term.name.titleize %>
-		        	<% end %>
-		        </p>
-		      <% end %>
+						<% if !@building.amenities_to_s.blank? %>
+							<p>
+							  <strong>Building-Level Amenities:</strong>
+							  <%= @building.amenities_to_s %>
+							</p>
+						<% end %>
 
-	        <% if @building.pet_policy %>
-						<p>
-		    			<strong>Pet Policy:</strong>
-		    			<%= @building.pet_policy.name.titleize %>
-						</p>
-					<% end %>
+						<% if @building.rental_term %>
+			        <p>
+			        	<strong>Rental Terms:</strong>
+			        	<% if @building.rental_term %>
+			        		<%= @building.rental_term.name.titleize %>
+			        	<% end %>
+			        </p>
+			      <% end %>
 
-					<% if !@building.utilities_to_s.blank? %>
-						<p>
-						  <strong>Utilities:</strong>
-						  <%= @building.utilities_to_s %>
-						</p>
-					<% end %>
+		        <% if @building.pet_policy %>
+							<p>
+			    			<strong>Pet Policy:</strong>
+			    			<%= @building.pet_policy.name.titleize %>
+							</p>
+						<% end %>
 
-					<% if @building.landlord%>
-						<!-- Broker's Fee -->
-		        <p>
-		    		<% if @building.landlord.has_fee %>
-		    			<strong>Tenant Pays:</strong>
-		    			<% if @building.landlord.tp_fee_percentage %>
-			    			<%= @building.landlord.tp_fee_percentage %>%
+						<% if !@building.utilities_to_s.blank? %>
+							<p>
+							  <strong>Utilities:</strong>
+							  <%= @building.utilities_to_s %>
+							</p>
+						<% end %>
+
+						<% if @building.landlord%>
+							<!-- Broker's Fee -->
+			        <p>
+			    		<% if @building.landlord.has_fee %>
+			    			<strong>Tenant Pays:</strong>
+			    			<% if @building.landlord.tp_fee_percentage %>
+				    			<%= @building.landlord.tp_fee_percentage %>%
+				    		<% else %>
+				    			(no amount specified)
+				    		<% end %>
+
+			    		<!-- No Broker's Fee -->
 			    		<% else %>
-			    			(no amount specified)
+			    			<strong>OP Pays:</strong>
+			    			<% if @building.landlord.op_fee_percentage %>
+				    			<%= @building.landlord.op_fee_percentage %>%
+				    		<% else %>
+				    			(no amount specified)
+				    		<% end %>
+
 			    		<% end %>
+			    	<% end %>
+		    		</p>
 
-		    		<!-- No Broker's Fee -->
-		    		<% else %>
-		    			<strong>OP Pays:</strong>
-		    			<% if @building.landlord.op_fee_percentage %>
-			    			<%= @building.landlord.op_fee_percentage %>%
-			    		<% else %>
-			    			(no amount specified)
-			    		<% end %>
+						<p>
+						  <strong>Created:</strong>
+						  <%= @building.created_at %>
+						</p>
+						<p>
+						  <strong>Last Updated:</strong>
+						  <%= @building.updated_at %>
+						</p>
+						<p>
+						  <strong>Last Unit Updated:</strong>
+						  <%= @building.last_unit_updated_at %>
+						</p>
+					</div>
+				</div><!-- row -->
 
-		    		<% end %>
-		    	<% end %>
-	    		</p>
+				<br />
+	    	<div class="row">
+	    		<div class="col-md-12">
+	    			<!-- Nav tabs -->
+				    <ul class="nav nav-tabs" role="tablist">
+				      <li role="google-map-tab" class="active"><a href="#google-map-tab" aria-controls="google-map-tab"
+				      	role="tab" data-toggle="tab">Map</a></li>
+				      <li role="walkscore"><a href="#walkscore" aria-controls="walkscore" role="tab" data-toggle="tab">Walkscore</a></li>
+				    </ul>
 
-					<p>
-					  <strong>Created:</strong>
-					  <%= @building.created_at %>
-					</p>
-					<p>
-					  <strong>Last Updated:</strong>
-					  <%= @building.updated_at %>
-					</p>
-					<p>
-					  <strong>Last Unit Updated:</strong>
-					  <%= @building.last_unit_updated_at %>
-					</p>
+	    			<div class="tab-content">
+				      <!-- ******************** first tablpanel - google maps ******************** -->
+				      <div role="tabpanel" class="tab-pane fade in active" id="google-map-tab">
+				      	<iframe id="map-canvas"
+								  frameborder="0"
+								  src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_MAPS_KEY'] %>
+								    &q=<%= @building.formatted_street_address %>"
+								  allowfullscreen>
+								</iframe>
+				      </div><!-- end tabpanel - google maps -->
+				      <!-- ******************** first tabpanel - walkscore ********************-->
+				      <div role="tabpanel" class="tab-pane fade center" id="walkscore">
+				      	<script type='text/javascript'>
+									var ws_wsid = 'e4004727da4a47a2bcb676b7abf930b6';
+									var ws_address = '<%= @building.formatted_street_address %>';
+									var ws_width = '600';
+									var ws_height = '444';
+									var ws_layout = 'horizontal';
+									var ws_commute = 'true';
+									var ws_transit_score = 'true';
+									var ws_map_modules = 'all';
+									</script><style type='text/css'>#ws-walkscore-tile{position:relative;text-align:left}#ws-walkscore-tile *{float:none;}#ws-foottext, #ws-footer a,#ws-footer a:link{font:11px/14px Verdana,Arial,Helvetica,sans-serif;margin-right:6px;white-space:nowrap;padding:0;color:#000;font-weight:bold;text-decoration:none}#ws-footer a:hover{color:#000;text-decoration:none}#ws-footer a:active{color:#b14900}</style><div id='ws-walkscore-tile'><div id='ws-footer' style='position:absolute;top:426px;left:8px;width:588px'><form id='ws-form'><span id='ws-foottext' style='float: left;'>Score <a id='ws-a' href='https://www.redfin.com/how-walk-score-works' target='_blank'>Your Home</a>: </span><input type='text' id='ws-street' style='position:absolute;top:0px;left:170px;width:386px' /><input type='image' id='ws-go' src='//cdn2.walk.sc/2/images/tile/go-btn.gif' height='15' width='26' border='0' alt='get my Walk Score' style='position:absolute;top:0px;right:0px' /></form></div></div><script type='text/javascript' src='https://www.walkscore.com/tile/show-walkscore-tile.php'></script>
 
-				</div>
-			</div>
+	  					</div><!-- end tabpanel - walkscore -->
+	  				</div>
+	  			</div>
+	  		</div><!-- row -->
 
-			<br />
-    	<div class="row">
-    		<div class="col-md-12">
-    			<!-- Nav tabs -->
-			    <ul class="nav nav-tabs" role="tablist">
-			      <li role="google-map-tab" class="active"><a href="#google-map-tab" aria-controls="google-map-tab"
-			      	role="tab" data-toggle="tab">Map</a></li>
-			      <li role="walkscore"><a href="#walkscore" aria-controls="walkscore" role="tab" data-toggle="tab">Walkscore</a></li>
-			    </ul>
+				<br>
+	    	<div class="row inaccuracy-report">
+	    		<div class="col-xs-12">
+		    		<h3>Inaccuracy Report</h3>
+		    		<%= form_for(@building,
+		    				url: send_inaccuracy_building_path(@building)) do |f| %>
+							<div class="modal-body2">
+								<p>Something wrong at <%= @building.street_address %>?
+								The more detail you can provide, the better.</p>
+								<br>
+							  <%= f.text_area :inaccuracy_description, rows: 5, class: 'form-control' %>
+							</div>
+							<div class="modal-footer">
+								<%= f.submit 'Send', class: 'btn btn-danger submit-link' %>
+							</div>
+						<% end %>
+		    	</div>
+		    </div>
 
-    			<div class="tab-content">
-			      <!-- ******************** first tablpanel - google maps ******************** -->
-			      <div role="tabpanel" class="tab-pane fade in active" id="google-map-tab">
-			      	<iframe id="map-canvas"
-							  frameborder="0"
-							  src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_MAPS_KEY'] %>
-							    &q=<%= @building.formatted_street_address %>"
-							  allowfullscreen>
-							</iframe>
-			      </div><!-- end tabpanel - google maps -->
-			      <!-- ******************** first tabpanel - walkscore ********************-->
-			      <div role="tabpanel" class="tab-pane fade center" id="walkscore">
-			      	<script type='text/javascript'>
-								var ws_wsid = 'e4004727da4a47a2bcb676b7abf930b6';
-								var ws_address = '<%= @building.formatted_street_address %>';
-								var ws_width = '600';
-								var ws_height = '444';
-								var ws_layout = 'horizontal';
-								var ws_commute = 'true';
-								var ws_transit_score = 'true';
-								var ws_map_modules = 'all';
-								</script><style type='text/css'>#ws-walkscore-tile{position:relative;text-align:left}#ws-walkscore-tile *{float:none;}#ws-foottext, #ws-footer a,#ws-footer a:link{font:11px/14px Verdana,Arial,Helvetica,sans-serif;margin-right:6px;white-space:nowrap;padding:0;color:#000;font-weight:bold;text-decoration:none}#ws-footer a:hover{color:#000;text-decoration:none}#ws-footer a:active{color:#b14900}</style><div id='ws-walkscore-tile'><div id='ws-footer' style='position:absolute;top:426px;left:8px;width:588px'><form id='ws-form'><span id='ws-foottext' style='float: left;'>Score <a id='ws-a' href='https://www.redfin.com/how-walk-score-works' target='_blank'>Your Home</a>: </span><input type='text' id='ws-street' style='position:absolute;top:0px;left:170px;width:386px' /><input type='image' id='ws-go' src='//cdn2.walk.sc/2/images/tile/go-btn.gif' height='15' width='26' border='0' alt='get my Walk Score' style='position:absolute;top:0px;right:0px' /></form></div></div><script type='text/javascript' src='https://www.walkscore.com/tile/show-walkscore-tile.php'></script>
-
-  					</div><!-- end tabpanel - walkscore -->
-  				</div>
-  			</div>
-  		</div>
-
-			<br>
-    	<div class="row inaccuracy-report">
-    		<div class="col-xs-12">
-	    		<h3>Inaccuracy Report</h3>
-	    		<%= form_for(@building,
-	    				url: send_inaccuracy_building_path(@building)) do |f| %>
-						<div class="modal-body2">
-							<p>Something wrong at <%= @building.street_address %>?
-							The more detail you can provide, the better.</p>
-							<br>
-						  <%= f.text_area :inaccuracy_description, rows: 5, class: 'form-control' %>
-						</div>
-						<div class="modal-footer">
-							<%= f.submit 'Send', class: 'btn btn-danger submit-link' %>
-						</div>
-					<% end %>
-	    	</div>
-	    </div>
-
-
-
-	</div>
-</div>
+	  	</div><!-- panel-body -->
+		</div><!-- bldg_panel -->
+	</div><!-- col -->
+</div><!-- row -->
 
 <div id="listings" data-search-path="<%= filter_listings_building_path %>">
 	<%= render partial:'shared/listings', locals: {
@@ -257,4 +256,5 @@
 	} %>
 </div>
 
+</div><!-- section-name -->
 </div><!-- buildings -->
