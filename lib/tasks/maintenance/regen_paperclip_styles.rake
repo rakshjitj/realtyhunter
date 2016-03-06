@@ -3,7 +3,7 @@ namespace :maintenance do
 	task :regen_paperclip_styles => :environment do
 		
 		Image.all.each do |i|
-			i.file.reprocess! :large, :thumb
+			i.file.reprocess! :large, :original
 		end
 
 		puts "Done!\n"		

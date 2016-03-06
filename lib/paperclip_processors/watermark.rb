@@ -61,7 +61,7 @@ module Paperclip
 
       if watermark_path
         command = "composite"
-        params = %W[-gravity #{@position} -geometry +15+15 #{watermark_path} #{tofile(dst)}]
+        params = %W[-gravity #{@position} -geometry +55+50 #{watermark_path} #{tofile(dst)}]
         params << tofile(dst)
         begin
           success = Paperclip.run(command, params.flatten.compact.collect{|e| "'#{e}'"}.join(" "))
