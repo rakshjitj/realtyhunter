@@ -30,7 +30,7 @@ class ListingSerializer < ActiveModel::Serializer
 		if object.primary_agents
 	  	object
 	      .primary_agents
-	      .map { |x| PrimaryAgentSerializer.new(x) }
+	      .map { |x| PrimaryAgentSerializer.new(x).attributes }
 		end
 	end
 
@@ -38,12 +38,9 @@ class ListingSerializer < ActiveModel::Serializer
 
   def photos
   	if object.images
-	    # object
-	    #   .images
-	    #   .map { |x| ActiveModel::Serializer::Adapter::Attributes.new(ListingImageSerializer.new(x)).as_json }
 	    object
 	      .images
-	      .map { |x| ListingImageSerializer.new(x) }
+	      .map { |x| ListingImageSerializer.new(x).attributes }
 	  end
   end
 
