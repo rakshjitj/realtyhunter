@@ -53,7 +53,7 @@ gem 'rails4-autocomplete'
 #gem 'pdfkit'
 gem 'wicked_pdf'
 # trying to get past font/cors issues...
-gem 'rack-cors', :require => 'rack/cors'
+gem 'rack-cors', require: 'rack/cors'
 # used for our rake tasks to import data
 gem 'mechanize'
 # make sure we handle time zones correctly

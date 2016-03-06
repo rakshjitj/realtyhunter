@@ -4,7 +4,7 @@ class ListingSerializer < ActiveModel::Serializer
 	:floor, :layout, :bedrooms, :unit_number, :pets, :status, :building, :date_available,
 	:changed_at, :square_footage, :rent, :id, :favorites, :show, :expose_address,
 	:total_room_count, :condition, :showing_instruction, :commission_amount,
-	:cyof, :rented_date, :rlsny, :share_with_brokers, 
+	:cyof, :rented_date, :rlsny, :share_with_brokers,
 	:open_house_mon_from, :open_house_mon_to, :open_house_tue_from, :open_house_tue_to,
     :open_house_wed_from, :open_house_wed_to, :open_house_thu_from, :open_house_thu_to,
     :open_house_fri_from, :open_house_fri_to, :open_house_sat_from, :open_house_sat_to,
@@ -27,11 +27,10 @@ class ListingSerializer < ActiveModel::Serializer
   end
 
 	def contacts
-		#object.primary_agents, each_serializer: PrimaryAgentSerializer
 		if object.primary_agents
-			object
+	  	object
 	      .primary_agents
-	      .map { |x| ActiveModel::Serializer::Adapter::Attributes.new(PrimaryAgentSerializer.new(x)).as_json }
+	      .map { |x| PrimaryAgentSerializer.new(x) }
 		end
 	end
 
@@ -39,14 +38,16 @@ class ListingSerializer < ActiveModel::Serializer
 
   def photos
   	if object.images
+	    # object
+	    #   .images
+	    #   .map { |x| ActiveModel::Serializer::Adapter::Attributes.new(ListingImageSerializer.new(x)).as_json }
 	    object
 	      .images
-	      .map { |x| ActiveModel::Serializer::Adapter::Attributes.new(ListingImageSerializer.new(x)).as_json }
+	      .map { |x| ListingImageSerializer.new(x) }
 	  end
   end
 
 	def listing_type
-		#building.respond_to?("neighborhood_name".to_sym)
 		if is_residential || is_commercial
 			"rentals"
 		else
