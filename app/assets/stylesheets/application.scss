@@ -1,8 +1,10 @@
+$grid-float-breakpoint: 1150px;
+$navbarCollapseWidth: 1150px;
+
 @import "announcements.scss";
 @import "custom.scss";
 @import "listings.scss";
 @import "map.scss";
-@import "pdf.scss";
 @import "residential_listing.scss";
 @import "scaffolds.scss";
 
@@ -11,8 +13,6 @@
 @import "dropzone/dropzone";
 @import "jquery.ui.all";
 @import "bootstrap-sprockets";
-$grid-float-breakpoint: 1150px;
-$navbarCollapseWidth: 1150px;
 @import "bootstrap";
 @import 'bootstrap-datetimepicker';
 @import "bootsy";

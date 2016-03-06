@@ -188,6 +188,7 @@ class ResidentialListing < ActiveRecord::Base
         'beds || \'/\' || baths as bed_and_baths',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
+        'residential_listings.favorites',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',

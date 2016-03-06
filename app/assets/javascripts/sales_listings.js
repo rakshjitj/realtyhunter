@@ -482,7 +482,7 @@ SalesListings = {};
 	  $('#sales .remove-building-feature').click(SalesListings.removeBuildingFeature);
 	  $('#sales .remove-neighborhood').click(SalesListings.removeNeighborhood);
 
-    SalesListings.selectedNeighborhoodIds = getURLParameterByName('neighborhood_ids');
+    SalesListings.selectedNeighborhoodIds = Common.getURLParameterByName('neighborhood_ids');
     if (SalesListings.selectedNeighborhoodIds) {
       SalesListings.selectedNeighborhoodIds =
           SalesListings.selectedNeighborhoodIds.split(',');
@@ -498,7 +498,7 @@ SalesListings = {};
       }
     });
 
-    SalesListings.selectedUnitAmenityIds = getURLParameterByName('unit_feature_ids');
+    SalesListings.selectedUnitAmenityIds = Common.getURLParameterByName('unit_feature_ids');
     if (SalesListings.selectedUnitAmenityIds) {
       SalesListings.selectedUnitAmenityIds =
           SalesListings.selectedUnitAmenityIds.split(',');
@@ -513,7 +513,7 @@ SalesListings = {};
       }
     });
 
-    SalesListings.selectedBuildingAmenityIds = getURLParameterByName('building_feature_ids');
+    SalesListings.selectedBuildingAmenityIds = Common.getURLParameterByName('building_feature_ids');
     if (SalesListings.selectedBuildingAmenityIds) {
       SalesListings.selectedBuildingAmenityIds =
           SalesListings.selectedBuildingAmenityIds.split(',');

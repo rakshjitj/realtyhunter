@@ -336,7 +336,7 @@ CommercialListings = {};
     $('#commercial #listing_id').change(CommercialListings.throttledSearch);
     $('#commercial #primary_agent_id').change(CommercialListings.throttledSearch);
 
-    CommercialListings.selectedNeighborhoodIds = getURLParameterByName('neighborhood_ids');
+    CommercialListings.selectedNeighborhoodIds = Common.getURLParameterByName('neighborhood_ids');
     if (CommercialListings.selectedNeighborhoodIds) {
       CommercialListings.selectedNeighborhoodIds =
           CommercialListings.selectedNeighborhoodIds.split(',');

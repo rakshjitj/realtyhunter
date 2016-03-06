@@ -464,6 +464,10 @@ ResidentialListings = {};
       ResidentialListings.showCard('main', e);
     });
 
+    $('.js-cancel-search').click(function(e) {
+      ResidentialListings.showCard('main', e);
+    });
+
     $('.js-reset-filters').click(function(e) {
       $('#address').val('');
       $('#rent_min').val('');
@@ -482,8 +486,27 @@ ResidentialListings = {};
     // only on index, not show page
     if ($('#r-big-map-mobile').length) {
       RHMapbox.initMapbox('r-big-map-mobile', ResidentialListings.buildContentString);
-     RHMapbox.centerOnMe();
-   }
+      RHMapbox.centerOnMe();
+    }
+
+    //Enable swiping...
+    var currLeft = $(".favorites-table").css('left');
+    if (currLeft === 'auto') {
+      currLeft = 0;
+    }
+
+    $(".favorites-table").swipe({
+      swipeLeft:function(event, direction, distance, duration, fingerCount, fingerData) {
+        // $(this).text("You swiped " + direction);
+        $(this).css('transform', 'translate(-100%)');
+      },
+      swipeRight:function(event, direction, distance, duration, fingerCount, fingerData) {
+        // $(this).text("You swiped " + direction);
+        $(this).css('transform', 'translate(100%)');
+      },
+      // Default is 75px, set to 0 for demo so any distance triggers swipe
+      threshold:0
+    });
   }
 
   ResidentialListings.initDesktopIndex = function() {
@@ -561,7 +584,7 @@ ResidentialListings = {};
     $('#unassigned_filter').change(ResidentialListings.throttledSearch);
     $('#primary_agent_id').change(ResidentialListings.throttledSearch);
 
-    ResidentialListings.selectedNeighborhoodIds = getURLParameterByName('neighborhood_ids');
+    ResidentialListings.selectedNeighborhoodIds = Common.getURLParameterByName('neighborhood_ids');
     if (ResidentialListings.selectedNeighborhoodIds) {
       ResidentialListings.selectedNeighborhoodIds =
           ResidentialListings.selectedNeighborhoodIds.split(',');
@@ -577,7 +600,7 @@ ResidentialListings = {};
       }
     });
 
-    ResidentialListings.selectedUnitAmenityIds = getURLParameterByName('unit_feature_ids');
+    ResidentialListings.selectedUnitAmenityIds = Common.getURLParameterByName('unit_feature_ids');
     if (ResidentialListings.selectedUnitAmenityIds) {
       ResidentialListings.selectedUnitAmenityIds =
           ResidentialListings.selectedUnitAmenityIds.split(',');
@@ -592,7 +615,7 @@ ResidentialListings = {};
       }
     });
 
-    ResidentialListings.selectedBuildingAmenityIds = getURLParameterByName('building_feature_ids');
+    ResidentialListings.selectedBuildingAmenityIds = Common.getURLParameterByName('building_feature_ids');
     if (ResidentialListings.selectedBuildingAmenityIds) {
       ResidentialListings.selectedBuildingAmenityIds =
           ResidentialListings.selectedBuildingAmenityIds.split(',');

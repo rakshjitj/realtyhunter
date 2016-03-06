@@ -29,16 +29,18 @@
 
         <div class="card list-view">
           <div class="card-contents">
-            <div class="card-nav">
-              <div class="card-nav-inner">
-                <div class="middle">
-                  <h4>Rentals</h4>
-                </div>
-              </div>
-            </div>
             <div class="card-middle">
+              <% if @favorite_units.count > 0 %>
+                <p class="minor-header minor-spacing">FAVORITE LISTINGS</p>
+                <div class="favorites-table">
+                  <%= render partial: 'residential_listings/mobile_favorites_view',
+                      collection: @favorite_units, as: :residential_listing,
+                      locals: {res_images: @res_images} %>
+                </div>
+              <% end %>
+              <p class="minor-header">RENTAL LISTINGS</p>
               <div class="infinite-table">
-                <%= render partial: 'residential_listings/residential_listing_mobile_list_view',
+                <%= render partial: 'residential_listings/mobile_list_view',
                     collection: @residential_units, as: :residential_listing,
                     locals: {res_images: @res_images} %>
               </div>
@@ -62,8 +64,8 @@
                 <div class="middle">
                   <h4>Mobile Filters</h4>
                 </div>
-                <div class="right js-reset-filters">
-                  <a class='link-reset-filters'>Reset</a>
+                <div class="right js-cancel-search">
+                  <a class='link-cancel-search'>Cancel</a>
                 </div>
               </div>
             </div>
@@ -185,11 +187,13 @@
                   </select>
                 </div>
               </div>
+
               <div class="row vertical-padding">
                 <div class="col-xs-12">
                   <%= label_tag :building_features, "Building Features", class: "field-label-sm" %>
                 </div>
               </div>
+
               <div class="row vertical-padding">
                 <div class="col-xs-11 selectize-wrapper">
                   <select id="building-amenities-select-multiple">
@@ -199,6 +203,14 @@
                       <% end %>
                     </optgroup>
                   </select>
+                </div>
+              </div>
+
+              <div class="row vertical-padding">
+                <div class="col-xs-12">
+                  <div class="js-reset-filters sm-margin-right">
+                    <a class='field-label-sm link-reset-filters btn btn-warning btn-block'>Reset Filters</a>
+                  </div>
                 </div>
               </div>
               <div class="row vertical-padding end-of-page-padding"></div>

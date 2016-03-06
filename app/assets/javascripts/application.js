@@ -28,16 +28,7 @@
 //= require jquery.mousewheel.min
 //= require selectize
 //= require jquery.infinite-pages
-
-function getURLParameterByName(name, url) {
-  if (!url) url = window.location.href;
-  name = name.replace(/[\[\]]/g, "\\$&");
-  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-    results = regex.exec(url);
-  if (!results) return null;
-  if (!results[2]) return '';
-  return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
+//= require jquery.touchSwipe.min
 
 $(document).ready(function() {
 	// change all date input fields to auto-open the calendar
@@ -93,8 +84,10 @@ $(document).ready(function() {
   } else {
     $('.navbar-mobile').remove();
   }
+
 });
 
+// debugging
 $(window).unload(function() {
 	Deals.clearTimer();
 	Careers.clearTimer();

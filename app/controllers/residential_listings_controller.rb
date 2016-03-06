@@ -322,6 +322,7 @@ class ResidentialListingsController < ApplicationController
       @map_infos = ResidentialListing.set_location_data(@residential_units.to_a, @res_images)
       # only get data + images for paginated responses
       @residential_units = @residential_units.page params[:page]
+      @favorite_units = @residential_units.where(favorites: true)
     end
 
     def async_create_csv
