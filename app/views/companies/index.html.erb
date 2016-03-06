@@ -1,49 +1,49 @@
 <% provide(:title, 'Companies') %>
 
-<div class="row">
-  <div class="col-md-6">
-    <h1>Companies</h1>
+  <div class="row">
+    <div class="col-md-6">
+      <h1>Companies</h1>
+    </div>
+    <div class="hidden-xs hidden-sm col-sm-6 form-label-responsive page-header-buttons">
+      <%= link_to 'Add a Company', new_company_path %>
+    </div>
+    <div class="hidden-md hidden-lg col-sm-6 col-sm-left-padding form-label-responsive page-header-buttons">
+      <%= link_to 'Add a Company', new_company_path %>
+    </div>
   </div>
-  <div class="hidden-xs hidden-sm col-sm-6 form-label-responsive page-header-buttons">
-    <%= link_to 'Add a Company', new_company_path %>
-  </div>
-  <div class="hidden-md hidden-lg col-sm-6 col-sm-left-padding form-label-responsive page-header-buttons">
-    <%= link_to 'Add a Company', new_company_path %>
-  </div>
-</div>
 
-<div class="row">
-  <div class="col-xs-12 col-md-6 vertical-padding">
-    <%= form_tag companies_path, :method => 'get' do %>
-      <%= label_tag(:name, "Filter:") %>
-      <%= text_field_tag :name, params[:search], placeholder: "name", size: 50 %>
-    <% end %>
+  <div class="row">
+    <div class="col-xs-12 col-md-6 vertical-padding">
+      <%= form_tag companies_path, :method => 'get' do %>
+        <%= label_tag(:name, "Filter:") %>
+        <%= text_field_tag :name, params[:search], placeholder: "name", size: 50 %>
+      <% end %>
+    </div>
   </div>
-</div>
 
-<br />
-<div class="row">
-  <div class="col-md-12">
-    <table class="table table-striped table-hover table-condensed infinite-table">
-      <thead>
-        <tr>
-          <th>Logo</th>
-          <th>Name</th>
-          <th># Offices</th>
-          <th># Employees</th>
-          <th colspan="1"></th>
-        </tr>
-      </thead>
+  <br />
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-striped table-hover table-condensed infinite-table">
+        <thead>
+          <tr>
+            <th>Logo</th>
+            <th>Name</th>
+            <th># Offices</th>
+            <th># Employees</th>
+            <th colspan="1"></th>
+          </tr>
+        </thead>
 
-      <tbody class="companies_table_body">
-        <%= render @companies %>
-      </tbody>
-    </table>
+        <tbody class="companies_table_body">
+          <%= render @companies %>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
 
-<div class="row">
-  <div class="col-sm-4 col-sm-offset-4 pagination-wrapper">
-    <%= render partial: 'shared/pagination', locals: {models: @companies} %>
+  <div class="row">
+    <div class="col-sm-4 col-sm-offset-4 pagination-wrapper">
+      <%= render partial: 'shared/pagination', locals: {models: @companies} %>
+    </div>
   </div>
-</div>

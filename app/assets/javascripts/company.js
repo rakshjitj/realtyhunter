@@ -3,7 +3,7 @@ Company = {};
 (function() {
   Company.timer;
 
-  Company.doSearch(event) {
+  Company.doSearch = function(event) {
     $.ajax({
       url: "<%= filter_companies_path %>",
       data: {

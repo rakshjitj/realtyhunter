@@ -11,12 +11,12 @@
 <div id="user-search-filters" data-search-path="<%= filter_users_path %>"></div>
 <%= form_tag users_path, :method => 'get' do %>
 <div class="row vertical-margin-lg">
-  <div class="col-md-9">
+  <div class="col-sm-9">
     <div class="row vertical-padding">
-      <div class="col-md-2">
+      <div class="col-xs-2">
         <%= label_tag :name_email, "Name/Email" %>
       </div>
-      <div class="col-md-4">
+      <div class="col-xs-4">
         <%= autocomplete_field_tag :name_email, params[:search],
           autocomplete_user_name_users_path,
           update_elements: {},
@@ -25,10 +25,10 @@
       </div>
     </div>
     <div class="row vertical-margin-lg">
-      <div class="col-md-2">
+      <div class="col-xs-2">
         <%= label_tag :status %>
       </div>
-      <div class="col-md-4">
+      <div class="col-xs-4">
         <%= params[:status] %>
         <%= select_tag(:status,
           options_for_select(['Active', 'Deleted'],
@@ -38,7 +38,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-3 vertical-align2 totals form-label-responsive">
+  <div class="col-sm-3 vertical-align2 totals form-label-responsive">
     <%= @users.total_count %> Users found<br>
   </div>
 </div>
