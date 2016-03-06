@@ -29,7 +29,6 @@
         <%= label_tag :status %>
       </div>
       <div class="col-xs-4">
-        <%= params[:status] %>
         <%= select_tag(:status,
           options_for_select(['Active', 'Deleted'],
             [params[:status].blank? ? 'Active' : params[:status]]),

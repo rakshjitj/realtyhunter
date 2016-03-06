@@ -17,8 +17,8 @@ Company = {};
 
   // search as user types
   Company.throttledSearch = function() {
-    clearInterval(timer);  //clear any interval on key up
-    timer = setTimeout(doSearch, 500);
+    clearInterval(Company.timer);  //clear any interval on key up
+    timer = setTimeout(Company.doSearch, 500);
   };
 
   // change enter key to tab
@@ -30,8 +30,8 @@ Company = {};
 
   //call when typing or enter or focus leaving
   Company.initialize = function() {
-    $('input').keydown(preventEnter);
-    $('#name').keyup(throttledSearch);
+    $('input').keydown(Company.preventEnter);
+    $('#name').keyup(Company.throttledSearch);
   };
 
 })();

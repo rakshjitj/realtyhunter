@@ -1,18 +1,18 @@
 <div class="row">
   <div class="col-md-12">
     <%= form_for ([@company, @office]) do |f| %>
-      <%= render :partial => 'shared/error_messages',
-      :locals => {:model => @office} %>
+      <%= render partial: 'shared/error_messages',
+          locals: {model: @office} %>
 
       <div class="field">
         <%= f.label :name, "Name" %><br>
         <%= f.text_field :name, class: 'form-control' %>
       </div>
 
-      <div class="field">
+      <div class="field map-container">
         <%= f.label :formatted_street_address, "Street Address" %><br>
         <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input', placeholder: "123 Main St" %>
-        <br/>
+        <br>
         <p>Visually confirm the office's location:</p>
         <div id="map-canvas" data-address="<%= @office.formatted_street_address %>"></div>
       </div>

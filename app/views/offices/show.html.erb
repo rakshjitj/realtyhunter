@@ -31,14 +31,19 @@
         </div>
       </div>
 
-      <br />
-      <div class="row map-container">
-        <div class="col-md-12">
-          <div id="map-canvas"></div>
+      <br>
+      <div class="row">
+        <div class="col-md-12 map-container">
+          <iframe id="map-canvas"
+            frameborder="0"
+            src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_MAPS_KEY'] %>
+              &q=<%= @office.formatted_street_address %>"
+            allowfullscreen>
+          </iframe>
         </div>
       </div>
 
-      <br />
+      <br>
       <div class="row">
         <div class="col-md-12">
           <strong>Managers:</strong>
