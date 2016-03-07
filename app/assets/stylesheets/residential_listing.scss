@@ -157,9 +157,14 @@
   height: 62px;
 }
 
+.res-show-page-wrapper {
+  height: 100vh;
+  position: relative;
+}
 #footer-mobile-show {
   position: fixed;
-  top: calc(100vh-62px);
+  top: calc(91vh);
+  // bottom: 75px;
   height: 62px;
   width: 100%;
   background: #eda800;

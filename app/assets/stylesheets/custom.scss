@@ -47,10 +47,6 @@ textarea {
   margin-bottom: 10px;
 }
 
-.map-hr {
-  margin-top: 0 !important;
-}
-
 /* for pdfs, don't page break inside a row */
 table, tr, td, th, tbody, thead, tfoot {
   page-break-inside: avoid !important;
@@ -100,11 +96,11 @@ a:hover.btn-danger {
   position: relative;
   max-width: 1200px !important;
   min-width: 400px !important;
+}
 
-  @media (max-width:414px) {
-    margin: 0 !important;
-    padding: 0 !important;
-  }
+.no-margin-padding {
+  margin-left: -15px !important;
+  padding: 0 !important;
 }
 
 // should always appear below navbar
@@ -113,7 +109,7 @@ a:hover.btn-danger {
   top: 100px;
   left: 0;
   right: 0;
-  @media (max-width:1150px) {
+  @media (max-width: $navbarCollapseWidth) {
     top: 50px;
   }
 }
