@@ -26,6 +26,9 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
+  def test
+  end
+
   # AJAX call
   def filter
     set_residential_listings

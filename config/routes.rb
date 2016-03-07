@@ -119,6 +119,7 @@ Rails.application.routes.draw do
     end
     collection do
       get 'filter'
+      get 'test'
       get 'neighborhoods_modal'
       get 'features_modal'
       get 'fee_options'

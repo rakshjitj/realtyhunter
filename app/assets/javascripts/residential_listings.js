@@ -548,7 +548,18 @@ $(document).ready(function() {
   var residential = url.indexOf('residential_listings') > -1;
   var editPage = url.indexOf('edit') > -1;
   var newPage = url.indexOf('new') > -1;
+
+  var testPage = url.indexOf('test') > -1;
+
   if (residential) {
+    if (testPage) {
+      if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        console.log('Is mobile: YES');
+      } else {
+        console.log('Is mobile: NO');
+      }
+    }
+
     // new and edit pages both render the same form template, so init them using the same code
     if (editPage || newPage) {
       ResidentialListings.initEditor();
