@@ -85,7 +85,7 @@ class ListingSerializer < ActiveModel::Serializer
 
 	def renter_fee
 		if is_residential
-			if object.listing.tp_fee_percentage
+			if object.listing.has_fee # tp_fee_percentage
 				"Fee"
 			else
 				"No Fee"
