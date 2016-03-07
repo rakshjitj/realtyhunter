@@ -435,6 +435,7 @@ ResidentialListings = {};
   // called on index & show pages
   ResidentialListings.initMobileIndex = function() {
     $('#residential-desktop').remove();
+    $('#residential-mobile').removeClass('hidden');
     $('#residential-mobile input').keydown(ResidentialListings.preventEnter);
 
     $('.js-show-mobile-filters').click(function(e) {
@@ -489,28 +490,29 @@ ResidentialListings = {};
       RHMapbox.centerOnMe();
     }
 
-    //Enable swiping...
-    var currLeft = $(".favorites-table").css('left');
-    if (currLeft === 'auto') {
-      currLeft = 0;
-    }
+    // // Enable swiping...
+    // var currLeft = $(".favorites-table").css('left');
+    // if (currLeft === 'auto') {
+    //   currLeft = 0;
+    // }
 
-    $(".favorites-table").swipe({
-      swipeLeft:function(event, direction, distance, duration, fingerCount, fingerData) {
-        // $(this).text("You swiped " + direction);
-        $(this).css('transform', 'translate(-100%)');
-      },
-      swipeRight:function(event, direction, distance, duration, fingerCount, fingerData) {
-        // $(this).text("You swiped " + direction);
-        $(this).css('transform', 'translate(100%)');
-      },
-      // Default is 75px, set to 0 for demo so any distance triggers swipe
-      threshold:0
-    });
+    // $(".favorites-table").swipe({
+    //   swipeLeft:function(event, direction, distance, duration, fingerCount, fingerData) {
+    //     // $(this).text("You swiped " + direction);
+    //     $(this).css('transform', 'translate(-100%)');
+    //   },
+    //   swipeRight:function(event, direction, distance, duration, fingerCount, fingerData) {
+    //     // $(this).text("You swiped " + direction);
+    //     $(this).css('transform', 'translate(100%)');
+    //   },
+    //   // Default is 75px, set to 0 for demo so any distance triggers swipe
+    //   threshold:0
+    // });
   }
 
   ResidentialListings.initDesktopIndex = function() {
     $('#residential-mobile').remove();
+    $('#residential-desktop').removeClass('hidden');
     ResidentialListings.enablePassiveUpdates();
 
     // hide spinner on main index when first pulling up the page
