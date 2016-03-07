@@ -3,18 +3,14 @@
 <%= form_for(@announcement) do |f| %>
 <div class="row">
   <div class="col-md-12">
+    <%= render partial: 'shared/error_messages',
+        locals: {model: @announcement} %>
 
-        <%= render partial: 'shared/error_messages',
-          locals: {model: @announcement} %>
-
-
-
-        <br />
         <div class="row">
-          <div class="col-md-3 form-label-responsive">
+          <div class="col-xs-2 form-label-responsive">
             <%= f.label :category, class: 'required' %>
           </div>
-          <div class="col-md-9">
+          <div class="col-xs-10 col-sm-4">
             <%= f.select(:category,
               options_for_select(%w(Residential Commercial Sales Event),
                 [@announcement.category ? @announcement.category.titleize : 'Residential']),
@@ -27,20 +23,20 @@
         <br />
         <div class="row">
           <div class="form-group">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-sm-2 form-label-responsive">
               <%= f.label :note, 'Notes', class: 'required' %>
             </div>
-            <div class="col-md-9">
+            <div class="col-sm-10">
               <%= f.text_area :note, class: 'form-control', rows: 6, required: true %>
             </div>
           </div>
         </div>
 
-        <br />
-        <div class="row">
-          <div class="form-group">
-            <div class="col-md-9 col-md-offset-3">
-              <%= f.submit "Send", class: "btn btn-warning" %>
+        <br>
+        <div class="row vertical-margin-lg">
+          <div class="col-md-6 col-md-offset-3">
+            <div class="actions">
+              <%= f.submit 'Send', class: "btn btn-warning btn-block" %>
             </div>
           </div>
         </div>

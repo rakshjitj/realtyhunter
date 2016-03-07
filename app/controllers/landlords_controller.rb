@@ -9,9 +9,11 @@ class LandlordsController < ApplicationController
   # GET /landlords
   # GET /landlords.json
   def index
-
     respond_to do |format|
       format.html do
+        set_landlords
+      end
+      format.js do
         set_landlords
       end
       format.csv do
@@ -112,7 +114,7 @@ class LandlordsController < ApplicationController
       set_units
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that landlord is not active."
-      redirect_to :action => 'index'
+      redirect_to action: 'index'
     end
 
     def set_units
@@ -155,10 +157,10 @@ class LandlordsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def landlord_params
 
-      params.permit(:sort_by, :filter, :agent_filter, :status, :status_listings,:street_number,
-        :route, :neighborhood, :sublocality, :administrative_area_level_2_short,
+      params.permit(:sort_by, :filter, :page, :agent_filter, :status, :status_listings, :street_number,
+         :route, :neighborhood, :sublocality, :administrative_area_level_2_short,
         :administrative_area_level_1_short, :postal_code, :country_short, :lat, :lng, :place_id,
-        :landlord => [:lock_version, :code, :name, :contact_name, :mobile, :office_phone, :fax,
+        landlord: [:lock_version, :code, :name, :contact_name, :mobile, :office_phone, :fax,
           :email, :website, :formatted_street_address, :notes,
           :listing_agent_percentage, :listing_agent_id,
           :has_fee, :op_fee_percentage, :tp_fee_percentage,

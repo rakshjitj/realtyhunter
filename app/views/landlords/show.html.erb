@@ -1,197 +1,199 @@
 <% provide(:title, @landlord.code) %>
+
 <div id="landlords">
+<div id="section-name" data-name="landlords">
 
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
+    <div id="landlord_panel" class="panel panel-default">
 
-    <div class="page-header">
-      <div class="row">
-        <div class="col-md-7">
-          <h1><small>Landlord</small> <%= @landlord.code %></h1>
-        </div>
-        <div class="col-md-5 form-label-responsive">
-          <br /><br />
-          <%= link_to 'Edit', edit_landlord_path(@landlord) %> |
-          <%= link_to 'View all', landlords_path %> |
-          <%= link_to 'Add building', new_building_path(landlord_id: @landlord.id) %><br  />
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12">
-        <div class="panel panel-default">
-          <div class="panel-body">
-
-            <div class="row">
-              <div class="col-xs-4 col-md-1">
-                <strong>Code:</strong>
-              </div>
-              <div class="col-xs-8 col-md-5">
-                <%= @landlord.code %>
-              </div>
-              <div class="col-xs-4 col-md-3">
-                <strong>Mobile:</strong>
-              </div>
-              <div class="col-xs-8 col-md-3 js-phoneNumber">
-                <%= @landlord.mobile %>
-              </div>
+      <div class="panel-heading">
+        <div class="panel-title">
+          <div class="row">
+            <div class="col-md-12 col-md-7">
+              <h1 class="center">
+                <small>Landlord</small> <%= @landlord.code %>
+              </h1>
             </div>
+          </div>
+        </div><!-- panel-title -->
+      </div><!-- panel-heading -->
 
-            <div class="row">
-              <div class="col-xs-4 col-md-1">
-                <strong>Name:</strong>
-              </div>
-              <div class="col-xs-8 col-md-5">
-                <%= @landlord.name %>
-              </div>
-              <div class="col-xs-4 col-md-3">
-                <strong>Office Phone:</strong>
-              </div>
-              <div class="col-xs-8 col-md-3 js-phoneNumber">
-                <%= @landlord.office_phone %>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-xs-4 col-md-3">
-                <strong>Contact Name:</strong>
-              </div>
-              <div class="col-xs-8 col-md-3">
-                <%= @landlord.contact_name %>
-              </div>
-              <div class="col-xs-4 col-md-3">
-                <strong>Fax:</strong>
-              </div>
-              <div class="col-xs-8 col-md-3">
-                <%= @landlord.fax %>
-              </div>
-
-            </div>
-
-            <div class="row">
-              <div class="col-xs-4 col-md-1">
-                <strong>Email:</strong>
-              </div>
-              <div class="col-xs-8 col-md-5">
-                <%= mail_to @landlord.email %>
-              </div>
-              <div class="col-xs-4 col-md-3">
-                <strong>Web:</strong>
-              </div>
-              <div class="col-xs-8 col-md-3">
-                <a href="<%= @landlord.website %>"><%= @landlord.website %></a>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-xs-4 col-md-3">
-                <strong>Listing Agent:</strong>
-              </div>
-              <div class="col-xs-8 col-md-3">
-                <% if @landlord.listing_agent %>
-                  <%= link_to @landlord.listing_agent.name, @landlord.listing_agent %>
-                <% else %>
-                  N/A
-                <% end %>
-              </div>
-              <div class="col-xs-5 col-md-3">
-                <strong>Office address:</strong>
-              </div>
-              <div class="col-xs-7 col-md-3">
-                <%= @landlord.formatted_street_address %>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-xs-4 col-md-3">
-                <strong>Listing Agent %:</strong>
-              </div>
-              <div class="col-xs-8 col-md-3">
-                <% if @landlord.listing_agent_percentage %>
-                  <%= @landlord.listing_agent_percentage %>%
-                <% else %>
-                  N/A
-                <% end %>
-              </div>
-              <div class="col-xs-5 col-md-3">
-                <strong>Key Pickup Location:</strong>
-              </div>
-              <div class="col-xs-7 col-md-3">
-                <%= @landlord.key_pick_up_location %>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-12">
-                <br />
-                <strong>Source of updates:</strong>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <%= @landlord.update_source %>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-12">
-                <br />
-                <strong>Notes: (Shared on listings)</strong>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <%= @landlord.notes %>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-12">
-                <br />
-                <strong>Additional Management info:</strong>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <%= @landlord.management_info %>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-12">
-                <!-- Broker's Fee -->
-                <br />
-                <% if @landlord.has_fee %>
-                  <strong>Tenant Pays:</strong>
-                  <% if @landlord.tp_fee_percentage %>
-                    <%= @landlord.tp_fee_percentage %>%
-                  <% else %>
-                    (no amount specified)
-                  <% end %>
-
-                <!-- No Broker's Fee -->
-                <% else %>
-                  <strong>OP Pays:</strong>
-                  <% if @landlord.op_fee_percentage %>
-                    <%= @landlord.op_fee_percentage %>%
-                  <% else %>
-                    (no amount specified)
-                  <% end %>
-
-                <% end %>
-
-
-              </div>
-            </div>
-
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-12 col-md-6 vertical-margin-lg">
+            <%= link_to 'Edit', edit_landlord_path(@landlord) %> |
+            <%= link_to 'View all', landlords_path %> |
+            <%= link_to 'Add building', new_building_path(landlord_id: @landlord.id) %><br  />
           </div>
         </div>
 
-      </div>
-    </div>
-  </div>
-</div>
+        <br>
+        <div class="row">
+          <div class="col-xs-4 col-md-3">
+            <strong>Code</strong>
+          </div>
+          <div class="col-xs-8 col-md-3">
+            <%= @landlord.code %>
+          </div>
+          <div class="col-xs-4 col-md-2">
+            <strong>Mobile</strong>
+          </div>
+          <div class="col-xs-8 col-md-4 js-phoneNumber">
+            <%= @landlord.mobile %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-4 col-md-3">
+            <strong>Name</strong>
+          </div>
+          <div class="col-xs-8 col-md-3">
+            <%= @landlord.name %>
+          </div>
+          <div class="col-xs-4 col-md-2">
+            <strong>Office Phone</strong>
+          </div>
+          <div class="col-xs-8 col-md-4 js-phoneNumber">
+            <%= @landlord.office_phone %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-4 col-md-3">
+            <strong>Contact Name</strong>
+          </div>
+          <div class="col-xs-8 col-md-3">
+            <%= @landlord.contact_name %>
+          </div>
+          <div class="col-xs-4 col-md-2">
+            <strong>Fax</strong>
+          </div>
+          <div class="col-xs-8 col-md-4">
+            <%= @landlord.fax %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-4 col-md-3">
+            <strong>Email</strong>
+          </div>
+          <div class="col-xs-8 col-md-3">
+            <%= mail_to @landlord.email %>
+          </div>
+          <div class="col-xs-4 col-md-2">
+            <strong>Web</strong>
+          </div>
+          <div class="col-xs-8 col-md-4">
+            <a href="<%= @landlord.website %>"><%= @landlord.website %></a>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-4 col-md-3">
+            <strong>Listing Agent</strong>
+          </div>
+          <div class="col-xs-8 col-md-3">
+            <% if @landlord.listing_agent %>
+              <%= link_to @landlord.listing_agent.name, @landlord.listing_agent %>
+            <% end %>
+          </div>
+          <div class="col-xs-5 col-md-2">
+            <strong>Key Pickup Location</strong>
+          </div>
+          <div class="col-xs-7 col-md-4">
+            <%= @landlord.key_pick_up_location %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-4 col-md-3">
+            <strong>Listing Agent %</strong>
+          </div>
+          <div class="col-xs-8 col-md-3">
+            <% if !@landlord.listing_agent_percentage.nil? %>
+              <%= @landlord.listing_agent_percentage %>%
+            <% end %>
+          </div>
+          <!-- spacer -->
+        </div>
+
+        <br>
+        <div class="row">
+          <div class="col-xs-12 col-md-3">
+            <strong>Office address</strong>
+          </div>
+          <div class="col-xs-12 col-md-9">
+            <%= @landlord.formatted_street_address %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <br />
+            <strong>Source of updates</strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <%= @landlord.update_source %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <br />
+            <strong>Notes (Shared on listings)</strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <%= @landlord.notes %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <br />
+            <strong>Additional Management info</strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <%= @landlord.management_info %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <!-- Broker's Fee -->
+            <br />
+            <% if @landlord.has_fee %>
+              <strong>Tenant Pays:</strong>
+              <% if @landlord.tp_fee_percentage %>
+                <%= @landlord.tp_fee_percentage %>%
+              <% else %>
+                (no amount specified)
+              <% end %>
+
+            <!-- No Broker's Fee -->
+            <% else %>
+              <strong>OP Pays:</strong>
+              <% if @landlord.op_fee_percentage %>
+                <%= @landlord.op_fee_percentage %>%
+              <% else %>
+                (no amount specified)
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+
+        <br>
+
+      </div><!-- panel-body -->
+    </div><!-- ll-panel -->
+  </div><!-- col? -->
+</div><!-- row -->
 
 <div id="listings" data-search-path="<%= filter_listings_landlord_path %>">
   <%= render partial:'shared/listings', locals: {
@@ -202,4 +204,5 @@
     com_images: @com_images } %>
 </div>
 
+</div><!-- section-name -->
 </div><!-- landlords -->

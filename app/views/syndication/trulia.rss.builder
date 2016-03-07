@@ -1,3 +1,4 @@
+# url looks like <base_url>/syndication/1/trulia
 xml.instruct! :xml, :version => "1.0"
 
 xml.hotPadsItems version:"2.1" do
@@ -48,8 +49,11 @@ xml.hotPadsItems version:"2.1" do
 			# 		xml.appointmentRequired
 			# 	end
 			# end
-			xml.previewMessage listing.description ? listing.description[0..255] : listing.description
-			xml.description listing.description
+
+			tmp_descrip = h raw sanitize listing.description, tags: %w()
+
+			xml.previewMessage tmp_descrip ? tmp_descrip[0..255] : tmp_descrip
+			xml.description tmp_descrip
 			xml.terms # TODO
 			# terms>One year lease, then month to month. Deposit equals first month's rent</terms>
 			xml.leaseTerm "OneYear"

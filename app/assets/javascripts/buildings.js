@@ -1,12 +1,14 @@
 Buildings = {};
 
 (function() {
+  Buildings.timer;
+
   Buildings.showSpinner = function() {
-    $('#buildings .index-spinner-desktop').show();
+    $('.index-spinner-desktop').show();
   };
 
   Buildings.hideSpinner = function() {
-    $('#buildings .index-spinner-desktop').hide();
+    $('.index-spinner-desktop').hide();
   };
 
   Buildings.filterListings = function(event) {
@@ -14,22 +16,20 @@ Buildings = {};
     $.ajax({
       url: search_path,
       data: {
-        status_listings: $('#buildings #status_listings').val(),
+        status_listings: $('#status_listings').val(),
       },
       dataType: "script",
       success: function(data) {
-        Buildings.hideSpinner();
       },
       error: function(data) {
-        Buildings.hideSpinner();
       }
     });
   };
 
   Buildings.filterBuildings = function(sortByCol, sortDirection) {
-  	var search_path = $('#search-filters').attr('data-search-path');
-
     Buildings.showSpinner();
+
+  	var search_path = $('#search-filters').attr('data-search-path');
 
     if (!sortByCol) {
       sortByCol = Common.getSearchParam('sort_by');
@@ -39,11 +39,11 @@ Buildings = {};
     }
 
     var data = {
-        filter: $('#buildings #filter').val(),
-        status: $('#buildings #status').val(),
-        sort_by: sortByCol,
-        direction: sortDirection,
-      };
+      filter: $('#filter').val(),
+      status: $('#status').val(),
+      sort_by: sortByCol,
+      direction: sortDirection,
+    };
     var searchParams = [];
     for(var key in data) {
       if (data.hasOwnProperty(key) && data[key]) {
@@ -60,7 +60,6 @@ Buildings = {};
   };
 
   // search as user types
-  Buildings.timer;
   Buildings.throttledBldgSearch = function() {
     clearTimeout(Buildings.timer);  //clear any interval on key up
     Buildings.timer = setTimeout(Buildings.filterBuildings, 500);
@@ -72,14 +71,6 @@ Buildings = {};
       $('#buildings #checkbox_active').focus();
       return false;
     }
-  };
-
-  Buildings.setPositions = function() {
-    // loop through and give each task a data-pos
-    // attribute that holds its position in the DOM
-    $('#buildings .img-thumbnail').each(function(i) {
-        $(this).attr("data-pos", i+1);
-    });
   };
 
   Buildings.removeBldgImage = function (id, building_id) {
@@ -94,15 +85,6 @@ Buildings = {};
       error: function(data) {
         //console.log('ERROR:', data);
       }
-    });
-  };
-
-  Buildings.makeSortable = function() {
-    // call sortable on our div with the sortable class
-    $('#buildings .sortable').sortable({
-      forcePlaceholderSize: true,
-      placeholderClass: 'col col-xs-2 border border-maroon',
-      dragImage: null
     });
   };
 
@@ -150,18 +132,15 @@ Buildings = {};
 
     Buildings.updateRemoveImgLinks();
 
-    $('.carousel-indicators > li:first-child').addClass('active');
-    $('.carousel-inner > .item:first-child').addClass('active')
-
-    Buildings.setPositions();
-    Buildings.makeSortable();
+    DropZoneHelper.setPositions('buildings', 'images');
+    DropZoneHelper.makeSortable('buildings', 'images');
 
     // after the order changes
     $('#buildings .sortable').sortable().bind('sortupdate', function(e, ui) {
       // array to store new order
       updated_order = []
       // set the updated positions
-      Buildings.setPositions();
+      DropZoneHelper.setPositions('buildings', 'images');
 
       // populate the updated_order array with the new task positions
       $('#buildings .img-thumbnail').each(function(i){
@@ -178,10 +157,10 @@ Buildings = {};
       });
     });
 
-    var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
+    var bldg_address = $('#map-canvas').attr('data-address') ? $('#map-canvas').attr('data-address') : 'New York, NY, USA';
     // google maps
     $("#bldg_panel").geocomplete({
-      map: "#map_canvas",
+      map: "#map-canvas",
       location: bldg_address,
       details: ".details"
     }).bind("geocode:result", function(event, result){
@@ -191,7 +170,7 @@ Buildings = {};
     });
 
     $(".autocomplete-input").geocomplete({
-      map: "#map_canvas",
+      map: "#map-canvas",
       location: bldg_address,
       details: ".details"
     }).bind("geocode:result", function(event, result){
@@ -201,14 +180,14 @@ Buildings = {};
 
       // update neighborhood options from google results
       var sublocality = '';
-      for (var i =0; i<result["address_components"].length; i++) {
-        if (result["address_components"][i]["types"][1] == "sublocality") {
-          sublocality = result["address_components"][i]["short_name"];
+      for (var i =0; i<result.address_components.length; i++) {
+        if (result.address_components[i].types[1] === "sublocality") {
+          sublocality = result.address_components[i].short_name;
         }
       }
 
       // if no neighborhood already set, update neighborhood from google results
-      if ($('#neighborhood').val() == "") {
+      // if ($('#neighborhood').val() === null) {
         $.ajax({
           type: "GET",
           url: '/buildings/neighborhood_options',
@@ -216,16 +195,16 @@ Buildings = {};
             sublocality: sublocality,
           },
           success: function(data) {
-            for (var i =0; i<result["address_components"].length; i++) {
-              if (result["address_components"][i]["types"][0] == "neighborhood") {
-                var nabe = result["address_components"][i]["short_name"];
+            for (var i =0; i<result.address_components.length; i++) {
+              if (result.address_components[i].types[0] === "neighborhood") {
+                var nabe = result.address_components[i].short_name;
                 //console.log(nabe);
                 $('#neighborhood').val(nabe);
               }
             }
           }
         });
-      }
+      // }
 
     }).bind("geocode:error", function(event, result){
       //console.log("[ERROR]: " + result);
@@ -249,13 +228,17 @@ Buildings = {};
     }
 
     // search filters
-    $('#buildings #filter').bind('railsAutocomplete.select', Buildings.throttledBldgSearch);
-    $('#buildings #filter').keydown(Buildings.preventEnter);
-    $('#buildings #filter').change(Buildings.throttledBldgSearch);
-    $('#buildings #status').change(Buildings.throttledBldgSearch);
-    $('#buildings #status_listings').change(Buildings.filterListings);
+    $('input').keydown(Buildings.preventEnter);
+    $('#filter').bind('railsAutocomplete.select', Buildings.throttledBldgSearch);
+    $('#filter').change(Buildings.throttledBldgSearch);
+    $('#status').change(Buildings.throttledBldgSearch);
   }
 
+  Buildings.initShow = function () {
+    $('.carousel-indicators > li:first-child').addClass('active');
+    $('.carousel-inner > .item:first-child').addClass('active');
+    $('#status_listings').change(Buildings.filterListings);
+  }
 })();
 
 $(document).on('keyup',function(evt) {
@@ -265,16 +248,16 @@ $(document).on('keyup',function(evt) {
 });
 
 $(document).ready(function () {
-  var url = window.location.pathname;
-  var buildings = url.indexOf('buildings') > -1;
-  var editPage = url.indexOf('edit') > -1;
-  var newPage = url.indexOf('new') > -1;
-  if (buildings) {
-    // new and edit pages both render the same form template, so init them using the same code
-    if (editPage || newPage) {
-      Buildings.initEditor();
-    } else {
-      Buildings.initIndex();
-    }
+  var editPage = $('.buildings.edit').length;
+  var newPage = $('.buildings.new').length;
+  var indexPage = $('.buildings.index').length;
+  var showPage = $('.buildings.show').length;
+  // new and edit pages both render the same form template, so init them using the same code
+  if (editPage || newPage) {
+    Buildings.initEditor();
+  } else if (indexPage) {
+    Buildings.initIndex();
+  } else if (showPage) {
+    Buildings.initShow();
   }
 });

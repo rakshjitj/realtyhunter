@@ -119,4 +119,8 @@ ContactUs = {};
 
 })();
 
-$(document).ready(ContactUs.initialize);
+$(document).ready(function() {
+  if ($('.careers').length) {
+    ContactUs.initialize();
+  }
+});

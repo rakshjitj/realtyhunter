@@ -80,14 +80,14 @@ class RoommatesController < ApplicationController
 
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that roommate is no longer available."
-      redirect_to :action => 'index'
+      redirect_to action: 'index'
   end
 
   def edit
     @roommate = Roommate.find(params[:id])
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that roommate is no longer available."
-      redirect_to :action => 'index'
+      redirect_to action: 'index'
   end
 
   def delete_modal
@@ -248,7 +248,7 @@ class RoommatesController < ApplicationController
       @roommate = Roommate.find_by!(id: params[:id])
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that roommate was not found."
-      redirect_to :action => 'index'
+      redirect_to action: 'index'
   	end
 
   	def set_roommates
@@ -285,7 +285,7 @@ class RoommatesController < ApplicationController
   	end
 
     def roommate_params
-    	data = params.permit(:sort_by, :filter, :direction, :name, :referred_by, :neighborhood_id,
+    	data = params.permit(:sort_by, :filter, :page, :direction, :name, :referred_by, :neighborhood_id,
         :submitted_date, :move_in_date, :monthly_budget, :status,
         :dogs_allowed, :cats_allowed, :address,
         roommate: [:lock_version, :name, :phone_number, :internal_notes,

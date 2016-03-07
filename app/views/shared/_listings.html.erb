@@ -20,9 +20,9 @@
         <div role="tabpanel" class="tab-pane fade in active" id="residential-listings">
         	<br />
         	<div class="row">
-					  <div class="col-md-2">
+					  <!-- <div class="col-md-2">
               <!-- will be a dropdown of either print pdf or email -->
-              <div class="dropdown selected-listings">
+              <!-- <div class="dropdown selected-listings">
                 <button class="btn btn-warning btn-sm dropdown-toggle disabled" id="selected-listings-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="menu">
                   0 Selected Listings
                   <span class="caret"></span>
@@ -36,10 +36,10 @@
                     <i class="fa fa-fw fa-list"></i> Internal Listings Sheet</a></li>
                 </ul>
               </div>
-					  </div>
+					  </div> -->
 
-            <div class="col-md-1">
-              <label>Status:</label>
+            <div class="col-md-2">
+              <label>Filter By Status:</label>
             </div>
             <div class="col-md-2">
               <% if current_user.is_management? || current_user.is_listings_manager? %>
@@ -59,8 +59,8 @@
             locals: { residential_units: residential_units, res_images: res_images} %>
 
           <div class="row">
-					  <div class="col-md-12">
-              <div class="listing-pagination">
+					  <div class="col-sm-4 col-sm-offset-4">
+              <div class="listing-pagination res pagination-wrapper">
                <%= render partial: 'shared/pagination', locals: {models: residential_units} %>
               </div>
 					  </div>
@@ -71,15 +71,16 @@
         <div role="tabpanel" class="tab-pane fade" id="commercial-listings">
           <%= render partial:'commercial_listings/table',
             locals: { commercial_units: commercial_units, com_images: com_images } %>
+
+          <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+              <div class="listing-pagination com pagination-wrapper">
+                <%= render partial: 'shared/pagination', locals: {models: commercial_units} %>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="row">
-				  <div class="col-md-12">
-            <div class="listing-pagination">
-  				  	<%= render partial: 'shared/pagination', locals: {models: commercial_units} %>
-            </div>
-				  </div>
-				</div>
     </div>
 
   </div><!-- col -->

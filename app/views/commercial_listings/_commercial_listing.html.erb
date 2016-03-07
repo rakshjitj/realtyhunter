@@ -4,7 +4,8 @@
       <i data-action="selectUnit" class="fa fa-square-o fa-lg"></i>
     </td>
 
-    <td>
+    <!-- ****** IMAGE ****************************************** -->
+    <td class="img-col" style="max-width: 150px;">
       <% if @com_images[commercial_listing.unit_id] %>
         <%= link_to(image_tag(@com_images[commercial_listing.unit_id].file.url(:thumb),
           alt: @com_images[commercial_listing.unit_id].file.url(:thumb)), commercial_listing) %>
@@ -13,6 +14,8 @@
         <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), commercial_listing) %>
       <% end %>
     </td>
+
+    <!-- ****** ADDRESS ****************************************** -->
     <td>
       <%= link_to commercial_listing.street_address_and_unit, commercial_listing %><br />
       <% if commercial_listing.neighborhood_name %>
@@ -27,15 +30,25 @@
       <% end %>
     </td>
 
+    <!-- ****** SUMMARY ****************************************** -->
     <td><%= commercial_listing.summary %></td>
-    <td><%= money_formatted(commercial_listing.rent) %>/Month</td>
+
+    <!-- ****** PRICE ****************************************** -->
+    <td><%= rent_formatted(commercial_listing.rent) %>/Month</td>
+
+    <!-- ****** SQ FOOTAGE ****************************************** -->
     <td><%= commercial_listing.sq_footage %></td>
+
+    <!-- ****** AVAILABLE BY ****************************************** -->
     <td><%= commercial_listing.available_by %></td>
+
+    <!-- ****** ACCESS INFO ****************************************** -->
     <td class="js-phoneNumber"><%= commercial_listing.access_info %></td>
 
     <!-- ****** UPDATED_AT ****************************************** -->
     <td><%= time_ago_in_words(commercial_listing.updated_at) %></td>
 
+    <!-- ****** STATUS ****************************************** -->
     <td>
       <% if commercial_listing.status == Unit.statuses["active"]
        %>

@@ -1,0 +1,52 @@
+#map-canvas {
+  margin-bottom: 15px;
+  padding-left: 0px;
+  width: 100%;
+  height: 400px;
+  border: 2px solid #fff;
+}
+
+#r-big-map {
+  height: 640px;
+  margin: 10px 0 0 0;
+  padding: 0;
+}
+
+#r-big-map-mobile {
+  min-height: 100vw;
+  height: 100vw;
+  order: 2;
+  flex: 1;
+  width: 100%;
+  overflow: hidden;
+}
+
+#c-big-map {
+  width: 100%;
+  height: 500px;
+  margin: 10px 0 0 0;
+  padding: 0;
+}
+
+#s-big-map {
+  width: 100%;
+  height: 500px;
+  margin: 10px 0 0 0;
+  padding: 0;
+}
+
+.popup {
+  text-align:center;
+}
+.popup .slideshow .image        { display: none; }
+.popup .slideshow .image.active { display: block; }
+.popup .slideshow img {
+  width: 100%;
+}
+.popup .content .contentRow        { background-color: white; }
+.popup .content .contentRow.active { background-color: #F5F5DC; }
+.popup .cycle {
+  padding: 10px 0 20px;
+}
+.popup .cycle a.prev { float: left; }
+.popup .cycle a.next { float: right; }

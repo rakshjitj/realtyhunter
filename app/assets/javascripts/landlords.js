@@ -1,13 +1,14 @@
 Landlords = {};
 
 (function() {
+  Landlords.timer;
 
   Landlords.showSpinner = function() {
-    $('#landlords .ll-spinner-desktop').show();
+    $('.ll-spinner-desktop').show();
   };
 
   Landlords.hideSpinner = function() {
-    $('#landlords .ll-spinner-desktop').hide();
+    $('.ll-spinner-desktop').hide();
   };
 
   Landlords.filterListings = function(event) {
@@ -15,7 +16,7 @@ Landlords = {};
     $.ajax({
       url: search_path,
       data: {
-        status_listings: $('#landlords #status_listings').val(),
+        status_listings: $('#status_listings').val(),
       },
       dataType: "script",
       success: function(data) {
@@ -61,7 +62,6 @@ Landlords = {};
   };
 
   // search as user types
-  Landlords.timer;
   Landlords.throttledSearch = function() {
     Landlords.showSpinner();
 
@@ -91,6 +91,20 @@ Landlords = {};
   Landlords.initEditor = function() {
     $('#landlords .has-fee').click(Landlords.toggleFeeOptions);
     Landlords.toggleFeeOptions();
+
+    var office_address = $('#map-canvas').attr('data-address') ? $('#map-canvas').attr('data-address') : 'New York, NY, USA';
+    console.log(office_address);
+    $(".autocomplete-input").geocomplete({
+      map: "#map-canvas",
+      location: office_address,
+      details: ".details"
+    }).bind("geocode:result", function(event, result){
+      if (this.value == "New York, NY, USA") {
+        this.value = '';
+      }
+    }).bind("geocode:error", function(event, result){
+      console.log(office_address, "[ERROR]: " + result);
+    });
   }
 
   Landlords.initIndex = function() {
@@ -109,20 +123,6 @@ Landlords = {};
       Common.markSortingColumnByElem($('th[data-sort="name"]'), 'asc')
     }
 
-    var bldg_address = $('#map_canvas').attr('data-address') ? $('#map_canvas').attr('data-address') : 'New York, NY, USA';
-
-    $(".autocomplete-input").geocomplete({
-      map: "#map_canvas",
-      location: bldg_address,
-      details: ".details"
-    }).bind("geocode:result", function(event, result){
-      if (this.value == "New York, NY, USA") {
-        this.value = '';
-      }
-    }).bind("geocode:error", function(event, result){
-      console.log(bldg_address, "[ERROR]: " + result);
-    });
-
     $('#landlords #filter').bind('railsAutocomplete.select', Landlords.throttledSearch);
     $('#landlords #filter').keydown(Landlords.preventEnter);
     $('#landlords #filter').change(Landlords.throttledSearch);
@@ -139,16 +139,16 @@ $(document).on('keyup',function(evt) {
 });
 
 $(document).ready(function () {
-  var url = window.location.pathname;
-  var landlords = url.indexOf('landlords') > -1;
-  var editPage = url.indexOf('edit') > -1;
-  var newPage = url.indexOf('new') > -1;
-  if (landlords) {
-    // new and edit pages both render the same form template, so init them using the same code
-    if (editPage || newPage) {
-      Landlords.initEditor();
-    } else {
-      Landlords.initIndex();
-    }
-  }
+  var editPage = $('.landlords.edit').length;
+  var newPage = $('.landlords.new').length;
+  var indexPage = $('.landlords.index').length;
+  var showPage = $('.landlords.show').length;
+  // new and edit pages both render the same form template, so init them using the same code
+  if (editPage || newPage) {
+    Landlords.initEditor();
+  } else if (indexPage) {
+    Landlords.initIndex();
+  } // else if (showPage) {
+    // not yet needed
+  // }
 });

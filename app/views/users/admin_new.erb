@@ -5,11 +5,14 @@
 
     <div class="page-header">
       <div class="row">
-        <div class="col-md-9">
+        <div class="col-sm-9">
           <h1 class="hidden-xs hidden-sm">New Employee Signup</h1>
           <h2 class="hidden-md hidden-lg">New Employee Signup</h2>
         </div>
-        <div class="col-md-3 form-label-responsive">
+        <div class="hidden-xs hidden-sm col-sm-3 form-label-responsive page-header-buttons-lg">
+          <%= link_to 'View Employees', employees_company_path(current_user.company) %>
+        </div>
+        <div class="hidden-md hidden-lg col-sm-3 form-label-responsive page-header-buttons">
           <%= link_to 'View Employees', employees_company_path(current_user.company) %>
         </div>
       </div>

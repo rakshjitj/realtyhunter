@@ -26,6 +26,9 @@
 //= require moment
 //= require bootstrap-datetimepicker
 //= require jquery.mousewheel.min
+//= require selectize
+//= require jquery.infinite-pages
+//= require jquery.touchSwipe.min
 
 $(document).ready(function() {
 	// change all date input fields to auto-open the calendar
@@ -66,8 +69,25 @@ $(document).ready(function() {
 	});
 
 	Common.detectPhoneNumbers();
+
+  // navbar
+  var sideslider = $('[data-toggle=collapse-side]');
+  var sel = sideslider.attr('data-target');
+  var sel2 = sideslider.attr('data-target-2');
+  sideslider.click(function(event){
+    $(sel).toggleClass('in');
+    $(sel2).toggleClass('out');
+  });
+
+  if (Common.onMobileDevice()) {
+    $('.navbar-desktop').remove();
+  } else {
+    $('.navbar-mobile').remove();
+  }
+
 });
 
+// debugging
 $(window).unload(function() {
 	Deals.clearTimer();
 	Careers.clearTimer();
@@ -79,4 +99,3 @@ $(window).unload(function() {
   CommercialListings.clearTimer();
   SalesListings.clearTimer();
 });
-

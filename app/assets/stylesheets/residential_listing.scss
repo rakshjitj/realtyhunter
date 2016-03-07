@@ -1,8 +1,4 @@
-
-.margin-vertical {
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
+/********* desktop *****************/
 
 .roommate_icon
 {
@@ -40,4 +36,204 @@
 .word-wrap {
   word-wrap: break-word !important;
   white-space: normal !important;
+}
+
+#residential #basic-info .row.vertical-margin-lg {
+  margin-left: 15px;
+}
+
+/********* both desktop and mobile *****************/
+
+.hidden {
+  display: none;
+}
+
+/********* mobile *****************/
+
+.card-middle {
+  order: 2;
+  flex-grow: 2;
+  overflow: auto;
+}
+
+.mobile-announcement {
+  flex: 1;
+}
+
+.card-nav {
+  order: 1;
+  flex-basis: 50px;
+  width: 100vw;
+  background-color: #eda800;
+  font-size: 1.5em;
+}
+
+.card-nav-inner {
+  display: flex;
+  flex-direction: row;
+  min-height: 50px;
+  align-items: center;
+  padding-top: 5px;
+  a {
+    color: white;
+  }
+}
+
+.left {
+  flex: 1;
+  cursor: pointer;
+  text-align: left;
+}
+.middle {
+  flex: 1;
+  text-align: center;
+}
+.right {
+  flex: 1;
+  cursor: pointer;
+  text-align: right;
+}
+
+.link-run-search {
+  padding-left: 10px;
+  text-decoration: none;
+}
+
+.link-cancel-search {
+  padding-right: 20px;
+  text-decoration: none;
+}
+
+.link-reset-filters {
+  padding-right: 20px;
+  text-decoration: none;
+}
+
+.mobile-filters {
+  background-color: #D3D3D3;
+
+  .field-label {
+    font-size: 2em;
+  }
+
+  .field-label-sm {
+    font-size: 1.75em;
+  }
+
+  .row {
+    margin-top: 10px;
+    margin-left: 5px;
+  }
+
+  .end-of-page-padding {
+    margin-bottom: 100px;
+  }
+}
+
+.selectize-wrapper {
+  padding-right: 0 !important;
+}
+
+.footer-wrapper {
+  position: relative;
+}
+
+/* index page footer */
+.footer-mobile-residential {
+  order: 3;
+  flex-basis: 65px;
+  min-height: 65px;
+  width: 100%;
+  background: #eda800;
+}
+
+.mobile-show-page-wrap {
+  height: calc(100vh - 62px);
+  overflow: scroll;
+  margin-bottom: -100px; /* the bottom margin is the negative value of the footer's height */
+}
+
+.mobile-show-bottom-spacer {
+  height: 62px;
+}
+
+#footer-mobile-show {
+  position: fixed;
+  top: calc(100vh-62px);
+  height: 62px;
+  width: 100%;
+  background: #eda800;
+}
+
+.nav-button-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-basis: 65px;
+}
+
+.nav-button-wrapper > .nav-button {
+  flex: 1;
+  height: 65px;
+  margin: 0;
+  padding: 10px 0 10px 0;
+  background-color: #eda800 !important;
+  color: black;
+  text-align: center;
+}
+
+.row-list-view {
+  min-height: 100px;
+  display: flex;
+  flex-direction: row;
+  flex-basis: 100px;
+  margin: 0px !important;
+}
+.col-image {
+  padding: 15;
+  order: 1;
+  width: 100px;
+  flex: 1;
+}
+
+.col-info {
+  order: 2;
+  margin-left: 15px;
+  flex-grow: 2;
+}
+
+.even {
+  background-color: white;
+}
+
+.odd {
+  background-color: #F2F2F2;
+}
+
+.minor-spacing {
+  margin-top: 9px;
+}
+.minor-header {
+  margin-bottom: 0;
+  padding: 5px 0 8px 9px;
+  border-bottom: 1px;
+  background-color: #eda800;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.sm-margin-right {
+  margin-right: 15px;
+}
+
+.favorites-table {
+  background-color: #ffffe6
+};
+
+/******* show ******************/
+.inaccuracy-report {
+  background-color: #FBEFEF;
+}
+
+#runit-panel > .panel-body {
+  padding-bottom: 0;
 }

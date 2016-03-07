@@ -4,7 +4,8 @@
     <i data-action="selectUnit" class="fa fa-square-o fa-lg"></i>
   </td>
 
-  <td>
+  <!-- ****** IMAGE ****************************************** -->
+  <td class="img-col" style="max-width: 150px;">
     <% if @res_images[sales_listing.unit_id] %>
       <%= link_to(image_tag(@res_images[sales_listing.unit_id].file.url(:thumb), :class => 'img-responsive',
         alt: @res_images[sales_listing.unit_id].file.url(:thumb)), sales_listing) %>
@@ -14,6 +15,7 @@
     <% end %>
   </td>
 
+  <!-- ****** ADDRESS ****************************************** -->
   <td>
     <%= link_to "#{sales_listing.street_address_and_unit}", sales_listing_path(sales_listing.id) %><br />
     <% if sales_listing.neighborhood_name %>
@@ -21,14 +23,17 @@
     <% end %>
   </td>
 
+  <!-- ****** UNIT ****************************************** -->
   <td>
     <%= sales_listing.building_unit %>
   </td>
 
+  <!-- ****** LOT SIZE ****************************************** -->
   <td>
     <%= sales_listing.lot_size %>
   </td>
 
+  <!-- ****** ACCESS INFO****************************************** -->
   <td data-toggle="tooltip" data-placement="top" title="<%= sales_listing.access_info %>"
     data-delay="1500">
     <%= trim_access sales_listing.access_info %></td>
@@ -40,8 +45,14 @@
       -
     <% end %>
   </td>
+
+  <!-- ****** PRICE ****************************************** -->
   <td><%= rent_formatted(sales_listing.rent) %></td>
+
+  <!-- ****** UPDATED AT ****************************************** -->
   <td><%= time_ago_in_words(sales_listing.updated_at) %></td>
+
+  <!-- ****** STATUS ****************************************** -->
   <td>
     <% if sales_listing.status == Unit.statuses["active"] %>
       <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
@@ -51,6 +62,7 @@
       <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
     <% end %>
   </td>
+
   <% if current_user.is_management? || current_user.is_listings_manager? ||
         current_user.is_photo_manager? %>
     <td>

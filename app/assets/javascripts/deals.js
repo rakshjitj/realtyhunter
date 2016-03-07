@@ -1,6 +1,8 @@
 Deals = {};
 
 (function() {
+  Deals.timer;
+
 	Deals.sortOnColumnClick = function() {
 		$('#deals .th-sortable').click(function(e) {
 			Common.sortOnColumnClick($(this), Deals.doSearch);
@@ -38,30 +40,7 @@ Deals = {};
       }
     }
     window.location.search = searchParams.join('&');
-
-	  // $.ajax({
-	  //   url: search_path,
-	  //   data: {
-   //      //client_name: $('#deals #client_name').val(),
-   //      address: $('#deals #address').val(),
-   //      landlord_code: $('#deals #landlord_code').val(),
-   //      closed_date_start: $('#deals #closed_date_start').val(),
-   //      closed_date_end: $('#deals #closed_date_end').val(),
-   //      state: $('#deals #state').val(),
-   //      sort_by: sortByCol,
-   //      direction: sortDirection,
-	  //   },
-	  //   dataType: 'script',
-	  //   success: function(data) {
-	  //   	Forms.hideSpinner();
-			// },
-			// error: function(data) {
-			// 	Forms.hideSpinner();
-			// }
-	  // });
 	};
-
-	Deals.timer;
 
 	Deals.clearTimer = function() {
 		clearTimeout(Deals.timer);
@@ -85,11 +64,7 @@ Deals = {};
     });
 	};
 
-	Deals.initialize = function() {
-		if (!$('#deals').length) {
-			return;
-		}
-
+	Deals.initIndex = function() {
 		document.addEventListener("page:restore", function() {
 		  Forms.hideSpinner();
 		});
@@ -120,8 +95,24 @@ Deals = {};
 	  if ($('#deals #deal_building_id').length) {
 		  $('#deals #deal_building_id').change(Deals.updateUnits);
 		}
-
 	};
+
+  Deals.initEditor = function() {
+
+  }
 })();
 
-$(document).ready(Deals.initialize);
+$(document).ready(function () {
+  var editPage = $('.deals.edit').length;
+  var newPage = $('.deals.new').length;
+  var indexPage = $('.deals.index').length;
+  var showPage = $('.deals.show').length;
+  // new and edit pages both render the same form template, so init them using the same code
+  if (editPage || newPage) {
+    Deals.initEditor();
+  } else if (indexPage) {
+    Deals.initIndex();
+  } // else if (showPage) {
+  //   Deals.initShow();
+  // }
+});

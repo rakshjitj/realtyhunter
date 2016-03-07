@@ -6,10 +6,10 @@
     <div class="page-header">
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-sm-6">
           <h1><%= @user.name %></h1>
         </div>
-        <div class="col-md-6 form-label-responsive">
+        <div class="col-sm-6 form-label-responsive page-header-buttons-lg">
           <% if can? :manage, @user %>
             <%= link_to 'Edit', edit_user_path(@user) %>
             <% @prev_link = true %>
@@ -30,11 +30,15 @@
           <% if current_user.can_approve(@user) %>
             <% if !user.approved? %>
               <% if @prev_link %> |&nbsp; <% end %>
-              <%= link_to 'Authorize account', admin_approve_user_path(@user), :remote => true, method: :post, data: { confirm: "Are you sure you want to approve #{user.name}'s account?" } %>
+              <%= link_to 'Authorize account', admin_approve_user_path(@user),
+                  remote: true, method: :post, data: {
+                    confirm: "Are you sure you want to approve #{user.name}'s account?" } %>
             <% else %>
               <% if @prev_link %> |&nbsp; <% end %>
               <% if !@user.archived %>
-                <%= link_to 'Suspend account', admin_unapprove_user_path(@user), :remote => true, method: :post, data: { confirm: "Are you sure you want to unapprove #{user.name}'s account?" } %>
+                <%= link_to 'Suspend account', admin_unapprove_user_path(@user),
+                    remote: true, method: :post, data: {
+                      confirm: "Are you sure you want to unapprove #{user.name}'s account?" } %>
               <% else %>
                 <%= link_to "Undelete", unarchive_user_path(user), remote: true, method: :patch,
                   data: { confirm: "Are you sure you want to undelete #{user.name}?" } %>
@@ -49,7 +53,7 @@
     </div><!-- page header -->
 
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-sm-6">
         <% if @user.image %>
           <% if @user.image.file.exists?(:large) %>
             <%= image_tag @user.image.file.url(:large), class: 'img-responsive',
@@ -60,13 +64,13 @@
           <%= image_tag "agent_soon.jpg", alt: "Agent image coming soon",
             class: 'img-responsive', width:"95%" %>
         <% end %>
-        <br />
+        <br>
       </div><!-- col-md-6 -->
 
-      <div class="col-md-6">
+      <div class="col-sm-6">
+
         <div class="row">
           <div class="col-md-12">
-
             <strong><%= @user.employee_title.display_name %>
             <% if @user.is_agent? %>
               <% @sp = @user.agent_specialties; if @sp.length > 0 %>
@@ -74,7 +78,7 @@
               <% end %>
             <% end %>
             </strong>
-            <br/>
+            <br>
             <%= @user.company.name %> - <%= @user.office.name %> Office
           </div>
         </div>
@@ -85,7 +89,9 @@
               Manager: <%= link_to @user.manager.name, @user.manager %>
 
               <% if current_user.can_kick(@user) %>
-                <%= link_to '(Kick off team)', admin_kick_user_path(user), :remote => true, method: :post, data: { confirm: "Are you sure you want to kick #{@user.name} off #{@user.manager.name.titleize}'s team?" } %>
+                <%= link_to '(Kick off team)', admin_kick_user_path(user),
+                    remote: true, method: :post, data: {
+                      confirm: "Are you sure you want to kick #{@user.name} off #{@user.manager.name.titleize}'s team?" } %>
               <% end %>
             </div>
           </div>
@@ -93,7 +99,7 @@
 
         <div class="row">
           <div class="col-md-12">
-          <strong>e &nbsp;|</strong> <%= mail_to @user.email, @user.email %>
+            <strong>e |</strong> <%= mail_to @user.email, @user.email %>
           </div>
         </div>
 
@@ -108,7 +114,7 @@
 
         <!-- ******** BIO ********** -->
         <% if !@user.bio.blank? %>
-          <br />
+          <br>
           <div class="row">
             <div class="col-md-12">
               <strong class="form-label-responsive">Short Bio:</strong>
@@ -121,14 +127,12 @@
           </div>
         <% end %>
 
-      </div>
+      </div><!-- col -->
     </div><!-- end top half -->
-
-
 
     <!-- ******** EMPLOYEES ********** -->
     <% if @user.subordinates.length > 0 %>
-      <br />
+      <br>
       <div class="row">
         <div class="col-md-1">
           <p><strong class="form-label-responsive">Team</strong></p>
@@ -151,9 +155,9 @@
 
     <!-- *************** API TOKEN *************** -->
     <% if current_user.id == @user.id %>
-      <br />
+      <br>
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <%= link_to 'Show API token', "#", class:'auth-token-toggle' %>
           <div class="auth-token hidden">
             <%= render partial: 'api_token', locals: {user: @user} %>
@@ -175,5 +179,3 @@
     com_images: @com_images } %>
 </div>
 
-
-</div>

@@ -94,7 +94,7 @@ class OfficesController < ApplicationController
       @office = Office.find_unarchived(params[:id])
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that office was not found"
-      redirect_to :action => 'index'
+      redirect_to action: 'index'
     end
 
     def set_offices
@@ -117,10 +117,10 @@ class OfficesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def office_params
-      params.permit(:direction, :filter, :street_number, :route,
+      params.permit(:direction, :filter, :page, :street_number, :route,
         :sublocality, :administrative_area_level_2_short, :administrative_area_level_1_short,
         :postal_code, :country_short, :lat, :lng, :place_id,
-        :office => [:formatted_street_address, :name, :telephone, :street_address, :city,
+        office: [:formatted_street_address, :name, :telephone, :street_address, :city,
         :state, :zipcode, :fax ])
     end
 end

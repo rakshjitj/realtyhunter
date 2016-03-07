@@ -3,7 +3,7 @@ $('#roommateDeleteModal .modal-body').html(
 
 $('#roommateDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', @roommate, remote: true, method: :delete, class: 'btn btn-danger delete-btn link-as-button', id: 'delete-link') %>");
 
-$('#roommateDeleteModal #delete-link').click( function(event) {
+$('#roommateDeleteModal .delete-btn').click( function(event) {
 	$('#roommateDeleteModal').modal('hide');
 	event.preventDefault();
 });

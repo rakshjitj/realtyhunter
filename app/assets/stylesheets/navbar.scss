@@ -1,0 +1,40 @@
+pre {
+  tab-size: 8;
+}
+.navbar {
+  li a {
+    padding: 10px;
+  }
+}
+
+@media screen and (max-width: 1150px) {
+  .side-collapse-container{
+    width: 100%;
+    position: relative;
+    left: 0;
+    transition: left .4s;
+  }
+  .side-collapse-container.out{
+    left: 200px;
+  }
+  .side-collapse {
+    top: 50px;
+    bottom: 0;
+    left: 0;
+    width: 200px;
+    position: fixed;
+    overflow: hidden;
+    transition: left .4s;
+  }
+  .side-collapse.in {
+    left: -200px;
+  }
+}
+
+
+.navbar-mobile {
+  .navbar-header button {
+    margin-left: 5px;
+    margin-right: 0;
+  }
+}

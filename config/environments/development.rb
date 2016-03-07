@@ -43,7 +43,7 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
   config.after_initialize do
-    Bullet.enable = true
+    Bullet.enable = false
     #Bullet.alert = true
     #Bullet.bullet_logger = true
     Bullet.console = true
@@ -52,7 +52,7 @@ Rails.application.configure do
   end
 
   config.paperclip_defaults = {
-    storage: :s3, 
+    storage: :s3,
     #s3_host_alias: 'd3829jye59v7xw.cloudfront.net',
     s3_protocol: :https,
     s3_credentials: {
@@ -64,7 +64,7 @@ Rails.application.configure do
 
   # Use a different cache store in production.
   #config.cache_store = :mem_cache_store
-  #config.cache_store = :dalli_store#, 
+  #config.cache_store = :dalli_store#,
     # (ENV["MEMCACHIER_SERVERS"] || "").split(","),
     # {:username => ENV["MEMCACHIER_USERNAME"],
     #  :password => ENV["MEMCACHIER_PASSWORD"],
@@ -72,7 +72,7 @@ Rails.application.configure do
     #  :socket_timeout => 1.5,
     #  :socket_failure_delay => 0.2
     # }
-    #{ :namespace => 'realty-monster', :expires_in => 1.day, :compress => true }, 
+    #{ :namespace => 'realty-monster', :expires_in => 1.day, :compress => true },
     #{ :pool_size => 5 }
   config.action_controller.perform_caching = true
 

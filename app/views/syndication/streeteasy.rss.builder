@@ -1,3 +1,4 @@
+# url looks like <base_url>/syndication/1/streeteasy
 xml.instruct! :xml, :version => "1.0"
 xml.streeteasy :version => "1.6" do
   xml.properties do
@@ -64,9 +65,9 @@ xml.streeteasy :version => "1.6" do
 					xml.availableOn listing.available_by # rentals only
 
 					if listing.r_id
-						xml.description listing.description
+            xml.description h raw sanitize listing.description, tags: %w()
 					elsif listing.c_id
-						xml.description listing.property_description
+						xml.description h raw sanitize listing.property_description, tags: %w()
 					end
 
 					xml.propertyType "rental"

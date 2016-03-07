@@ -10,7 +10,6 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     params[:status] = 'Active'
-    #@agent_title = EmployeeTitle.agent
     set_users
     @title = 'All users'
   end

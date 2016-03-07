@@ -1,6 +1,6 @@
 class BuildingsController < ApplicationController
   load_and_authorize_resource
-  skip_load_resource :only => :create
+  skip_load_resource only: :create
   before_action :set_building, except: [:index, :new, :create, :filter, :filter_listings,
     :refresh_images, :neighborhood_options, :autocomplete_building_formatted_street_address]
   autocomplete :building, :formatted_street_address, where: {archived: false}, full: true
@@ -13,6 +13,7 @@ class BuildingsController < ApplicationController
 
     respond_to do |format|
       format.html
+      format.js
       format.csv do
         headers['Content-Disposition'] = "attachment; filename=\"buildings-list.csv\""
         headers['Content-Type'] ||= 'text/csv'
@@ -122,18 +123,20 @@ class BuildingsController < ApplicationController
 
   # GET
   # handles ajax call. uses latest data in modal
-  def inaccuracy_modal
-    respond_to do |format|
-      format.js
-    end
-  end
+  # def inaccuracy_modal
+  #   respond_to do |format|
+  #     format.js
+  #   end
+  # end
 
   # triggers email to staff notifying them of the inaccuracy
   def send_inaccuracy
     @building.inaccuracy_description = building_params[:inaccuracy_description]
     @building.send_inaccuracy_report(current_user)
+    flash[:success] = "Report submitted! Thank you."
     respond_to do |format|
-      format.js { flash[:notice] = "Report submitted! Thank you." }
+      format.html { redirect_to @building }
+      format.js {  }
     end
   end
 
@@ -149,9 +152,6 @@ class BuildingsController < ApplicationController
   protected
 
    def correct_stale_record_version
-      # @building.reload.attributes = building_params[:building].reject do |attrb, value|
-      #  attrb.to_sym == :lock_version
-      # end
       @building.reload
       params[:building].delete('lock_version')
    end
@@ -219,7 +219,7 @@ class BuildingsController < ApplicationController
     # Need to take in additional params here. Can't rename them, or the geocode plugin
     # will not map to them correctly
     def building_params
-      params.permit(:sort_by, :direction, :filter, :status, :status_listings, :street_number,
+      params.permit(:sort_by, :direction, :page, :filter, :status, :status_listings, :street_number,
         :route, :intersection, :neighborhood,
         :sublocality, :administrative_area_level_2_short,
         :administrative_area_level_1_short,

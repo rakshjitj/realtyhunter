@@ -117,6 +117,13 @@ class CompaniesController < ApplicationController
     end
   end
 
+  protected
+
+    def correct_stale_record_version
+      @company.reload
+      params[:company].delete('lock_version')
+   end
+
   private
     def set_company
       @company = Company.find(params[:id])

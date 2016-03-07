@@ -1,5 +1,5 @@
 class ListingImageSerializer < ActiveModel::Serializer
-	attributes :large, :is_floorplan, :small, :media_type, :original, :id, :thumbnail
+	attributes :large, :is_floorplan, :media_type, :original, :id, :thumbnail
 
 	def large
 		object.file.url(:medium)
@@ -12,10 +12,6 @@ class ListingImageSerializer < ActiveModel::Serializer
   def local_file_name
   	object.file_file_name
   end
-  
-  def small
-  	object.file.url(:square)
-  end
 
   def media_type
   	"10"
@@ -23,11 +19,6 @@ class ListingImageSerializer < ActiveModel::Serializer
 
   def original
   	object.file.url(:original)
-    # if object.file.exists?(:large)
-    #   object.file.url(:large)
-    # else
-    #   object.file.url(:medium)
-    # end
   end
 
   def id

@@ -1,7 +1,10 @@
+<% provide(:title, @building.street_address + ' - Editing') %>
+
 <div class="row">
 	<div class="col-md-8 col-md-offset-2">
-    <% provide(:title, @building.street_address + ' - Editing') %>
-		<h1 class="page-header"><small>Editing</small> <%= @building.street_address %></h1>
+		<h1 class="page-header">
+      <small>Editing</small> <%= @building.street_address %>
+    </h1>
 		<%= link_to 'Show', @building %> |
 		<%= link_to 'View all', buildings_path %>
 

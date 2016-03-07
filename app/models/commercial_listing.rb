@@ -269,7 +269,7 @@ class CommercialListing < ActiveRecord::Base
   end
 
   # collect the data we will need to access from our giant map view
-  def self.set_location_data(cunits)
+  def self.set_location_data(cunits, images)
     map_infos = {}
     for i in 0..cunits.length-1
       #bldg = cunits[i].unit.building
@@ -286,6 +286,10 @@ class CommercialListing < ActiveRecord::Base
         property_type: cunit.property_category,
         sq_footage: cunit.sq_footage
        }
+
+      if images[cunit.unit_id]
+        unit_info['image'] = images[cunit.unit_id].file.url(:thumb)
+      end
 
       if map_infos.has_key?(street_address)
         map_infos[street_address]['units'] << unit_info

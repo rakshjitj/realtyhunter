@@ -114,7 +114,8 @@ class SalesListing < ActiveRecord::Base
   end
 
   def self.listings_by_neighborhood(user, listing_ids)
-    running_list = SalesListing.joins(unit: {building: [:company, :neighborhood]})
+    running_list = SalesListing.joins(unit: {building: [:company]})
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('companies.id = ?', user.company_id)
       .where('units.listing_id IN (?)', listing_ids)
       .select('buildings.formatted_street_address AS formatted_street_address2',
@@ -382,7 +383,7 @@ class SalesListing < ActiveRecord::Base
   end
 
   # collect the data we will need to access from our giant map view
-  def self.set_location_data(runits)
+  def self.set_location_data(runits, images)
     map_infos = {}
     for i in 0..runits.length-1
       runit = runits[i]
@@ -403,6 +404,10 @@ class SalesListing < ActiveRecord::Base
         beds: runit.beds,
         baths: runit.baths,
         rent: runit.rent }
+
+      if images[runit.unit_id]
+        unit_info['image'] = images[runit.unit_id].file.url(:thumb)
+      end
 
       if map_infos.has_key?(street_address)
         map_infos[street_address]['units'] << unit_info
@@ -478,7 +483,7 @@ class SalesListing < ActiveRecord::Base
     self.rented_date = Date.today
     self.save
   end
-  
+
   private
     def process_custom_amenities
       if custom_amenities

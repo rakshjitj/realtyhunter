@@ -1,22 +1,17 @@
 <% provide(:title, @commercial_unit.unit.building.street_address + ' - Editing') %>
+
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
 		<div class="page-header">
 			<div class="row">
-		    <div class="col-md-12">
-					<h1>
-						<% if @commercial_unit.unit.building_unit %>
-							<small>#<%= @commercial_unit.unit.building_unit %></small>
-						<% end %>
-						<%= @commercial_unit.unit.building.formatted_street_address %>
-				  </h1>
+		    <div class="col-sm-8">
+		    	<h1><%= @commercial_unit.unit.building.street_address %>
+		    	<% if !@commercial_unit.unit.building_unit.blank? %>
+			    	<small>#<%= @commercial_unit.unit.building_unit %></small>
+			    <% end %>
+			   	</h1>
 				</div>
-			</div>
-		  <div class="row">
-				<div class="col-md-6">
-				  <!-- a href="http://www.loopnet.com/lid/<%= @commercial_unit.unit.listing_id %>">http://www.loopnet.com/lid/<%= @commercial_unit.unit.listing_id %></a-->
-				</div>
-				<div class="col-md-6 form-label-responsive">
+				<div class="col-sm-4 page-header-buttons-lg form-label-responsive">
 					<%= link_to 'Show', @commercial_unit %>
 					| <%= link_to 'All units', commercial_listings_path %>
 				</div>

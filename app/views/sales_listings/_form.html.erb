@@ -135,10 +135,10 @@
             <br />
             <div class="row">
             <%= f.fields_for @sales_unit.unit do |unit_form| %>
-              <div class="col-xs-12 col-md-3 form-label-responsive">
+              <div class="col-xs-3 col-md-3">
                 <%= unit_form.label :status, class: 'required' %>
               </div>
-              <div class="col-xs-12 col-md-4">
+              <div class="col-xs-9 col-md-4">
                 <div class="field">
                   <%= unit_form.select :status,
                     options_for_select(['Active', 'On Market', 'Offer Submitted', 'Contract Out', 'In Escrow', 'Closed Off'],
@@ -153,23 +153,23 @@
 
             <br />
             <div class="row">
-              <div class="col-md-3 form-label-responsive">
+              <div class="col-xs-12 col-sm-3">
                 <%= f.label :formatted_street_address, "Street Address", class: 'required' %>
               </div>
-              <div class="col-md-9">
+              <div class="col-xs-12 col-sm-9">
                 <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input',
                   placeholder:"123 Main St", required: true %>
               </div>
             </div>
 
             <div class="neighborhood_options">
-              <%= render 'neighborhood_options' %>
+              <%= render 'sales_listings/neighborhood_options' %>
             </div>
 
-            <div class="field" id="map_panel">
+            <div class="field" id="map-panel">
               <br/>
               <p>Visually confirm the building's location:</p>
-              <div id="map_canvas" data-address="<%= @sales_unit.unit.building.formatted_street_address %>"></div>
+              <div id="map-canvas" data-address="<%= @sales_unit.unit.building.formatted_street_address %>"></div>
             </div>
 
           <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
@@ -189,10 +189,10 @@
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-4">
               <%= f.label :beds, class: 'required' %>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-8 col-sm-4">
               <%= f.number_field :beds, class: 'form-control',
                 in: 0.0..10.0, :required => true %>
             </div>
@@ -200,10 +200,10 @@
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :baths, class: 'required' %>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-8 col-sm-4">
               <%= f.number_field :baths, class: 'form-control', step: 0.5, in: 0.0..10.0,
               :required => true %>
             </div>
@@ -213,20 +213,20 @@
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= unit_form.label :building_unit, "Unit" %>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-8 col-sm-4">
               <%= unit_form.text_field :building_unit, class: 'form-control' %>
             </div>
           </div>
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= unit_form.label :available_by, "Available", class: 'required' %>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-8 col-sm-4">
               <div class='input-group date datepicker'
                 data-available-by="<%= @sales_unit.unit.available_by ? @sales_unit.unit.available_by.strftime("%m/%d/%Y") : '' %>">
 
@@ -242,22 +242,25 @@
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-md-3 ">
               <%= unit_form.label :access_info %>
             </div>
             <div class="col-md-9">
-              <%= f.check_box :tenant_occupied, checked: @sales_unit.tenant_occupied %>
-              <%= f.label :tenant_occupied %><br />
-                <%= unit_form.text_area :access_info, class: 'form-control', rows: 4 %>
+              <div class="checkbox checkbox-warning inline">
+                <%= f.check_box :tenant_occupied, checked: @sales_unit.tenant_occupied,
+                    class: 'styled' %>
+                <%= f.label :tenant_occupied %>
+              </div>
+              <%= unit_form.text_area :access_info, class: 'form-control', rows: 4 %>
             </div>
           </div>
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= unit_form.label :rent, "Price", class: 'required' %>
             </div>
-            <div class="col-md-3">
+            <div class="col-xs-8 col-sm-4">
               <%= unit_form.number_field :rent, class: 'form-control', :required => true %>
             </div>
           </div>
@@ -265,10 +268,10 @@
 
           <br />
           <div class="row">
-            <div class="col-xs-12 col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :listing_type, class: 'required' %>
             </div>
-            <div class="col-xs-12 col-md-4">
+            <div class="col-xs-8 col-sm-4">
               <div class="field">
                 <%= f.select :listing_type,
                   options_for_select(['Single Fam', '2-3 Fam Townhome', 'Multi-family', 'Condo', 'Coop'],
@@ -282,7 +285,7 @@
 
           <br />
           <div class="row">
-            <div class="col-xs-12 col-md-3 form-label-responsive">
+            <div class="col-xs-12 col-md-3">
               <%= f.label :sales_amenity_ids, "Amenities" %>
             </div>
 
@@ -321,7 +324,7 @@
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-md-3">
               <%= f.label :internal_notes %>
             </div>
             <div class="col-md-9">
@@ -331,7 +334,7 @@
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-md-3">
               <%= f.label :public_description %>
             </div>
             <div class="col-md-9">
@@ -341,50 +344,50 @@
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :seller_name, class: 'required' %>
             </div>
-            <div class="col-md-9">
+            <div class="col-xs-8 col-sm-9">
               <%= f.text_field :seller_name, class: 'form-control' %>
             </div>
           </div>
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :seller_phone, class: 'required' %>
             </div>
-            <div class="col-md-9">
+            <div class="col-xs-8 col-sm-9">
               <%= f.text_field :seller_phone, class: 'form-control' %>
             </div>
           </div>
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :seller_address, class: 'required' %>
             </div>
-            <div class="col-md-9">
+            <div class="col-xs-8 col-sm-9">
               <%= f.text_field :seller_address, class: 'form-control' %>
             </div>
           </div>
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :year_built %>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-8 col-sm-4">
               <%= f.text_field :year_built, class: 'form-control' %>
             </div>
           </div>
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :building_type, class: 'required' %>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-8 col-sm-4">
               <%= f.select :building_type,
                   options_for_select(['Wood Frame', 'Brick'],
                     [@sales_unit.building_type ? @sales_unit.building_type.titleize : '']),
@@ -396,100 +399,100 @@
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :lot_size %>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-8 col-sm-4">
               <%= f.number_field :lot_size, class: 'form-control' %>
             </div>
           </div>
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :building_size %>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-8 col-sm-4">
               <%= f.number_field :building_size, class: 'form-control' %>
             </div>
           </div>
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :block_taxes %>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-8 col-sm-4">
               <%= f.number_field :block_taxes, class: 'form-control' %>
             </div>
           </div>
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :lot_taxes %>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-8 col-sm-4">
               <%= f.number_field :lot_taxes, class: 'form-control' %>
             </div>
           </div>
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :water_sewer %>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-8 col-sm-4">
               <%= f.number_field :water_sewer, class: 'form-control' %>
             </div>
           </div>
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :insurance %>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-8 col-sm-4">
               <%= f.number_field :insurance, class: 'form-control' %>
             </div>
           </div>
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :school_district %>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-8 col-sm-4">
               <%= f.text_field :school_district, class: 'form-control' %>
             </div>
           </div>
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :certificate_of_occupancy %>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-8 col-sm-4">
               <%= f.text_field :certificate_of_occupancy, class: 'form-control' %>
             </div>
           </div>
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-sm-3">
               <%= f.label :violation_search %>
             </div>
-            <div class="col-md-9">
-              <%= f.text_area :violation_search, class: 'form-control', rows:'8' %>
+            <div class="col-sm-9">
+              <%= f.text_area :violation_search, class: 'form-control', rows: 6 %>
             </div>
           </div>
 
           <br />
           <div class="row show-op">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :percent_commission, 'Commission %' %>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-8 col-sm-4">
               <%= f.number_field :percent_commission, class: 'form-control', min: 0 %>
               <div id="op_explainer_text"></div>
             </div>
@@ -497,10 +500,10 @@
 
           <br />
           <div class="row show-op">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :outside_broker_commission, 'Outside Broker Commission %' %>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-8 col-sm-4">
               <%= f.number_field :outside_broker_commission, class: 'form-control', min: 0 %>
               <div id="op_explainer_text"></div>
             </div>
@@ -508,10 +511,10 @@
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-xs-3">
               <%= f.label :primary_agent_id, "Primary Agent" %>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-8 col-xs-4">
               <%= f.fields_for @sales_unit.unit do |unit_form| %>
                 <%= unit_form.select(:primary_agent_id,
                   options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
@@ -525,10 +528,10 @@
 
           <br />
           <div class="row">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-xs-3">
               <strong>Open House</strong>
             </div>
-            <div class="col-md-9">
+            <div class="col-xs-8 col-xs-9">
               <%= f.fields_for @sales_unit.unit do |unit_form| %>
                 <%= unit_form.check_box(:oh_exclusive) %>
                 <%= unit_form.label :oh_exclusive, "Is Exclusive" %><br />
@@ -539,10 +542,10 @@
           </div>
 
           <div class="row vertical-margin-lg">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :rlsny, "RLSNY" %>
             </div>
-            <div class="col-md-9">
+            <div class="col-xs-8 col-sm-9">
               <div class="checkbox checkbox-warning checkbox-inline ">
                 <%= f.check_box :rlsny, class:"rlsny", checked: @sales_unit ? @sales_unit.rlsny : false %>
                 <label></label>
@@ -551,28 +554,28 @@
           </div>
 
           <div class="row vertical-margin-lg">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :floor %>
             </div>
-            <div class="col-md-9">
+            <div class="col-xs-8 col-sm-9">
               <%= f.number_field :floor, class: 'form-control' %>
             </div>
           </div>
 
           <div class="row vertical-margin-lg">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :total_room_count %>
             </div>
-            <div class="col-md-9">
+            <div class="col-xs-8 col-sm-9">
               <%= f.number_field :total_room_count, class: 'form-control' %>
             </div>
           </div>
 
           <div class="row vertical-margin-lg">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :condition %>
             </div>
-            <div class="col-md-9">
+            <div class="col-xs-8 col-sm-9">
                 <%= f.select(:condition,
                   options_for_select(["New Mint", "Excellent", "Good", "Fair", "Wreck", "Estate"], @sales_unit.condition), {prompt: "Choose one..."},
                   class: 'form-control',
@@ -581,28 +584,28 @@
           </div>
 
           <div class="row vertical-margin-lg">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :showing_instruction %>
             </div>
-            <div class="col-md-9">
+            <div class="col-xs-8 col-sm-9">
               <%= f.text_field :showing_instruction, class: 'form-control' %>
             </div>
           </div>
 
           <div class="row vertical-margin-lg">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :commission_amount %>
             </div>
-            <div class="col-md-9">
+            <div class="col-xs-8 col-sm-9">
               <%= f.number_field :commission_amount, class: 'form-control', :step => 'any' %>
             </div>
           </div>
 
           <div class="row vertical-margin-lg">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :cyof, "CYOF" %>
             </div>
-            <div class="col-md-9">
+            <div class="col-xs-8 col-sm-9">
               <div class="radio radio-warning radio-inline">
                 <%= f.radio_button :cyof, true, checked: @sales_unit.cyof %>
                 <%= f.label :cyof_true, "Yes" %>
@@ -615,10 +618,10 @@
           </div>
 
           <div class="row vertical-margin-lg">
-            <div class="col-md-3 form-label-responsive">
+            <div class="col-xs-4 col-sm-3">
               <%= f.label :share_with_brokers, "Share w/ Brokers" %>
             </div>
-             <div class="col-md-9">
+             <div class="col-xs-8 col-sm-9">
               <div class="radio radio-warning radio-inline">
                 <%= f.radio_button :share_with_brokers, true, checked: @sales_unit.share_with_brokers %>
                 <%= f.label :share_with_brokers_true, "Yes" %>
@@ -630,15 +633,14 @@
             </div>
           </div>
 
-          <br />
-          <div class="row">
-            <div class="col-md-9 col-md-offset-3">
+          <br>
+          <div class="row vertical-margin-lg">
+            <div class="col-md-6 col-md-offset-3">
               <div class="actions">
-                <%= f.submit class: "btn btn-warning" %>
+                <%= f.submit class: "btn btn-warning btn-block" %>
               </div>
             </div>
           </div>
-
 
           <% end %>
 

@@ -1,15 +1,15 @@
 <!-- display company info -->
 <div class="row">
   <div class="col-xs-12">
-    <%= image_tag current_user.company.image.file.url(:thumb), :class => 'photo-inline pdf-company-logo', 
+    <%= image_tag current_user.company.image.file.url(:thumb), :class => 'photo-inline pdf-company-logo',
       alt: current_user.company.image.file.url(:thumb), align:"left" %>
-    
+
     <h3>
       <%= current_user.company.name %> Listings<br />
       <small><%= Time.now.strftime("%B %d, %Y") %></small><br />
       <small>FOR INTERNAL USE ONLY</small>
     </h3>
-    
+
   </div>
 </div>
 
@@ -62,12 +62,12 @@
               <% if listing.unit.building.pet_policy %>
                 <%= pet_policy(listing) %>
               <% else %>
-                None specified
+                N/A
               <% end %>
             </td>
           </tr>
         <% end %>
-      </table>  
+      </table>
 
     </div>
   </div>

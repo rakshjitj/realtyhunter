@@ -157,7 +157,7 @@ module Forms
 				@entry = WufooCareerForm.find_unarchived(params[:id])
 	    rescue ActiveRecord::RecordNotFound
 	      flash[:warning] = "Sorry, that entry is not active."
-	      redirect_to :action => 'index'
+	      redirect_to action: 'index'
 			end
 
 			def set_entries

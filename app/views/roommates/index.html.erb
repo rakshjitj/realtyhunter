@@ -4,17 +4,17 @@
 
 <div class="page-header">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-sm-6">
       <h1>Roomsharing Referrals</h1>
     </div>
-    <div class="col-md-6 form-label-responsive">
+    <div class="col-sm-6 form-label-responsive page-header-buttons">
       <%= link_to 'New Referral', new_roommate_path, class: 'btn btn-warning btn-sm link-as-button' %>
     </div>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-xs-12 col-md-4">
+  <div class="col-xs-12 col-sm-4">
 
     <i class="fa fa-spinner fa-pulse fa-5x room-spinner-desktop"></i>
 
@@ -60,7 +60,7 @@
       <% end %>
     </div>
   </div>
-  <div class="col-xs-12 col-md-4">
+  <div class="col-xs-12 col-sm-4">
 
     <div class="row vertical-padding">
       <div class="col-xs-5 form-label-responsive">
@@ -107,7 +107,7 @@
 
   </div>
 
-  <div class="col-xs-12 col-md-4">
+  <div class="col-xs-12 col-sm-4">
     <div class="row vertical-padding">
       <div class="col-xs-5 form-label-responsive">
         <%= label_tag :dogs_allowed %>
@@ -193,52 +193,43 @@
       &nbsp;&nbsp;<%= @roommates.total_count %> Roommates found
     </span>
   </div>
-
-  <div class="col-md-6 vertical-margin-lg">
-    <div class="form-label-responsive">
-      <%= render partial: 'shared/pagination', locals: {models: @roommates} %>
-    </div>
-  </div>
 </div>
 
 <div class="row">
   <div class="col-md-12">
-    <div class="table-responsive">
-      <table class="table table-striped table-hover table-condensed">
-        <thead>
-          <tr>
-            <th style="min-width: 45px;">
-              <!-- checkboxes -->
-              <i data-action="selectAllUnits" class="select-all-listings fa fa-square-o fa-lg"></i>
-            </th>
-            <th><!-- first image --></th>
-            <th data-sort="name" class="th-sortable">Name</th>
-            <th data-sort="phone">Phone</th>
-            <th data-sort="email" class="th-sortable">Email</th>
-            <th data-sort="monthly_budget" class="th-sortable">Monthly Budget</th>
-            <th data-sort="move_in_date" class="th-sortable">Move In Date</th>
-            <th data-sort="neighborhood_name" class="th-sortable">Neighborhood</th>
-            <th data-sort="dogs_allowed" class="th-sortable">Dogs Ok</th>
-            <th data-sort="cats_allowed" class="th-sortable">Cats Ok</th>
-            <th data-sort="submitted_date" class="th-sortable">Submitted</th>
-            <th data-sort="status">Status</th>
-            <th colspan="1"></th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover table-condensed infinite-table">
+      <thead>
+        <tr>
+          <th style="min-width: 45px;">
+            <!-- checkboxes -->
+            <i data-action="selectAllUnits" class="select-all-listings fa fa-square-o fa-lg"></i>
+          </th>
+          <th><!-- first image --></th>
+          <th data-sort="name" class="th-sortable">Name</th>
+          <th data-sort="phone">Phone</th>
+          <th data-sort="email" class="th-sortable">Email</th>
+          <th data-sort="monthly_budget" class="th-sortable">Monthly Budget</th>
+          <th data-sort="move_in_date" class="th-sortable">Move In Date</th>
+          <th data-sort="neighborhood_name" class="th-sortable">Neighborhood</th>
+          <th data-sort="dogs_allowed" class="th-sortable">Dogs Ok</th>
+          <th data-sort="cats_allowed" class="th-sortable">Cats Ok</th>
+          <th data-sort="submitted_date" class="th-sortable">Submitted</th>
+          <th data-sort="status">Status</th>
+          <th colspan="1"></th>
+        </tr>
+      </thead>
 
-        <tbody class="roommates_table_body">
-          <%= render partial: 'roommates/roommate',
-          collection: @roommates %>
-        </tbody>
-      </table>
-    </div>
+      <tbody class="roommates_table_body">
+        <%= render partial: 'roommates/roommate', collection: @roommates %>
+      </tbody>
+    </table>
   </div>
 </div>
 
 <% end %><!-- form -->
 
 <div class="row">
-  <div class="col-md-12 form-label-responsive">
+  <div class="col-sm-4 col-sm-offset-4 pagination-wrapper">
     <%= render partial: 'shared/pagination', locals: {models: @roommates} %>
   </div>
 </div>

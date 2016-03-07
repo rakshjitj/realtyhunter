@@ -8,11 +8,12 @@ class ResidentialListingsController < ApplicationController
   autocomplete :landlord, :code, full: true
   etag { current_user.id }
 
-  # GET /residential_units
-  # GET /residential_units.json
   def index
     respond_to do |format|
       format.html do
+        set_residential_listings
+      end
+      format.js do
         set_residential_listings
       end
       format.csv do
@@ -24,9 +25,6 @@ class ResidentialListingsController < ApplicationController
         redirect_to residential_listings_path(params)
       end
     end
-  end
-
-  def test
   end
 
   # AJAX call
@@ -41,42 +39,9 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
-  # GET
-  # handles ajax call. uses latest data in modal
-  def neighborhoods_modal
-    # TODO: as we onboard more locations,
-    # will need to come up with a more robust solution here
-    @neighborhoods = Neighborhood.unarchived
-    .where(state: current_user.office.administrative_area_level_1_short)
-    .to_a
-    .group_by(&:borough)
-
-    respond_to do |format|
-      format.js
-      format.html do
-        # catch-all
-        redirect_to residential_listings_url
-      end
-    end
-  end
-
-  # GET
-  # handles ajax call. uses latest data in modal
-  def features_modal
-    @building_amenities = BuildingAmenity.where(company: current_user.company)
-    @unit_amenities = ResidentialAmenity.where(company: current_user.company)
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  # GET /residential_units/1
-  # GET /residential_units/1.json
   def show
   end
 
-  # GET /residential_units/new
   def new
     @residential_unit = ResidentialListing.new
     @residential_unit.unit = Unit.new
@@ -88,13 +53,10 @@ class ResidentialListingsController < ApplicationController
     @panel_title = "Add a listing"
   end
 
-  # GET /residential_units/1/edit
   def edit
     @panel_title = "Edit listing"
   end
 
-  # POST /residential_units
-  # POST /residential_units.json
   def create
     ret1 = nil
     ResidentialListing.transaction do
@@ -133,7 +95,7 @@ class ResidentialListingsController < ApplicationController
 
     if residential_unit_dup.valid?
       @residential_unit = residential_unit_dup
-      render :js => "window.location.pathname = '#{residential_listing_path(@residential_unit)}'"
+      render js: "window.location.pathname = '#{residential_listing_path(@residential_unit)}'"
     else
       # TODO: not sure how to handle this best...
       flash[:warning] = "Duplication failed!"
@@ -171,34 +133,22 @@ class ResidentialListingsController < ApplicationController
     ids = params[:listing_ids].split(',')
     @neighborhood_group = ResidentialListing.listings_by_neighborhood(current_user, ids)
 
-    #respond_to do |format|
-    #  format.pdf do
-        render pdf: current_user.company.name + ' - Private Listings - ' + Date.today.strftime("%b%d%Y"),
-          template: "/residential_listings/print_private.pdf.erb",
-          orientation: 'Landscape',
-          layout:   "/layouts/pdf_layout.html"
-    #  end
-    #end
+    render pdf: current_user.company.name + ' - Private Listings - ' + Date.today.strftime("%b%d%Y"),
+      template: "/residential_listings/print_private.pdf.erb",
+      orientation: 'Landscape',
+      layout:   "/layouts/pdf_layout.html"
   end
 
-  # PATCH ajax
-  # Takes a unit off the market
   def print_public
     ids = params[:listing_ids].split(',')
     @neighborhood_group = ResidentialListing.listings_by_neighborhood(current_user, ids)
 
-    #respond_to do |format|
-    #  format.pdf do
-        render pdf: current_user.company.name + ' - Public Listings - ' + Date.today.strftime("%b%d%Y"),
-          template: "/residential_listings/print_public.pdf.erb",
-          orientation: 'Landscape',
-          layout:   "/layouts/pdf_layout.html"
-    #  end
-    #end
+    render pdf: current_user.company.name + ' - Public Listings - ' + Date.today.strftime("%b%d%Y"),
+      template: "/residential_listings/print_public.pdf.erb",
+      orientation: 'Landscape',
+      layout:   "/layouts/pdf_layout.html"
   end
 
-  # PATCH/PUT /residential_units/1
-  # PATCH/PUT /residential_units/1.json
   def update
     ret1 = nil
     ret2 = nil
@@ -225,8 +175,6 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
-  # DELETE /residential_units/1
-  # DELETE /residential_units/1.json
   def destroy
     @residential_unit.archive
     set_residential_listings
@@ -239,19 +187,21 @@ class ResidentialListingsController < ApplicationController
 
   # GET
   # handles ajax call. uses latest data in modal
-  def inaccuracy_modal
-    respond_to do |format|
-      format.js
-    end
-  end
+  # def inaccuracy_modal
+  #   respond_to do |format|
+  #     format.js
+  #   end
+  # end
 
   # PATCH
   # triggers email to staff notifying them of the inaccuracy
   def send_inaccuracy
     @residential_unit.inaccuracy_description = residential_listing_params[:inaccuracy_description]
     @residential_unit.send_inaccuracy_report(current_user)
+    flash[:success] = "Report submitted! Thank you."
     respond_to do |format|
-      format.js { flash[:success] = "Report submitted! Thank you." }
+      format.html { redirect_to @residential_unit }
+      format.js { }
     end
   end
 
@@ -282,7 +232,7 @@ class ResidentialListingsController < ApplicationController
   end
 
   def update_announcements
-    @announcement_items = Announcement.search({limit: 4})
+    @announcement_items = Announcement.search({limit: params[:limit]})
   end
 
   def assign_modal
@@ -356,14 +306,23 @@ class ResidentialListingsController < ApplicationController
     end
 
     def set_residential_listings
+      @neighborhoods = Neighborhood.unarchived
+          .where(state: current_user.office.administrative_area_level_1_short)
+          .to_a
+          .group_by(&:borough)
+
+      @building_amenities = BuildingAmenity.where(company: current_user.company)
+      @unit_amenities = ResidentialAmenity.where(company: current_user.company)
+
       do_search
       custom_sort
       # display all found listings on the map
-      @map_infos = ResidentialListing.set_location_data(@residential_units.to_a)
+      # note: we are loading waaaay more images now... monitor page load time
+      @res_images = ResidentialListing.get_images(@residential_units)
+      @map_infos = ResidentialListing.set_location_data(@residential_units.to_a, @res_images)
       # only get data + images for paginated responses
       @residential_units = @residential_units.page params[:page]
-      @res_images = ResidentialListing.get_images(@residential_units)
-      @announcement_items = Announcement.search({limit: 4})
+      @favorite_units = @residential_units.where(favorites: true)
     end
 
     def async_create_csv
@@ -398,6 +357,8 @@ class ResidentialListingsController < ApplicationController
       end
 
       @residential_units = ResidentialListing.search(params, current_user, params[:building_id])
+
+      @announcement_items = Announcement.search({limit: 4})
     end
 
     def custom_sort
@@ -407,12 +368,10 @@ class ResidentialListingsController < ApplicationController
       # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      # if sorting by an actual db column, use order
       @residential_units = @residential_units.order(sort_column + ' ' + sort_order)
       @residential_units
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def residential_listing_params
       data = params[:residential_listing].permit(
         :lock_version,
@@ -424,10 +383,17 @@ class ResidentialListingsController < ApplicationController
         :available_starting, :available_before, :custom_amenities,
         :roomsharing_filter, :unassigned_filter, :primary_agent_id, :favorites, :show, :expose_address,
         :floor, :total_room_count, :condition, :showing_instruction, :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
-        :unit => [:building_unit, :rent, :available_by, :access_info, :status,
+        :open_house_mon, :open_house_mon_from, :open_house_mon_to,
+        :open_house_tue, :open_house_tue_from, :open_house_tue_to,
+        :open_house_wed, :open_house_wed_from, :open_house_wed_to,
+        :open_house_thu, :open_house_thu_from, :open_house_thu_to,
+        :open_house_fri, :open_house_fri_from, :open_house_fri_to,
+        :open_house_sat, :open_house_sat_from, :open_house_sat_to,
+        :open_house_sun, :open_house_sun_from, :open_house_sun_to,
+        unit: [:building_unit, :rent, :available_by, :access_info, :status,
           :open_house, :oh_exclusive, :exclusive,
           :building_id, :primary_agent_id, :listing_agent_id ],
-        :residential_amenity_ids => []
+        residential_amenity_ids: []
         )
 
       if data[:unit]

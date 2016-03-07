@@ -90,4 +90,8 @@ Users = {};
 	};
 })();
 
-$(document).ready(Users.initialize);
+$(document).ready(function() {
+  if ($('.users').length) {
+    Users.initialize();
+  }
+});

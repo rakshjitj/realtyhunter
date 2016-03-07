@@ -1,40 +1,47 @@
 <% provide(:title, "Deal") %>
+
 <div id="deals">
+<div id="section-name" data-name="deals">
 
 <div class="row">
   <div class="col-md-offset-2 col-md-8">
-    <div class="page-header">
+    <div id="deal_panel" class="panel panel-default">
 
-      <div class="row">
-        <div class="col-md-6">
-          <h1>Deal
-            <small><%= @deal.street_address_and_unit %> </small>
-          </h1>
+      <div class="panel-heading">
+        <div class="panel-title">
+          <div class="row">
+            <div class="col-md-12 col-md-7">
+              <h1 class="center">
+                <small>Deal</small>
+                <%= @deal.street_address_and_unit %>
+              </h1>
+            </div>
+          </div>
+        </div><!-- panel-title -->
+      </div><!-- panel-heading -->
+
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-12 col-md-6 vertical-margin-lg">
+            <% if can? :edit, @deal %>
+              <%= link_to 'Edit', edit_deal_path(@deal) %>
+
+              <% if !@deal.archived %>
+                | &nbsp;<%= link_to 'Delete', @deal, method: :delete,
+                  data: { confirm: "Are you sure you want to delete #{@deal.street_address_and_unit}?" } %>
+                <% @prev_link = true %>
+              <!-- TODO: un-archive -->
+              <% end %>
+              <% if can? :manage, @deal %>
+                | <%= link_to 'All deals', deals_path %>
+              <% end %>
+            <% end %>
+          </div>
         </div>
-        <div class="col-md-6 form-label-responsive">
 
-          <% if can? :edit, @deal %>
-            <%= link_to 'Edit', edit_deal_path(@deal) %>
-
-            <% if !@deal.archived %>
-              | &nbsp;<%= link_to 'Delete', @deal, method: :delete,
-                data: { confirm: "Are you sure you want to delete #{@deal.street_address_and_unit}?" } %>
-              <% @prev_link = true %>
-            <!-- TODO: un-archive -->
-            <% end %>
-            <% if can? :manage, @deal %>
-              | <%= link_to 'All deals', deals_path %>
-            <% end %>
-          <% end %>
-
-      </div>
-
-    </div><!-- page header -->
-
-    <div class="row">
-      <div class="col-md-12">
-        <div class="row vertical-margin-lg">
-          <div class="col-md-6">
+        <br>
+        <div class="row">
+          <div class="col-sm-6">
             <div class="row">
               <div class="col-xs-5">
                 <strong>Listing:</strong>
@@ -107,7 +114,7 @@
             </div>
           </div>
 
-          <div class="col-md-6">
+          <div class="col-sm-6">
             <div class="row">
               <div class="col-xs-5">
                 <strong>Lease Term:</strong>
@@ -170,7 +177,7 @@
             </div>
 
           </div>
-        </div>
+        </div><!-- row -->
 <!--
         <br />
         <div class="row">
@@ -191,29 +198,24 @@
           No clients specified.
         <% end %> -->
 
-        <br />
-        <div class="row">
-          <div class="col-md-6">
-            <h3>Notes</h3>
+        <% if !@deal.deal_notes.blank? %>
+          <br />
+          <div class="row">
+            <div class="col-md-6">
+              <h3>Notes</h3>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <p>
-              <% if !@deal.deal_notes.blank? %>
-                <%= @deal.deal_notes %>
-              <% else %>
-                - None Specified -
-              <% end %>
-            </p>
+          <div class="row">
+            <div class="col-md-12">
+              <%= @deal.deal_notes %>
+            </div>
           </div>
-        </div>
+        <% end %>
 
-      </div>
-    </div><!-- end top half -->
-
+      </div><!-- panel-body -->
+    </div><!-- deal-panel -->
   </div><!-- main centering col -->
 </div><!-- overall row -->
 
-
-</div>
+</div><!-- section-name -->
+</div><!-- deals -->

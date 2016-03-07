@@ -1,6 +1,6 @@
 class DealsController < ApplicationController
   load_and_authorize_resource
-  skip_load_resource :only => :create
+  skip_load_resource only: :create
   before_action :set_deal, except: [:index, :new, :create, :filter,
     :autocomplete_building_formatted_street_address, :autocomplete_landlord_code,
     :get_units]
@@ -10,6 +10,9 @@ class DealsController < ApplicationController
 	def index
     respond_to do |format|
       format.html do
+        set_deals
+      end
+      format.js do
         set_deals
       end
       format.csv do
@@ -112,7 +115,7 @@ class DealsController < ApplicationController
       @landlord = Landlord.where(code: @deal.landlord_code).limit(1).first
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that deal is not active."
-      redirect_to :action => 'index'
+      redirect_to action: 'index'
   	end
 
 		def set_deals
@@ -143,8 +146,8 @@ class DealsController < ApplicationController
     end
 
     def deal_params
-    	data = params.permit(:sort_by, :direction, :address, :agent, :closed_date_start, :closed_date_end,
-        :landlord_code, :state,
+    	data = params.permit(:sort_by, :direction, :page, :address, :agent, :closed_date_start,
+        :closed_date_end, :landlord_code, :state,
     		deal: [:lock_version, :price, :client, :lease_term, :lease_start_date, :lease_expiration_date,
     			:closed_date, :move_in_date, :commission, :deal_notes, :listing_type, :is_sale_deal,
     			:unit_id, :user_id, :building_unit, :building_id, :landlord_code, :state])

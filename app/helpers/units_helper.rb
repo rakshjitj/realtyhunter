@@ -25,7 +25,7 @@ module UnitsHelper
 
 	def open_house(residential_unit)
 		unit = residential_unit.unit
-		descrip = "N/A"
+		descrip = ""
 		if unit.open_house
 			if unit.oh_exclusive
 				descrip = "<strong>EXCLUSIVE!</strong> "
@@ -35,5 +35,5 @@ module UnitsHelper
 
 		descrip.html_safe
 	end
-	
+
 end

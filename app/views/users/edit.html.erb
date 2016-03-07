@@ -5,10 +5,14 @@
 
 		<div class="page-header">
 			<div class="row">
-			  <div class="col-md-12">
+			  <div class="col-sm-6">
 		      <h1><small>Editing</small> <%= @user.name.titleize %></h1>
 		    </div>
-			  <div class="col-md-12 form-label-responsive">
+			  <div class="hidden-xs hidden-sm col-sm-6 form-label-responsive page-header-buttons-lg">
+			  	<%= link_to 'Show', @user %>
+		 		</div>
+
+		 		<div class="hidden-lg hidden-md col-sm-6 form-label-responsive page-header-buttons">
 			  	<%= link_to 'Show', @user %>
 		 		</div>
 		 	</div>

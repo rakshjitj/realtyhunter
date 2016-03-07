@@ -1,86 +1,90 @@
-
 <% provide(:title, 'Deals') %>
 
-<div class="page-header">
-  <div class="row">
-    <div class="col-md-6">
-      <h1>Deals</h1>
-    </div>
-    <div class="col-md-6 form-label-responsive">
-      <%= link_to 'Add a Deal', new_deal_path, class: 'btn btn-warning btn-sm link-as-button' %>
-      <%= link_to 'Download CSV', deals_path(format: :csv), class: 'btn btn-warning btn-sm link-as-button' %>
-    </div>
+<div class="row">
+  <div class="col-sm-6">
+    <h1>Deals</h1>
+  </div>
+  <div class="hidden-xs hidden-sm col-sm-6 form-label-responsive page-header-buttons">
+    <%= link_to 'Add a Deal', new_deal_path, class: 'btn btn-warning btn-sm link-as-button' %>
+    <%= link_to 'Download CSV', deals_path(format: :csv), class: 'btn btn-warning btn-sm link-as-button' %>
+  </div>
+  <div class="hidden-md hidden-lg col-sm-6 col-sm-left-padding form-label-responsive page-header-buttons">
+    <%= link_to 'Add a Deal', new_deal_path, class: 'btn btn-warning btn-sm link-as-button' %>
+    <%= link_to 'Download CSV', deals_path(format: :csv), class: 'btn btn-warning btn-sm link-as-button' %>
   </div>
 </div>
 
 <!-- put this here so that clicking on the buttons above won't trigger the spinner -->
 <div id="deals">
+  <div class="row">
+    <div class="col-xs-12">
+      <i class="fa fa-spinner fa-pulse fa-5x forms-spinner-desktop"></i>
 
-<div id="deals-search-filters" data-search-path="<%= filter_deals_path %>">
+      <div id="deals-search-filters" data-search-path="<%= filter_deals_path %>">
+      <%= form_tag deals_path, :method => 'get' do %>
+      <div class="row">
+        <div class="col-xs-3 col-md-1 vertical-margin-lg">
+          <%= label_tag(:address, "Address:") %>
+        </div>
+        <div class="col-xs-9 col-md-3 vertical-margin-lg">
+          <%= autocomplete_field_tag :address, params[:address],
+              autocomplete_building_formatted_street_address_deals_path,
+              update_elements: {},
+              placeholder: "123 Main St",
+              class:'form-control' %>
+        </div>
 
-  <i class="fa fa-spinner fa-pulse fa-4x forms-spinner-desktop"></i>
+        <div class="col-xs-3 col-md-1 vertical-margin-lg">
+          <strong>Closed Between:</strong>
+        </div>
 
-  <%= form_tag deals_path, :method => 'get' do %>
-    <div class="row">
-      <div class="col-xs-3 col-md-1 vertical-margin-lg">
-        <%= label_tag(:address, "Address:") %>
-      </div>
-      <div class="col-xs-9 col-md-3 vertical-margin-lg">
-      <%= autocomplete_field_tag :address, params[:address],
-          autocomplete_building_formatted_street_address_deals_path,
-          update_elements: {},
-          placeholder: "123 Main St",
-          class:'form-control' %>
-      </div>
+        <div class="col-xs-4 col-md-2 col-sm-left-padding vertical-margin-lg">
+          <div class='input-group date datepicker'>
+            <%= text_field_tag :closed_date_start, params[:closed_date_start],
+              placeholder: "starting", class:"form-control", size:30 %>
+            <label class="input-group-addon btn" for="date">
+              <span class="fa fa-calendar open-datepicker"></span>
+            </label>
+          </div>
+        </div>
 
-      <div class="col-xs-3 col-md-1 vertical-margin-lg">
-        <strong>Closed Between:</strong>
-      </div>
-
-      <div class="col-xs-4 col-md-2 col-sm-left-padding vertical-margin-lg">
-        <div class='input-group date datepicker'>
-          <%= text_field_tag :closed_date_start, params[:closed_date_start],
-            placeholder: "starting", class:"form-control", size:30 %>
-          <label class="input-group-addon btn" for="date">
-            <span class="fa fa-calendar open-datepicker"></span>
-          </label>
+        <div class="col-xs-4 col-md-2 col-sm-left-padding vertical-margin-lg">
+          <div class='input-group date datepicker'>
+            <%= text_field_tag :closed_date_end, params[:closed_date_end],
+              placeholder: "ending", class:"form-control" %>
+            <label class="input-group-addon btn" for="date">
+              <span class="fa fa-calendar open-datepicker"></span>
+            </label>
+          </div>
         </div>
       </div>
 
-      <div class="col-xs-4 col-md-2 col-sm-left-padding vertical-margin-lg">
-        <div class='input-group date datepicker'>
-          <%= text_field_tag :closed_date_end, params[:closed_date_end],
-            placeholder: "ending", class:"form-control" %>
-          <label class="input-group-addon btn" for="date">
-            <span class="fa fa-calendar open-datepicker"></span>
-          </label>
+      <div class="row">
+        <div class="col-xs-3 col-md-1 vertical-margin-lg">
+          <%= label_tag(:landlord_code, "Landlord:") %>
+        </div>
+        <div class="col-xs-9 col-md-3 vertical-margin-lg">
+          <%= autocomplete_field_tag :landlord_code, params[:landlord_code],
+            autocomplete_landlord_code_deals_path,
+            update_elements: {},
+            placeholder: "code",
+            class:'form-control' %>
+        </div>
+        <div class="col-xs-3 col-md-1 vertical-margin-lg">
+          <%= label_tag(:state, "State:") %>
+        </div>
+        <div class="col-xs-3 col-md-2 col-sm-left-padding vertical-margin-lg">
+          <%= select_tag(:state,
+            options_for_select(['Any', 'Accepted', 'Rejected', 'Dead'],
+            params[:state] ? params[:state].titleize : "Accepted"), class: 'form-control') %>
         </div>
       </div>
-    </div>
-
-    <div class="row">
-      <div class="col-xs-3 col-md-1 vertical-margin-lg">
-        <%= label_tag(:landlord_code, "Landlord:") %>
-      </div>
-      <div class="col-xs-9 col-md-3 vertical-margin-lg">
-        <%= autocomplete_field_tag :landlord_code, params[:landlord_code],
-          autocomplete_landlord_code_deals_path,
-          update_elements: {},
-          placeholder: "code",
-          class:'form-control' %>
-      </div>
-      <div class="col-xs-3 col-md-1 vertical-margin-lg">
-        <%= label_tag(:state, "State:") %>
-      </div>
-      <div class="col-xs-3 col-md-2 col-sm-left-padding vertical-margin-lg">
-        <%= select_tag(:state,
-          options_for_select(['Any', 'Accepted', 'Rejected', 'Dead'],
-          params[:state] ? params[:state].titleize : "Accepted"), class: 'form-control') %>
+      <% end %><!-- form end -->
+      <div class="hidden-xs hidden-sm">
+        <hr>
       </div>
     </div>
-
-  <% end %><!-- form end -->
-</div>
+  </div>
 
 <div class="hidden-xs hidden-sm">
   <hr>
@@ -92,41 +96,33 @@
       &nbsp;&nbsp;<%= @deals.total_count %> Deals found
     </span>
   </div>
-
-  <div class="col-md-6">
-    <div class="form-label-responsive">
-      <%= render partial: 'shared/pagination', locals: {models: @deals} %>
-    </div>
-  </div>
 </div>
 
 <div class="row">
   <div class="col-md-12">
-    <div class="table-responsive">
-      <table class="table table-striped table-hover table-condensed">
-        <thead>
-          <tr>
-            <th data-sort="street_address2" class="th-sortable">Address</th>
-            <th data-sort="building_unit" class="th-sortable">Unit</th>
-            <th data-sort="client" class="">Client</th>
-            <th data-sort="price" class="th-sortable">Price</th>
-            <th data-sort="commission" class="">Commission</th>
-            <th data-sort="state" class="">State</th>
-            <th data-sort="closed_date" class="th-sortable">Closed Date</th>
-            <th colspan="1"></th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover table-condensed infinite-table">
+      <thead>
+        <tr>
+          <th data-sort="street_address2" class="th-sortable">Address</th>
+          <th data-sort="building_unit" class="th-sortable">Unit</th>
+          <th data-sort="client" class="">Client</th>
+          <th data-sort="price" class="th-sortable">Price</th>
+          <th data-sort="commission" class="">Commission</th>
+          <th data-sort="state" class="">State</th>
+          <th data-sort="closed_date" class="th-sortable">Closed Date</th>
+          <th colspan="1"></th>
+        </tr>
+      </thead>
 
-        <tbody class="deals_table_body">
-          <%= render @deals %>
-        </tbody>
-      </table>
-    </div>
+      <tbody class="deals_table_body">
+        <%= render @deals %>
+      </tbody>
+    </table>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-md-6 col-md-offset-6 form-label-responsive">
+  <div class="col-sm-4 col-sm-offset-4 pagination-wrapper">
     <%= render partial: 'shared/pagination', locals: {models: @deals} %>
   </div>
 </div>

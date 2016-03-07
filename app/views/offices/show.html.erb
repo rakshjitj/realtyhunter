@@ -1,160 +1,148 @@
-<script>
-  function initialize() {
-    $(".map-container").geocomplete({
-      map: "#map_canvas",
-      location: "<%= @office.formatted_street_address %>" ,
-      details: ".details"
-    }).bind("geocode:result", function(event, result){
-        //console.log(result);
-    }).bind("geocode:error", function(event, result){
-        //console.log("[ERROR]: " + result);
-    });
-  };
-  $(document).ready(initialize);
-</script>
-
 <% provide(:title, @office.name.titleize) %>
 
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <div class="page-header">
-      <div class="row">
-        <div class="col-md-7">
-          <h1><%= @office.name.titleize %> Office</h1>
-          <%= @office.company.name %>
-        </div>
-        <div class="col-md-5 form-label-responsive">
-          <% if current_user.is_company_admin? %>
-            <%= link_to 'Edit', edit_company_office_path(@office.company, @office) %> |
-          <% end %>
-          <%= link_to 'All Offices', company_offices_path %> |
-          <%= link_to 'View Company', company_path(@office.company) %>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6">
-        <%= @office.formatted_street_address %>
-      </div>
-      <div class="col-md-3 form-label-responsive">
-        <strong>t</strong> | <%= @office.telephone %>
-      </div>
-      <div class="col-md-3 form-label-responsive">
-        <% if !@office.fax.empty? %>
-          <strong>f</strong> | <%= @office.fax %>
-        <% end %>
-      </div>
-    </div>
-
-    <br />
-    <div class="row map-container">
-      <div class="col-md-12">
-        <div id="map_canvas"></div>
-      </div>
-    </div>
-
-    <br />
-    <div class="row">
-      <div class="col-md-12">
-        <strong>Managers:</strong>
-      </div>
-    </div>
-
-    <!-- desktop screens -->
-    <div class="hidden-xs hidden-sm">
-      <div class="row">
-        <% if @managers.any? %>
-          <% for i in 0..@managers.length-1 %>
-            <% if i % 4 == 0 && i > 0 %>
-              </div>
-              <div class="row">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-sm-7">
+            <h1><%= @office.name.titleize %> Office</h1>
+            <%= @office.company.name %>
+          </div>
+          <div class="col-sm-5 form-label-responsive page-header-buttons-lg">
+            <% if current_user.is_company_admin? %>
+              <%= link_to 'Edit', edit_company_office_path(@office.company, @office) %> |
             <% end %>
-            <div class="col-md-3">
-              <%= link_to @managers[i][:name], user_path(@managers[i][:id]) %>
+            <%= link_to 'All Offices', company_offices_path %> |
+            <%= link_to 'View Company', company_path(@office.company) %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <%= @office.formatted_street_address %>
+        </div>
+        <div class="col-sm-6 form-label-responsive">
+          <strong>t</strong> | <%= @office.telephone %>
+          <br>
+          <% if !@office.fax.blank? %>
+            <strong>f</strong> | <%= @office.fax %>
+          <% end %>
+        </div>
+      </div>
+
+      <br>
+      <div class="row">
+        <div class="col-md-12 map-container">
+          <iframe id="map-canvas"
+            frameborder="0"
+            src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_MAPS_KEY'] %>
+              &q=<%= @office.formatted_street_address %>"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+
+      <br>
+      <div class="row">
+        <div class="col-md-12">
+          <strong>Managers:</strong>
+        </div>
+      </div>
+
+      <!-- desktop screens -->
+      <div class="hidden-xs hidden-sm">
+        <div class="row">
+          <% if @managers.any? %>
+            <% for i in 0..@managers.length-1 %>
+              <% if i % 4 == 0 && i > 0 %>
+                </div>
+                <div class="row">
+              <% end %>
+              <div class="col-md-3">
+                <%= link_to @managers[i][:name], user_path(@managers[i][:id]) %>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="col-xs-12">
+              No managers added yet.
             </div>
           <% end %>
-        <% else %>
-          <div class="col-xs-12">
-            No managers added yet.
-          </div>
-        <% end %>
+        </div>
       </div>
-    </div>
+
+      <!-- tiny screens -->
+      <div class="hidden-md hidden-lg">
+        <div class="row">
+          <% if @managers.any? %>
+            <% for i in 0..@managers.length-1 %>
+              <% if i % 2 == 0 && i > 0 %>
+                </div>
+                <div class="row">
+              <% end %>
+              <div class="col-xs-6">
+                <%= link_to @managers[i][:name], user_path(@managers[i][:id]) %>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="col-xs-12">
+              No managers added yet.
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <br />
+      <div class="row">
+        <div class="col-md-12">
+          <strong>Agents:</strong>
+        </div>
+      </div>
+
+      <!-- desktop screens -->
+      <div class="hidden-xs hidden-sm">
+        <div class="row">
+
+          <% if @agents.any? %>
+            <% for i in 0..@agents.length-1 %>
+              <% if i % 4 == 0 && i > 0 %>
+                </div>
+                <div class="row">
+              <% end %>
+              <div class="col-md-3">
+                <%= link_to @agents[i][:name], user_path(@agents[i][:id]) %>
+              </div>
+            <% end %>
+            <% else %>
+            <div class="col-md-12">
+              No agents added yet.
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- tiny screens -->
+      <div class="hidden-md hidden-lg">
+        <div class="row">
+          <% if @agents.any? %>
+            <% for i in 0..@agents.length-1 %>
+              <% if i % 2 == 0 && i > 0 %>
+                </div>
+                <div class="row">
+              <% end %>
+              <div class="col-xs-6">
+                <%= link_to @agents[i][:name], user_path(@agents[i][:id]) %>
+              </div>
+            <% end %>
+            <% else %>
+            <div class="col-xs-12">
+              No agents added yet.
+            </div>
+          <% end %>
+        </div>
+      </div>
 
     <!-- tiny screens -->
     <div class="hidden-md hidden-lg">
-      <div class="row">
-        <% if @managers.any? %>
-          <% for i in 0..@managers.length-1 %>
-            <% if i % 2 == 0 && i > 0 %>
-              </div>
-              <div class="row">
-            <% end %>
-            <div class="col-xs-6">
-              <%= link_to @managers[i][:name], user_path(@managers[i][:id]) %>
-            </div>
-          <% end %>
-        <% else %>
-          <div class="col-xs-12">
-            No managers added yet.
-          </div>
-        <% end %>
-      </div>
     </div>
-
-    <br />
-    <div class="row">
-      <div class="col-md-12">
-        <strong>Agents:</strong>
-      </div>
-    </div>
-
-    <!-- desktop screens -->
-    <div class="hidden-xs hidden-sm">
-      <div class="row">
-
-        <% if @agents.any? %>
-          <% for i in 0..@agents.length-1 %>
-            <% if i % 4 == 0 && i > 0 %>
-              </div>
-              <div class="row">
-            <% end %>
-            <div class="col-md-3">
-              <%= link_to @agents[i][:name], user_path(@agents[i][:id]) %>
-            </div>
-          <% end %>
-          <% else %>
-          <div class="col-md-12">
-            No agents added yet.
-          </div>
-        <% end %>
-      </div>
-    </div>
-
-    <!-- tiny screens -->
-    <div class="hidden-md hidden-lg">
-      <div class="row">
-        <% if @agents.any? %>
-          <% for i in 0..@agents.length-1 %>
-            <% if i % 2 == 0 && i > 0 %>
-              </div>
-              <div class="row">
-            <% end %>
-            <div class="col-xs-6">
-              <%= link_to @agents[i][:name], user_path(@agents[i][:id]) %>
-            </div>
-          <% end %>
-          <% else %>
-          <div class="col-xs-12">
-            No agents added yet.
-          </div>
-        <% end %>
-      </div>
-    </div>
-
-  <!-- tiny screens -->
-  <div class="hidden-md hidden-lg">
-  </div>
- </div>
-
+   </div>

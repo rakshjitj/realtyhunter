@@ -9,6 +9,15 @@ module ApplicationHelper
     end
   end
 
+  def trim_zeros cell
+    if cell.is_a?(Float)
+      i = cell.to_i
+      cell == i.to_f ? i : cell
+    else
+      cell
+    end
+  end
+
   def rent_formatted(rent)
     number_to_currency(rent, {precision: 0})
   end

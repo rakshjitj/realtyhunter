@@ -4,9 +4,19 @@ $navbarCollapseWidth: 1150px;
 @import "bootstrap";
 
 /* universal */
+html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 
 body {
   padding-top: 60px;
+  min-height:100vw;
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }
 
 /* Don't print link hrefs */
@@ -14,6 +24,11 @@ body {
   a[href]:after {
     content: none
   }
+}
+
+.margin-vertical {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 section {
@@ -50,14 +65,12 @@ h1 {
   font-size: 3em;
   letter-spacing: -2px;
   margin-bottom: 30px;
-  //text-align: center;
 }
 
 h2 {
   font-size: 1.2em;
   letter-spacing: -1px;
   margin-bottom: 30px;
-  //text-align: center;
   font-weight: normal;
   color: #777;
 }
@@ -84,9 +97,37 @@ a:hover.btn-danger {
 }
 
 .container-fluid {
-  width: 82%; // !important;
+  position: relative;
   max-width: 1200px !important;
   min-width: 400px !important;
+
+  @media (max-width:414px) {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+// should always appear below navbar
+.main-content {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  right: 0;
+  @media (max-width:1150px) {
+    top: 50px;
+  }
+}
+
+.mobile-container {
+  position: relative;
+  perspective: 800px;
+  top: -50px;
+}
+
+.title-logo {
+  @media (max-width:414px) {
+    padding: 15px;
+  }
 }
 
 .datepicker {
@@ -261,15 +302,15 @@ aside {
 }
 
 /* Users index */
-.users {
-  list-style: none;
-  margin: 0;
-  li {
-    overflow: auto;
-    padding: 10px 0;
-    border-bottom: 1px solid $gray-lighter;
-  }
-}
+// .users {
+//   list-style: none;
+//   margin: 0;
+//   li {
+//     overflow: auto;
+//     padding: 10px 0;
+//     border-bottom: 1px solid $gray-lighter;
+//   }
+// }
 
 .user-avatar-thumbnail {
   .fa-user {
@@ -296,18 +337,7 @@ aside {
   color: DarkOrange;
 }
 
-#map-canvas {
-  width: 100%;
-  margin-bottom: 15px;
-  border: 2px solid #fff;
-  padding-left: 0px;
-}
-
 @media (max-width:768px) {
-  // .mobile-toggle-map{
-  //   display: none;
-  // }
-
   .form-label-responsive {
     text-align: left;
   }
@@ -317,32 +347,6 @@ aside {
     text-align: right;
     padding-right: 10px;
   }
-}
-
-#map_canvas {
-  width: 100%;
-  height: 400px;
-}
-
-#r-big-map {
-  width: 100%;
-  height: 600px;
-  margin: 0;
-  padding: 0;
-}
-
-#c-big-map {
-  width: 100%;
-  height: 500px;
-  margin: 0;
-  padding: 0;
-}
-
-#s-big-map {
-  width: 100%;
-  height: 500px;
-  margin: 0;
-  padding: 0;
 }
 
 // doesn't seem to work...
@@ -362,10 +366,14 @@ aside {
 }
 
 .pagination {
-  padding: 1 !important;
-  margin: 0 !important;
+  margin-bottom: 10px;
+  a {
+    color: white !important;
+  }
+  @media (max-width:440px) {
+    font-size: 1em !important;
+  }
 }
-// .pagination > li > a {
 
 .thin-line {
   margin: 0 !important;
@@ -508,22 +516,30 @@ vertical-padding-lg {
   text-align: right !important;
 }
 
-// .row-relative {
-//   position: relative;
-// }
-// .bottom-align-text {
-//   position: absolute;
-//   bottom: 0;
-//   right: 0;
-// }
+.page-header-buttons {
+  margin: 20px 0 10px 0;
+  // @media (max-width:768px) {
+  //   margin: 0;
+  // }
+}
 
+.page-header-buttons-lg {
+  margin: 40px 0 10px 0;
+  // @media (max-width:768px) {
+  //   margin: 0;
+  // }
+}
+
+// buildings
 .index-spinner-desktop {
+  display: block;
   position: absolute;
   left: 15%;
-  top: 20%;
+  top: 18%;
   z-index: 1;
 }
 
+// landlords
 .ll-spinner-desktop {
   position: absolute;
   left: 15%;
@@ -606,3 +622,9 @@ label.required:after {
 .inline {
   display: inline-block;
 }
+
+#landlords .panel-body,
+#buildings .panel-body {
+  padding-bottom: 0;
+}
+

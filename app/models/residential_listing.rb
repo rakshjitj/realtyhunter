@@ -4,7 +4,7 @@ class ResidentialListing < ActiveRecord::Base
   has_and_belongs_to_many :residential_amenities
   has_many :roommates
   belongs_to :unit, touch: true
-  before_save :process_custom_amenities
+  before_save :process_custom_amenities, :open_house_schedule
   after_commit :update_building_counts
 
   attr_accessor :include_photos, :inaccuracy_description,
@@ -21,6 +21,8 @@ class ResidentialListing < ActiveRecord::Base
 
   validates :tp_fee_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
   validates_inclusion_of :tp_fee_percentage, :in => 0..100, allow_blank: true
+
+  OPEN_HOUSE_HOURS = ["7AM","8AM","9AM","10AM","11AM","12PM","1PM","2PM","3PM","4PM","5PM","6PM","7PM","8PM","9PM","10PM"]
 
   def archive
     self.unit.archived = true
@@ -107,7 +109,8 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self.listings_by_neighborhood(user, listing_ids)
-    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord, :neighborhood]})
+    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord]})
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('companies.id = ?', user.company_id)
       .where('units.listing_id IN (?)', listing_ids)
       .select('buildings.formatted_street_address',
@@ -185,6 +188,7 @@ class ResidentialListing < ActiveRecord::Base
         'beds || \'/\' || baths as bed_and_baths',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
+        'residential_listings.favorites',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
@@ -371,7 +375,7 @@ class ResidentialListing < ActiveRecord::Base
         params[:primary_agent_id], params[:primary_agent_id])
     end
 
-    running_list
+    running_list.uniq
   end
 
   def deep_copy_imgs(dst_id)
@@ -472,7 +476,7 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   # collect the data we will need to access from our giant map view
-  def self.set_location_data(runits)
+  def self.set_location_data(runits, images)
     map_infos = {}
     for i in 0..runits.length-1
       runit = runits[i]
@@ -492,7 +496,12 @@ class ResidentialListing < ActiveRecord::Base
         building_unit: runit.building_unit,
         beds: runit.beds,
         baths: runit.baths,
-        rent: runit.rent }
+        rent: runit.rent
+        }
+
+      if images[runit.unit_id]
+        unit_info['image'] = images[runit.unit_id].file.url(:thumb)
+      end
 
       if map_infos.has_key?(street_address)
         map_infos[street_address]['units'] << unit_info
@@ -500,7 +509,6 @@ class ResidentialListing < ActiveRecord::Base
         bldg_info['units'] = [unit_info]
         map_infos[street_address] = bldg_info
       end
-
     end
 
     map_infos.to_json
@@ -522,7 +530,6 @@ class ResidentialListing < ActiveRecord::Base
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'units.available_by', 'units.listing_id')
       .order('residential_listings.updated_at desc')
-      #'residential_listings.for_roomsharing',
 
     if !status.nil?
       status_lowercase = status.downcase
@@ -545,7 +552,8 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self.for_units(unit_ids, status=nil)
-    listings = ResidentialListing.joins(unit: {building: [:landlord, :neighborhood]})
+    listings = ResidentialListing.joins(unit: {building: [:landlord]})
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('units.id in (?)', unit_ids)
       .where('units.archived = false')
       .select('buildings.formatted_street_address',
@@ -613,14 +621,16 @@ class ResidentialListing < ActiveRecord::Base
 
       listings.each do |listing|
         csv << [listing.formatted_street_address, listing.building_unit, listing.neighborhood_name,
-          listing.exclusive, listing.can_roomshare,
-          listing.beds, listing.baths, listing.notes, listing.description, listing.lease_start, listing.lease_end,
-          listing.has_fee, listing.op_fee_percentage, listing.tp_fee_percentage, listing.tenant_occupied,
+          listing.exclusive ? 'Yes' : 'No', listing.can_roomshare ? 'Yes' : 'No',
+          listing.beds, listing.baths, listing.notes, listing.description, listing.lease_start,
+          listing.lease_end,
+          listing.has_fee ? 'Yes' : 'No', listing.op_fee_percentage, listing.tp_fee_percentage,
+          listing.tenant_occupied ? 'Yes' : 'No',
           agents[listing.unit_id] ? agents[listing.unit_id].map {|a| a.name }.join(', ') : '',
           listing.listing_id, listing.landlord_code, listing.rent,
           listing.available_by, listing.access_info,
           reverse_statuses[listing.status.to_s.to_sym],
-          listing.created_at, listing.updated_at, listing.archived]
+          listing.created_at, listing.updated_at, listing.archived ? 'Yes' : 'No']
       end
     end
   end
@@ -657,4 +667,34 @@ class ResidentialListing < ActiveRecord::Base
       bldg.landlord.last_unit_updated_at = DateTime.now
     end
 
+    def open_house_schedule
+      if self.open_house_mon == false
+        self.open_house_mon_from = ''
+        self.open_house_mon_to = ''
+      end
+      if self.open_house_tue == false
+        self.open_house_tue_from = ''
+        self.open_house_tue_to = ''
+      end
+      if self.open_house_wed == false
+        self.open_house_wed_from = ''
+        self.open_house_wed_to = ''
+      end
+      if self.open_house_thu == false
+        self.open_house_thu_from = ''
+        self.open_house_thu_to = ''
+      end
+      if self.open_house_fri == false
+        self.open_house_fri_from = ''
+        self.open_house_fri_to = ''
+      end
+      if self.open_house_sat == false
+        self.open_house_sat_from = ''
+        self.open_house_sat_to = ''
+      end
+      if self.open_house_sun == false
+        self.open_house_sun_from = ''
+        self.open_house_sun_to = ''
+      end
+    end
 end

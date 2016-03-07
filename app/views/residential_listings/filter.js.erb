@@ -1,9 +1,10 @@
+Listings.hideSpinner();
+
 $('.totals').html("<%= @residential_units.total_count %> Units found");
+$('.pagination-wrapper').html("<%=j (render :partial => 'shared/pagination', locals: {:models => @residential_units}) %>");
 
 $('.residential_units_table_body').html("<%= escape_javascript (render :partial => @residential_units) %>");
 
-$('.pagination').html("<%= escape_javascript (render :partial => 'shared/pagination', locals: {:models => @residential_units}) %>");
-
-ResidentialListings.updateOverviewMap("<%= escape_javascript(@map_infos).to_s.html_safe %>");
+ResidentialListings.updateOverviewMap("<%= escape_javascript(@map_infos).to_s.html_safe %>", ResidentialListings.buildContentString);
 
 $('#residential .announcements').html("<%= j(render partial: "residential_listings/announcements", locals: { announcements: @announcement_items }) %>");

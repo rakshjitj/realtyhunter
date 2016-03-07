@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.2.1'
+ruby '2.3.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.3'
 # Use postgres as the database for Active Record
@@ -30,6 +30,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'bootstrap-sass', '~> 3.3.4'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
+gem 'jquery-infinite-pages'
 gem 'autoprefixer-rails'
 # for handling single image uploads
 gem "paperclip"
@@ -52,7 +53,7 @@ gem 'rails4-autocomplete'
 #gem 'pdfkit'
 gem 'wicked_pdf'
 # trying to get past font/cors issues...
-gem 'rack-cors', :require => 'rack/cors'
+gem 'rack-cors', require: 'rack/cors'
 # used for our rake tasks to import data
 gem 'mechanize'
 # make sure we handle time zones correctly
@@ -71,6 +72,8 @@ gem 'bootsy'
 # wufoo
 gem 'wuparty'
 #gem "brakeman", :require => false
+#gem 'bootstrap-multiselect-rails'
+gem "selectize-rails"
 
 group :production do
 	gem 'rails_12factor' # related to serving static assets

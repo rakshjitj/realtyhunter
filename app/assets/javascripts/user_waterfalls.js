@@ -139,4 +139,8 @@ UserWaterfalls = {};
 
 })();
 
-$(document).ready(UserWaterfalls.initialize);
+$(document).ready(function() {
+  if ($('.user_waterfalls').length) {
+    UserWaterfalls.initialize();
+  }
+});

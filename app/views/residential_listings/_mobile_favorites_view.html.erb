@@ -1,0 +1,39 @@
+<div class="row row-list-view %>">
+  <!-- thumbnail image -->
+  <div class="col-image">
+    <% if @res_images[residential_listing.unit_id] %>
+      <%= link_to(image_tag(@res_images[residential_listing.unit_id].file.url(:thumb),
+          alt: @res_images[residential_listing.unit_id].file.url(:thumb)),
+          residential_listing) %>
+    <% else %>
+      <!-- placeholder image -->
+      <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon",
+          :size => "100x100"), residential_listing) %>
+    <% end %>
+  </div>
+
+  <!-- data -->
+  <div class="col-info">
+    <!-- 1st row: address -->
+    <div class="row">
+      <div class="col-xs-12">
+        <h4>
+          <%= link_to "#{residential_listing.street_address} ##{residential_listing.building_unit}",
+              residential_listing_path(residential_listing.id) %>
+        </h4>
+        <% if residential_listing.neighborhood_name %>
+          <small><%= residential_listing.neighborhood_name %></small>
+        <% end %>
+      </div>
+    </div>
+    <!-- 2nd row: price, beds/baths -->
+    <div class="row">
+      <div class="col-xs-6">
+        <%= beds_as_str(residential_listing) %> / <%= baths_as_str(residential_listing) %>
+      </div>
+      <div class="col-xs-5 text-right">
+        <%= rent_formatted(residential_listing.rent) %>
+      </div>
+    </div>
+  </div>
+</div>

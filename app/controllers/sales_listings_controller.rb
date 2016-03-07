@@ -2,17 +2,18 @@ class SalesListingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource only: :create
   before_action :set_sales_listing, except: [:new, :create, :index, :filter,
-    :print_list, :neighborhoods_modal, :features_modal,
+    :print_list, :neighborhoods_modal, :features_modal, :neighborhood_options,
     :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood, :fee_options]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
   etag { current_user.id }
 
-  # GET /sales_units
-  # GET /sales_units.json
   def index
     respond_to do |format|
       format.html do
+        set_sales_listings
+      end
+      format.js do
         set_sales_listings
       end
       format.csv do
@@ -32,40 +33,9 @@ class SalesListingsController < ApplicationController
     end
   end
 
-  # GET
-  # handles ajax call. uses latest data in modal
-  def neighborhoods_modal
-    @neighborhoods = Neighborhood.unarchived
-    .where(city: current_user.office.administrative_area_level_2_short)
-    .to_a
-    .group_by(&:borough)
-
-    # @neighborhoods.each do |borough, list|
-    #   puts list.inspect
-    # end
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  # GET
-  # handles ajax call. uses latest data in modal
-  def features_modal
-    @building_amenities = BuildingAmenity.where(company: current_user.company)
-    @unit_amenities = SalesAmenity.where(company: current_user.company)
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
-  # GET /sales_units/1
-  # GET /sales_units/1.json
   def show
   end
 
-  # GET /sales_units/new
   def new
     @sales_unit = SalesListing.new
     @sales_unit.unit = Unit.new
@@ -78,13 +48,10 @@ class SalesListingsController < ApplicationController
     @panel_title = "Add a listing"
   end
 
-  # GET /sales_units/1/edit
   def edit
     @panel_title = "Edit listing"
   end
 
-  # POST /sales_units
-  # POST /sales_units.json
   def create
     new_unit = nil
     new_bldg = nil
@@ -178,14 +145,10 @@ class SalesListingsController < ApplicationController
     ids = params[:listing_ids].split(',')
     @neighborhood_group = SalesListing.listings_by_neighborhood(current_user, ids)
 
-    #respond_to do |format|
-    #  format.pdf do
-        render pdf: current_user.company.name + ' - Private Sales Listings - ' + Date.today.strftime("%b%d%Y"),
-          template: "/sales_listings/print_private.pdf.erb",
-          orientation: 'Landscape',
-          layout:   "/layouts/pdf_layout.html"
-    #  end
-    #end
+    render pdf: current_user.company.name + ' - Private Sales Listings - ' + Date.today.strftime("%b%d%Y"),
+      template: "/sales_listings/print_private.pdf.erb",
+      orientation: 'Landscape',
+      layout:   "/layouts/pdf_layout.html"
   end
 
   # PATCH ajax
@@ -194,18 +157,12 @@ class SalesListingsController < ApplicationController
     ids = params[:listing_ids].split(',')
     @neighborhood_group = SalesListing.listings_by_neighborhood(current_user, ids)
 
-    #respond_to do |format|
-    #  format.pdf do
-        render pdf: current_user.company.name + ' - Public Sales Listings - ' + Date.today.strftime("%b%d%Y"),
-          template: "/sales_listings/print_public.pdf.erb",
-          orientation: 'Landscape',
-          layout:   "/layouts/pdf_layout.html"
-    #  end
-    #end
+    render pdf: current_user.company.name + ' - Public Sales Listings - ' + Date.today.strftime("%b%d%Y"),
+      template: "/sales_listings/print_public.pdf.erb",
+      orientation: 'Landscape',
+      layout:   "/layouts/pdf_layout.html"
   end
 
-  # PATCH/PUT /sales_units/1
-  # PATCH/PUT /sales_units/1.json
   def update
     ret1 = nil
     ret2 = nil
@@ -233,8 +190,6 @@ class SalesListingsController < ApplicationController
     end
   end
 
-  # DELETE /sales_units/1
-  # DELETE /sales_units/1.json
   def destroy
     @sales_unit.archive
     set_sales_listings
@@ -273,12 +228,13 @@ class SalesListingsController < ApplicationController
   def send_inaccuracy
     @sales_unit.inaccuracy_description = sales_listing_params[:inaccuracy_description]
     @sales_unit.send_inaccuracy_report(current_user)
+    flash[:success] = "Report submitted! Thank you."
     respond_to do |format|
-      format.js { flash[:notice] = "Report submitted! Thank you." }
+      format.html { redirect_to @sales_unit }
+      format.js { }
     end
   end
 
-  # GET /refresh_images
   # ajax call
   def refresh_images
     respond_to do |format|
@@ -286,7 +242,6 @@ class SalesListingsController < ApplicationController
     end
   end
 
-  # GET
   # ajax call
   def refresh_documents
     respond_to do |format|
@@ -312,6 +267,7 @@ class SalesListingsController < ApplicationController
 
     respond_to do |format|
       format.js
+      format.json
     end
   end
 
@@ -332,15 +288,23 @@ class SalesListingsController < ApplicationController
     end
 
     def set_sales_listings
+      @neighborhoods = Neighborhood.unarchived
+          .where(state: current_user.office.administrative_area_level_1_short)
+          .to_a
+          .group_by(&:borough)
+      @building_amenities = BuildingAmenity.where(company: current_user.company)
+      @unit_amenities = ResidentialAmenity.where(company: current_user.company)
+
       do_search
       @sales_units = custom_sort
       @count_all = SalesListing.joins(:unit)
         .where('units.archived = false')
         .where('units.status = ?', Unit.statuses["active"])
         .count
-      @map_infos = SalesListing.set_location_data(@sales_units.to_a)
-      @sales_units = @sales_units.page params[:page]
       @res_images = SalesListing.get_images(@sales_units)
+      @map_infos = SalesListing.set_location_data(@sales_units.to_a, @res_images)
+      @sales_units = @sales_units.page params[:page]
+
     end
 
     # returns all data for export
@@ -411,14 +375,14 @@ class SalesListingsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def sales_listing_params
       data = params.permit(
-        :sort_by, :direction, :filter,
+        :sort_by, :direction, :page, :filter,
         :beds, :baths, :include_photos, :inaccuracy_description,
         :available_starting, :available_before,
         :street_number, :route, :intersection,
         :neighborhood, :formatted_street_address,
         :sublocality, :administrative_area_level_2_short,
         :administrative_area_level_1_short,
-        :postal_code, :country_short, :lat, :lng, :place_id,        
+        :postal_code, :country_short, :lat, :lng, :place_id,
 
         sales_listing: [
           :lock_version,
@@ -429,7 +393,7 @@ class SalesListingsController < ApplicationController
           :school_district, :certificate_of_occupancy, :violation_search, :tenant_occupied,
           :internal_notes, :public_description,
           :floor, :total_room_count, :condition, :showing_instruction, :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
-          
+
           :unit => [:building_unit, :rent, :available_by, :access_info, :status,
             :open_house, :oh_exclusive,
             :building_id, :primary_agent_id, :listing_agent_id],

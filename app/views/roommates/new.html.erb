@@ -7,14 +7,9 @@
 		    <div class="col-md-6">
 		      <h1>Roomsharing Referral</h1>
 		    </div>
-		    <div class="col-md-6 form-label-responsive">
-		    	<% if can? :manage, @roommate %>
-		    		<%= link_to 'All roommates', roommates_path %>
-		    	<% end %>
-		    </div>
 		  </div>
 		</div>
-	  	
+
 		<%= render 'form' %>
 
 	</div>
