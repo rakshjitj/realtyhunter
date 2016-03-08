@@ -25,7 +25,7 @@ gem 'jquery-turbolinks'
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
-# Use ActiveModel has_secure_password
+## Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootstrap-sass', '~> 3.3.4'
 gem 'kaminari'
@@ -46,7 +46,7 @@ gem 'cancancan', '~> 1.10'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 #used to add semi-realistic users
-gem 'faker'
+#gem 'faker'
 gem 'ffaker'
 # autocomplete fields (like building addresses in our case)
 gem 'rails4-autocomplete'
@@ -81,7 +81,8 @@ group :production do
 	gem 'wkhtmltopdf-heroku', '~> 2.12.2.1'
   gem 'connection_pool'
   gem 'newrelic_rpm'
-  gem "lograge"
+  # gem "lograge"
+  gem "puma_worker_killer"
 end
 
 group :development, :test do
