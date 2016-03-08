@@ -22,7 +22,7 @@ class ResidentialListing < ActiveRecord::Base
   validates :tp_fee_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
   validates_inclusion_of :tp_fee_percentage, :in => 0..100, allow_blank: true
 
-  OPEN_HOUSE_HOURS = ["7AM","8AM","9AM","10AM","11AM","12PM","1PM","2PM","3PM","4PM","5PM","6PM","7PM","8PM","9PM","10PM"]
+  OPEN_HOUSE_HOURS = ["7:00AM","7:30AM", "8:00AM","8:30AM", "9:00AM", "9:30AM","10:00AM","10:30AM", "11:00AM","11:30AM","12:00PM","12:30PM", "1:00PM","1:30PM", "2:00PM","2:30PM", "3:00PM","3:30PM", "4:00PM","4:30PM", "5:00PM","5:30PM", "6:00PM","6:30PM","7:00PM","7:30PM", "8:00PM","8:30PM", "9:00PM","9:30PM","10:00PM"]
 
   def archive
     self.unit.archived = true
