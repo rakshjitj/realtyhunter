@@ -81,7 +81,6 @@ group :production do
 	gem 'wkhtmltopdf-heroku', '~> 2.12.2.1'
   gem 'connection_pool'
   gem 'newrelic_rpm'
-  # gem "lograge"
   gem "puma_worker_killer"
 end
 
@@ -93,7 +92,6 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-
 end
 
 group :development do
