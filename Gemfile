@@ -74,6 +74,7 @@ gem 'wuparty'
 #gem "brakeman", :require => false
 #gem 'bootstrap-multiselect-rails'
 gem "selectize-rails"
+gem "puma_worker_killer"
 
 group :production do
 	gem 'rails_12factor' # related to serving static assets
@@ -81,7 +82,6 @@ group :production do
 	gem 'wkhtmltopdf-heroku', '~> 2.12.2.1'
   gem 'connection_pool'
   gem 'newrelic_rpm'
-  gem "puma_worker_killer"
 end
 
 group :development, :test do

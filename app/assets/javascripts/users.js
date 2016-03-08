@@ -91,7 +91,10 @@ Users = {};
 })();
 
 $(document).ready(function() {
-  if ($('.users').length) {
+  if ($('.users').length ||
+      $('.companies.employees').length ||
+      $('.companies.managers').length ||
+      $('.offices.agents').length) {
     Users.initialize();
   }
 });

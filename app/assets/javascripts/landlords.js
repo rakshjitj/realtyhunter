@@ -11,7 +11,7 @@ Landlords = {};
     $('.ll-spinner-desktop').hide();
   };
 
-  Landlords.filterListings = function(event) {
+  Landlords.filterListings = function() {
     var search_path = $('#listings').attr('data-search-path');
     $.ajax({
       url: search_path,
@@ -77,7 +77,7 @@ Landlords = {};
     }
   };
 
-  Landlords.toggleFeeOptions = function(event) {
+  Landlords.toggleFeeOptions = function() {
     var isChecked = $('#landlords .has-fee').prop('checked');
     if (isChecked) {
       $('#landlords .show-op').addClass('hide');
@@ -126,6 +126,9 @@ Landlords = {};
     $('#landlords #filter').bind('railsAutocomplete.select', Landlords.throttledSearch);
     $('#landlords #filter').keydown(Landlords.preventEnter);
     $('#landlords #filter').change(Landlords.throttledSearch);
+  }
+
+  Landlords.initShow = function() {
     $('#landlords #status').change(Landlords.throttledSearch);
     $('#landlords #status_listings').change(Landlords.filterListings);
   }
@@ -148,7 +151,7 @@ $(document).ready(function () {
     Landlords.initEditor();
   } else if (indexPage) {
     Landlords.initIndex();
-  } // else if (showPage) {
-    // not yet needed
-  // }
+  } else if (showPage) {
+    Landlords.initShow();
+  }
 });
