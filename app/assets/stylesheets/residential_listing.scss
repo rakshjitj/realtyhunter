@@ -140,11 +140,9 @@
 
 /* index page footer */
 .footer-mobile-residential {
-  // order: 3;
-  // flex-basis: 65px;
+  order: 3;
+  flex-basis: 65px;
   min-height: 65px;
-  position: fixed;
-  top: 90vh;
   width: 100vw;
   background: #eda800;
 }
