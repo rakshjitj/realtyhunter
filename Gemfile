@@ -34,8 +34,7 @@ gem 'jquery-infinite-pages'
 gem 'autoprefixer-rails'
 # for handling single image uploads
 gem "paperclip"
-gem 'aws-sdk-v1' #paperclip
-#gem 'aws-sdk' #refile
+gem 'aws-sdk-v1','1.52.0' #paperclip
 # ajax drag/dropping multiple files
 gem 'dropzonejs-rails'
 # sending emails
