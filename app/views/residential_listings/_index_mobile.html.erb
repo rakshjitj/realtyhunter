@@ -31,7 +31,7 @@
           <div class="card-contents">
             <div class="card-middle">
               <% if @favorite_units.count > 0 %>
-                <p class="minor-header minor-spacing">FAVORITE LISTINGS</p>
+                <p class="minor-header">FAVORITE LISTINGS</p>
                 <div class="favorites-table">
                   <%= render partial: 'residential_listings/mobile_favorites_view',
                       collection: @favorite_units, as: :residential_listing,
