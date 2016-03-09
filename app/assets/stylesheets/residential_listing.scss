@@ -85,7 +85,7 @@
   text-align: left;
 }
 .middle {
-  flex: 1;
+  flex: 2;
   text-align: center;
 }
 .right {
@@ -215,9 +215,9 @@
   background-color: #F2F2F2;
 }
 
-// .minor-spacing {
-//   margin-top: 0px;
-// }
+.minor-spacing {
+  margin-top: 5px !important;
+}
 
 .minor-header {
   margin-top: 0px;
