@@ -3,7 +3,10 @@ namespace :maintenance do
 	task regen_paperclip_styles: :environment do
 
 		Image.all.each do |i|
-			i.file.reprocess! :large, :original
+      if i.file_updated_at < Date.today
+        puts "Processing image #{i.id} Last updated on: #{i.file_updated_at}"
+  			i.file.reprocess! :large, :original
+      end
 		end
 
 		puts "Done!\n"
