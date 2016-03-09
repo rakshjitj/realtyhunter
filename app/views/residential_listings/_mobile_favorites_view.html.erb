@@ -1,4 +1,4 @@
-<div class="row row-no-padding row-list-view %>">
+<div class="row-no-padding row-list-view %>">
   <!-- thumbnail image -->
   <div class="col-xs-4">
     <% if @res_images[residential_listing.unit_id] %>
@@ -8,14 +8,14 @@
     <% else %>
       <!-- placeholder image -->
       <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon",
-          :size => "100x100"), residential_listing) %>
+          size: "100x100"), residential_listing) %>
     <% end %>
   </div>
 
   <!-- data -->
   <div class="col-xs-8">
     <!-- 1st row: address -->
-    <div class="row row-no-padding">
+    <div class="row-no-padding">
       <div class="col-xs-10">
         <h4>
           <%= link_to "#{residential_listing.street_address} ##{residential_listing.building_unit}",
@@ -27,7 +27,7 @@
       </div>
     </div>
     <!-- 2nd row: price, beds/baths -->
-    <div class="row row-no-padding">
+    <div class="row-no-padding">
       <div class="col-xs-5">
         <%= beds_as_str(residential_listing) %> / <%= baths_as_str(residential_listing) %>
       </div>

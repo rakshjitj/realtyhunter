@@ -31,14 +31,14 @@
           <div class="card-contents">
             <div class="card-middle">
               <% if @favorite_units.count > 0 %>
-                <p class="minor-header">FAVORITE LISTINGS</p>
+                <h4 class="minor-header">FAVORITE LISTINGS</h4>
                 <div class="favorites-table">
                   <%= render partial: 'residential_listings/mobile_favorites_view',
                       collection: @favorite_units, as: :residential_listing,
                       locals: {res_images: @res_images} %>
                 </div>
               <% end %>
-              <p class="minor-header">RENTAL LISTINGS</p>
+              <h4 class="minor-header">RENTAL LISTINGS</h4>
               <div class="infinite-table">
                 <%= render partial: 'residential_listings/mobile_list_view',
                     collection: @residential_units, as: :residential_listing,
@@ -61,7 +61,7 @@
                 <div class="left js-run-search">
                   <a class="link-run-search">Search</a>
                 </div>
-                <div class="middle">
+                <div class="minor-header middle">
                   <h4>Mobile Filters</h4>
                 </div>
                 <div class="right js-cancel-search">

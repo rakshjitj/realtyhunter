@@ -215,12 +215,14 @@
   background-color: #F2F2F2;
 }
 
-.minor-spacing {
-  margin-top: 9px;
-}
+// .minor-spacing {
+//   margin-top: 0px;
+// }
+
 .minor-header {
+  margin-top: 0px;
   margin-bottom: 0;
-  padding: 5px 0 8px 9px;
+  padding: 10px 0 8px 9px;
   border-bottom: 1px;
   background-color: #eda800;
   font-weight: bold;
