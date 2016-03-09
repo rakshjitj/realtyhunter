@@ -47,7 +47,7 @@ gem 'cancancan', '~> 1.10'
 # gem 'capistrano-rails', group: :development
 #used to add semi-realistic users
 #gem 'faker'
-gem 'ffaker'
+# gem 'ffaker'
 # autocomplete fields (like building addresses in our case)
 gem 'rails4-autocomplete'
 #gem 'pdfkit'
@@ -74,7 +74,7 @@ gem 'wuparty'
 #gem "brakeman", :require => false
 #gem 'bootstrap-multiselect-rails'
 gem "selectize-rails"
-gem "puma_worker_killer"
+#gem "puma_worker_killer"
 
 group :production do
 	gem 'rails_12factor' # related to serving static assets
