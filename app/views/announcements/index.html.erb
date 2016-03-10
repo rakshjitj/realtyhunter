@@ -61,13 +61,6 @@
           </div>
         </div>
 
-        <div class="row vertical-padding">
-          <div class="col-md-6 col-md-offset-3 pagination-wrapper">
-            <%= render partial: 'shared/pagination',
-              locals: {models: @announcements, shorten_text: false} %>
-          </div>
-        </div>
-
       <% end %>
     </div>
 
@@ -79,6 +72,13 @@
 <div class="items">
   <%= render partial: "announcements/items_list",
     locals: { announcements: @announcements, shorten_text: false } %>
+</div>
+
+<div class="row vertical-padding">
+  <div class="col-md-6 col-md-offset-3 pagination-wrapper">
+    <%= render partial: 'shared/pagination',
+      locals: {models: @announcements, shorten_text: false} %>
+  </div>
 </div>
 
 <!-- Delete Modal -->

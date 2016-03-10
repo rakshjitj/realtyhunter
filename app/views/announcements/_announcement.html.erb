@@ -4,13 +4,13 @@
 <% is_sales = Announcement.categories[announcement.category] == Announcement.categories['sales'] %>
 
 <% if is_event %>
-	<div class="well announcement event-announcement">
+	<div class="announcement well event-announcement">
 <% elsif is_residential %>
-	<div class="well announcement residential-announcement">
+	<div class="announcement well residential-announcement">
 <% elsif is_commercial %>
-	<div class="well announcement commercial-announcement">
+	<div class="announcement well commercial-announcement">
 <% elsif is_sales %>
-	<div class="well announcement sales-announcement">
+	<div class="announcement well sales-announcement">
 <% end %>
 
 	<!-- if we are on any other page, this announcement should turn into a
