@@ -23,11 +23,28 @@
   position: absolute;
   top: 50px;
   left: 0;
-  width: 100vw;
   height: calc(100vh - 50px);
+
+  // galaxy
+  width: 100vw;
+  // iphone6s
+  // @media only screen
+  //   and (min-device-width: 414px)
+  //   and (max-device-width: 736px)
+  //   and (-webkit-min-device-pixel-ratio: 3) {
+  // }
+  // // iphone 5
+  // @media only screen
+  //   and (min-device-width: 320px)
+  //   and (max-device-width: 568px)
+  //   and (-webkit-min-device-pixel-ratio: 2) {
+  //     // width: 100%;
+  //     width: 320px;
+  //   }
+
   overflow: hidden;
   ::-webkit-scrollbar {
-      display: none;
+    display: none;
   }
 }
 
@@ -36,6 +53,13 @@
   visibility: hidden;
   display: none;
   width: 100vw;
+  // iphone5
+  // @media only screen
+  //   and (min-device-width: 320px)
+  //   and (max-device-width: 568px)
+  //   and (-webkit-min-device-pixel-ratio: 2) {
+  //     width: 320px;
+  //   }
   overflow: hidden;
 }
 
@@ -47,17 +71,15 @@
 .card-contents {
   display: flex;
   flex-direction: column;
+  height: 100%;
   width: 100vw;
-  height: 93vh; // calc(100vh - 50px);
-  overflow: scroll;
+  // iphone5
+  // @media only screen
+  //   and (min-device-width: 320px)
+  //   and (max-device-width: 568px)
+  //   and (-webkit-min-device-pixel-ratio: 2) {
+  //     width: 320px;
+  //   }
 
-@media
-  only screen and (-webkit-min-device-pixel-ratio: 2)      and (min-width: 320px),
-  only screen and (   min--moz-device-pixel-ratio: 2)      and (min-width: 320px),
-  only screen and (     -o-min-device-pixel-ratio: 2/1)    and (min-width: 320px),
-  only screen and (        min-device-pixel-ratio: 2)      and (min-width: 320px),
-  only screen and (                min-resolution: 192dpi) and (min-width: 320px),
-  only screen and (                min-resolution: 2dppx)  and (min-width: 320px) {
-    height: 87vh;
-  }
+  overflow: scroll;
 }

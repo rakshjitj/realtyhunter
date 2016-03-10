@@ -99,6 +99,7 @@ a:hover.btn-danger {
 
 .no-margin-padding {
   margin-left: -15px !important;
+  margin-right: -15px !important;
   padding: 0 !important;
 }
 
@@ -115,7 +116,7 @@ a:hover.btn-danger {
 
 .mobile-container {
   position: relative;
-  perspective: 800px;
+  // perspective: 800px;
   top: -50px;
 }
 

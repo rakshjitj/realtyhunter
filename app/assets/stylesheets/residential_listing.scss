@@ -54,6 +54,42 @@
   order: 2;
   flex-grow: 2;
   overflow: auto;
+  // everybody else besides retina
+  height: calc(100vh - 115px);
+
+  // @media
+  // // only screen and (-webkit-min-device-pixel-ratio: 2)      and (min-width: 320px),
+  // only screen and (   min--moz-device-pixel-ratio: 2)      and (min-width: 320px),
+  // only screen and (     -o-min-device-pixel-ratio: 2/1)    and (min-width: 320px),
+  // only screen and (        min-device-pixel-ratio: 2)      and (min-width: 320px),
+  // only screen and (                min-resolution: 192dpi) and (min-width: 320px),
+  // only screen and (                min-resolution: 2dppx)  and (min-width: 320px) {
+
+  //}
+  /* Portrait and Landscape */
+  // @media only screen
+  //   and (min-device-width: 320px)
+  //   and (max-device-width: 568px)
+  //   and (-webkit-min-device-pixel-ratio: 2) {
+  //     height: 470px; // 568px - 180px;
+  //   }
+    // iPhone 6
+    //iphone6
+  /* Portrait and Landscape */
+  @media only screen
+    and (min-device-width: 375px)
+    and (max-device-width: 667px)
+    and (-webkit-min-device-pixel-ratio: 2) {
+    height: calc(100vh - 185px);
+  }
+  //iphone6+
+  /* Portrait and Landscape */
+  @media only screen
+    and (min-device-width: 414px)
+    and (max-device-width: 736px)
+    and (-webkit-min-device-pixel-ratio: 3) {
+    height: calc(100vh - 185px);
+  }
 }
 
 .mobile-announcement {
@@ -63,7 +99,17 @@
 .card-nav {
   order: 1;
   flex-basis: 50px;
+  height: 100%;
   width: 100vw;
+  // iphone 5
+  // @media only screen
+  //   and (min-device-width: 320px)
+  //   and (max-device-width: 568px)
+  //   and (-webkit-min-device-pixel-ratio: 2) {
+  //     // width: 100%;
+  //     width: 320px;
+  //   }
+
   background-color: #eda800;
   font-size: 1.5em;
 }
@@ -144,13 +190,41 @@
   flex-basis: 65px;
   min-height: 65px;
   width: 100vw;
+  // iphone 5
+  // @media only screen
+  //   and (min-device-width: 320px)
+  //   and (max-device-width: 568px)
+  //   and (-webkit-min-device-pixel-ratio: 2) {
+  //     // width: 100%;
+  //     width: 320px;
+  //   }
+  // @include viewport-unit(width, 100vw);
   background: #eda800;
 }
 
 .mobile-show-page-wrap {
-  height: calc(100vh - 62px);
-  overflow: scroll;
   margin-bottom: -100px; /* the bottom margin is the negative value of the footer's height */
+  // height: 100vh;
+  //height: calc(100vh - 62px);
+  height: calc(100vh - 115px);
+  //iphone6
+  /* Portrait and Landscape */
+  @media only screen
+    and (min-device-width: 375px)
+    and (max-device-width: 667px)
+    and (-webkit-min-device-pixel-ratio: 2) {
+    height: calc(100vh - 185px);
+  }
+  //iphone6+
+  /* Portrait and Landscape */
+  @media only screen
+    and (min-device-width: 414px)
+    and (max-device-width: 736px)
+    and (-webkit-min-device-pixel-ratio: 3) {
+    height: calc(100vh - 185px);
+  }
+
+  overflow: scroll;
 }
 
 .mobile-show-bottom-spacer {
@@ -163,10 +237,38 @@
 }
 #footer-mobile-show {
   position: fixed;
-  top: calc(91vh);
+  top: calc(100vh - 65px);
   // bottom: 75px;
   height: 62px;
-  width: 100%;
+  width: 100vw;
+  left: 0;
+  // iphone 5
+  // @media only screen
+  //   and (min-device-width: 320px)
+  //   and (max-device-width: 568px)
+  //   and (-webkit-min-device-pixel-ratio: 2) {
+  //     // width: 100%;
+  //     width: 320px;
+  //   }
+  //iphone6
+  /* Portrait and Landscape */
+  @media only screen
+    and (min-device-width: 375px)
+    and (max-device-width: 667px)
+    and (-webkit-min-device-pixel-ratio: 2) {
+    top: 557px;
+    width: 100%;
+  }
+  //iphone6+
+  /* Portrait and Landscape */
+  @media only screen
+    and (min-device-width: 414px)
+    and (max-device-width: 736px)
+    and (-webkit-min-device-pixel-ratio: 3) {
+    top: 630px; //674
+    width: 100%;
+  }
+
   background: #eda800;
 }
 
@@ -216,7 +318,7 @@
 }
 
 .minor-spacing {
-  margin-top: 5px !important;
+  padding-top: 15px !important;
 }
 
 .minor-header {
