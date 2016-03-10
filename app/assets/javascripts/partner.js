@@ -83,9 +83,6 @@ Partner = {};
 			return;
 		}
 
-		document.addEventListener("page:restore", function() {
-		  Forms.hideSpinner();
-		});
 		Forms.hideSpinner();
 
 		// main index table
@@ -125,4 +122,6 @@ Partner = {};
 
 })();
 
-$(document).ready(Partner.initialize);
+$(document).on('ready page:load', Partner.initialize);
+
+$(document).on('page:restore', Partner.initialize);

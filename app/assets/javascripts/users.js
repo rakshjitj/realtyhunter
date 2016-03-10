@@ -88,13 +88,17 @@ Users = {};
       $('.agent-type').hide();
     }
 	};
+
+  Users.ready = function() {
+    if ($('.users').length ||
+        $('.companies.employees').length ||
+        $('.companies.managers').length ||
+        $('.offices.agents').length) {
+      Users.initialize();
+    }
+  };
 })();
 
-$(document).ready(function() {
-  if ($('.users').length ||
-      $('.companies.employees').length ||
-      $('.companies.managers').length ||
-      $('.offices.agents').length) {
-    Users.initialize();
-  }
-});
+$(document).on('ready page:load', Users.ready);
+
+$(document).on('page:restore', Users.ready);

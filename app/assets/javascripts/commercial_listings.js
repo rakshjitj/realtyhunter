@@ -51,7 +51,7 @@ CommercialListings = {};
     }
     window.location.search = searchParams.join('&');
 
-    CommercialListings.enablePassiveUpdates();
+    // CommercialListings.enablePassiveUpdates();
   };
 
   CommercialListings.clearTimer = function() {
@@ -60,21 +60,21 @@ CommercialListings = {};
     }
   };
 
-  CommercialListings.enablePassiveUpdates = function() {
-    if (!Common.onMobileDevice()) {
-      CommercialListings.passiveRealTimeUpdate();
-    }
-  }
+  // CommercialListings.enablePassiveUpdates = function() {
+    // if (!Common.onMobileDevice()) {
+      // CommercialListings.passiveRealTimeUpdate();
+    // }
+  // }
 
   // if a user remains on this page for an extended amount of time,
   // refresh the page every so often. We want to make sure they are
   // always viewing the latest data.
-  CommercialListings.passiveRealTimeUpdate = function() {
-    // don't trigger this on the show page (<URL>/commercial_listings/<ID<)
-    CommercialListings.clearTimer();
-    // update every few minutes
-    CommercialListings.timer = setTimeout(CommercialListings.doSearch, 60 * 3 * 1000);
-  };
+  // CommercialListings.passiveRealTimeUpdate = function() {
+  //   // don't trigger this on the show page (<URL>/commercial_listings/<ID<)
+  //   CommercialListings.clearTimer();
+  //   // update every few minutes
+  //   CommercialListings.timer = setTimeout(CommercialListings.doSearch, 60 * 3 * 1000);
+  // };
 
   // search as user types
   CommercialListings.throttledSearch = function () {
@@ -289,12 +289,7 @@ CommercialListings = {};
   }
 
   CommercialListings.initIndex = function() {
-    CommercialListings.enablePassiveUpdates();
-
-    document.addEventListener("page:restore", function() {
-      Listings.hideSpinner();
-      CommercialListings.enablePassiveUpdates();
-    });
+    // CommercialListings.enablePassiveUpdates();
 
     Listings.hideSpinner();
     $('#commercial a').click(function() {
@@ -318,7 +313,7 @@ CommercialListings = {};
       if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();
     });
 
-    CommercialListings.enablePassiveUpdates();
+    // CommercialListings.enablePassiveUpdates();
 
     RHMapbox.initMapbox('c-big-map', CommercialListings.buildContentString);
 
@@ -358,6 +353,22 @@ CommercialListings = {};
     $('.carousel-inner > .item:first-child').addClass('active');
   }
 
+  CommercialListings.ready = function() {
+    CommercialListings.clearTimer();
+
+    var editPage = $('.commercial_listings.edit').length;
+    var newPage = $('.commercial_listings.new').length;
+    var indexPage = $('.commercial_listings.index').length;
+    // new and edit pages both render the same form template, so init them using the same code
+    if (editPage || newPage) {
+      CommercialListings.initEditor();
+    } else if (indexPage) {
+      CommercialListings.initIndex();
+    } else {
+      CommercialListings.initShow();
+    }
+  }
+
 })();
 
 $(document).on('keyup',function(evt) {
@@ -366,18 +377,6 @@ $(document).on('keyup',function(evt) {
   }
 });
 
-$(document).ready(function() {
-  CommercialListings.clearTimer();
+$(document).on('ready page:load', CommercialListings.ready);
 
-  var editPage = $('.commercial_listings.edit').length;
-  var newPage = $('.commercial_listings.new').length;
-  var indexPage = $('.commercial_listings.index').length;
-  // new and edit pages both render the same form template, so init them using the same code
-  if (editPage || newPage) {
-    CommercialListings.initEditor();
-  } else if (indexPage) {
-    CommercialListings.initIndex();
-  } else {
-    CommercialListings.initShow();
-  }
-});
+$(document).on('page:restore', CommercialListings.ready);

@@ -30,14 +30,14 @@ Company = {};
 
   //call when typing or enter or focus leaving
   Company.initialize = function() {
-    $('input').keydown(Company.preventEnter);
-    $('#name').keyup(Company.throttledSearch);
+    if ($('.companies').length) {
+      $('input').keydown(Company.preventEnter);
+      $('#name').keyup(Company.throttledSearch);
+    }
   };
 
 })();
 
-$(document).ready(function() {
-  if ($('.companies').length) {
-    Company.initialize();
-  }
-});
+$(document).on('ready page:load', Company.initialize);
+
+$(document).on('page:restore', Company.initialize);

@@ -38,26 +38,6 @@ ContactUs = {};
       }
     }
     window.location.search = searchParams.join('&');
-
-	  // $.ajax({
-	  //   url: search_path,
-	  //   data: {
-   //      name: $('#contact-us #name').val(),
-   //      submitted_date: $('#contact-us #submitted_date').val(),
-   //      status: $('#contact-us #status').val(),
-   //      min_price: $('#contact-us #min_price').val(),
-   //      max_price: $('#contact-us #max_price').val(),
-   //      sort_by: sortByCol,
-   //      direction: sortDirection,
-	  //   },
-	  //   dataType: 'script',
-	  //   success: function(data) {
-	  //   	Forms.hideSpinner();
-			// },
-			// error: function(data) {
-			// 	Forms.hideSpinner();
-			// }
-	  // });
 	};
 
 	// search as user types
@@ -80,9 +60,6 @@ ContactUs = {};
 			return;
 		}
 
-		document.addEventListener("page:restore", function() {
-		  Forms.hideSpinner();
-		});
 		Forms.hideSpinner();
 
 		// main index table
@@ -119,8 +96,6 @@ ContactUs = {};
 
 })();
 
-$(document).ready(function() {
-  if ($('.careers').length) {
-    ContactUs.initialize();
-  }
-});
+$(document).on('ready page:load', ContactUs.initialize);
+
+$(document).on('page:restore', ContactUs.initialize);

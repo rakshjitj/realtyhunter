@@ -105,13 +105,10 @@ UserWaterfalls = {};
 	};
 
 	UserWaterfalls.initialize = function() {
-		if (!$('#waterfall').length) {
+    if (!$('.user_waterfalls').length) {
 			return;
 		}
 
-		document.addEventListener("page:restore", function() {
-		  Forms.hideSpinner();
-		});
 		Forms.hideSpinner();
 
 		$('.close').click(function() {
@@ -139,8 +136,6 @@ UserWaterfalls = {};
 
 })();
 
-$(document).ready(function() {
-  if ($('.user_waterfalls').length) {
-    UserWaterfalls.initialize();
-  }
-});
+$(document).on('ready page:load', UserWaterfalls.initialize);
+
+$(document).on('page:restore', UserWaterfalls.initialize);

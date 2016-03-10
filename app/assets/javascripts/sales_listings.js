@@ -50,7 +50,7 @@ SalesListings = {};
     }
     window.location.search = searchParams.join('&');
 
-		SalesListings.passiveRealTimeUpdate();
+		// SalesListings.passiveRealTimeUpdate();
 	};
 
 	SalesListings.clearTimer = function() {
@@ -59,20 +59,20 @@ SalesListings = {};
     }
 	};
 
-  SalesListings.enablePassiveUpdates = function() {
-    if (!Common.onMobileDevice()) {
-      SalesListings.passiveRealTimeUpdate();
-    }
-  }
+  // SalesListings.enablePassiveUpdates = function() {
+    // if (!Common.onMobileDevice()) {
+    //   SalesListings.passiveRealTimeUpdate();
+    // }
+  // }
 
 	// if a user remains on this page for an extended amount of time,
   // refresh the page every so often. We want to make sure they are
   // always viewing the latest data.
-  SalesListings.passiveRealTimeUpdate = function() {
-    SalesListings.clearTimer();
-    // update every few minutes
-	  SalesListings.timer = setTimeout(SalesListings.doSearch, 60 * 10 * 1000);
-  };
+  // SalesListings.passiveRealTimeUpdate = function() {
+  //   SalesListings.clearTimer();
+  //   // update every few minutes
+	 //  SalesListings.timer = setTimeout(SalesListings.doSearch, 60 * 10 * 1000);
+  // };
 
   // search as user types
 	SalesListings.throttledSearch = function () {
@@ -548,8 +548,24 @@ SalesListings = {};
   SalesListings.initShow = function() {
     $('.carousel-indicators > li:first-child').addClass('active');
     $('.carousel-inner > .item:first-child').addClass('active');
-  }
+  };
 
+  SalesListings.ready = function() {
+    SalesListings.clearTimer();
+
+    var editPage = $('.sales_listings.edit').length;
+    var newPage = $('.sales_listings.new').length;
+    var indexPage = $('.sales_listings.index').length;
+
+    // new and edit pages both render the same form template, so init them using the same code
+    if (editPage || newPage) {
+      SalesListings.initEditor();
+    } else if (indexPage) {
+      SalesListings.initIndex();
+    } else {
+      SalesListings.initShow();
+    }
+  };
 })();
 
 $(document).on('keyup',function(evt) {
@@ -558,19 +574,7 @@ $(document).on('keyup',function(evt) {
   }
 });
 
-$(document).ready(function() {
-  SalesListings.clearTimer();
+$(document).on('ready page:load', SalesListings.ready);
 
-  var editPage = $('.sales_listings.edit').length;
-  var newPage = $('.sales_listings.new').length;
-  var indexPage = $('.sales_listings.index').length;
+$(document).on('page:restore', SalesListings.ready);
 
-  // new and edit pages both render the same form template, so init them using the same code
-  if (editPage || newPage) {
-    SalesListings.initEditor();
-  } else if (indexPage) {
-    SalesListings.initIndex();
-  } else {
-    SalesListings.initShow();
-  }
-});

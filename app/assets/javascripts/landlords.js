@@ -108,9 +108,6 @@ Landlords = {};
   }
 
   Landlords.initIndex = function() {
-    document.addEventListener("page:restore", function() {
-      Landlords.hideSpinner();
-    });
     Landlords.hideSpinner();
     $('#landlords a').click(function() {
       Landlords.showSpinner();
@@ -126,12 +123,29 @@ Landlords = {};
     $('#landlords #filter').bind('railsAutocomplete.select', Landlords.throttledSearch);
     $('#landlords #filter').keydown(Landlords.preventEnter);
     $('#landlords #filter').change(Landlords.throttledSearch);
+    $('#landlords #status').change(Landlords.throttledSearch);
+    $('#landlords #status_listings').change(Landlords.filterListings);
   }
 
   Landlords.initShow = function() {
     $('#landlords #status').change(Landlords.throttledSearch);
     $('#landlords #status_listings').change(Landlords.filterListings);
   }
+
+  Landlords.ready = function () {
+    var editPage = $('.landlords.edit').length;
+    var newPage = $('.landlords.new').length;
+    var indexPage = $('.landlords.index').length;
+    var showPage = $('.landlords.show').length;
+    // new and edit pages both render the same form template, so init them using the same code
+    if (editPage || newPage) {
+      Landlords.initEditor();
+    } else if (indexPage) {
+      Landlords.initIndex();
+    } else if (showPage) {
+      Landlords.initShow();
+    }
+  };
 
 })();
 
@@ -141,17 +155,6 @@ $(document).on('keyup',function(evt) {
   }
 });
 
-$(document).ready(function () {
-  var editPage = $('.landlords.edit').length;
-  var newPage = $('.landlords.new').length;
-  var indexPage = $('.landlords.index').length;
-  var showPage = $('.landlords.show').length;
-  // new and edit pages both render the same form template, so init them using the same code
-  if (editPage || newPage) {
-    Landlords.initEditor();
-  } else if (indexPage) {
-    Landlords.initIndex();
-  } else if (showPage) {
-    Landlords.initShow();
-  }
-});
+$(document).on('ready page:load', Landlords.ready);
+
+$(document).on('page:restore', Landlords.ready);

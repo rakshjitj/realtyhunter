@@ -23,7 +23,6 @@ Deals = {};
     }
 
     var data = {
-      //client_name: $('#deals #client_name').val(),
       address: $('#deals #address').val(),
       landlord_code: $('#deals #landlord_code').val(),
       closed_date_start: $('#deals #closed_date_start').val(),
@@ -65,9 +64,6 @@ Deals = {};
 	};
 
 	Deals.initIndex = function() {
-		document.addEventListener("page:restore", function() {
-		  Forms.hideSpinner();
-		});
 		Forms.hideSpinner();
 
 		// main index table
@@ -97,22 +93,23 @@ Deals = {};
 		}
 	};
 
-  Deals.initEditor = function() {
-
-  }
+  Deals.ready = function () {
+    var editPage = $('.deals.edit').length;
+    var newPage = $('.deals.new').length;
+    var indexPage = $('.deals.index').length;
+    var showPage = $('.deals.show').length;
+    // new and edit pages both render the same form template, so init them using the same code
+    if (editPage || newPage) {
+      Deals.initEditor();
+    } else if (indexPage) {
+      Deals.initIndex();
+    } // else if (showPage) {
+    //   Deals.initShow();
+    // }
+  };
 })();
 
-$(document).ready(function () {
-  var editPage = $('.deals.edit').length;
-  var newPage = $('.deals.new').length;
-  var indexPage = $('.deals.index').length;
-  var showPage = $('.deals.show').length;
-  // new and edit pages both render the same form template, so init them using the same code
-  if (editPage || newPage) {
-    Deals.initEditor();
-  } else if (indexPage) {
-    Deals.initIndex();
-  } // else if (showPage) {
-  //   Deals.initShow();
-  // }
-});
+$(document).on('ready page:load', Deals.ready);
+
+$(document).on('page:restore', Deals.ready);
+

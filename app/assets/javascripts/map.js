@@ -140,13 +140,4 @@ RHMapbox = {};
   RHMapbox.centerOnMe = function() {
     RHMapbox.map.locate({setView: true, maxZoom: 15});
   }
-  // RHMapbox.resizeMap = function() {
-  //   var width = $(window).width();
-  //   if (width < 768) {
-  //     $('#' + RHMapbox.htmlID).css('width', width);
-  //     $('#' + RHMapbox.htmlID).css('height', 'calc(' + $(window).height() + '- 105px)');
-  //   }
-  //   RHMapbox.map.invalidateSize();
-  // }
-
 })();

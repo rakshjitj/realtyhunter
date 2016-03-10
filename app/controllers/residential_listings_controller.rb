@@ -391,18 +391,12 @@ class ResidentialListingsController < ApplicationController
         :open_house_sat, :open_house_sat_from, :open_house_sat_to,
         :open_house_sun, :open_house_sun_from, :open_house_sun_to,
         unit: [:building_unit, :rent, :available_by, :access_info, :status,
-          :open_house, :oh_exclusive, :exclusive,
+          :exclusive,
           :building_id, :primary_agent_id, :listing_agent_id ],
         residential_amenity_ids: []
         )
 
       if data[:unit]
-        if data[:unit][:oh_exclusive] == "1"
-          data[:unit][:oh_exclusive] = true
-        else
-          data[:unit][:oh_exclusive] = false
-        end
-
         if data[:unit][:status]
           data[:unit][:status] = data[:unit][:status].downcase
         end

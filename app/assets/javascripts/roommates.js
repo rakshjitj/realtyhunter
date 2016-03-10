@@ -263,9 +263,6 @@ Roommates = {};
 			return;
 		}
 
-		document.addEventListener("page:restore", function() {
-		  Roommates.hideSpinner();
-		});
 		Roommates.hideSpinner();
 
 		// main index table
@@ -330,8 +327,6 @@ $(document).on('keyup',function(evt) {
   }
 });
 
-$(document).ready(function() {
-  if ($('.roommates').length) {
-    Roommates.initialize();
-  }
-});
+$(document).on('ready page:load', Roommates.initialize);
+
+$(document).on('page:restore', Roommates.initialize);

@@ -212,9 +212,6 @@ Buildings = {};
   }
 
   Buildings.initIndex = function() {
-    document.addEventListener("page:restore", function() {
-      Buildings.hideSpinner();
-    });
     Buildings.hideSpinner();
     $('#buildings a').click(function() {
       Buildings.showSpinner();
@@ -239,6 +236,21 @@ Buildings = {};
     $('.carousel-inner > .item:first-child').addClass('active');
     $('#status_listings').change(Buildings.filterListings);
   }
+
+  Buildings.ready = function () {
+    var editPage = $('.buildings.edit').length;
+    var newPage = $('.buildings.new').length;
+    var indexPage = $('.buildings.index').length;
+    var showPage = $('.buildings.show').length;
+    // new and edit pages both render the same form template, so init them using the same code
+    if (editPage || newPage) {
+      Buildings.initEditor();
+    } else if (indexPage) {
+      Buildings.initIndex();
+    } else if (showPage) {
+      Buildings.initShow();
+    }
+  };
 })();
 
 $(document).on('keyup',function(evt) {
@@ -247,17 +259,6 @@ $(document).on('keyup',function(evt) {
   }
 });
 
-$(document).ready(function () {
-  var editPage = $('.buildings.edit').length;
-  var newPage = $('.buildings.new').length;
-  var indexPage = $('.buildings.index').length;
-  var showPage = $('.buildings.show').length;
-  // new and edit pages both render the same form template, so init them using the same code
-  if (editPage || newPage) {
-    Buildings.initEditor();
-  } else if (indexPage) {
-    Buildings.initIndex();
-  } else if (showPage) {
-    Buildings.initShow();
-  }
-});
+$(document).on('ready page:load', Buildings.ready);
+
+$(document).on('page:restore', Buildings.ready);

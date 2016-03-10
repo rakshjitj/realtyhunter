@@ -52,7 +52,7 @@ ResidentialListings = {};
       }
       window.location.search = searchParams.join('&');
 
-	 	ResidentialListings.enablePassiveUpdates();
+	 	// ResidentialListings.enablePassiveUpdates();
 	};
 
 	ResidentialListings.clearAnnouncementsTimer = function() {
@@ -88,21 +88,21 @@ ResidentialListings = {};
 		}
 	};
 
-  ResidentialListings.enablePassiveUpdates = function() {
-    if (!Common.onMobileDevice()) {
-      ResidentialListings.passiveRealTimeUpdate();
-      ResidentialListings.updateAnnouncements();
-    }
-  }
+  // ResidentialListings.enablePassiveUpdates = function() {
+  //   if (!Common.onMobileDevice()) {
+  //     ResidentialListings.passiveRealTimeUpdate();
+  //     ResidentialListings.updateAnnouncements();
+  //   }
+  // }
 
 	// if a user remains on this page for an extended amount of time,
 	// refresh the page every so often. We want to make sure they are
 	// always viewing the latest data.
-	ResidentialListings.passiveRealTimeUpdate = function() {
-		ResidentialListings.clearTimer();
+	// ResidentialListings.passiveRealTimeUpdate = function() {
+		// ResidentialListings.clearTimer();
 		// update every few minutes
-	  ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 60 * 10 * 1000);
-	};
+	  // ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 60 * 10 * 1000);
+	// };
 
 	// search as user types
 	ResidentialListings.throttledSearch = function () {
@@ -513,13 +513,7 @@ ResidentialListings = {};
   ResidentialListings.initDesktopIndex = function() {
     $('#residential-mobile').remove();
     $('#residential-desktop').removeClass('hidden');
-    ResidentialListings.enablePassiveUpdates();
-
-    // hide spinner on main index when first pulling up the page
-    document.addEventListener("page:restore", function() {
-      Listings.hideSpinner();
-      ResidentialListings.enablePassiveUpdates();
-    });
+    // ResidentialListings.enablePassiveUpdates();
 
     Listings.hideSpinner();
     $('.residential-desktop a').click(function() {
@@ -554,7 +548,6 @@ ResidentialListings = {};
 
     // activate tooltips
     // $('[data-toggle="tooltip"]').tooltip();
-
     RHMapbox.initMapbox('r-big-map', ResidentialListings.buildContentString);
   }
 
@@ -644,6 +637,23 @@ ResidentialListings = {};
     }
   }
 
+  ResidentialListings.ready = function() {
+    ResidentialListings.clearTimer();
+
+    var editPage = $('.residential_listings.edit').length;
+    var newPage = $('.residential_listings.new').length;
+    var indexPage = $('.residential_listings.index').length;
+
+    // new and edit pages both render the same form template, so init them using the same code
+    if (editPage || newPage) {
+      ResidentialListings.initEditor();
+    } else if (indexPage) {
+      ResidentialListings.initIndex();
+    } else {
+      ResidentialListings.initShow();
+    }
+  };
+
 })();
 
 $(document).on('keyup',function(evt) {
@@ -652,19 +662,6 @@ $(document).on('keyup',function(evt) {
   }
 });
 
-$(document).ready(function() {
-  ResidentialListings.clearTimer();
+$(document).on('ready page:load', ResidentialListings.ready);
 
-  var editPage = $('.residential_listings.edit').length;
-  var newPage = $('.residential_listings.new').length;
-  var indexPage = $('.residential_listings.index').length;
-
-  // new and edit pages both render the same form template, so init them using the same code
-  if (editPage || newPage) {
-    ResidentialListings.initEditor();
-  } else if (indexPage) {
-    ResidentialListings.initIndex();
-  } else {
-    ResidentialListings.initShow();
-  }
-});
+$(document).on('page:restore', ResidentialListings.ready);

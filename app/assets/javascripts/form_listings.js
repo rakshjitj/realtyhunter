@@ -10,7 +10,7 @@ FormListings = {};
 	FormListings.setupSortableColumns = function() {
 		$('#form-listing .th-sortable').click(function(e) {
 			e.preventDefault();
-			
+
 			if ($(this).hasClass('selected-sort')) {
 				// switch sort order
 				var i = $('.selected-sort i');
@@ -43,7 +43,7 @@ FormListings = {};
 	// for searching on the index page
 	FormListings.doSearch = function (sort_by_col, sort_direction) {
 		var search_path = $('#form-listing-search-filters').attr('data-search-path');
-	  
+
 	  Forms.showSpinner();
 
 	  $.ajax({
@@ -78,14 +78,10 @@ FormListings = {};
 	};
 
 	FormListings.initialize = function() {
-
-		document.addEventListener("page:restore", function() {
-		  Forms.hideSpinner();
-		});
 		Forms.hideSpinner();
 
 		// main index table
-		FormListings.setupSortableColumns();		
+		FormListings.setupSortableColumns();
 
 		$('.close').click(function() {
 			Forms.hideSpinner();
@@ -108,7 +104,6 @@ FormListings = {};
 			var action = $(this).data('action');
 			if (action in Forms.indexMenuActions) Forms.indexMenuActions[action]();
 		});
-
 	};
 
 })();

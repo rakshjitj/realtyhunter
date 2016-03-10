@@ -56,24 +56,16 @@ Announcements = {};
 	};
 
 	Announcements.initialize = function() {
-		// hide spinner on main index when first pulling up the page
-		document.addEventListener("page:restore", function() {
-		  Forms.hideSpinner();
-		  Announcements.passiveRealTimeUpdate();
+		if ($('.announcements').length) {
+			$('#announcements #created_start').blur(Announcements.throttledSearch);
+			$('#announcements #created_end').blur(Announcements.throttledSearch);
+			$('#announcements #category_filter').change(Announcements.throttledSearch);
 
-		});
-
-		$('#announcements #created_start').blur(Announcements.throttledSearch);
-		$('#announcements #created_end').blur(Announcements.throttledSearch);
-		$('#announcements #category_filter').change(Announcements.throttledSearch);
-
-		Announcements.passiveRealTimeUpdate();
+			Announcements.passiveRealTimeUpdate();
+		}
 	};
-
 })();
 
-$(document).ready(function() {
-	if ($('.announcements').length) {
-		Announcements.initialize();
-	}
-});
+$(document).on('ready page:load', Announcements.initialize);
+
+$(document).on('page:restore', Announcements.initialize);

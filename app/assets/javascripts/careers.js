@@ -35,24 +35,6 @@ Careers = {};
       }
     }
     window.location.search = searchParams.join('&');
-
-	  // $.ajax({
-	  //   url: search_path,
-	  //   data: {
-   //      name: $('#careers #name').val(),
-   //      submitted_date: $('#careers #submitted_date').val(),
-   //      status: $('#careers #status').val(),
-   //      sort_by: sort_by_col,
-   //      direction: sort_direction,
-	  //   },
-	  //   dataType: 'script',
-	  //   success: function(data) {
-	  //   	Forms.hideSpinner();
-			// },
-			// error: function(data) {
-			// 	Forms.hideSpinner();
-			// }
-	  // });
 	};
 
 	// search as user types
@@ -71,7 +53,7 @@ Careers = {};
 	};
 
 	Careers.initialize = function() {
-		if (!$('#careers').length) {
+    if (!$('#careers').length) {
 			return;
 		}
 
@@ -112,8 +94,6 @@ Careers = {};
 
 })();
 
-$(document).ready(function() {
-  if ($('.careers').length) {
-    Careers.initialize();
-  }
-});
+$(document).on('ready page:load', Careers.initialize);
+
+$(document).on('page:restore', Careers.initialize);
