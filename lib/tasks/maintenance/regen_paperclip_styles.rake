@@ -6,7 +6,8 @@ namespace :maintenance do
     imgs = Image.all
 		imgs.each do |i|
       if i.user_id.nil? && i.company_id.nil? &&
-          i.unit && i.unit.residential_listing && !i.unit.residential_listing.tenant_occupied
+          i.unit && i.unit.residential_listing && !i.unit.residential_listing.tenant_occupied &&
+          i.last_updated < Date.today
         puts "Processing image #{i.id} Last updated on: #{i.file_updated_at}"
         begin
     			i.file.reprocess! :large, :original
