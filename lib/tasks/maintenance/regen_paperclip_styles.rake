@@ -12,7 +12,7 @@ namespace :maintenance do
         begin
     			i.file.reprocess! :large, :original
         rescue
-          error_log << "Processing image #{i.id} Last updated on: #{i.file_updated_at}"
+          error_log << "FAILED image #{i.id} Last updated on: #{i.file_updated_at}"
         end
       end
 		end
