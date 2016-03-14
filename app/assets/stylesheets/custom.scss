@@ -5,16 +5,16 @@ $navbarCollapseWidth: 1150px;
 
 /* universal */
 html {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
 }
 
 body {
   padding-top: 60px;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   margin: 0;
 }
 
@@ -118,6 +118,8 @@ a:hover.btn-danger {
   position: relative;
   // perspective: 800px;
   top: -50px;
+  width: 100%;
+  height: 100%;
 }
 
 .title-logo {

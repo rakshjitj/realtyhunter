@@ -19,13 +19,13 @@
 #r-big-map-mobile {
   // everybody else
   height: calc(100vh - 115px);
-  // iphone5
-  // @media only screen
-  //   and (min-device-width: 320px)
-  //   and (max-device-width: 568px)
-  //   and (-webkit-min-device-pixel-ratio: 2) {
-  //     height: 470px;
-  //   }
+  /* iphone5: Portrait and Landscape */
+  @media only screen
+    and (min-device-width: 320px)
+    and (max-device-width: 568px)
+    and (-webkit-device-pixel-ratio: 2)  {
+      height: 460px;
+  }
   //iphone6
   /* Portrait and Landscape */
   @media only screen
