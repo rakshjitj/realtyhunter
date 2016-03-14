@@ -69,10 +69,12 @@
 
                 <!-- **************** ANNOUNCEMENTS **************** -->
                 <% if current_user.is_management? || current_user.is_listings_manager? %>
-                  <li><%= link_to "Announcements", new_announcement_path %></li>
-                  <li role="separator" class="divider"></li>
+                  <li><%= link_to "Announcements", new_announcement_path %></li>                  
+                <% end %>
 
-                  <!-- **************** FORMS **************** -->
+                <!-- **************** FORMS **************** -->
+                <% if current_user.is_wufoo_forms? %>
+                  <li role="separator" class="divider"></li>                  
                   <li class="dropdown-header">WuFoo Forms</li>
                   <li>
                     <%= link_to forms_careers_path do %>

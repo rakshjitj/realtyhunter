@@ -324,6 +324,18 @@ class User < ActiveRecord::Base
     false
   end
 
+  # wufoo forms permission
+  def is_wufoo_forms?    
+    wufoo_roles = [
+      :super_admin,
+      :company_admin,      
+      :manager]
+    wufoo_roles.each do |r|
+      return true if self.has_role? r
+    end
+    false
+  end
+
   def make_manager
     self.employee_title = EmployeeTitle.manager
     self.update_roles
