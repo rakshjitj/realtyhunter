@@ -8,7 +8,8 @@ class ListingSerializer < ActiveModel::Serializer
 	:open_house_mon_from, :open_house_mon_to, :open_house_tue_from, :open_house_tue_to,
     :open_house_wed_from, :open_house_wed_to, :open_house_thu_from, :open_house_thu_to,
     :open_house_fri_from, :open_house_fri_to, :open_house_sat_from, :open_house_sat_to,
-    :open_house_sun_from, :open_house_sun_to, :tenant_occupied
+    :open_house_sun_from, :open_house_sun_to, :tenant_occupied, :op_fee_percentage,
+    :rental_terms, :utilities
 
 	attribute :building, serializer: BuildingSerializer
 
@@ -85,7 +86,7 @@ class ListingSerializer < ActiveModel::Serializer
 
 	def renter_fee
 		if is_residential
-			if object.listing.has_fee # tp_fee_percentage
+			if object.listing.r_has_fee # tp_fee_percentage
 				"Fee"
 			else
 				"No Fee"
@@ -150,6 +151,22 @@ class ListingSerializer < ActiveModel::Serializer
 	def pets
 		if is_residential && object.pet_policies
 			object.pet_policies[0].pet_policy_name
+		else
+			nil
+		end
+	end
+
+	def rental_terms
+		if is_residential && object.rental_terms
+			object.rental_terms[0].rental_term_name
+		else
+			nil
+		end
+	end
+
+	def utilities
+		if is_residential && object.building_utilities
+			object.building_utilities.map{|a| a.utility_name.titleize}.join(', ')
 		else
 			nil
 		end
@@ -402,6 +419,14 @@ class ListingSerializer < ActiveModel::Serializer
 	def tenant_occupied
 		if is_residential
 			object.listing.tenant_occupied
+		else
+			nil
+		end
+	end
+
+	def op_fee_percentage
+		if is_residential
+			object.listing.r_op_fee_percentage
 		else
 			nil
 		end

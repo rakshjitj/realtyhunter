@@ -161,6 +161,13 @@ class Building < ActiveRecord::Base
       .to_a.group_by(&:id)
   end
 
+  def self.get_rental_terms(list)
+    bldg_ids = list.map(&:building_id)
+    Building.joins(:rental_term).where(id: bldg_ids)
+      .select('buildings.id', 'rental_terms.name as rental_term_name')
+      .to_a.group_by(&:id)
+  end
+
   # Used in our API. Takes in a list of units
   def self.get_amenities(list_of_units)
     building_ids = list_of_units.map(&:building_id)

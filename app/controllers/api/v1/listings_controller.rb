@@ -22,6 +22,8 @@ module API
 				# id in this case refers to the unit's listing id
 				listings = all_listings_search(@user.company_id, {id: params[:id]})
 				@pet_policies = Building.get_pet_policies(listings)
+				@rental_terms = Building.get_rental_terms(@listings)
+				@building_utilities = Building.get_utilities(@listings)
 				@residential_amenities = ResidentialListing.get_amenities(listings)
 				@images = Unit.get_all_images(listings)
 				@primary_agents = Unit.get_primary_agents(listings)
@@ -32,6 +34,8 @@ module API
 						listing: listings[0],
 						residential_amenities: @residential_amenities[listings[0].unit_id],
 						pet_policies: @pet_policies[listings[0].building_id],
+						rental_terms: @rental_terms[listings[0].building_id],
+						building_utilities: @building_utilities[listings[0].building_id],
 						primary_agents: @primary_agents[listings[0].unit_id],
 						building_amenities: @building_amenities[listings[0].building_id],
 						images: @images[listings[0].unit_id]
@@ -119,11 +123,15 @@ module API
 			def search_type_breakdown(search_params)
 				@residential_amenities = []
 				@pet_policies = []
+				@rental_terms = []
+				@building_utilities = []
 
 				if search_params[:listing_type] == "10" # residential
 					@listings = residential_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
 					@pet_policies = Building.get_pet_policies(@listings)
+					@rental_terms = Building.get_rental_terms(@listings)
+					@building_utilities = Building.get_utilities(@listings)
 					@residential_amenities = ResidentialListing.get_amenities(@listings)
 
 				# sales
@@ -141,6 +149,8 @@ module API
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
 					@residential_amenities = ResidentialListing.get_amenities(@listings)
 					@pet_policies = Building.get_pet_policies(@listings)
+					@rental_terms = Building.get_rental_terms(@listings)
+					@building_utilities = Building.get_utilities(@listings)
 
 				end
 
@@ -154,6 +164,8 @@ module API
 						listing: l,
 						residential_amenities: @residential_amenities[l.unit_id],
 						pet_policies: @pet_policies[l.building_id],
+						rental_terms: @rental_terms[l.building_id],
+						building_utilities: @building_utilities[l.building_id],
 						primary_agents: @primary_agents[l.unit_id],
 						building_amenities: @building_amenities[l.building_id],
 						images: @images[l.unit_id]
