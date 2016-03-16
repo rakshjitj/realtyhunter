@@ -187,7 +187,7 @@ xml.streeteasy :version => "1.6" do
 				xml.media do
 					if @images[listing.unit_id]
 						@images[listing.unit_id].each do |i|
-							xml.photo i.file.url(:original), position: i.priority
+							xml.photo url: i.file.url(:original), position: i.priority
 						end
 					end
 				end
