@@ -155,7 +155,7 @@ class ResidentialListing < ActiveRecord::Base
       .select('buildings.formatted_street_address',
         'units.listing_id', 'units.building_unit', 'units.status','units.rent', 'units.archived',
         'units.available_by', 'units.public_url', 'units.access_info', 'units.exclusive',
-        'units.primary_agent_id', 'units.primary_agent2_id',
+        'units.id AS unit_id', 'units.primary_agent_id', 'units.primary_agent2_id',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng',
         'residential_listings.beds', 'residential_listings.baths', 'residential_listings.notes',

@@ -17,12 +17,10 @@ class ResidentialListingsController < ApplicationController
         set_residential_listings
       end
       format.csv do
-        async_create_csv
-        flash[:success] = "The CSV file will be emailed to you once it has been generated."
-        params.delete('controller')
-        params.delete('action')
-        params.delete('format')
-        redirect_to residential_listings_path(params)
+        set_residential_listings_csv
+        headers['Content-Disposition'] = "attachment; filename=\"" +
+          current_user.name + " - Residential Listings.csv\""
+        headers['Content-Type'] ||= 'text/csv'
       end
     end
   end
@@ -325,9 +323,20 @@ class ResidentialListingsController < ApplicationController
       @favorite_units = @residential_units.where(favorites: true)
     end
 
-    def async_create_csv
-      # get IDs only and pass that along
-      Resque.enqueue(GenerateResidentialCSV, current_user.id, params)
+    # def async_create_csv
+    #   # get IDs only and pass that along
+    #   Resque.enqueue(GenerateResidentialCSV, current_user.id, params)
+    # end
+
+    # returns all data for export
+    def set_residential_listings_csv
+      @residential_units = ResidentialListing.export_all(current_user, params)
+      @residential_units = custom_sort
+      @agents = Unit.get_primary_agents(@residential_units)
+      @reverse_statuses = {
+        '0': 'Active',
+        '1': 'Pending',
+        '2': 'Off'}
     end
 
     def do_search

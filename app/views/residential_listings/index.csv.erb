@@ -2,21 +2,23 @@
   'Full Address', 'Unit', 'Neighborhood', 'Is Exclusive?', 'Roomsharing OK?',
   'Beds', 'Baths', 'Notes', 'Description', 'Lease Start', 'Lease End',
   'Has Fee?', 'OP Fee Percentage', 'TP Fee Percentage', 'Tenant Occupied',
-  'Primary Agents', 'Listing ID', 'Landlord', 'Price', 'Available', 'Access',
-  'Status', 'Created At', 'Updated At', 'Archived',
-	] -%>
+  'Primary Agent', 'Listing ID', 'Landlord', 'Price', 'Available', 'Access',
+  'Status', 'Created At', 'Updated At', 'Archived'
+  ] -%>
 
 <%= CSV.generate_line headers %>
 <%- @residential_units.each do |listing| -%>
 
-  <%= [listing.formatted_street_address, listing.building_unit, listing.neighborhood_name, listing.exclusive,
-      listing.can_roomshare,
-      listing.beds, listing.baths, listing.notes, listing.description, listing.lease_start, listing.lease_end,
-      listing.has_fee, listing.op_fee_percentage, listing.tp_fee_percentage, listing.tenant_occupied,
+  <%= [listing.formatted_street_address, listing.building_unit, listing.neighborhood_name,
+      listing.exclusive ? 'Yes' : 'No', listing.can_roomshare ? 'Yes' : 'No',
+      listing.beds, listing.baths, listing.notes, listing.description, listing.lease_start,
+      listing.lease_end,
+      listing.has_fee ? 'Yes' : 'No', listing.op_fee_percentage, listing.tp_fee_percentage,
+      listing.tenant_occupied ? 'Yes' : 'No',
       @agents[listing.unit_id] ? @agents[listing.unit_id].map {|a| a.name }.join(', ') : '',
       listing.listing_id, listing.landlord_code, listing.rent,
       listing.available_by, listing.access_info,
       @reverse_statuses[listing.status.to_s.to_sym],
-      listing.created_at, listing.updated_at, listing.archived
+      listing.created_at, listing.updated_at, listing.archived ? 'Yes' : 'No'
     ].to_csv.html_safe %>
 <%- end -%>
