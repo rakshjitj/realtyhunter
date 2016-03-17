@@ -1,5 +1,5 @@
 class BuildingLandlordSerializer < ActiveModel::Serializer
-  attributes :code, :name, :contact_name, :office_phone, :mobile, :fax, :email, :website, :city, :state, :zipcode, :street_address, :location, :listing_agent_id, :listing_agent_per, :fee, :owner_pays_per
+  attributes :code, :name, :contact_name, :office_phone, :mobile, :fax, :email, :website, :city, :state, :zipcode, :street_address, :location, :listing_agent, :listing_agent_percentage, :has_fee, :fee_percentage
 
   def code
   	object.code
@@ -57,15 +57,15 @@ class BuildingLandlordSerializer < ActiveModel::Serializer
     { latitude: object.l_lat, longitude: object.l_lng }
   end
 
-  def listing_agent_id
+  def listing_agent
     object.listing_agent_id
   end
 
-  def listing_agent_per
+  def listing_agent_percentage
     object.listing_agent_percentage
   end  
 
-  def fee
+  def has_fee
     if object.l_has_fee
       'Yes'
     else
@@ -73,8 +73,12 @@ class BuildingLandlordSerializer < ActiveModel::Serializer
     end
   end
 
-  def owner_pays_per
-    object.l_op_fee_percentage
+  def fee_percentage
+    if object.l_has_fee
+      object.l_tp_fee_percentage
+    else
+      object.l_op_fee_percentage
+    end
   end
 
 end

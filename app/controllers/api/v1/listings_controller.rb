@@ -22,8 +22,8 @@ module API
 				# id in this case refers to the unit's listing id
 				listings = all_listings_search(@user.company_id, {id: params[:id]})
 				@pet_policies = Building.get_pet_policies(listings)
-				@rental_terms = Building.get_rental_terms(@listings)
-				@building_utilities = Building.get_utilities(@listings)
+				@rental_terms = Building.get_rental_terms(listings)
+				@building_utilities = Building.get_utilities(listings)
 				@residential_amenities = ResidentialListing.get_amenities(listings)
 				@images = Unit.get_all_images(listings)
 				@primary_agents = Unit.get_primary_agents(listings)

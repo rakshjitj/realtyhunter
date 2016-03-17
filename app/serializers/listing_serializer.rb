@@ -156,22 +156,6 @@ class ListingSerializer < ActiveModel::Serializer
 		end
 	end
 
-	def rental_terms
-		if is_residential && object.rental_terms
-			object.rental_terms[0].rental_term_name
-		else
-			nil
-		end
-	end
-
-	def utilities
-		if is_residential && object.building_utilities
-			object.building_utilities.map{|a| a.utility_name.titleize}.join(', ')
-		else
-			nil
-		end
-	end
-
 	def status
 		if object.listing.status == "active"
 			"Active"
@@ -427,6 +411,22 @@ class ListingSerializer < ActiveModel::Serializer
 	def op_fee_percentage
 		if is_residential
 			object.listing.r_op_fee_percentage
+		else
+			nil
+		end
+	end
+
+	def rental_terms
+		if is_residential && object.rental_terms
+			object.rental_terms[0].rental_term_name
+		else
+			nil
+		end
+	end
+
+	def utilities
+		if is_residential && object.building_utilities
+			object.building_utilities.map{|a| a.utility_name.titleize}.join(', ')
 		else
 			nil
 		end
