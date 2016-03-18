@@ -11,7 +11,9 @@
           alt: @com_images[commercial_listing.unit_id].file.url(:thumb)), commercial_listing) %>
       <% else %>
         <!-- placeholder image -->
-        <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), commercial_listing) %>
+        <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon",
+          class: 'img-responsive',
+          size: "100x100"), commercial_listing) %>
       <% end %>
     </td>
 

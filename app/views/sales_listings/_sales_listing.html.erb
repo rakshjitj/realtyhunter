@@ -7,11 +7,14 @@
   <!-- ****** IMAGE ****************************************** -->
   <td class="img-col" style="max-width: 150px;">
     <% if @res_images[sales_listing.unit_id] %>
-      <%= link_to(image_tag(@res_images[sales_listing.unit_id].file.url(:thumb), :class => 'img-responsive',
+      <%= link_to(image_tag(@res_images[sales_listing.unit_id].file.url(:thumb),
+        class: 'img-responsive',
         alt: @res_images[sales_listing.unit_id].file.url(:thumb)), sales_listing) %>
     <% else %>
       <!-- placeholder image -->
-      <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), sales_listing) %>
+      <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon",
+        class: 'img-responsive',
+        size: "100x100"), sales_listing) %>
     <% end %>
   </td>
 
