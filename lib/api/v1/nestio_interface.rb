@@ -47,9 +47,8 @@ module API
 			def all_listings_search(company_id, search_params)
 				listings = Unit.joins('left join residential_listings on units.id = residential_listings.unit_id
 left join commercial_listings on units.id = commercial_listings.unit_id')
-				.joins(:building)
+				.joins(building: :landlord)
 				.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
-				.joins('left join landlords on landlords.id = buildings.landlord_id')
 				.where('units.archived = false')
 				.where('units.status IN (?)', Unit.statuses["active"])
 
@@ -76,16 +75,16 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'neighborhoods.borough as neighborhood_borough',
 					'landlords.code', 'landlords.name', 'landlords.contact_name',
 					'landlords.office_phone', 'landlords.mobile', 'landlords.fax',
-					'landlords.email', 'landlords.website', 
+					'landlords.email', 'landlords.website',
 					'landlords.administrative_area_level_1_short as l_administrative_area_level_1_short',
-					'landlords.sublocality as l_sublocality', 
+					'landlords.sublocality as l_sublocality',
 					'landlords.street_number as l_street_number', 'landlords.route as l_route',
-					'landlords.postal_code as l_postal_code', 
-					'landlords.lat as l_lat', 
+					'landlords.postal_code as l_postal_code',
+					'landlords.lat as l_lat',
 					'landlords.lng as l_lng',
 					'landlords.listing_agent_id', 'landlords.listing_agent_percentage',
-					'landlords.has_fee as l_has_fee', 
-					'landlords.op_fee_percentage as l_op_fee_percentage', 
+					'landlords.has_fee as l_has_fee',
+					'landlords.op_fee_percentage as l_op_fee_percentage',
 					'landlords.tp_fee_percentage as l_tp_fee_percentage',
 					'residential_listings.id AS r_id',
 					'residential_listings.lease_start', 'residential_listings.lease_end',
@@ -106,7 +105,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'residential_listings.open_house_fri_from','residential_listings.open_house_fri_to',
 					'residential_listings.open_house_sat_from','residential_listings.open_house_sat_to',
 					'residential_listings.open_house_sun_from','residential_listings.open_house_sun_to',
-					'residential_listings.tenant_occupied', 
+					'residential_listings.tenant_occupied',
 					'residential_listings.op_fee_percentage as r_op_fee_percentage',
 					'commercial_listings.id as c_id',
 					'commercial_listings.lease_term_months',
@@ -125,9 +124,8 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 
 			def residential_search(company_id, search_params)
 				listings = Unit
-					.joins(:residential_listing, :building)
+					.joins(:residential_listing, [building: :landlord])
 					.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
-					.joins('left join landlords on landlords.id = buildings.landlord_id')
 					.where('units.archived = false')
 					.where('units.status IN (?)', Unit.statuses["active"])
 
@@ -151,16 +149,16 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'neighborhoods.borough as neighborhood_borough',
 					'landlords.code', 'landlords.name', 'landlords.contact_name',
 					'landlords.office_phone', 'landlords.mobile', 'landlords.fax',
-					'landlords.email', 'landlords.website', 
+					'landlords.email', 'landlords.website',
 					'landlords.administrative_area_level_1_short as l_administrative_area_level_1_short',
-					'landlords.sublocality as l_sublocality', 
+					'landlords.sublocality as l_sublocality',
 					'landlords.street_number as l_street_number', 'landlords.route as l_route',
-					'landlords.postal_code as l_postal_code', 
-					'landlords.lat as l_lat', 
+					'landlords.postal_code as l_postal_code',
+					'landlords.lat as l_lat',
 					'landlords.lng as l_lng',
 					'landlords.listing_agent_id', 'landlords.listing_agent_percentage',
-					'landlords.has_fee as l_has_fee', 
-					'landlords.op_fee_percentage as l_op_fee_percentage', 
+					'landlords.has_fee as l_has_fee',
+					'landlords.op_fee_percentage as l_op_fee_percentage',
 					'landlords.tp_fee_percentage as l_tp_fee_percentage',
 					'residential_listings.id AS r_id',
 					'residential_listings.lease_start', 'residential_listings.lease_end',
@@ -198,9 +196,8 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 			end
 
 			def commercial_search(company_id, search_params)
-				listings = Unit.joins(:commercial_listing, :building)
+				listings = Unit.joins(:commercial_listing, [building: :landlord])
 					.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
-					.joins('left join landlords on landlords.id = buildings.landlord_id')
 					.where('units.archived = false')
 					.where('units.status IN (?)', Unit.statuses["active"])
 
@@ -223,16 +220,16 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'neighborhoods.borough as neighborhood_borough',
 					'landlords.code', 'landlords.name', 'landlords.contact_name',
 					'landlords.office_phone', 'landlords.mobile', 'landlords.fax',
-					'landlords.email', 'landlords.website', 
+					'landlords.email', 'landlords.website',
 					'landlords.administrative_area_level_1_short as l_administrative_area_level_1_short',
-					'landlords.sublocality as l_sublocality', 
+					'landlords.sublocality as l_sublocality',
 					'landlords.street_number as l_street_number', 'landlords.route as l_route',
-					'landlords.postal_code as l_postal_code', 
-					'landlords.lat as l_lat', 
+					'landlords.postal_code as l_postal_code',
+					'landlords.lat as l_lat',
 					'landlords.lng as l_lng',
 					'landlords.listing_agent_id', 'landlords.listing_agent_percentage',
-					'landlords.has_fee as l_has_fee', 
-					'landlords.op_fee_percentage as l_op_fee_percentage', 
+					'landlords.has_fee as l_has_fee',
+					'landlords.op_fee_percentage as l_op_fee_percentage',
 					'landlords.tp_fee_percentage as l_tp_fee_percentage',
 					'units.id as unit_id',
 					'commercial_listings.lease_term_months',
