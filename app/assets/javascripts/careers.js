@@ -1,19 +1,19 @@
 Careers = {};
 
 (function() {
-	Careers.sortOnColumnClick = function() {
-		$('#careers .th-sortable').click(function(e) {
-			Common.sortOnColumnClick($(this), Careers.doSearch);
-		});
-	};
+  Careers.sortOnColumnClick = function() {
+    $('#careers .th-sortable').click(function(e) {
+      Common.sortOnColumnClick($(this), Careers.doSearch);
+    });
+  };
 
-	// for searching on the index page
-	Careers.doSearch = function (sortByCol, sortDirection) {
-		var search_path = $('#careers-search-filters').attr('data-search-path');
+  // for searching on the index page
+  Careers.doSearch = function (sortByCol, sortDirection) {
+    var search_path = $('#careers-search-filters').attr('data-search-path');
 
-	  Forms.showSpinner();
+    Forms.showSpinner();
 
-	  if (!sortByCol) {
+    if (!sortByCol) {
       sortByCol = Common.getSearchParam('sort_by');
     }
     if (!sortDirection) {
@@ -35,62 +35,62 @@ Careers = {};
       }
     }
     window.location.search = searchParams.join('&');
-	};
+  };
 
-	// search as user types
-	Careers.timer;
+  // search as user types
+  Careers.timer;
 
-	Careers.clearTimer = function() {
-		clearTimeout(Careers.timer);
-	};
+  Careers.clearTimer = function() {
+    clearTimeout(Careers.timer);
+  };
 
-	Careers.throttledSearch = function () {
-		//clear any interval on key up
-		if (Careers.timer) {
-		  clearTimeout(Careers.timer);
-		}
-	  Careers.timer = setTimeout(Careers.doSearch, 500);
-	};
+  Careers.throttledSearch = function () {
+    //clear any interval on key up
+    if (Careers.timer) {
+      clearTimeout(Careers.timer);
+    }
+    Careers.timer = setTimeout(Careers.doSearch, 500);
+  };
 
-	Careers.initialize = function() {
+  Careers.initialize = function() {
     if (!$('#careers').length) {
-			return;
-		}
+      return;
+    }
 
-		document.addEventListener("page:restore", function() {
-		  Forms.hideSpinner();
-		});
-		Forms.hideSpinner();
+    document.addEventListener("page:restore", function() {
+      Forms.hideSpinner();
+    });
+    Forms.hideSpinner();
 
-		// main index table
-		Careers.sortOnColumnClick();
-		Common.markSortingColumn();
-		if (Common.getSearchParam('sort_by') === '') {
-			Common.markSortingColumnByElem($('th[data-sort="created_at"]'), 'desc')
-		}
+    // main index table
+    Careers.sortOnColumnClick();
+    Common.markSortingColumn();
+    if (Common.getSearchParam('sort_by') === '') {
+      Common.markSortingColumnByElem($('th[data-sort="created_at"]'), 'desc')
+    }
 
-		$('.close').click(function() {
-			Forms.hideSpinner();
-		});
+    $('.close').click(function() {
+      Forms.hideSpinner();
+    });
 
-		// index filtering
-		$('#careers input').keydown(Forms.preventEnter);
-		$('#careers #name').bind('railsAutocomplete.select', Careers.throttledSearch);
-		$('#careers #name').change(Careers.throttledSearch);
-	  $('#careers #status').change(Careers.throttledSearch);
-	  $('#careers #submitted_date').blur(Careers.throttledSearch);
+    // index filtering
+    $('#careers input').keydown(Forms.preventEnter);
+    $('#careers #name').bind('railsAutocomplete.select', Careers.throttledSearch);
+    $('#careers #name').change(Careers.throttledSearch);
+    $('#careers #status').change(Careers.throttledSearch);
+    $('#careers #submitted_date').blur(Careers.throttledSearch);
 
-		// index page - selecting listings menu dropdown
-		$('#careers #emailListings').click(Forms.sendMessage);
-		$('#careers #deleteMultiple').click(Forms.deleteMultiple);
+    // index page - selecting listings menu dropdown
+    $('#careers #emailListings').click(Forms.sendMessage);
+    $('#careers #deleteMultiple').click(Forms.deleteMultiple);
 
-		$('#careers tbody').on('click', 'i', Forms.toggleListingSelection);
-		$('#careers .select-all-listings').click(Forms.selectAllListings);
-		$('#careers .selected-listings-menu').on('click', 'a', function() {
-			var action = $(this).data('action');
-			if (action in Forms.indexMenuActions) Forms.indexMenuActions[action]();
-		});
-	};
+    $('#careers tbody').on('click', 'i', Forms.toggleListingSelection);
+    $('#careers .select-all-listings').click(Forms.selectAllListings);
+    $('#careers .selected-listings-menu').on('click', 'a', function() {
+      var action = $(this).data('action');
+      if (action in Forms.indexMenuActions) Forms.indexMenuActions[action]();
+    });
+  };
 
 })();
 

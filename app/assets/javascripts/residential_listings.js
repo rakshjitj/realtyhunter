@@ -7,13 +7,13 @@ ResidentialListings = {};
   ResidentialListings.selectedUnitAmenityIds = null;
   ResidentialListings.selectedBuildingAmenityIds = null;
 
-	// for searching on the index page
-	ResidentialListings.doSearch = function (sortByCol, sortDirection) {
-	  Listings.showSpinner();
+  // for searching on the index page
+  ResidentialListings.doSearch = function (sortByCol, sortDirection) {
+    Listings.showSpinner();
 
     var search_path = $('#res-search-filters').attr('data-search-path');
 
-	  if (!sortByCol) {
+    if (!sortByCol) {
       sortByCol = Common.getSearchParam('sort_by');
     }
     if (!sortDirection) {
@@ -52,20 +52,20 @@ ResidentialListings = {};
       }
       window.location.search = searchParams.join('&');
 
-	 	// ResidentialListings.enablePassiveUpdates();
-	};
+    // ResidentialListings.enablePassiveUpdates();
+  };
 
-	ResidentialListings.clearAnnouncementsTimer = function() {
-		if (ResidentialListings.announcementsTimer) {
-		  clearTimeout(ResidentialListings.announcementsTimer);
-		}
-	};
+  ResidentialListings.clearAnnouncementsTimer = function() {
+    if (ResidentialListings.announcementsTimer) {
+      clearTimeout(ResidentialListings.announcementsTimer);
+    }
+  };
 
-	ResidentialListings.clearTimer = function() {
-		if (ResidentialListings.timer) {
-		  clearTimeout(ResidentialListings.timer);
-		}
-	};
+  ResidentialListings.clearTimer = function() {
+    if (ResidentialListings.timer) {
+      clearTimeout(ResidentialListings.timer);
+    }
+  };
 
   ResidentialListings.queryAnnouncements = function(limit) {
     // console.log('res announce');
@@ -77,16 +77,16 @@ ResidentialListings = {};
     });
   }
 
-	// update the announcements every 60 seconds
-	ResidentialListings.updateAnnouncements = function() {
-		//console.log('updateAnnouncements ', $('.residential').length);
-		if ($('.announcement').length) {
-			//console.log('updating ann');
-			ResidentialListings.queryAnnouncements();
+  // update the announcements every 60 seconds
+  ResidentialListings.updateAnnouncements = function() {
+    //console.log('updateAnnouncements ', $('.residential').length);
+    if ($('.announcement').length) {
+      //console.log('updating ann');
+      ResidentialListings.queryAnnouncements();
 
-			ResidentialListings.announcementsTimer = setTimeout(ResidentialListings.updateAnnouncements, 60 * 1 * 1000);
-		}
-	};
+      ResidentialListings.announcementsTimer = setTimeout(ResidentialListings.updateAnnouncements, 60 * 1 * 1000);
+    }
+  };
 
   // ResidentialListings.enablePassiveUpdates = function() {
   //   if (!Common.onMobileDevice()) {
@@ -95,36 +95,36 @@ ResidentialListings = {};
   //   }
   // }
 
-	// if a user remains on this page for an extended amount of time,
-	// refresh the page every so often. We want to make sure they are
-	// always viewing the latest data.
-	// ResidentialListings.passiveRealTimeUpdate = function() {
-		// ResidentialListings.clearTimer();
-		// update every few minutes
-	  // ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 60 * 10 * 1000);
-	// };
+  // if a user remains on this page for an extended amount of time,
+  // refresh the page every so often. We want to make sure they are
+  // always viewing the latest data.
+  // ResidentialListings.passiveRealTimeUpdate = function() {
+    // ResidentialListings.clearTimer();
+    // update every few minutes
+    // ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 60 * 10 * 1000);
+  // };
 
-	// search as user types
-	ResidentialListings.throttledSearch = function () {
-		//clear any interval on key up
-		ResidentialListings.clearTimer();
-		ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 500);
-	};
+  // search as user types
+  ResidentialListings.throttledSearch = function () {
+    //clear any interval on key up
+    ResidentialListings.clearTimer();
+    ResidentialListings.timer = setTimeout(ResidentialListings.doSearch, 500);
+  };
 
-	ResidentialListings.preventEnter = function (event) {
-	  if (event.keyCode == 13) {
-	    return false;
-	  }
-	};
+  ResidentialListings.preventEnter = function (event) {
+    if (event.keyCode == 13) {
+      return false;
+    }
+  };
 
-	// for giant google map
-	ResidentialListings.buildContentString = function (key, info) {
+  // for giant google map
+  ResidentialListings.buildContentString = function (key, info) {
     var slideshowContent = '';
     var contentString = '<strong>' + key + '</strong><br />';
 
     var firstImageAdded = false;
     var imgCount = 0;
-	  for (var i=0; i<info['units'].length; i++) {
+    for (var i=0; i<info['units'].length; i++) {
 
       unit = info['units'][i];
 
@@ -138,17 +138,17 @@ ResidentialListings = {};
       }
 
       var shouldHighlightRow = imgCount == 1 && info['units'].length > 1;
-	    contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
+      contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
         + '<a href="https://myspace-realty-monster.herokuapp.com/residential_listings/'
         + unit.id + '">#' + unit.building_unit + ' ' +
         + unit.beds + ' bd / '
-	      + unit.baths + ' baths $' + unit.rent + '</a></div>';
-	    if (i == 5) {
-	      contentString += '<div class="contentRow"><a href="https://myspace-realty-monster.herokuapp.com/residential_listings?building_id='
+        + unit.baths + ' baths $' + unit.rent + '</a></div>';
+      if (i == 5) {
+        contentString += '<div class="contentRow"><a href="https://myspace-realty-monster.herokuapp.com/residential_listings?building_id='
           + info['building_id'] + '">View more...</a></div>';
-	      break;
-	    }
-	  }
+        break;
+      }
+    }
 
     output =
       '<div class="slideshow">' +
@@ -164,38 +164,38 @@ ResidentialListings = {};
       contentString +
       '</div>';
     return '<div class="popup">' + output + '</div>';
-	};
+  };
 
-	ResidentialListings.toggleFeeOptions = function(event) {
-		var isChecked = $('.has-fee').prop('checked');
-		if (isChecked) {
-			$('.show-op').addClass('hide');
-			$('.show-tp').removeClass('hide');
-		} else {
-			$('.show-op').removeClass('hide');
-			$('.show-tp').addClass('hide');
-		}
-	};
+  ResidentialListings.toggleFeeOptions = function(event) {
+    var isChecked = $('.has-fee').prop('checked');
+    if (isChecked) {
+      $('.show-op').addClass('hide');
+      $('.show-tp').removeClass('hide');
+    } else {
+      $('.show-op').removeClass('hide');
+      $('.show-tp').addClass('hide');
+    }
+  };
 
-	ResidentialListings.inheritFeeOptions = function() {
-		bldg_id = $('#residential_listing_unit_building_id').val();
+  ResidentialListings.inheritFeeOptions = function() {
+    bldg_id = $('#residential_listing_unit_building_id').val();
 
-		$.ajax({
-			type: 'GET',
-			url: '/residential_listings/fee_options/',
-			data: {
-				building_id: bldg_id,
-			}
-		});
-	};
+    $.ajax({
+      type: 'GET',
+      url: '/residential_listings/fee_options/',
+      data: {
+        building_id: bldg_id,
+      }
+    });
+  };
 
   ResidentialListings.sortOnColumnClick = function() {
-		$('.th-sortable').click(function(e) {
+    $('.th-sortable').click(function(e) {
       Common.sortOnColumnClick($(this), ResidentialListings.doSearch);
-		});
-	};
+    });
+  };
 
-	ResidentialListings.initializeImageDropzone = function() {
+  ResidentialListings.initializeImageDropzone = function() {
     // grap our upload form by its id
     $("#runit-dropzone").dropzone({
       // restrict image size to a maximum 1MB
@@ -658,7 +658,7 @@ ResidentialListings = {};
 
 $(document).on('keyup',function(evt) {
   if (evt.keyCode == 27) {
-  	Listings.hideSpinner();
+    Listings.hideSpinner();
   }
 });
 

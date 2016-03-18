@@ -1,16 +1,16 @@
 Offices = {};
 
 (function() {
-  Offices.init = function() {
+  Offices.init = function () {
     if ($('.offices.edit').length) {
       var office_address = $('#map-canvas').attr('data-address') ? $('#map-canvas').attr('data-address') : 'New York, NY, USA';
       $(".autocomplete-input").geocomplete({
         map: "#map-canvas",
         location: office_address,
         details: ".details"
-      }).bind("geocode:result", function(event, result) {
+      }).bind("geocode:result", function () {
         // console.log(result);
-      }).bind("geocode:error", function(event, result) {
+      }).bind("geocode:error", function () {
         console.log("[ERROR]: " + result);
       });
     }

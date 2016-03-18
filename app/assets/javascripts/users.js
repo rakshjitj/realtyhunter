@@ -19,8 +19,8 @@ Users = {};
     });
   };
 
-	Users.doSearch = function (event) {
-		var search_path = $('#user-search-filters').attr('data-search-path');
+  Users.doSearch = function (event) {
+    var search_path = $('#user-search-filters').attr('data-search-path');
     $.ajax({
       url: search_path,
       data: {
@@ -31,7 +31,7 @@ Users = {};
     });
   };
 
-	// search as user types
+  // search as user types
   Users.timer;
   Users.throttledSearch = function() {
     clearInterval(Users.timer);  //clear any interval on key up
@@ -46,8 +46,8 @@ Users = {};
   };
 
   Users.title_onchange_handler = function(event) {
-  	input = $(this).find('option:selected').text();
-  	var agent_title_name = $('#user_employee_title_id').attr('data-agent-title-name');
+    input = $(this).find('option:selected').text();
+    var agent_title_name = $('#user_employee_title_id').attr('data-agent-title-name');
     if (input.toLowerCase() === agent_title_name) {
       $('.agent-type').show();
     } else {
@@ -55,11 +55,11 @@ Users = {};
     }
   };
 
-	Users.initialize = function() {
-		$('.auth-token-toggle').click(function (event) {
-	    $('.auth-token').toggleClass('hidden');
-	    event.preventDefault();
-	  });
+  Users.initialize = function() {
+    $('.auth-token-toggle').click(function (event) {
+      $('.auth-token').toggleClass('hidden');
+      event.preventDefault();
+    });
 
     $('#users input').keydown(Users.preventEnter);
     $('#users #name_email').bind('railsAutocomplete.select', Users.throttledSearch);
@@ -80,14 +80,14 @@ Users = {};
     $('#user_employee_title_id').change(Users.title_onchange_handler);
     $('.agent-type').hide();
     // if the user is currently an agent, display the select input with suboptions
-  	var agent_title_name = $('#user_employee_title_id').attr('data-agent-title-name');
-  	var user_title_name = $('#user_employee_title_id').attr('data-user-title-name');
-  	if (agent_title_name == user_title_name) {
+    var agent_title_name = $('#user_employee_title_id').attr('data-agent-title-name');
+    var user_title_name = $('#user_employee_title_id').attr('data-user-title-name');
+    if (agent_title_name == user_title_name) {
       $('.agent-type').show();
     } else {
       $('.agent-type').hide();
     }
-	};
+  };
 
   Users.ready = function() {
     if ($('.users').length ||

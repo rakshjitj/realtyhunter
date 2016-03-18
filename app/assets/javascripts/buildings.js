@@ -1,17 +1,17 @@
 Buildings = {};
 
-(function() {
+(function () {
   Buildings.timer;
 
-  Buildings.showSpinner = function() {
+  Buildings.showSpinner = function () {
     $('.index-spinner-desktop').show();
   };
 
-  Buildings.hideSpinner = function() {
+  Buildings.hideSpinner = function () {
     $('.index-spinner-desktop').hide();
   };
 
-  Buildings.filterListings = function(event) {
+  Buildings.filterListings = function (event) {
     var search_path = $('#listings').attr('data-search-path');
     $.ajax({
       url: search_path,
@@ -19,17 +19,17 @@ Buildings = {};
         status_listings: $('#status_listings').val(),
       },
       dataType: "script",
-      success: function(data) {
+      success: function () {
       },
-      error: function(data) {
+      error: function () {
       }
     });
   };
 
-  Buildings.filterBuildings = function(sortByCol, sortDirection) {
+  Buildings.filterBuildings = function (sortByCol, sortDirection) {
     Buildings.showSpinner();
 
-  	var search_path = $('#search-filters').attr('data-search-path');
+    var search_path = $('#search-filters').attr('data-search-path');
 
     if (!sortByCol) {
       sortByCol = Common.getSearchParam('sort_by');
@@ -53,20 +53,20 @@ Buildings = {};
     window.location.search = searchParams.join('&');
   };
 
-  Buildings.sortOnColumnClick = function() {
-    $('#buildings .th-sortable').click(function(e) {
+  Buildings.sortOnColumnClick = function () {
+    $('#buildings .th-sortable').click(function (e) {
       Common.sortOnColumnClick($(this), Buildings.filterBuildings);
     });
   };
 
   // search as user types
-  Buildings.throttledBldgSearch = function() {
+  Buildings.throttledBldgSearch = function () {
     clearTimeout(Buildings.timer);  //clear any interval on key up
     Buildings.timer = setTimeout(Buildings.filterBuildings, 500);
   };
 
   // change enter key to tab
-  Buildings.preventEnter = function(event) {
+  Buildings.preventEnter = function (event) {
     if (event.keyCode == 13) {
       $('#buildings #checkbox_active').focus();
       return false;
@@ -88,8 +88,8 @@ Buildings = {};
     });
   };
 
-  Buildings.updateRemoveImgLinks = function() {
-    $('#buildings .delete-bldg-img').click(function(event) {
+  Buildings.updateRemoveImgLinks = function () {
+    $('#buildings .delete-bldg-img').click(function (event) {
       event.preventDefault();
       var id = $(this).attr('data-id');
       var bldg_id = $(this).attr('data-bldg-id');
@@ -98,7 +98,7 @@ Buildings = {};
     });
   };
 
-  Buildings.initEditor = function() {
+  Buildings.initEditor = function () {
     // disable auto discover
     Dropzone.autoDiscover = false;
 
@@ -121,7 +121,7 @@ Buildings = {};
         file.previewElement.remove();
       },
       //when the remove button is clicked
-      removedfile: function(file){
+      removedfile: function (file) {
         // grap the id of the uploaded file we set earlier
         var id = $(file.previewTemplate).find('.dz-remove').attr('id');
         var bldg_id = $(file.previewTemplate).find('.dz-remove').attr('bldg_id');
@@ -163,9 +163,9 @@ Buildings = {};
       map: "#map-canvas",
       location: bldg_address,
       details: ".details"
-    }).bind("geocode:result", function(event, result){
+    }).bind("geocode:result", function () {
       //console.log(result);
-    }).bind("geocode:error", function(event, result){
+    }).bind("geocode:error", function () {
       //console.log("[ERROR]: " + result);
     });
 
@@ -173,7 +173,7 @@ Buildings = {};
       map: "#map-canvas",
       location: bldg_address,
       details: ".details"
-    }).bind("geocode:result", function(event, result){
+    }).bind("geocode:result", function() {
       if (this.value == "New York, NY, USA") {
         this.value = '';
       }
@@ -194,7 +194,7 @@ Buildings = {};
           data: {
             sublocality: sublocality,
           },
-          success: function(data) {
+          success: function (data) {
             for (var i =0; i<result.address_components.length; i++) {
               if (result.address_components[i].types[0] === "neighborhood") {
                 var nabe = result.address_components[i].short_name;
@@ -206,14 +206,14 @@ Buildings = {};
         });
       // }
 
-    }).bind("geocode:error", function(event, result){
+    }).bind("geocode:error", function () {
       //console.log("[ERROR]: " + result);
     });
   }
 
-  Buildings.initIndex = function() {
+  Buildings.initIndex = function () {
     Buildings.hideSpinner();
-    $('#buildings a').click(function() {
+    $('#buildings a').click(function () {
       Buildings.showSpinner();
     });
 
@@ -253,7 +253,7 @@ Buildings = {};
   };
 })();
 
-$(document).on('keyup',function(evt) {
+$(document).on('keyup',function (evt) {
   if (evt.keyCode == 27) {
     Buildings.hideSpinner();
   }

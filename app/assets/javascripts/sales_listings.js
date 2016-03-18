@@ -6,8 +6,8 @@ SalesListings = {};
   SalesListings.selectedUnitAmenityIds = null;
   SalesListings.selectedBuildingAmenityIds = null;
 
-	// for searching on the index page
-	SalesListings.doSearch = function (sortByCol, sortDirection) {
+  // for searching on the index page
+  SalesListings.doSearch = function (sortByCol, sortDirection) {
     Listings.showSpinner();
 
     var search_path = $('#sales-search-filters').attr('data-search-path');
@@ -50,14 +50,14 @@ SalesListings = {};
     }
     window.location.search = searchParams.join('&');
 
-		// SalesListings.passiveRealTimeUpdate();
-	};
+    // SalesListings.passiveRealTimeUpdate();
+  };
 
-	SalesListings.clearTimer = function() {
-		if (SalesListings.timer) {
+  SalesListings.clearTimer = function() {
+    if (SalesListings.timer) {
       clearTimeout(SalesListings.timer);
     }
-	};
+  };
 
   // SalesListings.enablePassiveUpdates = function() {
     // if (!Common.onMobileDevice()) {
@@ -65,29 +65,29 @@ SalesListings = {};
     // }
   // }
 
-	// if a user remains on this page for an extended amount of time,
+  // if a user remains on this page for an extended amount of time,
   // refresh the page every so often. We want to make sure they are
   // always viewing the latest data.
   // SalesListings.passiveRealTimeUpdate = function() {
   //   SalesListings.clearTimer();
   //   // update every few minutes
-	 //  SalesListings.timer = setTimeout(SalesListings.doSearch, 60 * 10 * 1000);
+   //  SalesListings.timer = setTimeout(SalesListings.doSearch, 60 * 10 * 1000);
   // };
 
   // search as user types
-	SalesListings.throttledSearch = function () {
-		//clear any interval on key up
-		SalesListings.clearTimer();
-		SalesListings.timer = setTimeout(SalesListings.doSearch, 500);
-	};
+  SalesListings.throttledSearch = function () {
+    //clear any interval on key up
+    SalesListings.clearTimer();
+    SalesListings.timer = setTimeout(SalesListings.doSearch, 500);
+  };
 
-	// change enter key to tab
-	SalesListings.preventEnter = function (event) {
-	  if (event.keyCode == 13) {
-	    //$('#checkbox_active').focus();
-	    return false;
-	  }
-	};
+  // change enter key to tab
+  SalesListings.preventEnter = function (event) {
+    if (event.keyCode == 13) {
+      //$('#checkbox_active').focus();
+      return false;
+    }
+  };
 
   // for giant map
   SalesListings.buildContentString = function (key, info) {
@@ -144,7 +144,7 @@ SalesListings = {};
     });
   };
 
-	SalesListings.initializeDocumentsDropzone = function() {
+  SalesListings.initializeDocumentsDropzone = function() {
     // grap our upload form by its id
     $("#sunit-dropzone-docs").dropzone({
       // show remove links on each image upload
@@ -255,41 +255,41 @@ SalesListings = {};
     });
   };
 
-	// SalesListings.updateOverviewMap = function(in_data) {
-	// 	SalesListings.overlays.clearLayers();
+  // SalesListings.updateOverviewMap = function(in_data) {
+  //  SalesListings.overlays.clearLayers();
  //    var markers = new L.MarkerClusterGroup({
- //    	maxClusterRadius: 30 // lean towards showing more individual markers
+ //     maxClusterRadius: 30 // lean towards showing more individual markers
  //    }).addTo(SalesListings.overlays);
 
  //    var dataPoints;
-	//   // if updating from an ajax call, in_data will hava content.
-	//   // we load data from a data attribute on page load, but that remains cached forever -
-	//   // it will not update with subsequent ajax calls.
-	//   if (in_data) {
-	//   	dataPoints = JSON.parse(in_data);
-	//   } else {
-	//   	dataPoints = JSON.parse($('#s-big-map').attr('data-map-points'));
-	//   }
-	//   Object.keys(dataPoints).forEach(function(key, index) {
-	//     // draw each marker + load with data
-	//     var info = dataPoints[key];
-	//     var content = SalesListings.buildContentString(key, info);
-	//     var marker = L.marker(new L.LatLng(info.lat, info.lng), {
-	//       icon: L.mapbox.marker.icon({
-	//       	'marker-size': 'small',
-	//       	'marker-color': '#f86767'
-	//       }),
-	//       'title': key,
-	//     });
-	//     marker.bindPopup(content);
+  //   // if updating from an ajax call, in_data will hava content.
+  //   // we load data from a data attribute on page load, but that remains cached forever -
+  //   // it will not update with subsequent ajax calls.
+  //   if (in_data) {
+  //    dataPoints = JSON.parse(in_data);
+  //   } else {
+  //    dataPoints = JSON.parse($('#s-big-map').attr('data-map-points'));
+  //   }
+  //   Object.keys(dataPoints).forEach(function(key, index) {
+  //     // draw each marker + load with data
+  //     var info = dataPoints[key];
+  //     var content = SalesListings.buildContentString(key, info);
+  //     var marker = L.marker(new L.LatLng(info.lat, info.lng), {
+  //       icon: L.mapbox.marker.icon({
+  //        'marker-size': 'small',
+  //        'marker-color': '#f86767'
+  //       }),
+  //       'title': key,
+  //     });
+  //     marker.bindPopup(content);
  //      markers.addLayer(marker);
-	// 	});
+  //  });
 
  //    if (dataPoints.length) {
- //   		SalesListings.map.addLayer(markers);
+ //       SalesListings.map.addLayer(markers);
  //      SalesListings.map.fitBounds(markers.getBounds());
  //    }
-	// };
+  // };
 
   SalesListings.commissionAmount = function() {
     if($('#sales_listing_cyof_true').is(":checked")){
@@ -427,27 +427,27 @@ SalesListings = {};
     SalesListings.rlsnyValidation();
   };
 
-	SalesListings.initIndex = function() {
+  SalesListings.initIndex = function() {
     document.addEventListener("page:restore", function() {
-			Listings.hideSpinner();
+      Listings.hideSpinner();
       SalesListings.passiveRealTimeUpdate();
-		});
+    });
 
-		Listings.hideSpinner();
-		$('#sales a').click(function() {
-			Listings.showSpinner();
-		});
+    Listings.hideSpinner();
+    $('#sales a').click(function() {
+      Listings.showSpinner();
+    });
 
-		// main index table
-		SalesListings.sortOnColumnClick();
+    // main index table
+    SalesListings.sortOnColumnClick();
     Common.markSortingColumn();
     if (Common.getSearchParam('sort_by') === '') {
       Common.markSortingColumnByElem($('th[data-sort="updated_at"]'), 'desc')
     }
 
-		$('.close').click(function() {
-			Listings.hideSpinner();
-		});
+    $('.close').click(function() {
+      Listings.hideSpinner();
+    });
 
     $('#neighborhood-select-multiple').change(SalesListings.throttledSearch);
     $('#unit-amenities-select-multiple').change(SalesListings.throttledSearch);
@@ -455,32 +455,32 @@ SalesListings = {};
 
     RHMapbox.initMapbox('s-big-map', SalesListings.buildContentString);
 
-		// index filtering
-		$('#sales input').keydown(SalesListings.preventEnter);
-		$('#sales #address').bind('railsAutocomplete.select', SalesListings.throttledSearch);
-	  $('#sales #address').change(SalesListings.throttledSearch);
-	  $('#sales #unit').change(SalesListings.throttledSearch);
-	  $('#sales #price_min').change(SalesListings.throttledSearch);
-	  $('#sales #price_max').change(SalesListings.throttledSearch);
-	  $('#sales #bed_min').change(SalesListings.throttledSearch);
-	  $('#sales #bed_max').change(SalesListings.throttledSearch);
-	  $('#sales #bath_min').change(SalesListings.throttledSearch);
-	  $('#sales #bath_max').change(SalesListings.throttledSearch);
-	  $('#sales #landlord').bind('railsAutocomplete.select', SalesListings.throttledSearch);
-	  $('#sales #landlord').change(SalesListings.throttledSearch);
-	  $('#sales #available_starting').blur(SalesListings.throttledSearch);
-	  $('#sales #available_before').blur(SalesListings.throttledSearch);
-	  $('#sales #pet_policy_shorthand').change(SalesListings.throttledSearch);
-	  $('#sales #status').change(SalesListings.throttledSearch);
-	  $('#sales #features').change(SalesListings.throttledSearch);
-	  $('#sales #has_fee').change(SalesListings.throttledSearch);
-	  $('#sales #neighborhood_ids').change(SalesListings.throttledSearch);
-	  $('#sales #unit_feature_ids').change(SalesListings.throttledSearch);
-	  $('#sales #building_feature_ids').change(SalesListings.throttledSearch);
-	  // remove individual features by clicking on 'x' button
-	  $('#sales .remove-unit-feature').click(SalesListings.removeUnitFeature);
-	  $('#sales .remove-building-feature').click(SalesListings.removeBuildingFeature);
-	  $('#sales .remove-neighborhood').click(SalesListings.removeNeighborhood);
+    // index filtering
+    $('#sales input').keydown(SalesListings.preventEnter);
+    $('#sales #address').bind('railsAutocomplete.select', SalesListings.throttledSearch);
+    $('#sales #address').change(SalesListings.throttledSearch);
+    $('#sales #unit').change(SalesListings.throttledSearch);
+    $('#sales #price_min').change(SalesListings.throttledSearch);
+    $('#sales #price_max').change(SalesListings.throttledSearch);
+    $('#sales #bed_min').change(SalesListings.throttledSearch);
+    $('#sales #bed_max').change(SalesListings.throttledSearch);
+    $('#sales #bath_min').change(SalesListings.throttledSearch);
+    $('#sales #bath_max').change(SalesListings.throttledSearch);
+    $('#sales #landlord').bind('railsAutocomplete.select', SalesListings.throttledSearch);
+    $('#sales #landlord').change(SalesListings.throttledSearch);
+    $('#sales #available_starting').blur(SalesListings.throttledSearch);
+    $('#sales #available_before').blur(SalesListings.throttledSearch);
+    $('#sales #pet_policy_shorthand').change(SalesListings.throttledSearch);
+    $('#sales #status').change(SalesListings.throttledSearch);
+    $('#sales #features').change(SalesListings.throttledSearch);
+    $('#sales #has_fee').change(SalesListings.throttledSearch);
+    $('#sales #neighborhood_ids').change(SalesListings.throttledSearch);
+    $('#sales #unit_feature_ids').change(SalesListings.throttledSearch);
+    $('#sales #building_feature_ids').change(SalesListings.throttledSearch);
+    // remove individual features by clicking on 'x' button
+    $('#sales .remove-unit-feature').click(SalesListings.removeUnitFeature);
+    $('#sales .remove-building-feature').click(SalesListings.removeBuildingFeature);
+    $('#sales .remove-neighborhood').click(SalesListings.removeNeighborhood);
 
     SalesListings.selectedNeighborhoodIds = Common.getURLParameterByName('neighborhood_ids');
     if (SalesListings.selectedNeighborhoodIds) {
@@ -528,12 +528,12 @@ SalesListings = {};
       }
     });
 
-		var available_by = $('#sales .datepicker').attr('data-available-by');
-		if (available_by) {
-			$('#sales .datepicker').data("DateTimePicker").date(available_by);
-		}
+    var available_by = $('#sales .datepicker').attr('data-available-by');
+    if (available_by) {
+      $('#sales .datepicker').data("DateTimePicker").date(available_by);
+    }
 
-	  // index page - selecting listings menu dropdown
+    // index page - selecting listings menu dropdown
     $('#sales #emailListings').click(Listings.sendMessage);
     $('#sales tbody').on('click', 'i', Listings.toggleListingSelection);
     $('#sales .select-all-listings').click(Listings.selectAllListings);
@@ -570,7 +570,7 @@ SalesListings = {};
 
 $(document).on('keyup',function(evt) {
   if (evt.keyCode == 27) {
-  	Listings.hideSpinner();
+    Listings.hideSpinner();
   }
 });
 

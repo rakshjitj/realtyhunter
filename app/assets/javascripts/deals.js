@@ -3,19 +3,19 @@ Deals = {};
 (function() {
   Deals.timer;
 
-	Deals.sortOnColumnClick = function() {
-		$('#deals .th-sortable').click(function(e) {
-			Common.sortOnColumnClick($(this), Deals.doSearch);
-		});
-	};
+  Deals.sortOnColumnClick = function() {
+    $('#deals .th-sortable').click(function(e) {
+      Common.sortOnColumnClick($(this), Deals.doSearch);
+    });
+  };
 
-	// for searching on the index page
-	Deals.doSearch = function (sortByCol, sortDirection) {
-		var search_path = $('#deals-search-filters').attr('data-search-path');
+  // for searching on the index page
+  Deals.doSearch = function (sortByCol, sortDirection) {
+    var search_path = $('#deals-search-filters').attr('data-search-path');
 
-	  Forms.showSpinner();
+    Forms.showSpinner();
 
-	  if (!sortByCol) {
+    if (!sortByCol) {
       sortByCol = Common.getSearchParam('sort_by');
     }
     if (!sortDirection) {
@@ -32,66 +32,66 @@ Deals = {};
       direction: sortDirection,
     };
 
-		var searchParams = [];
+    var searchParams = [];
     for(var key in data) {
       if (data.hasOwnProperty(key) && data[key]) {
         searchParams.push(key + "=" + data[key]);
       }
     }
     window.location.search = searchParams.join('&');
-	};
+  };
 
-	Deals.clearTimer = function() {
-		clearTimeout(Deals.timer);
-	};
+  Deals.clearTimer = function() {
+    clearTimeout(Deals.timer);
+  };
 
-	Deals.throttledSearch = function () {
-		//clear any interval on key up
-		if (Deals.timer) {
-		  clearTimeout(Deals.timer);
-		}
-	  Deals.timer = setTimeout(Deals.doSearch, 500);
-	};
+  Deals.throttledSearch = function () {
+    //clear any interval on key up
+    if (Deals.timer) {
+      clearTimeout(Deals.timer);
+    }
+    Deals.timer = setTimeout(Deals.doSearch, 500);
+  };
 
-	Deals.updateUnits = function() {
-		$.ajax({
+  Deals.updateUnits = function() {
+    $.ajax({
       url: "/deals/get_units",
       data: {
         building_id: $('#deals #deal_building_id').val()
       },
       dataType: "script",
     });
-	};
+  };
 
-	Deals.initIndex = function() {
-		Forms.hideSpinner();
+  Deals.initIndex = function() {
+    Forms.hideSpinner();
 
-		// main index table
-		Deals.sortOnColumnClick();
-		Common.markSortingColumn();
+    // main index table
+    Deals.sortOnColumnClick();
+    Common.markSortingColumn();
     if (Common.getSearchParam('sort_by') === '') {
       Common.markSortingColumnByElem($('th[data-sort="closed_date"]'), 'desc')
     }
 
-		$('.close').click(function() {
-			Forms.hideSpinner();
-		});
+    $('.close').click(function() {
+      Forms.hideSpinner();
+    });
 
-		// index filtering
-		$('#deals input').keydown(Forms.preventEnter);
-		$('#deals #address').bind('railsAutocomplete.select', Deals.throttledSearch);
-		$('#deals #address').change(Deals.throttledSearch);
-		$('#deals #landlord_code').bind('railsAutocomplete.select', Deals.throttledSearch);
-		$('#deals #landlord_code').change(Deals.throttledSearch);
-		$('#deals #closed_date_start').blur(Deals.throttledSearch);
-	  $('#deals #closed_date_end').blur(Deals.throttledSearch);
-	  $('#deals #state').change(Deals.throttledSearch);
+    // index filtering
+    $('#deals input').keydown(Forms.preventEnter);
+    $('#deals #address').bind('railsAutocomplete.select', Deals.throttledSearch);
+    $('#deals #address').change(Deals.throttledSearch);
+    $('#deals #landlord_code').bind('railsAutocomplete.select', Deals.throttledSearch);
+    $('#deals #landlord_code').change(Deals.throttledSearch);
+    $('#deals #closed_date_start').blur(Deals.throttledSearch);
+    $('#deals #closed_date_end').blur(Deals.throttledSearch);
+    $('#deals #state').change(Deals.throttledSearch);
 
-	  // edit
-	  if ($('#deals #deal_building_id').length) {
-		  $('#deals #deal_building_id').change(Deals.updateUnits);
-		}
-	};
+    // edit
+    if ($('#deals #deal_building_id').length) {
+      $('#deals #deal_building_id').change(Deals.updateUnits);
+    }
+  };
 
   Deals.ready = function () {
     var editPage = $('.deals.edit').length;
