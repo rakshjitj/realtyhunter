@@ -1,15 +1,15 @@
 class ListingSerializer < ActiveModel::Serializer
-	attributes :listing_type, :property_type, :commercial_use, :min_lease_term,
-	:max_lease_term, :renter_fee, :bathrooms, :unit_amenities, :unit_description,
+	attributes :unit_description,
 	:floor, :layout, :bedrooms, :unit_number, :pets, :status, :building, :date_available,
 	:changed_at, :square_footage, :rent, :id, :favorite, :show, :expose_address,
 	:total_room_count, :condition, :showing_instruction, :commission_amount,
 	:cyof, :rented_date, :rlsny, :share_with_brokers,
 	:open_house_mon_from, :open_house_mon_to, :open_house_tue_from, :open_house_tue_to,
-    :open_house_wed_from, :open_house_wed_to, :open_house_thu_from, :open_house_thu_to,
-    :open_house_fri_from, :open_house_fri_to, :open_house_sat_from, :open_house_sat_to,
-    :open_house_sun_from, :open_house_sun_to, :tenant_occupied, :op_fee_percentage,
-    :rental_terms, :utilities
+  :open_house_wed_from, :open_house_wed_to, :open_house_thu_from, :open_house_thu_to,
+  :open_house_fri_from, :open_house_fri_to, :open_house_sat_from, :open_house_sat_to,
+  :open_house_sun_from, :open_house_sun_to, :tenant_occupied, :op_fee_percentage,
+  :rental_terms, :utilities, :listing_type, :property_type, :commercial_use, :min_lease_term,
+	:max_lease_term, :renter_fee, :bathrooms, :unit_amenities
 
 	attribute :building, serializer: BuildingSerializer
 
