@@ -83,13 +83,13 @@ class CommercialListing < ActiveRecord::Base
     Image.where(unit_id: unit_ids, priority: 0).index_by(&:unit_id)
   end
 
-   def self.export_all(user)
-    CommercialListing.joins([:commercial_property_type, unit: [building: [:company, :landlord]]])
+  def self.export_all(user, params)
+    params = params.symbolize_keys
+    running_list = CommercialListing.joins([:commercial_property_type, unit: [building: [:company, :landlord]]])
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
-
         'buildings.lat', 'buildings.lng', 'units.id as unit_id', 'units.listing_id',
         'units.access_info', 'units.listing_id',
         'units.building_unit', 'units.status','units.rent', 'units.available_by','units.exclusive',
@@ -114,7 +114,10 @@ class CommercialListing < ActiveRecord::Base
         'commercial_property_types.property_type AS property_category',
         'commercial_property_types.property_sub_type',
         )
-    end
+
+    running_list = CommercialListing._filter_query(running_list, user, params)
+    running_list
+  end
 
   def self.search(params, user, building_id=nil)
     running_list = CommercialListing.joins([:commercial_property_type, unit: {building: [:company, :landlord]}])
@@ -131,6 +134,11 @@ class CommercialListing < ActiveRecord::Base
         "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
         'units.available_by', 'units.primary_agent_id', 'units.primary_agent2_id')
 
+    running_list = CommercialListing._filter_query(running_list, user, params)
+    running_list
+  end
+
+  def self._filter_query(running_list, user, params)
     # actable_type to restrict to commercial only
     if !params && !building_id
       return running_list

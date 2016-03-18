@@ -270,7 +270,7 @@ class CommercialListingsController < ApplicationController
 
     # returns all data for export
     def set_commercial_listings_csv
-      @commercial_units = CommercialListing.export_all(current_user)
+      @commercial_units = CommercialListing.export_all(current_user, params)
       @commercial_units = custom_sort
       @agents = Unit.get_primary_agents(@commercial_units)
       @reverse_statuses = {
