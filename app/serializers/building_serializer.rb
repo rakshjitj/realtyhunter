@@ -6,17 +6,22 @@ class BuildingSerializer < ActiveModel::Serializer
     BuildingNeighborhoodSerializer.new(object).attributes
   end
 
+  attribute :landlord, serializer: BuildingLandlordSerializer
+  def landlord
+    BuildingLandlordSerializer.new(object).attributes
+  end
+
   def city
   	# should display city (brooklyn, new york)
-  	object.sublocality
+  	object.b_sublocality
   end
 
   def state
-  	object.administrative_area_level_1_short
+  	object.b_administrative_area_level_1_short
   end
 
   def zipcode
-  	object.postal_code
+  	object.b_postal_code
   end
 
   def name
@@ -28,10 +33,10 @@ class BuildingSerializer < ActiveModel::Serializer
   end
 
   def street_address
-  	object.street_number + ' ' + object.route
+  	object.b_street_number + ' ' + object.b_route
   end
 
   def location
-  	{ latitude: object.lat, longitude: object.lng }
+  	{ latitude: object.b_lat, longitude: object.b_lng }
   end
 end
