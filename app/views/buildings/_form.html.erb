@@ -46,10 +46,10 @@
 
         <br />
         <div class="row">
-          <div class="col-xs-4 col-md-3 form-label-responsive">
+          <div class="col-xs-2 col-sm-3">
             <%= f.label :landlord_id, "Landlord", class: 'required' %>
           </div>
-          <div class="col-xs-8 col-md-9">
+          <div class="col-xs-10 col-sm-9">
             <%= f.select(:landlord_id, options_for_select(current_user.company.landlords.order("code ASC").collect {|l| [l.code, l.id]},
               [@building.landlord ? @building.landlord.id : '']),
               {prompt: "Choose one..."},
@@ -61,10 +61,10 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 form-label-responsive">
+          <div class="col-sm-3">
             <%= f.label :formatted_street_address, "Street Address", class: 'required' %>
           </div>
-          <div class="col-md-9">
+          <div class="col-sm-9">
             <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input',
                 placeholder: "123 Main St" %>
           </div>
@@ -75,6 +75,7 @@
         </div>
 
     <div class="field">
+      <br>
       <p>Visually confirm the building's location:</p>
       <div id="map-canvas" data-address="<%= @building.formatted_street_address %>"></div>
     </div>
@@ -169,10 +170,10 @@
 
     <br />
     <div class="row">
-      <div class="col-xs-4 col-md-3">
+      <div class="col-xs-3 col-sm-2">
         <%= f.label :pet_policy_id, class: 'required' %>
       </div>
-      <div class="col-xs-8 col-md-6">
+      <div class="col-xs-9 col-sm-6">
         <%= f.select(:pet_policy_id,
           options_for_select(current_user.company.pet_policies.all.collect { |r| [r.name.titleize, r.id] },
           [@building.pet_policy ? @building.pet_policy.id : '']),
@@ -185,10 +186,10 @@
 
     <br />
     <div class="row">
-      <div class="col-xs-4 col-md-3">
+      <div class="col-xs-3 col-sm-2">
         <%= f.label :rental_term_id, "Rental Terms" %>
       </div>
-      <div class="col-xs-8 col-md-6">
+      <div class="col-xs-9 col-sm-6">
         <%= f.select(:rental_term_id, options_for_select(current_user.company.rental_terms.all.collect { |r| [r.name.titleize, r.id] },
           [@building.rental_term ? @building.rental_term.id : '']),
            {prompt: "Choose one..."},

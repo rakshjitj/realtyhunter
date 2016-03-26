@@ -173,7 +173,7 @@ Buildings = {};
       map: "#map-canvas",
       location: bldg_address,
       details: ".details"
-    }).bind("geocode:result", function() {
+    }).bind("geocode:result", function(event, result) {
       if (this.value == "New York, NY, USA") {
         this.value = '';
       }

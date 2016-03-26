@@ -10,7 +10,7 @@ Offices = {};
         details: ".details"
       }).bind("geocode:result", function () {
         // console.log(result);
-      }).bind("geocode:error", function () {
+      }).bind("geocode:error", function (event, result) {
         console.log("[ERROR]: " + result);
       });
     }

@@ -1,9 +1,9 @@
 <br />
 <div class="row">
-  <div class="col-md-3 form-label-responsive">
+  <div class="col-sm-3">
     <%= label_tag :neighborhood, "Neighborhood" %>
   </div>
-  <div class="col-md-9">
+  <div class="col-sm-9">
   <%= select_tag(:neighborhood,
     options_for_select(Neighborhood.for_borough(@building.sublocality).collect {|n| [n.name]},
     [@building.neighborhood ? @building.neighborhood.name : '']),
