@@ -28,6 +28,7 @@ module API
 				@images = Unit.get_all_images(listings)
 				@primary_agents = Unit.get_primary_agents(listings)
 				@building_amenities = Building.get_amenities(listings)
+				@open_houses = Unit.get_open_houses(listings)
 
 				if !listings.empty?
 					render json: Listing.new({
@@ -38,7 +39,8 @@ module API
 						building_utilities: @building_utilities[listings[0].building_id],
 						primary_agents: @primary_agents[listings[0].unit_id],
 						building_amenities: @building_amenities[listings[0].building_id],
-						images: @images[listings[0].unit_id]
+						images: @images[listings[0].unit_id],
+						open_houses: @open_houses[listings[0].unit_id],
 						})
 				else
 					render json: {}
@@ -125,6 +127,7 @@ module API
 				@pet_policies = []
 				@rental_terms = []
 				@building_utilities = []
+				@open_houses = []
 
 				if search_params[:listing_type] == "10" # residential
 					@listings = residential_search(@user.company_id, search_params)
@@ -157,6 +160,8 @@ module API
 				@images = Unit.get_all_images(@listings)
 				@primary_agents = Unit.get_primary_agents(@listings)
 				@building_amenities = Building.get_amenities(@listings)
+				@open_houses = Unit.get_open_houses(@listings)
+
 				# repackage into a format that's easily digestible
 				# by our API renderer
 				output = @listings.map do |l|
@@ -168,9 +173,12 @@ module API
 						building_utilities: @building_utilities[l.building_id],
 						primary_agents: @primary_agents[l.unit_id],
 						building_amenities: @building_amenities[l.building_id],
-						images: @images[l.unit_id]
+						images: @images[l.unit_id],
+						open_houses: @open_houses[l.unit_id]
 						})
 				end
+
+				puts "^^^^^^^ #{output.inspect}"
 
 				@lb = ListingBlob.new({
 					items: output,

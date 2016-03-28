@@ -3,9 +3,9 @@ class Listing
 	include ActiveModel::Serialization
 	extend ActiveModel::Naming
 	include ActiveModel::Conversion
-	
-	attr_reader :listing, :residential_amenities, :pet_policies,
-		:primary_agents, :building_amenities, :images, :rental_terms, :building_utilities
+
+	attr_reader :listing, :residential_amenities, :pet_policies, :primary_agents,
+		:building_amenities, :images, :rental_terms, :building_utilities, :open_houses
 
 	def initialize(attributes)
 		@listing = attributes[:listing]
@@ -16,6 +16,7 @@ class Listing
 		@primary_agents = attributes[:primary_agents]
 		@building_amenities = attributes[:building_amenities]
 		@images = attributes[:images]
+		@open_houses = attributes[:open_houses]
 	end
 
 end

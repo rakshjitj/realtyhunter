@@ -9,6 +9,8 @@ class Unit < ActiveRecord::Base
   has_one :sales_listing, dependent: :destroy
   has_many :announcements, dependent: :destroy
   has_many :deals, dependent: :destroy
+  has_many :open_houses, dependent: :destroy
+  accepts_nested_attributes_for :open_houses, allow_destroy: true
 
   before_validation :generate_unique_id
 
@@ -51,6 +53,11 @@ class Unit < ActiveRecord::Base
   def self.get_all_images(list)
     unit_ids = list.map(&:unit_id)
     Image.where(unit_id: unit_ids).to_a.group_by(&:unit_id)
+  end
+
+  def self.get_open_houses(list)
+    unit_ids = list.map(&:unit_id)
+    OpenHouse.where(unit_id: unit_ids).to_a.group_by(&:unit_id)
   end
 
   def self.get_primary_agents(list)

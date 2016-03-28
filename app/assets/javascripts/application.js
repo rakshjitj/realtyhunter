@@ -29,14 +29,23 @@
 //= require selectize
 //= require jquery.infinite-pages
 //= require jquery.touchSwipe.min
+//= require nested_form_fields
 
 $(document).ready(function() {
 	// change all date input fields to auto-open the calendar
-	$('.datepicker').datetimepicker({
-	  viewMode: 'days',
-	  format: 'MM/DD/YYYY',
-	  allowInputToggle: true
-	});
+	$('.datepicker').each(function() {
+    $(this).datetimepicker({
+  	  viewMode: 'days',
+  	  format: 'MM/DD/YYYY',
+  	  allowInputToggle: true
+  	});
+  });
+  $('.datepicker').each(function() {
+    var date_value = $(this).attr('data-available-by');
+    if (date_value) {
+      $(this).data("DateTimePicker").date(date_value);
+    }
+  });
 
 	$('input[type=number]').mousewheel(function(){
 		event.preventDefault();

@@ -23,17 +23,4 @@ module UnitsHelper
 
 	end
 
-	def open_house(residential_unit)
-		unit = residential_unit.unit
-		descrip = ""
-		if unit.open_house
-			if unit.oh_exclusive
-				descrip = "<strong>EXCLUSIVE!</strong> "
-			end
-			descrip = descrip + unit.open_house
-		end
-
-		descrip.html_safe
-	end
-
 end

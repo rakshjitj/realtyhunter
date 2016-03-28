@@ -4,20 +4,8 @@ class ListingSerializer < ActiveModel::Serializer
 	:changed_at, :square_footage, :rent, :id, :favorite, :show, :expose_address,
 	:total_room_count, :condition, :showing_instruction, :commission_amount,
 	:cyof, :rented_date, :rlsny, :share_with_brokers,
-	:open_house_mon_from, :open_house_mon_to, :open_house_tue_from, :open_house_tue_to,
-  :open_house_wed_from, :open_house_wed_to, :open_house_thu_from, :open_house_thu_to,
-  :open_house_fri_from, :open_house_fri_to, :open_house_sat_from, :open_house_sat_to,
-  :open_house_sun_from, :open_house_sun_to, :tenant_occupied, :op_fee_percentage,
   :rental_terms, :utilities, :listing_type, :property_type, :commercial_use, :min_lease_term,
 	:max_lease_term, :renter_fee, :bathrooms, :unit_amenities
-
-	attribute :building, serializer: BuildingSerializer
-
-	def building
-    BuildingSerializer.new(object.listing).attributes
-  end
-
- attributes :contacts
 
   def is_residential
  	  object.listing.respond_to?(:r_id) && object.listing.r_id
@@ -27,6 +15,20 @@ class ListingSerializer < ActiveModel::Serializer
  	  object.listing.respond_to?(:c_id) && object.listing.c_id
   end
 
+	attribute :open_houses
+	def open_houses
+		if object.open_houses
+			object.open_houses
+	      .map { |x| OpenHouseSerializer.new(x).attributes }
+		end
+	end
+
+	attribute :building, serializer: BuildingSerializer
+	def building
+    BuildingSerializer.new(object.listing).attributes
+  end
+
+  attributes :contacts
 	def contacts
 		if object.primary_agents
 	  	object
@@ -36,7 +38,6 @@ class ListingSerializer < ActiveModel::Serializer
 	end
 
  	attributes :photos
-
   def photos
   	if object.images
 	    object
@@ -63,9 +64,6 @@ class ListingSerializer < ActiveModel::Serializer
 
 	def commercial_use
 		nil
-	# 	if is_commercial && object.listing.commercial_property_type
-	# 		object.listing.commercial_property_type.property_type
-	# 	end
 	end
 
 	def min_lease_term
@@ -178,8 +176,6 @@ class ListingSerializer < ActiveModel::Serializer
 		end
 	end
 
-	# TODO: open_house
-
 	def changed_at
 		object.listing.updated_at
 	end
@@ -288,118 +284,6 @@ class ListingSerializer < ActiveModel::Serializer
 		end
 	end
 
-	def open_house_mon_from
-		if is_residential
-			object.listing.open_house_mon_from
-		else
-			nil
-		end
-	end
-
-	def open_house_mon_to
-		if is_residential
-			object.listing.open_house_mon_to
-		else
-			nil
-		end
-	end
-
-	def open_house_tue_from
-		if is_residential
-			object.listing.open_house_tue_from
-		else
-			nil
-		end
-	end
-
-	def open_house_tue_to
-		if is_residential
-			object.listing.open_house_tue_to
-		else
-			nil
-		end
-	end
-
-	def open_house_wed_from
-		if is_residential
-			object.listing.open_house_wed_from
-		else
-			nil
-		end
-	end
-
-	def open_house_wed_to
-		if is_residential
-			object.listing.open_house_wed_to
-		else
-			nil
-		end
-	end
-
-	def open_house_thu_from
-		if is_residential
-			object.listing.open_house_thu_from
-		else
-			nil
-		end
-	end
-
-	def open_house_thu_to
-		if is_residential
-			object.listing.open_house_thu_to
-		else
-			nil
-		end
-	end
-
-	def open_house_fri_from
-		if is_residential
-			object.listing.open_house_fri_from
-		else
-			nil
-		end
-	end
-
-	def open_house_fri_to
-		if is_residential
-			object.listing.open_house_fri_to
-		else
-			nil
-		end
-	end
-
-	def open_house_sat_from
-		if is_residential
-			object.listing.open_house_sat_from
-		else
-			nil
-		end
-	end
-
-	def open_house_sat_to
-		if is_residential
-			object.listing.open_house_sat_to
-		else
-			nil
-		end
-	end
-
-	def open_house_sun_from
-		if is_residential
-			object.listing.open_house_sun_from
-		else
-			nil
-		end
-	end
-
-	def open_house_sun_to
-		if is_residential
-			object.listing.open_house_sun_to
-		else
-			nil
-		end
-	end
-
 	def tenant_occupied
 		if is_residential
 			object.listing.tenant_occupied
@@ -431,4 +315,5 @@ class ListingSerializer < ActiveModel::Serializer
 			nil
 		end
 	end
+
 end

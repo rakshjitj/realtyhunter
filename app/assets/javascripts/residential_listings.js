@@ -372,41 +372,11 @@ ResidentialListings = {};
     });
   };
 
-  ResidentialListings.openHouseSchedule = function() {
-    $('.open_house_hours').change(function(){
-      var cb_id = ($(this).attr('id'));
-      if($('input[name="residential_listing[open_house_'+cb_id+']"]').is(":checked")){
-        $("#residential_listing_open_house_"+cb_id+"_from").removeAttr("disabled");
-        $("#residential_listing_open_house_"+cb_id+"_to").removeAttr("disabled");
-      }
-      else
-      {
-        $("#residential_listing_open_house_"+cb_id+"_from").attr("disabled", "disabled");
-        $("#residential_listing_open_house_"+cb_id+"_to").attr("disabled", "disabled");
-        // $("#residential_listing_open_house_"+cb_id+"_from").val('');
-        // $("#residential_listing_open_house_"+cb_id+"_to").val('');
-      }
-    });
-  };
-
   ResidentialListings.initEditor = function() {
     $('.has-fee').click(ResidentialListings.toggleFeeOptions);
     ResidentialListings.toggleFeeOptions();
     // when creating a new listing, inherit TP/OP from building's landlord
     $('#residential_listing_unit_building_id').change(ResidentialListings.inheritFeeOptions);
-
-    // TODO: need this still?
-    // make sure datepicker is formatted before setting initial date below
-    // use in residential/edit, on photos tab
-    $('.datepicker').datetimepicker({
-      viewMode: 'days',
-      format: 'MM/DD/YYYY',
-      allowInputToggle: true
-    });
-    var available_by = $('.datepicker').attr('data-available-by');
-    if (available_by) {
-      $('.datepicker').data("DateTimePicker").date(available_by);
-    }
 
     // for drag n dropping photos/docs
     // disable auto discover
@@ -416,7 +386,6 @@ ResidentialListings = {};
 
     ResidentialListings.commissionAmount();
     ResidentialListings.rlsnyValidation();
-    ResidentialListings.openHouseSchedule();
   }
 
   ResidentialListings.showCard = function(cardName, e) {
@@ -665,3 +634,15 @@ $(document).on('keyup',function(evt) {
 $(document).on('ready page:load', ResidentialListings.ready);
 
 $(document).on('page:restore', ResidentialListings.ready);
+
+// When dynamically adding open house fields through the edit form, make sure
+// the calendar widget is triggered
+$(document).on('fields_added.nested_form_fields', function() {
+  $('.datepicker').each(function() {
+    $(this).datetimepicker({
+      viewMode: 'days',
+      format: 'MM/DD/YYYY',
+      allowInputToggle: true
+    });
+  });
+});

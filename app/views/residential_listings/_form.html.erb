@@ -250,18 +250,57 @@
           </div>
         </div>
 
+        <!-- Open House -->
         <div class="row vertical-margin-lg">
           <div class="col-md-2">
-            <label>Open House Schedule</label>
+            <br>
+            <label>Open Houses</label>
           </div>
-          <div class="col-md-9">
-            <div class="row">
-              <div class="col-xs-12">
-                <%= render partial: 'open_house_schedule',  locals: { f: f } %>
-              </div>
+          <div class="col-md-10">
+            <div class="row vertical-margin-lg no-margin-padding">
+              <%= f.fields_for @residential_unit.unit do |unit_form| %>
+                <% i = 0 %>
+                <%= unit_form.nested_fields_for :open_houses do |oh| %>
+                  <!-- date -->
+                  <div class="col-xs-4">
+                    <div class='input-group date datepicker'
+                        data-available-by="<%= @residential_unit.unit.open_houses[i] ? @residential_unit.unit.open_houses[i].day.strftime("%m/%d/%Y") : '' %>">
+
+                      <%= oh.text_field :day,
+                        placeholder: "Available", class:"form-control", size:30 %>
+
+                      <label class="input-group-addon btn" for="date">
+                        <span class="fa fa-calendar open-datepicker"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- start time -->
+                  <div class="col-xs-3">
+                    Start time:<br>
+                    <%= oh.time_select :start_time,
+                      class: 'form-control', minute_step: 15, ampm: true, ignore_date: true, required: true %>
+                  </div>
+
+                  <!-- end time -->
+                  <div class="col-xs-3">
+                    End time:<br>
+                    <%= oh.time_select :end_time,
+                        class: 'form-control', minute_step: 15, ampm: true, ignore_date: true, required: true %>
+                  </div>
+
+
+                  <%= oh.remove_nested_fields_link %>
+                  <% i += 1 %>
+                <% end %>
+                <div class="col-xs-12">
+                  <%= unit_form.add_nested_fields_link :open_houses %>
+                </div>
+              <% end %>
             </div>
           </div>
         </div>
+        <!-- End open House -->
 
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
@@ -414,7 +453,7 @@
         </div>
 
         <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-2">
+          <div class="col-xs-3 col-md-4">
             <strong>Broker Fee</strong>
           </div>
           <div class="col-xs-9 col-md-4">
@@ -426,7 +465,7 @@
         </div>
 
         <div class="row show-op vertical-margin-lg">
-          <div class="col-xs-3 col-md-2">
+          <div class="col-xs-3 col-md-4">
             <%= f.label :op_fee_percentage, 'Owner Pays %' %>
           </div>
           <div class="col-xs-9 col-md-4">
@@ -436,7 +475,7 @@
         </div>
 
         <div class="row show-tp vertical-margin-lg">
-          <div class="col-xs-3 col-md-2">
+          <div class="col-xs-3 col-md-4">
             <%= f.label :tp_fee_percentage, 'Tenant Pays %' %>
           </div>
           <div class="col-xs-9 col-md-4">
@@ -446,7 +485,7 @@
         </div>
 
         <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-2">
+          <div class="col-xs-3 col-md-4">
             <%= f.label :primary_agent_id, "Primary Agent" %>
           </div>
           <div class="col-xs-9 col-md-4">

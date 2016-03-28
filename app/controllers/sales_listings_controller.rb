@@ -395,18 +395,11 @@ class SalesListingsController < ApplicationController
           :floor, :total_room_count, :condition, :showing_instruction, :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
 
           :unit => [:building_unit, :rent, :available_by, :access_info, :status,
-            :open_house, :oh_exclusive,
             :building_id, :primary_agent_id, :listing_agent_id],
           :sales_amenity_ids => []
           ])
 
       if data[:sales_listing][:unit]
-        if data[:sales_listing][:unit][:oh_exclusive] == "1"
-          data[:sales_listing][:unit][:oh_exclusive] = true
-        else
-          data[:sales_listing][:unit][:oh_exclusive] = false
-        end
-
         if !data[:sales_listing][:unit][:status].blank?
           data[:sales_listing][:unit][:status] = data[:sales_listing][:unit][:status].gsub(/\s+/, '_').downcase
         end

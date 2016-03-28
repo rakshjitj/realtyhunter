@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160306042401) do
+ActiveRecord::Schema.define(version: 20160324162322) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -337,6 +337,17 @@ ActiveRecord::Schema.define(version: 20160306042401) do
 
   add_index "offices", ["users_id"], name: "index_offices_on_users_id", using: :btree
 
+  create_table "open_houses", force: :cascade do |t|
+    t.time     "start_time"
+    t.time     "end_time"
+    t.date     "day"
+    t.integer  "unit_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "open_houses", ["unit_id"], name: "index_open_houses_on_unit_id", using: :btree
+
   create_table "pet_policies", force: :cascade do |t|
     t.string   "name"
     t.integer  "company_id"
@@ -402,27 +413,6 @@ ActiveRecord::Schema.define(version: 20160306042401) do
     t.date     "rented_date"
     t.boolean  "rlsny",               default: false
     t.boolean  "share_with_brokers",  default: false
-    t.boolean  "open_house_mon",      default: false
-    t.string   "open_house_mon_from"
-    t.string   "open_house_mon_to"
-    t.boolean  "open_house_tue",      default: false
-    t.string   "open_house_tue_from"
-    t.string   "open_house_tue_to"
-    t.boolean  "open_house_wed",      default: false
-    t.string   "open_house_wed_from"
-    t.string   "open_house_wed_to"
-    t.boolean  "open_house_thu",      default: false
-    t.string   "open_house_thu_from"
-    t.string   "open_house_thu_to"
-    t.boolean  "open_house_fri",      default: false
-    t.string   "open_house_fri_from"
-    t.string   "open_house_fri_to"
-    t.boolean  "open_house_sat",      default: false
-    t.string   "open_house_sat_from"
-    t.string   "open_house_sat_to"
-    t.boolean  "open_house_sun",      default: false
-    t.string   "open_house_sun_from"
-    t.string   "open_house_sun_to"
   end
 
   add_index "residential_listings", ["roommates_id"], name: "index_residential_listings_on_roommates_id", using: :btree
@@ -588,8 +578,6 @@ ActiveRecord::Schema.define(version: 20160306042401) do
     t.datetime "available_by"
     t.string   "access_info"
     t.integer  "status",                 default: 0
-    t.string   "open_house"
-    t.boolean  "oh_exclusive",           default: false
     t.integer  "building_id"
     t.integer  "primary_agent_id"
     t.integer  "images_id"
@@ -603,11 +591,13 @@ ActiveRecord::Schema.define(version: 20160306042401) do
     t.integer  "documents_id"
     t.integer  "primary_agent2_id"
     t.integer  "deals_id"
+    t.integer  "open_houses_id"
   end
 
   add_index "units", ["commercial_listing_id"], name: "index_units_on_commercial_listing_id", using: :btree
   add_index "units", ["documents_id"], name: "index_units_on_documents_id", using: :btree
   add_index "units", ["images_id"], name: "index_units_on_images_id", using: :btree
+  add_index "units", ["open_houses_id"], name: "index_units_on_open_houses_id", using: :btree
   add_index "units", ["primary_agent2_id"], name: "index_units_on_primary_agent2_id", using: :btree
   add_index "units", ["primary_agent_id"], name: "index_units_on_primary_agent_id", using: :btree
   add_index "units", ["rent"], name: "index_units_on_rent", using: :btree

@@ -1,10 +1,10 @@
 class ResidentialListing < ActiveRecord::Base
   queue = :residential_listings
-  # scope :unarchived, ->{where(archived: false)}
   has_and_belongs_to_many :residential_amenities
   has_many :roommates
   belongs_to :unit, touch: true
-  before_save :process_custom_amenities, :open_house_schedule
+  accepts_nested_attributes_for :unit #, allow_destroy: true
+  before_save :process_custom_amenities
   after_commit :update_building_counts
 
   attr_accessor :include_photos, :inaccuracy_description,
@@ -21,8 +21,6 @@ class ResidentialListing < ActiveRecord::Base
 
   validates :tp_fee_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
   validates_inclusion_of :tp_fee_percentage, :in => 0..100, allow_blank: true
-
-  OPEN_HOUSE_HOURS = ["7:00AM","7:30AM", "8:00AM","8:30AM", "9:00AM", "9:30AM","10:00AM","10:30AM", "11:00AM","11:30AM","12:00PM","12:30PM", "1:00PM","1:30PM", "2:00PM","2:30PM", "3:00PM","3:30PM", "4:00PM","4:30PM", "5:00PM","5:30PM", "6:00PM","6:30PM","7:00PM","7:30PM", "8:00PM","8:30PM", "9:00PM","9:30PM","10:00PM"]
 
   def archive
     self.unit.archived = true
@@ -667,34 +665,4 @@ class ResidentialListing < ActiveRecord::Base
       bldg.landlord.last_unit_updated_at = DateTime.now
     end
 
-    def open_house_schedule
-      if self.open_house_mon == false
-        self.open_house_mon_from = ''
-        self.open_house_mon_to = ''
-      end
-      if self.open_house_tue == false
-        self.open_house_tue_from = ''
-        self.open_house_tue_to = ''
-      end
-      if self.open_house_wed == false
-        self.open_house_wed_from = ''
-        self.open_house_wed_to = ''
-      end
-      if self.open_house_thu == false
-        self.open_house_thu_from = ''
-        self.open_house_thu_to = ''
-      end
-      if self.open_house_fri == false
-        self.open_house_fri_from = ''
-        self.open_house_fri_to = ''
-      end
-      if self.open_house_sat == false
-        self.open_house_sat_from = ''
-        self.open_house_sat_to = ''
-      end
-      if self.open_house_sun == false
-        self.open_house_sun_from = ''
-        self.open_house_sun_to = ''
-      end
-    end
 end

@@ -336,16 +336,11 @@ class CommercialListingsController < ApplicationController
         :rate_is_negotiable, :total_lot_size, :property_type, :commercial_property_type_id,
         :commercial_unit_id, :inaccuracy_description, :has_basement, :basement_sq_footage,
         :has_ventilation, :key_money_required, :key_money_amt, :listing_title, :liquor_eligible, :favorites, :show, :expose_address,
-        unit: [:building_unit, :rent, :available_by, :access_info, :status, :open_house, :oh_exclusive,
+        unit: [:building_unit, :rent, :available_by, :access_info, :status,
           :building_id, :primary_agent_id, :primary_agent2_id, :listing_agent_id, :exclusive ],
         )
 
       if data[:unit]
-        if data[:unit][:oh_exclusive] == "1"
-          data[:unit][:oh_exclusive] = true
-        else
-          data[:unit][:oh_exclusive] = false
-        end
 
         if data[:unit][:status]
           data[:unit][:status] = data[:unit][:status].downcase.gsub(/ /, '_')

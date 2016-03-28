@@ -61,19 +61,18 @@ gem 'local_time'
 gem 'dalli'
 # background workers
 gem 'redis-rails'
-gem 'resque', "~> 1.22.0"
+gem 'resque', '~> 1.22.0'
 gem 'delayed_paperclip'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
 gem 'rollbar', '~> 1.2.7'
-gem "active_model_serializers", github: "rails-api/active_model_serializers"
+gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
 gem 'bootsy'
 # wufoo
 gem 'wuparty'
 #gem "brakeman", :require => false
-#gem 'bootstrap-multiselect-rails'
-gem "selectize-rails"
-#gem "puma_worker_killer"
+gem 'selectize-rails'
+gem 'nested_form_fields'
 
 group :production do
 	gem 'rails_12factor' # related to serving static assets
@@ -103,6 +102,6 @@ group :development do
 end
 
 group :test do
-  gem "factory_girl_rails", "~> 4.0"
+  gem 'factory_girl_rails', '~> 4.0'
   gem 'database_cleaner'
 end

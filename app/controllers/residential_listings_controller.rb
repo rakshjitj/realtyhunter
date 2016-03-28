@@ -159,7 +159,7 @@ class ResidentialListingsController < ApplicationController
     # update res
     if ret1 && ret2
       flash[:success] = "Unit successfully updated!"
-      redirect_to residential_listing_path(@residential_unit, only_path: true)
+      redirect_to residential_listing_path(@residential_unit)
     else
       render 'edit'
     end
@@ -385,23 +385,17 @@ class ResidentialListingsController < ApplicationController
       data = params[:residential_listing].permit(
         :lock_version,
         :recipients, :title, :message, :listing_ids,
-        :tenant_occupied, #:for_roomsharing,
+        :tenant_occupied,
         :beds, :baths, :notes, :description, :lease_start, :lease_end,
         :include_photos, :inaccuracy_description,
         :has_fee, :op_fee_percentage, :tp_fee_percentage,
         :available_starting, :available_before, :custom_amenities,
-        :roomsharing_filter, :unassigned_filter, :primary_agent_id, :favorites, :show, :expose_address,
-        :floor, :total_room_count, :condition, :showing_instruction, :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
-        :open_house_mon, :open_house_mon_from, :open_house_mon_to,
-        :open_house_tue, :open_house_tue_from, :open_house_tue_to,
-        :open_house_wed, :open_house_wed_from, :open_house_wed_to,
-        :open_house_thu, :open_house_thu_from, :open_house_thu_to,
-        :open_house_fri, :open_house_fri_from, :open_house_fri_to,
-        :open_house_sat, :open_house_sat_from, :open_house_sat_to,
-        :open_house_sun, :open_house_sun_from, :open_house_sun_to,
+        :roomsharing_filter, :unassigned_filter, :primary_agent_id, :favorites, :show,
+        :expose_address, :floor, :total_room_count, :condition, :showing_instruction,
+        :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
         unit: [:building_unit, :rent, :available_by, :access_info, :status,
-          :exclusive,
-          :building_id, :primary_agent_id, :listing_agent_id ],
+          :exclusive, :building_id, :primary_agent_id, :listing_agent_id,
+          open_houses_attributes: [:day, :start_time, :end_time, :_destroy, :id] ],
         residential_amenity_ids: []
         )
 
@@ -413,6 +407,12 @@ class ResidentialListingsController < ApplicationController
         # convert into a datetime obj
         if !data[:unit][:available_by].blank?
           data[:unit][:available_by] = Date::strptime(data[:unit][:available_by], "%m/%d/%Y")
+        end
+
+        if data[:unit][:open_houses_attributes]
+          data[:unit][:open_houses_attributes].each do |idx, oh_data|
+            oh_data[:day] = Date::strptime(oh_data[:day], "%m/%d/%Y")
+          end
         end
       end
 
