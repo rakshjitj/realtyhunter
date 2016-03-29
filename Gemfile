@@ -73,6 +73,7 @@ gem 'wuparty'
 #gem "brakeman", :require => false
 gem 'selectize-rails'
 gem 'nested_form_fields'
+gem 'puma_worker_killer'
 
 group :production do
 	gem 'rails_12factor' # related to serving static assets
