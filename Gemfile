@@ -1,11 +1,12 @@
 source 'https://rubygems.org'
 
-#gem 'mime-types', '~> 2.4.3', require: 'mime/types/columnar'
 ruby '2.3.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.3'
 # Use postgres as the database for Active Record
 gem 'pg'
+#gem 'sprockets-rails', :require => 'sprockets/railtie'
+#gem 'sqlite3'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -16,7 +17,6 @@ gem 'coffee-rails', '~> 4.1.0'
 # gem 'therubyracer', platforms: :ruby
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
-# TODO: no longer maintained. need to find replacement eventually:
 gem 'jquery-ui-sass-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
@@ -42,7 +42,10 @@ gem 'mandrill-api'
 # roles authorization
 gem "rolify"
 gem 'cancancan', '~> 1.10'
-#gem 'faker' - used to add semi-realistic users
+# Use Capistrano for deployment
+# gem 'capistrano-rails', group: :development
+#used to add semi-realistic users
+#gem 'faker'
 # gem 'ffaker'
 # autocomplete fields (like building addresses in our case)
 gem 'rails4-autocomplete'
@@ -67,6 +70,7 @@ gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
 gem 'bootsy'
 # wufoo
 gem 'wuparty'
+#gem "brakeman", :require => false
 gem 'selectize-rails'
 gem 'nested_form_fields'
 gem 'puma_worker_killer'
@@ -83,20 +87,19 @@ group :development, :test do
   gem 'wkhtmltopdf-binary-edge', '~> 0.12.2.1'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+  # Access an IRB console on exception pages or by using <%= console %> in views
+  gem 'web-console', '~> 2.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
 
 group :development do
   gem 'rb-readline'
-  # gem "bullet"
+  gem "bullet"
   #gem 'sql-logging'
-  #gem 'better_errors'
-  # gem 'derailed'
-  # gem 'rack-mini-profiler'
-  # gem 'flamegraph'
-  # gem 'stackprof'
-  # gem 'memory_profiler'
+  gem 'better_errors'
+  gem 'derailed'
+  gem 'stackprof'
 end
 
 group :test do
