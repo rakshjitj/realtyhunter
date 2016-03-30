@@ -60,16 +60,16 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def street_address
-    output = ""
+    output = "".freeze
      # calling from 'show', for example with full objects loaded
     if !self.respond_to? :street_number
       if unit.building.street_number
-        output = unit.building.street_number + ' ' + unit.building.route
+        output = "#{unit.building.street_number} #{unit.building.route}".freeze
       end
 
     else # otherwise, we used a select statement to cherry pick fields
       if street_number
-        output = street_number + ' ' + route
+        output = "#{street_number} #{route}".freeze
       end
     end
 
@@ -78,14 +78,14 @@ class ResidentialListing < ActiveRecord::Base
 
   def amenities_to_s
     amenities = residential_amenities.map{|a| a.name.titleize}
-    amenities ? amenities.join(", ") : "None"
+    amenities ? amenities.join(", ") : "None".freeze
   end
 
   def all_amenities_to_s
     bldg_amenities = unit.building.building_amenities.map{|a| a.name.titleize}
     amenities = residential_amenities.map{|a| a.name.titleize}
     amenities.concat(bldg_amenities)
-    amenities ? amenities.join(", ") : "None"
+    amenities ? amenities.join(", ") : "None".freeze
   end
 
   # for use in search method below
@@ -197,9 +197,9 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self._filter_query(running_list, user, params)
-    params.delete('controller')
-    params.delete('action')
-    params.delete('format')
+    params.delete('controller'.freeze)
+    params.delete('action'.freeze)
+    params.delete('format'.freeze)
 
     if !params && !building_id
       return running_list
@@ -480,7 +480,7 @@ class ResidentialListing < ActiveRecord::Base
       runit = runits[i]
 
       if runit.street_number
-        street_address = runit.street_number + ' ' + runit.route
+        street_address = "#{runit.street_number} #{runit.route}".freeze
       else
         street_address = runit.route
       end

@@ -12,7 +12,7 @@
         alt: @res_images[residential_listing.unit_id]), residential_listing) %>
       <% else %>
         <!-- placeholder image -->
-        <%= link_to(image_tag("listing_soon_thumb.png", alt: "Image coming soon",
+        <%= link_to(image_tag(@image_placeholder_png, alt: "Image coming soon",
           class: 'img-responsive',
           size: "100x100"), residential_listing) %>
       <% end %>

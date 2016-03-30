@@ -326,6 +326,7 @@ class ResidentialListingsController < ApplicationController
       # only get data + images for paginated responses
       @residential_units = @residential_units.page params[:page]
       @favorite_units = @residential_units.where(favorites: true)
+      @image_placeholder_png = "listing_soon_thumb.png".freeze
     end
 
     # def async_create_csv
@@ -377,12 +378,12 @@ class ResidentialListingsController < ApplicationController
 
     def custom_sort
       # puts "GOT ---#{params.inspect} #{params[:sort_by]} --- #{params[:direction]}---"
-      sort_column = params[:sort_by] || "updated_at"
-      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
+      sort_column = params[:sort_by] || "updated_at".freeze
+      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc".freeze
       # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      @residential_units = @residential_units.order(sort_column + ' ' + sort_order)
+      @residential_units = @residential_units.order("#{sort_column} #{sort_order}")
       @residential_units
     end
 
@@ -422,7 +423,7 @@ class ResidentialListingsController < ApplicationController
       end
 
       if !data[:has_fee].nil?
-        if data[:has_fee] == "1"
+        if data[:has_fee] == "1".freeze
           data[:has_fee] = true
         else
           data[:has_fee] = false
@@ -430,7 +431,7 @@ class ResidentialListingsController < ApplicationController
       end
 
       if !data[:include_photos].nil?
-        if data[:include_photos] == "1"
+        if data[:include_photos] == "1".freeze
           data[:include_photos] = true
         else
           data[:include_photos] = false

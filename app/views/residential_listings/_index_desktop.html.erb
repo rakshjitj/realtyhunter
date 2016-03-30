@@ -185,7 +185,7 @@
           <div class="row vertical-padding">
             <div class="col-xs-6">
               <div class="checkbox checkbox-warning inline">
-                <%= check_box_tag :roomsharing_filter, "", params[:roomsharing_filter] == "true" ? true : false,
+                <%= check_box_tag :roomsharing_filter, "".freeze, params[:roomsharing_filter] == "true".freeze ? true : false,
                     class: 'styled' %>
                 <label for="roomsharing_filter">
                   Roomshares
@@ -195,7 +195,7 @@
             <% if current_user.is_management? %>
               <div class="col-xs-6">
                 <div class="checkbox checkbox-warning inline">
-                  <%= check_box_tag :unassigned_filter, "", params[:unassigned_filter] == "true" ? true : false,
+                  <%= check_box_tag :unassigned_filter, "".freeze, params[:unassigned_filter] == "true".freeze   ? true : false,
                       class: 'styled' %>
                   <label for="unassigned_filter">
                     Unassigned
