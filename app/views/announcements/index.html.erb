@@ -70,8 +70,8 @@
 <hr />
 
 <div class="items">
-  <%= render partial: "announcements/items_list",
-    locals: { announcements: @announcements, shorten_text: false } %>
+  <%= render partial: 'announcements/announcement',
+      collection: @announcements, as: :announcement, locals: {shorten_text: false } %>
 </div>
 
 <div class="row vertical-padding">

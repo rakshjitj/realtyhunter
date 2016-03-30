@@ -64,7 +64,6 @@ class AnnouncementsController < ApplicationController
     end
 
   	def announcement_params
-
   		data = params.permit(:id,
         :limit, :res_limit, :com_limit, :sales_limit, :event_limit,
         :created_start, :created_end, :category_filter,
@@ -81,7 +80,6 @@ class AnnouncementsController < ApplicationController
         end
       end
 
-      #puts data
       data
     end
 

@@ -1,6 +1,1 @@
-if ($('#residential').length) {
-  $('#residential .announcements').html("<%= j(render partial: "residential_listings/announcements", locals: { announcements: @announcement_items }) %>");
-}
-if ($('#residential-mobile').length) {
-  $('#residential-mobile .announcements-wrapper').html("<%= j(render partial: "residential_listings/announcements_mobile", locals: { announcements: @announcement_items }) %>");
-}
+$('#residential .announcements').html("<%= j(render partial: 'residential_listings/announcements', locals: {announcement_items: @announcement_items}) %>");

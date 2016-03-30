@@ -1,1 +1,1 @@
-$('.items').html("<%= escape_javascript (render partial: 'announcements/items_list', locals: { announcements: @announcements } ) %>");
+$('.items').html("<%= escape_javascript (render partial: 'announcements/announcement', collection: @announcements, as: :announcement, locals: {shorten_text: false }) %>");

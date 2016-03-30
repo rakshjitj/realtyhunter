@@ -126,6 +126,7 @@ Rails.application.routes.draw do
       get 'print_private'
       post 'send_listings'
       get 'update_announcements'
+      get 'update_announcements_mobile'
       get 'assign_modal'
       post 'assign'
       get 'unassign_modal'
@@ -390,8 +391,6 @@ Rails.application.routes.draw do
     end
     collection do
       get :filter
-      #get :autocomplete_building_formatted_street_address
-      #get :get_units
     end
   end
   get 'announce' => 'announcements#new'

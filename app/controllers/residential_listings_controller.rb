@@ -233,6 +233,11 @@ class ResidentialListingsController < ApplicationController
     @announcement_items = Announcement.search({limit: params[:limit]})
   end
 
+  # uses different template, so must be separated into it's own function
+  def update_announcements_mobile
+    @announcement_items = Announcement.search({limit: params[:limit]})
+  end
+
   def assign_modal
     @listings = ResidentialListing.joins(:unit)
       .where("units.listing_id IN (?)", params[:listing_ids])

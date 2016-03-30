@@ -1,8 +1,0 @@
-<% announcements.each do |announcement| %>
-<div class="row">
-  <div class="col-md-12">
-    <%= render partial: 'announcements/announcement',
-      locals: { announcement: announcement, shorten_text: false } %>
-  </div>
-</div>
-<% end %>

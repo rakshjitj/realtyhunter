@@ -1,19 +1,37 @@
-
 <!-- display a row of 4 announcements on desktop, or 1 on mobile -->
 
 <div class="row">
   <div class="col-md-12 hidden-xs hidden-sm">
     <div class="announcements">
-      <%= render partial: "announcements/top_row",
-        locals: { announcements: @announcement_items, shorten_text: @shorten_text } %>
+      <div class="row row-sm-padding announcement-fixed-height listings-top-row">
+        <% @announcement_items.each_index do |idx| %>
+          <% if idx % 4 == 0 && idx > 0 %>
+            </div>
+            <div class="row row-sm-padding announcement-fixed-height">
+          <% end %>
+
+          <div class="col-md-3 ">
+            <%= render partial: 'announcements/announcement',
+              locals: { announcement: @announcement_items[idx], shorten_text: true } %>
+          </div>
+
+        <% end %>
+      </div>
+
     </div>
   </div>
-  <div class="col-md-12 hidden-md hidden-lg">
-    <div class="announcements">
-      <% if @announcement_items.length > 1 %>
-        <%= render partial: "announcements/top_row",
-          locals: { announcements: [@announcement_items[0]], shorten_text: @shorten_text } %>
-      <% end %>
+
+  <% if @announcement_items.length > 1 %>
+    <div class="col-md-12 hidden-md hidden-lg">
+      <div class="announcements">
+        <div class="row row-sm-padding announcement-fixed-height listings-top-row">
+          <div class="col-md-3 ">
+            <%= render partial: 'announcements/announcement',
+              locals: { announcement: @announcement_items[0], shorten_text: true } %>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  <% end %>
 </div>
+
