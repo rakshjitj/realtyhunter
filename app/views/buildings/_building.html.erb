@@ -1,15 +1,17 @@
 <tr class="<%= cycle('even', 'odd') -%>">
   <!-- IMAGES -->
-  <td>
+  <td class="img-col">
     <% if @bldg_imgs[building.id] %>
 
       <%= link_to(
-        image_tag(@bldg_imgs[building.id].file.url(:thumb),
-        alt: @bldg_imgs[building.id].file.url(:thumb)), building) %>
+        image_tag(@bldg_imgs[building.id],
+        alt: @bldg_imgs[building.id]), building) %>
 
     <% else %>
       <!-- placeholder image -->
-      <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), building) %>
+      <%= link_to(image_tag("listing_soon_thumb.png", alt: "Image coming soon",
+          class: 'img-responsive',
+          size: "100x100"), building) %>
     <% end %>
   </td>
 

@@ -8,11 +8,11 @@
     <!-- ****** IMAGE ****************************************** -->
     <td class="img-col">
       <% if @res_images[residential_listing.unit_id] %>
-        <%= link_to(image_tag(@res_images[residential_listing.unit_id].file.url(:thumb),
-        alt: @res_images[residential_listing.unit_id].file.url(:thumb)), residential_listing) %>
+        <%= link_to(image_tag(@res_images[residential_listing.unit_id],
+        alt: @res_images[residential_listing.unit_id]), residential_listing) %>
       <% else %>
         <!-- placeholder image -->
-        <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon",
+        <%= link_to(image_tag("listing_soon_thumb.png", alt: "Image coming soon",
           class: 'img-responsive',
           size: "100x100"), residential_listing) %>
       <% end %>

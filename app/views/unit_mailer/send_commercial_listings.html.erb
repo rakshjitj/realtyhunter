@@ -42,11 +42,14 @@
 
 		<td style="max-width: 200px; vertical-align: top;">
 			<% if @images[listing.unit_id] %>
-	      <a href="<%= listing.public_url %>"><%= image_tag(@images[listing.unit_id].file.url(:thumb),
-	        alt: @images[listing.unit_id].file.url(:thumb)) %></a>
+	      <a href="<%= listing.public_url %>"><%= image_tag(@images[listing.unit_id],
+	        alt: @images[listing.unit_id]) %></a>
 	    <% else %>
 	      <!-- placeholder image -->
-	      <a href="<%= listing.public_url %>"><%= image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100") %></a>
+	      <a href="<%= listing.public_url %>">
+	      	<%= image_tag("listing_soon_thumb.png", alt: "Image coming soon",
+	      			class: 'img-responsive', size: "100x100") %>
+	      </a>
 	    <% end %>
 	  	<br />
 	    <%= rent_formatted(listing.rent) %><br />

@@ -175,8 +175,8 @@ class User < ActiveRecord::Base
 
   # for use in search method below
   def self.get_images(list)
-    user_ids = list.map(&:id)
-    Image.where(user_id: user_ids).index_by(&:user_id)
+    imgs = Image.where(user_id: list.map(&:id))
+    Hash[imgs.map {|img| [img.user_id, img.file.url(:thumb)]}]
   end
 
   def self.search(query_params, current_user)
@@ -325,10 +325,10 @@ class User < ActiveRecord::Base
   end
 
   # wufoo forms permission
-  def is_wufoo_forms?    
+  def is_wufoo_forms?
     wufoo_roles = [
       :super_admin,
-      :company_admin,      
+      :company_admin,
       :manager]
     wufoo_roles.each do |r|
       return true if self.has_role? r

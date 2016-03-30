@@ -98,8 +98,8 @@ class SalesListing < ActiveRecord::Base
   # for use in search method below
   # returns the first image for each unit
   def self.get_images(list)
-    unit_ids = list.map(&:unit_id)
-    Image.where(unit_id: unit_ids, priority: 0).index_by(&:unit_id)
+    imgs = Image.where(unit_id: list.map(&:unit_id), priority: 0)
+    Hash[imgs.map {|img| [img.unit_id, img.file.url(:thumb)]}]
   end
 
   # returns all images for each unit
@@ -406,7 +406,7 @@ class SalesListing < ActiveRecord::Base
         rent: runit.rent }
 
       if images[runit.unit_id]
-        unit_info['image'] = images[runit.unit_id].file.url(:thumb)
+        unit_info['image'] = images[runit.unit_id]
       end
 
       if map_infos.has_key?(street_address)
