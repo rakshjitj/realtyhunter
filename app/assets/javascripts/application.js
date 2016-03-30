@@ -14,6 +14,7 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require bootsy
+//= require jquery.ui.all
 //= require html.sortable.min
 //= require turbolinks
 //= require_tree .
