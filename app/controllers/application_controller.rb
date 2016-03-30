@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :logged_in_user
   #before_action :set_locale
   before_action ->{ @remote_ip = request.headers['REMOTE_ADDR'] }
+  before_filter :check_rack_mini_profiler
   after_filter :clear_xhr_flash
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -39,6 +40,13 @@ class ApplicationController < ActionController::Base
       }
       format.xml  { head :conflict }
       format.json { head :conflict }
+    end
+  end
+
+  def check_rack_mini_profiler
+    # for example - if current_user.admin?
+    if params[:rmp]
+      Rack::MiniProfiler.authorize_request
     end
   end
 

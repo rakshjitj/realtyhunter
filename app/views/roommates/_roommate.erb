@@ -6,14 +6,15 @@
     </td>
 
     <!-- ****** IMAGE ****************************************** -->
-    <td>
+    <td class="img-col">
       <!-- user uploaded an image from wufoo -->
       <% if roommate.upload_picture_of_yourself %>
         <%= link_to(image_tag(roommate.upload_picture_of_yourself, class: 'img-responsive', size:'100x100',
           alt: roommate.upload_picture_of_yourself), roommate) %>
       <% else %>
         <!-- placeholder image -->
-        <%= link_to(image_tag("listing_soon.png", alt: "Image coming soon", :size => "100x100"), roommate) %>
+        <%= link_to(image_tag("listing_soon_thumb.png".freeze, alt: "Image coming soon",
+            class: 'img-responsive', size: "100x100"), roommate) %>
       <% end %>
     </td>
 

@@ -181,11 +181,12 @@ class BuildingsController < ApplicationController
       @buildings = custom_sort
       @buildings = @buildings.page params[:page]
       @bldg_imgs = Building.get_images(@buildings)
+      @listing_placeholder_png = "listing_soon_thumb.png".freeze
     end
 
     def custom_sort
-      sort_column = building_params[:sort_by] || "formatted_street_address"
-      sort_order = %w[asc desc].include?(building_params[:direction]) ? building_params[:direction] : "asc"
+      sort_column = building_params[:sort_by] || "formatted_street_address".freeze
+      sort_order = %w[asc desc].include?(building_params[:direction]) ? building_params[:direction] : "asc".freeze
       # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order
@@ -199,10 +200,10 @@ class BuildingsController < ApplicationController
       param_obj = building_params
       param_obj[:building].each{ |k,v| param_obj[k] = v };
 
-      param_obj.delete("building")
+      param_obj.delete("building".freeze)
       # delete so that this field doesn't conflict with our foreign key
       @neighborhood_name = param_obj[:neighborhood]
-      param_obj.delete("neighborhood")
+      param_obj.delete("neighborhood".freeze)
 
       if is_new
         @building = Building.new(param_obj)

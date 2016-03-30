@@ -10,7 +10,7 @@ class Image < ActiveRecord::Base
       thumb: {
         geometry: '100x100>',
         rotation: a.instance.rotation
-        #processors: [:rotator]        
+        #processors: [:rotator]
       },
       # square: {
       #   geometry: '200x200#',
@@ -54,7 +54,7 @@ class Image < ActiveRecord::Base
   def apply_processors
     if self.user_id.present? or self.company_id.present?
       [:rotator]
-    else      
+    else
       [:rotator, :watermark]
     end
   end

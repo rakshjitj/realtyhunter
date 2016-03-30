@@ -9,22 +9,22 @@ module BuildingsHelper
 				building.pet_policy_name.titleize
 			end
 		else
-			"-"
+			"-".freeze
 		end
 	end
-	
+
 	def short_location_title(building)
 		if building.respond_to?("neighborhood_name".to_sym)
 			if building.neighborhood_name
-	      "<small>#{building.neighborhood_name}</small>".html_safe
+	      "<small>#{building.neighborhood_name}</small>".html_safe.freeze
 	    else
-	    	""
+	    	"".freeze
 	    end
 		else
 			if building.neighborhood
-	      "<small>#{building.neighborhood.name}</small>".html_safe
+	      "<small>#{building.neighborhood.name}</small>".html_safe.freeze
 	    else
-	    	""
+	    	"".freeze
 	    end
 	  end
 	end

@@ -40,7 +40,7 @@ module API
 						primary_agents: @primary_agents[listings[0].unit_id],
 						building_amenities: @building_amenities[listings[0].building_id],
 						images: @images[listings[0].unit_id],
-						open_houses: @open_houses[listings[0].unit_id],
+						open_houses: @open_houses[listings[0].unit_id]
 						})
 				else
 					render json: {}
@@ -50,7 +50,7 @@ module API
 		protected
 
 			def _is_valid_bool_value(val)
-				val = %w[true false 0 1].include?(val) ? val : ""
+				val = %w[true false 0 1].include?(val) ? val : "".freeze
 			end
 
 			# set some reasonable defaults for the search params,
@@ -58,11 +58,11 @@ module API
 			def restrict_results
 				# 10 = residential, 20 = sales, 30 = commercial
 				# default to residential
-				@listing_type = %w[10 20 30].include?(listing_params[:listing_type]) ? listing_params[:listing_type] : ""
+				@listing_type = %w[10 20 30].include?(listing_params[:listing_type]) ? listing_params[:listing_type] : "".freeze
 				# 10 - studio, 20 - 1 BR, 30 - 2 BR, 40 - 3 BR, 50 - 4+ BR, 80 - LOFT
-				layout = %w[10 20 30 40 50 80].include?(listing_params[:layout]) ? listing_params[:layout] : ""
+				layout = %w[10 20 30 40 50 80].include?(listing_params[:layout]) ? listing_params[:layout] : "".freeze
 				# 10 - 1 B, 15 - 1.5 B, 20 - 2 B, 25 - 2.5 B, 30 - 3 B, 35 - 3.5+ B
-				bathrooms = %w[10 15 20 25 30 35].include?(listing_params[:bathrooms]) ? listing_params[:bathrooms] : ""
+				bathrooms = %w[10 15 20 25 30 35].include?(listing_params[:bathrooms]) ? listing_params[:bathrooms] : "".freeze
 				# cats allowed
 				cats_allowed = _is_valid_bool_value(listing_params[:cats_allowed])
 				# dogs allowed
@@ -78,9 +78,9 @@ module API
 				# has_photos
 				has_photos = _is_valid_bool_value(listing_params[:has_photos])
 				# sort order defaults to order by last udpated
-				sort_column = %w[layout rent date_available updated status_updated].include?(listing_params[:sort]) ? listing_params[:sort] : "updated"
+				sort_column = %w[layout rent date_available updated status_updated].include?(listing_params[:sort]) ? listing_params[:sort] : "updated".freeze
 				# sort_dir
-				sort_dir = %w[asc desc].include?(listing_params[:sort_dir]) ? listing_params[:sort_dir] : ""
+				sort_dir = %w[asc desc].include?(listing_params[:sort_dir]) ? listing_params[:sort_dir] : "".freeze
 				# pagination
 				per_page = 50
 				if listing_params[:per_page] && !listing_params[:per_page].empty?
@@ -129,7 +129,7 @@ module API
 				@building_utilities = []
 				@open_houses = []
 
-				if search_params[:listing_type] == "10" # residential
+				if search_params[:listing_type] == "10".freeze # residential
 					@listings = residential_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
 					@pet_policies = Building.get_pet_policies(@listings)
@@ -138,12 +138,12 @@ module API
 					@residential_amenities = ResidentialListing.get_amenities(@listings)
 
 				# sales
-				elsif search_params[:listing_type] == "20" # sales
+				elsif search_params[:listing_type] == "20".freeze # sales
 					@listings = sales_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
 
 				# commercial
-				elsif search_params[:listing_type] == "30" #commercial
+				elsif search_params[:listing_type] == "30".freeze #commercial
 					@listings = commercial_search(@user.company_id, search_params)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
 
@@ -177,8 +177,6 @@ module API
 						open_houses: @open_houses[l.unit_id]
 						})
 				end
-
-				puts "^^^^^^^ #{output.inspect}"
 
 				@lb = ListingBlob.new({
 					items: output,

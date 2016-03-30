@@ -267,7 +267,7 @@ class RoommatesController < ApplicationController
 
       # set a default status if none otherwise specified
       if params[:status].blank?
-        params[:status] = 'Unmatched'
+        params[:status] = 'Unmatched'.freeze
       end
 
       @roommates = Roommate.search(params)
@@ -276,11 +276,11 @@ class RoommatesController < ApplicationController
   	end
 
   	def custom_sort
-      sort_column = params[:sort_by] || "submitted_date"
-      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
+      sort_column = params[:sort_by] || "submitted_date".freeze
+      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc".freeze
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      @roommates = @roommates.order(sort_column + ' ' + sort_order)
+      @roommates = @roommates.order("#{sort_column} #{sort_order}")
       @roommates
   	end
 
