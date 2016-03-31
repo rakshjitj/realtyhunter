@@ -9,7 +9,7 @@
 
     <% else %>
       <!-- placeholder image -->
-      <%= link_to(image_tag(@listing_placeholder_png, alt: "Image coming soon",
+      <%= link_to(image_tag("listing_soon_thumb.png".freeze, alt: "Image coming soon",
           class: 'img-responsive',
           size: "100x100"), building) %>
     <% end %>

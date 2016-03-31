@@ -543,9 +543,7 @@ class ResidentialListing < ActiveRecord::Base
       end
     end
 
-    unit_ids = listings.map(&:unit_id)
-    images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
-
+    images = ResidentialListing.get_images(listings)
     return listings, images
   end
 
@@ -580,9 +578,7 @@ class ResidentialListing < ActiveRecord::Base
       end
     end
 
-    unit_ids = listings.map(&:unit_id)
-    images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
-
+    images = ResidentialListing.get_images(listings)
     return listings, images
   end
 

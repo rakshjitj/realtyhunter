@@ -11,7 +11,7 @@
           alt: @com_images[commercial_listing.unit_id]), commercial_listing) %>
       <% else %>
         <!-- placeholder image -->
-        <%= link_to(image_tag("listing_soon_thumb.png", alt: "Image coming soon",
+        <%= link_to(image_tag("listing_soon_thumb.png".freeze, alt: "Image coming soon",
           class: 'img-responsive',
           size: "100x100"), commercial_listing) %>
       <% end %>

@@ -181,7 +181,6 @@ class BuildingsController < ApplicationController
       @buildings = custom_sort
       @buildings = @buildings.page params[:page]
       @bldg_imgs = Building.get_images(@buildings)
-      @listing_placeholder_png = "listing_soon_thumb.png".freeze
     end
 
     def custom_sort

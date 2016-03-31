@@ -341,9 +341,7 @@ class CommercialListing < ActiveRecord::Base
       end
     end
 
-    unit_ids = listings.map(&:unit_id)
-    images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
-
+    images = CommercialListing.get_images(listings)
     return listings, images
   end
 
@@ -393,9 +391,7 @@ class CommercialListing < ActiveRecord::Base
       end
     end
 
-    unit_ids = listings.map(&:unit_id)
-    images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
-
+    images = CommercialListing.get_images(listings)
     return listings, images
   end
 

@@ -326,7 +326,6 @@ class ResidentialListingsController < ApplicationController
       # only get data + images for paginated responses
       @residential_units = @residential_units.page params[:page]
       @favorite_units = @residential_units.where(favorites: true)
-      @image_placeholder_png = "listing_soon_thumb.png".freeze
     end
 
     # def async_create_csv
