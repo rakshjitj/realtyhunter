@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 ruby '2.3.0'
+gem 'mime-types', '~> 3.0'#, require: 'mime/types/columnar'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.3'
 # Use postgres as the database for Active Record
@@ -80,6 +81,7 @@ group :production do
 	gem 'wkhtmltopdf-heroku', '~> 2.12.2.1'
   gem 'connection_pool'
   gem 'newrelic_rpm'
+  gem 'skylight'
 end
 
 group :development, :test do
@@ -90,6 +92,10 @@ group :development, :test do
   # gem 'web-console', '~> 2.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  gem 'rack-mini-profiler'
+  gem 'flamegraph'
+  gem 'stackprof'
+  gem 'memory_profiler'
 end
 
 group :development do
@@ -98,10 +104,7 @@ group :development do
   #gem 'sql-logging'
   #gem 'better_errors'
   #gem 'derailed'
-  gem 'rack-mini-profiler'
-  gem 'flamegraph'
-  gem 'stackprof'
-  gem 'memory_profiler'
+
 end
 
 group :test do
