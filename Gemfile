@@ -3,9 +3,9 @@ source 'https://rubygems.org'
 ruby '2.3.0'
 gem 'mime-types', '~> 3.0'#, require: 'mime/types/columnar'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.3'
+gem 'rails', '~> 4.2.3'
 # Use postgres as the database for Active Record
-gem 'pg'
+gem 'pg', '~> 0.18.4'
 #gem 'sprockets-rails', :require => 'sprockets/railtie'
 #gem 'sqlite3'
 # Use SCSS for stylesheets
@@ -17,31 +17,31 @@ gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
-gem 'jquery-ui-sass-rails'
+gem 'jquery-rails', '~> 4.1.0'
+gem 'jquery-ui-sass-rails', '~> 4.0.3.0'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
-gem 'jquery-turbolinks'
+gem 'turbolinks', '~> 2.5.3'
+gem 'jquery-turbolinks', '~> 2.1.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 #gem 'sdoc', '~> 0.4.0', group: :doc
 ## Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
-gem 'bootstrap-sass', '~> 3.3.4'
-gem 'kaminari'
-gem 'bootstrap-kaminari-views'
-gem 'jquery-infinite-pages'
-gem 'autoprefixer-rails'
+gem 'bootstrap-sass', '>= 3.3.4'
+gem 'kaminari', '~> 0.16.3'
+gem 'bootstrap-kaminari-views', '~> 0.0.5'
+gem 'jquery-infinite-pages', '~> 0.2.0'
+gem 'autoprefixer-rails', '~> 6.3.3.1'
 # for handling single image uploads
 gem "paperclip"
-gem 'aws-sdk-v1' #paperclip
+gem 'aws-sdk-v1', '~> 1.52.0' #paperclip
 # ajax drag/dropping multiple files
-gem 'dropzonejs-rails'
+gem 'dropzonejs-rails', '~> 0.7.3'
 # sending emails
-gem 'mandrill-api'
+gem 'mandrill-api', '~> 1.0.53'
 # roles authorization
-gem "rolify"
+gem "rolify", '~> 5.0.0'
 gem 'cancancan', '~> 1.10'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -49,8 +49,8 @@ gem 'cancancan', '~> 1.10'
 #gem 'faker'
 # gem 'ffaker'
 # autocomplete fields (like building addresses in our case)
-gem 'rails4-autocomplete'
-gem 'wicked_pdf'
+gem 'rails4-autocomplete', '1.1.1'
+gem 'wicked_pdf', '1.0.5'
 # trying to get past font/cors issues...
 gem 'rack-cors', require: 'rack/cors'
 # used for our rake tasks to import data
@@ -58,14 +58,14 @@ gem 'mechanize'
 # make sure we handle time zones correctly
 gem 'local_time'
 # caching
-gem 'dalli'
+gem 'dalli', '~> 2.7.6'
 # background workers
 gem 'redis-rails'
 gem 'resque', '~> 1.22.0'
-gem 'delayed_paperclip'
+gem 'delayed_paperclip', '>= 2.9.1'
 gem 'momentjs-rails', '>= 2.9.0'
-gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
-gem 'rollbar', '~> 1.2.7'
+gem 'bootstrap3-datetimepicker-rails', '>= 4.14.30'
+
 gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
 gem 'bootsy'
 # wufoo
@@ -74,28 +74,24 @@ gem 'wuparty'
 gem 'selectize-rails'
 gem 'nested_form_fields'
 gem 'puma_worker_killer'
+gem 'rollbar', '~> 2.8.3'
 
 group :production do
-	gem 'rails_12factor' # related to serving static assets
+	gem 'rails_12factor', '0.0.3' # related to serving static assets
 	gem 'puma'
 	gem 'wkhtmltopdf-heroku', '~> 2.12.2.1'
-  gem 'connection_pool'
-  gem 'newrelic_rpm'
-  gem 'skylight'
+  gem 'connection_pool', '~> 2.2.0'
+  gem 'newrelic_rpm', '~> 3.15.0.314'
 end
 
 group :development, :test do
   gem 'wkhtmltopdf-binary-edge', '~> 0.12.2.1'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
+  gem 'byebug', '8.2.2'
   # Access an IRB console on exception pages or by using <%= console %> in views
   # gem 'web-console', '~> 2.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'rack-mini-profiler'
-  gem 'flamegraph'
-  gem 'stackprof'
-  gem 'memory_profiler'
+  gem 'spring', '1.6.4'
 end
 
 group :development do
@@ -104,7 +100,10 @@ group :development do
   #gem 'sql-logging'
   #gem 'better_errors'
   #gem 'derailed'
-
+  gem 'rack-mini-profiler'
+  gem 'flamegraph'
+  gem 'stackprof'
+  gem 'memory_profiler'
 end
 
 group :test do
