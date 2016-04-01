@@ -1,6 +1,6 @@
 class ApplicationMailer < ActionMailer::Base
   default from: "no-reply@realtyhunter.com"
   helper ApplicationHelper
-  helper ResidentialUnitsHelper
+  helper ResidentialListingsHelper
   layout 'mailer'
 end
