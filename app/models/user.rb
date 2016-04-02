@@ -4,8 +4,8 @@ class User < ActiveRecord::Base
   scope :unarchived, ->{where(archived: false)}
 
   has_and_belongs_to_many :roles, :join_table => :users_roles
-  belongs_to :office
-  belongs_to :company
+  belongs_to :office, touch: true
+  belongs_to :company, touch: true
   belongs_to :manager, :class_name => "User"
   belongs_to :employee_title
   has_many   :subordinates, :class_name => "User", :foreign_key => "manager_id"
@@ -471,4 +471,5 @@ class User < ActiveRecord::Base
       end
       #puts "done"
     end
+
 end

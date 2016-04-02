@@ -6,7 +6,6 @@ class SalesListingsController < ApplicationController
     :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood, :fee_options]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
-  etag { current_user.id }
 
   def index
     respond_to do |format|

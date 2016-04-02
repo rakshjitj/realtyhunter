@@ -1,6 +1,5 @@
 class NeighborhoodsController < ApplicationController
   before_action :set_neighborhood, only: [:show, :edit, :update, :destroy]
-  etag { current_user.id }
 
   # GET /neighborhoods
   # GET /neighborhoods.json

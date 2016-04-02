@@ -2,7 +2,6 @@ class CompaniesController < ApplicationController
   load_and_authorize_resource
   skip_before_action :logged_in_user, only: [:new, :create]
   before_action :set_company, except: [:new, :filter, :create, :index]
-  etag { current_user.id }
 
   # GET /companies
   # GET /companies.json

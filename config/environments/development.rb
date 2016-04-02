@@ -11,7 +11,6 @@ Rails.application.configure do
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
-  config.action_controller.perform_caching = false
 
   # Care if the mailer can't send.
   # Enable email previews
@@ -29,7 +28,7 @@ Rails.application.configure do
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
-  config.assets.debug = true
+  config.assets.debug = false
 
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
   # yet still be able to expire them through the digest params.
@@ -45,7 +44,6 @@ Rails.application.configure do
 
   config.paperclip_defaults = {
     storage: :s3,
-    #s3_host_alias: 'd3829jye59v7xw.cloudfront.net',
     s3_protocol: :https,
     s3_credentials: {
       bucket: ENV['S3_AVATAR_BUCKET'],
@@ -54,18 +52,7 @@ Rails.application.configure do
     }
   }
 
-  # Use a different cache store in production.
-  #config.cache_store = :mem_cache_store
-  #config.cache_store = :dalli_store#,
-    # (ENV["MEMCACHIER_SERVERS"] || "").split(","),
-    # {:username => ENV["MEMCACHIER_USERNAME"],
-    #  :password => ENV["MEMCACHIER_PASSWORD"],
-    #  :failover => true,
-    #  :socket_timeout => 1.5,
-    #  :socket_failure_delay => 0.2
-    # }
-    #{ :namespace => 'realty-monster', :expires_in => 1.day, :compress => true },
-    #{ :pool_size => 5 }
+  config.cache_store = :redis_store, "redis://localhost:6379/0/cache"
   config.action_controller.perform_caching = true
 
 end

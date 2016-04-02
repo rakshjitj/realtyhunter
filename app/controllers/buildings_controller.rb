@@ -4,7 +4,6 @@ class BuildingsController < ApplicationController
   before_action :set_building, except: [:index, :new, :create, :filter, :filter_listings,
     :refresh_images, :neighborhood_options, :autocomplete_building_formatted_street_address]
   autocomplete :building, :formatted_street_address, where: {archived: false}, full: true
-  etag { current_user.id }
 
   # GET /buildings
   # GET /buildings.json

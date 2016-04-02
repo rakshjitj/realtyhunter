@@ -12,7 +12,7 @@ class Announcement < ActiveRecord::Base
     entries = Announcement.joins(:user)
       .select('announcements.id', 'announcements.updated_at', 'announcements.category',
         'announcements.note', 'users.name AS sender_name')
-      .limit(params[:limit]).uniq
+      .limit(params[:limit])#.uniq
 
     if !params[:created_start].blank?
       entries = entries.where('announcements.created_at > ?', params[:created_start]);

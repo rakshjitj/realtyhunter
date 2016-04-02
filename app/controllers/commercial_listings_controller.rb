@@ -5,7 +5,6 @@ class CommercialListingsController < ApplicationController
     :neighborhoods_modal, :features_modal, :print_public, :print_private, :send_message]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
-  etag { current_user.id }
 
   def index
     respond_to do |format|

@@ -3,7 +3,6 @@ class OfficesController < ApplicationController
   skip_load_resource only: :create
   before_action :set_company, except: [:destroy]
   before_action :set_office, except: [:new, :create, :index]
-  etag { current_user.id }
 
   # GET /offices
   # GET /offices.json

@@ -95,12 +95,6 @@ class ResidentialListing < ActiveRecord::Base
     Hash[imgs.map {|img| [img.unit_id, img.file.url(:thumb)]}]
   end
 
-  # returns all images for each unit
-  # def self.get_all_images(list)
-  #   unit_ids = list.map(&:unit_id)
-  #   Image.where(unit_id: unit_ids).to_a.group_by(&:unit_id)
-  # end
-
   def self.get_amenities(list)
     ids = list.map(&:id)
     ResidentialAmenity.where(residential_listing_id: ids).select('name').to_a.group_by(&:residential_listing_id)

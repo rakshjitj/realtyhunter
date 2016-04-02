@@ -1,7 +1,6 @@
 class DocumentsController < ApplicationController
   before_action :set_document, only: [:destroy]
   before_action :set_unit, except: [:destroy]
-  etag { current_user.id }
 
   # POST /documents
   # POST /documents.json
