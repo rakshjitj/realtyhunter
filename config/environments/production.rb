@@ -12,7 +12,6 @@
 
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
-  config.action_controller.perform_caching = true
 
   # Enable Rack::Cache to put a simple HTTP cache in front of your application
   # Add `rack-cache` to your Gemfile before enabling this.
@@ -54,20 +53,7 @@
   # Use a different logger for distributed setups.
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
 
-  # Use a different cache store in production.
-  #config.cache_store = :mem_cache_store
-  config.cache_store = :dalli_store,
-    (ENV["MEMCACHIER_SERVERS"] || "").split(","),
-    {namespace: 'myspace-realty-monster',
-     username: ENV["MEMCACHIER_USERNAME"],
-     password: ENV["MEMCACHIER_PASSWORD"],
-     #:pool_size => 7,
-     failover: true,
-     socket_timeout: 1.5,
-     socket_failure_delay: 0.2,
-     compress: true
-    }
-    #{ :pool_size => 5 }
+  config.cache_store = :redis_store #, "redis://localhost:6379/0/cache"
   config.action_controller.perform_caching = true
 
   # Ignore bad email addresses and do not raise email delivery errors.
@@ -116,6 +102,4 @@
       :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'],
     }
   }
-
-  #config.middleware.use Rack::TwilioWebhookAuthentication, ENV["TWILIO_AUTH_TOKEN"], '/voice'
 end

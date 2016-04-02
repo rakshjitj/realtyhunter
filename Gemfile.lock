@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/rails-api/active_model_serializers.git
-  revision: b73b780b7961b7708a40aefd016bb543a4e8137c
+  revision: e11859905297a737cfe43657ceddd602b0f2284f
   specs:
     active_model_serializers (0.10.0.rc4)
       actionpack (>= 4.0)
@@ -85,7 +85,6 @@ GEM
     coffee-script-source (1.10.0)
     concurrent-ruby (1.0.1)
     connection_pool (2.2.0)
-    dalli (2.7.6)
     database_cleaner (1.5.1)
     delayed_paperclip (2.9.1)
       paperclip (>= 3.3)
@@ -320,7 +319,6 @@ DEPENDENCIES
   byebug (= 8.2.2)
   cancancan (~> 1.10)
   connection_pool (~> 2.2.0)
-  dalli (~> 2.7.6)
   database_cleaner
   delayed_paperclip (>= 2.9.1)
   dropzonejs-rails (~> 0.7.3)

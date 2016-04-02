@@ -351,7 +351,7 @@ class ResidentialListingsController < ApplicationController
 
       # default to searching for active units
       if !params[:status]
-        params[:status] = "active"
+        params[:status] = "active".freeze
       end
       # parse neighborhood ids into strings for display in the view
       @selected_neighborhoods = []

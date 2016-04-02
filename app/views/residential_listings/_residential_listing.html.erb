@@ -1,3 +1,4 @@
+<% cache(residential_listing) do %>
   <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= residential_listing.listing_id %>" >
 
     <!-- ****** checkboxes ****************************************** -->
@@ -20,7 +21,7 @@
 
     <!-- ****** ADDRESS ****************************************** -->
     <td>
-      <%= link_to "#{residential_listing.street_address}", residential_listing_path(residential_listing.id) %><br />
+      <%= link_to "#{residential_listing.street_address}".freeze, residential_listing_path(residential_listing.id) %><br />
       <% if residential_listing.neighborhood_name %>
         <small><%= residential_listing.neighborhood_name %></small>
       <% end %>
@@ -134,3 +135,4 @@
       </td>
     <% end %>
   </tr>
+<% end %><!-- cache -->
