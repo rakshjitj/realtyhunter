@@ -10,13 +10,15 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+// these 2 must be first:
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require bootsy
 //= require jquery.ui.all
 //= require html.sortable.min
-//= require turbolinks
+// mapbox
+// leaflet.markercluster
 //= require_tree .
 //= require bootstrap-sprockets
 //= require jquery.geocomplete.min
@@ -30,6 +32,8 @@
 //= require jquery.infinite-pages
 //= require jquery.touchSwipe.min
 //= require nested_form_fields
+// must be last:
+//= require turbolinks
 
 $(document).ready(function() {
 	// change all date input fields to auto-open the calendar
