@@ -155,7 +155,7 @@ module API
 
 				# if cached, render cached blob
 				listings_arr = @listings.to_a
-				blob_cache_key = 'api_v1_listings/#{}-#{}-#{}', listings_arr.map(&:unit_id), listings_arr.count, @listings.maximum(:updated_at)
+				blob_cache_key = "api_v1_listings/#{listings_arr.map(&:unit_id).join('')}-#{listings_arr.count}-#{@listings.maximum(:updated_at).to_i}"
 				blob = Rails.cache.fetch(blob_cache_key) do
 					if search_params[:listing_type] == "10".freeze # residential
 						@pet_policies = Building.get_pet_policies(@listings)
