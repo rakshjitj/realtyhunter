@@ -1,3 +1,4 @@
+cache "truila/#{@listings.map(&:unit_id).join('')}-#{@listings.to_a.count}-#{@listings.maximum(:updated_at).to_i}" do
 # url looks like <base_url>/syndication/1/trulia
 xml.instruct! :xml, :version => "1.0"
 
@@ -163,4 +164,5 @@ xml.hotPadsItems version:"2.1" do
 		end
 	end
 
+end
 end
