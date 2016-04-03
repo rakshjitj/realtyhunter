@@ -1,3 +1,5 @@
+<% cache(@residential_unit) do %>
+
 <% provide(:title, @residential_unit.street_address_and_unit) %>
 
 <div class="res-show-page-wrapper">
@@ -641,3 +643,4 @@
 </div>
 
 </div><!-- res-show-page-wrapper -->
+<% end %><!-- cache -->
