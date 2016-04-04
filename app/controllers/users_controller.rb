@@ -5,6 +5,7 @@ class UsersController < ApplicationController
     :admin_create, :update_offices, :autocomplete_user_name, :destroy, :unarchive]
   before_action :set_company, except: [:update_offices]
   autocomplete :user, :name, full: true
+  etag { current_user.try :id }
 
   # GET /users
   # GET /users.json
@@ -51,8 +52,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    # TODO: only show if this is an active user
-    #fresh_when([@user, @user.image])
+    fresh_when(@user)
   end
 
   # GET /update_offices

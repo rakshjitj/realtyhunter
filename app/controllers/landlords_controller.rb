@@ -4,6 +4,7 @@ class LandlordsController < ApplicationController
   before_action :set_landlord, except: [:index, :new, :create, :filter,
     :filter_listings, :autocomplete_landlord_code]
   autocomplete :landlord, :code, where: {archived: false}, full: true
+  etag { current_user.try :id }
 
   # GET /landlords
   # GET /landlords.json
@@ -43,6 +44,7 @@ class LandlordsController < ApplicationController
   # GET /landlords/1
   # GET /landlords/1.json
   def show
+    fresh_when(@landlord)
   end
 
   # GET /landlords/new

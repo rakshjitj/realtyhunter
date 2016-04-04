@@ -4,6 +4,7 @@ class BuildingsController < ApplicationController
   before_action :set_building, except: [:index, :new, :create, :filter, :filter_listings,
     :refresh_images, :neighborhood_options, :autocomplete_building_formatted_street_address]
   autocomplete :building, :formatted_street_address, where: {archived: false}, full: true
+  etag { current_user.try :id }
 
   # GET /buildings
   # GET /buildings.json
@@ -40,6 +41,7 @@ class BuildingsController < ApplicationController
   # GET /buildings/1
   # GET /buildings/1.json
   def show
+    fresh_when(@building)
   end
 
   # GET /buildings/new

@@ -33,6 +33,7 @@ class SalesListingsController < ApplicationController
   end
 
   def show
+    fresh_when(@sales_unit)
   end
 
   def new

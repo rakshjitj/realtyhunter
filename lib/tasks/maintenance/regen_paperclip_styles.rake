@@ -4,6 +4,7 @@ namespace :maintenance do
 
     error_log = []
     imgs = Image.all
+    # todo: use find_each to batch process
 		imgs.each do |i|
       if i.user_id.nil? && i.company_id.nil? &&
           i.unit && i.unit.residential_listing && !i.unit.residential_listing.tenant_occupied &&

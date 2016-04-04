@@ -1,4 +1,4 @@
-class SyndicationController < ApplicationController
+  class SyndicationController < ApplicationController
   skip_authorize_resource
   skip_before_action :logged_in_user
   protect_from_forgery with: :null_session
@@ -6,23 +6,14 @@ class SyndicationController < ApplicationController
 
   def naked_apts
     set_listings
-    respond_to do |format|
-      format.rss { render :layout => false }
-    end
   end
 
   def streeteasy
     set_listings
-    respond_to do |format|
-      format.rss { render :layout => false }
-    end
   end
 
   def trulia
     set_listings
-    respond_to do |format|
-      format.rss { render :layout => false }
-    end
   end
 
   def set_listings
@@ -36,12 +27,21 @@ class SyndicationController < ApplicationController
         @listings = trulia_listings(@company.id, syndication_params)
       end
 
-      @pet_policies = Building.get_pet_policies(@listings)
-      @residential_amenities = ResidentialListing.get_amenities(@listings)
-      @building_amenities = Building.get_amenities(@listings)
-      @images = Unit.get_all_images(@listings)
-      @utilities = Building.get_utilities(@listings)
-      @primary_agents, @agent_images = Unit.get_primary_agents_and_images(@listings)
+      if stale?(@listings)
+        listings_arr = @listings.to_a
+        @pet_policies = Building.get_pet_policies(@listings)
+        @residential_amenities = ResidentialListing.get_amenities(@listings)
+        @building_amenities = Building.get_amenities(@listings)
+        @images = Unit.get_all_images(@listings)
+        @utilities = Building.get_utilities(@listings)
+
+        # can you cache a function like this?
+        @primary_agents, @agent_images = Unit.get_primary_agents_and_images(@listings)
+
+        respond_to do |format|
+          format.rss { render :layout => false }
+        end
+      end
     end
   end
 

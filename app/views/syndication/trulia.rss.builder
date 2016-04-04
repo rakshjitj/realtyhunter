@@ -165,4 +165,4 @@ xml.hotPadsItems version:"2.1" do
 	end
 
 end
-end
+end #cache

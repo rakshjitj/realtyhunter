@@ -6,6 +6,7 @@ class ResidentialListingsController < ApplicationController
     :inaccuracy_modal, :send_inaccuracy, :refresh_images, :refresh_documents]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
+  etag { current_user.try :id }
 
   def index
     respond_to do |format|
@@ -37,6 +38,7 @@ class ResidentialListingsController < ApplicationController
   end
 
   def show
+    fresh_when(@residential_unit)
   end
 
   def new
@@ -312,22 +314,24 @@ class ResidentialListingsController < ApplicationController
           .where(state: current_user.office.administrative_area_level_1_short)
           .to_a
           .group_by(&:borough)
-
       @building_amenities = BuildingAmenity.where(company: current_user.company)
-
       @unit_amenities = ResidentialAmenity.where(company: current_user.company)
 
       do_search
-      custom_sort
+      if stale?(@residential_units) # todo: verify this works.. don't think it will
+        custom_sort
 
-      @res_images = ResidentialListing.get_images(@residential_units)
+        # lazy
+        @res_images = ResidentialListing.get_images(@residential_units)
 
-      # display all found listings on the map
-      @map_infos = ResidentialListing.set_location_data(@residential_units.to_a, @res_images)
+        # new query
+        # display all found listings on the map
+        @map_infos = ResidentialListing.set_location_data(@residential_units.to_a, @res_images)
 
-      # only get data + images for paginated responses
-      @residential_units = @residential_units.page params[:page]
-      @favorite_units = @residential_units.where(favorites: true)
+        # only get data + images for paginated responses
+        @residential_units = @residential_units.page params[:page]
+        @favorite_units = @residential_units.where(favorites: true)
+      end
     end
 
     # def async_create_csv
