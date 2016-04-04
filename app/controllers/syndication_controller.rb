@@ -27,7 +27,7 @@
         @listings = trulia_listings(@company.id, syndication_params)
       end
 
-      if stale?(@listings)
+      #if stale?(@listings)
         listings_arr = @listings.to_a
         @pet_policies = Building.get_pet_policies(@listings)
         @residential_amenities = ResidentialListing.get_amenities(@listings)
@@ -39,9 +39,9 @@
         @primary_agents, @agent_images = Unit.get_primary_agents_and_images(@listings)
 
         respond_to do |format|
-          format.rss { render :layout => false }
+          format.rss { render layout: false }
         end
-      end
+      #end
     end
   end
 

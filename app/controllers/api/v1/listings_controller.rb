@@ -151,7 +151,7 @@ module API
 					#@building_utilities = Building.get_utilities(@listings)
 				end
 
-				if stale?(@listings)
+				#if stale?(@listings)
 					@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
 
 					if search_params[:listing_type] == "10".freeze # residential
@@ -201,7 +201,7 @@ module API
 							})
 					end
 					render json: blob
-				end
+				#end
 			end
 
 			# Never trust parameters from the scary internet, only allow the white list through.
