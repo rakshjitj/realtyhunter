@@ -56,10 +56,10 @@ gem 'nested_form_fields'
 gem 'puma_worker_killer'
 gem 'rollbar', '~> 2.8.3'
 # profiling
-gem 'rack-mini-profiler', require: false
-gem 'flamegraph'
-gem 'stackprof'
-gem 'memory_profiler'
+# gem 'rack-mini-profiler', require: false
+# gem 'flamegraph'
+# gem 'stackprof'
+# gem 'memory_profiler'
 
 group :production do
 	gem 'rails_12factor', '0.0.3' # related to serving static assets
