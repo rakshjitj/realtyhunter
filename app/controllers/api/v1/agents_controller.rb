@@ -15,15 +15,15 @@ module API
 			def index
 				# pagination
 				per_page = 50
-				if agent_params[:per_page] && !agent_params[:per_page].empty?
-					per_page = agent_params[:per_page].to_i
-					if per_page < 50
-						per_page = 50
-					end
-					if per_page > 500
-						per_page = 500
-					end
-				end
+				# if agent_params[:per_page] && !agent_params[:per_page].empty?
+				# 	per_page = agent_params[:per_page].to_i
+				# 	if per_page < 50
+				# 		per_page = 50
+				# 	end
+				# 	if per_page > 500
+				# 		per_page = 500
+				# 	end
+				# end
 
 				@agents = User.unarchived
 					.where(company: @user.company)
@@ -32,7 +32,6 @@ module API
 						'users.updated_at', 'users.mobile_phone_number', 'users.bio', 'users.updated_at',
 						'employee_titles.name AS title')
 					.includes(:image)
-
 
 				@agents = @agents.where('employee_titles.name = ?', EmployeeTitle.agent.name)
 				# updated_at
@@ -44,8 +43,8 @@ module API
 	      @agents = @agents.order("users.name ASC")
 				@agents = @agents.page(agent_params[:page]).per(per_page)
 
-				agents_arr = @agents.to_a
-				#blob_cache_key = "api_v1_agents/#{agents_arr.map(&:id).join('')}-#{agents_arr.count}-#{@agents.maximum(:updated_at).to_i}"
+				#agents_arr = @agents.to_a
+				#blob_cache_key = "api_v1_agentz"
 				blob = #Rails.cache.fetch(blob_cache_key) do
 					AgentBlob.new({users: @agents})
 				#end

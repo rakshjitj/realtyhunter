@@ -83,15 +83,15 @@ module API
 				sort_dir = %w[asc desc].include?(listing_params[:sort_dir]) ? listing_params[:sort_dir] : "".freeze
 				# pagination
 				per_page = 50
-				if listing_params[:per_page] && !listing_params[:per_page].empty?
-					per_page = listing_params[:per_page].to_i
-					if per_page < 50
-						per_page = 50
-					end
-					if per_page > 50
-						per_page = 50
-					end
-				end
+				# if listing_params[:per_page] && !listing_params[:per_page].empty?
+				# 	per_page = listing_params[:per_page].to_i
+				# 	if per_page < 50
+				# 		per_page = 50
+				# 	end
+				# 	if per_page > 50
+				# 		per_page = 50
+				# 	end
+				# end
 
 				# calls our API::V1::NestioInterface module located under /lib
 				search_params = {
@@ -152,54 +152,59 @@ module API
 				end
 
 				@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
-
-				if search_params[:listing_type] == "10".freeze # residential
-					@pet_policies = Building.get_pet_policies(@listings)
-					@rental_terms = Building.get_rental_terms(@listings)
-					@building_utilities = Building.get_utilities(@listings)
-					@residential_amenities = ResidentialListing.get_amenities(@listings)
-				elsif search_params[:listing_type] == "20".freeze # sales
-				elsif search_params[:listing_type] == "30".freeze #commercial
-				else
-					@residential_amenities = ResidentialListing.get_amenities(@listings)
-					@pet_policies = Building.get_pet_policies(@listings)
-					@rental_terms = Building.get_rental_terms(@listings)
-					@building_utilities = Building.get_utilities(@listings)
-				end
-
-				@images = Unit.get_all_images(@listings)
-				@primary_agents = Unit.get_primary_agents(@listings)
-				@building_amenities = Building.get_amenities(@listings)
-				@open_houses = Unit.get_open_houses(@listings)
-
-				# repackage into a format that's easily digestible
-				# by our API renderer
-				output = @listings.map do |l|
-					Listing.new({
-						listing: l,
-						residential_amenities: @residential_amenities[l.unit_id],
-						pet_policies: @pet_policies[l.building_id],
-						rental_terms: @rental_terms[l.building_id],
-						building_utilities: @building_utilities[l.building_id],
-						primary_agents: @primary_agents[l.unit_id],
-						building_amenities: @building_amenities[l.building_id],
-						images: @images[l.unit_id],
-						open_houses: @open_houses[l.unit_id]
-						})
-				end
-
 				# if cached, render cached blob
 				listings_arr = @listings.to_a
 				blob_cache_key = "api_v1_listings/#{listings_arr.map(&:unit_id).join('')}-#{listings_arr.count}-#{@listings.maximum(:updated_at).to_i}"
-				blob = Rails.cache.fetch(blob_cache_key) do
-					ListingBlob.new({
-						items: output,
-						total_count: @listings.total_count,
-						total_pages: @listings.total_pages,
-						page: @listings.current_page
-						})
+				blob = Rails.cache.fetch(blob_cache_key)
+				if blob
+					render json: blob
+				else
+					if search_params[:listing_type] == "10".freeze # residential
+						@pet_policies = Building.get_pet_policies(@listings)
+						@rental_terms = Building.get_rental_terms(@listings)
+						@building_utilities = Building.get_utilities(@listings)
+						@residential_amenities = ResidentialListing.get_amenities(@listings)
+					elsif search_params[:listing_type] == "20".freeze # sales
+					elsif search_params[:listing_type] == "30".freeze #commercial
+					else
+						@residential_amenities = ResidentialListing.get_amenities(@listings)
+						@pet_policies = Building.get_pet_policies(@listings)
+						@rental_terms = Building.get_rental_terms(@listings)
+						@building_utilities = Building.get_utilities(@listings)
+					end
+
+					@images = Unit.get_all_images(@listings)
+					@primary_agents = Unit.get_primary_agents(@listings)
+					@building_amenities = Building.get_amenities(@listings)
+					@open_houses = Unit.get_open_houses(@listings)
+
+					# repackage into a format that's easily digestible
+					# by our API renderer
+					output = @listings.map do |l|
+						Listing.new({
+							listing: l,
+							residential_amenities: @residential_amenities[l.unit_id],
+							pet_policies: @pet_policies[l.building_id],
+							rental_terms: @rental_terms[l.building_id],
+							building_utilities: @building_utilities[l.building_id],
+							primary_agents: @primary_agents[l.unit_id],
+							building_amenities: @building_amenities[l.building_id],
+							images: @images[l.unit_id],
+							open_houses: @open_houses[l.unit_id]
+							})
+					end
+
+
+					blob = Rails.cache.fetch(blob_cache_key) do
+						ListingBlob.new({
+							items: output,
+							total_count: @listings.total_count,
+							total_pages: @listings.total_pages,
+							page: @listings.current_page
+							})
+					end
+					render json: blob
 				end
-				render json: blob
 			end
 
 			# Never trust parameters from the scary internet, only allow the white list through.
