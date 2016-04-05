@@ -1,3 +1,5 @@
+<% cache([@building, current_user.id, current_user.updated_at.to_i]) do %>
+
 <% provide(:title, @building.formatted_street_address) %>
 
 <div id="buildings">
@@ -258,3 +260,5 @@
 
 </div><!-- section-name -->
 </div><!-- buildings -->
+
+<% end %>

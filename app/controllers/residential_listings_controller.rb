@@ -23,6 +23,7 @@ class ResidentialListingsController < ApplicationController
         headers['Content-Disposition'] = "attachment; filename=\"" +
           current_user.name + " - Residential Listings.csv\""
         headers['Content-Type'] ||= 'text/csv'
+        render stream: true
       end
     end
   end

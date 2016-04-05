@@ -1,4 +1,4 @@
-cache "truila/#{@listings.map(&:unit_id).join('')}-#{@listings.to_a.count}-#{@listings.maximum(:updated_at).to_i}" do
+cache "trulia/#{@listings.map(&:unit_id).join('')}-#{@listings.to_a.count}-#{@listings.maximum(:updated_at).to_i}" do
 # url looks like <base_url>/syndication/1/trulia
 xml.instruct! :xml, :version => "1.0"
 
