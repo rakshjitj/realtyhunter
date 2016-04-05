@@ -13,7 +13,7 @@ class ResidentialListingsController < ApplicationController
     respond_to do |format|
       format.html do
         set_residential_listings
-        render stream: true
+        #render stream: true
       end
       format.js do
         set_residential_listings
@@ -23,7 +23,7 @@ class ResidentialListingsController < ApplicationController
         headers['Content-Disposition'] = "attachment; filename=\"" +
           current_user.name + " - Residential Listings.csv\""
         headers['Content-Type'] ||= 'text/csv'
-        render stream: true
+        #render stream: true
       end
     end
   end
