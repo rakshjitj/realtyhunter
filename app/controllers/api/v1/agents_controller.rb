@@ -35,23 +35,21 @@ module API
 
 
 				@agents = @agents.where('employee_titles.name = ?', EmployeeTitle.agent.name)
-				if stale?(@agents)
-					# updated_at
-					if agent_params[:changed_at] && !agent_params[:changed_at].empty?
-						time = Time.parse(agent_params[:changed_at]).in_time_zone
-		        @agents = @agents.where('users.updated_at > ?', time);
-		      end
+				# updated_at
+				if agent_params[:changed_at] && !agent_params[:changed_at].empty?
+					time = Time.parse(agent_params[:changed_at]).in_time_zone
+	        @agents = @agents.where('users.updated_at > ?', time);
+	      end
 
-		      @agents = @agents.order("users.name ASC")
-					@agents = @agents.page(agent_params[:page]).per(per_page)
+	      @agents = @agents.order("users.name ASC")
+				@agents = @agents.page(agent_params[:page]).per(per_page)
 
-					agents_arr = @agents.to_a
-					#blob_cache_key = "api_v1_agents/#{agents_arr.map(&:id).join('')}-#{agents_arr.count}-#{@agents.maximum(:updated_at).to_i}"
-					blob = #Rails.cache.fetch(blob_cache_key) do
-						AgentBlob.new({users: @agents})
-					#end
-					render json: blob
-				end
+				agents_arr = @agents.to_a
+				#blob_cache_key = "api_v1_agents/#{agents_arr.map(&:id).join('')}-#{agents_arr.count}-#{@agents.maximum(:updated_at).to_i}"
+				blob = #Rails.cache.fetch(blob_cache_key) do
+					AgentBlob.new({users: @agents})
+				#end
+				render json: blob
 			end
 
 			def show

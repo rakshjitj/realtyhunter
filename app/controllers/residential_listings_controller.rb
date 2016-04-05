@@ -317,20 +317,19 @@ class ResidentialListingsController < ApplicationController
       @unit_amenities = ResidentialAmenity.where(company: current_user.company)
 
       do_search
-      if stale?(@residential_units) # todo: verify this works.. don't think it will
-        custom_sort
+      custom_sort
 
-        # lazy
-        @res_images = ResidentialListing.get_images(@residential_units)
+      # lazy
+      @res_images = ResidentialListing.get_images(@residential_units)
 
-        # new query
-        # display all found listings on the map
-        @map_infos = ResidentialListing.set_location_data(@residential_units.to_a, @res_images)
+      # new query
+      # display all found listings on the map
+      @map_infos = ResidentialListing.set_location_data(@residential_units.to_a, @res_images)
 
-        # only get data + images for paginated responses
-        @residential_units = @residential_units.page params[:page]
-        @favorite_units = @residential_units.where(favorites: true)
-      end
+      # only get data + images for paginated responses
+      @residential_units = @residential_units.page params[:page]
+      @favorite_units = @residential_units.where(favorites: true)
+
     end
 
     # def async_create_csv
