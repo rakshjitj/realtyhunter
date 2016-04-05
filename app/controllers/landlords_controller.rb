@@ -44,7 +44,6 @@ class LandlordsController < ApplicationController
   # GET /landlords/1
   # GET /landlords/1.json
   def show
-    fresh_when(@landlord)
   end
 
   # GET /landlords/new

@@ -38,7 +38,6 @@ class ResidentialListingsController < ApplicationController
   end
 
   def show
-    fresh_when(@residential_unit)
   end
 
   def new

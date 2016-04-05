@@ -41,7 +41,6 @@ class BuildingsController < ApplicationController
   # GET /buildings/1
   # GET /buildings/1.json
   def show
-    fresh_when(@building)
   end
 
   # GET /buildings/new

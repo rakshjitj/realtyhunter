@@ -15,7 +15,6 @@ class OfficesController < ApplicationController
   def show
     @managers = @office.managers
     @agents = @office.agents
-    #fresh_when(@office)
   end
 
   # GET /offices/new
