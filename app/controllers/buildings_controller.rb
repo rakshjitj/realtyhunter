@@ -87,7 +87,7 @@ class BuildingsController < ApplicationController
   def update
     if @building.update(format_params_before_save(false).merge({updated_at: Time.now}))
       flash[:success] = "Building updated!"
-      redirect_to building_path(@building, only_path: true)
+      redirect_to building_path(@building)
     else
       render 'edit'
     end

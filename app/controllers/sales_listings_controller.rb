@@ -175,7 +175,7 @@ class SalesListingsController < ApplicationController
     # update res
     if ret1 && ret2
       flash[:success] = "Unit successfully updated!"
-      redirect_to sales_listing_path(@sales_unit, only_path: true)
+      redirect_to sales_listing_path(@sales_unit)
     else
       render 'edit'
     end

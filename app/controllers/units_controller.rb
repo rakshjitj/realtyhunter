@@ -42,7 +42,7 @@ class UnitsController < ApplicationController
   def update
     respond_to do |format|
       if @unit.update(unit_params)
-        format.html { redirect_to unit_path(@unit, only_path: true), notice: 'Unit was successfully updated.' }
+        format.html { redirect_to unit_path(@unit), notice: 'Unit was successfully updated.' }
         format.json { render :show, status: :ok, location: @unit }
       else
         format.html { render :edit }

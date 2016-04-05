@@ -27,21 +27,19 @@
         @listings = trulia_listings(@company.id, syndication_params)
       end
 
-      #if stale?(@listings)
-        listings_arr = @listings.to_a
-        @pet_policies = Building.get_pet_policies(@listings)
-        @residential_amenities = ResidentialListing.get_amenities(@listings)
-        @building_amenities = Building.get_amenities(@listings)
-        @images = Unit.get_all_images(@listings)
-        @utilities = Building.get_utilities(@listings)
+      listings_arr = @listings.to_a
+      @pet_policies = Building.get_pet_policies(@listings)
+      @residential_amenities = ResidentialListing.get_amenities(@listings)
+      @building_amenities = Building.get_amenities(@listings)
+      @images = Unit.get_all_images(@listings)
+      @utilities = Building.get_utilities(@listings)
 
-        # can you cache a function like this?
-        @primary_agents, @agent_images = Unit.get_primary_agents_and_images(@listings)
+      # can you cache a function like this?
+      @primary_agents, @agent_images = Unit.get_primary_agents_and_images(@listings)
 
-        respond_to do |format|
-          format.rss { render layout: false }
-        end
-      #end
+      respond_to do |format|
+        format.rss { render layout: false }
+      end
     end
   end
 

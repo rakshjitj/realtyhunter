@@ -137,7 +137,7 @@ class CommercialListingsController < ApplicationController
 
     if ret1 && ret2
       flash[:success] = "Unit successfully updated!"
-      redirect_to commercial_listing_path(@commercial_unit, only_path: true)
+      redirect_to commercial_listing_path(@commercial_unit)
     else
       set_property_types
       render 'edit'

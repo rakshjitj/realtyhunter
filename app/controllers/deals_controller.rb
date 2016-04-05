@@ -62,7 +62,7 @@ class DealsController < ApplicationController
 	def update
     if @deal.update(deal_params[:deal])
 			flash[:success] = "Deal updated!"
-      redirect_to deal_path(@deal, only_path: true)
+      redirect_to deal_path(@deal)
     else
     	render 'edit'
 		end

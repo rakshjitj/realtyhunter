@@ -9,9 +9,11 @@ class ResidentialListingsController < ApplicationController
   etag { current_user.try :id }
 
   def index
+
     respond_to do |format|
       format.html do
         set_residential_listings
+        render stream: true
       end
       format.js do
         set_residential_listings
@@ -319,17 +321,14 @@ class ResidentialListingsController < ApplicationController
       do_search
       custom_sort
 
-      # lazy
       @res_images = ResidentialListing.get_images(@residential_units)
 
-      # new query
       # display all found listings on the map
       @map_infos = ResidentialListing.set_location_data(@residential_units.to_a, @res_images)
 
       # only get data + images for paginated responses
       @residential_units = @residential_units.page params[:page]
       @favorite_units = @residential_units.where(favorites: true)
-
     end
 
     # def async_create_csv
