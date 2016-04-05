@@ -1,4 +1,4 @@
-<% cache(@residential_unit) do %>
+<% cache([@residential_unit, current_user]) do %>
 
 <% provide(:title, @residential_unit.street_address_and_unit) %>
 
