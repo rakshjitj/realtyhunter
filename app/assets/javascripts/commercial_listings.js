@@ -302,7 +302,6 @@ CommercialListings = {};
     if (Common.getSearchParam('sort_by') === '') {
       Common.markSortingColumnByElem($('th[data-sort="updated_at"]'), 'desc')
     }
-    $('#neighborhood-select-multiple').change(CommercialListings.throttledSearch);
 
     // index page - selecting listings menu dropdown
     $('#commercial #emailListings').click(Listings.sendMessage);
@@ -344,7 +343,8 @@ CommercialListings = {};
       items: CommercialListings.selectedNeighborhoodIds,
       onChange: function(value) {
         CommercialListings.selectedNeighborhoodIds = value;
-      }
+      },
+      onBlur: ResidentialListings.throttledSearch
     });
   }
 
