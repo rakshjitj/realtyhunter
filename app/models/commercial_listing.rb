@@ -279,8 +279,12 @@ class CommercialListing < ActiveRecord::Base
   # collect the data we will need to access from our giant map view
   def self.set_location_data(cunits, images)
     map_infos = {}
-    for i in 0..cunits.length-1
-      #bldg = cunits[i].unit.building
+    i = 0
+    while true
+      if i == cunits.length
+        break
+      end
+
       cunit = cunits[i]
       street_address = cunit.street_number + " " + cunit.route
       bldg_info = {
@@ -306,6 +310,7 @@ class CommercialListing < ActiveRecord::Base
         map_infos[street_address] = bldg_info
       end
 
+      i += 1
     end
 
     map_infos.to_json

@@ -11,7 +11,7 @@ class EmployeeTitle < ActiveRecord::Base
   end
 
   def display_name
-  	name.titleize.gsub('_', ' ')
+  	name.titleize.tr('_', ' ')
   end
 
   def self.agent

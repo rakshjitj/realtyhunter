@@ -470,7 +470,13 @@ class ResidentialListing < ActiveRecord::Base
   # collect the data we will need to access from our giant map view
   def self.set_location_data(runits, images)
     map_infos = {}
-    for i in 0..runits.length-1
+    # speed optimizaiton. `while true` is faster than 'for ...'
+    i = 0
+    while true
+      if i == runits.length
+        break
+      end
+
       runit = runits[i]
 
       if runit.street_number
@@ -501,6 +507,8 @@ class ResidentialListing < ActiveRecord::Base
         bldg_info['units'] = [unit_info]
         map_infos[street_address] = bldg_info
       end
+
+      i += 1
     end
 
     map_infos.to_json

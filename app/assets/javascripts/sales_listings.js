@@ -430,7 +430,7 @@ SalesListings = {};
   SalesListings.initIndex = function() {
     document.addEventListener("page:restore", function() {
       Listings.hideSpinner();
-      SalesListings.passiveRealTimeUpdate();
+      // SalesListings.passiveRealTimeUpdate();
     });
 
     Listings.hideSpinner();
@@ -542,7 +542,7 @@ SalesListings = {};
       if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();
     });
 
-    SalesListings.passiveRealTimeUpdate();
+    // SalesListings.passiveRealTimeUpdate();
   };
 
   SalesListings.initShow = function() {
