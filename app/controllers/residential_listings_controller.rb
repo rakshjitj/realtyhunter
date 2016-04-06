@@ -13,7 +13,7 @@ class ResidentialListingsController < ApplicationController
     respond_to do |format|
       format.html do
         set_residential_listings
-        #render stream: true
+        render stream: true
       end
       format.js do
         set_residential_listings
@@ -23,7 +23,7 @@ class ResidentialListingsController < ApplicationController
         headers['Content-Disposition'] = "attachment; filename=\"" +
           current_user.name + " - Residential Listings.csv\""
         headers['Content-Type'] ||= 'text/csv'
-        #render stream: true
+        render stream: true
       end
     end
   end
@@ -381,11 +381,13 @@ class ResidentialListingsController < ApplicationController
 
     def custom_sort
       # puts "GOT ---#{params.inspect} #{params[:sort_by]} --- #{params[:direction]}---"
-      sort_column = params[:sort_by] || "updated_at".freeze
+      sort_column = params[:sort_by] || "residential_listings.updated_at".freeze
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc".freeze
       # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order
+      puts "\n\n\n\n ******** #{sort_column} #{sort_order}"
+      puts @residential_units.to_sql
       @residential_units = @residential_units.order("#{sort_column} #{sort_order}")
       @residential_units
     end

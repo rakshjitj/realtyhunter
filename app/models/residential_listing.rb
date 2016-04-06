@@ -91,12 +91,12 @@ class ResidentialListing < ActiveRecord::Base
   # for use in search method below
   # returns the first image for each unit - thumbnail styles only
   def self.get_images(list)
-    imgs = Image.where(unit_id: list.map(&:unit_id), priority: 0)
+    imgs = Image.where(unit_id: list.pluck(:unit_id), priority: 0)
     Hash[imgs.map {|img| [img.unit_id, img.file.url(:thumb)]}]
   end
 
   def self.get_amenities(list)
-    ids = list.map(&:id)
+    ids = list.pluck(:id)
     ResidentialAmenity.where(residential_listing_id: ids).select('name').to_a.group_by(&:residential_listing_id)
   end
 
@@ -267,7 +267,7 @@ class ResidentialListing < ActiveRecord::Base
     if params[:building_feature_ids]
       features = params[:building_feature_ids][0, 256]
       features = features.split(",").select{|i| !i.empty?}
-        bldg_ids = Building.joins(:building_amenities).where('building_amenity_id IN (?)', features).map(&:id)
+        bldg_ids = Building.joins(:building_amenities).where('building_amenity_id IN (?)', features).pluck(:id)
         running_list = running_list.where("building_id IN (?)", bldg_ids)
     end
 
@@ -367,7 +367,7 @@ class ResidentialListing < ActiveRecord::Base
         params[:primary_agent_id], params[:primary_agent_id])
     end
 
-    running_list.uniq
+    running_list#.uniq
   end
 
   def deep_copy_imgs(dst_id)
@@ -578,7 +578,7 @@ class ResidentialListing < ActiveRecord::Base
 
   # Used in our API. Takes in a list of units
   def self.get_amenities(list_of_units)
-    unit_ids = list_of_units.map(&:unit_id)
+    unit_ids = list_of_units.pluck(:unit_id)
     list = ResidentialListing.joins(:residential_amenities)
       .where(unit_id: unit_ids).select('name', 'unit_id', 'id')
       .to_a.group_by(&:unit_id)
@@ -614,7 +614,7 @@ class ResidentialListing < ActiveRecord::Base
           listing.lease_end,
           listing.has_fee ? 'Yes' : 'No', listing.op_fee_percentage, listing.tp_fee_percentage,
           listing.tenant_occupied ? 'Yes' : 'No',
-          agents[listing.unit_id] ? agents[listing.unit_id].map {|a| a.name }.join(', ') : '',
+          agents[listing.unit_id] ? agents[listing.unit_id].pluck(:name).join(', ') : '',
           listing.listing_id, listing.landlord_code, listing.rent,
           listing.available_by, listing.access_info,
           reverse_statuses[listing.status.to_s.to_sym],
