@@ -5,7 +5,6 @@ class UsersController < ApplicationController
     :admin_create, :update_offices, :autocomplete_user_name, :destroy, :unarchive]
   before_action :set_company, except: [:update_offices]
   autocomplete :user, :name, full: true
-  etag { current_user.try :id }
 
   # GET /users
   # GET /users.json

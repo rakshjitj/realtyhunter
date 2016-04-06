@@ -6,14 +6,16 @@ class ResidentialListingsController < ApplicationController
     :inaccuracy_modal, :send_inaccuracy, :refresh_images, :refresh_documents]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
-  etag { current_user.try :id }
 
   def index
 
     respond_to do |format|
-      format.html do
+      format.html.phone do
         set_residential_listings
-        render stream: true
+      end
+      # tablets get treated the same as desktops
+      format.html.desktop do
+        set_residential_listings
       end
       format.js do
         set_residential_listings
@@ -23,7 +25,6 @@ class ResidentialListingsController < ApplicationController
         headers['Content-Disposition'] = "attachment; filename=\"" +
           current_user.name + " - Residential Listings.csv\""
         headers['Content-Type'] ||= 'text/csv'
-        render stream: true
       end
     end
   end
@@ -386,8 +387,6 @@ class ResidentialListingsController < ApplicationController
       # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      puts "\n\n\n\n ******** #{sort_column} #{sort_order}"
-      puts @residential_units.to_sql
       @residential_units = @residential_units.order("#{sort_column} #{sort_order}")
       @residential_units
     end

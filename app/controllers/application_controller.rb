@@ -7,8 +7,9 @@ class ApplicationController < ActionController::Base
   before_action :logged_in_user
   #before_action :set_locale
   before_action ->{ @remote_ip = request.headers['REMOTE_ADDR'] }
+  before_action :detect_device_variant
   before_filter :check_rack_mini_profiler
-  after_filter :clear_xhr_flash
+  after_filter  :clear_xhr_flash
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
@@ -50,6 +51,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
+
   protected
 
     def stale_record_recovery_action
@@ -73,4 +75,21 @@ class ApplicationController < ActionController::Base
   	  response.headers["Strict-Transport-Security"] = 'max-age=0'
   	end
 
+    # for our purposes, we treat tablets the same as desktop
+    def detect_device_variant
+      case request.user_agent
+      when /iPad/i
+        request.variant = :desktop #tablet
+      when /iPhone/i
+        request.variant = :phone
+      when /Android/i && /mobile/i
+        request.variant = :phone
+      when /Android/i
+        request.variant = :desktop #tablet
+      when /Windows Phone/i
+        request.variant = :phone
+      else
+        request.variant = :desktop
+    end
+    end
 end

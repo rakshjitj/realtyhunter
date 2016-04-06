@@ -408,8 +408,8 @@ ResidentialListings = {};
 
   // called on index & show pages
   ResidentialListings.initMobileIndex = function() {
-    $('#residential-desktop').remove();
-    $('#residential-mobile').removeClass('hidden');
+    // $('#residential-desktop').remove();
+    // $('#residential-mobile').removeClass('hidden');
     $('#residential-mobile input').keydown(ResidentialListings.preventEnter);
 
     $('.js-show-mobile-filters').click(function(e) {
@@ -496,8 +496,8 @@ ResidentialListings = {};
   }
 
   ResidentialListings.initDesktopIndex = function() {
-    $('#residential-mobile').remove();
-    $('#residential-desktop').removeClass('hidden');
+    // $('#residential-mobile').remove();
+    // $('#residential-desktop').removeClass('hidden');
     // ResidentialListings.enablePassiveUpdates();
 
     Listings.hideSpinner();
