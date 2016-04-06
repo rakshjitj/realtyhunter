@@ -96,7 +96,7 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self.get_amenities(list)
-    ids = list.pluck(:id)
+    ids = list.pluck('residential_listings.id')
     ResidentialAmenity.where(residential_listing_id: ids).select('name').to_a.group_by(&:residential_listing_id)
   end
 
@@ -578,7 +578,7 @@ class ResidentialListing < ActiveRecord::Base
 
   # Used in our API. Takes in a list of units
   def self.get_amenities(list_of_units)
-    unit_ids = list_of_units.pluck(:unit_id)
+    unit_ids = list_of_units.pluck('units.id')
     list = ResidentialListing.joins(:residential_amenities)
       .where(unit_id: unit_ids).select('name', 'unit_id', 'id')
       .to_a.group_by(&:unit_id)

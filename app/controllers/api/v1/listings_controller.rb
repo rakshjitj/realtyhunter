@@ -154,7 +154,7 @@ module API
 				@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
 				# if cached, render cached blob
 				listings_arr = @listings.to_a
-				blob_cache_key = "api_v1_listings/#{listings_arr.map(&:unit_id).join('')}-#{listings_arr.count}-#{@listings.maximum(:updated_at).to_i}"
+				blob_cache_key = "api_v1_listings/#{@listings.pluck('units.id').join('')}-#{listings_arr.count}-#{@listings.maximum(:updated_at).to_i}"
 				blob = Rails.cache.fetch(blob_cache_key)
 				if blob
 					render json: blob
