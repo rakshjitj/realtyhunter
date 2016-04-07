@@ -350,7 +350,11 @@ class SalesListingsController < ApplicationController
       params[:sort_by] = sort_column
       params[:direction] = sort_order
       # if sorting by an actual db column, use order
-      @sales_units = @sales_units.order(sort_column + ' ' + sort_order)
+      if SalesListing.column_names.include?(params[:sort_by])
+        @sales_units = @sales_units.order(sort_column + ' ' + sort_order)
+      else
+        # TODO
+      end
       @sales_units
     end
 

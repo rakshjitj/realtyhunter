@@ -388,7 +388,12 @@ class ResidentialListingsController < ApplicationController
       # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      @residential_units = @residential_units.order("#{sort_column} #{sort_order}")
+      if ResidentialListing.column_names.include?(params[:sort_by])
+        @residential_units = @residential_units.order("#{sort_column} #{sort_order}")
+      else
+        #@residential_units = @residential_units.sort_by(params[:sort_column]) #{sort_order}")
+        #.sort_by(&:custom_method)
+      end
       @residential_units
     end
 
