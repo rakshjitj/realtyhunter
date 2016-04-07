@@ -195,7 +195,7 @@ module API
 					end
 
 
-					blob = Rails.cache.fetch(blob_cache_key) do
+					blob = Rails.cache.fetch(blob_cache_key, expires_in: 12.hours) do
 						ListingBlob.new({
 							items: output,
 							total_count: @listings.total_count,
