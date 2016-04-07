@@ -52,7 +52,7 @@ Rails.application.configure do
     }
   }
 
-  config.cache_store = :redis_store, "redis://localhost:6379/0/cache"
+  config.cache_store = :redis_store, "redis://localhost:6379/0/cache", {expires_in: 1.day}
   config.action_controller.perform_caching = true
 
 end

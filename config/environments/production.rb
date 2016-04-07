@@ -21,7 +21,11 @@
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  config.serve_static_files = true #ENV['RAILS_SERVE_STATIC_FILES'].present?
+  config.static_cache_control = "public, max-age=31536000"
+  # serve from CDN
+  # Enable serving of images, stylesheets, and JavaScripts from an asset server.
+  config.action_controller.asset_host = ENV['CLOUDFRONT_ENDPOINT']
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
@@ -47,13 +51,16 @@
   # when problems arise.
   config.log_level = :warn
 
+  # Use default logging formatter so that PID and timestamp are not suppressed.
+  config.log_formatter = ::Logger::Formatter.new
+
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
 
   # Use a different logger for distributed setups.
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
 
-  config.cache_store = :redis_store #, "redis://localhost:6379/0/cache"
+  config.cache_store = :redis_store, {expires_in: 1.day} #, "redis://localhost:6379/0/cache"
   config.action_controller.perform_caching = true
 
   # Ignore bad email addresses and do not raise email delivery errors.
@@ -62,6 +69,7 @@
   config.action_mailer.delivery_method = :smtp
   host = 'myspace-realty-monster.herokuapp.com'
   config.action_mailer.default_url_options = { host: host }
+
   # use mandril
   ActionMailer::Base.smtp_settings = {
     :port =>           '587',
@@ -72,6 +80,9 @@
     :authentication => :plain
   }
   ActionMailer::Base.delivery_method = :smtp
+  # use postmark
+  # config.action_mailer.delivery_method = :postmark
+  # config.action_mailer.postmark_settings = {api_token: ENV['POSTMARK_API_KEY']}
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
@@ -80,26 +91,19 @@
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
 
-  # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
-
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  # serve from CDN
-  # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  config.action_controller.asset_host = ENV['CLOUDFRONT_ENDPOINT']
-
   config.paperclip_defaults = {
-    :storage => :s3,
+    storage: :s3,
     #path: "/:class/:attachment/:id_partition/:style/:filename",
     #url: ':s3_alias_url',
     #s3_host_alias: 'd3829jye59v7xw.cloudfront.net',
-    :s3_protocol => :https,
-    :s3_credentials => {
-      :bucket => ENV['S3_AVATAR_BUCKET'],
-      :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
-      :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'],
+    s3_protocol: :https,
+    s3_credentials: {
+      bucket: ENV['S3_AVATAR_BUCKET'],
+      access_key_id: ENV['AWS_ACCESS_KEY_ID'],
+      secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
     }
   }
 end
