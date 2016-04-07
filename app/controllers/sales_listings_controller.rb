@@ -63,9 +63,9 @@ class SalesListingsController < ApplicationController
       u_params.delete('lock_version')
       #puts "AFTER #{u_params.inspect}"
       # find or create building
-      new_bldg = Building.find_by(
+      new_bldg = Building.where(
         street_number: get_bldg_params[:street_number],
-        route: get_bldg_params[:route])
+        route: get_bldg_params[:route]).first
       if !new_bldg
         new_bldg = Building.create(
           get_bldg_params.merge(

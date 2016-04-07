@@ -316,7 +316,7 @@ class RoommatesController < ApplicationController
         end
 
         if !data[:roommate][:neighborhood].blank? && data[:roommate][:neighborhood] != 'Other'
-          data[:roommate][:neighborhood] = Neighborhood.find_by(name: data[:roommate][:neighborhood])
+          data[:roommate][:neighborhood] = Neighborhood.where(name: data[:roommate][:neighborhood]).first
         end
 
         data[:roommate].delete_if{|k,v| (!v || v.blank?) }

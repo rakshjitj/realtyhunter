@@ -1,9 +1,9 @@
 class AccountActivationsController < ApplicationController
   skip_authorize_resource
   skip_before_action :logged_in_user
-  
+
   def edit
-    user = User.find_by(email: params[:email])
+    user = User.where(email: params[:email]).first
     # TODO: what if they are activated but not approved?
     if user && !user.activated? && user.authenticated?(:activation, params[:id])
       user.activate

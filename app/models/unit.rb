@@ -107,7 +107,7 @@ class Unit < ActiveRecord::Base
         #puts "*** calling generate"
         #if !self.unit.listing_id
           listing_id = SecureRandom.random_number(9999999)
-          while Unit.find_by(listing_id: listing_id) do
+          while Unit.where(listing_id: listing_id).first do
             listing_id = SecureRandom.random_number(9999999)
           end
 

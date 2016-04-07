@@ -24,12 +24,12 @@ module API
 				authed = false
 				# check for token in the URL?
 				if !authed && params[:token]
-					@user = User.find_by(auth_token: params[:token])
+					@user = User.where(auth_token: params[:token]).first
 					return @user ? true : false
 				end
 
 				authenticate_or_request_with_http_token('Agents') do |token, options|
-					@user = User.find_by(auth_token: token)
+					@user = User.where(auth_token: token).first
 					authed = true
 				end
 			end
@@ -37,7 +37,7 @@ module API
 			# def api_params
 			# 	params.permit(:token, :pretty, :format)
 			# end
-		
+
 		end
 	end
 end

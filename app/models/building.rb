@@ -129,7 +129,7 @@ class Building < ActiveRecord::Base
 	end
 
   def find_or_create_neighborhood(neighborhood, borough, city, state)
-		@neigh = Neighborhood.find_by(name: neighborhood)
+		@neigh = Neighborhood.where(name: neighborhood).first
     if !@neigh
       @neigh = Neighborhood.create(
         name: neighborhood,
@@ -187,7 +187,7 @@ class Building < ActiveRecord::Base
 
   	def process_rental_term
   		if custom_rental_term && !custom_rental_term.empty?
-  			req = RentalTerm.find_by(name: custom_rental_term, company: company)
+  			req = RentalTerm.where(name: custom_rental_term, company: company).first
   			if !req
   				req = RentalTerm.create!(name: custom_rental_term, company: company)
   			end
@@ -201,7 +201,7 @@ class Building < ActiveRecord::Base
         amenities.each{|a|
           if !a.empty?
             a = a.downcase.strip
-            found = BuildingAmenity.find_by(name: a, company: company)
+            found = BuildingAmenity.where(name: a, company: company).first
             if !found
               self.building_amenities << BuildingAmenity.create!(name: a, company: company)
             end
@@ -216,7 +216,7 @@ class Building < ActiveRecord::Base
         terms.each{|t|
           t = t.downcase.strip
           if !t.empty?
-            found = Utility.find_by(name: t, company: company)
+            found = Utility.where(name: t, company: company).first
             if !found
               self.utilities << Utility.create!(name: t, company: company)
             end

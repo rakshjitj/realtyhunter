@@ -15,7 +15,7 @@ class SessionsController < ApplicationController
 
   def create
     # automatically lowercase their email and trim any whitespaces
-    user = User.find_by(email: params[:session][:email].downcase.gsub(/\A\p{Space}*|\p{Space}*\z/, ''))
+    user = User.where(email: params[:session][:email].downcase.gsub(/\A\p{Space}*|\p{Space}*\z/, '')).first
     #puts "\n^^^^ found user #{user.inspect}"
     if user && !user.archived && user.authenticate(params[:session][:password])
       #puts "111111"

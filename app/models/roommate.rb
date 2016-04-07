@@ -81,13 +81,13 @@ class Roommate < ActiveRecord::Base
       if params[:referred_by] == 'Website'
         roommates = roommates.where(user_id: nil)
       else
-	    user = User.find_by(name: params[:referred_by])
+	    user = User.where(name: params[:referred_by]).first
 	    roommates = roommates.where(user_id: user)
       end
     end
 
     if !params[:neighborhood_id].blank?
-      nabe = Neighborhood.find_by(id: params[:neighborhood_id])
+      nabe = Neighborhood.where(id: params[:neighborhood_id]).first
       roommates = roommates.where(neighborhood_id: nabe.id)
     end
 

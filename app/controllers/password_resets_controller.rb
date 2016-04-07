@@ -9,7 +9,7 @@ class PasswordResetsController < ApplicationController
   end
 
   def create
-    @user = User.find_by(email: params[:password_reset][:email].downcase)
+    @user = User.where(email: params[:password_reset][:email].downcase).first
     if @user
       @user.create_reset_digest
       @user.send_password_reset_email
@@ -20,7 +20,7 @@ class PasswordResetsController < ApplicationController
       render 'new'
     end
   end
-  
+
   def edit
   end
 
@@ -51,7 +51,7 @@ class PasswordResetsController < ApplicationController
     # Before filters
 
     def get_user
-      @user = User.find_by(email: params[:email])
+      @user = User.where(email: params[:email]).first
     end
 
     # Confirms a valid user.
@@ -69,5 +69,5 @@ class PasswordResetsController < ApplicationController
         redirect_to new_password_reset_url
       end
     end
-    
+
 end

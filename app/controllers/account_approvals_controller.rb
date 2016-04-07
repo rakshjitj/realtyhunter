@@ -3,11 +3,11 @@ class AccountApprovalsController < ApplicationController
   skip_before_action :logged_in_user
 
   def edit
-    @user = User.find_by(email: params[:email])
+    @user = User.where(email: params[:email]).first
     if @user && !@user.approved? && @user.authenticated?(:approval,  params[:id])
       @user.approve
       UserMailer.account_approval_done(@user).deliver_now
-      @company = Company.find_by(name: params[:company])
+      @company = Company.where(name: params[:company]).first
       flash[:success] = "#{@user.name} Approved!"
       redirect_to user #TODO: send to admin dash?
     else

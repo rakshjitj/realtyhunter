@@ -642,7 +642,7 @@ class ResidentialListing < ActiveRecord::Base
         amenities.each{|a|
           if !a.empty?
             a = a.downcase.strip
-            found = ResidentialAmenity.find_by(name: a, company: self.unit.building.company)
+            found = ResidentialAmenity.where(name: a, company: self.unit.building.company).first
             if !found
               self.residential_amenities << ResidentialAmenity.create!(name: a, company: self.unit.building.company)
             end

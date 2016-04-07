@@ -16,10 +16,10 @@ module SessionsHelper
   def current_user
     if (user_id = session[:user_id])
       #puts "found from session"
-      @current_user ||= User.find_by(id: user_id)
+      @current_user ||= User.where(id: user_id).first
     elsif (user_id = cookies.signed[:user_id])
       #puts "found from cookies"
-      user = User.find_by(id: user_id)
+      user = User.where(id: user_id).first
       if user && user.authenticated?(:remember, cookies[:remember_token])
         log_in user
         @current_user = user
@@ -56,5 +56,5 @@ module SessionsHelper
   def store_location
     session[:forwarding_url] = request.url if request.get?
   end
-  
+
 end

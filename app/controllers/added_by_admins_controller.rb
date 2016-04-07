@@ -3,7 +3,7 @@ class AddedByAdminsController < ApplicationController
   skip_before_action :logged_in_user
   before_action :get_user,   only: [:edit, :update]
   before_action :valid_user, only: [:edit, :update]
-  
+
   def edit
   end
 
@@ -35,7 +35,7 @@ class AddedByAdminsController < ApplicationController
     # Before filters
 
     def get_user
-      @user = User.find_by(email: params[:email])
+      @user = User.where(email: params[:email]).first
     end
 
     # Confirms a valid user.
@@ -44,5 +44,5 @@ class AddedByAdminsController < ApplicationController
               @user.authenticated?(:reset, params[:id]))
         redirect_to root_url
       end
-    end    
+    end
 end

@@ -420,7 +420,7 @@ class User < ActiveRecord::Base
     def generate_auth_token
       loop do
         token = SecureRandom.hex
-        found_user = User.find_by(auth_token: token)
+        found_user = User.where(auth_token: token).first
         #break token unless found_user #self.class.exists?(auth_token: token)
         if !found_user
           return token
