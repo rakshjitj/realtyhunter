@@ -47,8 +47,6 @@ class Deal < ActiveRecord::Base
   end
 
   def self.search(params)
-    puts params
-    puts params[:closed_date_end]
     deals = Deal.unarchived
       .joins(unit: :building)
       .select('deals.id', 'deals.archived', 'deals.price', 'deals.closed_date', 'deals.commission',

@@ -88,9 +88,9 @@ class SalesListingsController < ApplicationController
     if new_bldg.save && new_unit.save && @sales_unit.save
       redirect_to @sales_unit
     else
-      puts new_bldg.errors.messages
-      puts new_unit.errors.messages
-      puts @sales_unit.errors.messages
+      #puts new_bldg.errors.messages
+      #puts new_unit.errors.messages
+      #puts @sales_unit.errors.messages
       render 'new'
     end
   end

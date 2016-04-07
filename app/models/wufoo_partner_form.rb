@@ -44,7 +44,7 @@ class WufooPartnerForm < ActiveRecord::Base
   def mark_read
     if !read
       self.update!(read: true)
-      puts "UPDATED #{self.inspect}"
+      # puts "UPDATED #{self.inspect}"
     end
   end
 

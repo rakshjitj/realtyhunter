@@ -17,7 +17,7 @@ class AnnouncementsController < ApplicationController
       redirect_to action: 'new'
     else
       # error
-      puts @announcement.errors.messages
+      # puts @announcement.errors.messages
       render 'new'
     end
 	end
