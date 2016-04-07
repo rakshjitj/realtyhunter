@@ -70,13 +70,13 @@
         <thead>
           <tr>
             <th></th>
-            <th data-sort="formatted_street_address" class="th-sortable">
+            <th data-sort="buildings.formatted_street_address" class="th-sortable">
               Address</th>
-            <th data-sort="active_unit_count" class="th-sortable">
+            <th data-sort="buildings.active_unit_count" class="th-sortable">
               On-Market Units</th>
-            <th data-sort="total_unit_count" class="th-sortable">
+            <th data-sort="buildings.total_unit_count" class="th-sortable">
               Total Units</th>
-            <th data-sort="last_unit_updated_at" class="th-sortable">
+            <th data-sort="buildings.last_unit_updated_at" class="th-sortable">
               Last Unit Updated</th>
             <% if current_user.is_management? %>
               <th colspan="1"></th>

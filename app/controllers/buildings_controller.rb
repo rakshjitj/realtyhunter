@@ -188,7 +188,7 @@ class BuildingsController < ApplicationController
       # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      @buildings = @buildings.order(sort_column + ' ' + sort_order)
+      @buildings = @buildings.order("#{sort_column} #{sort_order}")
       @buildings
     end
 
