@@ -52,7 +52,8 @@ class Landlord < ActiveRecord::Base
   	if params[:filter]
 	    terms = params[:filter].split(" ")
 	    terms.each do |term|
-	      running_list = running_list.where('name ILIKE ? or code ILIKE ?', "%#{term}%", "%#{term}%").all
+	      running_list = running_list.where('landlords.name ILIKE ? or landlords.code ILIKE ?',
+            "%#{term}%", "%#{term}%").all
 	    end
 	  end
 
@@ -63,10 +64,10 @@ class Landlord < ActiveRecord::Base
         if status_lowercase == 'active/pending'
           running_list = running_list.joins(buildings: :units)
               .where("units.status IN (?) ",
-                [Unit.statuses['active'], Unit.statuses['pending']]).uniq
+                [Unit.statuses['active'], Unit.statuses['pending']])#.uniq
         else
           running_list = running_list.joins(buildings: :units)
-              .where("units.status = ? ", Unit.statuses[status_lowercase]).uniq
+              .where("units.status = ? ", Unit.statuses[status_lowercase])#.uniq
         end
       end
     end

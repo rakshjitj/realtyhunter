@@ -105,10 +105,10 @@ class Building < ActiveRecord::Base
         if status_lowercase == 'active/pending'
           running_list = running_list.joins(:units)
               .where("units.status IN (?) ",
-                [Unit.statuses['active'], Unit.statuses['pending']]).uniq
+                [Unit.statuses['active'], Unit.statuses['pending']])#.uniq
         else
           running_list = running_list.joins(:units)
-              .where("units.status = ? ", Unit.statuses[status_lowercase]).uniq
+              .where("units.status = ? ", Unit.statuses[status_lowercase])#.uniq
         end
       end
     end

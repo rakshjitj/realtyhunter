@@ -135,11 +135,11 @@ class LandlordsController < ApplicationController
     end
 
     def custom_sort
-      sort_column = params[:sort_by] || "code"
-      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+      sort_column = params[:sort_by] || "landlords.code".freeze
+      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc".freeze
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      @landlords = @landlords.order(sort_column + ' ' + sort_order)
+      @landlords = @landlords.order("#{sort_column} #{sort_order}".freeze)
       @landlords
     end
 

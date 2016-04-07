@@ -21,7 +21,7 @@
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.serve_static_files = true #ENV['RAILS_SERVE_STATIC_FILES'].present?
+  config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present? #true
   config.static_cache_control = "public, max-age=31536000"
   # serve from CDN
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
