@@ -71,7 +71,6 @@ class Building < ActiveRecord::Base
     self.update_attribute(:active_unit_count, units.unarchived.available_on_market.count)
 	end
 
-  # for use in search method below
   def self.get_images(list)
     imgs = Image.where(building_id: list.ids, priority: 0)
     Hash[imgs.map {|img| [img.unit_id, img.file.url(:thumb)]}]
@@ -155,14 +154,14 @@ class Building < ActiveRecord::Base
 
   # used in API, syndication
   def self.get_pet_policies(list)
-    bldg_ids = list.map(&:building_id)
+    bldg_ids = list.pluck(:building_id)
     Building.joins(:pet_policy).where(id: bldg_ids)
       .select('buildings.id', 'pet_policies.name as pet_policy_name')
       .to_a.group_by(&:id)
   end
 
   def self.get_rental_terms(list)
-    bldg_ids = list.map(&:building_id)
+    bldg_ids = list.pluck(:building_id)
     Building.joins(:rental_term).where(id: bldg_ids)
       .select('buildings.id', 'rental_terms.name as rental_term_name')
       .to_a.group_by(&:id)
@@ -170,7 +169,7 @@ class Building < ActiveRecord::Base
 
   # Used in our API. Takes in a list of units
   def self.get_amenities(list_of_units)
-    building_ids = list_of_units.map(&:building_id)
+    building_ids = list_of_units.pluck(:building_id)
     list = Building.joins(:building_amenities)
       .where(id: building_ids).select('name', 'id')
       .to_a.group_by(&:id)
@@ -178,7 +177,7 @@ class Building < ActiveRecord::Base
 
   # Used by syndication
   def self.get_utilities(list)
-    bldg_ids = list.map(&:building_id)
+    bldg_ids = list.pluck(:building_id)
     Building.joins(:utilities).where(id: bldg_ids)
       .select('buildings.id', 'utilities.name as utility_name')
       .to_a.group_by(&:id)

@@ -27,7 +27,6 @@
         @listings = trulia_listings(@company.id, syndication_params)
       end
 
-      listings_arr = @listings.to_a
       @pet_policies = Building.get_pet_policies(@listings)
       @residential_amenities = ResidentialListing.get_amenities(@listings)
       @building_amenities = Building.get_amenities(@listings)

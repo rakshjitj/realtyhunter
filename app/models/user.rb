@@ -173,7 +173,6 @@ class User < ActiveRecord::Base
     reset_sent_at < 2.hours.ago
   end
 
-  # for use in search method below
   def self.get_images(list)
     imgs = Image.where(user_id: list.ids)
     Hash[imgs.map {|img| [img.user_id, img.file.url(:thumb)]}]

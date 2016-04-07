@@ -3,7 +3,10 @@ class UnitMailerPreview < ActionMailer::Preview
 
   def send_residential_listings
     source_agent = User.where(email: 'rbujans@myspacenyc.com').first
-    listing_ids = ResidentialListing.joins(:unit).where('units.archived = false').limit(3).select('listing_id').map(&:listing_id)
+    listing_ids = ResidentialListing.joins(:unit).where('units.archived = false')
+        .limit(3)
+        .select('listing_id')
+        .pluck(:listing_id)
     listings = ResidentialListing.listings_by_id(source_agent, listing_ids)
     images = ResidentialListing.get_images(listings)
 
@@ -15,7 +18,10 @@ class UnitMailerPreview < ActionMailer::Preview
 
   def send_commercial_listings
     source_agent = User.where(email: 'rbujans@myspacenyc.com').first
-    listing_ids = CommercialListing.joins(:unit).where('units.archived = false').limit(3).select('listing_id').map(&:listing_id)
+    listing_ids = CommercialListing.joins(:unit).where('units.archived = false')
+        .limit(3)
+        .select('listing_id')
+        .pluck(:listing_id)
     listings = CommercialListing.listings_by_id(source_agent, listing_ids)
     images = CommercialListing.get_images(listings)
 

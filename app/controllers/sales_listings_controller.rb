@@ -344,8 +344,8 @@ class SalesListingsController < ApplicationController
 
     def custom_sort
       #puts "GOT #{params[:sort_by]} #{params[:direction]}"
-      sort_column = params[:sort_by] || "updated_at"
-      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
+      sort_column = params[:sort_by] || "sales_listings.updated_at".freeze
+      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc".freeze
       # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order

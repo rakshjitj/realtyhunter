@@ -55,7 +55,9 @@
 	    <%= listing.beds %> BR / <%= trim_zeros(listing.baths) %> Bath<br />
 	    <%= listing.route %>, <% listing.neighborhood_name %><br />
 
-	    <hr />
+	    <% if !listing.all_amenities_to_s.blank? || !listing.unit.building.utilities_to_s.blank? %>
+	    	<hr />
+	    <% end %>
 
 	    <% if !listing.all_amenities_to_s.blank? %>
 	      <%= listing.all_amenities_to_s %>
@@ -67,7 +69,6 @@
 	      <%= listing.unit.building.utilities_to_s %>
 	    <% end %>
 
-	    <br />
 	    <br />
 	    <a style="padding: 5px 10px; font-size: 12px;line-height: 1.5; border-radius: 3px;color: #fff;
     background-color: #f0ad4e;border-color: #eea236;"

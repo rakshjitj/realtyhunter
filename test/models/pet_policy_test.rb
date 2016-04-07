@@ -17,25 +17,25 @@ class PetPolicyTest < ActiveSupport::TestCase
   end
 
   test 'policies_that_allow_cats only returns cat-friendly policies' do
-  	policies = PetPolicy.policies_that_allow_cats(@company.id, true).map(&:id)
+  	policies = PetPolicy.policies_that_allow_cats(@company.id, true).ids
   	assert_not_includes policies, @pp_dogs.id
   	assert_includes policies, @pp_cats.id
   end
-  
+
   test 'policies_that_allow_cats(false) returns cat-unfriendly policies' do
-    policies = PetPolicy.policies_that_allow_cats(@company.id, false).map(&:id)
+    policies = PetPolicy.policies_that_allow_cats(@company.id, false).ids
     assert_includes policies, @pp_dogs.id
     assert_not_includes policies, @pp_cats.id
   end
 
   test 'policies_that_allow_dogs only returns dog-friendly policies' do
-  	policies = PetPolicy.policies_that_allow_dogs(@company.id, true).map(&:id)
+  	policies = PetPolicy.policies_that_allow_dogs(@company.id, true).ids
   	assert_includes policies, @pp_dogs.id
   	assert_not_includes policies, @pp_cats.id
   end
 
   test 'policies_that_allow_dogs(false) only returns dog-unfriendly policies' do
-    policies = PetPolicy.policies_that_allow_dogs(@company.id, false).map(&:id)
+    policies = PetPolicy.policies_that_allow_dogs(@company.id, false).ids
     assert_not_includes policies, @pp_dogs.id
     assert_includes policies, @pp_cats.id
   end

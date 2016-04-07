@@ -95,18 +95,11 @@ class SalesListing < ActiveRecord::Base
     amenities ? amenities.join(", ") : "None"
   end
 
-  # for use in search method below
   # returns the first image for each unit
   def self.get_images(list)
-    imgs = Image.where(unit_id: list.map(&:unit_id), priority: 0)
+    imgs = Image.where(unit_id: list.pluck('units.id'), priority: 0)
     Hash[imgs.map {|img| [img.unit_id, img.file.url(:thumb)]}]
   end
-
-  # returns all images for each unit
-  # def self.get_all_images(list)
-  #   unit_ids = list.map(&:unit_id)
-  #   Image.where(unit_id: unit_ids).to_a.group_by(&:unit_id)
-  # end
 
   def self.get_amenities(list)
     SalesAmenity.where(sales_listing_id: list.ids)
@@ -446,7 +439,7 @@ class SalesListing < ActiveRecord::Base
       listings = listings.where.not("status = ?", Unit.statuses["off"])
     end
 
-    unit_ids = listings.map(&:unit_id)
+    unit_ids = listings.pluck(:unit_id)
     images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
 
     return listings, images
@@ -471,7 +464,7 @@ class SalesListing < ActiveRecord::Base
       listings = listings.where.not("status = ?", Unit.statuses["off"])
     end
 
-    unit_ids = listings.map(&:unit_id)
+    unit_ids = listings.pluck(:unit_id)
     images = Image.where(unit_id: unit_ids).index_by(&:unit_id)
 
     return listings, images
@@ -479,7 +472,7 @@ class SalesListing < ActiveRecord::Base
 
   # Used in our API. Takes in a list of units
   def self.get_amenities(list_of_units)
-    unit_ids = list_of_units.map(&:unit_id)
+    unit_ids = list_of_units.pluck('units.id')
     list = SalesListing.joins(:sales_amenities)
       .where(unit_id: unit_ids).select('name', 'unit_id', 'id')
       .to_a.group_by(&:unit_id)

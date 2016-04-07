@@ -7,7 +7,8 @@ class BuildingMailer < ApplicationMailer
     # end
     @building = building
     @reporter = reporter
-    mail to: 'info@myspacenyc.com', #data_enterers.map(&:email), 
-    	subject: "Inaccuracy Reported for #{building.street_address}", from: @reporter.email
+    mail to: 'info@myspacenyc.com',
+    	subject: "Inaccuracy Reported for #{building.street_address}",
+        from: @reporter.email
   end
 end

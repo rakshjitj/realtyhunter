@@ -76,16 +76,16 @@ class CommercialListing < ActiveRecord::Base
     end
   end
 
-  # for use in search method below
   # returns the first image for each unit
   def self.get_images(list)
-    imgs = Image.where(unit_id: list.map(&:unit_id), priority: 0)
+    imgs = Image.where(unit_id: list.pluck(:unit_id), priority: 0)
     Hash[imgs.map {|img| [img.unit_id, img.file.url(:thumb)]}]
   end
 
   def self.export_all(user, params)
     params = params.symbolize_keys
-    running_list = CommercialListing.joins([:commercial_property_type, unit: [building: [:company, :landlord]]])
+    running_list = CommercialListing
+      .joins([:commercial_property_type, unit: [building: [:company, :landlord]]])
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address',

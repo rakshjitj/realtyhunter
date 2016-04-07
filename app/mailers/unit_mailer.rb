@@ -7,7 +7,7 @@ class UnitMailer < ApplicationMailer
     # end
     @listing = listing
     @reporter = reporter
-    mail to: 'info@myspacenyc.com', #data_enterers.map(&:email),
+    mail to: 'info@myspacenyc.com',
     	subject: "Inaccuracy Reported for #{listing.unit.building.street_address} ##{listing.unit.building_unit}",
     	from: @reporter.email
   end
@@ -19,7 +19,7 @@ class UnitMailer < ApplicationMailer
     # end
     @listing = listing
     @reporter = reporter
-    mail to: 'info@myspacenyc.com', #data_enterers.map(&:email),
+    mail to: 'info@myspacenyc.com',
     	subject: "Inaccuracy Reported for Commercial Unit: #{listing.unit.building.street_address}",
     	from: @reporter.email
   end

@@ -7,9 +7,9 @@
 <div class="modal-body">
 
   <p class="disclaimer-text">
-    Pick an apartment for <%= @roommates.map(&:name).map{ |n| n.titleize }.join(", ") %>:
+    Pick an apartment for <%= @roommates.map{|r| r.name.titleize}.join(", ") %>:
   </p>
-  
+
   <br />
   <div class="row">
     <div class="col-md-2 form-label-responsive">
@@ -17,10 +17,10 @@
     </div>
     <div class="col-md-8">
       <div class="form-group ui-front">
-        <%= autocomplete_field_tag :address, "",  
+        <%= autocomplete_field_tag :address, "",
           autocomplete_building_formatted_street_address_roommates_path,
           update_elements: {},
-          placeholder: "123 Main St", 
+          placeholder: "123 Main St",
           required: 'true',
           class:'form-control' %>
       </div>
@@ -34,7 +34,7 @@
     </div>
     <div class="col-md-3">
       <div class="found_units">
-        <%= select_tag(:unit_id, 
+        <%= select_tag(:unit_id,
           options_for_select([]),
             {prompt: "Choose one...",
             class: 'form-control',
@@ -57,7 +57,7 @@
   <%= hidden_field_tag "ids", params[:ids] %>
 
 </div>
-      
+
 <div class="modal-footer">
   <span class="submit-btn">
     <%= submit_tag "Assign", class: 'btn btn-danger' %>

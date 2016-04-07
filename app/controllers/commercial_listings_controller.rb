@@ -306,15 +306,15 @@ class CommercialListingsController < ApplicationController
     end
 
     def custom_sort
-      sort_column = params[:sort_by] || "updated_at"
-      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
+      sort_column = params[:sort_by] || "commercial_listings.updated_at".freeze
+      sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc".freeze
       # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order
       if sort_column == 'landlord_code'
-        @commercial_units = @commercial_units.order("LOWER(code) " + sort_order)
+        @commercial_units = @commercial_units.order("LOWER(code) #{sort_order}".freeze)
       else
-        @commercial_units = @commercial_units.order(sort_column + ' ' + sort_order)
+        @commercial_units = @commercial_units.order("#{sort_column} #{sort_order}".freeze)
       end
       @commercial_units
     end

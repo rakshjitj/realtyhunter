@@ -88,7 +88,6 @@ class ResidentialListing < ActiveRecord::Base
     amenities ? amenities.join(", ") : "None".freeze
   end
 
-  # for use in search method below
   # returns the first image for each unit - thumbnail styles only
   def self.get_images(list)
     imgs = Image.where(unit_id: list.pluck(:unit_id), priority: 0)

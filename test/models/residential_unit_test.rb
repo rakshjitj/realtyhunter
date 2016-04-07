@@ -10,19 +10,19 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @building = build(:building, company: @company)
     @building2 = build(:building, company: @company)
     @building3 = build(:building, company: @company)
-    
-    @unit = build(:residential_unit, 
-        building: @building, 
+
+    @unit = build(:residential_unit,
+        building: @building,
         rent: 10,
         beds: 1,
         baths: 1)
-    @unit2 = build(:residential_unit, 
-        building: @building2, 
+    @unit2 = build(:residential_unit,
+        building: @building2,
         rent: 20,
         beds: 5,
         baths: 5)
-    @unit3 = build(:residential_unit, 
-        building: @building3, 
+    @unit3 = build(:residential_unit,
+        building: @building3,
         rent: 30,
         beds: 8,
         baths: 8)
@@ -89,11 +89,11 @@ class ResidentialUnitTest < ActiveSupport::TestCase
     @unit.save
     @unit2.save
     @unit3.save
-    Unit.all 
+    Unit.all
     params = {}
     params[:address] = @building.formatted_street_address
     @results = ResidentialUnit.search(params, @user)
-    @results2 = @results.map(&:building_unit)
+    @results2 = @results.pluck(:building_unit)
     assert_equal 1, @results.length
     assert @results[0].building.formatted_street_address, @building.formatted_street_address
   end

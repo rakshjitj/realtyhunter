@@ -1,4 +1,4 @@
-cache "naked_apts/#{@listings.map(&:unit_id).join('')}-#{@listings.to_a.count}-#{@listings.maximum(:updated_at).to_i}" do
+cache "naked_apts/#{@listings.ids.join('')}-#{@listings.ids.count}-#{@listings.maximum(:updated_at).to_i}" do
 # url looks like <base_url>/syndication/1/naked_apts
 xml.instruct! :xml, :version => "1.0"
 xml.streeteasy :version => "1.6" do

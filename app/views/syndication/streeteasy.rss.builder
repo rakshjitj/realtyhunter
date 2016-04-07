@@ -1,4 +1,4 @@
-cache "streeteasy/#{@listings.map(&:unit_id).join('')}-#{@listings.to_a.count}-#{@listings.maximum(:updated_at).to_i}" do
+cache "streeteasy/#{@listings.ids.join('')}-#{@listings.ids.count}-#{@listings.maximum(:updated_at).to_i}" do
 # url looks like <base_url>/syndication/1/streeteasy
 xml.instruct! :xml, :version => "1.0"
 xml.streeteasy :version => "1.6" do
@@ -26,7 +26,7 @@ xml.streeteasy :version => "1.6" do
 				@status = "in-contract"
 		  elsif listing.status == "binder_signed"
 				@status = "contract-signed"
-			elsif listing.status == "off" ||
+			elsif listing.status == "off" #||
 				listing.status == "rented"
 			end
 

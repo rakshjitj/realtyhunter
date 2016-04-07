@@ -37,7 +37,7 @@ class UserMailerTest < ActionMailer::TestCase
 
     mail = UserMailer.account_approval_needed(user, company)
     assert_equal "Account approval needed", mail.subject
-    assert_equal company.admins.map(&:email), mail.to
+    assert_equal company.admins.pluck(:email), mail.to
     assert_equal ["rbujans@myspacenyc.com"], mail.from
     assert_match user.name,               mail.body.encoded
     assert_match user.email,               mail.body.encoded

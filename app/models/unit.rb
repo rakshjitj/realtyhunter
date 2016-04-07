@@ -51,19 +51,19 @@ class Unit < ActiveRecord::Base
 
   # returns all images for each unit
   def self.get_all_images(list)
-    unit_ids = list.map(&:unit_id)
+    unit_ids = list.pluck('units.id')
     Image.where(unit_id: unit_ids).to_a.group_by(&:unit_id)
   end
 
   def self.get_open_houses(list)
-    unit_ids = list.map(&:unit_id)
+    unit_ids = list.pluck('units.id')
     OpenHouse.where(unit_id: unit_ids).to_a.group_by(&:unit_id)
   end
 
   def self.get_primary_agents(list)
     User.joins(:office)
       .joins('inner join units on users.id = units.primary_agent_id OR users.id = units.primary_agent2_id')
-      .where('units.id IN (?)', list.map(&:unit_id))
+      .where('units.id IN (?)', list.pluck('units.id'))
       .select('users.id', 'name', 'email', 'mobile_phone_number', 'phone_number', 'public_url',
         'offices.telephone AS office_telephone', 'offices.fax AS office_fax', 'units.id as unit_id')
       .to_a.group_by(&:unit_id)
@@ -74,7 +74,7 @@ class Unit < ActiveRecord::Base
     users = User
       .joins(:office)
       .joins('inner join units on users.id = units.primary_agent_id OR users.id = units.primary_agent2_id')
-      .where('units.id IN (?)', list.map(&:unit_id))
+      .where('units.id IN (?)', list.pluck("units.id"))
       .select('users.id', 'name', 'email', 'mobile_phone_number', 'phone_number', 'public_url',
         'offices.telephone AS office_telephone', 'offices.fax AS office_fax', 'units.id as unit_id')
 

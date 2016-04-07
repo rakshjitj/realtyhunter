@@ -14,7 +14,7 @@ class UserMailer < ApplicationMailer
   def account_approval_needed(user, company)
     @user = user
     @company = company
-    @emails = @company.admins.map(&:email)
+    @emails = @company.admins.pluck(&:email)
     #puts "--- #{@user} #{@company} #{@company.admins.inspect}"
     mail to: @emails, subject: "Account approval needed"
   end

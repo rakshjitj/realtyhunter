@@ -262,7 +262,7 @@ class RoommatesController < ApplicationController
         'Ridgewood',
         'Williamsburg',
         'Flatbush Ditmas Park'])
-      @referrers = current_user.company.users.unarchived.map(&:name).to_a
+      @referrers = current_user.company.users.unarchived.pluck(:name)
       @referrers.insert(0, 'Website')
 
       # set a default status if none otherwise specified

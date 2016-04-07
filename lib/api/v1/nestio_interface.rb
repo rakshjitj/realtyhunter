@@ -169,16 +169,71 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'residential_listings.op_fee_percentage as r_op_fee_percentage',
 					'units.id as unit_id',
 					'units.primary_agent_id',
-					'units.primary_agent2_id',
-					'residential_listings.id AS r_id',
+					'units.primary_agent2_id'
 				)
 
 				listings
 			end
 
-			# TODO
+			# TODO: still not fully setup
 			def sales_search(company_id, search_params)
-				listings = ResidentialListing.none
+				listings = SalesListing.none
+				# listings = SalesListing.joins(unit: {building: [:company]})
+		  #     .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+		  #     .where('companies.id = ?', company_id)
+		  #     .select('buildings.formatted_street_address AS formatted_street_address2',
+		  #       'units.listing_id',
+		  #       'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2',
+		  #       'buildings.lat as lat2', 'buildings.lng as lng2', 'units.id AS unit_id',
+		  #       'units.building_unit', 'units.status','units.rent',
+		  #       'sales_listings.beds || \'/\' || sales_listings.baths as bed_and_baths',
+		  #       'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
+		  #       'units.access_info',
+		  #       'sales_listings.id', 'sales_listings.baths', 'sales_listings.beds', 'units.access_info',
+		  #       'sales_listings.seller_name', 'sales_listings.updated_at',
+		  #       'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
+		  #       'units.available_by', 'units.public_url')
+
+
+				# # TODO: add restrictions
+
+				# listings = _sort_by(search_params, listings)
+
+				# listings = listings
+				# 	.select('units.building_unit', 'units.status', 'units.available_by',
+				# 	'units.listing_id', 'units.updated_at', 'units.rent',
+				# 	'buildings.id as building_id',
+				# 	'buildings.administrative_area_level_2_short',
+				# 	'buildings.administrative_area_level_1_short as b_administrative_area_level_1_short',
+				# 	'buildings.sublocality as b_sublocality',
+				# 	'buildings.street_number as b_street_number', 'buildings.route as b_route',
+				# 	'buildings.postal_code as b_postal_code',
+				# 	'buildings.lat as b_lat',
+				# 	'buildings.lng as b_lng',
+				# 	'neighborhoods.name as neighborhood_name',
+				# 	'neighborhoods.borough as neighborhood_borough',
+				# 	'landlords.code', 'landlords.name', 'landlords.contact_name',
+				# 	'landlords.office_phone', 'landlords.mobile', 'landlords.fax',
+				# 	'landlords.email', 'landlords.website',
+				# 	'landlords.administrative_area_level_1_short as l_administrative_area_level_1_short',
+				# 	'landlords.sublocality as l_sublocality',
+				# 	'landlords.street_number as l_street_number', 'landlords.route as l_route',
+				# 	'landlords.postal_code as l_postal_code',
+				# 	'landlords.lat as l_lat',
+				# 	'landlords.lng as l_lng',
+				# 	'landlords.listing_agent_id', 'landlords.listing_agent_percentage',
+				# 	'landlords.has_fee as l_has_fee',
+				# 	'landlords.op_fee_percentage as l_op_fee_percentage',
+				# 	'landlords.tp_fee_percentage as l_tp_fee_percentage',
+				# 	'sales_listings.beds',
+				# 	'sales_listings.baths',
+				# 	'sales_listings.public_description',
+				# 	'units.id as unit_id',
+				# 	'units.primary_agent_id',
+				# 	'units.primary_agent2_id',
+				# 	'sales_listings.id as s_id')
+
+				listings
 			end
 
 			def commercial_search(company_id, search_params)
@@ -226,8 +281,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'commercial_listings.expose_address as c_expose_address',
 					'units.primary_agent_id',
 					'units.primary_agent2_id',
-					'commercial_listings.id as c_id',
-				)
+					'commercial_listings.id as c_id')
 
 				listings
 			end
@@ -262,7 +316,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					feature_record1 = ResidentialAmenity.where(company_id: company_id)
 						.where('residential_amenities.name ILIKE ?', "%washer/dryer%").first
 					if feature_record1
-						unit_ids = listings.map(&:id)
+						unit_ids = listings.ids
 				    listings1_ids = ResidentialListing.joins(:residential_amenities)
 				    .where(unit_id: unit_ids)
 				    .where('residential_amenity_id = ?', feature_record1.id)
@@ -274,7 +328,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
   	    		where('name ILIKE ?', 'laundry in bldg').first
 					if feature_record2
 						listings2_ids = listings.joins(building: :building_amenities)
-  	    			.where('building_amenity_id = ?', feature_record2.id).map(&:id)
+  	    			.where('building_amenity_id = ?', feature_record2.id).ids
   	    	end
 
   	    	new_ids = [listings1_ids, listings2_ids].flatten
@@ -301,14 +355,11 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 						.where('name ILIKE ?', "%#{feature.downcase}%").first
 					if feature_record
 						# listings is still a list of unit records
-						unit_ids = listings.map(&:id)
+						unit_ids = listings.ids
 				    restricted_unit_ids = ResidentialListing.joins(:residential_amenities)
-				    .where(unit_id: unit_ids)
-				    .where('residential_amenity_id = ?', feature_record.id)
-				    .map{|r| r.unit_id}
-
-						#listings = listings.joins(residential_listing: :residential_amenities)
-  	    		#	.where('residential_amenity_id = ?', feature_record.id)
+						    .where(unit_id: unit_ids)
+						    .where('residential_amenity_id = ?', feature_record.id)
+						    .map{|r| r.unit_id}
   	    		listings = listings.where(id: restricted_unit_ids)
   	    	end
 
@@ -382,14 +433,14 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 						cats_allowed = to_boolean(search_params[:cats_allowed])
 						pet_policies = PetPolicy.policies_that_allow_cats(company_id, cats_allowed)
 						listings = listings
-						.where('buildings.pet_policy_id IN (?)', pet_policies.map(&:id));
+								.where('buildings.pet_policy_id IN (?)', pet_policies.ids)
 					end
 					# dogs allowed
 					if (search_params[:dogs_allowed] && !search_params[:dogs_allowed].empty?)
 						dogs_allowed = to_boolean(search_params[:dogs_allowed])
 						pet_policies = PetPolicy.policies_that_allow_dogs(company_id, dogs_allowed)
 						listings = listings
-							.where('buildings.pet_policy_id IN (?)', pet_policies.map(&:id));
+								.where('buildings.pet_policy_id IN (?)', pet_policies.ids)
 					end
 					# laundry_in_unit
 					listings = _search_by_residential_amenity('laundry_in_unit', company_id, listings, search_params)
