@@ -73,7 +73,7 @@ class Building < ActiveRecord::Base
 
   # for use in search method below
   def self.get_images(list)
-    imgs = Image.where(building_id: list.map(&:id), priority: 0)
+    imgs = Image.where(building_id: list.ids, priority: 0)
     Hash[imgs.map {|img| [img.unit_id, img.file.url(:thumb)]}]
   end
 

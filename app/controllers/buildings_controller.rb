@@ -183,7 +183,7 @@ class BuildingsController < ApplicationController
     end
 
     def custom_sort
-      sort_column = building_params[:sort_by] || "formatted_street_address".freeze
+      sort_column = building_params[:sort_by] || "buildings.formatted_street_address".freeze
       sort_order = %w[asc desc].include?(building_params[:direction]) ? building_params[:direction] : "asc".freeze
       # reset params so that view helper updates correctly
       params[:sort_by] = sort_column

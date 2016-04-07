@@ -66,7 +66,7 @@ class RoommatesController < ApplicationController
     sub = roommate_params[:roommate][:title]
     msg = roommate_params[:roommate][:message]
     roommate_ids = roommate_params[:roommate][:ids]
-    Roommate.send_message(current_user, recipients, sub, msg, roommate_ids)
+    Roommate.send_message(current_user, recipients, sub, msg, roommate_ids.split(','))
 
     respond_to do |format|
       format.js { flash[:success] = "Message sent!"  }

@@ -7,9 +7,9 @@ class RoommateMailer < ApplicationMailer
       .select(
     	  'roommates.id', 'roommates.describe_yourself',
     	  'roommates.upload_picture_of_yourself',
-    	  'roommates.name', 'roommates.phone_number', 'roommates.email', 
+    	  'roommates.name', 'roommates.phone_number', 'roommates.email',
     	  'neighborhoods.name as neighborhood_name',
-    	  'roommates.monthly_budget', 'roommates.move_in_date', 'roommates.dogs_allowed', 
+    	  'roommates.monthly_budget', 'roommates.move_in_date', 'roommates.dogs_allowed',
     	  'roommates.cats_allowed', 'roommates.created_at as submitted_date',
     	  'roommates.archived')
       .where(id: roommate_ids)

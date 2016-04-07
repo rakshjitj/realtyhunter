@@ -1,7 +1,7 @@
 $('#roommateDeleteMultipleModal .modal-body').html(
-	"Are you sure you want to delete <br><br><%= @roommates.map(&:name).join('<br>').html_safe %> <br><br>Deleting them is permanent and will completely erase their info!");
+	"Are you sure you want to delete <br><br><%= @roommates.pluck(:name).join('<br>').html_safe %> <br><br>Deleting them is permanent and will completely erase their info!");
 
-$('#roommateDeleteMultipleModal .submit-link').replaceWith("<%= j(link_to 'Delete', destroy_multiple_roommates_path(ids: @roommates.map(&:id)), remote: true, method: :delete, class: 'btn btn-danger delete-btn link-as-button submit-link', id: 'delete-link') %>");
+$('#roommateDeleteMultipleModal .submit-link').replaceWith("<%= j(link_to 'Delete', destroy_multiple_roommates_path(ids: @roommates.ids), remote: true, method: :delete, class: 'btn btn-danger delete-btn link-as-button submit-link', id: 'delete-link') %>");
 
 $('#roommateDeleteMultipleModal .submit-link').click( function(event) {
 	$('#roommateDeleteMultipleModal').modal('hide');

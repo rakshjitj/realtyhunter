@@ -33,11 +33,10 @@ module Forms
 	    recipients = careers_params[:email_modal][:recipients].split(/\s, \,/)
 	    sub = careers_params[:email_modal][:title]
 	    msg = careers_params[:email_modal][:message]
-	    puts current_user, recipients, sub, msg
 	    WufooCareerForm.send_message(current_user, recipients, sub, msg)
 
 	    respond_to do |format|
-	      format.js { flash[:success] = "Message sent!"  }
+	      format.js { flash[:success] = "Message sent!" }
 	    end
 	  end
 

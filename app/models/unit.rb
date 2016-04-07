@@ -77,11 +77,9 @@ class Unit < ActiveRecord::Base
       .where('units.id IN (?)', list.map(&:unit_id))
       .select('users.id', 'name', 'email', 'mobile_phone_number', 'phone_number', 'public_url',
         'offices.telephone AS office_telephone', 'offices.fax AS office_fax', 'units.id as unit_id')
-      .to_a
 
-    images = Image.where(user_id: users.map(&:id)).index_by(&:user_id)
-
-    return [users.group_by(&:unit_id), images]
+    images = Image.where(user_id: users.ids).index_by(&:user_id)
+    return [users.to_a.group_by(&:unit_id), images]
   end
 
   # mainly for use in our API. Returns list of any

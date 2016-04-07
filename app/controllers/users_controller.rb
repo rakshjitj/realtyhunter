@@ -33,7 +33,7 @@ class UsersController < ApplicationController
   # GET /coworkers/1
   # GET /coworkers/1.json
   def coworkers
-    @users = @user.coworkers.order("created_at ASC")
+    @users = @user.coworkers.order("users.updated_at ASC")
     @users = @users.page params[:page]
     @title = @user.company.name + ' Employees'
     render 'index'
@@ -43,7 +43,7 @@ class UsersController < ApplicationController
   # GET /subordinates/1.json
   def subordinates
     @manager = User.find(params[:id])
-    @users = @manager.subordinates.order("created_at ASC")
+    @users = @manager.subordinates.order("users.updated_at ASC")
     @users = @users.page params[:page]
     @title = @manager.fname.titleize + "'s Team"
     render 'index'
@@ -65,13 +65,13 @@ class UsersController < ApplicationController
   def new
     @companies = Company.all
     @offices = []
-    @employtee_titles = EmployeeTitle.where.not("name like ?", "%admin%")
+    @employtee_titles = EmployeeTitle.where.not("users.name like ?", "%admin%")
     @user = User.new
   end
 
   # GET /users/batch_new
   def admin_new
-    @default_role_set = Role.where(name: ['residential', 'commercial', 'sales']).map(&:id)
+    @default_role_set = Role.where(name: ['residential', 'commercial', 'sales']).ids
     @user = User.new
   end
 
@@ -116,7 +116,7 @@ class UsersController < ApplicationController
       #puts "**** #{@user.errors.inspect}"
       @companies = Company.all
       @offices = []
-      @employtee_titles = EmployeeTitle.where.not("name like ?", "%admin%")
+      @employtee_titles = EmployeeTitle.where.not("users.name like ?", "%admin%")
       @agent_title = EmployeeTitle.agent
       render 'new'
     end

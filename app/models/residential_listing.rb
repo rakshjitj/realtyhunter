@@ -96,8 +96,8 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self.get_amenities(list)
-    ids = list.pluck('residential_listings.id')
-    ResidentialAmenity.where(residential_listing_id: ids).select('name').to_a.group_by(&:residential_listing_id)
+    ResidentialAmenity.where(residential_listing_id: list.ids)
+        .select('name').to_a.group_by(&:residential_listing_id)
   end
 
   def self.listings_by_neighborhood(user, listing_ids)

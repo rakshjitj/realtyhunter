@@ -109,8 +109,8 @@ class SalesListing < ActiveRecord::Base
   # end
 
   def self.get_amenities(list)
-    ids = list.map(&:id)
-    SalesAmenity.where(sales_listing_id: ids).select('name').to_a.group_by(&:sales_listing_id)
+    SalesAmenity.where(sales_listing_id: list.ids)
+        .select('name').to_a.group_by(&:sales_listing_id)
   end
 
   def self.listings_by_neighborhood(user, listing_ids)
@@ -275,7 +275,7 @@ class SalesListing < ActiveRecord::Base
     if params[:building_feature_ids]
       features = params[:building_feature_ids][0, 256]
       features = features.split(",").select{|i| !i.empty?}
-        bldg_ids = Building.joins(:building_amenities).where('building_amenity_id IN (?)', features).map(&:id)
+        bldg_ids = Building.joins(:building_amenities).where('building_amenity_id IN (?)', features).ids
         @running_list = @running_list.where("building_id IN (?)", bldg_ids)
     end
 

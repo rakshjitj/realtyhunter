@@ -75,15 +75,15 @@ class User < ActiveRecord::Base
 
   # primary units only currently
   def residential_units(status=nil)
-    ids = self._get_listings_by_status(self.primary_units, status).map(&:id) +
-        self._get_listings_by_status(self.primary2_units, status).map(&:id)
+    ids = self._get_listings_by_status(self.primary_units, status).ids +
+        self._get_listings_by_status(self.primary2_units, status).ids
     ResidentialListing.for_units(ids)
   end
 
   # primary units only currently
   def commercial_units(status=nil)
-    ids = self._get_listings_by_status(self.primary_units, status).map(&:id) +
-        self._get_listings_by_status(self.primary2_units, status).map(&:id)
+    ids = self._get_listings_by_status(self.primary_units, status).ids +
+        self._get_listings_by_status(self.primary2_units, status).ids
     CommercialListing.for_units(ids)
   end
 
@@ -175,7 +175,7 @@ class User < ActiveRecord::Base
 
   # for use in search method below
   def self.get_images(list)
-    imgs = Image.where(user_id: list.map(&:id))
+    imgs = Image.where(user_id: list.ids)
     Hash[imgs.map {|img| [img.user_id, img.file.url(:thumb)]}]
   end
 
@@ -231,38 +231,6 @@ class User < ActiveRecord::Base
       self.add_role :sales
       self.add_role :agent
     end
-
-    # (almost) everyone should always be able to see residential stuff
-    # if self.employee_title != EmployeeTitle.external_vendor
-    #   # note: this isn't really used anymore...
-    #   # we decided that everyone should be able to view residential/commercial/sales listings
-    #   self.add_role :residential
-    #   self.add_role :commercial
-    # end
-
-    # if you're an agent, add in specific roles for the type of
-    # agent that you are
-    # if self.employee_title == EmployeeTitle.agent
-    #   # cull out empty selections
-    #   if self.agent_types
-    #     self.agent_types = self.agent_types.select(&:present?)
-    #   end
-    #   # always make sure they at least have one specialty area selected
-    #   if !self.agent_types || !self.agent_types.any?
-    #     # note: this isn't really used anymore...
-    #     # we decided that everyone should be able to view residential/commercial/sales listings
-    #     self.add_role :residential
-    #     self.add_role :commercial
-    #   else
-    #     # otherwise, note the specialities they indicated
-    #     self.agent_types.each do |role|
-    #       self.add_sanitized_role(role, true)
-    #     end
-
-    #   end
-    # else
-    #   self.add_sanitized_role(self.employee_title.name, false)
-    # end
   end
 
   # def handles_residential?
@@ -273,9 +241,9 @@ class User < ActiveRecord::Base
   #   self.has_role? :commercial
   # end
 
-  def handles_sales?
-    self.has_role? :sales
-  end
+  # def handles_sales?
+  #   self.has_role? :sales
+  # end
 
   def is_company_admin?
     self.has_role? :company_admin
@@ -368,15 +336,6 @@ class User < ActiveRecord::Base
   def coworkers
     company.users.preload(:roles)
   end
-
-  def self.get_all_agent_specialties(lists)
-    user_ids = list.map(&:id)
-  end
-
-  # def self.get_images(list)
-  #   user_ids = list.map(&:id)
-  #   Image.where(user_id: user_ids).index_by(&:user_id)
-  # end
 
   # keep a running list of our specialties so we
   # don't always have to recalculate
