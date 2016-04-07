@@ -117,7 +117,7 @@ Landlords = {};
     Landlords.sortOnColumnClick();
     Common.markSortingColumn();
     if (Common.getSearchParam('sort_by') === '') {
-      Common.markSortingColumnByElem($('th[data-sort="name"]'), 'asc')
+      Common.markSortingColumnByElem($('th[data-sort="landlords.name"]'), 'asc')
     }
 
     $('#landlords #filter').bind('railsAutocomplete.select', Landlords.throttledSearch);

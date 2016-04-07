@@ -221,7 +221,7 @@ Buildings = {};
     Buildings.sortOnColumnClick();
     Common.markSortingColumn();
     if (Common.getSearchParam('sort_by') === '') {
-      Common.markSortingColumnByElem($('th[data-sort="formatted_street_address"]'), 'desc')
+      Common.markSortingColumnByElem($('th[data-sort="buildings.formatted_street_address"]'), 'desc')
     }
 
     // search filters

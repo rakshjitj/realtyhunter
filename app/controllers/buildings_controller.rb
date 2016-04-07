@@ -167,9 +167,9 @@ class BuildingsController < ApplicationController
 
     def set_units
       @residential_units, @res_images = @building.residential_units(params[:status_listings])
-      @residential_units = @residential_units.page params[:page]
+      @residential_units = @residential_units.page(params[:page]).per(25)
       @commercial_units, @com_images = @building.commercial_units(params[:status_listings])
-      @commercial_units = @commercial_units.page params[:page]
+      @commercial_units = @commercial_units.page(params[:page]).per(25)
     end
 
     def set_buildings
