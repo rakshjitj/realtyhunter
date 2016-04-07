@@ -2,6 +2,7 @@ class WufooFormsMailer < ApplicationMailer
 	def send_message(source_agent, recipients, sub, msg)
     @source_agent = source_agent
     @message = msg
-    mail to: recipients, subject: sub, from: @source_agent.email
+    mail to: recipients, subject: sub, from: @source_agent.email,
+        tag: 'wufoo', track_opens:'true'
   end
 end

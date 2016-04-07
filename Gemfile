@@ -27,7 +27,7 @@ gem "paperclip"
 gem 'aws-sdk-v1', '~> 1.52.0' #paperclip
 # ajax drag/dropping multiple files
 gem 'dropzonejs-rails', '~> 0.7.3'
-gem 'mandrill-api', '~> 1.0.53'
+gem 'postmark-rails', '~> 0.12.0'
 gem "rolify", '~> 5.0.0'
 gem 'cancancan', '~> 1.10'
 #used to add semi-realistic users
@@ -58,6 +58,7 @@ gem 'rollbar', '~> 2.8.3'
 gem 'activerecord-import'
 gem 'oj'
 gem 'oj_mimic_json'
+
 # profiling
 # gem 'rack-mini-profiler', require: false
 # gem 'flamegraph'

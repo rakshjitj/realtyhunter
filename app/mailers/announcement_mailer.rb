@@ -8,7 +8,7 @@ class AnnouncementMailer < ApplicationMailer
 		else
 			title = note
 		end
-		mail to: recipients, subject: ""
+		mail to: recipients, subject: "", tag: 'announcements', track_opens:'true'
 	end
 
 end
