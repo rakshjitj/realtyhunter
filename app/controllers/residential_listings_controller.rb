@@ -8,7 +8,6 @@ class ResidentialListingsController < ApplicationController
   autocomplete :landlord, :code, full: true
 
   def index
-
     respond_to do |format|
       format.html.phone do
         set_residential_listings
@@ -330,7 +329,9 @@ class ResidentialListingsController < ApplicationController
 
       # only get data + images for paginated responses
       @residential_units = @residential_units.page params[:page]
-      @favorite_units = @residential_units.where(favorites: true)
+      if request.variant != ":phone"
+        @favorite_units = @residential_units.where(favorites: true)
+      end
     end
 
     # def async_create_csv
