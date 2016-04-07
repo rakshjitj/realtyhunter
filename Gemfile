@@ -55,6 +55,9 @@ gem 'selectize-rails'
 gem 'nested_form_fields'
 gem 'puma_worker_killer'
 gem 'rollbar', '~> 2.8.3'
+gem 'activerecord-import'
+gem 'oj'
+gem 'oj_mimic_json'
 # profiling
 # gem 'rack-mini-profiler', require: false
 # gem 'flamegraph'
@@ -86,7 +89,7 @@ group :development do
   #gem 'sql-logging'
   #gem 'better_errors'
   #gem 'derailed'
-
+  #gem 'stackprof'
 end
 
 group :test do
