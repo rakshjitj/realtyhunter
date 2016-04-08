@@ -94,9 +94,9 @@
     <!-- ****** LANDLORD ****************************************** -->
     <td>
       <% if current_user.is_management? %>
-        <%= link_to residential_listing.landlord_code, landlord_path(residential_listing.landlord_id) %>
+        <%= link_to residential_listing.code, landlord_path(residential_listing.landlord_id) %>
       <% else %>
-        <%= residential_listing.landlord_code %>
+        <%= residential_listing.code %>
       <% end %>
     </td>
 

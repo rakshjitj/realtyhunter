@@ -496,10 +496,6 @@ ResidentialListings = {};
   }
 
   ResidentialListings.initDesktopIndex = function() {
-    // $('#residential-mobile').remove();
-    // $('#residential-desktop').removeClass('hidden');
-    // ResidentialListings.enablePassiveUpdates();
-
     Listings.hideSpinner();
     $('.residential-desktop a').click(function() {
       Listings.showSpinner();

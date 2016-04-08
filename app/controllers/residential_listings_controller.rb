@@ -320,9 +320,8 @@ class ResidentialListingsController < ApplicationController
       @unit_amenities = ResidentialAmenity.where(company: current_user.company)
 
       do_search
-      custom_sort
-
       @res_images = ResidentialListing.get_images(@residential_units)
+      custom_sort
 
       # display all found listings on the map
       @map_infos = ResidentialListing.set_location_data(@residential_units.to_a, @res_images)
@@ -382,17 +381,15 @@ class ResidentialListingsController < ApplicationController
     end
 
     def custom_sort
-      # puts "GOT ---#{params.inspect} #{params[:sort_by]} --- #{params[:direction]}---"
-      sort_column = params[:sort_by] || "residential_listings.updated_at".freeze
+      #puts "GOT ---#{params.inspect} #{params[:sort_by]} --- #{params[:direction]}---"
+      sort_column = params[:sort_by] || "updated_at".freeze
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc".freeze
-      # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      if ResidentialListing.column_names.include?(params[:sort_by])
-        @residential_units = @residential_units.order("#{sort_column} #{sort_order}")
+      if sort_column == 'bed_and_baths_sorter'.freeze
+        @residential_units = @residential_units.order("beds #{sort_order}, baths #{sort_order}".freeze)
       else
-        #@residential_units = @residential_units.sort_by(params[:sort_column]) #{sort_order}")
-        #.sort_by(&:custom_method)
+        @residential_units = @residential_units.order("#{sort_column} #{sort_order}".freeze)
       end
       @residential_units
     end

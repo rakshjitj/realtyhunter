@@ -90,7 +90,9 @@ class ResidentialListing < ActiveRecord::Base
 
   # returns the first image for each unit - thumbnail styles only
   def self.get_images(list)
-    imgs = Image.where(unit_id: list.pluck(:unit_id), priority: 0)
+    puts "\n\n\n\n********* #{list[0].inspect}"
+    unit_ids = list.pluck(:unit_id)
+    imgs = Image.where(unit_id: unit_ids, priority: 0)
     Hash[imgs.map {|img| [img.unit_id, img.file.url(:thumb)]}]
   end
 
@@ -108,12 +110,13 @@ class ResidentialListing < ActiveRecord::Base
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent', 'residential_listings.beds',
-        'beds || \'/\' || baths as bed_and_baths',
+        #'beds || \'/\' || baths as bed_and_baths',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
-        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        'landlords.code',
+        'landlords.id AS landlord_id',
         'units.available_by')
       .to_a.group_by(&:neighborhood_name)
     running_list
@@ -128,12 +131,13 @@ class ResidentialListing < ActiveRecord::Base
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent', 'residential_listings.beds',
-        'beds || \'/\' || baths as bed_and_baths',
+        #'beds || \'/\' || baths as bed_and_baths',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
-        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        'landlords.code',
+        'landlords.id AS landlord_id',
         'units.available_by', 'units.public_url')
     running_list
   end
@@ -156,7 +160,8 @@ class ResidentialListing < ActiveRecord::Base
         'residential_listings.tenant_occupied', 'residential_listings.created_at',
         'residential_listings.updated_at',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
-        'landlords.code AS landlord_code','landlords.id AS landlord_id')
+        'landlords.code',
+        'landlords.id AS landlord_id')
 
     running_list = ResidentialListing._filter_query(running_list, user, params)
     running_list
@@ -176,13 +181,14 @@ class ResidentialListing < ActiveRecord::Base
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent', 'residential_listings.beds',
         'units.primary_agent_id', 'units.primary_agent2_id',
-        'beds || \'/\' || baths as bed_and_baths',
+        #'beds || \'/\' || baths as bed_and_baths',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.favorites',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
-        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        'landlords.code',
+        'landlords.id AS landlord_id',
         'units.listing_id', 'units.available_by', 'units.public_url')
 
     running_list = ResidentialListing._filter_query(running_list, user, params)
@@ -521,12 +527,13 @@ class ResidentialListing < ActiveRecord::Base
       .select('buildings.formatted_street_address',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id',
-        'beds || \'/\' || baths as bed_and_baths',
+        #'beds || \'/\' || baths as bed_and_baths',
         'residential_listings.beds', 'residential_listings.id',
         'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'neighborhoods.name AS neighborhood_name',
-        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        'landlords.code',
+        'landlords.id AS landlord_id',
         'units.available_by', 'units.listing_id')
       .order('residential_listings.updated_at desc')
 
@@ -556,14 +563,14 @@ class ResidentialListing < ActiveRecord::Base
       .select('buildings.formatted_street_address',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id',
-        'beds || \'/\' || baths as bed_and_baths',
+        #'beds || \'/\' || baths as bed_and_baths',
         'residential_listings.beds', 'residential_listings.id',
         'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'neighborhoods.name AS neighborhood_name',
-        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        'landlords.code',
+        'landlords.id AS landlord_id',
         'units.available_by', 'units.listing_id')
-      #'residential_listings.for_roomsharing',
 
     if !status.nil?
       status_lowercase = status.downcase
@@ -622,7 +629,9 @@ class ResidentialListing < ActiveRecord::Base
           listing.has_fee ? 'Yes' : 'No', listing.op_fee_percentage, listing.tp_fee_percentage,
           listing.tenant_occupied ? 'Yes' : 'No',
           agents[listing.unit_id] ? agents[listing.unit_id].pluck(:name).join(', ') : '',
-          listing.listing_id, listing.landlord_code, listing.rent,
+          listing.listing_id,
+          listing.code,
+          listing.rent,
           listing.available_by, listing.access_info,
           reverse_statuses[listing.status.to_s.to_sym],
           listing.created_at, listing.updated_at, listing.archived ? 'Yes' : 'No']
