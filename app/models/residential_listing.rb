@@ -372,7 +372,7 @@ class ResidentialListing < ActiveRecord::Base
         params[:primary_agent_id], params[:primary_agent_id])
     end
 
-    running_list#.uniq
+    running_list.uniq
   end
 
   def deep_copy_imgs(dst_id)
@@ -534,7 +534,9 @@ class ResidentialListing < ActiveRecord::Base
         'neighborhoods.name AS neighborhood_name',
         'landlords.code',
         'landlords.id AS landlord_id',
-        'units.available_by', 'units.listing_id')
+        'units.available_by', 'units.listing_id',
+        #'residential_listings.'
+      )
       .order('residential_listings.updated_at desc')
 
     if !status.nil?
@@ -543,14 +545,15 @@ class ResidentialListing < ActiveRecord::Base
         if status_lowercase == 'active/pending'
           listings = listings
               .where("units.status IN (?) ",
-                [Unit.statuses['active'], Unit.statuses['pending']])#.uniq
+                [Unit.statuses['active'], Unit.statuses['pending']])
         else
           listings = listings
-              .where("units.status = ? ", Unit.statuses[status_lowercase])#.uniq
+              .where("units.status = ? ", Unit.statuses[status_lowercase])
         end
       end
     end
 
+    listings = listings#.uniq
     images = ResidentialListing.get_images(listings)
     return listings, images
   end
@@ -578,10 +581,10 @@ class ResidentialListing < ActiveRecord::Base
         if status_lowercase == 'active/pending'
           listings = listings
               .where("units.status IN (?) ",
-                [Unit.statuses['active'], Unit.statuses['pending']])#.uniq
+                [Unit.statuses['active'], Unit.statuses['pending']]).uniq
         else
           listings = listings
-              .where("units.status = ? ", Unit.statuses[status_lowercase])#.uniq
+              .where("units.status = ? ", Unit.statuses[status_lowercase]).uniq
         end
       end
     end

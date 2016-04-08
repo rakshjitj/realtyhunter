@@ -63,14 +63,14 @@ class User < ActiveRecord::Base
         if status_lowercase == 'active/pending'
           listings = listings
               .where("units.status IN (?) ",
-                [Unit.statuses['active'], Unit.statuses['pending']])#.uniq
+                [Unit.statuses['active'], Unit.statuses['pending']])
         else
           listings = listings
-              .where("units.status = ? ", Unit.statuses[status_lowercase])#.uniq
+              .where("units.status = ? ", Unit.statuses[status_lowercase])
         end
       end
     end
-    listings
+    listings.uniq
   end
 
   # primary units only currently
