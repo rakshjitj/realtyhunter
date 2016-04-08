@@ -112,7 +112,9 @@
               <%= label_tag :status, "Status" %>
             </div>
             <div class="col-xs-7 col-sm-left-padding">
-              <% if current_user.is_management? || current_user.is_listings_manager? %>
+              <% if current_user.is_management? ||
+                    current_user.is_listings_manager? ||
+                    current_user.is_photo_manager? %>
                 <%= select_tag(:status,
                   options_for_select(['Any', 'Active + Pending', 'Active', 'Pending', 'Off'],
                   params[:status] ? params[:status].titleize : "Active"), class: 'form-control') %>
