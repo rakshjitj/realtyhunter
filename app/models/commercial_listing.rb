@@ -18,7 +18,6 @@ class CommercialListing < ActiveRecord::Base
   validates :total_lot_size, presence: true
 
   validates :property_description, presence: true
-  validates :location_description, presence: true
 
   def archive
     self.unit.archived = true
@@ -398,16 +397,16 @@ class CommercialListing < ActiveRecord::Base
         if status_lowercase == 'active/pending'
           listings = listings
               .where("units.status IN (?) ",
-                [Unit.statuses['active'], Unit.statuses['pending']])#.uniq
+                [Unit.statuses['active'], Unit.statuses['pending']])
         else
           listings = listings
-              .where("units.status = ? ", Unit.statuses[status_lowercase])#.uniq
+              .where("units.status = ? ", Unit.statuses[status_lowercase])
         end
       end
     end
 
     images = CommercialListing.get_images(listings)
-    return listings, images
+    return listings.uniq, images
   end
 
   def self.listings_by_id(user, listing_ids)

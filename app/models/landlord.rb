@@ -72,7 +72,7 @@ class Landlord < ActiveRecord::Base
       end
     end
 
-    running_list
+    running_list.uniq
 	end
 
 	def self.search_csv(params)
