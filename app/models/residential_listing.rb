@@ -90,7 +90,6 @@ class ResidentialListing < ActiveRecord::Base
 
   # returns the first image for each unit - thumbnail styles only
   def self.get_images(list)
-    puts "\n\n\n\n********* #{list[0].inspect}"
     unit_ids = list.pluck(:unit_id)
     imgs = Image.where(unit_id: unit_ids, priority: 0)
     Hash[imgs.map {|img| [img.unit_id, img.file.url(:thumb)]}]
@@ -153,6 +152,7 @@ class ResidentialListing < ActiveRecord::Base
         'units.id AS unit_id', 'units.primary_agent_id', 'units.primary_agent2_id',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng',
+        'residential_listings.id',
         'residential_listings.beds', 'residential_listings.baths', 'residential_listings.notes',
         'residential_listings.description', 'residential_listings.lease_start',
         'residential_listings.lease_end', 'residential_listings.has_fee',

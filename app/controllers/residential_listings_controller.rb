@@ -341,12 +341,14 @@ class ResidentialListingsController < ApplicationController
     # returns all data for export
     def set_residential_listings_csv
       @residential_units = ResidentialListing.export_all(current_user, params)
-      @residential_units = custom_sort
+      @utilities = Building.get_utilities(@residential_units)
+      @amenities = ResidentialListing.get_amenities(@residential_units)
       @agents = Unit.get_primary_agents(@residential_units)
       @reverse_statuses = {
         '0': 'Active',
         '1': 'Pending',
         '2': 'Off'}
+      @residential_units = custom_sort
     end
 
     def do_search
