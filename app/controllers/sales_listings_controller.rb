@@ -310,8 +310,8 @@ class SalesListingsController < ApplicationController
     # returns all data for export
     def set_sales_listings_csv
       @sales_units = SalesListing.export_all(current_user)
-      @sales_units = custom_sort
       @agents = Unit.get_primary_agents(@sales_units)
+      @sales_units = custom_sort
     end
 
     def do_search
