@@ -6,11 +6,11 @@
   </div>
   <div class="hidden-xs hidden-sm col-sm-6 form-label-responsive page-header-buttons">
     <%= link_to 'Add a Landlord', new_landlord_path, class: 'btn btn-warning btn-sm link-as-button' %>
-    <%= link_to 'Download CSV', landlords_path(format: :csv), class: 'btn btn-warning btn-sm link-as-button' %>
+    <%= link_to 'Download CSV', landlords_path(params.merge(format: 'csv').symbolize_keys), class: 'btn btn-warning btn-sm link-as-button' %>
   </div>
   <div class="hidden-md hidden-lg col-sm-6 col-sm-left-padding form-label-responsive page-header-buttons">
     <%= link_to 'Add a Landlord', new_landlord_path, class: 'btn btn-warning btn-sm link-as-button' %>
-    <%= link_to 'Download CSV', landlords_path(format: :csv), class: 'btn btn-warning btn-sm link-as-button' %>
+    <%= link_to 'Download CSV', landlords_path(params.merge(format: 'csv').symbolize_keys), class: 'btn btn-warning btn-sm link-as-button' %>
   </div>
 </div>
 
@@ -65,16 +65,16 @@
       <table class="table table-striped table-hover table-condensed infinite-table">
         <thead>
           <tr>
-            <th data-sort="landlords.code" class="th-sortable">Code</th>
-            <th data-sort="landlords.name" class="th-sortable">Name</th>
+            <th data-sort="code" class="th-sortable">Code</th>
+            <th data-sort="name" class="th-sortable">Name</th>
             <th>Mobile</th>
-            <th data-sort="landlords.active_unit_count" class="th-sortable" class="">
+            <th data-sort="active_unit_count" class="th-sortable" class="">
               On-Market Units
             </th>
-            <th data-sort="landlords.total_unit_count" class="th-sortable" class="">
+            <th data-sort="total_unit_count" class="th-sortable" class="">
               Total Units
             </th>
-            <th data-sort="landlords.last_unit_updated_at" class="th-sortable" class="">
+            <th data-sort="last_unit_updated_at" class="th-sortable" class="">
               Last Unit Updated
             </th>
             <th colspan="1"></th>

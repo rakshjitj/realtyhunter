@@ -8,9 +8,22 @@
 <%= CSV.generate_line headers %>
 <%- @deals.each do |deal| -%>
 
-  <%= [deal.full_address, deal.building_unit, deal.price,  "#{deal.lease_term} Months",
-    deal.lease_start_date, deal.lease_expiration_date, deal.closed_date, deal.move_in_date, deal.commission, deal.state.titleize,
-    deal.deal_notes, deal.landlord_code, deal.unit_id, deal.user_id ? deal.user.name : '-None Specified-',
-      deal.created_at, deal.updated_at, deal.archived
+  <%= [deal.full_address,
+    deal.building_unit,
+    deal.price,
+    "#{deal.lease_term} Months",
+    deal.lease_start_date,
+    deal.lease_expiration_date,
+    deal.closed_date,
+    deal.move_in_date,
+    deal.commission,
+    deal.state.titleize,
+    deal.deal_notes,
+    deal.landlord_code,
+    deal.unit_id,
+    deal.user_id ? deal.user.name : '-None Specified-',
+    deal.created_at,
+    deal.updated_at,
+    deal.archived
     ].to_csv.html_safe %>
 <%- end -%>

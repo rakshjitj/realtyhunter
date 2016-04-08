@@ -198,7 +198,7 @@
         </div>
 
       <% if current_user.is_management? %>
-        <%= link_to 'Export to CSV', sales_listings_path(format: 'csv'),
+        <%= link_to 'Export to CSV', sales_listings_path(params.merge(format: 'csv').symbolize_keys),
           class:"btn btn-sm btn-warning link-as-button" %>
       <% end %>
 

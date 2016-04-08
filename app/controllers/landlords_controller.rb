@@ -135,7 +135,7 @@ class LandlordsController < ApplicationController
     end
 
     def custom_sort
-      sort_column = params[:sort_by] || "landlords.code".freeze
+      sort_column = params[:sort_by] || "code".freeze
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc".freeze
       params[:sort_by] = sort_column
       params[:direction] = sort_order
@@ -155,7 +155,6 @@ class LandlordsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def landlord_params
-
       params.permit(:sort_by, :filter, :page, :agent_filter, :status, :status_listings, :street_number,
          :route, :neighborhood, :sublocality, :administrative_area_level_2_short,
         :administrative_area_level_1_short, :postal_code, :country_short, :lat, :lng, :place_id,
