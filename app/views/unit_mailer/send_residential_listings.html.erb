@@ -2,8 +2,10 @@
 <table>
 	<tr>
 		<td>
-			<%= image_tag @source_agent.company.image.file.url(:thumb),
-      	alt: @source_agent.company.image.file.url(:thumb), align:"left" %>
+			<% if @source_agent.image %>
+				<%= image_tag @source_agent.image.file.url(:thumb),
+  		    alt: @source_agent.image.file.url(:thumb) %>
+  		<% end %>
 		</td>
 		<td style="min-width:200px;">
 			<%= @source_agent.name %>
@@ -14,16 +16,10 @@
 	      <br /><%= link_to @source_agent.mobile_phone_number, "tel:" + @source_agent.mobile_phone_number %>
 	    <% end %>
 		</td>
-		<td>
-			<% if @source_agent.image %>
-				<%= image_tag @source_agent.image.file.url(:thumb),
-  		    alt: @source_agent.image.file.url(:thumb) %>
-  		<% end %>
-		</td>
 	</tr>
 </table>
 
-<hr />
+<hr style="width:'50%'">
 
 <% if @message %>
 	<p><%= @message %></p>
@@ -47,7 +43,7 @@
 	    <% else %>
 	      <!-- placeholder image -->
 	      <a href="<%= listing.public_url %>">
-	      	<%= image_tag("listing_soon.png", alt: "Image coming soon",
+	      	<%= image_tag("listing_soon_thumb.png", alt: "Image coming soon",
 	      			class: 'img-responsive', size: "100x100") %></a>
 	    <% end %>
 	  	<br />
@@ -69,6 +65,7 @@
 	      <%= listing.unit.building.utilities_to_s %>
 	    <% end %>
 
+	    <br />
 	    <br />
 	    <a style="padding: 5px 10px; font-size: 12px;line-height: 1.5; border-radius: 3px;color: #fff;
     background-color: #f0ad4e;border-color: #eea236;"

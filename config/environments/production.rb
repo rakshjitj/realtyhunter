@@ -71,18 +71,18 @@
   config.action_mailer.default_url_options = { host: host }
 
   # use mandril
-  ActionMailer::Base.smtp_settings = {
-    :port =>           '587',
-    :address =>        'smtp.mandrillapp.com',
-    :user_name =>      ENV['MANDRILL_USERNAME'],
-    :password =>       ENV['MANDRILL_APIKEY'],
-    :domain =>         'heroku.com',
-    :authentication => :plain
-  }
-  ActionMailer::Base.delivery_method = :smtp
+  # ActionMailer::Base.smtp_settings = {
+  #   :port =>           '587',
+  #   :address =>        'smtp.mandrillapp.com',
+  #   :user_name =>      ENV['MANDRILL_USERNAME'],
+  #   :password =>       ENV['MANDRILL_APIKEY'],
+  #   :domain =>         'heroku.com',
+  #   :authentication => :plain
+  # }
+  #ActionMailer::Base.delivery_method = :smtp
   # use postmark
-  # config.action_mailer.delivery_method = :postmark
-  # config.action_mailer.postmark_settings = {api_token: ENV['POSTMARK_API_KEY']}
+  config.action_mailer.delivery_method = :postmark
+  config.action_mailer.postmark_settings = {api_token: ENV['POSTMARK_API_KEY']}
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
