@@ -298,11 +298,6 @@ class SalesListingsController < ApplicationController
       @res_images = SalesListing.get_images(@sales_units)
       @sales_units = custom_sort
 
-      # @count_all = SalesListing.joins(:unit)
-      #   .where('units.archived = false')
-      #   .where('units.status = ?', Unit.statuses["active"])
-      #   .count
-
       @map_infos = SalesListing.set_location_data(@sales_units.to_a, @res_images)
       @sales_units = @sales_units.page params[:page]
     end

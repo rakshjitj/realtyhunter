@@ -259,11 +259,6 @@ class CommercialListingsController < ApplicationController
       @com_images = CommercialListing.get_images(@commercial_units)
       @commercial_units = custom_sort
 
-      # @count_all = CommercialListing.joins(:unit)
-      #   .where('units.archived = false')
-      #   .where('units.status = ?', Unit.statuses["active"])
-      #   .count
-
       @map_infos = CommercialListing.set_location_data(@commercial_units.to_a, @com_images)
       @commercial_units = @commercial_units.page params[:page]
     end
