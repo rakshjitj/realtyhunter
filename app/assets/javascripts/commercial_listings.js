@@ -293,7 +293,9 @@ CommercialListings = {};
 
     Listings.hideSpinner();
     $('#commercial a').click(function() {
-      Listings.showSpinner();
+      if ($(this).text().toLowerCase().indexOf('csv') === -1) {
+        Listings.showSpinner();
+      }
     });
 
     // main index table

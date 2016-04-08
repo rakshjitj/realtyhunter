@@ -214,7 +214,9 @@ Buildings = {};
   Buildings.initIndex = function () {
     Buildings.hideSpinner();
     $('#buildings a').click(function () {
-      Buildings.showSpinner();
+      if ($(this).text().toLowerCase().indexOf('csv') === -1) {
+        Buildings.showSpinner();
+      }
     });
 
     // main index table

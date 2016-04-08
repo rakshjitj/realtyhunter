@@ -497,8 +497,10 @@ ResidentialListings = {};
 
   ResidentialListings.initDesktopIndex = function() {
     Listings.hideSpinner();
-    $('.residential-desktop a').click(function() {
-      Listings.showSpinner();
+    $('#residential-desktop a').click(function() {
+      if ($(this).text().toLowerCase().indexOf('csv') === -1) {
+        Listings.showSpinner();
+      }
     });
 
     // main index table
@@ -508,7 +510,7 @@ ResidentialListings = {};
       Common.markSortingColumnByElem($('th[data-sort="updated_at"]'), 'desc')
     }
 
-    $('.residential-desktop .close').click(function() {
+    $('#residential-desktop .close').click(function() {
       Listings.hideSpinner();
     });
 

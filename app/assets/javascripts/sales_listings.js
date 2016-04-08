@@ -428,14 +428,11 @@ SalesListings = {};
   };
 
   SalesListings.initIndex = function() {
-    document.addEventListener("page:restore", function() {
-      Listings.hideSpinner();
-      // SalesListings.passiveRealTimeUpdate();
-    });
-
     Listings.hideSpinner();
     $('#sales a').click(function() {
-      Listings.showSpinner();
+      if ($(this).text().toLowerCase().indexOf('csv') === -1) {
+        Listings.showSpinner();
+      }
     });
 
     // main index table

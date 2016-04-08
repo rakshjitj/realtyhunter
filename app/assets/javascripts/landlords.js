@@ -110,7 +110,9 @@ Landlords = {};
   Landlords.initIndex = function() {
     Landlords.hideSpinner();
     $('#landlords a').click(function() {
-      Landlords.showSpinner();
+      if ($(this).text().toLowerCase().indexOf('csv') === -1) {
+        Landlords.showSpinner();
+      }
     });
 
     // main index table
