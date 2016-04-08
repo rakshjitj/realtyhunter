@@ -76,22 +76,7 @@ class Building < ActiveRecord::Base
     Hash[imgs.map {|img| [img.unit_id, img.file.url(:thumb)]}]
   end
 
-	def self.search(query_str, status)
-    running_list = Building.joins(:landlord)
-      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
-      .where('buildings.archived = false')
-      .select(
-        'landlords.code AS landlord_code','landlords.id AS landlord_id',
-        'buildings.formatted_street_address', 'buildings.notes',
-        'buildings.id', 'buildings.street_number', 'buildings.route',
-        'buildings.sublocality', 'buildings.neighborhood_id', 'neighborhoods.name as neighborhood_name',
-        'buildings.administrative_area_level_2_short',
-        'buildings.administrative_area_level_1_short', 'buildings.postal_code',
-        'buildings.updated_at', 'buildings.created_at',
-        'buildings.last_unit_updated_at',
-        'buildings.total_unit_count',
-        'buildings.active_unit_count')
-
+  def self._filter_query(running_list, query_str, status)
     if query_str
       @terms = query_str.split(" ")
       @terms.each do |term|
@@ -114,7 +99,47 @@ class Building < ActiveRecord::Base
     end
 
     running_list
+  end
+
+	def self.search(query_str, status)
+    running_list = Building
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+      .where('buildings.archived = false')
+      .select(
+        'buildings.formatted_street_address', 'buildings.notes',
+        'buildings.id', 'buildings.street_number', 'buildings.route',
+        'buildings.sublocality', 'buildings.neighborhood_id', 'neighborhoods.name as neighborhood_name',
+        'buildings.administrative_area_level_2_short',
+        'buildings.administrative_area_level_1_short', 'buildings.postal_code',
+        'buildings.updated_at', 'buildings.created_at',
+        'buildings.last_unit_updated_at',
+        'buildings.total_unit_count',
+        'buildings.active_unit_count')
+
+    running_list = Building._filter_query(running_list, query_str, status)
+    running_list
 	end
+
+  # adds in landlord
+  def self.export_all(query_str, status)
+    running_list = Building.joins(:landlord)
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+      .where('buildings.archived = false')
+      .select(
+        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        'buildings.formatted_street_address', 'buildings.notes',
+        'buildings.id', 'buildings.street_number', 'buildings.route',
+        'buildings.sublocality', 'buildings.neighborhood_id', 'neighborhoods.name as neighborhood_name',
+        'buildings.administrative_area_level_2_short',
+        'buildings.administrative_area_level_1_short', 'buildings.postal_code',
+        'buildings.updated_at', 'buildings.created_at',
+        'buildings.last_unit_updated_at',
+        'buildings.total_unit_count',
+        'buildings.active_unit_count')
+
+    running_list = Building._filter_query(running_list, query_str, status)
+    running_list
+  end
 
 	def amenities_to_s
 		amenities = self.building_amenities.map{|a| a.name.titleize}

@@ -14,6 +14,7 @@ class BuildingsController < ApplicationController
       format.html
       format.js
       format.csv do
+        set_buildings_csv
         headers['Content-Disposition'] = "attachment; filename=\"buildings-list.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
@@ -172,6 +173,13 @@ class BuildingsController < ApplicationController
       @commercial_units = @commercial_units.page(params[:page]).per(25)
     end
 
+    def set_buildings_csv
+      @buildings = Building.export_all(
+      building_params[:filter],
+      building_params[:status])
+      @buildings = custom_sort
+    end
+
     def set_buildings
       @buildings = Building.search(
         building_params[:filter],
@@ -183,12 +191,11 @@ class BuildingsController < ApplicationController
     end
 
     def custom_sort
-      sort_column = building_params[:sort_by] || "buildings.formatted_street_address".freeze
+      sort_column = building_params[:sort_by] || "formatted_street_address".freeze
       sort_order = %w[asc desc].include?(building_params[:direction]) ? building_params[:direction] : "asc".freeze
-      # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      @buildings = @buildings.order("#{sort_column} #{sort_order}")
+      @buildings = @buildings.order("#{sort_column} #{sort_order}".freeze)
       @buildings
     end
 
