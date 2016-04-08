@@ -1,29 +1,21 @@
 class UnitMailer < ApplicationMailer
 
   def inaccuracy_reported(listing, reporter)
-    # data_enterers = unit.building.company.data_enterers
-    # if !data_enterers
-    #   data_enterers = building.company.admins
-    # end
     @listing = listing
     @reporter = reporter
     mail to: 'info@myspacenyc.com',
     	subject: "Inaccuracy Reported for #{listing.unit.building.street_address} ##{listing.unit.building_unit}",
-    	from: @reporter.email,
+    	reply_to: @reporter.email,
       tag: 'residential_inaccuracy',
       track_opens:'true'
   end
 
   def commercial_inaccuracy_reported(listing, reporter)
-    # data_enterers = unit.building.company.data_enterers
-    # if !data_enterers
-    #   data_enterers = building.company.admins
-    # end
     @listing = listing
     @reporter = reporter
     mail to: 'info@myspacenyc.com',
     	subject: "Inaccuracy Reported for Commercial Unit: #{listing.unit.building.street_address}",
-    	from: @reporter.email,
+    	reply_to: @reporter.email,
       tag: 'commercial_inaccuracy',
       track_opens:'true'
   end
@@ -33,7 +25,7 @@ class UnitMailer < ApplicationMailer
     @source_agent = source_agent
     @message = msg
     @images = images
-    mail to: recipients, subject: sub, from: @source_agent.email,
+    mail to: recipients, subject: sub, reply_to: @source_agent.email,
       tag: 'sent_residential_listings', track_opens:'true'
   end
 
@@ -42,7 +34,7 @@ class UnitMailer < ApplicationMailer
     @source_agent = source_agent
     @message = msg
     @images = images
-    mail to: recipients, subject: sub, from: @source_agent.email,
+    mail to: recipients, subject: sub, reply_to: @source_agent.email,
         tag: 'sent_commercial_listings', track_opens:'true'
   end
 
@@ -51,7 +43,7 @@ class UnitMailer < ApplicationMailer
     @source_agent = source_agent
     @message = msg
     @images = images
-    mail to: recipients, subject: sub, from: @source_agent.email,
+    mail to: recipients, subject: sub, reply_to: @source_agent.email,
         tag: 'sent_sales_listings', track_opens:'true'
   end
 

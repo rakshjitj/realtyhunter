@@ -9,7 +9,7 @@ class BuildingMailer < ApplicationMailer
     @reporter = reporter
     mail to: 'info@myspacenyc.com',
     	subject: "Inaccuracy Reported for #{building.street_address}",
-        from: @reporter.email,
+        reply_to: @reporter.email,
         tag: 'building_inaccuracy',
         track_opens:'true'
   end
