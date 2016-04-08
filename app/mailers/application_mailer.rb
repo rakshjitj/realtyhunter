@@ -1,5 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "info@realtyhunter.com"
+  default from: "info@myspacenyc.com"
   helper ApplicationHelper
   helper ResidentialListingsHelper
   layout 'mailer'
