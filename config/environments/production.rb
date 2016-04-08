@@ -60,7 +60,7 @@
   # Use a different logger for distributed setups.
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
 
-  config.cache_store = :redis_store, {expires_in: 1.day} #, "redis://localhost:6379/0/cache"
+  config.cache_store = :redis_store, {expires_in: 1.day, race_condition_ttl: 10} #, "redis://localhost:6379/0/cache"
   config.action_controller.perform_caching = true
 
   # Ignore bad email addresses and do not raise email delivery errors.
