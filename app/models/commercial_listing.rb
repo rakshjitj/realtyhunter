@@ -110,7 +110,9 @@ class CommercialListing < ActiveRecord::Base
         'commercial_listings.key_money_amt',
         'commercial_listings.created_at','commercial_listings.updated_at', 'units.archived',
         'neighborhoods.name AS neighborhood_name',
-        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        #'landlords.code AS landlord_code',
+        'landlords.code',
+        'landlords.id AS landlord_id',
         'commercial_property_types.property_type AS property_category',
         'commercial_property_types.property_sub_type',
         )
@@ -130,7 +132,9 @@ class CommercialListing < ActiveRecord::Base
         'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage',
         'commercial_listings.id', 'commercial_listings.updated_at',
         'neighborhoods.name AS neighborhood_name',
-        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        #'landlords.code AS landlord_code',
+        'landlords.code',
+        'landlords.id AS landlord_id',
         "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
         'units.available_by', 'units.primary_agent_id', 'units.primary_agent2_id')
 
@@ -327,7 +331,9 @@ class CommercialListing < ActiveRecord::Base
         'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage',
         'commercial_listings.id', 'commercial_listings.updated_at',
         'neighborhoods.name AS neighborhood_name',
-        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        #'landlords.code AS landlord_code',
+        'landlords.code',
+        'landlords.id AS landlord_id',
         "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
         'units.available_by')
       .order('commercial_listings.updated_at desc')
@@ -360,7 +366,9 @@ class CommercialListing < ActiveRecord::Base
         'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage',
         'commercial_listings.id', 'commercial_listings.updated_at',
         'neighborhoods.name AS neighborhood_name',
-        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        #'landlords.code AS landlord_code',
+        'landlords.code',
+        'landlords.id AS landlord_id',
         "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
         'units.available_by')
       .to_a.group_by(&:neighborhood_name)
@@ -378,7 +386,9 @@ class CommercialListing < ActiveRecord::Base
         'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage',
         'commercial_listings.id', 'commercial_listings.updated_at',
         'neighborhoods.name AS neighborhood_name',
-        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        #'landlords.code AS landlord_code',
+        'landlords.code',
+        'landlords.id AS landlord_id',
         "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
         'units.available_by')
 
@@ -412,7 +422,9 @@ class CommercialListing < ActiveRecord::Base
         'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage',
         'commercial_listings.id', 'commercial_listings.updated_at',
         'neighborhoods.name AS neighborhood_name',
-        'landlords.code AS landlord_code','landlords.id AS landlord_id',
+        #'landlords.code AS landlord_code',
+        'landlords.code',
+        'landlords.id AS landlord_id',
         'commercial_property_types.property_type AS property_category', 'commercial_property_types.property_sub_type',
         'units.available_by', 'units.public_url')
     running_list

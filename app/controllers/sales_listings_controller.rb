@@ -295,15 +295,16 @@ class SalesListingsController < ApplicationController
       @unit_amenities = ResidentialAmenity.where(company: current_user.company)
 
       do_search
-      @sales_units = custom_sort
-      @count_all = SalesListing.joins(:unit)
-        .where('units.archived = false')
-        .where('units.status = ?', Unit.statuses["active"])
-        .count
       @res_images = SalesListing.get_images(@sales_units)
+      @sales_units = custom_sort
+
+      # @count_all = SalesListing.joins(:unit)
+      #   .where('units.archived = false')
+      #   .where('units.status = ?', Unit.statuses["active"])
+      #   .count
+
       @map_infos = SalesListing.set_location_data(@sales_units.to_a, @res_images)
       @sales_units = @sales_units.page params[:page]
-
     end
 
     # returns all data for export
@@ -318,7 +319,7 @@ class SalesListingsController < ApplicationController
 
       # default to searching for active units
       if !params[:status]
-        params[:status] = "active"
+        params[:status] = "active".freeze
       end
       # parse neighborhood ids into strings for display in the view
       @selected_neighborhoods = []
@@ -344,16 +345,15 @@ class SalesListingsController < ApplicationController
 
     def custom_sort
       #puts "GOT #{params[:sort_by]} #{params[:direction]}"
-      sort_column = params[:sort_by] || "sales_listings.updated_at".freeze
+      sort_column = params[:sort_by] || "updated_at".freeze
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc".freeze
-      # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order
       # if sorting by an actual db column, use order
-      if SalesListing.column_names.include?(params[:sort_by])
-        @sales_units = @sales_units.order(sort_column + ' ' + sort_order)
+      if sort_column == 'bed_and_baths_sorter'.freeze
+        @sales_units = @sales_units.order("beds #{sort_order}, baths #{sort_order}".freeze)
       else
-        # TODO
+        @sales_units = @sales_units.order("#{sort_column} #{sort_order}".freeze)
       end
       @sales_units
     end

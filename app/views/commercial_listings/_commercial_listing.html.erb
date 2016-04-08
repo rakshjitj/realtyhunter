@@ -26,9 +26,9 @@
     </td>
     <td>
       <% if current_user.is_management? %>
-        <%= link_to commercial_listing.landlord_code, landlord_path(commercial_listing.landlord_id) %>
+        <%= link_to commercial_listing.code, landlord_path(commercial_listing.landlord_id) %>
       <% else %>
-        <%= commercial_listing.landlord_code %>
+        <%= commercial_listing.code %>
       <% end %>
     </td>
 

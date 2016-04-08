@@ -25,7 +25,7 @@
       listing.basement_sq_footage, listing.has_ventilation ? 'Yes' : 'No',
       listing.key_money_required ? 'Yes' : 'No', listing.key_money_amt,
       @agents[listing.unit_id] ? @agents[listing.unit_id].map {|a| a.name }.join(', ') : '',
-      listing.listing_id, listing.landlord_code,
+      listing.listing_id, listing.code,
       listing.rent,
       listing.available_by, listing.access_info,
       @reverse_statuses[listing.status.to_s.to_sym],

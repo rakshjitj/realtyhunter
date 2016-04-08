@@ -256,13 +256,14 @@ class CommercialListingsController < ApplicationController
           .group_by(&:borough)
 
       do_search
+      @com_images = CommercialListing.get_images(@commercial_units)
       @commercial_units = custom_sort
 
-      @count_all = CommercialListing.joins(:unit)
-        .where('units.archived = false')
-        .where('units.status = ?', Unit.statuses["active"])
-        .count
-      @com_images = CommercialListing.get_images(@commercial_units)
+      # @count_all = CommercialListing.joins(:unit)
+      #   .where('units.archived = false')
+      #   .where('units.status = ?', Unit.statuses["active"])
+      #   .count
+
       @map_infos = CommercialListing.set_location_data(@commercial_units.to_a, @com_images)
       @commercial_units = @commercial_units.page params[:page]
     end
@@ -306,16 +307,15 @@ class CommercialListingsController < ApplicationController
     end
 
     def custom_sort
-      sort_column = params[:sort_by] || "commercial_listings.updated_at".freeze
+      sort_column = params[:sort_by] || "updated_at".freeze
       sort_order = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc".freeze
-      # reset params so that view helper updates correctly
       params[:sort_by] = sort_column
       params[:direction] = sort_order
-      if sort_column == 'landlord_code'
-        @commercial_units = @commercial_units.order("LOWER(code) #{sort_order}".freeze)
-      else
+      #if sort_column == 'landlord_code'
+      #  @commercial_units = @commercial_units.order("LOWER(code) #{sort_order}".freeze)
+      #else
         @commercial_units = @commercial_units.order("#{sort_column} #{sort_order}".freeze)
-      end
+      #end
       @commercial_units
     end
 
