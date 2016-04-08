@@ -175,8 +175,10 @@ class BuildingsController < ApplicationController
 
     def set_buildings_csv
       @buildings = Building.export_all(
-      building_params[:filter],
-      building_params[:status])
+          building_params[:filter],
+          building_params[:status])
+      @amenities = Building.get_amenities_from_buildings(@buildings)
+      @utilities = Building.get_utilities_from_buildings(@buildings)
       @buildings = custom_sort
     end
 

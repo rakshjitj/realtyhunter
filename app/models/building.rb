@@ -185,27 +185,43 @@ class Building < ActiveRecord::Base
       .to_a.group_by(&:id)
   end
 
-  def self.get_rental_terms(list)
-    bldg_ids = list.pluck(:building_id)
+  def self.get_rental_terms(list_of_units)
+    bldg_ids = list_of_units.pluck(:building_id)
     Building.joins(:rental_term).where(id: bldg_ids)
       .select('buildings.id', 'rental_terms.name as rental_term_name')
       .to_a.group_by(&:id)
   end
 
-  # Used in our API. Takes in a list of units
+  # Used in our API
   def self.get_amenities(list_of_units)
     building_ids = list_of_units.pluck(:building_id)
-    list = Building.joins(:building_amenities)
-      .where(id: building_ids).select('name', 'id')
-      .to_a.group_by(&:id)
+    Building.joins(:building_amenities)
+        .where(id: building_ids).select('name', 'id')
+        .to_a.group_by(&:id)
+  end
+
+  # used by building csv
+  def self.get_amenities_from_buildings(list_of_bldgs)
+    building_ids = list_of_bldgs.pluck(:id)
+    Building.joins(:building_amenities)
+        .where(id: building_ids).select('name', 'id')
+        .to_a.group_by(&:id)
   end
 
   # Used by syndication
-  def self.get_utilities(list)
-    bldg_ids = list.pluck(:building_id)
+  def self.get_utilities(list_of_units)
+    bldg_ids = list_of_units.pluck(:building_id)
     Building.joins(:utilities).where(id: bldg_ids)
-      .select('buildings.id', 'utilities.name as utility_name')
-      .to_a.group_by(&:id)
+        .select('buildings.id', 'utilities.name as utility_name')
+        .to_a.group_by(&:id)
+  end
+
+  # used by building csv
+  def self.get_utilities_from_buildings(list_of_bldgs)
+    bldg_ids = list_of_bldgs.pluck(:id)
+    Building.joins(:utilities).where(id: bldg_ids)
+        .select('buildings.id', 'utilities.name as utility_name')
+        .to_a.group_by(&:id)
   end
 
   private

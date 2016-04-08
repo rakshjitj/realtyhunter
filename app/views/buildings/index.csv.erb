@@ -1,29 +1,40 @@
-<%- headers = ['Street Address', 'Neighborhood', 'Borough',
-	'City', 'State', 'Zipcode', 'Active Units',
-	'Total Units', 'Last Updated At', 'Notes',
-	'Landlord', 'Amenities', 'Utilities', 'Rental Term',
+<%- headers = ['Street Address',
+  'Neighborhood',
+  'Borough',
+	'City',
+  'State',
+  'Zipcode',
+  'Notes',
+	'Landlord',
+  'Amenities',
+  'Utilities',
+  'Rental Term',
   'Total Units Count',
   'Active Units Count',
   'Last Unit Updated At',
-  'Created At', 'Updated At'
+  'Created At',
+  'Updated At'
   ] -%>
 <%= CSV.generate_line headers %>
 <%- @buildings.each do |building| -%>
 
-  <%= [building.street_address, building.neighborhood_name, building.sublocality,
+  <%= [building.street_address,
+    building.neighborhood_name,
+    building.sublocality, #borough
   	building.administrative_area_level_2_short,
-  		building.administrative_area_level_1_short, building.postal_code, building.active_units.count,
-  		building.units.count, building.updated_at, building.notes,
-  		building.landlord_code, building.amenities_to_s, building.utilities_to_s,
-
-      building.rental_term ? building.rental_term.name.titleize : '',
-
-      building.total_unit_count,
-      building.active_unit_count,
-      building.last_unit_updated_at,
-
-      building.created_at,
-      building.updated_at
-
-      ].to_csv.html_safe %>
+		building.administrative_area_level_1_short,
+    building.postal_code,
+    building.notes,
+		building.landlord_code,
+    #building.amenities_to_s,
+    @amenities[building.id] ? @amenities[building.id].map{|a| a.name.titleize}.join(', ') : nil,
+    #building.utilities_to_s,
+    @utilities[building.id] ? @utilities[building.id].map{|a| a.utility_name.titleize}.join(', ') : nil,
+    building.rental_term ? building.rental_term.name.titleize : '',
+    building.total_unit_count,
+    building.active_unit_count,
+    building.last_unit_updated_at,
+    building.created_at,
+    building.updated_at
+    ].to_csv.html_safe %>
 <%- end -%>
