@@ -10,16 +10,19 @@
         Basic Info
       </a>
     </li>
-    <li role="photos">
-      <a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">
-        Photos
-      </a>
-    </li>
-    <li role="photos">
-      <a href="#documents" aria-controls="documents" role="tab" data-toggle="tab">
-        Documents
-      </a>
-    </li>
+
+    <% if action_name != 'new' %>
+      <li role="photos">
+        <a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">
+          Photos
+        </a>
+      </li>
+      <li role="photos">
+        <a href="#documents" aria-controls="documents" role="tab" data-toggle="tab">
+          Documents
+        </a>
+      </li>
+    <% end %>
   <% else %>
     <li role="photos" class="active">
       <a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">
@@ -607,8 +610,7 @@
               <div class="field">
                 <%= f.bootsy_area :location_description, class: 'form-control',
                       rows: 15,
-                      editor_options: { image: false },
-                      required: true %>
+                      editor_options: { image: false } %>
               </div>
             </div>
           </div>
