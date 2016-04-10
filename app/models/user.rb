@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
         end
       end
     end
-    listings.uniq
+    listings#.uniq
   end
 
   # primary units only currently
