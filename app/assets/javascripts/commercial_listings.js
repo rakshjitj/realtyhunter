@@ -37,11 +37,15 @@ CommercialListings = {};
         status: $('#commercial #status').val(),
         commercial_property_type_id: $('#commercial #commercial_property_type_id').val(),
         listing_id: $('#commercial #listing_id').val(),
-        neighborhood_ids: CommercialListings.selectedNeighborhoodIds,
+        // neighborhood_ids: CommercialListings.selectedNeighborhoodIds,
         primary_agent_id:  $('#commercial #primary_agent_id').val(),
         sort_by: sortByCol,
         direction: sortDirection,
       };
+
+    if (CommercialListings.selectedNeighborhoodIds.length) {
+      data['neighborhood_ids'] = CommercialListings.selectedNeighborhoodIds;
+    }
 
     var searchParams = [];
     for(var key in data) {
@@ -317,19 +321,22 @@ CommercialListings = {};
     RHMapbox.initMapbox('c-big-map', CommercialListings.buildContentString);
 
     $('#commercial input').keydown(CommercialListings.preventEnter);
-    $('#commercial #address').bind('railsAutocomplete.select', CommercialListings.throttledSearch);
+    // $('#commercial #address').bind('railsAutocomplete.select', CommercialListings.throttledSearch);
     // $('#commercial #address').change(CommercialListings.throttledSearch);
     // $('#commercial #rent_min').change(CommercialListings.throttledSearch);
     // $('#commercial #sq_footage_min').change(CommercialListings.throttledSearch);
     // $('#commercial #sq_footage_max').change(CommercialListings.throttledSearch);
     // $('#commercial #rent_max').change(CommercialListings.throttledSearch);
-    $('#commercial #landlord').bind('railsAutocomplete.select', CommercialListings.throttledSearch);
+    // $('#commercial #landlord').bind('railsAutocomplete.select', CommercialListings.throttledSearch);
     // $('#commercial #landlord').change(CommercialListings.throttledSearch);
     // $('#commercial #status').change(CommercialListings.throttledSearch);
     // $('#commercial #commercial_property_type_id').change(CommercialListings.throttledSearch);
     // $('#commercial #listing_id').change(CommercialListings.throttledSearch);
     // $('#commercial #primary_agent_id').change(CommercialListings.throttledSearch);
-    $('#com-search-trigger').click(CommercialListings.throttledSearch);
+    $('#com-search-trigger').click(function(e) {
+      CommercialListings.doSearch();
+      e.preventDefault();
+    });
 
     CommercialListings.selectedNeighborhoodIds = Common.getURLParameterByName('neighborhood_ids');
     if (CommercialListings.selectedNeighborhoodIds) {
@@ -345,7 +352,7 @@ CommercialListings = {};
       onChange: function(value) {
         CommercialListings.selectedNeighborhoodIds = value;
       },
-      //onBlur: ResidentialListings.throttledSearch
+      //onBlur: CommercialListings.throttledSearch
     });
   }
 

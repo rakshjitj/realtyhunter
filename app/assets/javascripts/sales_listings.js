@@ -35,12 +35,22 @@ SalesListings = {};
       status: $('#sales #status').val(),
       features: $('#sales #features').val(),
       has_fee: $('#sales #has_fee').val(),
-      neighborhood_ids: SalesListings.selectedNeighborhoodIds,
-      unit_feature_ids: SalesListings.selectedUnitAmenityIds,
-      building_feature_ids: SalesListings.selectedBuildingAmenityIds,
+      // neighborhood_ids: SalesListings.selectedNeighborhoodIds,
+      // unit_feature_ids: SalesListings.selectedUnitAmenityIds,
+      // building_feature_ids: SalesListings.selectedBuildingAmenityIds,
       sort_by: sortByCol,
       direction: sortDirection,
     };
+
+    if (SalesListings.selectedNeighborhoodIds.length) {
+        data['neighborhood_ids'] = SalesListings.selectedNeighborhoodIds;
+      }
+      if (SalesListings.selectedUnitAmenityIds) {
+        data['unit_feature_ids'] = SalesListings.selectedUnitAmenityIds;
+      }
+      if (SalesListings.selectedBuildingAmenityIds) {
+        data['building_feature_ids'] = SalesListings.selectedBuildingAmenityIds;
+      }
 
     var searchParams = [];
     for(var key in data) {
@@ -49,8 +59,6 @@ SalesListings = {};
       }
     }
     window.location.search = searchParams.join('&');
-
-    // SalesListings.passiveRealTimeUpdate();
   };
 
   SalesListings.clearTimer = function() {
@@ -454,7 +462,7 @@ SalesListings = {};
 
     // index filtering
     $('#sales input').keydown(SalesListings.preventEnter);
-    $('#sales #address').bind('railsAutocomplete.select', SalesListings.throttledSearch);
+    // $('#sales #address').bind('railsAutocomplete.select', SalesListings.throttledSearch);
     // $('#sales #address').change(SalesListings.throttledSearch);
     // $('#sales #unit').change(SalesListings.throttledSearch);
     // $('#sales #price_min').change(SalesListings.throttledSearch);
@@ -463,7 +471,7 @@ SalesListings = {};
     // $('#sales #bed_max').change(SalesListings.throttledSearch);
     // $('#sales #bath_min').change(SalesListings.throttledSearch);
     // $('#sales #bath_max').change(SalesListings.throttledSearch);
-    $('#sales #landlord').bind('railsAutocomplete.select', SalesListings.throttledSearch);
+    // $('#sales #landlord').bind('railsAutocomplete.select', SalesListings.throttledSearch);
     // $('#sales #landlord').change(SalesListings.throttledSearch);
     // $('#sales #available_starting').blur(SalesListings.throttledSearch);
     // $('#sales #available_before').blur(SalesListings.throttledSearch);
@@ -474,7 +482,10 @@ SalesListings = {};
     // $('#sales #neighborhood_ids').change(SalesListings.throttledSearch);
     // $('#sales #unit_feature_ids').change(SalesListings.throttledSearch);
     // $('#sales #building_feature_ids').change(SalesListings.throttledSearch);
-    $('#sales-search-trigger').click(CommercialListings.throttledSearch);
+    $('#sales-search-trigger').click(function(e) {
+      SalesListings.doSearch();
+      e.preventDefault();
+    });
 
     SalesListings.selectedNeighborhoodIds = Common.getURLParameterByName('neighborhood_ids');
     if (SalesListings.selectedNeighborhoodIds) {

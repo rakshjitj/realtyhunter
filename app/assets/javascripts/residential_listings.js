@@ -34,9 +34,6 @@ ResidentialListings = {};
         available_before: $('#available_before').val(),
         status: $('#status').val(),
         has_fee: $('#has_fee').val(),
-        neighborhood_ids: ResidentialListings.selectedNeighborhoodIds,
-        unit_feature_ids: ResidentialListings.selectedUnitAmenityIds,
-        building_feature_ids: ResidentialListings.selectedBuildingAmenityIds,
         roomsharing_filter: $('#roomsharing_filter').prop('checked'),
         unassigned_filter: $('#unassigned_filter').prop('checked'),
         primary_agent_id:  $('#primary_agent_id').val(),
@@ -44,12 +41,25 @@ ResidentialListings = {};
         direction: sortDirection,
       };
 
+      if (ResidentialListings.selectedNeighborhoodIds.length) {
+        data['neighborhood_ids'] = ResidentialListings.selectedNeighborhoodIds;
+      }
+      if (ResidentialListings.selectedUnitAmenityIds) {
+        data['unit_feature_ids'] = ResidentialListings.selectedUnitAmenityIds;
+      }
+      if (ResidentialListings.selectedBuildingAmenityIds) {
+        data['building_feature_ids'] = ResidentialListings.selectedBuildingAmenityIds;
+      }
+
       var searchParams = [];
       for(var key in data) {
         if (data.hasOwnProperty(key) && data[key]) {
           searchParams.push(key + "=" + data[key]);
+        } else {
+          // console.log('OTHER: ', key);
         }
       }
+
       window.location.search = searchParams.join('&');
   };
 
@@ -519,6 +529,7 @@ ResidentialListings = {};
       items: ResidentialListings.selectedNeighborhoodIds,
       onChange: function(value) {
         ResidentialListings.selectedNeighborhoodIds = value;
+        console.log(ResidentialListings.selectedNeighborhoodIds);
       },
       // onBlur: ResidentialListings.throttledSearch
     });
@@ -587,7 +598,7 @@ ResidentialListings = {};
     }
 
     $('input').keydown(ResidentialListings.preventEnter);
-    $('#address').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
+    //$('#address').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
     // $('#address').change(ResidentialListings.throttledSearch);
     // $('#rent_min').change(ResidentialListings.throttledSearch);
     // $('#rent_max').change(ResidentialListings.throttledSearch);
@@ -595,7 +606,7 @@ ResidentialListings = {};
     // $('#bed_max').change(ResidentialListings.throttledSearch);
     // $('#bath_min').change(ResidentialListings.throttledSearch);
     // $('#bath_max').change(ResidentialListings.throttledSearch);
-    $('#landlord').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
+    //$('#landlord').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
     // $('#landlord').change(ResidentialListings.throttledSearch);
     // $('#available_starting').blur(ResidentialListings.throttledSearch);
     // $('#available_before').blur(ResidentialListings.throttledSearch);
@@ -605,7 +616,10 @@ ResidentialListings = {};
     // $('#roomsharing_filter').change(ResidentialListings.throttledSearch);
     // $('#unassigned_filter').change(ResidentialListings.throttledSearch);
     // $('#primary_agent_id').change(ResidentialListings.throttledSearch);
-    $('#res-search-trigger').click(ResidentialListings.throttledSearch);
+    $('#res-search-trigger').click(function(e) {
+      ResidentialListings.doSearch();
+      e.preventDefault();
+    });
   }
 
   ResidentialListings.initShow = function() {
