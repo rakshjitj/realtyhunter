@@ -50,8 +50,6 @@ CommercialListings = {};
       }
     }
     window.location.search = searchParams.join('&');
-
-    // CommercialListings.enablePassiveUpdates();
   };
 
   CommercialListings.clearTimer = function() {
@@ -148,7 +146,7 @@ CommercialListings = {};
 
   CommercialListings.sortOnColumnClick = function() {
     $('#commercial .th-sortable').click(function(e) {
-      Common.sortOnColumnClick($(this), CommercialListings.doSearch);
+      Common.sortOnColumnClick($(this), CommercialListings.throttledSearch);
     });
   };
 
@@ -320,17 +318,18 @@ CommercialListings = {};
 
     $('#commercial input').keydown(CommercialListings.preventEnter);
     $('#commercial #address').bind('railsAutocomplete.select', CommercialListings.throttledSearch);
-    $('#commercial #address').change(CommercialListings.throttledSearch);
-    $('#commercial #rent_min').change(CommercialListings.throttledSearch);
-    $('#commercial #sq_footage_min').change(CommercialListings.throttledSearch);
-    $('#commercial #sq_footage_max').change(CommercialListings.throttledSearch);
-    $('#commercial #rent_max').change(CommercialListings.throttledSearch);
+    // $('#commercial #address').change(CommercialListings.throttledSearch);
+    // $('#commercial #rent_min').change(CommercialListings.throttledSearch);
+    // $('#commercial #sq_footage_min').change(CommercialListings.throttledSearch);
+    // $('#commercial #sq_footage_max').change(CommercialListings.throttledSearch);
+    // $('#commercial #rent_max').change(CommercialListings.throttledSearch);
     $('#commercial #landlord').bind('railsAutocomplete.select', CommercialListings.throttledSearch);
-    $('#commercial #landlord').change(CommercialListings.throttledSearch);
-    $('#commercial #status').change(CommercialListings.throttledSearch);
-    $('#commercial #commercial_property_type_id').change(CommercialListings.throttledSearch);
-    $('#commercial #listing_id').change(CommercialListings.throttledSearch);
-    $('#commercial #primary_agent_id').change(CommercialListings.throttledSearch);
+    // $('#commercial #landlord').change(CommercialListings.throttledSearch);
+    // $('#commercial #status').change(CommercialListings.throttledSearch);
+    // $('#commercial #commercial_property_type_id').change(CommercialListings.throttledSearch);
+    // $('#commercial #listing_id').change(CommercialListings.throttledSearch);
+    // $('#commercial #primary_agent_id').change(CommercialListings.throttledSearch);
+    $('#com-search-trigger').click(CommercialListings.throttledSearch);
 
     CommercialListings.selectedNeighborhoodIds = Common.getURLParameterByName('neighborhood_ids');
     if (CommercialListings.selectedNeighborhoodIds) {
@@ -346,7 +345,7 @@ CommercialListings = {};
       onChange: function(value) {
         CommercialListings.selectedNeighborhoodIds = value;
       },
-      onBlur: ResidentialListings.throttledSearch
+      //onBlur: ResidentialListings.throttledSearch
     });
   }
 

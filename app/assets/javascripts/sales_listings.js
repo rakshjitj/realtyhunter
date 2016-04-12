@@ -140,7 +140,7 @@ SalesListings = {};
 
   SalesListings.sortOnColumnClick = function() {
     $('#sales .th-sortable').click(function(e) {
-      Common.sortOnColumnClick($(this), SalesListings.doSearch);
+      Common.sortOnColumnClick($(this), SalesListings.throttledSearch);
     });
   };
 
@@ -455,29 +455,26 @@ SalesListings = {};
     // index filtering
     $('#sales input').keydown(SalesListings.preventEnter);
     $('#sales #address').bind('railsAutocomplete.select', SalesListings.throttledSearch);
-    $('#sales #address').change(SalesListings.throttledSearch);
-    $('#sales #unit').change(SalesListings.throttledSearch);
-    $('#sales #price_min').change(SalesListings.throttledSearch);
-    $('#sales #price_max').change(SalesListings.throttledSearch);
-    $('#sales #bed_min').change(SalesListings.throttledSearch);
-    $('#sales #bed_max').change(SalesListings.throttledSearch);
-    $('#sales #bath_min').change(SalesListings.throttledSearch);
-    $('#sales #bath_max').change(SalesListings.throttledSearch);
+    // $('#sales #address').change(SalesListings.throttledSearch);
+    // $('#sales #unit').change(SalesListings.throttledSearch);
+    // $('#sales #price_min').change(SalesListings.throttledSearch);
+    // $('#sales #price_max').change(SalesListings.throttledSearch);
+    // $('#sales #bed_min').change(SalesListings.throttledSearch);
+    // $('#sales #bed_max').change(SalesListings.throttledSearch);
+    // $('#sales #bath_min').change(SalesListings.throttledSearch);
+    // $('#sales #bath_max').change(SalesListings.throttledSearch);
     $('#sales #landlord').bind('railsAutocomplete.select', SalesListings.throttledSearch);
-    $('#sales #landlord').change(SalesListings.throttledSearch);
-    $('#sales #available_starting').blur(SalesListings.throttledSearch);
-    $('#sales #available_before').blur(SalesListings.throttledSearch);
-    $('#sales #pet_policy_shorthand').change(SalesListings.throttledSearch);
-    $('#sales #status').change(SalesListings.throttledSearch);
-    $('#sales #features').change(SalesListings.throttledSearch);
-    $('#sales #has_fee').change(SalesListings.throttledSearch);
-    $('#sales #neighborhood_ids').change(SalesListings.throttledSearch);
-    $('#sales #unit_feature_ids').change(SalesListings.throttledSearch);
-    $('#sales #building_feature_ids').change(SalesListings.throttledSearch);
-    // remove individual features by clicking on 'x' button
-    $('#sales .remove-unit-feature').click(SalesListings.removeUnitFeature);
-    $('#sales .remove-building-feature').click(SalesListings.removeBuildingFeature);
-    $('#sales .remove-neighborhood').click(SalesListings.removeNeighborhood);
+    // $('#sales #landlord').change(SalesListings.throttledSearch);
+    // $('#sales #available_starting').blur(SalesListings.throttledSearch);
+    // $('#sales #available_before').blur(SalesListings.throttledSearch);
+    // $('#sales #pet_policy_shorthand').change(SalesListings.throttledSearch);
+    // $('#sales #status').change(SalesListings.throttledSearch);
+    // $('#sales #features').change(SalesListings.throttledSearch);
+    // $('#sales #has_fee').change(SalesListings.throttledSearch);
+    // $('#sales #neighborhood_ids').change(SalesListings.throttledSearch);
+    // $('#sales #unit_feature_ids').change(SalesListings.throttledSearch);
+    // $('#sales #building_feature_ids').change(SalesListings.throttledSearch);
+    $('#sales-search-trigger').click(CommercialListings.throttledSearch);
 
     SalesListings.selectedNeighborhoodIds = Common.getURLParameterByName('neighborhood_ids');
     if (SalesListings.selectedNeighborhoodIds) {
