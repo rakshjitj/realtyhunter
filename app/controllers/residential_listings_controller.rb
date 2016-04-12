@@ -126,7 +126,7 @@ class ResidentialListingsController < ApplicationController
     ResidentialListing.send_listings(current_user, listings, images, recipients, sub, msg)
 
     respond_to do |format|
-      format.js { flash[:success] = "Listings sent!"  }
+      format.js { flash[:success] = "Email sent!"  }
     end
   end
 
