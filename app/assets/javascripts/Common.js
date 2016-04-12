@@ -47,7 +47,7 @@ Common = {};
       searchStr = window.location.search,
       retVal = '';
 
-    idx = searchStr.indexOf('sort_by');
+    idx = searchStr.indexOf(paramName);
     if (idx > -1) {
       startIdx = searchStr.indexOf('=', idx+1);
       endIdx = searchStr.indexOf('&', idx+1);

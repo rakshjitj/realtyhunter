@@ -51,8 +51,6 @@ ResidentialListings = {};
         }
       }
       window.location.search = searchParams.join('&');
-
-    // ResidentialListings.enablePassiveUpdates();
   };
 
   ResidentialListings.clearAnnouncementsTimer = function() {
@@ -196,7 +194,7 @@ ResidentialListings = {};
 
   ResidentialListings.sortOnColumnClick = function() {
     $('.th-sortable').click(function(e) {
-      Common.sortOnColumnClick($(this), ResidentialListings.doSearch);
+      Common.sortOnColumnClick($(this), ResidentialListings.throttledSearch);
     });
   };
 
@@ -522,7 +520,7 @@ ResidentialListings = {};
       onChange: function(value) {
         ResidentialListings.selectedNeighborhoodIds = value;
       },
-      onBlur: ResidentialListings.throttledSearch
+      // onBlur: ResidentialListings.throttledSearch
     });
 
     $('#unit-amenities-select-multiple').selectize({
@@ -533,7 +531,7 @@ ResidentialListings = {};
       onChange: function(value) {
         ResidentialListings.selectedUnitAmenityIds = value;
       },
-      onBlur: ResidentialListings.throttledSearch
+      // onBlur: ResidentialListings.throttledSearch
     });
 
     $('#building-amenities-select-multiple').selectize({
@@ -544,7 +542,7 @@ ResidentialListings = {};
       onChange: function(value) {
         ResidentialListings.selectedBuildingAmenityIds = value;
       },
-      onBlur: ResidentialListings.throttledSearch
+      // onBlur: ResidentialListings.throttledSearch
     });
 
     // just above main listings table - selecting listings menu dropdown
@@ -590,23 +588,24 @@ ResidentialListings = {};
 
     $('input').keydown(ResidentialListings.preventEnter);
     $('#address').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
-    $('#address').change(ResidentialListings.throttledSearch);
-    $('#rent_min').change(ResidentialListings.throttledSearch);
-    $('#rent_max').change(ResidentialListings.throttledSearch);
-    $('#bed_min').change(ResidentialListings.throttledSearch);
-    $('#bed_max').change(ResidentialListings.throttledSearch);
-    $('#bath_min').change(ResidentialListings.throttledSearch);
-    $('#bath_max').change(ResidentialListings.throttledSearch);
+    // $('#address').change(ResidentialListings.throttledSearch);
+    // $('#rent_min').change(ResidentialListings.throttledSearch);
+    // $('#rent_max').change(ResidentialListings.throttledSearch);
+    // $('#bed_min').change(ResidentialListings.throttledSearch);
+    // $('#bed_max').change(ResidentialListings.throttledSearch);
+    // $('#bath_min').change(ResidentialListings.throttledSearch);
+    // $('#bath_max').change(ResidentialListings.throttledSearch);
     $('#landlord').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
-    $('#landlord').change(ResidentialListings.throttledSearch);
-    $('#available_starting').blur(ResidentialListings.throttledSearch);
-    $('#available_before').blur(ResidentialListings.throttledSearch);
-    $('#pet_policy_shorthand').change(ResidentialListings.throttledSearch);
-    $('#status').change(ResidentialListings.throttledSearch);
-    $('#has_fee').change(ResidentialListings.throttledSearch);
-    $('#roomsharing_filter').change(ResidentialListings.throttledSearch);
-    $('#unassigned_filter').change(ResidentialListings.throttledSearch);
-    $('#primary_agent_id').change(ResidentialListings.throttledSearch);
+    // $('#landlord').change(ResidentialListings.throttledSearch);
+    // $('#available_starting').blur(ResidentialListings.throttledSearch);
+    // $('#available_before').blur(ResidentialListings.throttledSearch);
+    // $('#pet_policy_shorthand').change(ResidentialListings.throttledSearch);
+    // $('#status').change(ResidentialListings.throttledSearch);
+    // $('#has_fee').change(ResidentialListings.throttledSearch);
+    // $('#roomsharing_filter').change(ResidentialListings.throttledSearch);
+    // $('#unassigned_filter').change(ResidentialListings.throttledSearch);
+    // $('#primary_agent_id').change(ResidentialListings.throttledSearch);
+    $('#res-search-trigger').click(ResidentialListings.throttledSearch);
   }
 
   ResidentialListings.initShow = function() {
