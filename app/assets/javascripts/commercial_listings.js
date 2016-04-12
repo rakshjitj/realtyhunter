@@ -146,7 +146,7 @@ CommercialListings = {};
 
   CommercialListings.sortOnColumnClick = function() {
     $('#commercial .th-sortable').click(function(e) {
-      Common.sortOnColumnClick($(this), CommercialListings.throttledSearch);
+      Common.sortOnColumnClick($(this), CommercialListings.doSearch);
     });
   };
 

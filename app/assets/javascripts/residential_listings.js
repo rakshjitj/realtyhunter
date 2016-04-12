@@ -194,7 +194,7 @@ ResidentialListings = {};
 
   ResidentialListings.sortOnColumnClick = function() {
     $('.th-sortable').click(function(e) {
-      Common.sortOnColumnClick($(this), ResidentialListings.throttledSearch);
+      Common.sortOnColumnClick($(this), ResidentialListings.doSearch);
     });
   };
 

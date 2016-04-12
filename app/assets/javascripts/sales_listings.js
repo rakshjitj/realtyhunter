@@ -140,7 +140,7 @@ SalesListings = {};
 
   SalesListings.sortOnColumnClick = function() {
     $('#sales .th-sortable').click(function(e) {
-      Common.sortOnColumnClick($(this), SalesListings.throttledSearch);
+      Common.sortOnColumnClick($(this), SalesListings.doSearch);
     });
   };
 
