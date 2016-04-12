@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160324162322) do
+ActiveRecord::Schema.define(version: 20160405054732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 20160324162322) do
   add_index "buildings", ["documents_id"], name: "index_buildings_on_documents_id", using: :btree
   add_index "buildings", ["formatted_street_address"], name: "index_buildings_on_formatted_street_address", using: :btree
   add_index "buildings", ["images_id"], name: "index_buildings_on_images_id", using: :btree
-  add_index "buildings", ["updated_at"], name: "index_buildings_on_updated_at", using: :btree
+  add_index "buildings", ["updated_at"], name: "index_buildings_on_updated_at", order: {"updated_at"=>:desc}, using: :btree
 
   create_table "buildings_utilities", id: false, force: :cascade do |t|
     t.integer "building_id"
@@ -296,6 +296,7 @@ ActiveRecord::Schema.define(version: 20160324162322) do
   add_index "landlords", ["buildings_id"], name: "index_landlords_on_buildings_id", using: :btree
   add_index "landlords", ["code"], name: "index_landlords_on_code", using: :btree
   add_index "landlords", ["listing_agent_id"], name: "index_landlords_on_listing_agent_id", using: :btree
+  add_index "landlords", ["updated_at"], name: "index_landlords_on_updated_at", order: {"updated_at"=>:desc}, using: :btree
 
   create_table "neighborhoods", force: :cascade do |t|
     t.boolean  "archived",     default: false
@@ -417,6 +418,7 @@ ActiveRecord::Schema.define(version: 20160324162322) do
 
   add_index "residential_listings", ["roommates_id"], name: "index_residential_listings_on_roommates_id", using: :btree
   add_index "residential_listings", ["unit_id"], name: "index_residential_listings_on_unit_id", using: :btree
+  add_index "residential_listings", ["updated_at"], name: "index_residential_listings_on_updated_at", order: {"updated_at"=>:desc}, using: :btree
 
   create_table "roles", force: :cascade do |t|
     t.string   "name"
@@ -658,6 +660,7 @@ ActiveRecord::Schema.define(version: 20160324162322) do
   add_index "users", ["name"], name: "index_users_on_name", using: :btree
   add_index "users", ["office_id"], name: "index_users_on_office_id", using: :btree
   add_index "users", ["roommates_id"], name: "index_users_on_roommates_id", using: :btree
+  add_index "users", ["updated_at"], name: "index_users_on_updated_at", order: {"updated_at"=>:desc}, using: :btree
 
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"
