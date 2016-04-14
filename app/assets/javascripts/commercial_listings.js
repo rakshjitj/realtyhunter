@@ -43,7 +43,7 @@ CommercialListings = {};
         direction: sortDirection,
       };
 
-    if (CommercialListings.selectedNeighborhoodIds.length) {
+    if (CommercialListings.selectedNeighborhoodIds && CommercialListings.selectedNeighborhoodIds.length) {
       data['neighborhood_ids'] = CommercialListings.selectedNeighborhoodIds;
     }
 

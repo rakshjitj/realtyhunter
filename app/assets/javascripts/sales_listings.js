@@ -42,13 +42,13 @@ SalesListings = {};
       direction: sortDirection,
     };
 
-    if (SalesListings.selectedNeighborhoodIds.length) {
+    if (SalesListings.selectedNeighborhoodIds && SalesListings.selectedNeighborhoodIds.length) {
         data['neighborhood_ids'] = SalesListings.selectedNeighborhoodIds;
       }
-      if (SalesListings.selectedUnitAmenityIds) {
+      if (SalesListings.selectedUnitAmenityIds && SalesListings.selectedUnitAmenityIds.length) {
         data['unit_feature_ids'] = SalesListings.selectedUnitAmenityIds;
       }
-      if (SalesListings.selectedBuildingAmenityIds) {
+      if (SalesListings.selectedBuildingAmenityIds && SalesListings.selectedBuildingAmenityIds.length) {
         data['building_feature_ids'] = SalesListings.selectedBuildingAmenityIds;
       }
 

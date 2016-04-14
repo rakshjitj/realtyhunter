@@ -41,13 +41,13 @@ ResidentialListings = {};
         direction: sortDirection,
       };
 
-      if (ResidentialListings.selectedNeighborhoodIds.length) {
+      if (ResidentialListings.selectedNeighborhoodIds && ResidentialListings.selectedNeighborhoodIds.length) {
         data['neighborhood_ids'] = ResidentialListings.selectedNeighborhoodIds;
       }
-      if (ResidentialListings.selectedUnitAmenityIds) {
+      if (ResidentialListings.selectedUnitAmenityIds && ResidentialListings.selectedUnitAmenityIds.length) {
         data['unit_feature_ids'] = ResidentialListings.selectedUnitAmenityIds;
       }
-      if (ResidentialListings.selectedBuildingAmenityIds) {
+      if (ResidentialListings.selectedBuildingAmenityIds && ResidentialListings.selectedBuildingAmenityIds.length) {
         data['building_feature_ids'] = ResidentialListings.selectedBuildingAmenityIds;
       }
 
@@ -204,6 +204,7 @@ ResidentialListings = {};
 
   ResidentialListings.sortOnColumnClick = function() {
     $('.th-sortable').click(function(e) {
+      console.log('hello');
       Common.sortOnColumnClick($(this), ResidentialListings.doSearch);
     });
   };
