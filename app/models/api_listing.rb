@@ -1,5 +1,5 @@
 # for use in API active_record serialization only
-class Listing
+class APIListing
 	include ActiveModel::Serialization
 	extend ActiveModel::Naming
 	include ActiveModel::Conversion
@@ -18,9 +18,6 @@ class Listing
 		@building_amenities = attributes[:building_amenities]
 		@images = attributes[:images]
 		@open_houses = attributes[:open_houses]
-		# strictly for caching purposes
-		#@id = attributes[:listing].unit_id
-		#@updated_at = attributes[:listing].updated_at
 	end
 
 end
