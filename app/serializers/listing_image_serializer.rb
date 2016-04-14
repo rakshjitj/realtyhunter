@@ -2,7 +2,7 @@ class ListingImageSerializer < ActiveModel::Serializer
 	attributes :large, :is_floorplan, :media_type, :original, :id, :thumbnail
 
 	def large
-		object.file.url(:medium)
+		object.file.url(:large)
   end
 
   def is_floorplan
