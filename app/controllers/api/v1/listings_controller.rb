@@ -21,19 +21,17 @@ module API
 			def show
 				# id in this case refers to the unit's listing id
 				listings = all_listings_search(@user.company_id, {id: params[:id]})
-				if listings && listings.length == 0
-					render json: {}
-				else
-					@pet_policies = Building.get_pet_policies(listings)
-					@rental_terms = Building.get_rental_terms(listings)
-					@building_utilities = Building.get_utilities(listings)
-					@residential_amenities = ResidentialListing.get_amenities(listings)
-					@images = Unit.get_all_images(listings)
-					@primary_agents = Unit.get_primary_agents(listings)
-					@building_amenities = Building.get_amenities(listings)
-					@open_houses = Unit.get_open_houses(listings)
+				@pet_policies = Building.get_pet_policies(listings)
+				@rental_terms = Building.get_rental_terms(listings)
+				@building_utilities = Building.get_utilities(listings)
+				@residential_amenities = ResidentialListing.get_amenities(listings)
+				@images = Unit.get_all_images(listings)
+				@primary_agents = Unit.get_primary_agents(listings)
+				@building_amenities = Building.get_amenities(listings)
+				@open_houses = Unit.get_open_houses(listings)
 
-					serializer_params = {
+				if !listings.empty?
+					render json: Listing.new({
 						listing: listings[0],
 						residential_amenities: @residential_amenities[listings[0].unit_id],
 						pet_policies: @pet_policies[listings[0].building_id],
@@ -42,15 +40,10 @@ module API
 						primary_agents: @primary_agents[listings[0].unit_id],
 						building_amenities: @building_amenities[listings[0].building_id],
 						images: @images[listings[0].unit_id],
-						open_houses: @open_houses[listings[0].unit_id]}
-
-					if is_residential(listings[0])
-						render json: APIResidentialListing.new(serializer_params)
-					elsif is_commercial(listings[0])
-						render json: APICommercialListing.new(serializer_params)
-					elsif is_sales(listings[0])
-						render json: APISalesListing.new(serializer_params)
-					end
+						open_houses: @open_houses[listings[0].unit_id]
+						})
+				else
+					render json: {}
 				end
 			end
 
@@ -136,21 +129,29 @@ module API
 				@building_utilities = []
 				@open_houses = []
 
-				# residential
-				if search_params[:listing_type] == "10".freeze
+				if search_params[:listing_type] == "10".freeze # residential
 					@listings = residential_search(@user.company_id, search_params)
-				# sales
-				elsif search_params[:listing_type] == "20".freeze
+					#@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
+					#@pet_policies = Building.get_pet_policies(@listings)
+					#@rental_terms = Building.get_rental_terms(@listings)
+					#@building_utilities = Building.get_utilities(@listings)
+					#@residential_amenities = ResidentialListing.get_amenities(@listings)
+				elsif search_params[:listing_type] == "20".freeze # sales
 					@listings = sales_search(@user.company_id, search_params)
-				# commercial
-				elsif search_params[:listing_type] == "30".freeze
+					#@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
+				elsif search_params[:listing_type] == "30".freeze #commercial
 					@listings = commercial_search(@user.company_id, search_params)
-				else # everything
+					#@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
+				else
 					@listings = all_listings_search(@user.company_id, search_params)
+					#@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
+					#@residential_amenities = ResidentialListing.get_amenities(@listings)
+					#@pet_policies = Building.get_pet_policies(@listings)
+					#@rental_terms = Building.get_rental_terms(@listings)
+					#@building_utilities = Building.get_utilities(@listings)
 				end
 
 				@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
-
 				# if cached, render cached blob
 				listings_arr = @listings.to_a
 				# blob_cache_key = "api_v1_listings/#{@listings.pluck('units.id').join('')}-#{listings_arr.count}-#{@listings.maximum(:updated_at).to_i}"
@@ -183,7 +184,7 @@ module API
 					# c_count = 0
 					# s_count = 0
 					output = @listings.map do |l|
-						serializer_params = {
+						Listing.new({
 							listing: l,
 							residential_amenities: @residential_amenities[l.unit_id],
 							pet_policies: @pet_policies[l.building_id],
@@ -192,25 +193,23 @@ module API
 							primary_agents: @primary_agents[l.unit_id],
 							building_amenities: @building_amenities[l.building_id],
 							images: @images[l.unit_id],
-							open_houses: @open_houses[l.unit_id]}
+							open_houses: @open_houses[l.unit_id]})
 
-						if is_residential(l)
-							#r_count += 1
-							APIResidentialListing.new(serializer_params)
-						elsif is_commercial(l)
-							#c_count += 1
-							APICommercialListing.new(serializer_params)
-						elsif is_sales(l)
-							#s_count += 1
-							APISalesListing.new(serializer_params)
-						else
-							# todo: check prod for bad listings. remove any that fall into this category
-							# most likely leftovers from early testing
-							puts "AH HA FOUND ONE! #{l.inspect}"
-						end
+						# if is_residential(l)
+						# 	#r_count += 1
+						# 	APIResidentialListing.new(serializer_params)
+						# elsif is_commercial(l)
+						# 	#c_count += 1
+						# 	APICommercialListing.new(serializer_params)
+						# elsif is_sales(l)
+						# 	#s_count += 1
+						# 	APISalesListing.new(serializer_params)
+						# else
+						# 	# todo: check prod for bad listings. remove any that fall into this category
+						# 	# most likely leftovers from early testing
+						# 	puts "AH HA FOUND ONE! #{l.inspect}"
+						# end
 					end
-
-					#puts "\n\n\n******* #{r_count} #{c_count} #{s_count} #{@listings.total_count}"
 
 					blob = #Rails.cache.fetch(blob_cache_key, expires_in: 12.hours) do
 						ListingBlob.new({
@@ -233,19 +232,6 @@ module API
 	      	:has_photos, :featured, :sort, :sort_dir, :per_page, :page,
 	      	:neighborhoods, :geometry, :agents)
     	end
-
-		private
-			def is_residential(object)
-		    object.respond_to?(:r_id) && object.r_id
-		  end
-
-		  def is_commercial(object)
-		    object.respond_to?(:c_id) && object.c_id
-		  end
-
-		  def is_sales(object)
-		    object.respond_to?(:s_id) && object.s_id
-		  end
 
 		end
 	end

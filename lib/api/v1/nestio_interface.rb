@@ -44,21 +44,13 @@ module API
 				neighborhoods
 			end
 
-			# todo: when ready to turn on the sales API, uncomment the relevant lines below
-			# and move the sales_listing join into the correct spot.
-			# note: landlords and neighborhoods are optional. landlords are only optional on
-			# sales_listings
 			def all_listings_search(company_id, search_params)
-				# left join sales_listings on units.id = sales_listings.unit_id')
-				listings = Unit.joins(
-					'left join residential_listings on units.id = residential_listings.unit_id
+				listings = Unit.joins('left join residential_listings on units.id = residential_listings.unit_id
 left join commercial_listings on units.id = commercial_listings.unit_id')
-				.joins([building: :company])
+				.joins(building: :landlord)
 				.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
-				.joins('left join landlords on landlords.id = buildings.landlord_id')
 				.where('units.archived = false')
 				.where('units.status IN (?)', Unit.statuses["active"])
-				.where('companies.id = ?', company_id)
 
 				if search_params[:id] && !search_params[:id].empty?
 					listings = listings.where('units.listing_id = ?', search_params[:id])
@@ -69,101 +61,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 				end
 
 				listings = listings
-					.select(
-					'units.id as unit_id', 'units.primary_agent_id', 'units.primary_agent2_id',
-					'units.building_unit', 'units.status', 'units.available_by',
-					'units.listing_id', 'units.updated_at', 'units.rent',
-					'buildings.id as building_id',
-					'buildings.administrative_area_level_2_short',
-					'buildings.administrative_area_level_1_short as b_administrative_area_level_1_short',
-					'buildings.sublocality as b_sublocality',
-					'buildings.street_number as b_street_number', 'buildings.route as b_route',
-					'buildings.postal_code as b_postal_code',
-					'buildings.lat as b_lat',
-					'buildings.lng as b_lng',
-					'neighborhoods.name as neighborhood_name',
-					'neighborhoods.borough as neighborhood_borough',
-					'landlords.code', 'landlords.name', 'landlords.contact_name',
-					'landlords.office_phone', 'landlords.mobile', 'landlords.fax',
-					'landlords.email', 'landlords.website',
-					'landlords.administrative_area_level_1_short as l_administrative_area_level_1_short',
-					'landlords.sublocality as l_sublocality',
-					'landlords.street_number as l_street_number', 'landlords.route as l_route',
-					'landlords.postal_code as l_postal_code',
-					'landlords.lat as l_lat',
-					'landlords.lng as l_lng',
-					'landlords.listing_agent_id', 'landlords.listing_agent_percentage',
-					'landlords.has_fee as l_has_fee',
-					'landlords.op_fee_percentage as l_op_fee_percentage',
-					'landlords.tp_fee_percentage as l_tp_fee_percentage',
-					'residential_listings.id AS r_id',
-					'commercial_listings.id as c_id',
-					#'sales_listings.id as s_id',
-					'residential_listings.lease_start', 'residential_listings.lease_end',
-					'residential_listings.has_fee as r_has_fee',
-					'residential_listings.tp_fee_percentage', 'residential_listings.beds',
-					'residential_listings.baths',
-					'residential_listings.description',
-					'commercial_listings.property_description',
-					#'sales_listings.public_description',
-					'residential_listings.favorites as r_favorites',
-					'commercial_listings.favorites as c_favorites',
-					'residential_listings.show as r_show',
-					'commercial_listings.show as c_show',
-					'residential_listings.expose_address as r_expose_address',
-					'commercial_listings.expose_address as c_expose_address',
-					'residential_listings.floor as r_floor',
-					'commercial_listings.floor as c_floor',
-					#'sales_listings.floor as s_floor',
-					'residential_listings.total_room_count as r_total_room_count',
-					#'sales_listings.total_room_count as s_total_room_count',
-					'residential_listings.condition as r_condition',
-					#'sales_listings.condition as s_condition',
-					'residential_listings.showing_instruction as r_showing_instruction',
-					#'sales_listings.showing_instruction as s_showing_instruction',
-					'residential_listings.commission_amount as r_commission_amount',
-					#'sales_listings.commission_amount as s_commission_amount',
-					'residential_listings.cyof as r_cyof',
-					#'sales_listings.cyof as s_cyof',
-					'residential_listings.rented_date as r_rented_date',
-					'residential_listings.rlsny as r_rlsny',
-					#'sales_listings.rlsny as s_rlsny',
-					'residential_listings.share_with_brokers as r_share_with_brokers',
-					#'sales_listings.share_with_brokers as s_share_with_brokers',
-					'residential_listings.tenant_occupied as r_tenant_occupied',
-					#'sales_listings.tenant_occupied as s_tenant_occupied',
-					'residential_listings.op_fee_percentage as r_op_fee_percentage',
-					'commercial_listings.lease_term_months',
-					'commercial_listings.sq_footage',
-					# following fields are all from sales_listings
-					# 'sales_listings.building_size',
-					# :percent_commission, :outside_broker_commission,
-				 #  :seller_name, :seller_phone, :seller_address,
-				 #  :year_built, :building_type, :lot_size,
-				 #  :block_taxes, :lot_taxes, :water_sewer, :insurance,
-				 #  :school_district, :certificate_of_occupancy, :violation_search, :listing_type
-				)
-
-				listings
-			end
-
-			# note: neighborhoods are optional
-			def residential_search(company_id, search_params)
-				listings = Unit
-					.joins(:residential_listing, [building: [:landlord, :company]])
-					.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
-					.where('units.archived = false')
-					.where('units.status IN (?)', Unit.statuses["active"])
-					.where('companies.id = ?', company_id)
-
-				listings = _restrict_on_residential_model(company_id, search_params, listings)
-				listings = _restrict_on_unit_model(company_id, search_params, listings)
-				listings = _sort_by(search_params, listings)
-
-				listings = listings
-					.select(
-					'units.id as unit_id', 'units.primary_agent_id', 'units.primary_agent2_id',
-					'units.building_unit', 'units.status', 'units.available_by',
+					.select('units.building_unit', 'units.status', 'units.available_by',
 					'units.listing_id', 'units.updated_at', 'units.rent',
 					'buildings.id as building_id',
 					'buildings.administrative_area_level_2_short',
@@ -195,17 +93,83 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'residential_listings.baths', 'residential_listings.description',
 					'residential_listings.favorites as r_favorites', 'residential_listings.show as r_show',
 					'residential_listings.expose_address as r_expose_address',
-					'residential_listings.floor as r_floor',
-					'residential_listings.total_room_count as r_total_room_count',
-					'residential_listings.condition as r_condition',
-					'residential_listings.showing_instruction as r_showing_instruction',
-					'residential_listings.commission_amount as r_commission_amount',
-					'residential_listings.cyof as r_cyof',
-					'residential_listings.rented_date as r_rented_date',
-					'residential_listings.rlsny as r_rlsny',
-					'residential_listings.share_with_brokers as r_share_with_brokers',
-					'residential_listings.tenant_occupied as r_tenant_occupied',
-					'residential_listings.op_fee_percentage as r_op_fee_percentage'
+					'residential_listings.floor as r_floor', 'residential_listings.total_room_count',
+					'residential_listings.condition', 'residential_listings.showing_instruction',
+					'residential_listings.commission_amount', 'residential_listings.cyof',
+					'residential_listings.rented_date', 'residential_listings.rlsny',
+					'residential_listings.share_with_brokers',
+					'residential_listings.tenant_occupied',
+					'residential_listings.op_fee_percentage as r_op_fee_percentage',
+					'commercial_listings.id as c_id',
+					'commercial_listings.lease_term_months',
+					'commercial_listings.property_description',
+					'commercial_listings.floor as c_floor',
+					'commercial_listings.sq_footage',
+					'commercial_listings.favorites as c_favorites', 'commercial_listings.show as c_show',
+					'commercial_listings.expose_address as c_expose_address',
+					'units.id as unit_id',
+					'units.primary_agent_id',
+					'units.primary_agent2_id'
+				)
+
+				listings
+			end
+
+			def residential_search(company_id, search_params)
+				listings = Unit
+					.joins(:residential_listing, [building: :landlord])
+					.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+					.where('units.archived = false')
+					.where('units.status IN (?)', Unit.statuses["active"])
+
+				listings = _restrict_on_residential_model(company_id, search_params, listings)
+				listings = _restrict_on_unit_model(company_id, search_params, listings)
+				listings = _sort_by(search_params, listings)
+
+
+				listings = listings
+					.select('units.building_unit', 'units.status', 'units.available_by',
+					'units.listing_id', 'units.updated_at', 'units.rent',
+					'buildings.id as building_id',
+					'buildings.administrative_area_level_2_short',
+					'buildings.administrative_area_level_1_short as b_administrative_area_level_1_short',
+					'buildings.sublocality as b_sublocality',
+					'buildings.street_number as b_street_number', 'buildings.route as b_route',
+					'buildings.postal_code as b_postal_code',
+					'buildings.lat as b_lat',
+					'buildings.lng as b_lng',
+					'neighborhoods.name as neighborhood_name',
+					'neighborhoods.borough as neighborhood_borough',
+					'landlords.code', 'landlords.name', 'landlords.contact_name',
+					'landlords.office_phone', 'landlords.mobile', 'landlords.fax',
+					'landlords.email', 'landlords.website',
+					'landlords.administrative_area_level_1_short as l_administrative_area_level_1_short',
+					'landlords.sublocality as l_sublocality',
+					'landlords.street_number as l_street_number', 'landlords.route as l_route',
+					'landlords.postal_code as l_postal_code',
+					'landlords.lat as l_lat',
+					'landlords.lng as l_lng',
+					'landlords.listing_agent_id', 'landlords.listing_agent_percentage',
+					'landlords.has_fee as l_has_fee',
+					'landlords.op_fee_percentage as l_op_fee_percentage',
+					'landlords.tp_fee_percentage as l_tp_fee_percentage',
+					'residential_listings.id AS r_id',
+					'residential_listings.lease_start', 'residential_listings.lease_end',
+					'residential_listings.has_fee as r_has_fee',
+					'residential_listings.tp_fee_percentage', 'residential_listings.beds',
+					'residential_listings.baths', 'residential_listings.description',
+					'residential_listings.favorites as r_favorites', 'residential_listings.show as r_show',
+					'residential_listings.expose_address as r_expose_address',
+					'residential_listings.floor as r_floor', 'residential_listings.total_room_count',
+					'residential_listings.condition', 'residential_listings.showing_instruction',
+					'residential_listings.commission_amount', 'residential_listings.cyof',
+					'residential_listings.rented_date', 'residential_listings.rlsny',
+					'residential_listings.share_with_brokers',
+					'residential_listings.tenant_occupied',
+					'residential_listings.op_fee_percentage as r_op_fee_percentage',
+					'units.id as unit_id',
+					'units.primary_agent_id',
+					'units.primary_agent2_id'
 				)
 
 				listings
@@ -213,73 +177,77 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 
 			# TODO: still not fully setup
 			def sales_search(company_id, search_params)
-				listings = Unit
-					.joins(:sales_listing, [building: :company])
-		      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
-		      .where('units.archived = false')
-					.where('units.status IN (?)', Unit.statuses["active"])
-		      .where('companies.id = ?', company_id)
+				listings = SalesListing.none
+				# listings = SalesListing.joins(unit: {building: [:company]})
+		  #     .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+		  #     .where('companies.id = ?', company_id)
+		  #     .select('buildings.formatted_street_address AS formatted_street_address2',
+		  #       'units.listing_id',
+		  #       'buildings.id AS building_id', 'buildings.street_number as street_number2', 'buildings.route as route2',
+		  #       'buildings.lat as lat2', 'buildings.lng as lng2', 'units.id AS unit_id',
+		  #       'units.building_unit', 'units.status','units.rent',
+		  #       'sales_listings.beds || \'/\' || sales_listings.baths as bed_and_baths',
+		  #       'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
+		  #       'units.access_info',
+		  #       'sales_listings.id', 'sales_listings.baths', 'sales_listings.beds', 'units.access_info',
+		  #       'sales_listings.seller_name', 'sales_listings.updated_at',
+		  #       'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
+		  #       'units.available_by', 'units.public_url')
 
-		    #listings = _sort_by(search_params, listings)
 
-		     listings = listings
-		     		.select(
-		     		'units.id as unit_id', 'units.primary_agent_id', 'units.primary_agent2_id',
-		     		'units.building_unit', 'units.status', 'units.available_by',
-						'units.listing_id', 'units.updated_at', 'units.rent', 'units.public_url',
-						'units.access_info',
-						'buildings.id as building_id',
-						'buildings.administrative_area_level_2_short',
-						'buildings.administrative_area_level_1_short as b_administrative_area_level_1_short',
-						'buildings.sublocality as b_sublocality',
-						'buildings.street_number as b_street_number', 'buildings.route as b_route',
-						'buildings.postal_code as b_postal_code',
-						'buildings.lat as b_lat',
-						'buildings.lng as b_lng',
-						'neighborhoods.name as neighborhood_name',
-						'neighborhoods.borough as neighborhood_borough',
-						'sales_listings.id as s_id',
-		        'sales_listings.beds || \'/\' || sales_listings.baths as bed_and_baths',
-		        'sales_listings.baths', 'sales_listings.beds',
-		        'sales_listings.public_description',
-		        'sales_listings.floor as s_floor',
-		        'sales_listings.total_room_count as s_total_room_count',
-		        'sales_listings.condition as s_condition',
-		        'sales_listings.showing_instruction as s_showing_instruction',
-		        'sales_listings.commission_amount as s_commission_amount',
-		        'sales_listings.cyof as s_cyof',
-		        'sales_listings.rlsny as s_rlsny',
-						'sales_listings.share_with_brokers as s_share_with_brokers',
-						'sales_listings.tenant_occupied as s_tenant_occupied',
-						# following fields are all from sales_listings
-						'sales_listings.building_size',
-						:percent_commission, :outside_broker_commission,
-					  :seller_name, :seller_phone, :seller_address,
-					  :year_built, :building_type, :lot_size,
-					  :block_taxes, :lot_taxes, :water_sewer, :insurance,
-					  :school_district, :certificate_of_occupancy, :violation_search, :listing_type
-						)
+				# # TODO: add restrictions
 
-				# # TODO: add sales-specific restrictions
-				#listings = _restrict_on_unit_model(company_id, search_params, listings)
+				# listings = _sort_by(search_params, listings)
+
+				# listings = listings
+				# 	.select('units.building_unit', 'units.status', 'units.available_by',
+				# 	'units.listing_id', 'units.updated_at', 'units.rent',
+				# 	'buildings.id as building_id',
+				# 	'buildings.administrative_area_level_2_short',
+				# 	'buildings.administrative_area_level_1_short as b_administrative_area_level_1_short',
+				# 	'buildings.sublocality as b_sublocality',
+				# 	'buildings.street_number as b_street_number', 'buildings.route as b_route',
+				# 	'buildings.postal_code as b_postal_code',
+				# 	'buildings.lat as b_lat',
+				# 	'buildings.lng as b_lng',
+				# 	'neighborhoods.name as neighborhood_name',
+				# 	'neighborhoods.borough as neighborhood_borough',
+				# 	'landlords.code', 'landlords.name', 'landlords.contact_name',
+				# 	'landlords.office_phone', 'landlords.mobile', 'landlords.fax',
+				# 	'landlords.email', 'landlords.website',
+				# 	'landlords.administrative_area_level_1_short as l_administrative_area_level_1_short',
+				# 	'landlords.sublocality as l_sublocality',
+				# 	'landlords.street_number as l_street_number', 'landlords.route as l_route',
+				# 	'landlords.postal_code as l_postal_code',
+				# 	'landlords.lat as l_lat',
+				# 	'landlords.lng as l_lng',
+				# 	'landlords.listing_agent_id', 'landlords.listing_agent_percentage',
+				# 	'landlords.has_fee as l_has_fee',
+				# 	'landlords.op_fee_percentage as l_op_fee_percentage',
+				# 	'landlords.tp_fee_percentage as l_tp_fee_percentage',
+				# 	'sales_listings.beds',
+				# 	'sales_listings.baths',
+				# 	'sales_listings.public_description',
+				# 	'units.id as unit_id',
+				# 	'units.primary_agent_id',
+				# 	'units.primary_agent2_id',
+				# 	'sales_listings.id as s_id')
+
 				listings
 			end
 
 			def commercial_search(company_id, search_params)
-				listings = Unit.joins(:commercial_listing, [building: [:landlord, :company]])
+				listings = Unit.joins(:commercial_listing, [building: :landlord])
 					.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
 					.where('units.archived = false')
 					.where('units.status IN (?)', Unit.statuses["active"])
-					.where('companies.id = ?', company_id)
 
 				# TODO: restrict by commercial params
 				listings = _restrict_on_unit_model(company_id, search_params, listings)
 				listings = _sort_by(search_params, listings)
 
 				listings = listings
-					.select(
-					'units.id as unit_id', 'units.primary_agent_id', 'units.primary_agent2_id',
-					'units.building_unit', 'units.status', 'units.available_by',
+					.select('units.building_unit', 'units.status', 'units.available_by',
 					'units.listing_id', 'units.updated_at', 'units.rent',
 					'buildings.administrative_area_level_2_short AS administrative_area_level_2_short',
 					'buildings.administrative_area_level_1_short AS b_administrative_area_level_1_short',
@@ -304,13 +272,16 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'landlords.has_fee as l_has_fee',
 					'landlords.op_fee_percentage as l_op_fee_percentage',
 					'landlords.tp_fee_percentage as l_tp_fee_percentage',
-					'commercial_listings.id AS c_id',
+					'units.id as unit_id',
 					'commercial_listings.lease_term_months',
 					'commercial_listings.property_description',
 					'commercial_listings.floor as c_floor',
 					'commercial_listings.sq_footage',
 					'commercial_listings.favorites as c_favorites', 'commercial_listings.show as c_show',
-					'commercial_listings.expose_address as c_expose_address')
+					'commercial_listings.expose_address as c_expose_address',
+					'units.primary_agent_id',
+					'units.primary_agent2_id',
+					'commercial_listings.id as c_id')
 
 				listings
 			end
