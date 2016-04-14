@@ -153,11 +153,11 @@ module API
 
 				# if cached, render cached blob
 				listings_arr = @listings.to_a
-				blob_cache_key = "api_v1_listings/#{@listings.pluck('units.id').join('')}-#{listings_arr.count}-#{@listings.maximum(:updated_at).to_i}"
-				blob = Rails.cache.fetch(blob_cache_key)
-				if blob
-					render json: blob
-				else
+				# blob_cache_key = "api_v1_listings/#{@listings.pluck('units.id').join('')}-#{listings_arr.count}-#{@listings.maximum(:updated_at).to_i}"
+				# blob = Rails.cache.fetch(blob_cache_key)
+				# if blob
+				# 	render json: blob
+				# else
 					if search_params[:listing_type] == "10".freeze # residential
 						@pet_policies = Building.get_pet_policies(@listings)
 						@rental_terms = Building.get_rental_terms(@listings)
@@ -179,9 +179,9 @@ module API
 
 					# repackage into a format that's easily digestible
 					# by our API renderer
-					r_count = 0
-					c_count = 0
-					s_count = 0
+					# r_count = 0
+					# c_count = 0
+					# s_count = 0
 					output = @listings.map do |l|
 						serializer_params = {
 							listing: l,
@@ -195,13 +195,13 @@ module API
 							open_houses: @open_houses[l.unit_id]}
 
 						if is_residential(l)
-							r_count += 1
+							#r_count += 1
 							APIResidentialListing.new(serializer_params)
 						elsif is_commercial(l)
-							c_count += 1
+							#c_count += 1
 							APICommercialListing.new(serializer_params)
 						elsif is_sales(l)
-							s_count += 1
+							#s_count += 1
 							APISalesListing.new(serializer_params)
 						else
 							# todo: check prod for bad listings. remove any that fall into this category
@@ -212,16 +212,16 @@ module API
 
 					#puts "\n\n\n******* #{r_count} #{c_count} #{s_count} #{@listings.total_count}"
 
-					blob = Rails.cache.fetch(blob_cache_key, expires_in: 12.hours) do
+					blob = #Rails.cache.fetch(blob_cache_key, expires_in: 12.hours) do
 						ListingBlob.new({
 							items: output,
 							total_count: @listings.total_count,
 							total_pages: @listings.total_pages,
 							page: @listings.current_page
 							})
-					end
+					#end
 					render json: blob
-				end
+				#end
 			end
 
 			# Never trust parameters from the scary internet, only allow the white list through.
