@@ -45,9 +45,9 @@ Rails.application.configure do
 
   config.paperclip_defaults = {
     storage: :s3,
-    url: ':s3_alias_url',
-    s3_host_alias: ENV['CLOUDFRONT_ENDPOINT'],
-    path: '/:class/:attachment/:id_partition/:style/:filename',
+    # url: ':s3_alias_url',
+    # s3_host_alias: ENV['CLOUDFRONT_ENDPOINT'],
+    # path: '/:class/:attachment/:id_partition/:style/:filename',
     s3_protocol: 'http',
     s3_credentials: {
       bucket: ENV['S3_AVATAR_BUCKET'],
