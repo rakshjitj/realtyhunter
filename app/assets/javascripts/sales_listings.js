@@ -369,13 +369,6 @@ SalesListings = {};
   };
 
   SalesListings.initEditor = function() {
-    // TODO: still need this?
-    // make sure datepicker is formatted before setting initial date below
-    $('.datepicker').datetimepicker({
-      viewMode: 'days',
-      format: 'MM/DD/YYYY',
-      allowInputToggle: true
-    });
     var available_by = $('#sales .datepicker').attr('data-available-by');
     if (available_by) {
       $('#sales .datepicker').data("DateTimePicker").date(available_by);
@@ -414,7 +407,6 @@ SalesListings = {};
             for (var i =0; i<result.address_components.length; i++) {
               if (result.address_components[i].types[0] === "neighborhood") {
                 var nabe = result.address_components[i].short_name;
-                console.log('new nabe', nabe);
                 $('#neighborhood').val(nabe);
               }
             }
@@ -422,7 +414,7 @@ SalesListings = {};
         });
       //}
     }).bind("geocode:error", function(event, result){
-      //console.log("[ERROR]: " + result);
+      // console.log("[ERROR]: " + result);
     });
 
     // for drag n dropping photos
