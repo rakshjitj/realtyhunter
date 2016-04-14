@@ -21,11 +21,11 @@
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present? #true
+  config.serve_static_files = true#ENV['RAILS_SERVE_STATIC_FILES'].present? #true
   config.static_cache_control = "public, max-age=31536000"
   # serve from CDN
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  config.action_controller.asset_host = ENV['CLOUDFRONT_ENDPOINT']
+  #config.action_controller.asset_host = ENV['CLOUDFRONT_ENDPOINT']
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
@@ -45,7 +45,7 @@
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  config.force_ssl = false#true
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
@@ -96,14 +96,14 @@
 
   config.paperclip_defaults = {
     storage: :s3,
-    #path: "/:class/:attachment/:id_partition/:style/:filename",
-    #url: ':s3_alias_url',
-    #s3_host_alias: 'd3829jye59v7xw.cloudfront.net',
-    s3_protocol: :https,
+    url: ':s3_alias_url',
+    s3_host_alias: ENV['CLOUDFRONT_ENDPOINT'],
+    path: '/:class/:attachment/:id_partition/:style/:filename',
+    s3_protocol: 'http',
     s3_credentials: {
       bucket: ENV['S3_AVATAR_BUCKET'],
       access_key_id: ENV['AWS_ACCESS_KEY_ID'],
       secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
-    }
+    },
   }
 end
