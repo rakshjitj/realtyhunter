@@ -309,6 +309,7 @@ CommercialListings = {};
 
     // index page - selecting listings menu dropdown
     $('#commercial #emailListings').click(Listings.sendMessage);
+    $('#commercial tbody').off('click', 'i', Listings.toggleListingSelection);
     $('#commercial tbody').on('click', 'i', Listings.toggleListingSelection);
     $('#commercial .select-all-listings').click(Listings.selectAllListings);
     $('#commercial .selected-listings-menu').on('click', 'a', function() {

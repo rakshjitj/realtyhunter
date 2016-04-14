@@ -532,6 +532,7 @@ SalesListings = {};
 
     // index page - selecting listings menu dropdown
     $('#sales #emailListings').click(Listings.sendMessage);
+    $('#sales tbody').off('click', 'i', Listings.toggleListingSelection);
     $('#sales tbody').on('click', 'i', Listings.toggleListingSelection);
     $('#sales .select-all-listings').click(Listings.selectAllListings);
     $('#sales .selected-listings-menu').on('click', 'a', function() {

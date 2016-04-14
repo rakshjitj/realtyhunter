@@ -561,6 +561,7 @@ ResidentialListings = {};
     $('#emailListings').click(Listings.sendMessage);
     $('#assignListings').click(Listings.assignPrimaryAgent);
     $('#unassignListings').click(Listings.unassignPrimaryAgent);
+    $('tbody').off('click', 'i', Listings.toggleListingSelection);
     $('tbody').on('click', 'i', Listings.toggleListingSelection);
     $('.select-all-listings').click(Listings.selectAllListings);
     $('.selected-listings-menu').on('click', 'a', function() {

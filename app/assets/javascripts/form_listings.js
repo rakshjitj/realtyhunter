@@ -98,6 +98,7 @@ FormListings = {};
 
     // index page - selecting listings menu dropdown
     $('#form-listing #emailListings').click(Forms.sendMessage);
+    $('#form-listing tbody').off('click', 'i', Forms.toggleListingSelection);
     $('#form-listing tbody').on('click', 'i', Forms.toggleListingSelection);
     $('#form-listing .select-all-listings').click(Forms.selectAllListings);
     $('#form-listing .selected-listings-menu').on('click', 'a', function() {

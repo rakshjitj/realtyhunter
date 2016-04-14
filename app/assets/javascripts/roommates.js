@@ -301,6 +301,7 @@ Roommates = {};
     $('#roommates #matchMultiple').click(Roommates.matchMultiple);
     $('#roommates #deleteMultiple').click(Roommates.deleteMultiple);
 
+    $('#roommates tbody').off('click', 'i', Roommates.toggleListingSelection);
     $('#roommates tbody').on('click', 'i', Roommates.toggleListingSelection);
     $('#roommates .select-all-listings').click(Roommates.selectAllListings);
     Roommates.selectedRoommates = [];

@@ -112,6 +112,7 @@ Partner = {};
     $('#partner #emailListings').click(Forms.sendMessage);
     $('#partner #deleteMultiple').click(Forms.deleteMultiple);
 
+    $('#partner tbody').off('click', 'i', Forms.toggleListingSelection);
     $('#partner tbody').on('click', 'i', Forms.toggleListingSelection);
     $('#partner .select-all-listings').click(Forms.selectAllListings);
     $('#partner .selected-listings-menu').on('click', 'a', function() {

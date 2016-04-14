@@ -84,6 +84,7 @@ Careers = {};
     $('#careers #emailListings').click(Forms.sendMessage);
     $('#careers #deleteMultiple').click(Forms.deleteMultiple);
 
+    $('#careers tbody').off('click', 'i', Forms.toggleListingSelection);
     $('#careers tbody').on('click', 'i', Forms.toggleListingSelection);
     $('#careers .select-all-listings').click(Forms.selectAllListings);
     $('#careers .selected-listings-menu').on('click', 'a', function() {

@@ -86,6 +86,7 @@ ContactUs = {};
 		$('#contact-us #emailListings').click(Forms.sendMessage);
 		$('#contact-us #deleteMultiple').click(Forms.deleteMultiple);
 
+    $('#contact-us tbody').off('click', 'i', Forms.toggleListingSelection);
 		$('#contact-us tbody').on('click', 'i', Forms.toggleListingSelection);
 		$('#contact-us .select-all-listings').click(Forms.selectAllListings);
 		$('#contact-us .selected-listings-menu').on('click', 'a', function() {
