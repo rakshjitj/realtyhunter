@@ -99,7 +99,7 @@ $(document).ready(function() {
   }
 
   $('#infinite-table-container').infinitePages({
-      debug: true,
+      debug: false,
       loading: function() {
         // console.log("Loading...");
         return $(this).text("Loading...");
