@@ -1,6 +1,6 @@
 // Append new data
 $("<%=j render @users, :manager => nil %>")
-  .appendTo($(".infinite-table"));
+  .appendTo($(".infinite-table-users"));
 Listings.hideSpinner();
 
 // Update pagination link

@@ -44,43 +44,44 @@
 
 <% end %>
 
-<div class="row">
-  <div class="col-md-12">
-    <table class="table table-striped table-hover table-condensed infinite-table">
-      <thead>
-        <tr>
-          <th></th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Title</th>
-          <th>Office</th>
-          <th>Last Login</th>
-          <th>
-            <span class="has-tooltip" data-toggle="tooltip"
-                title="Did the user click on the activation link that was emailed to them?">
-            Activated?
-            </span>
-          </th>
-          <th>
-            <span class="has-tooltip" data-toggle="tooltip"
-                title="Has an admin approved their account?">
-              Account<br /> Authorized?
-            </span>
-          </th>
-          <th colspan="1"></th>
-        </tr>
-      </thead>
-      <tbody class="users_table_body">
-        <%= render @users, :manager => nil %>
-      </tbody>
-    </table>
+<span id="infinite-table-container">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-striped table-hover table-condensed infinite-table-users">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Title</th>
+            <th>Office</th>
+            <th>Last Login</th>
+            <th>
+              <span class="has-tooltip" data-toggle="tooltip"
+                  title="Did the user click on the activation link that was emailed to them?">
+              Activated?
+              </span>
+            </th>
+            <th>
+              <span class="has-tooltip" data-toggle="tooltip"
+                  title="Has an admin approved their account?">
+                Account<br /> Authorized?
+              </span>
+            </th>
+            <th colspan="1"></th>
+          </tr>
+        </thead>
+        <tbody class="users_table_body">
+          <%= render @users, :manager => nil %>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
-
-<div class="row">
-  <div class="col-sm-4 col-sm-offset-4 pagination-wrapper">
-    <%= render partial: 'shared/pagination', locals: {models: @users} %>
+  <div class="row">
+    <div class="col-sm-4 col-sm-offset-4 pagination-wrapper">
+      <%= render partial: 'shared/pagination', locals: {models: @users} %>
+    </div>
   </div>
-</div>
+</span>
 
 </div>

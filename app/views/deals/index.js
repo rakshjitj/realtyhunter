@@ -1,6 +1,6 @@
 // Append new data
 $("<%=j render @deals %>")
-  .appendTo($(".infinite-table"));
+  .appendTo($(".infinite-table-deals"));
 Forms.hideSpinner();
 
 // Update pagination link

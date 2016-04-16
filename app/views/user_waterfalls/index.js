@@ -1,6 +1,6 @@
 // Append new data
 $("<%=j render partial: 'user_waterfalls/user_waterfall', collection: @entries, as: :entry %>")
-  .appendTo($(".infinite-table"));
+  .appendTo($(".infinite-table-waterfall"));
 Buildings.hideSpinner();
 
 // Update pagination link

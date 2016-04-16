@@ -67,36 +67,36 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-12">
-    <div>
-      <table class="table table-striped table-hover table-condensed infinite-table">
-        <thead>
-          <tr>
-            <th data-sort="parent_agent_name" class="th-sortable">Agent</th>
-            <th data-sort="agent_seniority_rate" class="th-sortable">Agent Seniority</th>
-            <th data-sort="child_agent_name" class="th-sortable">Waterfall Agent</th>
-            <th data-sort="level" class="th-sortable">Tier</th>
-            <th data-sort="rate" class="th-sortable">Percentage</th>
-            <th colspan="1"></th>
-          </tr>
-        </thead>
+<span id="infinite-table-container">
+  <div class="row">
+    <div class="col-md-12">
+      <div>
+        <table class="table table-striped table-hover table-condensed infinite-table-waterfall">
+          <thead>
+            <tr>
+              <th data-sort="parent_agent_name" class="th-sortable">Agent</th>
+              <th data-sort="agent_seniority_rate" class="th-sortable">Agent Seniority</th>
+              <th data-sort="child_agent_name" class="th-sortable">Waterfall Agent</th>
+              <th data-sort="level" class="th-sortable">Tier</th>
+              <th data-sort="rate" class="th-sortable">Percentage</th>
+              <th colspan="1"></th>
+            </tr>
+          </thead>
 
-        <tbody class="user_waterfall_table_body">
-          <%= render partial: 'user_waterfalls/user_waterfall', collection: @entries, as: :entry %>
-        </tbody>
+          <tbody class="user_waterfall_table_body">
+            <%= render partial: 'user_waterfalls/user_waterfall', collection: @entries, as: :entry %>
+          </tbody>
 
-      </table>
+        </table>
+      </div>
     </div>
   </div>
-</div>
-
-<div class="row">
-  <div class="col-sm-4 col-sm-offset-4 pagination-wrapper">
-    <%= render partial: 'shared/pagination', locals: {models: @entries} %>
+  <div class="row">
+    <div class="col-sm-4 col-sm-offset-4 pagination-wrapper">
+      <%= render partial: 'shared/pagination', locals: {models: @entries} %>
+    </div>
   </div>
-</div>
-
+</span>
 
 <!-- Delete Modal -->
 <div class="modal fade modal-fullscreen" id="unitDeleteModal" tabindex="-1" role="dialog"

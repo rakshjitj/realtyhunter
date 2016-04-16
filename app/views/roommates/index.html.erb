@@ -195,44 +195,46 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-12">
-    <table class="table table-striped table-hover table-condensed infinite-table">
-      <thead>
-        <tr>
-          <th style="min-width: 45px;">
-            <!-- checkboxes -->
-            <i data-action="selectAllUnits" class="select-all-listings fa fa-square-o fa-lg"></i>
-          </th>
-          <th><!-- first image --></th>
-          <th data-sort="name" class="th-sortable">Name</th>
-          <th data-sort="phone">Phone</th>
-          <th data-sort="email" class="th-sortable">Email</th>
-          <th data-sort="monthly_budget" class="th-sortable">Monthly Budget</th>
-          <th data-sort="move_in_date" class="th-sortable">Move In Date</th>
-          <th data-sort="neighborhood_name" class="th-sortable">Neighborhood</th>
-          <th data-sort="dogs_allowed" class="th-sortable">Dogs Ok</th>
-          <th data-sort="cats_allowed" class="th-sortable">Cats Ok</th>
-          <th data-sort="submitted_date" class="th-sortable">Submitted</th>
-          <th data-sort="status">Status</th>
-          <th colspan="1"></th>
-        </tr>
-      </thead>
+<span id="infinite-table-container">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-striped table-hover table-condensed infinite-table">
+        <thead>
+          <tr>
+            <th style="min-width: 45px;">
+              <!-- checkboxes -->
+              <i data-action="selectAllUnits" class="select-all-listings fa fa-square-o fa-lg"></i>
+            </th>
+            <th><!-- first image --></th>
+            <th data-sort="name" class="th-sortable">Name</th>
+            <th data-sort="phone">Phone</th>
+            <th data-sort="email" class="th-sortable">Email</th>
+            <th data-sort="monthly_budget" class="th-sortable">Monthly Budget</th>
+            <th data-sort="move_in_date" class="th-sortable">Move In Date</th>
+            <th data-sort="neighborhood_name" class="th-sortable">Neighborhood</th>
+            <th data-sort="dogs_allowed" class="th-sortable">Dogs Ok</th>
+            <th data-sort="cats_allowed" class="th-sortable">Cats Ok</th>
+            <th data-sort="submitted_date" class="th-sortable">Submitted</th>
+            <th data-sort="status">Status</th>
+            <th colspan="1"></th>
+          </tr>
+        </thead>
 
-      <tbody class="roommates_table_body">
-        <%= render partial: 'roommates/roommate', collection: @roommates %>
-      </tbody>
-    </table>
+        <tbody class="roommates_table_body">
+          <%= render partial: 'roommates/roommate', collection: @roommates %>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
+  <div class="row">
+    <div class="col-sm-4 col-sm-offset-4 pagination-wrapper">
+      <%= render partial: 'shared/pagination', locals: {models: @roommates} %>
+    </div>
+  </div>
+</span>
 
 <% end %><!-- form -->
 
-<div class="row">
-  <div class="col-sm-4 col-sm-offset-4 pagination-wrapper">
-    <%= render partial: 'shared/pagination', locals: {models: @roommates} %>
-  </div>
-</div>
 
 <!-- Email Modal -->
 <div class="modal fade modal-fullscreen" id="emailModal" tabindex="-1" role="dialog"

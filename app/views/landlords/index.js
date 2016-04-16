@@ -1,6 +1,6 @@
 // Append new data
 $("<%=j render @landlords %>")
-  .appendTo($(".infinite-table"));
+  .appendTo($(".infinite-table-ll"));
 Landlords.hideSpinner();
 
 // Update pagination link

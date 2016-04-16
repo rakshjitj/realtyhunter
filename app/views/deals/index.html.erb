@@ -100,34 +100,35 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-12">
-    <table class="table table-striped table-hover table-condensed infinite-table">
-      <thead>
-        <tr>
-          <th data-sort="street_address2" class="th-sortable">Address</th>
-          <th data-sort="building_unit" class="th-sortable">Unit</th>
-          <th data-sort="client" class="">Client</th>
-          <th data-sort="price" class="th-sortable">Price</th>
-          <th data-sort="commission" class="">Commission</th>
-          <th data-sort="state" class="">State</th>
-          <th data-sort="closed_date" class="th-sortable">Closed Date</th>
-          <th colspan="1"></th>
-        </tr>
-      </thead>
+<span id="infinite-table-container">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-striped table-hover table-condensed infinite-table-deals">
+        <thead>
+          <tr>
+            <th data-sort="street_address2" class="th-sortable">Address</th>
+            <th data-sort="building_unit" class="th-sortable">Unit</th>
+            <th data-sort="client" class="">Client</th>
+            <th data-sort="price" class="th-sortable">Price</th>
+            <th data-sort="commission" class="">Commission</th>
+            <th data-sort="state" class="">State</th>
+            <th data-sort="closed_date" class="th-sortable">Closed Date</th>
+            <th colspan="1"></th>
+          </tr>
+        </thead>
 
-      <tbody class="deals_table_body">
-        <%= render @deals %>
-      </tbody>
-    </table>
+        <tbody class="deals_table_body">
+          <%= render @deals %>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
-
-<div class="row">
-  <div class="col-sm-4 col-sm-offset-4 pagination-wrapper">
-    <%= render partial: 'shared/pagination', locals: {models: @deals} %>
+  <div class="row">
+    <div class="col-sm-4 col-sm-offset-4 pagination-wrapper">
+      <%= render partial: 'shared/pagination', locals: {models: @deals} %>
+    </div>
   </div>
-</div>
+</span>
 
 <!-- Delete Modal -->
 <div class="modal fade modal-fullscreen" id="dealDeleteModal" tabindex="-1" role="dialog"

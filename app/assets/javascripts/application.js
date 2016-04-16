@@ -98,6 +98,21 @@ $(document).ready(function() {
     $('.navbar-mobile').remove();
   }
 
+  $('#infinite-table-container').infinitePages({
+      debug: true,
+      loading: function() {
+        // console.log("Loading...");
+        return $(this).text("Loading...");
+      },
+      success: function() {
+        // console.log('success!');
+      },
+      error: function() {
+        // console.log("Trouble! Please drink some coconut water and click again");
+        return $(this).text("Trouble! Please drink some coconut water and click again");
+      }
+    });
+
 });
 
 // debugging

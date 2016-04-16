@@ -417,7 +417,7 @@ ResidentialListings = {};
 
   // called on index & show pages
   ResidentialListings.initMobileIndex = function() {
-    // $('#residential-desktop').remove();
+    $('#residential-desktop').remove();
     // $('#residential-mobile').removeClass('hidden');
     $('#residential-mobile input').keydown(ResidentialListings.preventEnter);
 
@@ -505,7 +505,10 @@ ResidentialListings = {};
   }
 
   ResidentialListings.initDesktopIndex = function() {
+    //$('#residential-desktop').removeClass('hidden');
+    $('#residential-mobile').remove();
     Listings.hideSpinner();
+
     $('#residential-desktop a').click(function() {
       if ($(this).text().toLowerCase().indexOf('csv') === -1) {
         Listings.showSpinner();
@@ -653,11 +656,11 @@ ResidentialListings = {};
 
 })();
 
-$(document).on('keyup',function(evt) {
-  if (evt.keyCode == 27) {
-    Listings.hideSpinner();
-  }
-});
+// $(document).on('keyup',function(evt) {
+//   if (evt.keyCode == 27) {
+//     Listings.hideSpinner();
+//   }
+// });
 
 $(document).on('ready page:load', ResidentialListings.ready);
 

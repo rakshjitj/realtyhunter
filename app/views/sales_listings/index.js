@@ -1,6 +1,6 @@
 // Append new data
 $("<%=j render partial: 'sales_listings/sales_listing', collection: @sales_units, locals: {res_images: @res_images} %>")
-  .appendTo($(".infinite-table"));
+  .appendTo($(".infinite-table-sales"));
 Listings.hideSpinner();
 
 // Update pagination link
