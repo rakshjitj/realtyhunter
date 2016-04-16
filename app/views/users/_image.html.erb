@@ -25,7 +25,8 @@
       <%= form_for(@user, :url => upload_image_user_path(@user),
         html: {multipart: true}, method: :post) do |f| %>
         <%= f.file_field :file %><br>
-        <%= f.submit "Upload Photo", class: "btn btn-warning" %>
+        <%= f.submit "Upload Photo", class: "btn btn-warning", id:'btn-submit-img',
+            disabled: true %>
       <% end %>
     </div>
   </div>
