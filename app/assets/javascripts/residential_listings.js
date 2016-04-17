@@ -656,11 +656,11 @@ ResidentialListings = {};
 
 })();
 
-// $(document).on('keyup',function(evt) {
-//   if (evt.keyCode == 27) {
-//     Listings.hideSpinner();
-//   }
-// });
+$(document).on('keyup',function(evt) {
+  if (evt.keyCode == 27) {
+    Listings.hideSpinner();
+  }
+});
 
 $(document).on('ready page:load', ResidentialListings.ready);
 

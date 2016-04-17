@@ -35,6 +35,24 @@
 // must be last:
 //= require turbolinks
 
+function reinitInfiniteScroll () {
+  $('#infinite-table-container').infinitePages({
+    debug: true,
+    buffer: 200,
+    loading: function() {
+      // console.log("Loading...");
+      return $(this).text("Loading...");
+    },
+    success: function() {
+      // console.log('success!');
+    },
+    error: function() {
+      // console.log("Trouble! Please drink some coconut water and click again");
+      return $(this).text("Error. Please reload page to scroll");
+    }
+  });
+}
+
 $(document).ready(function() {
 	// change all date input fields to auto-open the calendar
 	$('.datepicker').each(function() {
@@ -98,22 +116,12 @@ $(document).ready(function() {
     $('.navbar-mobile').remove();
   }
 
-  $('#infinite-table-container').infinitePages({
-      debug: false,
-      loading: function() {
-        // console.log("Loading...");
-        return $(this).text("Loading...");
-      },
-      success: function() {
-        // console.log('success!');
-      },
-      error: function() {
-        // console.log("Trouble! Please drink some coconut water and click again");
-        return $(this).text("Trouble! Please drink some coconut water and click again");
-      }
-    });
-
+  reinitInfiniteScroll();
 });
+
+$(document).on('ready page:load', reinitInfiniteScroll);
+$(document).on('page:restore', reinitInfiniteScroll);
+// $(document).on('turbolinks:load', reinitInfiniteScroll);
 
 // debugging
 $(window).unload(function() {
