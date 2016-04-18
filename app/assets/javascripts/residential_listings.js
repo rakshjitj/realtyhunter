@@ -1,4 +1,4 @@
-ResidentialListings = {};
+  ResidentialListings = {};
 
 (function() {
   ResidentialListings.timer;
@@ -22,6 +22,7 @@ ResidentialListings = {};
 
     var data = {
         address: $('#address').val(),
+        unit: $('#unit').val(),
         rent_min: $('#rent_min').val(),
         rent_max: $('#rent_max').val(),
         bed_min: $('#bed_min').val(),

@@ -34,7 +34,7 @@
 
       <i class="fa fa-spinner fa-pulse fa-5x res-spinner-desktop listings-spinner-desktop"></i>
 
-      <div id="res-search-filters" data-search-path="<%= filter_residential_listings_path %>">
+      <div class="res-desktop-search-filters" id="res-search-filters" data-search-path="<%= filter_residential_listings_path %>">
         <%= form_tag residential_listings_path, method: 'get' do %>
           <div class="row vertical-margin-lg">
             <div class="col-xs-3">
@@ -46,6 +46,14 @@
                 update_elements: {},
                 placeholder: "123 Main St",
                 class:'form-control' %>
+            </div>
+          </div>
+          <div class="row vertical-padding">
+            <div class="col-xs-3">
+              <%= label_tag(:unit, "Unit") %>
+            </div>
+            <div class="col-xs-8 col-sm-left-padding">
+              <%= text_field_tag :unit, params[:unit], class:"form-control" %>
             </div>
           </div>
           <div class="row vertical-padding">
