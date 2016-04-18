@@ -1,6 +1,28 @@
 Common = {};
 
 (function() {
+  // disabled due to issues when navigating backwards in turbolinks
+  // todo: check at a future date to see if the issue has been resolved
+  Common.reinitInfiniteScroll = function () {
+    console.log("RE-INIT");
+    $(window).unbind('scroll');
+    $('#infinite-table-container').infinitePages({
+      debug: true,
+      buffer: 200,
+      loading: function() {
+        // console.log("Loading...");
+        return $(this).text("Loading...");
+      },
+      success: function() {
+        // console.log('success!');
+      },
+      error: function() {
+        // console.log("Trouble! Please drink some coconut water and click again");
+        return $(this).text("Error. Please reload page to scroll");
+      }
+    });
+  }
+
   Common.getURLParameterByName = function (name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
