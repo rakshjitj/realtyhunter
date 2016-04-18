@@ -6,13 +6,13 @@
 
   <% if !user.archived %>
 	  <br />
-	  <%= link_to "Delete", user, remote: true, method: :delete,
-	  	data: { confirm: "Are you sure you want to delete #{user.name}?" } %>
+	  <%= link_to "Delete", user_path(user), remote: true, method: :delete,
+	  	data: { confirm: "Are you sure you want to delete #{user.name}?", params: params } %>
 
 
 	<% else %>
 		<%= link_to "Undelete", unarchive_user_path(user), remote: true, method: :patch,
-	  	data: { confirm: "Are you sure you want to undelete #{user.name}?" } %>
+	  	data: { confirm: "Are you sure you want to undelete #{user.name}?", params: params } %>
 
 	<% end %>
 <% end %>

@@ -1,4 +1,4 @@
 $('.commercial_units_table_body').html("<%= escape_javascript (render :partial => @commercial_units) %>");
-
 $('.totals').html("<%= @commercial_units.total_count %> Units found");
 $('.pagination-wrapper').html("<%=j (render :partial => 'shared/pagination', locals: {:models => @commercial_units}) %>");
+Listings.hideSpinner();

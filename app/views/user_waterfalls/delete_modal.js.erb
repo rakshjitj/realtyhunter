@@ -1,9 +1,9 @@
-$('#unitDeleteModal .modal-body').html("<%= j(render :partial => "delete_modal_helper", locals: { entry: @entry }) %>");
+$('#waterfallDeleteModal .modal-body').html("<%= j(render partial: "delete_modal_helper", locals: { entry: @entry }) %>");
 
-$('#unitDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', @entry, remote: true, method: :delete, class: 'btn btn-danger link-as-button delete-btn', id: 'delete-link') %>");
-$('#unitDeleteModal .delete-btn').click( function(event) {
-	$('#unitDeleteModal').modal('hide');
+$('#waterfallDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', user_waterfall_path(@entry, @params_copy), remote: true, method: :delete, class: 'btn btn-danger link-as-button delete-btn', id: 'delete-link') %>");
+$('#waterfallDeleteModal .delete-btn').click( function(event) {
+	$('#waterfallDeleteModal').modal('hide');
 	event.preventDefault();
 });
 
-$('#unitDeleteModal').modal('show');
+$('#waterfallDeleteModal').modal('show');

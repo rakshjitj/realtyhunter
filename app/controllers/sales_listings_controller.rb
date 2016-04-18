@@ -184,6 +184,10 @@ class SalesListingsController < ApplicationController
   # GET
   # handles ajax call. uses latest data in modal
   def delete_modal
+    @params_copy = params
+    @params_copy.delete('action')
+    @params_copy.delete('controller')
+    @params_copy.delete('id')
     respond_to do |format|
       format.js
     end

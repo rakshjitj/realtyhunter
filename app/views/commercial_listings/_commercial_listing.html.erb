@@ -72,7 +72,7 @@
         <% if !current_user.is_photo_manager? %>
           <%= link_to 'Edit', edit_commercial_listing_path(commercial_listing) %>
           <br /><%= link_to 'Delete', delete_modal_commercial_listing_path(commercial_listing),
-            data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
+            data: { toggle: "modal", target: "#unitDeleteModal", params: params}, remote: true %>
           <br /><%= link_to 'Announcement', new_announcement_path(
             { address: commercial_listing.formatted_street_address }) %>
         <% else %>

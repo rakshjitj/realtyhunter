@@ -171,6 +171,10 @@ class ResidentialListingsController < ApplicationController
   # GET
   # handles ajax call. uses latest data in modal
   def delete_modal
+    @params_copy = params
+    @params_copy.delete('action')
+    @params_copy.delete('controller')
+    @params_copy.delete('id')
     respond_to do |format|
       format.js
     end
@@ -399,6 +403,7 @@ class ResidentialListingsController < ApplicationController
     def residential_listing_params
       data = params[:residential_listing].permit(
         :lock_version,
+        :id,
         :recipients, :title, :message, :listing_ids,
         :tenant_occupied,
         :beds, :baths, :notes, :description, :lease_start, :lease_end,

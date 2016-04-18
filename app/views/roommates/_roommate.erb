@@ -104,7 +104,7 @@
             data: { toggle: "modal", target: "#roommateUnmatchModal"}, remote: true %>
         <% end %>
           <%= link_to 'Delete', delete_modal_roommate_path(roommate),
-            data: { toggle: "modal", target: "#roommateDeleteModal"}, remote: true %>
+            data: { toggle: "modal", target: "#roommateDeleteModal", params: params}, remote: true %>
         <br />
       </td>
 

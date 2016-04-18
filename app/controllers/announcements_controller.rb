@@ -35,6 +35,10 @@ class AnnouncementsController < ApplicationController
 
   def delete_modal
     @announcement = Announcement.find(params[:id])
+    @params_copy = params
+    @params_copy.delete('action')
+    @params_copy.delete('controller')
+    @params_copy.delete('id')
     respond_to do |format|
       format.js
     end

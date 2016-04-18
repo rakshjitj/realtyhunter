@@ -167,6 +167,8 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
+    params.delete('action')
+    params.delete('controller')
     # don't set_user, that does addtl work
     @user = User.find(params[:id])
     @user.archive

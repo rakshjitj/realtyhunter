@@ -45,7 +45,7 @@
     <% if current_user.is_management? || current_user.is_listings_manager? %>
       <td>
         <%= link_to 'Delete', hide_modal_forms_partner_path(entry),
-          data: { toggle: "modal", target: "#entryArchiveModal"}, remote: true %>
+          data: { toggle: "modal", target: "#entryArchiveModal", params: params}, remote: true %>
       </td>
     <% end %>
   </tr>

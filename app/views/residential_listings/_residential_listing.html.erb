@@ -115,13 +115,15 @@
     </td>
 
     <!-- ****** LINKS ****************************************** -->
-    <% if current_user.is_management? || current_user.is_listings_manager? || current_user.is_photo_manager? %>
+    <% if current_user.is_management? ||
+          current_user.is_listings_manager? ||
+          current_user.is_photo_manager? %>
       <td>
 
         <% if !current_user.is_photo_manager? %>
           <%= link_to 'Edit', edit_residential_listing_path(residential_listing) %>
           <br><%= link_to 'Delete', delete_modal_residential_listing_path(residential_listing),
-            data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
+            data: { toggle: "modal", target: "#unitDeleteModal", params: params}, remote: true %>
           <br>
           <%= link_to 'Duplicate', duplicate_modal_residential_listing_path(residential_listing),
             data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>

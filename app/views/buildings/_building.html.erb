@@ -41,7 +41,7 @@
     <td>
       <%= link_to 'Edit', edit_building_path(building) %> <br />
       <%= link_to 'Delete', delete_modal_building_path(building),
-        data: {toggle: "modal", target: "#bldgDeleteModal"}, remote: true %>
+        data: {toggle: "modal", target: "#bldgDeleteModal", params: params}, remote: true %>
     </td>
   <% end %>
 </tr>

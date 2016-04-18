@@ -4,7 +4,7 @@ Common = {};
   // disabling infinite scroll due to issues when navigating backwards in turbolinks
   // todo: check at a future date to see if the issue has been resolved
   Common.reinitInfiniteScroll = function () {
-    console.log("RE-INIT");
+    // console.log("RE-INIT");
     $(window).unbind('scroll');
     $('#infinite-table-container').infinitePages({
       debug: true,

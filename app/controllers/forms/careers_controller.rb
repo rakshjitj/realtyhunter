@@ -76,6 +76,10 @@ module Forms
 
 	  def delete_modal
 	  	@entry = WufooCareerForm.find(params[:id])
+	  	@params_copy = params
+	    @params_copy.delete('action')
+	    @params_copy.delete('controller')
+	    @params_copy.delete('id')
 	    respond_to do |format|
 	      format.js
 	      format.html { redirect_to forms_careers_url }
@@ -83,6 +87,10 @@ module Forms
 	  end
 
 	  def hide_modal
+	  	@params_copy = params
+	    @params_copy.delete('action')
+	    @params_copy.delete('controller')
+	    @params_copy.delete('id')
 	    respond_to do |format|
 	      format.js
 	      format.html { redirect_to forms_careers_url }

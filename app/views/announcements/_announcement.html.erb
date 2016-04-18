@@ -38,7 +38,7 @@
 				<br>
 				<small><em class="padding-right">
 					<%= link_to 'Delete', delete_modal_announcement_path(announcement),
-	          	data: { toggle: "modal", target: "#annDeleteModal"}, remote: true %>
+	          	data: { toggle: "modal", target: "#annDeleteModal", params: params}, remote: true %>
 				</em></small>
 			<% end %>
 		</div>

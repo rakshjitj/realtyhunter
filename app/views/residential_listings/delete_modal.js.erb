@@ -1,6 +1,6 @@
 $('#unitDeleteModal .modal-body').html("<%= j(render :partial => "delete_modal_helper", locals: { residential_unit: @residential_unit }) %>");
 
-$('#unitDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', @residential_unit, remote: true, method: :delete, class: 'btn btn-danger link-as-button delete-btn', id: 'delete-link') %>");
+$('#unitDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', residential_listing_path(@residential_unit, @params_copy), remote: true, method: :delete, class: 'btn btn-danger link-as-button delete-btn', id: 'delete-link') %>");
 $('#unitDeleteModal .delete-btn').click( function(event) {
 	$('#unitDeleteModal').modal('hide');
 	event.preventDefault();

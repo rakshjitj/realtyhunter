@@ -1,7 +1,7 @@
 $('#entryArchiveModal .modal-body').html(
 "Are you sure you want to delete <%= j(@entry.name) %>? Deletion is permanent. There is no undo!");
 
-$('#entryArchiveModal .delete-btn').replaceWith("<%= j(link_to 'Delete', hide_forms_career_path(@entry), remote: true, method: :patch, class: 'btn btn-danger delete-btn link-as-button', id: 'delete-link') %>");
+$('#entryArchiveModal .delete-btn').replaceWith("<%= j(link_to 'Delete', hide_forms_career_path(@entry, @params_copy), remote: true, method: :patch, class: 'btn btn-danger delete-btn link-as-button', id: 'delete-link') %>");
 $('#entryArchiveModal #delete-link').click( function(event) {
 	$('#entryArchiveModal').modal('hide');
 	event.preventDefault();

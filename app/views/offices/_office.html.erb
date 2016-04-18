@@ -1,5 +1,5 @@
 <tr class="<%= cycle('even', 'odd') -%>">
-	
+
   <td><%= link_to office.name, company_office_path(office.company, office) %></td>
   <td><%= office.formatted_street_address %></td>
   <td><%= office.telephone %></td>
@@ -9,7 +9,8 @@
     <% prev_link = false %>
   	<% if can? :update, office %>
 	  	<%= link_to 'Edit', edit_company_office_path(office.company, office) %> |
-	  	<%= link_to 'Delete', company_office_path(office.company, office), method: :delete, data: { confirm: 'Are you sure?' } %>
+	  	<%= link_to 'Delete', company_office_path(office.company, office), method: :delete,
+          data: { confirm: 'Are you sure?', params: params } %>
       <% prev_link = true %>
 	  <% end %>
 

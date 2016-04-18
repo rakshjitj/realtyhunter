@@ -2,7 +2,7 @@
   <td>
     <% if company.image %>
       <div class="img-thumbnail">
-        <%= image_tag company.image.file.url(:thumb), :class => 'img-responsive center-block', 
+        <%= image_tag company.image.file.url(:thumb), :class => 'img-responsive center-block',
           alt: company.image.file.url(:thumb) %>
       </div>
     <% else %>
@@ -16,8 +16,9 @@
   <td><%= link_to company.users.count, employees_company_path(company) %></td>
   <td>
     <% if can? :update, company %>
-      <%= link_to 'Edit', edit_company_path(company) %> | 
-      <%= link_to 'Delete', company, method: :delete, data: { confirm: 'Are you sure you want to delete #{company.name}?' } %>
+      <%= link_to 'Edit', edit_company_path(company) %> |
+      <%= link_to 'Delete', company, method: :delete,
+          data: { confirm: 'Are you sure you want to delete #{company.name}?', params: params } %>
     <% end %>
   </td>
 </tr>

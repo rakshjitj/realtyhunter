@@ -4,7 +4,7 @@
   </td>
 
   <td>
-    <%= trim_zeros entry.agent_seniority_rate %> %  
+    <%= trim_zeros entry.agent_seniority_rate %> %
   </td>
 
   <td>
@@ -24,9 +24,9 @@
   </td>
 
   <td>
-    <%= link_to 'Delete', delete_modal_user_waterfall_path(entry), 
-      data: { toggle: "modal", target: "#unitDeleteModal"}, remote: true %>
-    <%= link_to 'Edit', edit_modal_user_waterfall_path(entry), 
+    <%= link_to 'Delete', delete_modal_user_waterfall_path(entry),
+      data: { toggle: "modal", target: "#waterfallDeleteModal", params: params}, remote: true %>
+    <%= link_to 'Edit', edit_modal_user_waterfall_path(entry),
       data: { toggle: "modal", target: "#waterfallEditModal"}, remote: true %>
   </td>
 
