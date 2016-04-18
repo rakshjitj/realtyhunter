@@ -1,14 +1,22 @@
 class BuildingSerializer < ActiveModel::Serializer
   attributes :city, :state, :zipcode, :name, :id, :street_address, :location
-  
-  attribute :neighborhood, serializer: BuildingNeighborhoodSerializer
+
+  def is_sales
+    object.respond_to?(:s_id) && object.s_id
+  end
+
+  attribute :neighborhood
   def neighborhood
     BuildingNeighborhoodSerializer.new(object).attributes
   end
 
-  attribute :landlord, serializer: BuildingLandlordSerializer
+  attribute :landlord
   def landlord
-    BuildingLandlordSerializer.new(object).attributes
+    if !is_sales
+      BuildingLandlordSerializer.new(object).attributes
+    else
+      nil
+    end
   end
 
   def city
