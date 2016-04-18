@@ -1,4 +1,5 @@
 class ListingSerializer < ActiveModel::Serializer
+	# cache key: 'listings', expires_in: 3.hours
 
 	attributes :unit_description,
 	:floor, :layout, :bedrooms, :unit_number, :pets, :status, :building, :date_available,
