@@ -102,8 +102,6 @@ $(document).ready(function() {
   //Common.reinitInfiniteScroll();
 });
 
-$(document).on('page:restore', Common.reinitInfiniteScroll);
-
 // debugging
 $(window).unload(function() {
 	Deals.clearTimer();

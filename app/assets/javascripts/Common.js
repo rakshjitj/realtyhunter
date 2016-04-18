@@ -1,7 +1,7 @@
 Common = {};
 
 (function() {
-  // disabled due to issues when navigating backwards in turbolinks
+  // disabling infinite scroll due to issues when navigating backwards in turbolinks
   // todo: check at a future date to see if the issue has been resolved
   Common.reinitInfiniteScroll = function () {
     console.log("RE-INIT");
