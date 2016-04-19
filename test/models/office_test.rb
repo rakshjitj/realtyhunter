@@ -158,18 +158,27 @@ class OfficeTest < ActiveSupport::TestCase
   test "managers gets all managers for this office" do
     michael = create(:user, company: @office.company)
     archer = create(:user, company: @office.company)
+    michael.employee_title = EmployeeTitle.agent
+    archer.employee_title = EmployeeTitle.agent
+
     @office.users = [michael, archer]
     michael.make_manager
+    michael.save
+    archer.save
     assert true, michael.is_manager?
-    assert_equal 1, @office.managers.count
+    assert_equal 1, @office.managers.length
   end
 
   test "agents gets all agents for this office" do
     michael = create(:user, company: @office.company)
     archer = create(:user, company: @office.company)
+    michael.employee_title = EmployeeTitle.agent
+    archer.employee_title = EmployeeTitle.agent
     @office.users = [michael, archer]
     michael.make_manager
-    assert_equal 1, @office.agents.count
+    michael.save
+    archer.save
+    assert_equal 1, @office.agents.length
   end
 
 end

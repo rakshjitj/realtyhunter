@@ -16,18 +16,8 @@ class BuildingTest < ActiveSupport::TestCase
     assert_not @bldg.valid?
   end
 
-  test "street_number should be present" do
-    @bldg.street_number = "     "
-    assert_not @bldg.valid?
-  end
-
   test "route should be present" do
     @bldg.route = "     "
-    assert_not @bldg.valid?
-  end
-
-  test "administrative_area_level_2_short should be present" do
-    @bldg.administrative_area_level_2_short = "     "
     assert_not @bldg.valid?
   end
 
@@ -63,16 +53,6 @@ class BuildingTest < ActiveSupport::TestCase
 
   test "company should be present" do
     @bldg.company = nil
-    assert_not @bldg.valid?
-  end
-
-  test "landlord should be present" do
-    @bldg.landlord = nil
-    assert_not @bldg.valid?
-  end
-
-  test "neighborhood should be present" do
-    @bldg.neighborhood = nil
     assert_not @bldg.valid?
   end
 
@@ -121,13 +101,6 @@ class BuildingTest < ActiveSupport::TestCase
     assert_not @bldg.valid?
   end
 
-  test "formatted_street_address should be unique" do
-    duplicate_bldg = @bldg.dup
-    duplicate_bldg.formatted_street_address = @bldg.formatted_street_address
-    @bldg.save
-    assert_not duplicate_bldg.valid?
-  end
-
   test "street_address return street number and route" do
     assert @bldg.street_address, @bldg.street_number + ' ' + @bldg.route
   end
@@ -144,14 +117,9 @@ class BuildingTest < ActiveSupport::TestCase
     assert_raises(ActiveRecord::RecordNotFound) { Building.find_unarchived(@bldg.id) }
   end
 
-  test "search can find any address" do
-    @bldgs = Building.search("MyString1", false)
-    assert @bldgs.count, 1
-  end
-
-  test "search can find only buildings with active units" do
-    @bldgs = Building.search("MyString1", true)
-    assert @bldgs.count, 0
+  test "search can find address" do
+    @bldgs = Building.search("Franklin Ave, Brooklyn, NY 11238", 'active')
+    assert @bldgs.length, 1
   end
 
   test "save and add neighborhood creates neighborhood" do

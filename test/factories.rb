@@ -47,16 +47,6 @@ FactoryGirl.define do
     name { generate(:sequenced_name) }
   end
 
-  factory :agent_type do
-    name { 'generate(:sequenced_name)' }
-    factory :residential_agent do
-      name "residential"
-    end
-    factory :commercial_agent do
-      name "commercial"
-    end
-  end
-
   factory :user do
     name { generate(:sequenced_name) }
     email { generate(:sequenced_email) }
@@ -68,14 +58,14 @@ FactoryGirl.define do
 
   factory :neighborhood do
     name { generate(:sequenced_name) }
-    borough { generate(:sequenced_name) }
+    borough { 'Brookyln' }
     city "New York"
     state "NY"
   end
 
   factory :rental_term do
     name { generate(:sequenced_name) }
-    company 
+    company
     #company { company_myspace }
   end
 
@@ -116,7 +106,7 @@ FactoryGirl.define do
     #company { company_myspace }
     landlord
     company
-    neighborhood
+    #neighborhood
     pet_policy
     rental_term
     # after(:build) do |building, evaluator|
@@ -130,17 +120,16 @@ FactoryGirl.define do
     company
   end
 
-  factory :residential_unit do
+  factory :residential_listing do
     building_unit { generate(:sequenced_number) }
     rent { generate(:sequenced_number) }
     lease_duration "year"
     beds 1
     baths 2.5
     building
-    actable_type 'ResidentialUnit'
   end
 
-  factory :commercial_unit do
+  factory :commercial_listing do
     building_unit { generate(:sequenced_number) }
     rent { generate(:sequenced_number) }
     construction_status "existing"
@@ -149,7 +138,6 @@ FactoryGirl.define do
     floor { generate(:sequenced_number) }
     building_size { generate(:sequenced_number) }
     building
-    actable_type 'CommercialUnit'
   end
 
 end

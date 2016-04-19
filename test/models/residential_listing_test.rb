@@ -2,7 +2,7 @@ require 'factory_girl_rails'
 include FactoryGirl::Syntax::Methods
 require 'test_helper'
 
-class ResidentialUnitTest < ActiveSupport::TestCase
+class ResidentialListingTest < ActiveSupport::TestCase
   def setup
     @company = build_stubbed(:company)
     @user = create(:user, company: @company)

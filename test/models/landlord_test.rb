@@ -5,10 +5,10 @@ require 'test_helper'
 class LandlordTest < ActiveSupport::TestCase
 
 	def setup
-    @company = build(:company)
-    @rental_term = build(:rental_term, company: @company)
+    @company = create(:company)
+    #@rental_term = build(:rental_term, company: @company)
     # build then save to trigger before_save callback
-    @landlord = build(:landlord, company: @company, rental_term: @rental_term)
+    @landlord = build(:landlord, company: @company) #, rental_term: @rental_term
     @landlord.save
   end
 
@@ -26,31 +26,9 @@ class LandlordTest < ActiveSupport::TestCase
     assert_not @landlord.valid?
   end
 
-  test "mobile should be present" do
-    @landlord.mobile = "     "
-    assert_not @landlord.valid?
-  end
-
-  test "email should be present" do
-    @landlord.email = "     "
-    assert_not @landlord.valid?
-  end
-
-  test "rental_term should be present" do
-    @landlord.rental_term = nil
-    assert_not @landlord.valid?
-  end
-
 	test "code should be unique" do
     duplicate_landlord = @landlord.dup
     duplicate_landlord.code = @landlord.code.upcase
-    @landlord.save
-    assert_not duplicate_landlord.valid?
-  end
-
-  test "name should be unique" do
-    duplicate_landlord = @landlord.dup
-    duplicate_landlord.name = @landlord.name.upcase
     @landlord.save
     assert_not duplicate_landlord.valid?
   end
@@ -60,6 +38,15 @@ class LandlordTest < ActiveSupport::TestCase
     duplicate_landlord.email = @landlord.email.upcase
     @landlord.save
     assert_not duplicate_landlord.valid?
+  end
+
+  test "name does not need to be unique" do
+    duplicate_landlord = @landlord.dup
+    duplicate_landlord.email = 'something@else.com'
+    duplicate_landlord.code = duplicate_landlord.code + '2'
+    @landlord.save
+    duplicate_landlord.save
+    assert duplicate_landlord.valid?
   end
 
 	test "code should not be too long" do

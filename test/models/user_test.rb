@@ -5,9 +5,8 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
 
   def setup
-    @res_agent_type = create(:residential_agent)
-    @com_agent_type = create(:commercial_agent)
     @company = create(:company)
+    @current_user = create(:user, company: @company)
     @user = create(:user, company: @company)
     @user2 = create(:user, company: @company)
     @manager = create(:user, company: @company)
@@ -125,7 +124,7 @@ class UserTest < ActiveSupport::TestCase
     @user.name = "raquel bujans"
     params = {}
     params[:name_email] = "bujans"
-    results = User.search(params)
+    results = User.search(params, @current_user)
     assert results.length, 1
   end
 
@@ -133,49 +132,30 @@ class UserTest < ActiveSupport::TestCase
     @user.name = "raquel bujans"
     params = {}
     params[:name_email] = "blah"
-    results = User.search(params)
+    results = User.search(params, @current_user)
     assert results.length, 0
   end
 
-  # test the roles out
-  test "update_roles sets residential agent as default" do
+  test "update_roles sets residential agent defaults" do
     @user.agent_types = nil
     @user.employee_title = EmployeeTitle.agent
     @user.update_roles
     assert @user.employee_title.name, EmployeeTitle.agent.name
-    # everyone has residential by default
     assert @user.has_role? :residential
+    assert @user.has_role? :commercial
+    assert @user.has_role? :sales
+    assert @user.has_role? :agent
   end
 
-  test "update_roles updates employee_title" do
-    @user.agent_types = nil
+  test "update_roles only updates roles for agents" do
     @user.employee_title = EmployeeTitle.closing_manager
     @user.update_roles
     assert @user.employee_title.name, EmployeeTitle.closing_manager.name
-    assert @user.has_role? :closing_manager
-    # everyone has residential by default
-    assert @user.has_role? :residential
+    assert_not @user.has_role? :closing_manager
+    assert_not @user.has_role? :residential
   end
 
-  test "can get agent specialties" do
-    @user.employee_title = EmployeeTitle.agent
-    @user.agent_types = ['residential', 'commercial']
-    @user.update_roles
-    assert @user.has_role? :residential
-    assert @user.agent_specialties[0], "residential"
-    assert @user.agent_specialties[1], "commercial"
-  end
-
-  test "can get agent specialty id" do
-    @user.employee_title = EmployeeTitle.agent
-    @user.agent_types = ['residential', 'commercial']
-    @user.update_roles
-    assert @user.has_role? :residential
-    assert @user.agent_specialties_as_indicies[0], 1
-    assert @user.agent_specialties_as_indicies[1], 2
-  end
-
-  # # TODO test add_sanitized_role
+  # TODO test add_sanitized_role
 
   test "make manager works" do
     @manager.make_manager
@@ -235,10 +215,10 @@ class UserTest < ActiveSupport::TestCase
     @company.save
     assert @user.coworkers.length, 1
     assert @user.coworkers[0], @user2
-  end 
+  end
 
   #test "super admin can see users from all companies" do
-  #end 
+  #end
 
   test "agent can't kick anyone" do
     assert_not @user.can_kick(@user2)
@@ -299,7 +279,7 @@ class UserTest < ActiveSupport::TestCase
   test "every user gets a unique auth token upon creation" do
     @user.save
     assert_not_nil @user.auth_token
-    
+
     duplicate_user = @user.dup
     duplicate_user.save
     assert_not duplicate_user.valid?
