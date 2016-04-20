@@ -90,6 +90,10 @@ FactoryGirl.define do
     #association :rental_term, :factory => :rental_term, :username => 'admin'
   end
 
+  factory :building_amenitiy do
+    name { generate(:sequenced_name) }
+  end
+
   factory :building do
     sequence(:formatted_street_address) { |n| "#{n} Franklin Ave, Brooklyn, NY 11238" }
     street_number "722"
@@ -106,13 +110,18 @@ FactoryGirl.define do
     #company { company_myspace }
     landlord
     company
-    #neighborhood
+    neighborhood
     pet_policy
     rental_term
-    # after(:build) do |building, evaluator|
-    #   #company evaluator.company
-    #   create(:landlord, company: evaluator.company)#, evaluator.total_items, building: building)
-    # end
+    #building_amenitiy
+     # user_with_posts will create post data after the user has been created
+    factory :building_with_building_amenities do
+      # posts_count is declared as a transient attribute and available in
+      # attributes on the factory, as well as the callback via the evaluator
+      transient do
+        building_amenities_count 2
+      end
+    end
   end
 
   factory :pet_policy do
@@ -120,24 +129,32 @@ FactoryGirl.define do
     company
   end
 
-  factory :residential_listing do
+  factory :unit do
     building_unit { generate(:sequenced_number) }
     rent { generate(:sequenced_number) }
-    lease_duration "year"
-    beds 1
-    baths 2.5
     building
   end
 
+  factory :residential_listing do
+    lease_start 12
+    lease_end 12
+    beds 1
+    baths 2.5
+    unit
+  end
+
   factory :commercial_listing do
-    building_unit { generate(:sequenced_number) }
-    rent { generate(:sequenced_number) }
+    # building_unit { generate(:sequenced_number) }
+    # rent { generate(:sequenced_number) }
     construction_status "existing"
     lease_type "full_service"
     sq_footage { generate(:sequenced_number) }
     floor { generate(:sequenced_number) }
     building_size { generate(:sequenced_number) }
-    building
+    property_description "blah"
+    total_lot_size 100
+    #building
+    unit
   end
 
 end

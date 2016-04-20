@@ -34,11 +34,17 @@ class AbilityTest < ActiveSupport::TestCase
   	@external_vendor.employee_title = EmployeeTitle.find_by(name: 'external vendor')
   	@external_vendor.update_roles
 
-  	@runit = build(:residential_unit, building: @building)
-  	@runit2 = build(:residential_unit, building: @building2)
+  	@unit = create(:unit,
+      building: @building,
+      rent: 10)
+    @unit2 = create(:unit,
+      building: @building2,
+      rent: 20)
 
-  	@cunit = build(:commercial_unit, building: @building)
-  	@cunit2 = build(:commercial_unit, building: @building2)
+    @runit = create(:residential_listing, unit: @unit)
+    @runit2 = create(:residential_listing, unit: @unit2)
+    @cunit = create(:commercial_listing, unit: @unit)
+    @cunit2 = create(:commercial_listing, unit: @unit2)
   end
 
   test "external vendors can access their profile" do
