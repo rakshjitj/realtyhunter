@@ -190,7 +190,6 @@ class ResidentialListing < ActiveRecord::Base
         'landlords.code',
         'landlords.id AS landlord_id',
         'units.listing_id', 'units.available_by', 'units.public_url')
-
     running_list = ResidentialListing._filter_query(running_list, user, params)
     running_list
   end
@@ -441,8 +440,7 @@ class ResidentialListing < ActiveRecord::Base
 
   def take_off_market(new_lease_end_date)
     if new_lease_end_date
-      update({status: :off,
-              available_by: new_lease_end_date})
+      self.unit.update({status: :off, available_by: new_lease_end_date})
     else
       raise "No lease end date specified"
     end

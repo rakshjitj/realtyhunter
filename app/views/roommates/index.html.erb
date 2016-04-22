@@ -8,7 +8,10 @@
       <h1>Roomsharing Referrals</h1>
     </div>
     <div class="col-sm-6 form-label-responsive page-header-buttons">
-      <%= link_to 'New Referral', new_roommate_path, class: 'btn btn-warning btn-sm link-as-button' %>
+      <%= link_to 'New Referral', new_roommate_path,
+          class: 'btn btn-warning btn-sm link-as-button' %>
+      <%= link_to 'Export to CSV', roommates_path(params.merge(format: 'csv').symbolize_keys),
+          class:"btn btn-sm btn-warning link-as-button" %>
     </div>
   </div>
 </div>

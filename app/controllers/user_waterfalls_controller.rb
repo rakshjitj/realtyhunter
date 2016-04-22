@@ -5,8 +5,22 @@ class UserWaterfallsController < ApplicationController
 	autocomplete :user, :name, full: true
 
 	def index
-    set_user_waterfalls
     @new_entry = UserWaterfall.new
+
+    respond_to do |format|
+      format.html do
+        set_user_waterfalls
+      end
+      format.js do
+        set_user_waterfalls
+      end
+      format.csv do
+        set_user_waterfalls_csv
+        headers['Content-Disposition'] = "attachment; filename=\"" +
+          current_user.name + " - Waterfall Data.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+    end
   end
 
   def filter
@@ -102,6 +116,11 @@ class UserWaterfallsController < ApplicationController
   		@entries = @entries.page params[:page]
   		custom_sort
   	end
+
+    def set_user_waterfalls_csv
+      @entries = UserWaterfall.export(user_waterfall_params)
+      custom_sort
+    end
 
   	def custom_sort
       sort_column = params[:sort_by] || "parent_agent_name"

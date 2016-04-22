@@ -13,7 +13,20 @@ class RoommatesController < ApplicationController
   autocomplete :building, :formatted_street_address, full: true
 
   def index
-    set_roommates
+    respond_to do |format|
+      format.html do
+        set_roommates
+      end
+      format.js do
+        set_roommates
+      end
+      format.csv do
+        set_roommates_csv
+        headers['Content-Disposition'] = "attachment; filename=\"" +
+          current_user.company.name + " - Roommates.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+    end
   end
 
   def filter
@@ -278,6 +291,17 @@ class RoommatesController < ApplicationController
       @roommates = custom_sort
       @roommates = @roommates.page params[:page]
   	end
+
+    def set_roommates_csv
+      # set a default status if none otherwise specified
+      if params[:status].blank?
+        params[:status] = 'Unmatched'.freeze
+      end
+
+      @roommates = Roommate.export(params)
+      @roommates = custom_sort
+      @roommates = @roommates
+    end
 
   	def custom_sort
       sort_column = params[:sort_by] || "submitted_date".freeze

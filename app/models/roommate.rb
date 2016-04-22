@@ -53,19 +53,8 @@ class Roommate < ActiveRecord::Base
         'roommates.archived', 'users.name as user_name', 'roommates.created_at', 'roommates.updated_at')
   end
 
-  def self.search(params)
-    roommates = Roommate
-      .joins('left join neighborhoods on roommates.neighborhood_id = neighborhoods.id')
-      .select(
-    	  'roommates.id', 'roommates.read',
-    	  'roommates.upload_picture_of_yourself',
-    	  'roommates.name', 'roommates.phone_number', 'roommates.email',
-    	  'neighborhoods.name as neighborhood_name',
-    	  'roommates.monthly_budget', 'roommates.move_in_date', 'roommates.dogs_allowed',
-    	  'roommates.cats_allowed', 'roommates.created_at as submitted_date',
-    	  'roommates.archived', 'roommates.residential_listing_id')
-
-	   # all search params come in as strings from the url
+  def self._filterQuery(roommates, params)
+    # all search params come in as strings from the url
     # clear out any invalid search params
     params.delete_if{ |k,v| (!v || v == 0 || v.empty?) }
 
@@ -81,8 +70,8 @@ class Roommate < ActiveRecord::Base
       if params[:referred_by] == 'Website'
         roommates = roommates.where(user_id: nil)
       else
-	    user = User.where(name: params[:referred_by]).first
-	    roommates = roommates.where(user_id: user)
+      user = User.where(name: params[:referred_by]).first
+      roommates = roommates.where(user_id: user)
       end
     end
 
@@ -117,6 +106,40 @@ class Roommate < ActiveRecord::Base
     end
 
     roommates
+  end
+
+  def self.export(params)
+    roommates = Roommate
+      .joins('left join neighborhoods on roommates.neighborhood_id = neighborhoods.id')
+      .joins('left join residential_listings on roommates.residential_listing_id = residential_listings.id')
+      .select(
+        'roommates.id', 'roommates.read',
+        'roommates.upload_picture_of_yourself',
+        'roommates.how_did_you_hear_about_us',
+        'roommates.internal_notes', 'roommates.describe_yourself',
+        'roommates.name', 'roommates.phone_number', 'roommates.email',
+        'neighborhoods.name as neighborhood_name', 'roommates.residential_listing_id',
+        'roommates.monthly_budget', 'roommates.move_in_date', 'roommates.dogs_allowed',
+        'roommates.cats_allowed', 'roommates.created_at as submitted_date',
+        'roommates.updated_at',
+        'roommates.archived', 'roommates.residential_listing_id')
+
+    return _filterQuery(roommates, params)
+  end
+
+  def self.search(params)
+    roommates = Roommate
+      .joins('left join neighborhoods on roommates.neighborhood_id = neighborhoods.id')
+      .select(
+    	  'roommates.id', 'roommates.read',
+    	  'roommates.upload_picture_of_yourself',
+    	  'roommates.name', 'roommates.phone_number', 'roommates.email',
+    	  'neighborhoods.name as neighborhood_name',
+    	  'roommates.monthly_budget', 'roommates.move_in_date', 'roommates.dogs_allowed',
+    	  'roommates.cats_allowed', 'roommates.created_at as submitted_date',
+    	  'roommates.archived', 'roommates.residential_listing_id')
+
+    return _filterQuery(roommates, params)
   end
 
   def self.send_message(source_agent, recipients, sub, msg, roommate_ids)

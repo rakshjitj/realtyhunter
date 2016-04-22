@@ -21,6 +21,7 @@ class Building < ActiveRecord::Base
 	attr_accessor :building, :inaccuracy_description,
     :custom_rental_term, :custom_amenities, :custom_utilities, :custom_neighborhood_id
 
+  # can't be unique. we might have archived copies with the same address
 	validates :formatted_street_address, presence: true, length: {maximum: 200}
 		#uniqueness: { case_sensitive: false }
 

@@ -5,13 +5,12 @@
       <%= link_to_next_page(models, 'Load More', remote: true,
           params: params.merge({
             action: controller.action_name == 'filter' ? 'index' : controller.action_name,
-
+            class: 'prefetch'
             }) ) %>
     <% else %>
       <%= link_to_next_page(models, 'Load More', remote: true,
           params: params.merge({
-            action: controller.action_name == 'filter' ? 'index' : controller.action_name,
-            class: 'prefetch'
+            action: controller.action_name == 'filter' ? 'index' : controller.action_name
             }) ) %>
     <% end %>
   </p>

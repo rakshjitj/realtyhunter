@@ -50,8 +50,32 @@ class UserWaterfall < ActiveRecord::Base
 		rates[:senior][params[:level].to_sym][idx]
   end
 
+  def self._filterQuery(running_list, params)
+    if !params[:parent_agent].blank?
+      running_list =
+        running_list.where('parent_agents.name ILIKE ?', "%#{params[:parent_agent]}%")
+    end
+
+    if !params[:parent_agent_id].blank?
+      running_list =
+        running_list.where('parent_agent_id = ?', params[:parent_agent_id])
+    end
+
+    if !params[:child_agent].blank?
+      running_list =
+        running_list.where('child_agents.name ILIKE ?', "%#{params[:child_agent]}%")
+    end
+
+    if !params[:level].blank? && ['1', '2', '3' '4'].include?(params[:level])
+      running_list =
+        running_list.where('level = ?', params[:level])
+    end
+
+    running_list
+  end
+
   def self.search(params)
-  	@running_list = UserWaterfall.unarchived
+  	running_list = UserWaterfall.unarchived
   		.joins('LEFT JOIN users AS parent_agents ON parent_agents.id = user_waterfalls.parent_agent_id
 LEFT JOIN users AS child_agents ON child_agents.id = user_waterfalls.child_agent_id')
   		.select('user_waterfalls.id', 'rate', 'level', 'user_waterfalls.updated_at',
@@ -59,27 +83,20 @@ LEFT JOIN users AS child_agents ON child_agents.id = user_waterfalls.child_agent
   			'parent_agents.name as parent_agent_name',
   			'child_agents.name as child_agent_name')
 
-  	if !params[:parent_agent].blank?
-      @running_list =
-      	@running_list.where('parent_agents.name ILIKE ?', "%#{params[:parent_agent]}%")
-    end
+  	_filterQuery(running_list, params)
+  end
 
-    if !params[:parent_agent_id].blank?
-      @running_list =
-      	@running_list.where('parent_agent_id = ?', params[:parent_agent_id])
-    end
+  def self.export(params)
+    running_list = UserWaterfall.unarchived
+      .joins('LEFT JOIN users AS parent_agents ON parent_agents.id = user_waterfalls.parent_agent_id
+LEFT JOIN users AS child_agents ON child_agents.id = user_waterfalls.child_agent_id')
+      .select('user_waterfalls.id', 'rate', 'level', 'user_waterfalls.updated_at',
+        'agent_seniority_rate',
+        'parent_agents.name as parent_agent_name',
+        'child_agents.name as child_agent_name',
+        'user_waterfalls.created_at', 'user_waterfalls.updated_at', 'user_waterfalls.archived')
 
-    if !params[:child_agent].blank?
-      @running_list =
-      	@running_list.where('child_agents.name ILIKE ?', "%#{params[:child_agent]}%")
-    end
-
-    if !params[:level].blank? && ['1', '2', '3' '4'].include?(params[:level])
-      @running_list =
-      	@running_list.where('level = ?', params[:level])
-    end
-
-  	@running_list
+    _filterQuery(running_list, params)
   end
 
 end

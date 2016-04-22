@@ -42,9 +42,26 @@ class CompaniesController < ApplicationController
 
   def employees
     @title = 'Employees'
-    @users = @company.employees.page params[:page]
-    @user_images = User.get_images(@users)
-    render 'users/index'
+
+    respond_to do |format|
+      format.html do
+        @users = @company.employees.page params[:page]
+        @user_images = User.get_images(@users)
+        render 'users/index'
+      end
+      format.js do
+        @users = @company.employees.page params[:page]
+        @user_images = User.get_images(@users)
+        render 'users/index'
+      end
+      format.csv do
+        @users = @company.employees_for_export
+        headers['Content-Disposition'] = "attachment; filename=\"" +
+          @company.name + " - #{@title}.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+        render 'users/index'
+      end
+    end
   end
 
   # POST /companies

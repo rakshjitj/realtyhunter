@@ -36,10 +36,22 @@
           prompt: "Any"}) %>
       </div>
     </div>
+
+    <div class="row vertical-margin-lg">
+      <div class="col-xs-3">
+        <%= @users.total_count %> Users found
+      </div>
+    </div>
   </div>
+
   <div class="col-sm-3 vertical-align2 totals form-label-responsive">
-    <%= @users.total_count %> Users found<br>
+    <% if current_user.is_management? && action_name == "employees" %>
+      <%= link_to 'Export to CSV',
+          employees_company_path(current_user.company, params.merge(format: 'csv').symbolize_keys),
+          class:"btn btn-sm btn-warning link-as-button" %>
+    <% end %>
   </div>
+
 </div>
 
 <% end %>

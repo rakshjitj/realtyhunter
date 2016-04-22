@@ -91,6 +91,18 @@ class Company < ActiveRecord::Base
         'users.manager_id')
 	end
 
+  def employees_for_export
+    self.users.unarchived
+      .joins(:office, :employee_title)
+      .includes(:manager, :roles)
+      .select('users.company_id', 'users.archived', 'users.id', 'users.phone_number',
+        'users.mobile_phone_number', 'users.last_login_at', 'users.bio',
+        'users.name', 'users.email', 'users.activated', 'users.approved',
+        'employee_titles.name AS employee_title_name', 'employee_titles.id AS employee_title_id',
+        'offices.name AS office_name', 'offices.id as office_id',
+        'users.manager_id', 'users.created_at', 'users.updated_at', 'users.archived')
+  end
+
 	# def data_enterers
 	# 	#users.unarchived.includes(:employee_title, :office, :image, :company, :manager).select{|u| u if u.is_data_entry? }
 	# 	User.joins(:roles).where('roles.name = ?', 'manager').includes(:employee_title, :office, :image, :manager)

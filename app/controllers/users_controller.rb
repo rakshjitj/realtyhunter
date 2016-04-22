@@ -34,9 +34,23 @@ class UsersController < ApplicationController
   # GET /coworkers/1.json
   def coworkers
     @users = @user.coworkers.order("users.updated_at ASC")
-    @users = @users.page params[:page]
     @title = @user.company.name + ' Employees'
-    render 'index'
+
+    respond_to do |format|
+      format.html do
+        @users = @users.page params[:page]
+        render 'index'
+      end
+      format.js do
+        @users = @users.page params[:page]
+        render 'index'
+      end
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"" +
+          current_user.name + " - #{@title}.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+    end
   end
 
   # GET /subordinates/1
@@ -284,6 +298,9 @@ class UsersController < ApplicationController
       @residential_units = @residential_units.page(params[:page]).per(25)
       @commercial_units, @com_images = @user.commercial_units(params[:status_listings])
       @commercial_units = @commercial_units.page(params[:page]).per(25)
+    end
+
+    def format_for_csv
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
