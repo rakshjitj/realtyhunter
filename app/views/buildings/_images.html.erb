@@ -1,6 +1,6 @@
 <% @building.images.each do |image| %>
-	  <div class="img img-thumbnail col-xs-2" data-id="<%= image.id %>" data-bldg-id="<%= @building.id %>">
-	  	<%= image_tag image.file.url(:thumb), :class => 'img-responsive center-block', alt: image.file.url(:thumb) %>
+	  <div class="img col-xs-6" data-id="<%= image.id %>" data-bldg-id="<%= @building.id %>">
+	  	<%= image_tag image.file.url(:large), :class => 'img-responsive img-medium center-block', alt: image.file.url(:large) %>
 	  	<%= link_to "Remove", "",
 	  		class: 'btn btn-xs btn-link center-block delete-bldg-img',
 	  		"data-id": image.id, "data-bldg-id": @building.id %>
