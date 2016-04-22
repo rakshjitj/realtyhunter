@@ -1,0 +1,30 @@
+<%- headers = [
+  'Name', 'Phone', 'Email', 'Monthly Budget', 'Move In Date', 'Neighborhood',
+  'How did you hear about us?', 'Picture', 'Description',
+  'Dogs Allowed', 'Cats Allowed',
+  'Status', 'Internal Notes',
+  'Submitted At', 'Updated At', 'Archived'
+  ] -%>
+
+<%= CSV.generate_line headers %>
+<%- @roommates.each do |roommate| -%>
+
+  <%= [
+      roommate.name,
+      roommate.phone_number,
+      roommate.email,
+      roommate.monthly_budget,
+      roommate.move_in_date,
+      roommate.neighborhood_name,
+      roommate.how_did_you_hear_about_us,
+      roommate.upload_picture_of_yourself,
+      roommate.describe_yourself,
+      roommate.dogs_allowed ? 'Yes' : 'No',
+      roommate.cats_allowed ? 'Yes' : 'No',
+      roommate.residential_listing_id ? 'Yes' : 'No',
+      roommate.internal_notes,
+      roommate.submitted_date,
+      roommate.updated_at,
+      roommate.archived ? 'Yes' : 'No'
+    ].to_csv.html_safe %>
+<%- end -%>

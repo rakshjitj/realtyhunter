@@ -1,0 +1,25 @@
+<%- headers = [
+  'Name', 'Email', 'Phone', 'Mobile Phone', 'Title', 'Office', 'Last Login', 'Activated','Account Authorized',
+  'Bio',
+  'Created At', 'Updated At', 'Archived'
+  ] -%>
+
+<%= CSV.generate_line headers %>
+<%- @users.each do |user| -%>
+
+  <%= [
+      user.name,
+      user.email,
+      user.phone_number,
+      user.mobile_phone_number,
+      user.employee_title_name.titleize,
+      user.office_name,
+      user.last_login_at,
+      user.activated ? 'Yes' : 'No',
+      user.approved ? 'Yes' : 'No',
+      user.bio,
+      user.created_at,
+      user.updated_at,
+      user.archived ? 'Yes' : 'No'
+    ].to_csv.html_safe %>
+<%- end -%>

@@ -1,0 +1,19 @@
+<%- headers = [
+  'Agent', 'Agent Seniority', 'Waterfall Agent', 'Tier', 'Percentage',
+  'Created At', 'Updated At', 'Archived'
+  ] -%>
+
+<%= CSV.generate_line headers %>
+<%- @entries.each do |entry| -%>
+
+  <%= [
+      entry.parent_agent_name,
+      "#{entry.agent_seniority_rate} %",
+      entry.child_agent_name,
+      entry.level < 4 ? "Level #{entry.level}" : 'Special Agreement',
+      "#{entry.rate} %",
+      entry.created_at,
+      entry.updated_at,
+      entry.archived ? 'Yes' : 'No'
+    ].to_csv.html_safe %>
+<%- end -%>
