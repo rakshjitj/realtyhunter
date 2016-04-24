@@ -1,2 +1,3 @@
 $('.residential_units_table_body').html("<%= j(render partial: @residential_units) %>");
 $('.commercial_units_table_body').html("<%= j(render partial: @commercial_units) %>");
+$('.pagination-wrapper').html("<%=j (render partial: 'shared/pagination', locals: {models: @residential_units}) %>");
