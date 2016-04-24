@@ -1,7 +1,7 @@
-<% cache([@building, @building.landlord.id, @residential_units.ids, @commercial_units.ids,
+<!--% cache([@building, @building.landlord.id, @residential_units.ids, @commercial_units.ids,
 		@building.landlord.updated_at,
 		@residential_units.maximum(:updated_at).to_i, @commercial_units.maximum(:updated_at).to_i,
-		current_user.employee_title.name]) do %>
+		current_user.employee_title.name]) do %-->
 
 <% provide(:title, @building.formatted_street_address) %>
 
@@ -265,4 +265,4 @@
 </div><!-- section-name -->
 </div><!-- buildings -->
 
-<% end %><!-- cache -->
+<!--% end %--><!-- cache -->

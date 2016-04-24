@@ -1,7 +1,7 @@
-<% cache([@landlord, current_user.employee_title.name,
+<!--% cache([@landlord, current_user.employee_title.name,
     @residential_units.ids, @commercial_units.ids,
     @residential_units.maximum(:updated_at).to_i, @commercial_units.maximum(:updated_at).to_i
-    ]) do %>
+    ]) do %-->
 
 <% provide(:title, @landlord.code) %>
 
@@ -212,4 +212,4 @@
 </div><!-- section-name -->
 </div><!-- landlords -->
 
-<% end %><!-- cache -->
+<!--% end %--><!-- cache -->
