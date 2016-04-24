@@ -43,6 +43,7 @@ class LandlordsController < ApplicationController
   # GET /landlords/1
   # GET /landlords/1.json
   def show
+    set_units
   end
 
   # GET /landlords/new
@@ -114,7 +115,6 @@ class LandlordsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_landlord
       @landlord = Landlord.find_unarchived(params[:id])
-      set_units
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that landlord is not active."
       redirect_to action: 'index'

@@ -41,6 +41,7 @@ class BuildingsController < ApplicationController
   # GET /buildings/1
   # GET /buildings/1.json
   def show
+    set_units
   end
 
   # GET /buildings/new
@@ -168,7 +169,6 @@ class BuildingsController < ApplicationController
       if @building.neighborhood
         @building.custom_neighborhood_id = @building.neighborhood.id
       end
-      set_units
     end
 
     def set_units
