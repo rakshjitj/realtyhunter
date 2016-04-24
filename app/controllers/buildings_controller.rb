@@ -172,6 +172,9 @@ class BuildingsController < ApplicationController
     end
 
     def set_units
+      if (!params[:status_listings])
+        params[:status_listings] = 'active/pending'
+      end
       @residential_units, @res_images = @building.residential_units(params[:status_listings])
       @residential_units = @residential_units.page(params[:page]).per(25)
       @commercial_units, @com_images = @building.commercial_units(params[:status_listings])
