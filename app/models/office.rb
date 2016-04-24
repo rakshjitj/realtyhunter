@@ -59,12 +59,10 @@ class Office < ActiveRecord::Base
 	end
 
 	def agents
-
-		User.joins(:office, :employee_title)
+		User.joins(:office, :employee_title).merge(Office.where(id: self.id))
 			.unarchived
 			.includes(:manager)
 			.preload(:roles)
-			.merge(Office.where(id: self.id))
 			.merge(EmployeeTitle.where(name: 'agent'))
 			.order(:name)
 			.select('users.company_id', 'users.archived', 'users.id',

@@ -210,8 +210,8 @@ class User < ActiveRecord::Base
     running_list
   end
 
-  # copies in new roles from
-  # user.agent_types & user.employee_title
+
+  # assign sensible defaults for user accounts
   def update_roles
     # clear out old roles
     #self.roles = [];
@@ -223,12 +223,12 @@ class User < ActiveRecord::Base
       self.save
     end
 
-    # assign sensible defaults, if nothing is otherwise specified
-    if !self.roles.length
-      self.add_role :residential
-      self.add_role :commercial
-      self.add_role :sales
-      self.add_role :agent
+    # right now, agents should have access to all the basic listing types
+    if self.employee_title == EmployeeTitle.agent
+      self.add_role :residential unless self.has_role? :residential
+      self.add_role :commercial unless self.has_role? :commercial
+      self.add_role :sales unless self.has_role? :sales
+      self.add_role :agent unless self.has_role? :agent
     end
   end
 
@@ -305,11 +305,13 @@ class User < ActiveRecord::Base
 
   def make_manager
     self.employee_title = EmployeeTitle.manager
+    self.add_role :manager
     self.update_roles
   end
 
   def make_company_admin
     self.employee_title = EmployeeTitle.company_admin
+    self.add_role :company_admin
     self.update_roles
   end
 
