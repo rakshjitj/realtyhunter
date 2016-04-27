@@ -1,9 +1,10 @@
   <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= commercial_listing.listing_id %>" >
     <!-- ****** checkboxes ****************************************** -->
-    <td>
-      <i data-action="selectUnit" class="fa fa-square-o fa-lg"></i>
-    </td>
-
+    <% if controller_name == 'commercial_listings' %>
+      <td>
+        <i data-action="selectUnit" class="fa fa-square-o fa-lg"></i>
+      </td>
+    <% end %>
     <!-- ****** IMAGE ****************************************** -->
     <td class="img-col" style="max-width: 150px;">
       <% if @com_images[commercial_listing.unit_id] %>
