@@ -567,7 +567,8 @@
     $('#unassignListings').click(Listings.unassignPrimaryAgent);
     $('tbody').off('click', 'i', Listings.toggleListingSelection);
     $('tbody').on('click', 'i', Listings.toggleListingSelection);
-    $('.select-all-listings').click(Listings.selectAllListings);
+    $('.select-all-listings').off('click', Listings.selectAllListings);
+    $('.select-all-listings').on('click', Listings.selectAllListings);
     $('.selected-listings-menu').on('click', 'a', function() {
       var action = $(this).data('action');
       if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();

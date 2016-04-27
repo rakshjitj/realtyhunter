@@ -311,7 +311,8 @@ CommercialListings = {};
     $('#commercial #emailListings').click(Listings.sendMessage);
     $('#commercial tbody').off('click', 'i', Listings.toggleListingSelection);
     $('#commercial tbody').on('click', 'i', Listings.toggleListingSelection);
-    $('#commercial .select-all-listings').click(Listings.selectAllListings);
+    $('#commercial .select-all-listings').off('click', Listings.selectAllListings);
+    $('#commercial .select-all-listings').on('click', Listings.selectAllListings);
     $('#commercial .selected-listings-menu').on('click', 'a', function() {
       var action = $(this).data('action');
       if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();
