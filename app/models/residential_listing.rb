@@ -25,7 +25,7 @@ class ResidentialListing < ActiveRecord::Base
   def archive
     self.unit.archived = true
     self.unit.save
-    self.update_building_counts
+    update_building_counts
   end
 
   def self.find_unarchived(id)
