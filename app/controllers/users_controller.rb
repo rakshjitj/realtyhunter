@@ -101,7 +101,7 @@ class UsersController < ApplicationController
       # add in each role type
       @user.update_roles
       # send users an email prompting them to change pass & login
-      @user.send_added_by_admin_email(current_user.company, @user.reset_token)
+      @user.send_added_by_admin_email(current_user.company)
       flash[:success] = "Users have been notified!"
       redirect_to admin_new_users_path
     else

@@ -17,8 +17,8 @@
           Once you get done, you'll be able to view our listings.
         </p>
         <%= form_for(@user, url: added_by_admin_path(params[:id])) do |f| %>
-          <%= render :partial => 'shared/error_messages', 
-            :locals => {:model => @user} %>
+          <%= render partial: 'shared/error_messages',
+            locals: {model: @user} %>
 
           <%= hidden_field_tag :email, @user.email %>
 
@@ -32,7 +32,7 @@
         <% end %>
       </div>
     </div>
-    
-      
+
+
   </div>
 </div>
