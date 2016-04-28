@@ -64,14 +64,14 @@ class ResidentialListing < ActiveRecord::Base
     output = "".freeze
      # calling from 'show', for example with full objects loaded
     if !self.respond_to? :street_number
-      if unit.building.street_number
+      #if unit.building.street_number
         output = "#{unit.building.street_number} #{unit.building.route}".freeze
-      end
+      #end
 
     else # otherwise, we used a select statement to cherry pick fields
-      if street_number
+      #if street_number
         output = "#{street_number} #{route}".freeze
-      end
+      #end
     end
 
     output
@@ -100,6 +100,7 @@ class ResidentialListing < ActiveRecord::Base
     ResidentialAmenity.where(residential_listing_id: list.ids)
         .select('name').to_a.group_by(&:residential_listing_id)
   end
+
 
   def self.listings_by_neighborhood(user, listing_ids)
     running_list = ResidentialListing.joins(unit: {building: [:company, :landlord]})
@@ -423,17 +424,18 @@ class ResidentialListing < ActiveRecord::Base
     end
   end
 
-  def self.send_listings(source_agent, listings, images, recipients, sub, msg)
-    if source_agent
-      UnitMailer.send_residential_listings(source_agent, listings, images, recipients, sub, msg).deliver_now
+  def self.send_listings(source_agent_id, listing_ids, recipients, sub, msg)
+    if source_agent_id
+      UnitMailer.send_residential_listings(source_agent_id, listing_ids,
+          recipients, sub, msg).deliver
     else
       "No sender specified"
     end
   end
 
-  def send_inaccuracy_report(reporter)
+  def send_inaccuracy_report(reporter, message)
     if reporter
-      UnitMailer.inaccuracy_reported(self, reporter).deliver_now
+      UnitMailer.inaccuracy_reported(self.id, reporter.id, message).deliver
     else
       raise "No reporter specified"
     end

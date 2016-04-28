@@ -1,6 +1,6 @@
 <%= @reporter.name %> has submitted this error report:
 
-<%= @listing.inaccuracy_description %>
+<%= @message %>
 
-
-<%= link_to "Please login and update", edit_commercial_listing_url(@listing) %> the unit's info.
+Please login and update the unit's info.
+<%= edit_commercial_listing_url(@listing) %>

@@ -166,8 +166,8 @@ class Building < ActiveRecord::Base
     self.neighborhood = @neigh
   end
 
-  def send_inaccuracy_report(reporter)
-    BuildingMailer.inaccuracy_reported(self, reporter).deliver_now
+  def send_inaccuracy_report(reporter, message)
+    BuildingMailer.inaccuracy_reported(self.id, reporter.id, message).deliver
   end
 
   def residential_units(status=nil)

@@ -177,8 +177,7 @@ class CommercialListingsController < ApplicationController
   # PATCH
   # triggers email to staff notifying them of the inaccuracy
   def send_inaccuracy
-    @commercial_unit.inaccuracy_description = commercial_listing_params[:inaccuracy_description]
-    @commercial_unit.send_inaccuracy_report(current_user)
+    @commercial_unit.send_inaccuracy_report(current_user, commercial_listing_params[:inaccuracy_description])
     flash[:success] = "Report submitted! Thank you."
     respond_to do |format|
       format.html { redirect_to @commercial_unit }
@@ -227,9 +226,8 @@ class CommercialListingsController < ApplicationController
     sub = commercial_listing_params[:title]
     msg = commercial_listing_params[:message]
     listing_ids = commercial_listing_params[:listing_ids].split(',')
-    listings = CommercialListing.listings_by_id(current_user, listing_ids)
-    images = CommercialListing.get_images(listings)
-    CommercialListing.send_listings(current_user, listings, images, recipients, sub, msg)
+
+    CommercialListing.send_listings(current_user.id, listing_ids, recipients, sub, msg)
 
     respond_to do |format|
       format.js { flash[:success] = "Listings sent!"  }

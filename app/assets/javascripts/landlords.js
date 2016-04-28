@@ -93,7 +93,7 @@ Landlords = {};
     Landlords.toggleFeeOptions();
 
     var office_address = $('#map-canvas').attr('data-address') ? $('#map-canvas').attr('data-address') : 'New York, NY, USA';
-    console.log(office_address);
+    // console.log(office_address);
     $(".autocomplete-input").geocomplete({
       map: "#map-canvas",
       location: office_address,
@@ -103,7 +103,7 @@ Landlords = {};
         this.value = '';
       }
     }).bind("geocode:error", function(event, result){
-      console.log(office_address, "[ERROR]: " + result);
+      // console.log(office_address, "[ERROR]: " + result);
     });
   }
 

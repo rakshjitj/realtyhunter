@@ -205,7 +205,6 @@
 
   ResidentialListings.sortOnColumnClick = function() {
     $('.th-sortable').click(function(e) {
-      console.log('hello');
       Common.sortOnColumnClick($(this), ResidentialListings.doSearch);
     });
   };
@@ -534,7 +533,7 @@
       items: ResidentialListings.selectedNeighborhoodIds,
       onChange: function(value) {
         ResidentialListings.selectedNeighborhoodIds = value;
-        console.log(ResidentialListings.selectedNeighborhoodIds);
+        // console.log(ResidentialListings.selectedNeighborhoodIds);
       },
       // onBlur: ResidentialListings.throttledSearch
     });

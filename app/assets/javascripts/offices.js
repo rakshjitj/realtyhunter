@@ -11,7 +11,7 @@ Offices = {};
       }).bind("geocode:result", function () {
         // console.log(result);
       }).bind("geocode:error", function (event, result) {
-        console.log("[ERROR]: " + result);
+        // console.log("[ERROR]: " + result);
       });
     }
   };

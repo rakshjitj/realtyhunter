@@ -142,9 +142,9 @@ class Roommate < ActiveRecord::Base
     return _filterQuery(roommates, params)
   end
 
-  def self.send_message(source_agent, recipients, sub, msg, roommate_ids)
-    if source_agent
-      RoommateMailer.send_message(source_agent, recipients, sub, msg, roommate_ids).deliver_now
+  def self.send_message(source_agent_id, recipients, sub, msg, roommate_ids)
+    if source_agent_id
+      RoommateMailer.send_message(source_agent_id, recipients, sub, msg, roommate_ids).deliver
     else
       "No sender specified"
     end

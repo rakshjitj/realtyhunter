@@ -154,9 +154,8 @@
   aria-labelledby="emailModal" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
+      <%= form_tag(send_message_forms_contact_us_path, remote:true) do %>
       <div class="modal-body">
-
-        <%= form_tag(send_message_forms_contact_us_path, remote:true) do %>
         <div class="row vertical-padding">
           <div class="col-md-12">
             <%= label_tag "email_modal[recipients]", "Recipients", class: 'required' %>

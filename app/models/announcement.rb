@@ -32,7 +32,7 @@ class Announcement < ActiveRecord::Base
 		# NOTE: We've decided to go with email instead of texting for now, to save on costs.
 		recipients = ['myspaceupdates@myspacenyc.com']
 	  AnnouncementMailer.send_broadcast(
-      current_user, recipients, note).deliver_now
+      current_user.id, recipients, note).deliver
 	  self.update_attribute(:was_broadcast, true)
 	end
 

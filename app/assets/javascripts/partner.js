@@ -84,6 +84,8 @@ Partner = {};
     }
 
     Forms.hideSpinner();
+    Forms.selectedEntries = [];
+    Forms.selectedRoommateEmails = [];
 
     // main index table
     Partner.sortOnColumnClick();

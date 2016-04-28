@@ -120,10 +120,8 @@ class ResidentialListingsController < ApplicationController
     recipients = residential_listing_params[:recipients].split(/[\,,\s]/)
     sub = residential_listing_params[:title]
     msg = residential_listing_params[:message]
-    ids = residential_listing_params[:listing_ids].split(',')
-    listings = ResidentialListing.listings_by_id(current_user, ids)
-    images = ResidentialListing.get_images(listings)
-    ResidentialListing.send_listings(current_user, listings, images, recipients, sub, msg)
+    listing_ids = residential_listing_params[:listing_ids].split(',')
+    ResidentialListing.send_listings(current_user.id, listing_ids, recipients, sub, msg)
 
     respond_to do |format|
       format.js { flash[:success] = "Email sent!"  }
@@ -184,7 +182,8 @@ class ResidentialListingsController < ApplicationController
     @residential_unit.archive
     set_residential_listings
     respond_to do |format|
-      format.html { redirect_to residential_listings_url, notice: 'Residential unit was successfully destroyed.' }
+      format.html { redirect_to residential_listings_url,
+          notice: 'Residential unit was successfully destroyed.' }
       format.json { head :no_content }
       format.js
     end
@@ -201,8 +200,8 @@ class ResidentialListingsController < ApplicationController
   # PATCH
   # triggers email to staff notifying them of the inaccuracy
   def send_inaccuracy
-    @residential_unit.inaccuracy_description = residential_listing_params[:inaccuracy_description]
-    @residential_unit.send_inaccuracy_report(current_user)
+    @residential_unit.send_inaccuracy_report(current_user,
+        residential_listing_params[:inaccuracy_description])
     flash[:success] = "Report submitted! Thank you."
     respond_to do |format|
       format.html { redirect_to @residential_unit }

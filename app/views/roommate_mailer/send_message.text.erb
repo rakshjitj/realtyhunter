@@ -1,0 +1,28 @@
+<% if @message %>
+<%= @message %>
+<% end %>
+
+Thanks,
+<%= @source_agent.name %>
+e | <%= @source_agent.email %>
+p | <%= @source_agent.mobile_phone_number %>
+<%= @source_agent.company.name %> - <%= @source_agent.company.website %>
+
+-----------
+
+<% @roommates.each do |roomie| %>
+<%= roomie.name %>
+e | <%= roomie.email %>
+p | <%= roomie.phone_number %>
+
+<%= roomie.describe_yourself %>
+
+Monthly Budget: <%= roomie.monthly_budget %>
+Move In Date: <%= roomie.move_in_date %>
+Neighborhood: <%= roomie.neighborhood_name %>
+Dogs Allowed: <%= roomie.dogs_allowed ? 'Yes' : 'No' %>
+Cats Allowed: <%= roomie.cats_allowed ? 'Yes' : 'No' %>
+
+<% end %>
+
+

@@ -216,10 +216,8 @@ class SalesListingsController < ApplicationController
     recipients = sales_listing_params[:recipients].split(/[\,,\s]/)
     sub = sales_listing_params[:title]
     msg = sales_listing_params[:message]
-    ids = sales_listing_params[:listing_ids].split(',')
-    listings = SalesListing.listings_by_id(current_user, ids)
-    images = SalesListing.get_images(listings)
-    SalesListing.send_listings(current_user, listings, images, recipients, sub, msg)
+    listing_ids = sales_listing_params[:listing_ids].split(',')
+    SalesListing.send_listings(current_user.id, listing_ids, recipients, sub, msg)
 
     respond_to do |format|
       format.js { flash[:success] = "Listings sent!"  }
@@ -229,8 +227,7 @@ class SalesListingsController < ApplicationController
   # PATCH
   # triggers email to staff notifying them of the inaccuracy
   def send_inaccuracy
-    @sales_unit.inaccuracy_description = sales_listing_params[:inaccuracy_description]
-    @sales_unit.send_inaccuracy_report(current_user)
+    @sales_unit.send_inaccuracy_report(current_user, sales_listing_params[:inaccuracy_description])
     flash[:success] = "Report submitted! Thank you."
     respond_to do |format|
       format.html { redirect_to @sales_unit }

@@ -6,7 +6,7 @@ class AccountApprovalsController < ApplicationController
     @user = User.where(email: params[:email]).first
     if @user && !@user.approved? && @user.authenticated?(:approval,  params[:id])
       @user.approve
-      UserMailer.account_approval_done(@user).deliver_now
+      UserMailer.account_approval_done(@user.id).deliver
       @company = Company.where(name: params[:company]).first
       flash[:success] = "#{@user.name} Approved!"
       redirect_to user #TODO: send to admin dash?

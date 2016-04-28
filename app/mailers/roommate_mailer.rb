@@ -1,7 +1,6 @@
 class RoommateMailer < ApplicationMailer
-
-	def send_message(source_agent, recipients, sub, msg, roommate_ids)
-    @source_agent = source_agent
+	def send_message(source_agent_id, recipients, sub, msg, roommate_ids)
+    @source_agent = User.where(id: source_agent_id).first
     @message = msg
     @roommates = Roommate.joins('left join neighborhoods on roommates.neighborhood_id = neighborhoods.id')
       .select(

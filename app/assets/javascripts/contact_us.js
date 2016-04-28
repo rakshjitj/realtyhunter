@@ -61,6 +61,8 @@ ContactUs = {};
 		}
 
 		Forms.hideSpinner();
+    Forms.selectedEntries = [];
+    Forms.selectedRoommateEmails = [];
 
 		// main index table
 		ContactUs.sortOnColumnClick();

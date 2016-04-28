@@ -351,17 +351,17 @@ class SalesListing < ActiveRecord::Base
     end
   end
 
-  def self.send_listings(source_agent, listings, images, recipients, sub, msg)
-    if source_agent
-      UnitMailer.send_sales_listings(source_agent, listings, images, recipients, sub, msg).deliver_now
+  def self.send_listings(source_agent_id, listing_id, recipients, sub, msg)
+    if source_agent_id
+      UnitMailer.send_sales_listings(source_agent, listing_ids, recipients, sub, msg).deliver
     else
       "No sender specified"
     end
   end
 
-  def send_inaccuracy_report(reporter)
+  def send_inaccuracy_report(reporter, message)
     if reporter
-      UnitMailer.inaccuracy_reported(self, reporter).deliver_now
+      UnitMailer.inaccuracy_reported(self.id, reporter.id, message).deliver
     else
       raise "No reporter specified"
     end

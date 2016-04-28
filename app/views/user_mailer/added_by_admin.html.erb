@@ -2,7 +2,7 @@
 
 <p>You must change your password the first time you login.</p>
 
-<%= link_to "Login & change my password", 
-	edit_added_by_admin_url(@user.reset_token, email: @user.email) %>
+<%= link_to "Login & change my password",
+	edit_added_by_admin_url(@reset_token, email: @user.email) %>
 
 <p>If you have no idea, what this is about, just carry on. Your account with us will remain inactive.</p>

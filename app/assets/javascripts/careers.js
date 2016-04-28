@@ -57,10 +57,9 @@ Careers = {};
       return;
     }
 
-    document.addEventListener("page:restore", function() {
-      Forms.hideSpinner();
-    });
     Forms.hideSpinner();
+    Forms.selectedEntries = [];
+    Forms.selectedRoommateEmails = [];
 
     // main index table
     Careers.sortOnColumnClick();

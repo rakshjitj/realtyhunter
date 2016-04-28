@@ -137,8 +137,7 @@ class BuildingsController < ApplicationController
 
   # triggers email to staff notifying them of the inaccuracy
   def send_inaccuracy
-    @building.inaccuracy_description = building_params[:inaccuracy_description]
-    @building.send_inaccuracy_report(current_user)
+    @building.send_inaccuracy_report(current_user, building_params[:building][:inaccuracy_description])
     flash[:success] = "Report submitted! Thank you."
     respond_to do |format|
       format.html { redirect_to @building }
@@ -238,7 +237,7 @@ class BuildingsController < ApplicationController
       params.permit(:sort_by, :direction, :page, :filter, :status, :status_listings, :street_number,
         :route, :intersection, :neighborhood,
         :sublocality, :administrative_area_level_2_short,
-        :administrative_area_level_1_short,
+        :administrative_area_level_1_short, :inaccuracy_description,
         :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id, :file,
         building: [:lock_version, :formatted_street_address, :notes, :landlord_id, :user_id,
           :inaccuracy_description, :pet_policy_id, :rental_term_id, :custom_rental_term, :file,

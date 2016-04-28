@@ -2,7 +2,7 @@
 <table>
 	<tr>
 		<td>
-			<%= image_tag @source_agent.company.image.file.url(:thumb), 
+			<%= image_tag @source_agent.company.image.file.url(:thumb),
       	alt: @source_agent.company.image.file.url(:thumb), align:"left" %>
 		</td>
 		<td style="min-width:200px;">
@@ -16,7 +16,7 @@
 		</td>
 		<td>
 			<% if @source_agent.image %>
-				<%= image_tag @source_agent.image.file.url(:thumb), 
+				<%= image_tag @source_agent.image.file.url(:thumb),
   		    alt: @source_agent.image.file.url(:thumb) %>
   		<% end %>
 		</td>
@@ -34,16 +34,17 @@
 <table>
 	<% @roommates.each do |roomie| %>
 		<tr>
-		<div style="background-color:#E5E4E2; margin: 10px; padding: 10px">
+		<div style="background-color:#E5E4E2; margin: 10px; padding: 10px; width: 85%;">
 				<% if !roomie.upload_picture_of_yourself.blank? %>
-					<%= image_tag roomie.upload_picture_of_yourself, alt: 'Roommate Photo' %>
+					<%= image_tag roomie.upload_picture_of_yourself, alt: 'Roommate Photo',
+							class: "img-responsive", width: "300" %>
 				<% else %>
 					- No photo provided -
 				<% end %><br />
 				<strong><%= roomie.name %></strong><br />
 				<strong>e | </strong><%= mail_to roomie.email, roomie.email %><br />
 				<strong>p | </strong><a href="tel:<%= roomie.phone_number %>"><%= roomie.phone_number %></a><br />
-				
+
 				<p><%= roomie.describe_yourself %></p>
 				Monthly Budget: <%= roomie.monthly_budget %><br />
 				Move In Date: <%= roomie.move_in_date %><br />
@@ -60,7 +61,7 @@
 <table>
 	<tr>
 		<td>
-			<%= image_tag @source_agent.company.image.file.url(:thumb), 
+			<%= image_tag @source_agent.company.image.file.url(:thumb),
 		    alt: @source_agent.company.image.file.url(:thumb), align:"left" %>
 		</th>
 		<td style="vertical-align: middle;">

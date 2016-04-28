@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+  class User < ActiveRecord::Base
   rolify
   default_scope { order("users.name ASC") }
   scope :unarchived, ->{where(archived: false)}
@@ -138,13 +138,13 @@ class User < ActiveRecord::Base
 
   # Sends activation email.
   def send_activation_email
-    UserMailer.account_activation(self).deliver_now
+    UserMailer.account_activation(self.id).deliver
   end
 
   # sends the company admin a notification, asking to
   # approve this user
   def send_company_approval_email
-    UserMailer.account_approval_needed(self, self.company).deliver_now
+    UserMailer.account_approval_needed(self.id, self.company.id).deliver
   end
 
   # Sets the password reset attributes.
@@ -156,7 +156,8 @@ class User < ActiveRecord::Base
 
   # Sends password reset email.
   def send_password_reset_email
-    UserMailer.password_reset(self).deliver_now
+    create_reset_digest
+    UserMailer.password_reset(id, reset_token).deliver
   end
 
   def assign_random_password
@@ -165,7 +166,8 @@ class User < ActiveRecord::Base
 
   # Sends password reset email.
   def send_added_by_admin_email(company)
-    UserMailer.added_by_admin(company, self).deliver_now
+    create_reset_digest
+    UserMailer.added_by_admin(company.id, id, reset_token).deliver
   end
 
   # Returns true if a password reset has expired.

@@ -34,7 +34,7 @@ module Forms
 	    recipients = contact_us_params[:email_modal][:recipients].split(/\s, \,/)
 	    sub = contact_us_params[:email_modal][:title]
 	    msg = contact_us_params[:email_modal][:message]
-	    WufooContactUsForm.send_message(current_user, recipients, sub, msg)
+	    WufooContactUsForm.send_message(current_user.id, recipients, sub, msg)
 
 	    respond_to do |format|
 	      format.js { flash[:success] = "Message sent!"  }

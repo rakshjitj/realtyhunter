@@ -251,6 +251,8 @@ GEM
       redis-namespace (~> 1.0)
       sinatra (>= 0.9.2)
       vegas (~> 0.1.2)
+    resque_mailer (2.2.7)
+      actionmailer (>= 3.0)
     rolify (5.0.0)
     rollbar (2.8.3)
       multi_json
@@ -345,6 +347,7 @@ DEPENDENCIES
   rb-readline
   redis-rails
   resque (~> 1.22.0)
+  resque_mailer
   rolify (~> 5.0.0)
   rollbar (~> 2.8.3)
   sass-rails (~> 5.0)

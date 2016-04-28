@@ -33,9 +33,9 @@ class WufooPartnerForm < ActiveRecord::Base
     WufooPartnerForm.where(id: id).where(archived:false).first
   end
 
-  def self.send_message(source_agent, recipients, sub, msg)
-    if source_agent
-      WufooFormsMailer.send_message(source_agent, recipients, sub, msg).deliver_now
+  def self.send_message(source_agent_id, recipients, sub, msg)
+    if source_agent_id
+      WufooFormsMailer.send_message(source_agent_id, recipients, sub, msg).deliver
     else
       "No sender specified"
     end

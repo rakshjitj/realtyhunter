@@ -194,21 +194,22 @@
   aria-labelledby="emailModal" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
+      <%= form_tag(send_message_forms_partner_index_path, remote: true) do %>
       <div class="modal-body">
-
-        <%= form_tag(send_message_forms_partner_index_path, remote:true) do %>
         <div class="row vertical-padding">
           <div class="col-md-12">
             <%= label_tag "email_modal[recipients]", "Recipients", class: 'required' %>
             <i><small>Use commas to separate email addresses</small></i>
-            <%= text_field_tag "email_modal[recipients]", nil, class: 'form-control', required: true %>
+            <%= text_field_tag "email_modal[recipients]", nil, class: 'form-control',
+                required: true %>
           </div>
         </div>
 
         <div class="row vertical-padding">
           <div class="col-md-12">
             <%= label_tag "email_modal[title]", "Title", class: 'required' %>
-            <%= text_field_tag "email_modal[title]", "Thank you for contacting us!", class: 'form-control', required: true %>
+            <%= text_field_tag "email_modal[title]", "Thank you for contacting us!",
+                class: 'form-control', required: true %>
           </div>
         </div>
 
@@ -220,20 +221,15 @@
         </div>
 
         <br />
-        <div class="row vertical-padding">
-          <div class="col-md-12">
-
-          </div>
-        </div>
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
+        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">
+          Cancel
+        </button>&nbsp;&nbsp;
         <%= submit_tag "Send Email", class:"btn btn-warning" %>
       </div>
-
       <% end %>
-
     </div>
   </div>
 </div>

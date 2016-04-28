@@ -93,7 +93,7 @@ Buildings = {};
       event.preventDefault();
       var id = $(this).attr('data-id');
       var bldg_id = $(this).attr('data-bldg-id');
-      console.log(id, bldg_id);
+      // console.log(id, bldg_id);
       Buildings.removeBldgImage(id, bldg_id);
     });
   };

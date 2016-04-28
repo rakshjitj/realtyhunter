@@ -1,14 +1,10 @@
 class BuildingMailer < ApplicationMailer
-
-  def inaccuracy_reported(building, reporter)
-    # data_enterers = building.company.data_enterers
-    # if !data_enterers
-    # 	data_enterers = building.company.admins
-    # end
-    @building = building
-    @reporter = reporter
+  def inaccuracy_reported(building_id, reporter_id, message)
+    @building = Building.where(id: building_id).first
+    @reporter = User.where(id: reporter_id).first
+    @message = message
     mail to: 'info@myspacenyc.com',
-    	subject: "Inaccuracy Reported for #{building.street_address}",
+    	subject: "Inaccuracy Reported for #{@building.street_address}",
         reply_to: @reporter.email,
         tag: 'building_inaccuracy',
         track_opens:'true'

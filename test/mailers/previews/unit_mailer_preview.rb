@@ -1,6 +1,12 @@
 # Preview all emails at http://localhost:3000/rails/mailers/user_mailer
 class UnitMailerPreview < ActionMailer::Preview
 
+  def inaccuracy_reported
+    listing = ResidentialListing.all.first
+    reporter = User.where(email: 'rbujans@myspacenyc.com').first
+    UnitMailer.inaccuracy_reported(listing.id, reporter.id, 'This apartment is dirty!')
+  end
+
   def send_residential_listings
     source_agent = User.where(email: 'rbujans@myspacenyc.com').first
     listing_ids = ResidentialListing.joins(:unit).where('units.archived = false')
