@@ -100,7 +100,7 @@ Deals = {};
     var showPage = $('.deals.show').length;
     // new and edit pages both render the same form template, so init them using the same code
     if (editPage || newPage) {
-      Deals.initEditor();
+      // Deals.initEditor();
     } else if (indexPage) {
       Deals.initIndex();
     } // else if (showPage) {
