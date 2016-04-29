@@ -12,8 +12,6 @@
   <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': true %>
 
-  <script src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js'></script>
-  <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': true %>
   <%= csrf_meta_tags %>
 
@@ -58,8 +56,12 @@
 
   </div>
 
-  <!-- used for geocoding -->
+  <script data-turbolinks-eval="false"
+      src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js'></script>
+  <script data-turbolinks-eval="false"
+      src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
 
+  <!-- used for geocoding -->
   <script type="text/javascript" data-turbolinks-eval="false"
       src="https://maps.googleapis.com/maps/api/js?libraries=places&key=<%= ENV['GOOGLE_MAPS_KEY'] %>">
   </script>
