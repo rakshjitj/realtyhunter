@@ -635,6 +635,8 @@
     if(!Common.onMobileDevice()) {
       $('#footer-mobile-show').remove();
       $('.mobile-show-page-wrap').removeClass();
+    } else {
+      $('#footer-mobile-show').removeClass('hidden');
     }
   }
 
