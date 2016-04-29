@@ -10,9 +10,8 @@
   <link href='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css' rel='stylesheet' />
   <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
   <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': true %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': true %>
 
-  <%= javascript_include_tag 'application', 'data-turbolinks-track': true %>
   <%= csrf_meta_tags %>
 
   <!-- favicons generated from http://realfavicongenerator.net/ -->
@@ -65,6 +64,8 @@
   <script type="text/javascript" data-turbolinks-eval="false"
       src="https://maps.googleapis.com/maps/api/js?libraries=places&key=<%= ENV['GOOGLE_MAPS_KEY'] %>">
   </script>
+
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': true, 'data-turbolinks-eval':"false" %>
 
 </body>
 </html>
