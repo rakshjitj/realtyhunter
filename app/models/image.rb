@@ -32,7 +32,7 @@ class Image < ActiveRecord::Base
     }
 
   process_in_background :file, processing_image_url: :processing_image_fallback,
-    only_process: [:original]
+    only_process: [:large, :original]
     #processing_image_url: Rails.root + "/images/:style/image_uploading.jpg",
 
 
