@@ -12,14 +12,6 @@ class Image < ActiveRecord::Base
         rotation: a.instance.rotation
         #processors: [:rotator]
       },
-      # square: {
-      #   geometry: '200x200#',
-      #   rotation: a.instance.rotation,
-      # },
-      # medium: {
-      #   geometry: '300x300>',
-      #   rotation: a.instance.rotation,
-      # },
       large: {
         geometry: '2500x2500>',
         rotation: a.instance.rotation
@@ -39,23 +31,16 @@ class Image < ActiveRecord::Base
       p.apply_processors
     }
 
-    # styles: {
-    #   original: {convert_options: '-auto-orient'},
-    #   thumb:  '100x100>',
-    #   square: '200x200#',
-    #   medium: '300x300>',
-    #   large:  '500x500>'
-    # },
-
   process_in_background :file, processing_image_url: :processing_image_fallback,
+    only_process: [:original]
     #processing_image_url: Rails.root + "/images/:style/image_uploading.jpg",
-    only_process: [:large, :original]
+
 
   def apply_processors
     if self.user_id.present? or self.company_id.present?
-      [:rotator]
+      [:compression]
     else
-      [:rotator, :watermark]
+      [:watermark, :compression]
     end
   end
 
@@ -100,14 +85,6 @@ class Image < ActiveRecord::Base
       pos = pos + 1
     }
   end
-
-  # def rotate
-  #   self.rotation += 90
-  #   puts "**** NEW rotation is #{rotation}"
-  #   self.rotation = self.rotation % 360 if (self.rotation >= 360 || self.rotation <= -360)
-  #   self.update_attribute(:rotation, rotation)
-  #   self.file.reprocess! :large
-  # end
 
   private
     # preserve order. keep numbers starting at 0

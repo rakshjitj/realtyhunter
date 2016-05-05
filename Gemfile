@@ -23,6 +23,7 @@ gem 'bootstrap-kaminari-views', '~> 0.0.5'
 gem 'jquery-infinite-pages', '~> 0.2.0'
 gem 'autoprefixer-rails', '~> 6.3.3.1'
 # for handling single image uploads
+gem "paperclip-compression"
 gem "paperclip"
 gem 'aws-sdk-v1', '~> 1.52.0' #paperclip
 # ajax drag/dropping multiple files
