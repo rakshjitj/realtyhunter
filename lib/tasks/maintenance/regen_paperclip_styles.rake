@@ -11,7 +11,7 @@ namespace :maintenance do
       #    i.file_updated_at < Date.today
         puts "Processing image #{i.id} Last updated on: #{i.file_updated_at}"
         begin
-    			i.file.reprocess! :large, :original
+    			i.file.reprocess! :large, :original, :thumb
         rescue
           error_log << "FAILED image #{i.id} Last updated on: #{i.file_updated_at}"
         end
