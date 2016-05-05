@@ -105,5 +105,13 @@
       access_key_id: ENV['AWS_ACCESS_KEY_ID'],
       secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
     },
+    # s3_headers: {
+    #   'Cache-Control': 'max-age=315576000',
+    #   'Expires': 10.years.from_now.httpdate
+    # }
+    compression: {
+      png: '-o 7 -quiet',
+      jpeg: '-copy none -optimize'
+    }
   }
 end

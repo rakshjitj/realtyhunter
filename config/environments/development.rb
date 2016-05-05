@@ -15,9 +15,12 @@ Rails.application.configure do
   # Care if the mailer can't send.
   # Enable email previews
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.delivery_method = :test
+  config.action_mailer.delivery_method = :smtp #:test
   host = 'localhost:3000'
   config.action_mailer.default_url_options = { host: host }
+  # use postmark
+  config.action_mailer.delivery_method = :postmark
+  config.action_mailer.postmark_settings = {api_token: ENV['POSTMARK_API_KEY']}
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -45,17 +48,22 @@ Rails.application.configure do
 
   config.paperclip_defaults = {
     storage: :s3,
-    # url: ':s3_alias_url',
-    # s3_host_alias: ENV['CLOUDFRONT_ENDPOINT'],
-    # path: '/:class/:attachment/:id_partition/:style/:filename',
     s3_protocol: 'http',
     s3_credentials: {
       bucket: ENV['S3_AVATAR_BUCKET'],
       access_key_id: ENV['AWS_ACCESS_KEY_ID'],
       secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
     },
+    # s3_headers: {
+    #   'Cache-Control': 'max-age=315576000',
+    #   'Expires': 10.years.from_now.httpdate
+    # },
+    compression: {
+      png: '-o 7 -quiet',
+      jpeg: '-copy none -optimize'
+    }
   }
 
-  #config.cache_store = :redis_store, "redis://localhost:6379/0/cache", {expires_in: 1.day}
-  config.action_controller.perform_caching = false
+  config.cache_store = :redis_store, "redis://localhost:6379/0/cache", {expires_in: 1.day}
+  config.action_controller.perform_caching = true
 end

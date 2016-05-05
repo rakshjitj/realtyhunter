@@ -10,12 +10,10 @@ class Image < ActiveRecord::Base
       thumb: {
         geometry: '100x100>',
         rotation: a.instance.rotation
-        #processors: [:rotator]
       },
       large: {
         geometry: '2500x2500>',
         rotation: a.instance.rotation
-        #processors: [:rotator]
       },
       original: {
         convert_options: '-auto-orient',
@@ -23,7 +21,7 @@ class Image < ActiveRecord::Base
       }
     }},
     #default_url: Rails.root + "/images/:style/missing.png",
-    only_process: [:thumb],
+    only_process: [:thumb, :large, :original],
     convert_options: { all: '-auto-orient' },
     source_file_options: { all: '-auto-orient' },
     # processors: [:rotator, :watermark]
@@ -31,10 +29,9 @@ class Image < ActiveRecord::Base
       p.apply_processors
     }
 
-  process_in_background :file, processing_image_url: :processing_image_fallback,
-    only_process: [:large, :original]
+  # process_in_background :file, processing_image_url: :processing_image_fallback,
+  #   only_process: [:large, :original]
     #processing_image_url: Rails.root + "/images/:style/image_uploading.jpg",
-
 
   def apply_processors
     if self.user_id.present? or self.company_id.present?
