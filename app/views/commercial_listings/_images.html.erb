@@ -1,7 +1,9 @@
-<% @commercial_unit.unit.images.each do |image| %>
-	  <div class="img col-xs-4 col-md-6" data-id="<%= image.id %>" data-unit-id="<%= @commercial_unit.id %>">
-	  	<%= image_tag image.file.url(:large), :class => 'img-responsive img-medium center-block', alt: image.file.url(:large) %>
-	  	<%= link_to "Remove", "",
+<% @commercial_unit.unit.images.each_with_index do |image, idx| %>
+	  <div class="col-xs-6 sortable-img img" data-id="<%= image.id %>" data-unit-id="<%= @commercial_unit.id %>">
+	  	<%= image_tag image.file.url(:large),
+          class: 'img-medium',
+          alt: image.file.url(:large) %>
+	  	<%= link_to "Remove ##{idx}", "",
 	  		class: 'btn btn-xs btn-link center-block delete-unit-img',
 	  		"data-id": image.id, "data-unit-id": @commercial_unit.id %>
 	  </div>

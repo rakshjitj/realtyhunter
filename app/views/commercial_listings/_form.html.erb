@@ -95,13 +95,15 @@
           <div class="row">
             <div class="col-md-12">
               <p><strong>Edit current photos (drag to reorder):</strong></p>
-              <div class="images sortable">
-                <% if @commercial_unit.unit.images.length > 0 %>
-                  <%= render 'images',  locals: { commercial_unit: @commercial_unit } %>
-                <% else %>
-                  <p>(No photos uploaded yet.)</p>
-                <% end %>
-              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="images sortable">
+              <% if @commercial_unit.unit.images.length > 0 %>
+                <%= render 'images',  locals: { commercial_unit: @commercial_unit } %>
+              <% else %>
+                <div class="col-md-12"><p>(No photos uploaded yet.)</p></div>
+              <% end %>
             </div>
           </div>
 
@@ -131,13 +133,15 @@
           <div class="row">
             <div class="col-md-12">
               <p><strong>Edit current photos (drag to reorder):</strong></p>
-              <div class="images sortable">
-                <% if @commercial_unit.unit.images.length > 0 %>
-                  <%= render 'images',  locals: { commercial_unit: @commercial_unit } %>
-                <% else %>
-                  <p>(No photos uploaded yet.)</p>
-                <% end %>
-              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="images sortable">
+              <% if @commercial_unit.unit.images.length > 0 %>
+                <%= render 'images',  locals: { commercial_unit: @commercial_unit } %>
+              <% else %>
+                <div class="col-md-12"><p>(No photos uploaded yet.)</p></div>
+              <% end %>
             </div>
           </div>
 

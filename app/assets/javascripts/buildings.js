@@ -143,7 +143,7 @@ Buildings = {};
       DropZoneHelper.setPositions('buildings', 'images');
 
       // populate the updated_order array with the new task positions
-      $('#buildings .img-thumbnail').each(function(i){
+      $('#buildings .img').each(function(i){
         updated_order.push({ id: $(this).data('id'), position: i+1 });
       });
       //console.log(updated_order);

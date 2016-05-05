@@ -80,13 +80,17 @@
             <div class="row">
               <div class="col-md-12">
                 <p><strong>Edit current photos (drag to reorder):</strong></p>
-                <div class="images sortable">
-                  <% if @residential_unit.unit.images.length > 0 %>
-                    <%= render 'images',  locals: { residential_unit: @residential_unit } %>
-                  <% else %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="images sortable">
+                <% if @residential_unit.unit.images.length > 0 %>
+                  <%= render 'images',  locals: { residential_unit: @residential_unit } %>
+                <% else %>
+                  <div class="col-xs-12">
                     <p>(No files uploaded yet.)</p>
-                  <% end %>
-                </div>
+                  </div>
+                <% end %>
               </div>
             </div>
 
@@ -114,11 +118,16 @@
           <div class="row">
             <div class="col-md-12">
               <p><strong>Edit current photos (drag to reorder):</strong></p>
+            </div>
+          </div>
+          <div class="row">
               <div class="images sortable">
                 <% if @residential_unit.unit.images.length > 0 %>
                   <%= render 'images',  locals: { residential_unit: @residential_unit } %>
                 <% else %>
-                  <p>(No files uploaded yet.)</p>
+                  <div class="col-md-12">
+                    <p>(No files uploaded yet.)</p>
+                  </div>
                 <% end %>
               </div>
             </div>

@@ -17,7 +17,7 @@ DropZoneHelper = {};
     // call sortable on our div with the sortable class
     $('#' + sectionID + ' ' + '.' + subsection + '.sortable').sortable({
       forcePlaceholderSize: true,
-      placeholderClass: 'col col-xs-2 border border-maroon',
+      placeholderClass: 'col-xs-6 sortable-img-placeholder',
       dragImage: null
     });
   };
