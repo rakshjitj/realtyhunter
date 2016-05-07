@@ -73,7 +73,7 @@ group :production do
 	gem 'wkhtmltopdf-heroku', '~> 2.12.2.1'
   gem 'connection_pool', '~> 2.2.0'
   gem 'newrelic_rpm', '~> 3.15.0.314'
-  gem 'skylight'
+  #gem 'skylight'
 end
 
 group :development, :test do
