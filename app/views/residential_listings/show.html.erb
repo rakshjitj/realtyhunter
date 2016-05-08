@@ -1,6 +1,7 @@
-<% cache([@residential_unit, @residential_unit.unit.building.id,
-		@residential_unit.unit.building.updated_at, request.variant,
-		current_user.employee_title.name]) do %>
+<% cache([@residential_unit, current_user.employee_title.name, request.variant.to_s,
+		@residential_unit.unit.building.updated_at,
+		@residential_unit.unit.building.landlord.updated_at
+		]) do %>
 
 <% provide(:title, @residential_unit.street_address_and_unit) %>
 
@@ -590,7 +591,7 @@
 
 </div>
 
-<%= render 'residential_listings/footer_show_mobile' %>
+	<%= render 'residential_listings/footer_show_mobile' %>
 
 <!-- modals that are common to show/index pages -->
 <%# Template Dependency: layouts/modals %>
@@ -694,4 +695,5 @@
   </div>
 </div>
 </div><!-- res-show-page-wrapper -->
+
 <% end %><!-- cache -->
