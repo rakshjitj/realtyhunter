@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160405054732) do
+ActiveRecord::Schema.define(version: 20160511021213) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -453,6 +453,7 @@ ActiveRecord::Schema.define(version: 20160405054732) do
     t.string   "internal_notes"
     t.boolean  "read",                       default: false
     t.integer  "residential_listing_id"
+    t.string   "do_you_have_pets"
   end
 
   create_table "roomsharing_applications", force: :cascade do |t|

@@ -82,7 +82,7 @@ class RoommatesController < ApplicationController
     Roommate.send_message(current_user.id, recipients, sub, msg, roommate_ids.split(','))
 
     respond_to do |format|
-      format.js { flash[:success] = "Message sent!"  }
+      format.js { flash[:success] = "Message sent!" }
     end
   end
 
