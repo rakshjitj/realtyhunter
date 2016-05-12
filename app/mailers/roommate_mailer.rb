@@ -8,8 +8,8 @@ class RoommateMailer < ApplicationMailer
     	  'roommates.upload_picture_of_yourself',
     	  'roommates.name', 'roommates.phone_number', 'roommates.email',
     	  'neighborhoods.name as neighborhood_name',
-    	  'roommates.monthly_budget', 'roommates.move_in_date', 'roommates.dogs_allowed',
-    	  'roommates.cats_allowed', 'roommates.created_at as submitted_date',
+    	  'roommates.monthly_budget', 'roommates.move_in_date',
+    	  'roommates.do_you_have_pets', 'roommates.created_at as submitted_date',
     	  'roommates.archived')
       .where(id: roommate_ids)
     mail to: recipients, reply_to: 'no-reply@myspacenyc.com', subject: sub, tag: 'roommates', track_opens:'true'

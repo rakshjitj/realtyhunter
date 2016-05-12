@@ -49,8 +49,9 @@
 				Monthly Budget: <%= roomie.monthly_budget %><br />
 				Move In Date: <%= roomie.move_in_date %><br />
 				Neighborhood: <%= roomie.neighborhood_name %><br />
-				Dogs Allowed: <%= roomie.dogs_allowed ? 'Yes' : 'No' %><br />
-				Cats Allowed: <%= roomie.cats_allowed ? 'Yes' : 'No' %><br />
+				<% if !roomie.do_you_have_pets.blank? %>
+					Has Pets: <%= roomie.do_you_have_pets %><br />
+				<% end %>
 			</div>
 		</tr>
 	<% end %>

@@ -165,8 +165,7 @@ Roommates = {};
       submitted_date: $('#roommates #submitted_date').val(),
       move_in_date: $('#roommates #move_in_date').val(),
       monthly_budget: $('#roommates #monthly_budget').val(),
-      dogs_allowed: $('#roommates #dogs_allowed').val(),
-      cats_allowed: $('#roommates #cats_allowed').val(),
+      do_you_have_pets: $('#roommates #do_you_have_pets').val(),
       status: $('#roommates #status').val(),
       sort_by: sortByCol,
       direction: sortDirection,
@@ -179,32 +178,6 @@ Roommates = {};
       }
     }
     window.location.search = searchParams.join('&');
-
-    // $.ajax({
-    //   url: search_path,
-    //   data: {
-   //      name: $('#roommates #name').val(),
-   //      referred_by: $('#roommates #referred_by').val(),
-   //      neighborhood_id: $('#roommates #neighborhood_id').val(),
-   //      submitted_date: $('#roommates #submitted_date').val(),
-   //      move_in_date: $('#roommates #move_in_date').val(),
-   //      monthly_budget: $('#roommates #monthly_budget').val(),
-   //      dogs_allowed: $('#roommates #dogs_allowed').val(),
-   //      cats_allowed: $('#roommates #cats_allowed').val(),
-   //      status: $('#roommates #status').val(),
-   //      sort_by: sortByCol,
-   //      direction: sortDirection,
-    //   },
-    //   dataType: 'script',
-    //   success: function(data) {
-    //    //console.log('SUCCESS:', data.responseText);
-    //    Roommates.hideSpinner();
-      // },
-      // error: function(data) {
-      //  //console.log('ERROR:', data.responseText);
-      //  Roommates.hideSpinner();
-      // }
-    // });
   };
 
   // search as user types
@@ -292,8 +265,7 @@ Roommates = {};
     $('#roommates #submitted_date').blur(Roommates.throttledSearch);
     $('#roommates #move_in_date').blur(Roommates.throttledSearch);
     $('#roommates #monthly_budget').change(Roommates.throttledSearch);
-    $('#roommates #dogs_allowed').change(Roommates.throttledSearch);
-    $('#roommates #cats_allowed').change(Roommates.throttledSearch);
+    $('#roommates #do_you_have_pets').change(Roommates.throttledSearch);
     $('#roommates #status').change(Roommates.throttledSearch);
 
     // index page - selecting listings menu dropdown

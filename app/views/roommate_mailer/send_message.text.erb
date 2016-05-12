@@ -20,8 +20,9 @@ p | <%= roomie.phone_number %>
 Monthly Budget: <%= roomie.monthly_budget %>
 Move In Date: <%= roomie.move_in_date %>
 Neighborhood: <%= roomie.neighborhood_name %>
-Dogs Allowed: <%= roomie.dogs_allowed ? 'Yes' : 'No' %>
-Cats Allowed: <%= roomie.cats_allowed ? 'Yes' : 'No' %>
+<% if !roomie.do_you_have_pets.blank? %>
+  Has Pets: <%= roomie.do_you_have_pets %><br />
+<% end %>
 
 <% end %>
 

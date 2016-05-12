@@ -110,26 +110,13 @@
 
           <div class="row vertical-margin-lg">
             <div class="col-xs-3">
-              <%= f.label :dogs_allowed %>
+              <%= f.label :do_you_have_pets %>
             </div>
             <div class="col-xs-9">
-              <%= f.select(:dogs_allowed, options_for_select(['Yes', 'No'],
-                [@roommate.dogs_allowed == 'Yes' ? 'Yes' : 'No']),
+              <%= f.select(:do_you_have_pets, options_for_select(['Yes', 'No']),
                 {prompt: "Choose one..."},
                 class: 'form-control',
-                :include_blank => true) %>
-            </div>
-          </div>
 
-          <div class="row vertical-margin-lg">
-            <div class="col-xs-3">
-              <%= f.label :cats_allowed %>
-            </div>
-            <div class="col-xs-9">
-              <%= f.select(:cats_allowed, options_for_select(['Yes', 'No'],
-                [@roommate.cats_allowed == 'Yes' ? 'Yes' : 'No']),
-                {prompt: "Choose one..."},
-                class: 'form-control',
                 :include_blank => true) %>
             </div>
           </div>

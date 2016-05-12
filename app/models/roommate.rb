@@ -18,8 +18,7 @@ class Roommate < ActiveRecord::Base
   validates :upload_picture_of_yourself, length: {maximum: 500}
   validates :monthly_budget, length: {maximum: 50}
   validates :move_in_date, length: {maximum: 50}
-  validates :dogs_allowed, length: {maximum: 50}
-  validates :cats_allowed, length: {maximum: 50}
+  validates :do_you_have_pets, length: {maximum: 50}
   validates :internal_notes, length: {maximum: 1000}
 
   def archive
@@ -49,7 +48,7 @@ class Roommate < ActiveRecord::Base
         'roommates.monthly_budget',
         'roommates.upload_picture_of_yourself', 'roommates.move_in_date',
         'neighborhoods.name as neighborhood_name',
-        'roommates.dogs_allowed', 'roommates.cats_allowed', 'roommates.created_by',
+        'roommates.do_you_have_pets', 'roommates.created_by',
         'roommates.archived', 'users.name as user_name', 'roommates.created_at', 'roommates.updated_at')
   end
 
@@ -92,12 +91,8 @@ class Roommate < ActiveRecord::Base
       roommates = roommates.where('roommates.monthly_budget = ?', params[:monthly_budget])
     end
 
-    if !params[:dogs_allowed].blank?
-      roommates = roommates.where('roommates.dogs_allowed = ?', params[:dogs_allowed])
-    end
-
-    if !params[:cats_allowed].blank?
-      roommates = roommates.where('roommates.cats_allowed = ?', params[:cats_allowed])
+    if !params[:do_you_have_pets].blank?
+      roommates = roommates.where('roommates.do_you_have_pets = ?', params[:do_you_have_pets])
     end
 
     if !params[:status].blank? && params[:status] != 'Any'

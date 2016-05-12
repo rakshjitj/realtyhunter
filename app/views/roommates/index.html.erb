@@ -67,7 +67,7 @@
 
     <div class="row vertical-padding">
       <div class="col-xs-5 form-label-responsive">
-        <%= label_tag(:submitted_date) %>
+        <%= label_tag :submitted_date, 'Submitted Date' %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
         <div class='input-group date datepicker'>
@@ -82,7 +82,7 @@
 
     <div class="row vertical-padding">
       <div class="col-xs-5 form-label-responsive">
-        <%= label_tag(:move_in_date) %>
+        <%= label_tag :move_in_date, 'Move In Date' %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
         <div class='input-group date datepicker'>
@@ -97,7 +97,7 @@
 
     <div class="row vertical-padding">
       <div class="col-xs-5 form-label-responsive">
-        <%= label_tag :monthly_budget %>
+        <%= label_tag :monthly_budget, 'Monthly Budget' %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
         <%= select_tag(:monthly_budget,
@@ -113,29 +113,12 @@
   <div class="col-xs-12 col-sm-4">
     <div class="row vertical-padding">
       <div class="col-xs-5 form-label-responsive">
-        <%= label_tag :dogs_allowed %>
+        <%= label_tag :do_you_have_pets, 'Has pets' %>
       </div>
       <div class="col-xs-7 col-sm-left-padding">
-
-        <%= select_tag(:dogs_allowed,
-          options_for_select(['Yes', 'No'],
-          ),
-          {class: "form-control",
-          prompt: "Doesn't matter"}) %>
-      </div>
-    </div>
-
-    <div class="row vertical-padding">
-      <div class="col-xs-5 form-label-responsive">
-        <%= label_tag :cats_allowed %>
-      </div>
-      <div class="col-xs-7 col-sm-left-padding">
-
-        <%= select_tag(:cats_allowed,
-          options_for_select(['Yes', 'No'],
-          ),
-          {class: "form-control",
-          prompt: "Doesn't matter"}) %>
+        <%= select_tag(:do_you_have_pets, options_for_select(['Yes', 'No'],
+            [params[:do_you_have_pets].blank? ? 'Any' : params[:do_you_have_pets]]),
+            {class: "form-control", prompt: 'Any'}) %>
       </div>
     </div>
 

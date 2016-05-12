@@ -315,29 +315,13 @@ class RoommatesController < ApplicationController
     def roommate_params
     	data = params.permit(:sort_by, :filter, :page, :direction, :name, :referred_by, :neighborhood_id,
         :submitted_date, :move_in_date, :monthly_budget, :status,
-        :dogs_allowed, :cats_allowed, :address,
+        :do_you_have_pets, :address,
         roommate: [:lock_version, :name, :phone_number, :internal_notes,
           :email, :how_did_you_hear_about_us, :upload_picture_of_yourself, :describe_yourself,
-          :monthly_budget, :move_in_date, :neighborhood, :dogs_allowed, :cats_allowed,
+          :monthly_budget, :move_in_date, :neighborhood, :do_you_have_pets,
           :user_id, :recipients, :title, :message, :ids])
 
       if data[:roommate]
-        if !data[:roommate][:cats_allowed].blank?
-          if data[:roommate][:cats_allowed] == "Yes"
-            data[:roommate][:cats_allowed] = true
-          else
-            data[:roommate][:cats_allowed] = false
-          end
-        end
-
-        if !data[:roommate][:dogs_allowed].blank?
-          if data[:roommate][:dogs_allowed] == "Yes"
-            data[:roommate][:dogs_allowed] = true
-          else
-            data[:roommate][:dogs_allowed] = false
-          end
-        end
-
         # convert into a datetime obj
         if !data[:roommate][:move_in_date].blank?
           data[:roommate][:move_in_date] = Date::strptime(data[:roommate][:move_in_date], "%m/%d/%Y")
