@@ -6,11 +6,10 @@
     <div class="page-header">
 
       <div class="row">
-        <div class="col-md-6">
-          <h1>Roommate Referral<br/><%= @roommate.name %></h1>
+        <div class="col-sm-8">
+          <h1><small>Roommate Referral</small> <%= @roommate.name %></h1>
         </div>
-        <div class="col-md-6 form-label-responsive">
-
+        <div class="col-sm-4 page-header-buttons-lg form-label-responsive">
           <% if can? :edit, @roommate %>
             <%= link_to 'Edit', edit_roommate_path(@roommate) %>
 

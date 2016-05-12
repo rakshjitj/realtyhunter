@@ -119,8 +119,8 @@ class Roommate < ActiveRecord::Base
         'roommates.internal_notes', 'roommates.describe_yourself',
         'roommates.name', 'roommates.phone_number', 'roommates.email',
         'neighborhoods.name as neighborhood_name', 'roommates.residential_listing_id',
-        'roommates.monthly_budget', 'roommates.move_in_date', 'roommates.dogs_allowed',
-        'roommates.cats_allowed', 'roommates.created_at as submitted_date',
+        'roommates.monthly_budget', 'roommates.move_in_date', 'roommates.do_you_have_pets',
+        'roommates.created_at as submitted_date',
         'roommates.updated_at',
         'roommates.archived', 'roommates.residential_listing_id')
 
@@ -135,8 +135,8 @@ class Roommate < ActiveRecord::Base
     	  'roommates.upload_picture_of_yourself',
     	  'roommates.name', 'roommates.phone_number', 'roommates.email',
     	  'neighborhoods.name as neighborhood_name',
-    	  'roommates.monthly_budget', 'roommates.move_in_date', 'roommates.dogs_allowed',
-    	  'roommates.cats_allowed', 'roommates.created_at as submitted_date',
+    	  'roommates.monthly_budget', 'roommates.move_in_date', 'roommates.do_you_have_pets',
+        'roommates.created_at as submitted_date',
     	  'roommates.archived', 'roommates.residential_listing_id')
 
     return _filterQuery(roommates, params)
