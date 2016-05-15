@@ -176,6 +176,13 @@
 			    	<% end %>
 		    		</p>
 
+		    		<% if !@building.llc_name.blank? %>
+			    		<p>
+			    			<strong>LLC Name:</strong>
+			    			<%= @building.llc_name %>
+			    		</p>
+			    	<% end %>
+
 						<p>
 						  <strong>Created:</strong>
 						  <%= @building.created_at %>

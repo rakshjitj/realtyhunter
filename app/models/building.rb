@@ -39,6 +39,8 @@ class Building < ActiveRecord::Base
 	validates :lng, presence: true, length: {maximum: 100}
 	validates :place_id, presence: true, length: {maximum: 100}
 
+  validates :llc_name, allow_blank: true, length: {maximum: 200}
+
 	validates :company, presence: true
   # don't validate landlord presence here - if this building has sales listings instead of rentals,
   # for example, then there will be a seller instead of a landlord. only rentals have landlord info.
@@ -132,7 +134,7 @@ class Building < ActiveRecord::Base
         'buildings.id', 'buildings.street_number', 'buildings.route',
         'buildings.sublocality', 'buildings.neighborhood_id', 'neighborhoods.name as neighborhood_name',
         'buildings.administrative_area_level_2_short',
-        'buildings.administrative_area_level_1_short', 'buildings.postal_code',
+        'buildings.administrative_area_level_1_short', 'buildings.postal_code', 'buildings.llc_name',
         'buildings.updated_at', 'buildings.created_at',
         'buildings.last_unit_updated_at',
         'buildings.total_unit_count',

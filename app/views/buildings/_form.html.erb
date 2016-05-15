@@ -188,7 +188,7 @@
       </div>
     </div>
 
-    <br />
+    <br>
     <div class="row">
       <div class="col-xs-3 col-sm-2">
         <%= f.label :rental_term_id, "Rental Terms" %>
@@ -202,8 +202,18 @@
         <%= f.text_field :custom_rental_term, class: 'form-control vertical-margin-lg',
           placeholder: "Or enter new custom rental term" %>
       </div>
-
     </div>
+
+    <br>
+    <div class="row">
+      <div class="col-xs-3 col-sm-2">
+        <%= f.label :llc_name, "LLC name" %>
+      </div>
+      <div class="col-xs-9 col-sm-6">
+        <%= f.text_field :llc_name, class: 'form-control' %>
+      </div>
+    </div>
+
 
     <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
     <div class="details field">
