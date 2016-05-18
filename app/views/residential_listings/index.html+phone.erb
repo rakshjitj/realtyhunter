@@ -148,6 +148,14 @@
                 </div>
               </div>
               <div class="row vertical-padding">
+              <div class="col-xs-3">
+                <%= label_tag :listing_id, "Listing ID", class: "field-label-sm" %>
+              </div>
+              <div class="col-xs-8 col-sm-left-padding">
+                <%= text_field_tag :listing_id, params[:listing_id], class:"form-control" %>
+              </div>
+            </div>
+              <div class="row vertical-padding">
                 <div class="col-xs-3">
                   <%= label_tag :pet_policy_shorthand, "Pets", class: 'field-label-sm' %>
                 </div>

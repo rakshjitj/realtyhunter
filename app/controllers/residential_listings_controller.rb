@@ -124,7 +124,7 @@ class ResidentialListingsController < ApplicationController
     ResidentialListing.send_listings(current_user.id, listing_ids, recipients, sub, msg)
 
     respond_to do |format|
-      format.js { flash[:success] = "Email sent!"  }
+      format.js { flash[:success] = "Email sent!" }
     end
   end
 
@@ -403,7 +403,7 @@ class ResidentialListingsController < ApplicationController
       data = params[:residential_listing].permit(
         :lock_version,
         :id,
-        :recipients, :title, :message, :listing_ids,
+        :recipients, :title, :message, :listing_ids, :listing_id,
         :tenant_occupied,
         :beds, :baths, :notes, :description, :lease_start, :lease_end,
         :include_photos, :inaccuracy_description,

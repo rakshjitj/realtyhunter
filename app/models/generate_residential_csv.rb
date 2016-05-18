@@ -3,7 +3,7 @@ class GenerateResidentialCSV
 
 	# takes in residential listings
 	def self.perform(user_id, params)
-    UnitMailer.send_residential_csv(user_id, params).deliver_now
+    UnitMailer.send_residential_csv(user_id, params).deliver
   end
 
 end

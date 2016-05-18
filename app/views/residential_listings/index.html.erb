@@ -92,15 +92,19 @@
               <%= select_tag(:bath_min,
                 options_for_select(%w(Any 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 5.5 6 6.5 7 7.5 8 8.5 9 9.5 10),
                 params[:bath_min]), class: 'form-control') %>
-              <!--%= number_field_tag :bath_min, params[:bath_min], min: 0, max: 10, interval: 0.5,
-                placeholder: " min", class:"form-control" %-->
             </div>
             <div class="col-xs-4 col-sm-left-padding">
               <%= select_tag(:bath_max,
                 options_for_select(%w(Any 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 5.5 6 6.5 7 7.5 8 8.5 9 9.5 10),
                 params[:bath_max]), class: 'form-control') %>
-              <!--%= number_field_tag :bath_max, params[:bath_max], min: 0, max: 10, interval: 0.5,
-                placeholder: " max", class:"form-control" %-->
+            </div>
+          </div>
+          <div class="row vertical-padding">
+            <div class="col-xs-4">
+              <%= label_tag(:listing_id, "Listing ID") %>
+            </div>
+            <div class="col-xs-7 col-sm-left-padding">
+              <%= text_field_tag :listing_id, params[:listing_id], class:"form-control" %>
             </div>
           </div>
           <div class="row vertical-padding">

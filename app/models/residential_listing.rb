@@ -286,6 +286,11 @@ class ResidentialListing < ActiveRecord::Base
       .where("code ILIKE ?", "%#{params[:landlord]}%")
     end
 
+    if params[:listing_id]
+      running_list = running_list
+      .where("units.listing_id = ?", params[:listing_id].to_i)
+    end
+
     # search pet policy
     if params[:pet_policy_shorthand]
       pp = params[:pet_policy_shorthand].downcase
