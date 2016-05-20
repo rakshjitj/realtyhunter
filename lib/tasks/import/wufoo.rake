@@ -340,7 +340,7 @@ namespace :import do
 		###############################################################
 		wufoo = WuParty.new(ENV['RH_WUFOO_ACCT'], ENV['RH_WUFOO_API'])
 		#puts wufoo.forms
-		company = Company.where(name: 'MySpace NYC').first
+		company = Company.where('name ILIKE ?', "%MySpace%").first
 		import_roommates_web_form(wufoo, company);
 		import_contact_us_form(wufoo, company)
 		import_partner_form(wufoo, company)
