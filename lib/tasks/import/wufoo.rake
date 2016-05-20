@@ -13,12 +13,12 @@ namespace :import do
 					.gsub(/-/, '_').gsub(/___/, '_').gsub(/__/, '_').downcase
 				fields[field['ID']] = db_column
 			end
-			
+
 			fields
 		end
 
 		def import_careers_form(wufoo, company)
-			form = wufoo.form('x1n6jklx0nhtyom') 
+			form = wufoo.form('x1n6jklx0nhtyom')
 			fields = build_fields(form)
 
 			# only pull new information
@@ -57,7 +57,7 @@ namespace :import do
 
 				hash[:created_at] = entry["DateCreated"]
 				hash[:created_by] = entry["CreatedBy"]
-				
+
 				if !entry["DateUpdated"].blank?
 					hash[:updated_at] = entry["DateUpdated"]
 				end
@@ -85,7 +85,7 @@ namespace :import do
 
 		# roommates-form
 		def import_roommates_web_form(wufoo, company)
-			form = wufoo.form('z15ov1by0w7n41d') 
+			form = wufoo.form('z15ov1by0w7n41d')
 			fields = build_fields(form)
 
 			# only pull new information
@@ -131,7 +131,7 @@ namespace :import do
 
 				hash[:created_at] = entry["DateCreated"]
 				hash[:created_by] = entry["CreatedBy"]
-				
+
 				if !entry["DateUpdated"].blank?
 					hash[:updated_at] = entry["DateUpdated"]
 				end
@@ -159,9 +159,9 @@ namespace :import do
 		end
 
 		def import_contact_us_form(wufoo, company)
-			form = wufoo.form('m13cggzo03ka4xv') 
+			form = wufoo.form('m13cggzo03ka4xv')
 			fields = build_fields(form)
-			
+
 			last_entry = WufooContactUsForm.order('created_at desc').limit(1).first;
 			if last_entry
 				entries = form.entries(filters: [['DateCreated', 'Is_after', (last_entry.created_at - 1.day)]])
@@ -218,9 +218,9 @@ namespace :import do
 
 		# partner-with-myspace-nyc
 		def import_partner_form(wufoo, company)
-			form = wufoo.form('rt5glur0xdke0a') 
+			form = wufoo.form('rt5glur0xdke0a')
 			fields = build_fields(form)
-			
+
 			last_entry = WufooPartnerForm.order('created_at desc').limit(1).first;
 			if last_entry
 				entries = form.entries(filters: [['DateCreated', 'Is_after', (last_entry.created_at - 1.day)]])
@@ -271,7 +271,7 @@ namespace :import do
 
 		# def _import_listings(wufoo, company, form, listing_type_id)
 		# 	fields = build_fields(form)
-			
+
 		# 	entries = form.entries
 		# 	entries.each do |entry|
 		# 		hash = {}
@@ -327,20 +327,20 @@ namespace :import do
 
 		# rental-listings-form
 		# def import_residential_listing_form(wufoo, company)
-		# 	form = wufoo.form('q1ky5fnq1l6p9ri') 
+		# 	form = wufoo.form('q1ky5fnq1l6p9ri')
 		# 	_import_listings(wufoo, company, form, 'residential')
 		# end
 
 		# # commercial-listings-form
 		# def import_commercial_listing_form(wufoo, company)
-		# 	form = wufoo.form('sewgb8508ansh2') 
+		# 	form = wufoo.form('sewgb8508ansh2')
 		# 	_import_listings(wufoo, company, form, 'commercial')
 		# end
 
 		###############################################################
 		wufoo = WuParty.new(ENV['RH_WUFOO_ACCT'], ENV['RH_WUFOO_API'])
 		#puts wufoo.forms
-		company = Company.find_by(name:'MyspaceNYC')
+		company = Company.where(name: 'Myspace NYC').first
 		import_roommates_web_form(wufoo, company);
 		import_contact_us_form(wufoo, company)
 		import_partner_form(wufoo, company)
