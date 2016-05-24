@@ -11,7 +11,7 @@ namespace :import do
 
     unmatched_bldgs = []
     count = 0
-    CSV.foreach('lib/tasks/import/building_llc_names.csv', col_sep: ',') { |row|
+    CSV.foreach('lib/tasks/import/building_LLC_names.csv', col_sep: ',') { |row|
       if count == 0
         count = count + 1
         next
