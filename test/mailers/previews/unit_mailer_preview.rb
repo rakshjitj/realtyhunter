@@ -16,7 +16,7 @@ class UnitMailerPreview < ActionMailer::Preview
     listings = ResidentialListing.listings_by_id(source_agent, listing_ids)
     images = ResidentialListing.get_images(listings)
 
-    UnitMailer.send_residential_listings(source_agent, listings, images,
+    UnitMailer.send_residential_listings(source_agent.id, listing_ids,
       ['look.away@gmail.com'],
       'Checkout these great listings',
       'amazing listings just for you')

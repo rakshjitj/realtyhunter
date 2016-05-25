@@ -1,5 +1,5 @@
 class BuildingSerializer < ActiveModel::Serializer
-  attributes :city, :state, :zipcode, :name, :id, :street_address, :location
+  attributes :city, :state, :zipcode, :name, :id, :street_address, :location, :llc_name
 
   def is_sales
     object.respond_to?(:s_id) && object.s_id
@@ -12,7 +12,7 @@ class BuildingSerializer < ActiveModel::Serializer
 
   attribute :landlord
   def landlord
-    if !is_sales
+    if !is_sales && object.respond_to?(:code)
       BuildingLandlordSerializer.new(object).attributes
     else
       nil
@@ -46,5 +46,9 @@ class BuildingSerializer < ActiveModel::Serializer
 
   def location
   	{ latitude: object.b_lat, longitude: object.b_lng }
+  end
+
+  def llc_name
+    object.llc_name
   end
 end
