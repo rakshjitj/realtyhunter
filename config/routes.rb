@@ -213,6 +213,7 @@ Rails.application.routes.draw do
       resources :agents, only: [:index, :show]
       resources :neighborhoods, only: [:index, :show]
       resources :listings, only: [:index, :show]
+      resources :buildings, only: [:index, :show]
     end
   end
 
@@ -312,50 +313,6 @@ Rails.application.routes.draw do
         delete 'destroy_multiple'
       end
     end
-
-  # NOTE: we have decided to not use these 2 forms:
-
-  #   resources :residential_listings, only: [:index, :destroy] do
-  #     member do
-  #       get 'delete_modal'
-  #       get 'hide_modal'
-  #       patch 'hide'
-  #       get 'unarchive_modal'
-  #       post 'unarchive'
-  #       get 'detail_modal'
-  #     end
-  #     collection do
-  #       get 'filter'
-  #       post 'send_message'
-  #       get 'download'
-  #       patch 'mark_read'
-  #       get :autocomplete_wufoo_listings_form_name
-  #       get :autocomplete_wufoo_listings_form_email
-        # get 'destroy_multiple_modal'
-        # delete 'destroy_multiple'
-  #     end
-  #   end
-
-  #   resources :commercial_listings, only: [:index, :destroy] do
-  #     member do
-  #       get 'delete_modal'
-  #       get 'hide_modal'
-  #       patch 'hide'
-  #       get 'unarchive_modal'
-  #       post 'unarchive'
-  #       get 'detail_modal'
-  #     end
-  #     collection do
-  #       get 'filter'
-  #       post 'send_message'
-  #       get 'download'
-  #       patch 'mark_read'
-  #       get :autocomplete_wufoo_listings_form_name
-  #       get :autocomplete_wufoo_listings_form_email
-          # get 'destroy_multiple_modal'
-          # delete 'destroy_multiple'
-  #     end
-  #   end
   end
 
   resources :roomsharing_applications do
