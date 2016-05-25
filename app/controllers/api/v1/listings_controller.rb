@@ -153,11 +153,11 @@ module API
 
 				# if cached, render cached blob
 
-				blob_cache_key = "api_v1_listings/#{@listings.pluck('units.id').join('')}-#{@listings.count}-#{@listings.maximum(:updated_at).to_i}"
-				blob = Rails.cache.fetch(blob_cache_key)
-				if blob
-					render json: blob
-				else
+				# blob_cache_key = "api_v1_listings/#{@listings.pluck('units.id').join('')}-#{@listings.count}-#{@listings.maximum(:updated_at).to_i}"
+				# blob = Rails.cache.fetch(blob_cache_key)
+				# if blob
+				# 	render json: blob
+				# else
 					if search_params[:listing_type] == "10".freeze # residential
 						@pet_policies = Building.get_pet_policies(@listings)
 						@rental_terms = Building.get_rental_terms(@listings)
@@ -212,16 +212,16 @@ module API
 
 					#puts "\n\n\n******* #{r_count} #{c_count} #{s_count} #{@listings.total_count}"
 
-					blob = Rails.cache.fetch(blob_cache_key, expires_in: 12.hours) do
+					blob = #Rails.cache.fetch(blob_cache_key, expires_in: 12.hours) do
 						ListingBlob.new({
 							items: output,
 							total_count: @listings.total_count,
 							total_pages: @listings.total_pages,
 							page: @listings.current_page
 							})
-					end
+					#end
 					render json: blob
-				end
+				#end
 			end
 
 			# Never trust parameters from the scary internet, only allow the white list through.
