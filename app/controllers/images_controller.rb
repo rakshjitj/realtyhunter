@@ -1,3 +1,9 @@
+#
+# TODO: This code is terrible! It was written when I had very little
+# understanding of how Paperclip worked. I would re-write it, but at
+# this point I don't have the time, and things work as they are.
+# Should be updated at some point.
+#
 class ImagesController < ApplicationController
   skip_load_resource
   before_action :set_image, only: [:destroy]

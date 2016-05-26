@@ -9,7 +9,7 @@ xml.hotPadsItems version:"2.1" do
 		xml.website @company.website
 		#xml.city @company.city
 		#xml.state @company.state
-		xml.company_logo source: @company.image.file.url(:original)
+		xml.company_logo source: @company.image.file.url(:large)
 	end
 
 	@listings.each do |listing|
@@ -137,7 +137,7 @@ xml.hotPadsItems version:"2.1" do
 
 			if @images[listing.unit_id]
 				@images[listing.unit_id].each do |i|
-					xml.listingPhoto source:i.file.url(:original) do #repeatable
+					xml.listingPhoto source:i.file.url(:large) do #repeatable
 						#xml.label
 						#xml.caption
 					end

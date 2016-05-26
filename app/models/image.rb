@@ -13,7 +13,8 @@ class Image < ActiveRecord::Base
       },
       large: {
         geometry: '2500x2500>',
-        rotation: a.instance.rotation
+        rotation: a.instance.rotation,
+        watermark_path: "#{Rails.root}/public/watermark-logo.png"
       },
       original: {
         convert_options: '-auto-orient',
@@ -21,7 +22,7 @@ class Image < ActiveRecord::Base
       }
     }},
     #default_url: Rails.root + "/images/:style/missing.png",
-    only_process: [:thumb, :large, :original],
+    only_process: [:thumb, :large], #, :original
     convert_options: { all: '-auto-orient' },
     source_file_options: { all: '-auto-orient' },
     # processors: [:rotator, :watermark]

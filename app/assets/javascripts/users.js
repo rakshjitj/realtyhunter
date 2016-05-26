@@ -88,15 +88,16 @@ Users = {};
       $('.agent-type').hide();
     }
 
+    // TODO: this shit isn't working
     // don't let users click the 'upload photo' button unless a value has been set
-    var uploaded_file_name = $('#user_file');
-    uploaded_file_name.change(function() {
-      if (uploaded_file_name.val().length > 0) {
-        $('#btn-submit-img').prop('disabled', false);
-      } else {
-        $('#btn-submit-img').prop('disabled', true);
-      }
-    });
+    // var uploaded_file_name = $('#user_file');
+    // uploaded_file_name.change(function() {
+    //   if (uploaded_file_name.val().length > 0) {
+    //     $('#btn-submit-img').prop('disabled', false);
+    //   } else {
+    //     $('#btn-submit-img').prop('disabled', true);
+    //   }
+    // });
   };
 
   Users.ready = function() {

@@ -178,7 +178,7 @@ xml.streeteasy :version => "1.6" do
 								xml.name agent.name
 								xml.company @company.name
 								if @agent_images[agent.id]
-									xml.photo url:@agent_images[agent.id].file.url(:original)
+									xml.photo url:@agent_images[agent.id].file.url(:large)
 								end
 							  xml.url agent.public_url
 						  	xml.email agent.email
@@ -197,7 +197,7 @@ xml.streeteasy :version => "1.6" do
 				xml.media do
 					if @images[listing.unit_id]
 						@images[listing.unit_id].each do |i|
-							xml.photo url:i.file.url(:original), position: i.priority, desription:""
+							xml.photo url:i.file.url(:large), position: i.priority, desription:""
 						end
 					end
 				end

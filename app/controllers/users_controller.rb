@@ -152,25 +152,23 @@ class UsersController < ApplicationController
 
   # POST /users/1
   def upload_image
-    #image = Image.create(user_params)
-    #if image
       # delete old image
-      # TODO verify this removes old image from S3!
       @user.image = nil
+      @user.save
+
       # add new image
       @user.image = Image.create(user_params)
+      @user.update_columns(updated_at: Time.now)
       @user.image.file.reprocess_without_delay!(:large)
       flash[:success] = "Profile image updated!"
       redirect_to @user
-    #else
-    #  puts "**** #{@user.errors.inspect}"
-    #  render 'edit'
-    #end
   end
 
   def destroy_image
     if @user.image
       @user.image = nil
+      @user.save
+      @user.update_columns(updated_at: Time.now)
     end
     respond_to do |format|
       format.js
