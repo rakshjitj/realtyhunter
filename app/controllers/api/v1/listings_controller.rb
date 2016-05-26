@@ -84,6 +84,8 @@ module API
 				laundry_in_unit = _is_valid_bool_value(listing_params[:laundry_in_unit])
 				# has_photos
 				has_photos = _is_valid_bool_value(listing_params[:has_photos])
+				#status
+				status = listing_params[:status] ? listing_params[:status] : 'active'
 				# sort order defaults to order by last udpated
 				sort_column = %w[layout rent date_available updated status_updated].include?(listing_params[:sort]) ? listing_params[:sort] : "updated".freeze
 				# sort_dir
@@ -122,7 +124,8 @@ module API
 					page: listing_params[:page],
 					agents: listing_params[:agents],
 					neighborhoods: listing_params[:neighborhoods],
-					changed_at: listing_params[:changed_at]
+					changed_at: listing_params[:changed_at],
+					status: status
 				}
 
 				search_type_breakdown(search_params)
@@ -231,7 +234,7 @@ module API
 	      	:cats_allowed, :dogs_allowed, :elevator, :doorman, :date_available_after,
 	      	:date_available_before, :laundry_in_building, :laundry_in_unit, :changed_at,
 	      	:has_photos, :featured, :sort, :sort_dir, :per_page, :page,
-	      	:neighborhoods, :geometry, :agents)
+	      	:neighborhoods, :geometry, :agents, :status)
     	end
 
 		private
