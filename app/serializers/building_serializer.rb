@@ -13,7 +13,7 @@ class BuildingSerializer < ActiveModel::Serializer
   attribute :landlord
   def landlord
     if !is_sales && object.respond_to?(:code)
-      BuildingLandlordSerializer.new(object).attributes
+      LandlordSerializer.new(object).attributes
     else
       nil
     end

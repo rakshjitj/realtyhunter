@@ -214,6 +214,7 @@ Rails.application.routes.draw do
       resources :neighborhoods, only: [:index, :show]
       resources :listings, only: [:index, :show]
       resources :buildings, only: [:index, :show]
+      resources :landlords, only: [:index, :show]
     end
   end
 

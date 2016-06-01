@@ -2,16 +2,6 @@ module API
   module V1
 
     class BuildingsController < ApiController
-      # designed to match: http://developers.nestio.com/api/v1/
-
-      # params: token (required)
-
-      # response codes
-      # 200 - success, 400 - invalid params, 403 - invalid API key
-
-      # example request
-      # https://nestiolistings.com/api/v1/public/buildings/123/?key={API KEY}
-
       def index
         # pagination
         per_page = 50

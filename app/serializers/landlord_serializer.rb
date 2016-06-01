@@ -1,4 +1,4 @@
-class BuildingLandlordSerializer < ActiveModel::Serializer
+class LandlordSerializer < ActiveModel::Serializer
   attributes :code, :name, :contact_name, :office_phone, :mobile, :fax, :email, :website, :city,
     :state, :zipcode, :street_address, :location, :listing_agent_id, :listing_agent_percentage,
     :has_fee, :fee_percentage
