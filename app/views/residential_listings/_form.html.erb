@@ -603,6 +603,32 @@
           </div>
         </div>
 
+        <div class="row vertical-margin-lg">
+          <div class="col-xs-3 col-md-4">
+            <%= f.label :rls_flag, "RLS Flag" %>
+          </div>
+          <div class="col-xs-9 col-md-7">
+            <div class="checkbox checkbox-warning checkbox-inline">
+              <%= f.check_box :rls_flag, class:"styled",
+                  checked: @residential_unit ? @residential_unit.rls_flag : false %>
+              <label></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row vertical-margin-lg">
+          <div class="col-xs-3 col-md-4">
+            <%= f.label :streeteasy_flag, "Streeteasy Flag" %>
+          </div>
+          <div class="col-xs-9 col-md-7">
+            <div class="checkbox checkbox-warning checkbox-inline">
+              <%= f.check_box :streeteasy_flag, class:"styled",
+                  checked: @residential_unit ? @residential_unit.streeteasy_flag : false %>
+              <label></label>
+            </div>
+          </div>
+        </div>
+
         <br>
         <div class="row vertical-margin-lg">
           <div class="col-md-6 col-md-offset-3">

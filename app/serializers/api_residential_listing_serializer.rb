@@ -4,7 +4,7 @@ class APIResidentialListingSerializer < ActiveModel::Serializer
   :floor, :layout, :bedrooms, :unit_number, :pets, :status, :date_available,
   :changed_at, :square_footage, :rent, :id, :favorite, :show, :expose_address,
   :total_room_count, :condition, :showing_instruction, :commission_amount,
-  :cyof, :rented_date, :rlsny, :share_with_brokers,
+  :cyof, :rented_date, :rlsny, :share_with_brokers, :rls_flag, :streeteasy_flag,
   :rental_terms, :utilities, :listing_type, :property_type, :commercial_use, :min_lease_term,
   :max_lease_term, :renter_fee, :bathrooms, :unit_amenities
 
@@ -209,4 +209,11 @@ class APIResidentialListingSerializer < ActiveModel::Serializer
     end
   end
 
+  def rls_flag
+    object.listing.rls_flag
+  end
+
+  def streeteasy_flag
+    object.listing.streeteasy_flag
+  end
 end

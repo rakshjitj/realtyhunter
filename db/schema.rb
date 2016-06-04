@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160515194719) do
+ActiveRecord::Schema.define(version: 20160604004947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -415,6 +415,8 @@ ActiveRecord::Schema.define(version: 20160515194719) do
     t.date     "rented_date"
     t.boolean  "rlsny",               default: false
     t.boolean  "share_with_brokers",  default: false
+    t.boolean  "rls_flag",            default: false
+    t.boolean  "streeteasy_flag",     default: false
   end
 
   add_index "residential_listings", ["roommates_id"], name: "index_residential_listings_on_roommates_id", using: :btree

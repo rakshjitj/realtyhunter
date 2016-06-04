@@ -412,6 +412,7 @@ class ResidentialListingsController < ApplicationController
         :roomsharing_filter, :unassigned_filter, :primary_agent_id, :favorites, :show,
         :expose_address, :floor, :total_room_count, :condition, :showing_instruction,
         :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
+        :rls_flag, :streeteasy_flag,
         unit: [:building_unit, :rent, :available_by, :access_info, :status,
           :exclusive, :building_id, :primary_agent_id, :listing_agent_id,
           open_houses_attributes: [:day, :start_time, :end_time, :_destroy, :id] ],

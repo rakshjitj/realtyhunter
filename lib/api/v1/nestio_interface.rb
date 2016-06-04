@@ -136,6 +136,8 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'residential_listings.op_fee_percentage as r_op_fee_percentage',
 					'commercial_listings.lease_term_months',
 					'commercial_listings.sq_footage',
+					'residential_listings.rls_flag',
+					'residential_listings.streeteasy_flag',
 					# following fields are all from sales_listings
 					# 'sales_listings.building_size',
 					# :percent_commission, :outside_broker_commission,
@@ -207,7 +209,9 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'residential_listings.rlsny as r_rlsny',
 					'residential_listings.share_with_brokers as r_share_with_brokers',
 					'residential_listings.tenant_occupied as r_tenant_occupied',
-					'residential_listings.op_fee_percentage as r_op_fee_percentage'
+					'residential_listings.op_fee_percentage as r_op_fee_percentage',
+					'residential_listings.rls_flag',
+					'residential_listings.streeteasy_flag',
 				)
 
 				listings
