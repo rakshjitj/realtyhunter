@@ -37,11 +37,17 @@
   </td>
 
   <!-- ACTIONS -->
-  <% if current_user.is_management? || current_user.is_listings_manager? %>
+  <% if current_user.is_management? ||
+        current_user.is_listings_manager? ||
+        current_user.is_photo_manager? %>
     <td>
-      <%= link_to 'Edit', edit_building_path(building) %> <br />
-      <%= link_to 'Delete', delete_modal_building_path(building),
-        data: {toggle: "modal", target: "#bldgDeleteModal", params: params}, remote: true %>
+      <%= link_to 'Edit', edit_building_path(building) %>
+
+      <% if !current_user.is_photo_manager? %>
+        <br />
+        <%= link_to 'Delete', delete_modal_building_path(building),
+            data: {toggle: "modal", target: "#bldgDeleteModal", params: params}, remote: true %>
+      <% end %>
     </td>
   <% end %>
 </tr>

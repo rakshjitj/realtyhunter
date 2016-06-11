@@ -5,13 +5,27 @@
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#basic-info" aria-controls="basic-info" role="tab" data-toggle="tab">Basic Info</a></li>
-    <li role="photos"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+    <% if !current_user.is_photo_manager? %>
+      <li role="presentation" class="active"><a href="#basic-info" aria-controls="basic-info" role="tab" data-toggle="tab">Basic Info</a></li>
+      <% if action_name != 'new' %>
+          <li role="photos"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+      <% end %>
+    <% else %>
+      <li role="photos" class="active"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+    <% end %>
   </ul>
 
   <div class="tab-content">
     <!-- ******************** second tabpanel - photos ******************** -->
-    <div role="tabpanel" class="tab-pane fade" id="photos">
+    <!-- For the photo panel, note that the only difference hinges on if the logged in user is a
+          photo manager or not. If they are, then this panel is active upon page load. Otherwise,
+          we default to having the 'basic info' tab active. In all other respects, the if/else below
+          is exactly the same. -->
+    <% if current_user.is_photo_manager? %>
+        <div role="tabpanel" class="tab-pane fade in active" id="photos">
+    <% else %>
+      <div role="tabpanel" class="tab-pane fade" id="photos">
+    <% end %>
       <% if @building.id %>
 
         <br />
@@ -43,6 +57,7 @@
       <% end %>
     </div><!-- end tabpanel photos -->
     <!-- ******************** first tabpanel - basic info ********************-->
+    <% if !current_user.is_photo_manager? %>
     <div role="tabpanel" class="tab-pane fade in active" id="basic-info">
       <%= form_for(@building) do |f| %>
         <%= f.hidden_field :lock_version %>
@@ -240,7 +255,7 @@
     </div>
 
     <% end %>
-
+    <% end %>
   </div><!-- end tabpanel home -->
 
   </div><!-- tab content -->
