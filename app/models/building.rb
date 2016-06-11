@@ -72,7 +72,6 @@ class Building < ActiveRecord::Base
 
 	def update_active_unit_count
     active_count = units.where('status = ?', Unit.statuses['active']).count
-    puts "11111 #{active_count}"
     self.update_attribute(:active_unit_count, active_count)
 	end
 
