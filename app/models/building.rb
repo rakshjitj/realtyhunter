@@ -71,7 +71,9 @@ class Building < ActiveRecord::Base
 	end
 
 	def update_active_unit_count
-    self.update_attribute(:active_unit_count, units.unarchived.available_on_market.count)
+    active_count = units.where('status = ?', Unit.statuses['active']).count
+    puts "11111 #{active_count}"
+    self.update_attribute(:active_unit_count, active_count)
 	end
 
   def self.get_images(list)
