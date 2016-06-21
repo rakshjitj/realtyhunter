@@ -443,8 +443,18 @@
             <%= f.label :op_fee_percentage, 'Owner Pays %' %>
           </div>
           <div class="col-xs-9 col-md-4">
-            <%= f.number_field :op_fee_percentage, class: 'form-control', min: 0, default: 95 %>
-            <div id="op_explainer_text"></div>
+            <%= f.number_field :op_fee_percentage, class: 'form-control', min: 0, max: 100 %>
+            <div id="op_explainer_text">
+              <p class="explainer-text">
+                <% if @residential_unit.unit && @residential_unit.unit.building &&
+                      @residential_unit.unit.building.landlord.op_fee_percentage %>
+                  The landlords's default OP is
+                  <%= @residential_unit.unit.building.landlord.op_fee_percentage %>%.
+                <% else %>
+                  The landlord has no default OP % specified.
+                <% end %>
+              </p>
+            </div>
           </div>
         </div>
 
@@ -453,8 +463,18 @@
             <%= f.label :tp_fee_percentage, 'Tenant Pays %' %>
           </div>
           <div class="col-xs-9 col-md-4">
-            <%= f.number_field :tp_fee_percentage, class: 'form-control', min: 0, default: 95 %>
-            <div id="tp_explainer_text"></div>
+            <%= f.number_field :tp_fee_percentage, class: 'form-control', min: 0, max: 100 %>
+            <div id="tp_explainer_text">
+              <p>
+                <% if @residential_unit.unit && @residential_unit.unit.building &&
+                      @residential_unit.unit.building.landlord.tp_fee_percentage %>
+                  The landlords's default TP is
+                  <%= @residential_unit.unit.building.landlord.tp_fee_percentage %>%.
+                <% else %>
+                  The landlord has no default TP % specified.
+                <% end %>
+              </p>
+            </div>
           </div>
         </div>
 
