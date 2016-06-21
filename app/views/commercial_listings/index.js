@@ -1,5 +1,5 @@
 // Append new data
-$("<%=j render partial: 'commercial_listings/commercial_listing', collection: @commercial_units, locals: {com_images: @com_images} %>")
+$("<%=j render partial: 'commercial_listings/commercial_listing', collection: @commercial_units, locals: {com_images: @com_images, bldg_images: @bldg_images} %>")
   .appendTo($(".infinite-table-com"));
 Listings.hideSpinner();
 
