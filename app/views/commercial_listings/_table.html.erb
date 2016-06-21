@@ -21,9 +21,10 @@
         </thead>
 
         <tbody class="commercial_units_table_body">
-          <%= render commercial_units %>
-          <!--%= render partial: 'commercial_listings/commercial_listing',
-          collection: @commercial_units, locals: {com_images: @com_images} %-->
+          <%= render partial: 'commercial_listings/commercial_listing',
+              collection: commercial_units, locals: {
+                com_images: com_images, bldg_images: bldg_images
+              } %>
         </tbody>
 
       </table>

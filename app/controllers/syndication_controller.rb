@@ -31,6 +31,7 @@
       @residential_amenities = ResidentialListing.get_amenities(@listings)
       @building_amenities = Building.get_amenities(@listings)
       @images = Unit.get_all_images(@listings)
+      @bldg_images = Building.get_all_bldg_images(@listings)
       @utilities = Building.get_utilities(@listings)
 
       # can you cache a function like this?

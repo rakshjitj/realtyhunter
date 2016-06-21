@@ -131,8 +131,7 @@
 								  <!-- first display building photos... -->
 								  	<% @residential_unit.unit.building.images.each do |image| %>
 								  		<div class="item">
-
-										    	<%= image_tag image.file.url(:large), :class => 'img-responsive center-block',
+										    <%= image_tag image.file.url(:large), :class => 'img-responsive center-block',
 										      	alt: image.file.url(:large)  %>
 
 									    </div>

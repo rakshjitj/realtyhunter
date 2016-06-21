@@ -323,11 +323,13 @@ class ResidentialListingsController < ApplicationController
       @unit_amenities = ResidentialAmenity.where(company: current_user.company)
 
       do_search
+      @bldg_images = Building.get_bldg_images_from_units(@residential_units)
       @res_images = ResidentialListing.get_images(@residential_units)
       custom_sort
 
       # display all found listings on the map
-      @map_infos = ResidentialListing.set_location_data(@residential_units.to_a, @res_images)
+      @map_infos = ResidentialListing.set_location_data(
+          @residential_units.to_a, @res_images, @bldg_images)
 
       # only get data + images for paginated responses
       @residential_units = @residential_units.page params[:page]

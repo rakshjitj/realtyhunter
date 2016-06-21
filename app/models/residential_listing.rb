@@ -482,7 +482,7 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   # collect the data we will need to access from our giant map view
-  def self.set_location_data(runits, images)
+  def self.set_location_data(runits, images, bldg_images)
     map_infos = {}
     # speed optimizaiton. `while true` is faster than 'for ...'
     i = 0
@@ -511,7 +511,9 @@ class ResidentialListing < ActiveRecord::Base
         rent: runit.rent
         }
 
-      if images[runit.unit_id]
+      if bldg_images[runit.building_id]
+        unit_info['image'] = bldg_images[runit.building_id]
+      elsif images[runit.unit_id]
         unit_info['image'] = images[runit.unit_id]
       end
 
@@ -543,8 +545,7 @@ class ResidentialListing < ActiveRecord::Base
         'neighborhoods.name AS neighborhood_name',
         'landlords.code',
         'landlords.id AS landlord_id',
-        'units.available_by', 'units.listing_id',
-        #'residential_listings.'
+        'units.available_by', 'units.listing_id'
       )
       .order('residential_listings.updated_at desc')
 
@@ -562,9 +563,9 @@ class ResidentialListing < ActiveRecord::Base
       end
     end
 
-    listings = listings#.uniq
     images = ResidentialListing.get_images(listings)
-    return listings, images
+    bldg_images = Building.get_bldg_images_from_units(listings)
+    return listings, images, bldg_images
   end
 
   def self.for_units(unit_ids, status=nil)
@@ -599,7 +600,8 @@ class ResidentialListing < ActiveRecord::Base
     end
 
     images = ResidentialListing.get_images(listings)
-    return listings, images
+    bldg_images = Building.get_bldg_images_from_units(listings)
+    return listings, images, bldg_images
   end
 
   # Used in our API. Takes in a list of units

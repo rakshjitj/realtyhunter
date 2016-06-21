@@ -1,12 +1,17 @@
 <div class="row-no-padding row-list-view <%= cycle("even", "odd") %>">
   <!-- thumbnail image -->
   <div class="col-xs-4">
-    <% if @res_images[residential_listing.unit_id] %>
+    <!-- display building image first, if any are found -->
+    <% if @bldg_images[residential_listing.building_id] %>
+      <%= link_to(image_tag(@bldg_images[residential_listing.building_id],
+          alt: @bldg_images[residential_listing.building_id]), residential_listing) %>
+    <!-- otherwise, pick the first residential photo -->
+    <% elsif @res_images[residential_listing.unit_id] %>
       <%= link_to(image_tag(@res_images[residential_listing.unit_id],
           alt: @res_images[residential_listing.unit_id]),
           residential_listing) %>
     <% else %>
-      <!-- placeholder image -->
+    <!-- otherwise, fall back on placeholder image -->
       <%= link_to(image_tag("listing_soon_thumb.png", alt: "Image coming soon",
           size: "100x100"), residential_listing) %>
     <% end %>

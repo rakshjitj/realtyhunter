@@ -38,14 +38,14 @@
                 <div class="favorites-table">
                   <%= render partial: 'residential_listings/mobile_favorites_view',
                       collection: @favorite_units, as: :residential_listing,
-                      locals: {res_images: @res_images} %>
+                      locals: {res_images: @res_images, bldg_images: @bldg_images} %>
                 </div>
               <% end %>
               <h4 class="minor-header">RENTAL LISTINGS</h4>
               <div class="infinite-table">
                 <%= render partial: 'residential_listings/mobile_list_view',
                     collection: @residential_units, as: :residential_listing,
-                    locals: {res_images: @res_images} %>
+                    locals: {res_images: @res_images, bldg_images: @bldg_images} %>
               </div>
               <div class="row">
                 <div class="col-xs-12 pagination-wrapper">

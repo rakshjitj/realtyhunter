@@ -1,4 +1,8 @@
-cache "trulia/#{@listings.ids.join('')}-#{@listings.ids.count}-#{@listings.maximum(:updated_at).to_i}" do
+# todo: before re-enabling caching here, need to figure out how to expire the cache here
+# when a building photo is updated. the building photo is displayed before listings photos,
+# but adding/removing building photos does not update the listing object.
+#cache "trulia/#{@listings.ids.join('')}-#{@listings.ids.count}-#{@listings.maximum(:updated_at).to_i}-" do
+
 # url looks like <base_url>/syndication/1/trulia
 xml.instruct! :xml, :version => "1.0"
 
@@ -135,6 +139,14 @@ xml.hotPadsItems version:"2.1" do
 				xml.listingPermission agent.email
 			end
 
+			if @bldg_images[listing.building_id]
+				@bldg_images[listing.building_id].each do |i|
+					xml.listingPhoto source:i.file.url(:large) do #repeatable
+						#xml.label
+						#xml.caption
+					end
+				end
+			end
 			if @images[listing.unit_id]
 				@images[listing.unit_id].each do |i|
 					xml.listingPhoto source:i.file.url(:large) do #repeatable
@@ -165,4 +177,4 @@ xml.hotPadsItems version:"2.1" do
 	end
 
 end
-end #cache
+#end #cache

@@ -282,7 +282,7 @@ class CommercialListing < ActiveRecord::Base
   end
 
   # collect the data we will need to access from our giant map view
-  def self.set_location_data(cunits, images)
+  def self.set_location_data(cunits, images, bldg_images)
     map_infos = {}
     i = 0
     while true
@@ -304,7 +304,9 @@ class CommercialListing < ActiveRecord::Base
         sq_footage: cunit.sq_footage
        }
 
-      if images[cunit.unit_id]
+      if bldg_images[cunit.building_id]
+        unit_info['image'] = bldg_images[cunit.building_id]
+      elsif images[cunit.unit_id]
         unit_info['image'] = images[cunit.unit_id]
       end
 
@@ -332,7 +334,6 @@ class CommercialListing < ActiveRecord::Base
         'units.building_unit', 'units.status','units.rent', 'commercial_listings.sq_footage',
         'commercial_listings.id', 'commercial_listings.updated_at',
         'neighborhoods.name AS neighborhood_name',
-        #'landlords.code AS landlord_code',
         'landlords.code',
         'landlords.id AS landlord_id',
         "commercial_property_types.property_type AS property_category", "commercial_property_types.property_sub_type",
@@ -354,7 +355,8 @@ class CommercialListing < ActiveRecord::Base
     end
 
     images = CommercialListing.get_images(listings)
-    return listings, images
+    bldg_images = Building.get_bldg_images_from_units(listings)
+    return listings, images, bldg_images
   end
 
   def self.listings_by_neighborhood(user, listing_ids)
@@ -408,7 +410,8 @@ class CommercialListing < ActiveRecord::Base
     end
 
     images = CommercialListing.get_images(listings)
-    return listings.uniq, images
+    bldg_images = Building.get_bldg_images_from_units(listings)
+    return listings.uniq, images, bldg_images
   end
 
   def self.listings_by_id(user, listing_ids)

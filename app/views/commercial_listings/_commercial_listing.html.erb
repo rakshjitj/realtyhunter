@@ -7,11 +7,16 @@
     <% end %>
     <!-- ****** IMAGE ****************************************** -->
     <td class="img-col" style="max-width: 150px;">
-      <% if @com_images[commercial_listing.unit_id] %>
-        <%= link_to(image_tag(@com_images[commercial_listing.unit_id],
-          alt: @com_images[commercial_listing.unit_id]), commercial_listing) %>
+      <!-- display building image first, if any are found -->
+      <% if bldg_images[commercial_listing.building_id] %>
+        <%= link_to(image_tag(bldg_images[commercial_listing.building_id],
+            alt: bldg_images[commercial_listing.building_id]), commercial_listing) %>
+      <!-- otherwise, pick the first residential photo -->
+      <% elsif com_images[commercial_listing.unit_id] %>
+        <%= link_to(image_tag(com_images[commercial_listing.unit_id],
+          alt: com_images[commercial_listing.unit_id]), commercial_listing) %>
       <% else %>
-        <!-- placeholder image -->
+      <!-- otherwise, fall back on placeholder image -->
         <%= link_to(image_tag("listing_soon_thumb.png".freeze, alt: "Image coming soon",
           class: 'img-responsive',
           size: "100x100"), commercial_listing) %>

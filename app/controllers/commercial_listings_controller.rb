@@ -258,10 +258,12 @@ class CommercialListingsController < ApplicationController
           .group_by(&:borough)
 
       do_search
+      @bldg_images = Building.get_bldg_images_from_units(@commercial_units)
       @com_images = CommercialListing.get_images(@commercial_units)
       @commercial_units = custom_sort
 
-      @map_infos = CommercialListing.set_location_data(@commercial_units.to_a, @com_images)
+      @map_infos = CommercialListing.set_location_data(
+          @commercial_units.to_a, @com_images, @bldg_images)
       @commercial_units = @commercial_units.page params[:page]
     end
 

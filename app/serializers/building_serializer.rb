@@ -19,6 +19,15 @@ class BuildingSerializer < ActiveModel::Serializer
     end
   end
 
+  attributes :photos
+  def photos
+    if object.images
+      object
+        .images
+        .map { |x| ListingImageSerializer.new(x).attributes }
+    end
+  end
+
   def city
   	# should display city (brooklyn, new york)
   	object.b_sublocality

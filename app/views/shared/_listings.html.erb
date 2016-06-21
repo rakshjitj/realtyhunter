@@ -20,24 +20,6 @@
         <div role="tabpanel" class="tab-pane fade in active" id="residential-listings">
         	<br />
         	<div class="row">
-					  <!-- <div class="col-md-2">
-              <!-- will be a dropdown of either print pdf or email -->
-              <!-- <div class="dropdown selected-listings">
-                <button class="btn btn-warning btn-sm dropdown-toggle disabled" id="selected-listings-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="menu">
-                  0 Selected Listings
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu selected-listings-menu" aria-labelledby="selected-listings-dropdown">
-                  <li role="presentation"><a class="list-item-sm-padding" id="emailListings" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#emailModal">
-                    <i class="fa fa-fw fa-envelope"></i> Email</a></li>
-                  <li role="presentation"><a class="list-item-sm-padding" data-action="listingsSheet" role="menuitem" tabindex="-1">
-                    <i class="fa fa-fw fa-file-text"></i> Show Sheet</a></li>
-                  <li role="presentation"><a class="list-item-sm-padding" data-action="internalListingsSheet" role="menuitem" tabindex="-1">
-                    <i class="fa fa-fw fa-list"></i> Internal Listings Sheet</a></li>
-                </ul>
-              </div>
-					  </div> -->
-
             <div class="col-md-2">
               <label>Filter By Status:</label>
             </div>
@@ -58,7 +40,8 @@
 					</div>
 
           <%= render partial:'residential_listings/table',
-            locals: { residential_units: residential_units, res_images: res_images} %>
+            locals: { residential_units: residential_units, res_images: res_images,
+                bldg_images: res_bldg_images} %>
 
           <div class="row">
 					  <div class="col-sm-4 col-sm-offset-4">
@@ -72,7 +55,8 @@
       <!-- ******************** second tabpanel - commercial ********************-->
         <div role="tabpanel" class="tab-pane fade" id="commercial-listings">
           <%= render partial:'commercial_listings/table',
-            locals: { commercial_units: commercial_units, com_images: com_images } %>
+            locals: { commercial_units: commercial_units, com_images: com_images,
+                bldg_images: com_bldg_images } %>
 
           <div class="row">
             <div class="col-sm-4 col-sm-offset-4">

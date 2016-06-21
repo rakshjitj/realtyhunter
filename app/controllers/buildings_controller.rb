@@ -109,7 +109,7 @@ class BuildingsController < ApplicationController
     @params_copy.delete('action')
     @params_copy.delete('controller')
     @params_copy.delete('id')
-    puts @params_copy.inspect
+    # puts @params_copy.inspect
     respond_to do |format|
       format.js
     end
@@ -174,9 +174,10 @@ class BuildingsController < ApplicationController
       if (!params[:status_listings])
         params[:status_listings] = 'active/pending'
       end
-      @residential_units, @res_images = @building.residential_units(params[:status_listings])
+      @residential_units, @res_images, @res_bldg_images = @building.residential_units(params[:status_listings])
       @residential_units = @residential_units.page(params[:page]).per(25)
-      @commercial_units, @com_images = @building.commercial_units(params[:status_listings])
+      @commercial_units, @com_images, @com_bldg_images = @building.commercial_units(params[:status_listings])
+      # puts @com_bldg_images
       @commercial_units = @commercial_units.page(params[:page]).per(25)
     end
 

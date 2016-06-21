@@ -60,14 +60,16 @@
 					  </div>
 
 					  <!-- Controls -->
-					  <a class="left carousel-control" href="#building-carousel" role="button" data-slide="prev">
-					    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-					    <span class="sr-only">Previous</span>
-					  </a>
-					  <a class="right carousel-control" href="#building-carousel" role="button" data-slide="next">
-					    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-					    <span class="sr-only">Next</span>
-					  </a>
+					  <% if @building.images.length > 1 %>
+						  <a class="left carousel-control" href="#building-carousel" role="button" data-slide="prev">
+						    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+						    <span class="sr-only">Previous</span>
+						  </a>
+						  <a class="right carousel-control" href="#building-carousel" role="button" data-slide="next">
+						    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+						    <span class="sr-only">Next</span>
+						  </a>
+						<% end %>
 					</div>
 
 					<!-- clickable navigation -->
@@ -265,8 +267,10 @@
 		model: @building,
 		residential_units: @residential_units,
 		res_images: @res_images,
+		res_bldg_images: @res_bldg_images,
 		commercial_units: @commercial_units,
-		com_images: @com_images
+		com_images: @com_images,
+		com_bldg_images: @com_bldg_images
 	} %>
 </div>
 

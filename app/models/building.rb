@@ -75,9 +75,22 @@ class Building < ActiveRecord::Base
     self.update_attribute(:active_unit_count, active_count)
 	end
 
+  # get first image
+  def self.get_bldg_images_from_units(list)
+    imgs = Image.where(building_id: list.pluck(:building_id), priority: 0)
+    Hash[imgs.map {|img| [img.building_id, img.file.url(:thumb)]}]
+  end
+
+  # get first image
   def self.get_images(list)
     imgs = Image.where(building_id: list.ids, priority: 0)
-    Hash[imgs.map {|img| [img.unit_id, img.file.url(:thumb)]}]
+    Hash[imgs.map {|img| [img.building_id, img.file.url(:thumb)]}]
+  end
+
+  # returns all images for each building
+  def self.get_all_bldg_images(list)
+    building_ids = list.map(&:building_id)
+    Image.where(building_id: building_ids).to_a.group_by(&:building_id)
   end
 
   def self._filter_query(running_list, query_str, status)

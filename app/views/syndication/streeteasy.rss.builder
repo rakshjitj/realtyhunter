@@ -1,4 +1,8 @@
-cache "streeteasy/#{@listings.ids.join('')}-#{@listings.ids.count}-#{@listings.maximum(:updated_at).to_i}" do
+# todo: before re-enabling caching here, need to figure out how to expire the cache here
+# when a building photo is updated. the building photo is displayed before listings photos,
+# but adding/removing building photos does not update the listing object.
+#cache "streeteasy/#{@listings.ids.join('')}-#{@listings.ids.count}-#{@listings.maximum(:updated_at).to_i}" do
+
 # url looks like <base_url>/syndication/1/streeteasy
 xml.instruct! :xml, :version => "1.0"
 xml.streeteasy :version => "1.6" do
@@ -195,6 +199,11 @@ xml.streeteasy :version => "1.6" do
 				end
 
 				xml.media do
+					if @bldg_images[listing.building_id]
+						@bldg_images[listing.building_id].each do |i|
+							xml.photo url:i.file.url(:large), position: i.priority, desription:""
+						end
+					end
 					if @images[listing.unit_id]
 						@images[listing.unit_id].each do |i|
 							xml.photo url:i.file.url(:large), position: i.priority, desription:""
@@ -206,4 +215,4 @@ xml.streeteasy :version => "1.6" do
 		end # listings.each
 	end # properties
 end #streeteasy
-end # cache
+#end # cache
