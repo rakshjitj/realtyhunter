@@ -19,7 +19,7 @@
 <%= CSV.generate_line headers %>
 <%- @buildings.each do |building| -%>
 
-  <%= [building.street_address,
+  <%= ['"' + building.street_address + '"',
     building.neighborhood_name,
     building.sublocality, #borough
   	building.administrative_area_level_2_short,

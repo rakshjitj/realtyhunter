@@ -13,7 +13,7 @@
 <%= CSV.generate_line headers %>
 <%- @sales_units.each do |listing| -%>
 
-  <%= [listing.formatted_street_address2,
+  <%= ['"' + listing.formatted_street_address2 + '"',
     listing.building_unit,
     listing.neighborhood_name,
     listing.exclusive,

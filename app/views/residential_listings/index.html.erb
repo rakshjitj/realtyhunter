@@ -12,17 +12,27 @@
     <div class="hidden-xs hidden-sm col-sm-6 form-label-responsive page-header-buttons">
       <% if current_user.is_management? || current_user.is_listings_manager? %>
         <%= link_to 'Make Announcement', new_announcement_path,
-          class: "btn btn-warning btn-sm link-as-button" %>
-        <%= link_to 'Add a Deal', new_deal_path, class: 'btn btn-warning btn-sm link-as-button' %>
-        <%= link_to 'Add a unit', new_residential_listing_path, class: 'btn btn-warning btn-sm link-as-button' %>
+            class: "btn btn-warning btn-sm link-as-button management-action-button" %>
+        <%= link_to 'Add a Deal', new_deal_path,
+            class: 'btn btn-warning btn-sm link-as-button management-action-button' %>
+        <%= link_to 'Add a unit', new_residential_listing_path,
+            class: 'btn btn-warning btn-sm link-as-button management-action-button' %>
+        <%= link_to 'Export to CSV',
+            residential_listings_path(params.merge(format: 'csv').symbolize_keys),
+            class: 'btn btn-sm btn-warning link-as-button management-action-button' %>
       <% end %>
     </div>
     <div class="hidden-md hidden-lg col-sm-5 col-sm-left-padding form-label-responsive page-header-buttons">
       <% if current_user.is_management? || current_user.is_listings_manager? %>
         <%= link_to 'Make Announcement', new_announcement_path,
-          class: "btn btn-warning btn-sm link-as-button" %>
-        <%= link_to 'Add a Deal', new_deal_path, class: 'btn btn-warning btn-sm link-as-button' %>
-        <%= link_to 'Add a unit', new_residential_listing_path, class: 'btn btn-warning btn-sm link-as-button' %>
+            class: "btn btn-warning btn-sm link-as-button management-action-button" %>
+        <%= link_to 'Add a Deal', new_deal_path,
+            class: 'btn btn-warning btn-sm link-as-button management-action-button' %>
+        <%= link_to 'Add a unit', new_residential_listing_path,
+            class: 'btn btn-warning btn-sm link-as-button management-action-button' %>
+        <%= link_to 'Export to CSV',
+            residential_listings_path(params.merge(format: 'csv').symbolize_keys),
+            class:"btn btn-sm btn-warning link-as-button management-action-button" %>
       <% end %>
     </div>
   </div>
@@ -298,11 +308,6 @@
             <i class="fa fa-fw fa-list"></i> Internal Listings Sheet</a></li>
         </ul>
       </div>
-
-      <% if current_user.is_management? %>
-        <%= link_to 'Export to CSV', residential_listings_path(params.merge(format: 'csv').symbolize_keys),
-          class:"btn btn-sm btn-warning link-as-button" %>
-      <% end %>
 
       <span class="totals">
         &nbsp;&nbsp;<%= @residential_units.total_count %> Units found
