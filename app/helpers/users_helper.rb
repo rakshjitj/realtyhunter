@@ -10,8 +10,8 @@ module UsersHelper
 
 
 	def employee_title_and_specialty(user)
-	
-		title = ''	
+
+		title = ''
 		if user.respond_to?("employee_title_name".to_sym)
 			title = user.employee_title_name.titleize
 		else
@@ -22,13 +22,9 @@ module UsersHelper
 		if user.is_company_admin?
 			html = html + ' <span class="glyphicon glyphicon-star dark-orange" aria-hidden="true"></span>'
 		end
-		
-		# if title == 'agent'
-		# 	html = html + ' | ' + user.agent_specialties.join(", ")
-		# end
 
 		html.html_safe
 	end
 
-	
+
 end

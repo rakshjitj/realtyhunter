@@ -8,9 +8,6 @@
 #   # Inactive Agent:
 #   @user.add_role :inactive_agent
 #   # Licensed Agent:
-#   @user.add_role :residential
-#   @user.add_role :commercial
-#   @user.add_role :sales
 #   @user.add_role :roomsharing
 #   @user.add_role :associate_broker
 #   @user.add_role :broker
@@ -130,13 +127,6 @@
 
 # # seed user data -----------------------------------------
 
-# @agent_types = AgentType.create!([
-#   {name: "residential"},
-#   {name: "commercial"},
-#   {name: "sales"},
-#   #{name: "roomsharing"},
-#   ])
-
 # @employee_titles = EmployeeTitle.create!([
 #   {name: "unlicensed agent"},
 #   {name: "agent"},
@@ -170,7 +160,6 @@
 #     employee_title: EmployeeTitle.find_by(name: 'agent'),
 #     mobile_phone_number: '666-666-6666'
 #   })
-# @api_only.agent_types = ['residential', 'commercial']
 
 # # super admin
 # @super_admin = User.create!(
@@ -187,7 +176,6 @@
 #     employee_title: EmployeeTitle.find_by(name: 'super admin'),
 #     mobile_phone_number: '666-666-6666'
 #   })
-# @super_admin.agent_types = ['residential', 'commercial']
 
 # @company_admin1 = User.create!(
 #   { name: 'Nir Mizrachi',
@@ -203,7 +191,6 @@
 #     employee_title: EmployeeTitle.find_by(name: 'company admin'),
 #     mobile_phone_number: '929-258-7847'
 #   })
-# @company_admin1.agent_types = ['residential', 'commercial']
 
 # define_roles
 # @company_admin1.update_roles

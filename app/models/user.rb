@@ -340,27 +340,6 @@
     company.users.preload(:roles)
   end
 
-  # keep a running list of our specialties so we
-  # don't always have to recalculate
-  def agent_specialties
-    specialties = []
-
-    if has_role? :residential
-      specialties << 'Residential'
-    end
-    if has_role? :commercial
-      specialties << 'Commercial'
-    end
-    if has_role? :sales
-      specialties << 'Sales'
-    end
-    if has_role? :roomsharing
-      specialties << 'Roomsharing'
-    end
-
-    specialties
-  end
-
   # In order to approve another user, we must be:
   # - A company admin
   # - From the same company as the other user
