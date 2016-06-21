@@ -20,7 +20,7 @@ module API
 
 			def show
 				# id in this case refers to the unit's listing id
-				listings = all_listings_search(@user.company_id, {id: params[:id]})
+				listings = all_listings_search(@user.company_id, {id: params[:id], status: 'active'})
 				if listings && listings.length == 0
 					render json: {}
 				else
