@@ -7,8 +7,8 @@ class BuildingBlob
 
   def initialize(attributes)
     @items = attributes[:items]
-    @total_items = @items.total_count
-    @total_pages = @items.total_pages
-    @page = @items.current_page
+    @total_items = attributes[:total_count]
+    @total_pages = attributes[:total_pages]
+    @page = attributes[:page]
   end
 end

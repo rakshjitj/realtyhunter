@@ -5,7 +5,7 @@ class APISalesListing
   include ActiveModel::Conversion
 
   attr_reader :listing, :residential_amenities, :pet_policies, :primary_agents,
-    :building_amenities, :images, :rental_terms, :building_utilities, :open_houses,
+    :images, :rental_terms, :building_utilities, :open_houses, :building_blob,
     :id, :updated_at
 
   def initialize(attributes)
@@ -15,9 +15,9 @@ class APISalesListing
     @rental_terms = attributes[:rental_terms]
     @building_utilities = attributes[:building_utilities]
     @primary_agents = attributes[:primary_agents]
-    @building_amenities = attributes[:building_amenities]
     @images = attributes[:images]
     @open_houses = attributes[:open_houses]
+    @building_blob = attributes[:building_blob]
   end
 
 end

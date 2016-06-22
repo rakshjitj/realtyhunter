@@ -211,7 +211,7 @@ class Building < ActiveRecord::Base
 
   # Used in our API
   def self.get_amenities(list_of_units)
-    building_ids = list_of_units.pluck(:building_id)
+    building_ids = list_of_units.map(&:building_id)
     Building.joins(:building_amenities)
         .where(id: building_ids).select('name', 'id')
         .to_a.group_by(&:id)

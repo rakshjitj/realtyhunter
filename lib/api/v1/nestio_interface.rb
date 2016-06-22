@@ -44,6 +44,51 @@ module API
 				neighborhoods
 			end
 
+			# warning: must return buildings.id unmapped. do not change that line!
+			def buildings_search(query_params = nil)
+				buildings = Building.unarchived
+          .joins(:company)
+          .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+          .joins('left join landlords on landlords.id = buildings.landlord_id')
+          .where(company: @user.company)
+
+        if query_params && query_params[:id]
+          buildings = buildings.where(id: query_params[:id])
+        elsif query_params && query_params[:ids]
+         	buildings = buildings.where(id: query_params[:ids])
+        end
+
+        buildings = buildings.select('buildings.id', 'buildings.id as building_id',
+          'buildings.administrative_area_level_2_short',
+          'buildings.administrative_area_level_1_short as b_administrative_area_level_1_short',
+          'buildings.sublocality as b_sublocality',
+          'buildings.street_number as b_street_number',
+          'buildings.route as b_route',
+          'buildings.postal_code as b_postal_code',
+          'buildings.landlord_id',
+          'buildings.lat as b_lat',
+          'buildings.lng as b_lng',
+          'buildings.llc_name',
+          'buildings.updated_at',
+          'neighborhoods.name as neighborhood_name',
+          'neighborhoods.borough as neighborhood_borough',
+          'landlords.code', 'landlords.name', 'landlords.contact_name',
+          'landlords.office_phone', 'landlords.mobile', 'landlords.fax',
+          'landlords.email', 'landlords.website',
+          'landlords.administrative_area_level_1_short as l_administrative_area_level_1_short',
+          'landlords.sublocality as l_sublocality',
+          'landlords.street_number as l_street_number', 'landlords.route as l_route',
+          'landlords.postal_code as l_postal_code',
+          'landlords.lat as l_lat',
+          'landlords.lng as l_lng',
+          'landlords.listing_agent_id', 'landlords.listing_agent_percentage',
+          'landlords.has_fee as l_has_fee',
+          'landlords.op_fee_percentage as l_op_fee_percentage',
+          'landlords.tp_fee_percentage as l_tp_fee_percentage')
+
+        buildings
+			end
+
 			# todo: when ready to turn on the sales API, uncomment the relevant lines below
 			# and move the sales_listing join into the correct spot.
 			# note: landlords and neighborhoods are optional. landlords are only optional on
@@ -74,14 +119,6 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'units.building_unit', 'units.status', 'units.available_by',
 					'units.listing_id', 'units.updated_at', 'units.rent',
 					'buildings.id as building_id',
-					'buildings.administrative_area_level_2_short',
-					'buildings.administrative_area_level_1_short as b_administrative_area_level_1_short',
-					'buildings.sublocality as b_sublocality',
-					'buildings.street_number as b_street_number', 'buildings.route as b_route',
-					'buildings.postal_code as b_postal_code',
-					'buildings.lat as b_lat',
-					'buildings.lng as b_lng',
-					'buildings.llc_name',
 					'neighborhoods.name as neighborhood_name',
 					'neighborhoods.borough as neighborhood_borough',
 					'landlords.code', 'landlords.name', 'landlords.contact_name',
@@ -169,14 +206,6 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'units.building_unit', 'units.status', 'units.available_by',
 					'units.listing_id', 'units.updated_at', 'units.rent',
 					'buildings.id as building_id',
-					'buildings.administrative_area_level_2_short',
-					'buildings.administrative_area_level_1_short as b_administrative_area_level_1_short',
-					'buildings.sublocality as b_sublocality',
-					'buildings.street_number as b_street_number', 'buildings.route as b_route',
-					'buildings.postal_code as b_postal_code',
-					'buildings.lat as b_lat',
-					'buildings.lng as b_lng',
-					'buildings.llc_name',
 					'neighborhoods.name as neighborhood_name',
 					'neighborhoods.borough as neighborhood_borough',
 					'landlords.code', 'landlords.name', 'landlords.contact_name',
@@ -235,14 +264,6 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 						'units.listing_id', 'units.updated_at', 'units.rent', 'units.public_url',
 						'units.access_info',
 						'buildings.id as building_id',
-						'buildings.administrative_area_level_2_short',
-						'buildings.administrative_area_level_1_short as b_administrative_area_level_1_short',
-						'buildings.sublocality as b_sublocality',
-						'buildings.street_number as b_street_number', 'buildings.route as b_route',
-						'buildings.postal_code as b_postal_code',
-						'buildings.lat as b_lat',
-						'buildings.lng as b_lng',
-						'buildings.llc_name',
 						'neighborhoods.name as neighborhood_name',
 						'neighborhoods.borough as neighborhood_borough',
 						'sales_listings.id as s_id',
@@ -288,14 +309,14 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'units.id as unit_id', 'units.primary_agent_id', 'units.primary_agent2_id',
 					'units.building_unit', 'units.status', 'units.available_by',
 					'units.listing_id', 'units.updated_at', 'units.rent',
-					'buildings.administrative_area_level_2_short AS administrative_area_level_2_short',
-					'buildings.administrative_area_level_1_short AS b_administrative_area_level_1_short',
-					'buildings.sublocality as b_sublocality',
-					'buildings.street_number as b_street_number', 'buildings.route as b_route',
-					'buildings.postal_code as b_postal_code',
-					'buildings.lat as b_lat',
-					'buildings.lng as b_lng',
-					'buildings.llc_name',
+					# 'buildings.administrative_area_level_2_short AS administrative_area_level_2_short',
+					# 'buildings.administrative_area_level_1_short AS b_administrative_area_level_1_short',
+					# 'buildings.sublocality as b_sublocality',
+					# 'buildings.street_number as b_street_number', 'buildings.route as b_route',
+					# 'buildings.postal_code as b_postal_code',
+					# 'buildings.lat as b_lat',
+					# 'buildings.lng as b_lng',
+					# 'buildings.llc_name',
 					'buildings.id as building_id',
 					'neighborhoods.name as neighborhood_name',
 					'neighborhoods.borough as neighborhood_borough',

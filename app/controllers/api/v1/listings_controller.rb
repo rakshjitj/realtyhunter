@@ -24,25 +24,34 @@ module API
 				if listings && listings.length == 0
 					render json: {}
 				else
-					@pet_policies = Building.get_pet_policies(listings)
-					@rental_terms = Building.get_rental_terms(listings)
-					@building_utilities = Building.get_utilities(listings)
-					@residential_amenities = ResidentialListing.get_amenities(listings)
-					@images = Unit.get_all_images(listings)
-					@primary_agents = Unit.get_primary_agents(listings)
-					@building_amenities = Building.get_amenities(listings)
-					@open_houses = Unit.get_open_houses(listings)
+					listing = listings[0]
+					pet_policies = Building.get_pet_policies(listings)
+					rental_terms = Building.get_rental_terms(listings)
+					building_utilities = Building.get_utilities(listings)
+					residential_amenities = ResidentialListing.get_amenities(listings)
+					images = Unit.get_all_images(listings)
+					primary_agents = Unit.get_primary_agents(listings)
+					open_houses = Unit.get_open_houses(listings)
+
+					buildings = buildings_search({id: listing.building_id})
+	        bldg_images = Building.get_all_bldg_images(buildings)
+	        building_amenities = Building.get_amenities(buildings)
 
 					serializer_params = {
 						listing: listings[0],
-						residential_amenities: @residential_amenities[listings[0].unit_id],
-						pet_policies: @pet_policies[listings[0].building_id],
-						rental_terms: @rental_terms[listings[0].building_id],
-						building_utilities: @building_utilities[listings[0].building_id],
-						primary_agents: @primary_agents[listings[0].unit_id],
-						building_amenities: @building_amenities[listings[0].building_id],
-						images: @images[listings[0].unit_id],
-						open_houses: @open_houses[listings[0].unit_id]}
+						residential_amenities: residential_amenities[listing.unit_id],
+						pet_policies: pet_policies[listing.building_id],
+						rental_terms: rental_terms[listing.building_id],
+						building_utilities: building_utilities[listing.building_id],
+						primary_agents: primary_agents[listing.unit_id],
+						images: images[listing.unit_id],
+						open_houses: open_houses[listing.unit_id],
+						building_blob: APIBuilding.new({
+	            building: buildings[0],
+	            images: images[buildings[0].building_id],
+	            amenities: building_amenities[buildings[0].building_id]
+	          })
+					}
 
 					if is_residential(listings[0])
 						render json: APIResidentialListing.new(serializer_params)
@@ -141,18 +150,18 @@ module API
 
 				# residential
 				if search_params[:listing_type] == "10".freeze
-					@listings = residential_search(@user.company_id, search_params)
+					listings = residential_search(@user.company_id, search_params)
 				# sales
 				elsif search_params[:listing_type] == "20".freeze
-					@listings = sales_search(@user.company_id, search_params)
+					listings = sales_search(@user.company_id, search_params)
 				# commercial
 				elsif search_params[:listing_type] == "30".freeze
-					@listings = commercial_search(@user.company_id, search_params)
+					listings = commercial_search(@user.company_id, search_params)
 				else # everything
-					@listings = all_listings_search(@user.company_id, search_params)
+					listings = all_listings_search(@user.company_id, search_params)
 				end
 
-				@listings = @listings.page(listing_params[:page]).per(listing_params[:per_page])
+				listings = listings.page(listing_params[:page]).per(listing_params[:per_page])
 
 				# if cached, render cached blob
 
@@ -162,30 +171,37 @@ module API
 				# 	render json: blob
 				# else
 					if search_params[:listing_type] == "10".freeze # residential
-						@pet_policies = Building.get_pet_policies(@listings)
-						@rental_terms = Building.get_rental_terms(@listings)
-						@building_utilities = Building.get_utilities(@listings)
-						@residential_amenities = ResidentialListing.get_amenities(@listings)
+						@pet_policies = Building.get_pet_policies(listings)
+						@rental_terms = Building.get_rental_terms(listings)
+						@building_utilities = Building.get_utilities(listings)
+						@residential_amenities = ResidentialListing.get_amenities(listings)
 					elsif search_params[:listing_type] == "20".freeze # sales
 					elsif search_params[:listing_type] == "30".freeze #commercial
 					else
-						@residential_amenities = ResidentialListing.get_amenities(@listings)
-						@pet_policies = Building.get_pet_policies(@listings)
-						@rental_terms = Building.get_rental_terms(@listings)
-						@building_utilities = Building.get_utilities(@listings)
+						@residential_amenities = ResidentialListing.get_amenities(listings)
+						@pet_policies = Building.get_pet_policies(listings)
+						@rental_terms = Building.get_rental_terms(listings)
+						@building_utilities = Building.get_utilities(listings)
 					end
 
-					@images = Unit.get_all_images(@listings)
-					@primary_agents = Unit.get_primary_agents(@listings)
-					@building_amenities = Building.get_amenities(@listings)
-					@open_houses = Unit.get_open_houses(@listings)
+					@images = Unit.get_all_images(listings)
+					@primary_agents = Unit.get_primary_agents(listings)
+					# @building_amenities = Building.get_amenities(listings)
+					@open_houses = Unit.get_open_houses(listings)
 
 					# repackage into a format that's easily digestible
 					# by our API renderer
 					r_count = 0
 					c_count = 0
 					s_count = 0
-					output = @listings.map do |l|
+
+					buildings = buildings_search({ids: listings.pluck(:building_id)})
+					bldg_images = Building.get_all_bldg_images(buildings)
+          building_amenities = Building.get_amenities(buildings)
+
+          buildings = buildings.to_a.group_by(&:building_id)
+
+					output = listings.map do |l|
 						serializer_params = {
 							listing: l,
 							residential_amenities: @residential_amenities[l.unit_id],
@@ -193,9 +209,15 @@ module API
 							rental_terms: @rental_terms[l.building_id],
 							building_utilities: @building_utilities[l.building_id],
 							primary_agents: @primary_agents[l.unit_id],
-							building_amenities: @building_amenities[l.building_id],
 							images: @images[l.unit_id],
-							open_houses: @open_houses[l.unit_id]}
+							open_houses: @open_houses[l.unit_id],
+							building_blob:
+								APIBuilding.new({
+			            building: buildings[l.building_id][0],
+			            images: bldg_images[l.building_id],
+			            amenities: building_amenities[l.building_id]
+			          })
+						}
 
 						if is_residential(l)
 							r_count += 1
@@ -218,9 +240,9 @@ module API
 					blob = #Rails.cache.fetch(blob_cache_key, expires_in: 12.hours) do
 						ListingBlob.new({
 							items: output,
-							total_count: @listings.total_count,
-							total_pages: @listings.total_pages,
-							page: @listings.current_page
+							total_count: listings.total_count,
+							total_pages: listings.total_pages,
+							page: listings.current_page
 							})
 					#end
 					render json: blob

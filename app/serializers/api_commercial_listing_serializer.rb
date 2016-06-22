@@ -1,6 +1,6 @@
 class APICommercialListingSerializer < ActiveModel::Serializer
   # common to all units
-  attributes :unit_description,
+  attributes :unit_description, :building, :open_houses, :contacts, :photos,
   :floor, :layout, :bedrooms, :unit_number, :pets, :status, :date_available,
   :changed_at, :square_footage, :rent, :id, :favorite, :show, :expose_address,
   :total_room_count, :condition, :showing_instruction, :commission_amount,
@@ -8,7 +8,6 @@ class APICommercialListingSerializer < ActiveModel::Serializer
   :rental_terms, :utilities, :listing_type, :property_type, :commercial_use, :min_lease_term,
   :max_lease_term, :renter_fee, :bathrooms, :unit_amenities
 
-  attribute :open_houses
   def open_houses
     if object.open_houses
       object.open_houses
@@ -16,12 +15,10 @@ class APICommercialListingSerializer < ActiveModel::Serializer
     end
   end
 
-  attribute :building, serializer: BuildingSerializer
   def building
-    BuildingSerializer.new(object.listing).attributes
+    APIBuildingSerializer.new(object.building_blob).attributes
   end
 
-  attributes :contacts
   def contacts
     if object.primary_agents
       object
@@ -30,7 +27,6 @@ class APICommercialListingSerializer < ActiveModel::Serializer
     end
   end
 
-  attributes :photos
   def photos
     if object.images
       object

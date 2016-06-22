@@ -1,53 +1,62 @@
 module API
   module V1
 
+    # TODO: consider returning only building data and removing landlord data from here. keep the
+    # landlord ID below.
+
     class BuildingsController < ApiController
+      include API::V1::NestioInterface
+
       def index
         # pagination
         per_page = 50
 
-        # warning: must return buildings.id unmapped. do not change that line!
-        @buildings = Building.unarchived
-          .joins(:company)
-          .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
-          .where(company: @user.company)
-          .select('buildings.id', 'buildings.id as building_id',
-          'buildings.administrative_area_level_2_short',
-          'buildings.administrative_area_level_1_short as b_administrative_area_level_1_short',
-          'buildings.sublocality as b_sublocality',
-          'buildings.street_number as b_street_number',
-          'buildings.route as b_route',
-          'buildings.postal_code as b_postal_code',
-          'buildings.lat as b_lat',
-          'buildings.lng as b_lng',
-          'buildings.llc_name',
-          'buildings.updated_at',
-          'neighborhoods.name as neighborhood_name',
-          'neighborhoods.borough as neighborhood_borough')
+        buildings = buildings_search()
 
         # updated_at
         if building_params[:changed_at] && !building_params[:changed_at].empty?
           time = Time.parse(building_params[:changed_at]).in_time_zone
-          @buildings = @buildings.where('buildings.updated_at > ?', time);
+          buildings = buildings.where('buildings.updated_at > ?', time);
         end
 
-        @buildings = @buildings.order("buildings.updated_at ASC")
-        @buildings = @buildings.page(building_params[:page]).per(per_page)
-        @images = Building.get_all_bldg_images(@buildings)
+        buildings = buildings.order("buildings.updated_at ASC")
+        buildings = buildings.page(building_params[:page]).per(per_page)
+        images = Building.get_all_bldg_images(buildings)
+        building_amenities = Building.get_amenities(buildings)
 
-        #agents_arr = @buildings.to_a
+        output = buildings.map do |b|
+          APIBuilding.new({
+            building: b,
+            images: images[b.building_id],
+            amenities: building_amenities[b.building_id]
+          })
+        end
+        #agents_arr = buildings.to_a
         #blob_cache_key = "api_v1_agentz"
         blob = #Rails.cache.fetch(blob_cache_key) do
           BuildingBlob.new({
-            items: @buildings,
+            items: output,
+            total_count: buildings.total_count,
+            total_pages: buildings.total_pages,
+            page: buildings.current_page
           })
         #end
         render json: blob
       end
 
       def show
-        @building = Building.find(params[:id])
-        render json: @building
+        buildings = buildings_search({id: params[:id]})
+        if buildings && buildings.length == 0
+          render json: {}
+        else
+          images = Building.get_all_bldg_images(buildings)
+          building_amenities = Building.get_amenities(buildings)
+          render json: APIBuilding.new({
+            building: buildings[0],
+            images: images[buildings[0].building_id],
+            amenities: building_amenities[buildings[0].building_id]
+          })
+        end
       end
 
     protected

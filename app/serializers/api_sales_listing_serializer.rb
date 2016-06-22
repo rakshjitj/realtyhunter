@@ -1,6 +1,6 @@
 class APISalesListingSerializer < ActiveModel::Serializer
   # common to all units
-  attributes :unit_description,
+  attributes :unit_description, :building, :open_houses, :contacts, :photos,
   :floor, :layout, :bedrooms, :unit_number, :pets, :status, :date_available,
   :changed_at, :rent, :id,
   :total_room_count, :condition, :showing_instruction, :commission_amount,
@@ -18,7 +18,6 @@ class APISalesListingSerializer < ActiveModel::Serializer
   # :square_footage, :favorite, :show, :expose_address, :rented_date, :rental_terms, :utilities,
   # :min_lease_term, :max_lease_term, :renter_fee,
 
-  attribute :open_houses
   def open_houses
     if object.open_houses
       object.open_houses
@@ -26,13 +25,10 @@ class APISalesListingSerializer < ActiveModel::Serializer
     end
   end
 
-  attribute :building
   def building
-    # TODO: why does this break with sales?
-    BuildingSerializer.new(object.listing).attributes
+    APIBuildingSerializer.new(object.building_blob).attributes
   end
 
-  attributes :contacts
   def contacts
     if object.primary_agents
       object
@@ -41,7 +37,6 @@ class APISalesListingSerializer < ActiveModel::Serializer
     end
   end
 
-  attributes :photos
   def photos
     if object.images
       object
