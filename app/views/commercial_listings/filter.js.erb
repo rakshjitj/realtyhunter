@@ -1,4 +1,4 @@
-$('.commercial_units_table_body').html("<%= escape_javascript (render :partial => @commercial_units) %>");
+$('.commercial_units_table_body').html("<%= j(render partial: 'commercial_listings/commercial_listing', collection: @commercial_units, locals: {com_images: @com_images, bldg_images: @bldg_images}) %>");
 
 $('.totals').html("<%= @commercial_units.total_count %> Units found");
 $('.pagination-wrapper').html("<%=j (render :partial => 'shared/pagination', locals: {:models => @commercial_units}) %>");
