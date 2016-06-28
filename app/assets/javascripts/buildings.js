@@ -164,9 +164,9 @@ Buildings = {};
       location: bldg_address,
       details: ".details"
     }).bind("geocode:result", function () {
-      //console.log(result);
+      console.log(result);
     }).bind("geocode:error", function () {
-      //console.log("[ERROR]: " + result);
+      console.log("[ERROR]: " + result);
     });
 
     $(".autocomplete-input").geocomplete({
@@ -177,6 +177,7 @@ Buildings = {};
       if (this.value == "New York, NY, USA") {
         this.value = '';
       }
+      console.log(this.value);
 
       // update neighborhood options from google results
       var sublocality = '';
@@ -207,7 +208,7 @@ Buildings = {};
       // }
 
     }).bind("geocode:error", function () {
-      //console.log("[ERROR]: " + result);
+      console.log("[ERROR]: " + result);
     });
   }
 

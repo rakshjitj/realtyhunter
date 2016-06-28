@@ -20,7 +20,7 @@ module API
 
 			def show
 				# id in this case refers to the unit's listing id
-				listings = all_listings_search(@user.company_id, {id: params[:id], status: 'active'})
+				listings = all_listings_search(@user.company_id, {id: params[:id], status: 'active,pending'})
 				if listings && listings.length == 0
 					render json: {}
 				else
@@ -94,7 +94,7 @@ module API
 				# has_photos
 				has_photos = _is_valid_bool_value(listing_params[:has_photos])
 				#status
-				status = listing_params[:status] ? listing_params[:status] : 'active'
+				status = listing_params[:status] ? listing_params[:status] : 'active,pending'
 				# sort order defaults to order by last udpated
 				sort_column = %w[layout rent date_available updated status_updated].include?(listing_params[:sort]) ? listing_params[:sort] : "updated".freeze
 				# sort_dir

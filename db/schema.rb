@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160604004947) do
+ActiveRecord::Schema.define(version: 20160628030503) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 20160604004947) do
     t.integer  "active_unit_count",                 default: 0,     null: false
     t.datetime "last_unit_updated_at"
     t.string   "llc_name"
+    t.boolean  "never_watermark_images",            default: false
   end
 
   add_index "buildings", ["documents_id"], name: "index_buildings_on_documents_id", using: :btree
@@ -598,6 +599,9 @@ ActiveRecord::Schema.define(version: 20160604004947) do
     t.integer  "primary_agent2_id"
     t.integer  "deals_id"
     t.integer  "open_houses_id"
+    t.boolean  "never_watermark_images", default: false
+    t.integer  "syndication_status",     default: 0
+    t.boolean  "has_stock_photos",       default: false
   end
 
   add_index "units", ["commercial_listing_id"], name: "index_units_on_commercial_listing_id", using: :btree

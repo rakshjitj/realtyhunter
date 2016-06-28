@@ -23,11 +23,15 @@ class Unit < ActiveRecord::Base
     :offer_submitted, :offer_accepted, :binder_signed, :off_market_for_lease_execution, #additional for commercial
     :on_market, :contract_out, :in_escrow, :closed # additional for sales
    ]
-
-	validates :status, presence: true, inclusion: {
+  validates :status, presence: true, inclusion: {
     in: ['active', 'pending', 'off',
          'offer_submitted', 'offer_accepted', 'binder_signed', 'off_market_for_lease_execution',
          'on_market', 'contract_out', 'in_escrow', 'closed'] }
+
+  enum syndication_status: ['Syndicate if matches criteria', 'Force syndicate', 'Never syndicate']
+  validates :syndication_status, presence: true, inclusion: {
+    in: ['Syndicate if matches criteria', 'Force syndicate', 'Never syndicate']
+  }
 
   # this should really been called "price", as its used across both rentals and sales
 	validates :rent, presence: true, numericality: { only_integer: true }

@@ -49,8 +49,13 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 		listings = listings.joins(building: [:company, :landlord])
 			.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
 			.where('units.archived = false')
-			.where('units.status =(?)', Unit.statuses["active"])
+			.where('units.status IN (?) OR units.syndication_status = ?',
+					[Unit.statuses["active"], Unit.statuses["pending"]], Unit.syndication_statuses['Force syndicate'])
 			.where('units.primary_agent_id > 0')
+			.where('units.syndication_status IN (?)', [
+					Unit.syndication_statuses['Syndicate if matches criteria'],
+					Unit.syndication_statuses['Force syndicate']
+				])
 			.where('companies.id = ?', company_id)
 
 		# naked requires all no-fee listings to be exposed

@@ -411,6 +411,23 @@
                     </div>
                   </div>
                 </div>
+
+                <%= f.fields_for @residential_unit.unit do |unit_form| %>
+                <div class="row">
+                  <div class="col-xs-6 col-sm-4">
+                    <%= unit_form.label :syndication_status, "Should syndicate", class: 'required' %>
+                  </div>
+                  <div class="col-xs-9 col-md-6">
+                    <%= unit_form.select(:syndication_status,
+                      options_for_select(['Syndicate if matches criteria', 'Force syndicate', 'Never syndicate'],
+                        [@residential_unit.unit.syndication_status]),
+                      {prompt: "Choose one..."},
+                      class: 'form-control',
+                      include_blank: true) %>
+                  </div>
+                </div>
+                <% end %>
+
               </div>
             </div>
             <br>

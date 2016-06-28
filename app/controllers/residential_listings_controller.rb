@@ -417,6 +417,7 @@ class ResidentialListingsController < ApplicationController
         :rls_flag, :streeteasy_flag,
         unit: [:building_unit, :rent, :available_by, :access_info, :status,
           :exclusive, :building_id, :primary_agent_id, :listing_agent_id,
+          :syndication_status,
           open_houses_attributes: [:day, :start_time, :end_time, :_destroy, :id] ],
         residential_amenity_ids: []
         )

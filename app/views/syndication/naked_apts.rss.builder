@@ -10,21 +10,22 @@ xml.streeteasy :version => "1.6" do
 
 	  @listings.each do |listing|
 
+	  	# status should always be reported as active
 	  	# translate status
 	  	@status = 'active'
-			if listing.status == "active"
-				@status = "active"
-			elsif listing.status == "pending"
-				@status = "off-market"
-			elsif listing.status == "offer_submitted"
-				@status = "contract-out"
-			elsif listing.status == "offer_accepted"
-				@status = "in-contract"
-		  elsif listing.status == "binder_signed"
-				@status = "contract-signed"
-			elsif listing.status == "off" ||
-				listing.status == "rented"
-			end
+			# if listing.status == "active"
+			# 	@status = "active"
+			# elsif listing.status == "pending"
+			# 	@status = "off-market"
+			# elsif listing.status == "offer_submitted"
+			# 	@status = "contract-out"
+			# elsif listing.status == "offer_accepted"
+			# 	@status = "in-contract"
+		 #  elsif listing.status == "binder_signed"
+			# 	@status = "contract-signed"
+			# elsif listing.status == "off" ||
+			# 	listing.status == "rented"
+			# end
 
 			# listing type
 			if listing.r_id

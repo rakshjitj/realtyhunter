@@ -94,6 +94,8 @@ module API
 			# note: landlords and neighborhoods are optional. landlords are only optional on
 			# sales_listings
 			def all_listings_search(company_id, search_params)
+				statuses = search_params[:status].split(',').map{|s| Unit.statuses[s]}
+
 				# left join sales_listings on units.id = sales_listings.unit_id')
 				listings = Unit.joins(
 					'left join residential_listings on units.id = residential_listings.unit_id
@@ -102,7 +104,11 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 				.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
 				.joins('left join landlords on landlords.id = buildings.landlord_id')
 				.where('units.archived = false')
-				.where('units.status IN (?)', Unit.statuses[search_params[:status]])
+				.where('units.syndication_status IN (?)', [
+						Unit.syndication_statuses['Syndicate if matches criteria'],
+						Unit.syndication_statuses['Force syndicate']
+					])
+				.where('units.status IN (?)', statuses)
 				.where('companies.id = ?', company_id)
 
 				if search_params[:id] && !search_params[:id].empty?
@@ -118,6 +124,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'units.id as unit_id', 'units.primary_agent_id', 'units.primary_agent2_id',
 					'units.building_unit', 'units.status', 'units.available_by',
 					'units.listing_id', 'units.updated_at', 'units.rent',
+					'units.syndication_status',
 					'buildings.id as building_id',
 					'neighborhoods.name as neighborhood_name',
 					'neighborhoods.borough as neighborhood_borough',
@@ -205,6 +212,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'units.id as unit_id', 'units.primary_agent_id', 'units.primary_agent2_id',
 					'units.building_unit', 'units.status', 'units.available_by',
 					'units.listing_id', 'units.updated_at', 'units.rent',
+					'units.syndication_status',
 					'buildings.id as building_id',
 					'neighborhoods.name as neighborhood_name',
 					'neighborhoods.borough as neighborhood_borough',
@@ -262,7 +270,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 		     		'units.id as unit_id', 'units.primary_agent_id', 'units.primary_agent2_id',
 		     		'units.building_unit', 'units.status', 'units.available_by',
 						'units.listing_id', 'units.updated_at', 'units.rent', 'units.public_url',
-						'units.access_info',
+						'units.access_info', 'units.syndication_status',
 						'buildings.id as building_id',
 						'neighborhoods.name as neighborhood_name',
 						'neighborhoods.borough as neighborhood_borough',
@@ -309,14 +317,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'units.id as unit_id', 'units.primary_agent_id', 'units.primary_agent2_id',
 					'units.building_unit', 'units.status', 'units.available_by',
 					'units.listing_id', 'units.updated_at', 'units.rent',
-					# 'buildings.administrative_area_level_2_short AS administrative_area_level_2_short',
-					# 'buildings.administrative_area_level_1_short AS b_administrative_area_level_1_short',
-					# 'buildings.sublocality as b_sublocality',
-					# 'buildings.street_number as b_street_number', 'buildings.route as b_route',
-					# 'buildings.postal_code as b_postal_code',
-					# 'buildings.lat as b_lat',
-					# 'buildings.lng as b_lng',
-					# 'buildings.llc_name',
+					'units.syndication_status',
 					'buildings.id as building_id',
 					'neighborhoods.name as neighborhood_name',
 					'neighborhoods.borough as neighborhood_borough',
