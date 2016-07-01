@@ -200,6 +200,10 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					.joins(:residential_listing, [building: [:landlord, :company]])
 					.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
 					.where('units.archived = false')
+					.where('units.syndication_status IN (?)', [
+						Unit.syndication_statuses['Syndicate if matches criteria'],
+						Unit.syndication_statuses['Force syndicate']
+					])
 					.where('units.status IN (?)', Unit.statuses[search_params[:status]])
 					.where('companies.id = ?', company_id)
 
@@ -260,6 +264,10 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					.joins(:sales_listing, [building: :company])
 		      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
 		      .where('units.archived = false')
+		      .where('units.syndication_status IN (?)', [
+						Unit.syndication_statuses['Syndicate if matches criteria'],
+						Unit.syndication_statuses['Force syndicate']
+					])
 					.where('units.status IN (?)', Unit.statuses[search_params[:status]])
 		      .where('companies.id = ?', company_id)
 
@@ -305,6 +313,10 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 				listings = Unit.joins(:commercial_listing, [building: [:landlord, :company]])
 					.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
 					.where('units.archived = false')
+					.where('units.syndication_status IN (?)', [
+						Unit.syndication_statuses['Syndicate if matches criteria'],
+						Unit.syndication_statuses['Force syndicate']
+					])
 					.where('units.status IN (?)', Unit.statuses[search_params[:status]])
 					.where('companies.id = ?', company_id)
 

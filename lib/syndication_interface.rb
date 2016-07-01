@@ -50,7 +50,8 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 			.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
 			.where('units.archived = false')
 			.where('units.status IN (?) OR units.syndication_status = ?',
-					[Unit.statuses["active"]], Unit.syndication_statuses['Force syndicate'])
+					[Unit.statuses["active"], Unit.statuses["pending"]],
+						Unit.syndication_statuses['Force syndicate'])
 			.where('units.primary_agent_id > 0')
 			.where('units.syndication_status IN (?)', [
 					Unit.syndication_statuses['Syndicate if matches criteria'],
