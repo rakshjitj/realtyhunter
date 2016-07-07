@@ -196,6 +196,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 
 			# note: neighborhoods are optional
 			def residential_search(company_id, search_params)
+				statuses = search_params[:status].split(',').map{|s| Unit.statuses[s]}
 				listings = Unit
 					.joins(:residential_listing, [building: [:landlord, :company]])
 					.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
@@ -204,7 +205,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 						Unit.syndication_statuses['Syndicate if matches criteria'],
 						Unit.syndication_statuses['Force syndicate']
 					])
-					.where('units.status IN (?)', Unit.statuses[search_params[:status]])
+					.where('units.status IN (?)', statuses)
 					.where('companies.id = ?', company_id)
 
 				listings = _restrict_on_residential_model(company_id, search_params, listings)
@@ -260,6 +261,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 
 			# TODO: still not fully setup
 			def sales_search(company_id, search_params)
+				statuses = search_params[:status].split(',').map{|s| Unit.statuses[s]}
 				listings = Unit
 					.joins(:sales_listing, [building: :company])
 		      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
@@ -268,7 +270,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 						Unit.syndication_statuses['Syndicate if matches criteria'],
 						Unit.syndication_statuses['Force syndicate']
 					])
-					.where('units.status IN (?)', Unit.statuses[search_params[:status]])
+					.where('units.status IN (?)', statuses)
 		      .where('companies.id = ?', company_id)
 
 		    #listings = _sort_by(search_params, listings)
@@ -310,6 +312,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 			end
 
 			def commercial_search(company_id, search_params)
+				statuses = search_params[:status].split(',').map{|s| Unit.statuses[s]}
 				listings = Unit.joins(:commercial_listing, [building: [:landlord, :company]])
 					.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
 					.where('units.archived = false')
@@ -317,7 +320,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 						Unit.syndication_statuses['Syndicate if matches criteria'],
 						Unit.syndication_statuses['Force syndicate']
 					])
-					.where('units.status IN (?)', Unit.statuses[search_params[:status]])
+					.where('units.status IN (?)', statuses)
 					.where('companies.id = ?', company_id)
 
 				# TODO: restrict by commercial params
