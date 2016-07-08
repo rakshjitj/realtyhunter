@@ -1,7 +1,7 @@
-<!--% cache([user, current_user.employee_title.name,
+<% cache([user, current_user.employee_title.name,
     residential_units.ids, commercial_units.ids,
     residential_units.maximum(:updated_at).to_i, commercial_units.maximum(:updated_at).to_i
-    ]) do %-->
+    ]) do %>
 
 <% provide(:title, @user.name) %>
 <div id="users">
@@ -182,4 +182,4 @@
     } %>
 </div>
 
-<!--% end %--><!-- cache -->
+<% end %><!-- cache -->
