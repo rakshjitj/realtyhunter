@@ -64,6 +64,11 @@ class Unit < ActiveRecord::Base
     OpenHouse.where(unit_id: unit_ids).to_a.group_by(&:unit_id)
   end
 
+  def self.get_agents_by_id(ids)
+    primary_agents = User.where(id: ids)
+    Hash[primary_agents.map {|agent| [agent.id, agent.name]}]
+  end
+
   def self.get_primary_agents(list)
     User.joins(:office)
       .joins('inner join units on users.id = units.primary_agent_id OR users.id = units.primary_agent2_id')

@@ -107,6 +107,15 @@
       <% end %>
     </td>
 
+    <!-- ****** PRIMARY AGENT ****************************************** -->
+    <td>
+      <% if residential_listing.primary_agent_id %>
+        <%= link_to @primary_agents[residential_listing.primary_agent_id], user_path(residential_listing.primary_agent_id) %>
+      <% else %>
+        --
+      <% end %>
+    </td>
+
     <!-- ****** UPDATED_AT ****************************************** -->
     <td><%= time_ago_in_words(residential_listing.updated_at) %></td>
 

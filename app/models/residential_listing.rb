@@ -545,6 +545,7 @@ class ResidentialListing < ActiveRecord::Base
         'neighborhoods.name AS neighborhood_name',
         'landlords.code',
         'landlords.id AS landlord_id',
+        'units.primary_agent_id',
         'units.available_by', 'units.listing_id'
       )
       .order('residential_listings.updated_at desc')
@@ -583,6 +584,7 @@ class ResidentialListing < ActiveRecord::Base
         'neighborhoods.name AS neighborhood_name',
         'landlords.code',
         'landlords.id AS landlord_id',
+        'units.primary_agent_id',
         'units.available_by', 'units.listing_id')
 
     if !status.nil?

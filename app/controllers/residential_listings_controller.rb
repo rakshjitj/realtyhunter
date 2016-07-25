@@ -325,6 +325,7 @@ class ResidentialListingsController < ApplicationController
       do_search
       @bldg_images = Building.get_bldg_images_from_units(@residential_units)
       @res_images = ResidentialListing.get_images(@residential_units)
+      @primary_agents = Unit.get_agents_by_id(@residential_units.pluck(:primary_agent_id))
       custom_sort
 
       # display all found listings on the map
