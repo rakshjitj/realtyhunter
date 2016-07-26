@@ -38,6 +38,7 @@
         has_fee: $('#has_fee').val(),
         roomsharing_filter: $('#roomsharing_filter').prop('checked'),
         unassigned_filter: $('#unassigned_filter').prop('checked'),
+        tenant_occupied_filter: $('#tenant_occupied_filter').prop('checked'),
         primary_agent_id:  $('#primary_agent_id').val(),
         sort_by: sortByCol,
         direction: sortDirection,
@@ -605,24 +606,6 @@
     }
 
     $('input').keydown(ResidentialListings.preventEnter);
-    //$('#address').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
-    // $('#address').change(ResidentialListings.throttledSearch);
-    // $('#rent_min').change(ResidentialListings.throttledSearch);
-    // $('#rent_max').change(ResidentialListings.throttledSearch);
-    // $('#bed_min').change(ResidentialListings.throttledSearch);
-    // $('#bed_max').change(ResidentialListings.throttledSearch);
-    // $('#bath_min').change(ResidentialListings.throttledSearch);
-    // $('#bath_max').change(ResidentialListings.throttledSearch);
-    //$('#landlord').bind('railsAutocomplete.select', ResidentialListings.throttledSearch);
-    // $('#landlord').change(ResidentialListings.throttledSearch);
-    // $('#available_starting').blur(ResidentialListings.throttledSearch);
-    // $('#available_before').blur(ResidentialListings.throttledSearch);
-    // $('#pet_policy_shorthand').change(ResidentialListings.throttledSearch);
-    // $('#status').change(ResidentialListings.throttledSearch);
-    // $('#has_fee').change(ResidentialListings.throttledSearch);
-    // $('#roomsharing_filter').change(ResidentialListings.throttledSearch);
-    // $('#unassigned_filter').change(ResidentialListings.throttledSearch);
-    // $('#primary_agent_id').change(ResidentialListings.throttledSearch);
     $('#res-search-trigger').click(function(e) {
       ResidentialListings.doSearch();
       e.preventDefault();

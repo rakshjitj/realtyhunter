@@ -230,7 +230,18 @@
             <% end %>
           </div>
 
+          <div class="row vertical-padding">
+            <div class="col-xs-6">
+              <div class="checkbox checkbox-warning inline">
+                <%= check_box_tag :tenant_occupied_filter, "".freeze, params[:tenant_occupied_filter] == "true".freeze ? true : false,
+                    class: 'styled' %>
+                <label for="tenant_occupied_filter">
+                  Tenant Occupied
+                </label>
+              </div>
+            </div>
 
+          </div>
 
           <div class="row vertical-padding">
             <div class="col-xs-11 selectize-wrapper">

@@ -379,7 +379,7 @@ class ResidentialListing < ActiveRecord::Base
 
     if !params[:tenant_occupied_filter].blank?
       running_list = running_list.where(
-          'units.tenant_occupied = ?', params[:tenant_occupied_filter])
+          'residential_listings.tenant_occupied = ?', params[:tenant_occupied_filter])
     end
 
     # primary agent
