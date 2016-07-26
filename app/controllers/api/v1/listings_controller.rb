@@ -186,7 +186,6 @@ module API
 
 					@images = Unit.get_all_images(listings)
 					@primary_agents = Unit.get_primary_agents(listings)
-					# @building_amenities = Building.get_amenities(listings)
 					@open_houses = Unit.get_open_houses(listings)
 
 					# repackage into a format that's easily digestible
@@ -227,11 +226,13 @@ module API
 							APICommercialListing.new(serializer_params)
 						elsif is_sales(l)
 							s_count += 1
+							puts "---SALES #{l.inspect}"
 							APISalesListing.new(serializer_params)
 						else
-							# todo: check prod for bad listings. remove any that fall into this category
-							# most likely leftovers from early testing
-							puts "AH HA FOUND ONE! #{l.inspect}"
+							# Remove any that fall into this category - most likely leftovers from early testing,
+							# bad code, etc.
+							puts "AH HA FOUND ONE! Deleting... #{l.listing_id}"
+							Unit.where(listing_id: l.listing_id).delete_all
 						end
 					end
 

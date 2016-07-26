@@ -96,9 +96,10 @@ module API
 			def all_listings_search(company_id, search_params)
 				statuses = search_params[:status].split(',').map{|s| Unit.statuses[s]}
 
-				# left join sales_listings on units.id = sales_listings.unit_id')
+				#
 				listings = Unit.joins(
 					'left join residential_listings on units.id = residential_listings.unit_id
+left join sales_listings on units.id = sales_listings.unit_id
 left join commercial_listings on units.id = commercial_listings.unit_id')
 				.joins([building: :company])
 				.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
@@ -143,14 +144,14 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'landlords.tp_fee_percentage as l_tp_fee_percentage',
 					'residential_listings.id AS r_id',
 					'commercial_listings.id as c_id',
-					#'sales_listings.id as s_id',
+					'sales_listings.id as s_id',
 					'residential_listings.lease_start', 'residential_listings.lease_end',
 					'residential_listings.has_fee as r_has_fee',
 					'residential_listings.tp_fee_percentage', 'residential_listings.beds',
 					'residential_listings.baths',
 					'residential_listings.description',
 					'commercial_listings.property_description',
-					#'sales_listings.public_description',
+					'sales_listings.public_description',
 					'residential_listings.favorites as r_favorites',
 					'commercial_listings.favorites as c_favorites',
 					'residential_listings.show as r_show',
@@ -159,36 +160,35 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'commercial_listings.expose_address as c_expose_address',
 					'residential_listings.floor as r_floor',
 					'commercial_listings.floor as c_floor',
-					#'sales_listings.floor as s_floor',
+					'sales_listings.floor as s_floor',
 					'residential_listings.total_room_count as r_total_room_count',
-					#'sales_listings.total_room_count as s_total_room_count',
+					'sales_listings.total_room_count as s_total_room_count',
 					'residential_listings.condition as r_condition',
-					#'sales_listings.condition as s_condition',
+					'sales_listings.condition as s_condition',
 					'residential_listings.showing_instruction as r_showing_instruction',
-					#'sales_listings.showing_instruction as s_showing_instruction',
+					'sales_listings.showing_instruction as s_showing_instruction',
 					'residential_listings.commission_amount as r_commission_amount',
-					#'sales_listings.commission_amount as s_commission_amount',
+					'sales_listings.commission_amount as s_commission_amount',
 					'residential_listings.cyof as r_cyof',
-					#'sales_listings.cyof as s_cyof',
+					'sales_listings.cyof as s_cyof',
 					'residential_listings.rented_date as r_rented_date',
 					'residential_listings.rlsny as r_rlsny',
-					#'sales_listings.rlsny as s_rlsny',
+					'sales_listings.rlsny as s_rlsny',
 					'residential_listings.share_with_brokers as r_share_with_brokers',
-					#'sales_listings.share_with_brokers as s_share_with_brokers',
+					'sales_listings.share_with_brokers as s_share_with_brokers',
 					'residential_listings.tenant_occupied as r_tenant_occupied',
-					#'sales_listings.tenant_occupied as s_tenant_occupied',
+					'sales_listings.tenant_occupied as s_tenant_occupied',
 					'residential_listings.op_fee_percentage as r_op_fee_percentage',
 					'commercial_listings.lease_term_months',
 					'commercial_listings.sq_footage',
 					'residential_listings.rls_flag',
 					'residential_listings.streeteasy_flag',
-					# following fields are all from sales_listings
-					# 'sales_listings.building_size',
-					# :percent_commission, :outside_broker_commission,
-				 #  :seller_name, :seller_phone, :seller_address,
-				 #  :year_built, :building_type, :lot_size,
-				 #  :block_taxes, :lot_taxes, :water_sewer, :insurance,
-				 #  :school_district, :certificate_of_occupancy, :violation_search, :listing_type
+					'sales_listings.building_size',
+					:percent_commission, :outside_broker_commission,
+				  :seller_name, :seller_phone, :seller_address,
+				  :year_built, :building_type, :lot_size,
+				  :block_taxes, :lot_taxes, :water_sewer, :insurance,
+				  :school_district, :certificate_of_occupancy, :violation_search, :listing_type
 				)
 
 				listings
