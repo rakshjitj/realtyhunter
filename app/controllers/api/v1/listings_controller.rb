@@ -226,13 +226,13 @@ module API
 							APICommercialListing.new(serializer_params)
 						elsif is_sales(l)
 							s_count += 1
-							puts "---SALES #{l.inspect}"
+							#puts "---SALES #{l.inspect}"
 							APISalesListing.new(serializer_params)
 						else
 							# Remove any that fall into this category - most likely leftovers from early testing,
 							# bad code, etc.
-							puts "AH HA FOUND ONE! Deleting... #{l.listing_id}"
-							Unit.where(listing_id: l.listing_id).delete_all
+							puts "AH HA FOUND ONE! #{l.listing_id}"
+							#Unit.where(listing_id: l.listing_id).delete_all
 						end
 					end
 
