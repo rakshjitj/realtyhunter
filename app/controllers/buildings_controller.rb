@@ -41,6 +41,9 @@ class BuildingsController < ApplicationController
   # GET /buildings/1
   # GET /buildings/1.json
   def show
+    if !@building
+      redirect_to buildings_url
+    end
     set_units
   end
 
