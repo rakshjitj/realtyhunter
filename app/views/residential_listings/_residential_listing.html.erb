@@ -109,8 +109,8 @@
 
     <!-- ****** PRIMARY AGENT ****************************************** -->
     <td>
-      <% if residential_listing.primary_agent_id %>
-        <%= link_to @primary_agents[residential_listing.primary_agent_id], user_path(residential_listing.primary_agent_id) %>
+      <% if residential_listing.primary_agent_name %>
+        <%= link_to residential_listing.primary_agent_name, user_path(residential_listing.primary_agent_id) %>
       <% else %>
         --
       <% end %>

@@ -111,7 +111,6 @@ class ResidentialListing < ActiveRecord::Base
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent', 'residential_listings.beds',
-        #'beds || \'/\' || baths as bed_and_baths',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at',
@@ -132,7 +131,6 @@ class ResidentialListing < ActiveRecord::Base
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent', 'residential_listings.beds',
-        #'beds || \'/\' || baths as bed_and_baths',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at',
@@ -147,11 +145,12 @@ class ResidentialListing < ActiveRecord::Base
     params = params.symbolize_keys
     running_list = ResidentialListing.joins(unit: [building: [:company, :landlord]])
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+      .joins('left join users on users.id = units.primary_agent_id')
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address',
         'units.listing_id', 'units.building_unit', 'units.status','units.rent', 'units.archived',
         'units.available_by', 'units.public_url', 'units.access_info', 'units.exclusive',
-        'units.id AS unit_id', 'units.primary_agent_id', 'units.primary_agent2_id',
+        'units.id AS unit_id', 'units.primary_agent_id',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng',
         'residential_listings.id',
@@ -163,7 +162,8 @@ class ResidentialListing < ActiveRecord::Base
         'residential_listings.updated_at',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code',
-        'landlords.id AS landlord_id')
+        'landlords.id AS landlord_id',
+        'users.name as primary_agent_name')
 
     running_list = ResidentialListing._filter_query(running_list, user, params)
     running_list
@@ -176,14 +176,14 @@ class ResidentialListing < ActiveRecord::Base
   def self.search(params, user, building_id=nil)
     running_list = ResidentialListing.joins(unit: {building: [:company, :landlord]})
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+      .joins('left join users on users.id = units.primary_agent_id')
       .where('units.archived = false')
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent', 'residential_listings.beds',
-        'units.primary_agent_id', 'units.primary_agent2_id',
-        #'beds || \'/\' || baths as bed_and_baths',
+        'units.primary_agent_id',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.favorites',
@@ -191,7 +191,8 @@ class ResidentialListing < ActiveRecord::Base
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code',
         'landlords.id AS landlord_id',
-        'units.listing_id', 'units.available_by', 'units.public_url')
+        'units.listing_id', 'units.available_by', 'units.public_url',
+        'users.name as primary_agent_name')
     running_list = ResidentialListing._filter_query(running_list, user, params)
     running_list
   end
@@ -457,27 +458,6 @@ class ResidentialListing < ActiveRecord::Base
   def calc_lease_end_date
     end_date = Date.today
     end_date = Date.today >> 12
-    # case(lease_duration)
-    # when "year"
-    #   end_date = Date.today >> 12
-    # when "thirteen_months"
-    #   end_date = Date.today >> 13
-    # when "fourteen_months"
-    #   end_date = Date.today >> 14
-    # when "fifteen_months"
-    #   end_date = Date.today >> 15
-    # when "sixteen_months"
-    #   end_date = Date.today >> 16
-    # when "seventeen_months"
-    #   end_date = Date.today >> 17
-    # when "eighteen_months"
-    #   end_date = Date.today >> 18
-    # when "two_years"
-    #   end_date = Date.today >> 24
-    # else
-    #   end_date = Date.today >> 12
-    # end
-
     end_date
   end
 
@@ -533,21 +513,20 @@ class ResidentialListing < ActiveRecord::Base
   def self.for_buildings(bldg_ids, status=nil)
     listings = ResidentialListing.joins(unit: {building: :landlord})
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+      .joins('left join users on users.id = units.primary_agent_id')
       .where('buildings.id in (?)', bldg_ids)
       .where('units.archived = false')
       .select('buildings.formatted_street_address',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id',
-        #'beds || \'/\' || baths as bed_and_baths',
         'residential_listings.beds', 'residential_listings.id',
         'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'neighborhoods.name AS neighborhood_name',
         'landlords.code',
         'landlords.id AS landlord_id',
-        'units.primary_agent_id',
-        'units.available_by', 'units.listing_id'
-      )
+        'units.primary_agent_id', 'units.available_by', 'units.listing_id',
+        'users.name as primary_agent_name')
       .order('residential_listings.updated_at desc')
 
     if !status.nil?
@@ -572,20 +551,20 @@ class ResidentialListing < ActiveRecord::Base
   def self.for_units(unit_ids, status=nil)
     listings = ResidentialListing.joins(unit: {building: [:landlord]})
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+      .joins('left join users on users.id = units.primary_agent_id')
       .where('units.id in (?)', unit_ids)
       .where('units.archived = false')
       .select('buildings.formatted_street_address',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id',
-        #'beds || \'/\' || baths as bed_and_baths',
         'residential_listings.beds', 'residential_listings.id',
         'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'neighborhoods.name AS neighborhood_name',
         'landlords.code',
         'landlords.id AS landlord_id',
-        'units.primary_agent_id',
-        'units.available_by', 'units.listing_id')
+        'units.primary_agent_id', 'units.available_by', 'units.listing_id',
+        'users.name as primary_agent_name')
 
     if !status.nil?
       status_lowercase = status.downcase

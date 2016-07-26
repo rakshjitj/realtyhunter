@@ -293,7 +293,6 @@ class UsersController < ApplicationController
       params[:status_listings] = !params[:status_listings].nil? ? params[:status_listings] : 'active/pending'
       @residential_units, @res_images, @res_bldg_images = @user.residential_units(params[:status_listings])
       @residential_units = @residential_units.page(params[:page]).per(25)
-      @primary_agents = Unit.get_agents_by_id(@residential_units.pluck(:primary_agent_id))
       @commercial_units, @com_images, @com_bldg_images = @user.commercial_units(params[:status_listings])
       @commercial_units = @commercial_units.page(params[:page]).per(25)
     end
