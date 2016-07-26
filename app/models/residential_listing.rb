@@ -163,7 +163,7 @@ class ResidentialListing < ActiveRecord::Base
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code',
         'landlords.id AS landlord_id',
-        'users.name as primary_agent_name')
+        'users.name')
 
     running_list = ResidentialListing._filter_query(running_list, user, params)
     running_list
@@ -188,11 +188,12 @@ class ResidentialListing < ActiveRecord::Base
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.favorites',
         'residential_listings.has_fee', 'residential_listings.updated_at',
+        'residential_listings.tenant_occupied',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code',
         'landlords.id AS landlord_id',
         'units.listing_id', 'units.available_by', 'units.public_url',
-        'users.name as primary_agent_name')
+        'users.name')
     running_list = ResidentialListing._filter_query(running_list, user, params)
     running_list
   end
@@ -376,6 +377,11 @@ class ResidentialListing < ActiveRecord::Base
         'units.primary_agent_id IS NULL AND units.primary_agent2_id IS NULL')
     end
 
+    if !params[:tenant_occupied_filter].blank?
+      running_list = running_list.where(
+          'units.tenant_occupied = ?', params[:tenant_occupied_filter])
+    end
+
     # primary agent
     if !params[:primary_agent_id].blank?
       running_list = running_list.where('units.primary_agent_id = ? OR units.primary_agent2_id = ?',
@@ -526,7 +532,7 @@ class ResidentialListing < ActiveRecord::Base
         'landlords.code',
         'landlords.id AS landlord_id',
         'units.primary_agent_id', 'units.available_by', 'units.listing_id',
-        'users.name as primary_agent_name')
+        'users.name')
       .order('residential_listings.updated_at desc')
 
     if !status.nil?
@@ -564,7 +570,7 @@ class ResidentialListing < ActiveRecord::Base
         'landlords.code',
         'landlords.id AS landlord_id',
         'units.primary_agent_id', 'units.available_by', 'units.listing_id',
-        'users.name as primary_agent_name')
+        'users.name')
 
     if !status.nil?
       status_lowercase = status.downcase

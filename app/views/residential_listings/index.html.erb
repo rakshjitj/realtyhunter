@@ -230,6 +230,8 @@
             <% end %>
           </div>
 
+
+
           <div class="row vertical-padding">
             <div class="col-xs-11 selectize-wrapper">
               <select id="neighborhood-select-multiple" placeholder="Neighborhoods...">
@@ -333,7 +335,7 @@
             <th data-sort="available_by" class="th-sortable">Available</th>
             <th style="min-width: 20%;">Access</th>
             <th data-sort="code" class="th-sortable">Landlord</th>
-            <th data-sort="primary_agent_name" class="th-sortable">Primary Agent</th>
+            <th data-sort="name" class="th-sortable">Primary Agent</th>
             <th data-sort="residential_listings.updated_at" class="th-sortable">Updated</th>
             <th data-sort="units.status" class="th-sortable">Status</th>
             <% if current_user.is_management? || current_user.is_listings_manager? %>

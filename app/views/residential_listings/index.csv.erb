@@ -18,7 +18,7 @@
       listing.lease_end,
       listing.has_fee ? 'Yes' : 'No', listing.op_fee_percentage, listing.tp_fee_percentage,
       listing.tenant_occupied ? 'Yes' : 'No',
-      listing.primary_agent_name ?  listing.primary_agent_name : '',
+      listing.name ?  listing.name : '',
       listing.listing_id, listing.code, listing.rent,
       listing.available_by, listing.access_info,
       @reverse_statuses[listing.status.to_s.to_sym],
