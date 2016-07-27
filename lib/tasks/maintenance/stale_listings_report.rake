@@ -16,7 +16,7 @@ namespace :maintenance do
 
     results = []
     @units.each {|u|
-      if u.updated_at < 2.weeks.ago && u.description.blank?
+      if u.updated_at < 2.days.ago && u.description.blank?
         unit_address = u.street_address_and_unit
         results << unit_address + " [#{u.updated_at}]"
       end
