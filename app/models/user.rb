@@ -226,12 +226,7 @@
     end
 
     # right now, agents should have access to all the basic listing types
-    if self.employee_title == EmployeeTitle.agent
-      self.add_role :residential unless self.has_role? :residential
-      self.add_role :commercial unless self.has_role? :commercial
-      self.add_role :sales unless self.has_role? :sales
-      self.add_role :agent unless self.has_role? :agent
-    end
+    self.add_role :inactive_agent unless self.roles.any?
   end
 
   # def handles_residential?
@@ -281,16 +276,28 @@
       :super_admin,
       :company_admin,
       :operations,
-      :data_entry,
-      :broker,
-      :associate_broker,
       :manager,
-      :closing_manager]
+      :data_entry]
     management_roles.each do |r|
       return true if self.has_role? r
     end
 
     false
+  end
+
+  def valid_roles_list
+    management_roles = [
+      :super_admin,
+      :company_admin,
+      :operations,
+      :manager,
+      :data_entry]
+
+    if is_management?
+      Role.where.not(name: 'super_admin')
+    else
+      Role.where('name NOT IN (?)', management_roles)
+    end
   end
 
   # wufoo forms permission

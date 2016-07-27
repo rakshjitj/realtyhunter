@@ -99,10 +99,10 @@ class Ability
     # company admins can do anything, but for his/her particular company only
     # managers/data entry can do most things
     elsif user.has_role?(:company_admin) || user.has_role?(:manager) ||
-      user.has_role?(:data_entry) || user.has_role?(:closing_manager) ||
+      user.has_role?(:data_entry) ||
       user.has_role?(:listings_manager) || user.has_role?(:photo_manager)
 
-      if user.has_role?(:company_admin) || user.has_role?(:closing_manager)
+      if user.has_role?(:company_admin)
         # managers/admins of any kind can manage user accounts
         can :manage, User, company_id: user.company_id
         can :manage, Company, id: user.company.id
@@ -116,7 +116,8 @@ class Ability
       # if labelled "posting admin", then this is an agent who has been
       # entrusted with managing listings. They should still show up labelled as
       # an "agent" on the rest of the site
-      elsif user.has_role?(:data_entry) || user.has_role?(:listings_manager) || user.has_role?(:photo_manager)
+      elsif user.has_role?(:data_entry) || user.has_role?(:listings_manager) ||
+          user.has_role?(:photo_manager)
 
         can :read, Company, id: user.company.id
         can :view_staff, Company, id: user.company.id

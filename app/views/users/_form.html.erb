@@ -68,7 +68,7 @@
         <div class="col-md-12">
           <%= f.label :role_ids, "Enabled permissions", class: 'required' %><br>
             <%= f.select(:role_ids,
-              options_for_select(Role.all.collect {|t| [t.name.titleize, t.id]},
+              options_for_select(@user.valid_roles_list.collect {|t| [t.name.titleize, t.id]},
               @user.role_ids.length > 0 ? @user.role_ids : @default_role_set),
               {},
               required: true,

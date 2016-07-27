@@ -103,11 +103,6 @@ class Company < ActiveRecord::Base
         'users.manager_id', 'users.created_at', 'users.updated_at', 'users.archived')
   end
 
-	# def data_enterers
-	# 	#users.unarchived.includes(:employee_title, :office, :image, :company, :manager).select{|u| u if u.is_data_entry? }
-	# 	User.joins(:roles).where('roles.name = ?', 'manager').includes(:employee_title, :office, :image, :manager)
-	# end
-
 	def update_employee_titles
 		employee_titles.split(/\r?\n/).each {|e|
       sanitized_name = EmployeeTitle.sanitize_name(e)
