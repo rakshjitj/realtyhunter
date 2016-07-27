@@ -285,7 +285,7 @@
     false
   end
 
-  def valid_roles_list
+  def valid_roles_list(logged_in_user)
     management_roles = [
       :super_admin,
       :company_admin,
@@ -293,7 +293,17 @@
       :manager,
       :data_entry]
 
-    if is_management?
+    logged_in_user_is_management = false
+    management_roles.each do |r|
+      if logged_in_user.has_role? r
+        logged_in_user_is_management = true
+        break
+      end
+    end
+
+    if logged_in_user.has_role?(:super_admin)
+      Role.all
+    elsif logged_in_user_is_management
       Role.where.not(name: 'super_admin')
     else
       Role.where('name NOT IN (?)', management_roles)
