@@ -66,8 +66,8 @@ class UnitMailer < ApplicationMailer
 
   def send_forced_syndication_report(managers, data)
     @data = data
-    mail to: managers, subject: "Stale Listings Report",
-        tag: 'stale_listings_report', track_opens:'true', reply_to: 'no-reply@myspacenyc.com'
+    mail to: managers, subject: "Forced Syndication Listings Report",
+        tag: 'forced_syndication_report', track_opens:'true', reply_to: 'no-reply@myspacenyc.com'
   end
 
 end

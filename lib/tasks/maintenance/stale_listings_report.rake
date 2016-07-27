@@ -18,14 +18,14 @@ namespace :maintenance do
     @units.each {|u|
       if u.updated_at < 2.weeks.ago && u.description.blank?
         unit_address = u.street_address_and_unit
-        results << unit_address + "[#{u.updated_at}]"
+        results << unit_address + " [#{u.updated_at}]"
       end
     }
 
     puts "Found #{results.count} results:"
     puts "\n" + results.join("\n")
 
-    managers = ['rbujans@myspacenyc.com']
+    managers = ['info@myspacenyc.com', 'smullahy@myspacenyc.com']
     UnitMailer.send_stale_listings_report(managers, results).deliver
     puts "Email sent to #{managers.inspect}"
     log.info "Email sent to #{managers.inspect}"

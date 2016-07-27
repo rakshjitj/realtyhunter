@@ -23,7 +23,7 @@ namespace :maintenance do
     puts "Found #{results.count} results:"
     puts "\n" + results.join("\n")
 
-    managers = ['rbujans@myspacenyc.com']
+    managers = ['info@myspacenyc.com', 'smullahy@myspacenyc.com']
     UnitMailer.send_forced_syndication_report(managers, results).deliver
     puts "Email sent to #{managers.inspect}"
     log.info "Email sent to #{managers.inspect}"
