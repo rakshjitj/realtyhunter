@@ -285,7 +285,7 @@
     false
   end
 
-  def valid_roles_list(logged_in_user)
+  def self.valid_roles_list(logged_in_user)
     management_roles = [
       :super_admin,
       :company_admin,
