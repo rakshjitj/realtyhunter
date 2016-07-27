@@ -12,7 +12,7 @@ xml.streeteasy :version => "1.6" do
 
 	  	# NOTE: this is super hacky. We should filter this out before sending
 	  	# to the view.
-	  	if @primary_agents[listing.unit_id].length &&
+	  	if !@primary_agents[listing.unit_id].blank? &&
 	  				@primary_agents[listing.unit_id][0].name == @company.name
 	  		# skip our generic catch-all account
 	  		next
@@ -167,7 +167,7 @@ xml.streeteasy :version => "1.6" do
 							end
 						end
 
-						if !@other_amenities.empty?
+						if !@other_amenities.blank?
 							xml.other @other_amenities.join(", ")
 						end
 
@@ -176,7 +176,7 @@ xml.streeteasy :version => "1.6" do
 
 				# TODO: open houses
 
-				if !@primary_agents[listing.unit_id].empty?
+				if !@primary_agents[listing.unit_id].blank?
 					xml.agents do
 						@primary_agents[listing.unit_id].each do |agent|
 							xml.agent id: agent.id do
@@ -197,6 +197,8 @@ xml.streeteasy :version => "1.6" do
 						  end
 						end
 					end
+				else
+					puts "***** BLANK ID: #{listing.unit_id}"
 				end
 
 				xml.media do

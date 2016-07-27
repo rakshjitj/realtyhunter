@@ -159,7 +159,7 @@ xml.streeteasy :version => "1.6" do
 							end
 						end
 
-						if !@other_amenities.empty?
+						if !@other_amenities.blank?
 							xml.other @other_amenities.join(", ")
 						end
 
