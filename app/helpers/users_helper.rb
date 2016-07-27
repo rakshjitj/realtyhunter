@@ -19,7 +19,7 @@ module UsersHelper
 		end
 
 		html = title.titleize
-		if user.is_company_admin?
+		if user.employee_title_name == EmployeeTitle.company_admin
 			html = html + ' <span class="glyphicon glyphicon-star dark-orange" aria-hidden="true"></span>'
 		end
 
