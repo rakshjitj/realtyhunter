@@ -1,0 +1,11 @@
+<h1>Weekly Forced Syndication Report</h1>
+
+<% if @data.count > 0 %>
+  <p>Here is the current list of units set to 'force syndicate':</p>
+  <p><%= @data.to_a.join("<br />").html_safe %></p>
+<% else %>
+  <p>There are no listings set to force syndicate right now. </p>
+<% end %>
+
+<p>Thanks,<br />
+The Team at Myspace<p>

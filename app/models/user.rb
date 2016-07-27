@@ -226,7 +226,7 @@
     end
 
     # right now, agents should have access to all the basic listing types
-    self.add_role :inactive_agent unless self.roles.any?
+    self.add_role :agent unless self.roles.any?
   end
 
   # def handles_residential?

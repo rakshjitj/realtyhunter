@@ -1,0 +1,21 @@
+Weekly Forced Syndication Report
+
+<% if @data.count > 0 %>
+
+Here is the current list of units set to 'force syndicate':
+
+
+<%= @data.to_a.join("<br />").html_safe %>
+
+<% else %>
+
+
+There are no listings set to force syndicate right now.
+
+
+<% end %>
+
+Thanks,
+
+
+The Team at Myspace

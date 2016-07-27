@@ -23,6 +23,6 @@
 *.DS_Store
 
 # database dumps
-*.dump
+*.dump*
 .ruby-version
 *.DS_Store

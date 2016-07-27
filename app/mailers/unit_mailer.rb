@@ -58,12 +58,16 @@ class UnitMailer < ApplicationMailer
         tag: 'sent_sales_listings', track_opens:'true'
   end
 
-  # note: currently unsed
-  # def send_residential_csv(user_id, params)
-  #   @source_agent = User.find(user_id)
-  #   attachments['Residential Listings.csv'] = ResidentialListing.to_csv(@source_agent, params)
-  #   mail to: @source_agent.email, subject: "#{@source_agent.company.name} Residential Listings CSV",
-  #       tag: 'sent_residential_csv', track_opens:'true'
-  # end
+  def send_stale_listings_report(managers, data)
+    @data = data
+    mail to: managers, subject: "Stale Listings Report",
+        tag: 'stale_listings_report', track_opens:'true', reply_to: 'no-reply@myspacenyc.com'
+  end
+
+  def send_forced_syndication_report(managers, data)
+    @data = data
+    mail to: managers, subject: "Stale Listings Report",
+        tag: 'stale_listings_report', track_opens:'true', reply_to: 'no-reply@myspacenyc.com'
+  end
 
 end
