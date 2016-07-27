@@ -34,7 +34,7 @@ class Ability
 
   # Nir, Michelle, Shawn, Dani, Cheryl, Ashleigh, me
   def roomsharing_permissions(user)
-    if user.has_role? :roomsharing
+    if user.has_role?(:roomsharing) || user.has_role?(:company_admin)
       can :manage, Roommate
       can :manage, RoomsharingApplication
     else
@@ -52,16 +52,19 @@ class Ability
     can :manage, ResidentialAmenity, :company_id => user.company.id
     can :manage, Utility, :company_id => user.company.id
     posting_permissions(user)
-    can :manage, WufooContactUsForm
-    can :manage, WufooListingsForm
-    can :manage, WufooPartnerForm
-    can :manage, WufooCareerForm
 
     if user.has_role?(:company_admin)
       can :manage, UserWaterfall
     end
 
     can :manage, Deal
+  end
+
+  def wufoo_permissions
+    can :manage, WufooContactUsForm
+    can :manage, WufooListingsForm
+    can :manage, WufooPartnerForm
+    can :manage, WufooCareerForm
   end
 
   def agent_permissions(user)
@@ -107,6 +110,7 @@ class Ability
         can :manage, Landlord do |landlord|
           !landlord.company_id || landlord.company_id == user.company_id
         end
+        wufoo_permissions()
 
       # user can enter in all kinds of data
       # if labelled "posting admin", then this is an agent who has been
@@ -126,8 +130,10 @@ class Ability
         can :read, User, company_id: user.company_id
         can :manage, User, id: user.id
 
-        can :manage, Landlord do |landlord|
-          !landlord.company_id || landlord.company_id == user.company_id
+        if user.has_role?(:data_entry) || user.has_role?(:listings_manager)
+          can :manage, Landlord do |landlord|
+            !landlord.company_id || landlord.company_id == user.company_id
+          end
         end
 
       elsif user.has_role?(:manager)
@@ -140,6 +146,7 @@ class Ability
           landlord.company_id == user.company_id
         end
         can :filter, Landlord, company_id: user.company_id
+        wufoo_permissions()
       end
 
       common_permissions(user)
