@@ -39,6 +39,7 @@
         roomsharing_filter: $('#roomsharing_filter').prop('checked'),
         unassigned_filter: $('#unassigned_filter').prop('checked'),
         tenant_occupied_filter: $('#tenant_occupied_filter').prop('checked'),
+        has_stock_photos_filter: $('#has_stock_photos_filter').prop('checked'),
         primary_agent_id:  $('#primary_agent_id').val(),
         sort_by: sortByCol,
         direction: sortDirection,

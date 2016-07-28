@@ -197,8 +197,6 @@ xml.streeteasy :version => "1.6" do
 						  end
 						end
 					end
-				else
-					puts "***** BLANK ID: #{listing.unit_id}"
 				end
 
 				xml.media do

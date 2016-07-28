@@ -150,7 +150,7 @@ class ResidentialListing < ActiveRecord::Base
       .select('buildings.formatted_street_address',
         'units.listing_id', 'units.building_unit', 'units.status','units.rent', 'units.archived',
         'units.available_by', 'units.public_url', 'units.access_info', 'units.exclusive',
-        'units.id AS unit_id', 'units.primary_agent_id',
+        'units.id AS unit_id', 'units.primary_agent_id', 'units.has_stock_photos',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng',
         'residential_listings.id',
@@ -183,7 +183,7 @@ class ResidentialListing < ActiveRecord::Base
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent', 'residential_listings.beds',
-        'units.primary_agent_id',
+        'units.primary_agent_id',  'units.has_stock_photos',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.favorites',
@@ -382,6 +382,11 @@ class ResidentialListing < ActiveRecord::Base
           'residential_listings.tenant_occupied = ?', params[:tenant_occupied_filter])
     end
 
+    if !params[:has_stock_photos_filter].blank?
+      running_list = running_list.where(
+          'units.has_stock_photos = ?', params[:has_stock_photos_filter])
+    end
+
     # primary agent
     if !params[:primary_agent_id].blank?
       running_list = running_list.where('units.primary_agent_id = ? OR units.primary_agent2_id = ?',
@@ -525,6 +530,7 @@ class ResidentialListing < ActiveRecord::Base
       .select('buildings.formatted_street_address',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id',
+        'units.has_stock_photos',
         'residential_listings.beds', 'residential_listings.id',
         'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at',
@@ -564,6 +570,7 @@ class ResidentialListing < ActiveRecord::Base
       .select('buildings.formatted_street_address',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id',
+        'units.has_stock_photos',
         'residential_listings.beds', 'residential_listings.id',
         'residential_listings.baths','units.access_info',
         'residential_listings.has_fee', 'residential_listings.updated_at',

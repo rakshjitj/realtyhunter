@@ -240,7 +240,15 @@
                 </label>
               </div>
             </div>
-
+            <div class="col-xs-6">
+              <div class="checkbox checkbox-warning inline">
+                <%= check_box_tag :has_stock_photos_filter, "".freeze, params[:has_stock_photos_filter] == "true".freeze ? true : false,
+                    class: 'styled' %>
+                <label for="has_stock_photos_filter">
+                  Stock Photos
+                </label>
+              </div>
+            </div>
           </div>
 
           <div class="row vertical-padding">
