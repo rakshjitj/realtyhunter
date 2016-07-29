@@ -1,4 +1,5 @@
 <% cache([@residential_unit, current_user.employee_title.name, request.variant.to_s,
+		@residential_unit.unit.updated_at,
 		@residential_unit.unit.building.updated_at,
 		@residential_unit.unit.building.landlord.updated_at
 		]) do %>
@@ -354,7 +355,10 @@
 			    			<strong>Access info:</strong>
 			    		</div>
 			    		<div class="col-xs-12 col-md-9">
-			    			<strong class="exclusive-listing"><%= occupancy_status(@residential_unit) %></strong>
+			    			<div class="disclaimer"><%= occupancy_status(@residential_unit) %></div>
+			    			<% if @residential_unit.unit.has_stock_photos %>
+				    			<div class="disclaimer">Has Stock Photos</div>
+				    		<% end %>
 			    			<div class="access-info">
 				    			<%= @residential_unit.unit.access_info %>
 				    		</div>

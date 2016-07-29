@@ -2,7 +2,7 @@ module UnitsHelper
 
 	def occupancy_status(unit)
 		if unit.tenant_occupied
-			'<div class="danger"><strong>TENANT OCCUPIED</strong></div>'.html_safe
+			'<strong>Tenant Occupied</strong>'.html_safe
 		else
 			'<strong>Unit vacant</strong>'.html_safe
 		end

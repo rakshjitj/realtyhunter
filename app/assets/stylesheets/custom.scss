@@ -555,8 +555,18 @@ label.required:after {
   color: #00008B;
 }
 
-.exclusive-listing {
+.disclaimer {
+  display: inline;
   color: #3333FF;
+  font-weight: bold;
+}
+
+.disclaimer:after {
+  content: ', ';
+}
+
+.disclaimer:nth-last-child(2):after {
+  content: '';
 }
 
 // main index page
