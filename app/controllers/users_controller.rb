@@ -85,7 +85,7 @@ class UsersController < ApplicationController
 
   # GET /users/batch_new
   def admin_new
-    @default_role_set = Role.where(name: ['residential', 'commercial', 'sales']).ids
+    @default_role_set = Role.where(name: ['agent']).ids
     @user = User.new
   end
 

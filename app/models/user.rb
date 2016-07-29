@@ -161,6 +161,7 @@
   end
 
   def assign_random_password
+    # self.password = '123456'
     self.password = SecureRandom.base64
   end
 
