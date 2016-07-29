@@ -12,7 +12,7 @@ class UnitImagesController < ApplicationController
     # dropzone expects a json response code
     if @image.save(image_params)
       @unit.images << @image
-      update_listing_timestamp(@image)
+      # update_listing_timestamp(@image)
 
       if params[:residential_listing_id] && !params[:residential_listing_id].empty?
         render json: { message: "success", fileID: @image.id, unitID: @unit.id, runitID: @unit.residential_listing.id },

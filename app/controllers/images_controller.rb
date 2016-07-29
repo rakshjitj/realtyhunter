@@ -18,7 +18,7 @@ class ImagesController < ApplicationController
     # dropzone expects a json response code
     @image.building = @building
     if @image.save(image_params)
-      @image.building.update_columns(updated_at: Time.now)
+      # @image.building.update_columns(updated_at: Time.now)
       render json: { message: "success", fileID: @image.id, bldgID: @building.id }, status: 200
     else
       #  you need to send an error header, otherwise Dropzone
@@ -31,7 +31,7 @@ class ImagesController < ApplicationController
   # DELETE /images/1.json
   def destroy
     if @image
-      @image.building.update_columns(updated_at: Time.now)
+      # @image.building.update_columns(updated_at: Time.now)
       @image.file = nil
       if @image.destroy
         render json: { message: "File deleted from server" }
@@ -50,7 +50,7 @@ class ImagesController < ApplicationController
       img = Image.find(value[:id])
       if img && img.priority != value[:position]
         img.update_columns(priority: value[:position])
-        img.building.update_columns(updated_at: Time.now)
+        # img.building.update_columns(updated_at: Time.now)
       end
     end
     render nothing: true
