@@ -23,7 +23,7 @@ namespace :maintenance do
         unit_address = u.street_address_and_unit
         output = "[#{u.updated_at}] " + unit_address
         if u.unit.primary_agent_id && agents[u.unit.primary_agent_id]
-          output += ', Agent:' + agents[u.unit.primary_agent_id]
+          output += ', Agent: ' + agents[u.unit.primary_agent_id]
         end
         results << output
       end
@@ -32,7 +32,7 @@ namespace :maintenance do
     puts "Found #{results.count} results:"
     puts "\n" + results.join("\n")
 
-    managers = ['info@myspacenyc.com', 'smullahy@myspacenyc.com', 'rbujans@myspacenyc.com']
+    managers = ['info@myspacenyc.com', 'smullahy@myspacenyc.com']
     UnitMailer.send_stale_listings_report(managers, results).deliver
     puts "Email sent to #{managers.inspect}"
     log.info "Email sent to #{managers.inspect}"
