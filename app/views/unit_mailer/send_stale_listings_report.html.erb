@@ -2,7 +2,7 @@
 
 <% if @data.count > 0 %>
   <p>Here is the current list of units with no description that have not been updated
-    in the last 2 weeks:</p>
+    in the last 2 days:</p>
   <p><%= @data.to_a.join("<br />").html_safe %></p>
 <% else %>
   <p>No listings found! Everything looks good - our listings all have descriptions or
