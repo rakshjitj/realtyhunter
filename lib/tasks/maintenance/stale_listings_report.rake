@@ -22,7 +22,7 @@ namespace :maintenance do
       if u.updated_at < 2.days.ago && u.description.blank?
         unit_address = u.street_address_and_unit
         output = "[#{u.updated_at}] " + unit_address
-        if u.unit.primary_agent_id
+        if u.unit.primary_agent_id && agents[u.unit.primary_agent_id]
           output += ', Agent:' + agents[u.unit.primary_agent_id]
         end
         results << output
