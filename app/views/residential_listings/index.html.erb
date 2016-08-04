@@ -110,18 +110,18 @@
             </div>
           </div>
           <div class="row vertical-padding">
-            <div class="col-xs-4">
+            <div class="col-xs-5">
               <%= label_tag(:listing_id, "Listing ID") %>
             </div>
-            <div class="col-xs-7 col-sm-left-padding">
+            <div class="col-xs-6 col-sm-left-padding">
               <%= text_field_tag :listing_id, params[:listing_id], class:"form-control" %>
             </div>
           </div>
           <div class="row vertical-padding">
-            <div class="col-xs-4">
+            <div class="col-xs-5">
               <%= label_tag(:landlord, "Landlord ") %>
             </div>
-            <div class="col-xs-7 col-sm-left-padding">
+            <div class="col-xs-6 col-sm-left-padding">
               <%= autocomplete_field_tag :landlord, params[:landlord],
                 autocomplete_landlord_code_residential_listings_path,
                 update_elements: {},
@@ -130,10 +130,10 @@
             </div>
           </div>
           <div class="row vertical-padding">
-            <div class="col-xs-4">
+            <div class="col-xs-5">
               <%= label_tag :status, "Status" %>
             </div>
-            <div class="col-xs-7 col-sm-left-padding">
+            <div class="col-xs-6 col-sm-left-padding">
               <% if current_user.is_management? ||
                     current_user.is_listings_manager? ||
                     current_user.is_photo_manager? %>
@@ -148,19 +148,19 @@
             </div>
           </div>
           <div class="row vertical-padding">
-            <div class="col-xs-4">
+            <div class="col-xs-5">
               <%= label_tag :has_fee, "Broker's Fee" %>
             </div>
-            <div class="col-xs-7 col-sm-left-padding">
+            <div class="col-xs-6 col-sm-left-padding">
               <%= select_tag(:has_fee,
                 options_for_select(%w(Any Yes No), params[:has_fee]), class: 'form-control') %>
             </div>
           </div>
           <div class="row vertical-padding">
-            <div class="col-xs-4">
+            <div class="col-xs-5">
               <%= label_tag :pet_policy_shorthand, "Pet policy" %>
             </div>
-            <div class="col-xs-7 col-sm-left-padding">
+            <div class="col-xs-6 col-sm-left-padding">
               <%= select_tag(:pet_policy_shorthand,
                 options_for_select(["Any", "Cats Only", "Dogs Only", "None"],
                 [params[:pet_policy_shorthand] ? params[:pet_policy_shorthand].titleize : "Any"]),
@@ -169,10 +169,10 @@
           </div>
 
           <div class="row vertical-padding">
-            <div class="col-xs-4">
+            <div class="col-xs-5">
               <%= label_tag :primary_agent_id, "Agent" %>
             </div>
-            <div class="col-xs-7 col-sm-left-padding">
+            <div class="col-xs-6 col-sm-left-padding">
               <%= select_tag(:primary_agent_id,
                 options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
                     [params[:primary_agent_id] ? params[:primary_agent_id].titleize : "Any"]),
@@ -180,6 +180,20 @@
                   class: 'form-control'}) %>
             </div>
           </div>
+
+          <% if current_user.is_management? %>
+            <div class="row vertical-padding">
+              <div class="col-xs-5">
+                <%= label_tag :streeteasy_filter, "On Streeteasy" %>
+              </div>
+              <div class="col-xs-6 col-sm-left-padding">
+                <%= select_tag(:streeteasy_filter,
+                    options_for_select(['Any', 'Yes', 'No'],
+                    [params[:streeteasy_filter] ? params[:streeteasy_filter].titleize : 'Any']),
+                    class: 'form-control') %>
+              </div>
+            </div>
+          <% end %>
 
           <div class="row vertical-padding">
             <div class="col-xs-12">

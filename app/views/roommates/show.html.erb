@@ -128,10 +128,10 @@
 
         <br />
         <div class="row">
-          <div class="col-md-3 exclusive-listing">
+          <div class="col-md-3 exclusive">
             <strong>Matched to:</strong>
           </div>
-          <div class="col-md-9 exclusive-listing">
+          <div class="col-md-9 exclusive">
             <% if @roommate.is_matched? %>
               <%= link_to @roommate.residential_listing.street_address_and_unit, @roommate.residential_listing %>
             <% else %>

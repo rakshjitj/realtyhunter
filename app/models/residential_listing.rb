@@ -192,7 +192,7 @@ class ResidentialListing < ActiveRecord::Base
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code',
         'landlords.id AS landlord_id',
-        'units.listing_id', 'units.available_by', 'units.public_url',
+        'units.listing_id', 'units.available_by', 'units.public_url', 'units.exclusive',
         'users.name')
     running_list = ResidentialListing._filter_query(running_list, user, params)
     running_list
@@ -391,6 +391,24 @@ class ResidentialListing < ActiveRecord::Base
     if !params[:primary_agent_id].blank?
       running_list = running_list.where('units.primary_agent_id = ? OR units.primary_agent2_id = ?',
         params[:primary_agent_id], params[:primary_agent_id])
+    end
+
+    if !params[:streeteasy_filter].blank?
+      if params[:streeteasy_filter] == 'Yes'
+        running_list = running_list.where('units.exclusive = TRUE')
+          .where("residential_listings.description <> ''")
+          .where('units.status IN (?) OR units.syndication_status = ?',
+              [Unit.statuses["active"], Unit.statuses["pending"]],
+              Unit.syndication_statuses['Force syndicate'])
+          .where('units.primary_agent_id > 0')
+          .where('units.syndication_status IN (?)', [
+              Unit.syndication_statuses['Syndicate if matches criteria'],
+              Unit.syndication_statuses['Force syndicate']
+            ])
+      elsif params[:streeteasy_filter] == 'No'
+        running_list = running_list.where('units.exclusive = FALSE')
+        running_list = running_list.where("residential_listings.description = ''")
+      end
     end
 
     running_list.uniq

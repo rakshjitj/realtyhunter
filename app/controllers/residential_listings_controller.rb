@@ -405,7 +405,7 @@ class ResidentialListingsController < ApplicationController
         :include_photos, :inaccuracy_description,
         :has_fee, :op_fee_percentage, :tp_fee_percentage,
         :available_starting, :available_before, :custom_amenities,
-        :roomsharing_filter, :unassigned_filter, :tenant_occupied_filter,
+        :roomsharing_filter, :unassigned_filter, :tenant_occupied_filter, :streeteasy_filter,
         :primary_agent_id, :favorites, :show,
         :expose_address, :floor, :total_room_count, :condition, :showing_instruction,
         :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
