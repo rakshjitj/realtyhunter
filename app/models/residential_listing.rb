@@ -13,14 +13,14 @@ class ResidentialListing < ActiveRecord::Base
 	validates :lease_start, presence: true, length: {maximum: 5}
   validates :lease_end, presence: true, length: {maximum: 5}
 
-	validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }
-	validates :baths, presence: true, :numericality => { :less_than_or_equal_to => 11 }
+	validates :beds, presence: true, numericality: { less_than_or_equal_to: 11 }
+	validates :baths, presence: true, numericality: { less_than_or_equal_to: 11 }
 
   validates :op_fee_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
-  validates_inclusion_of :op_fee_percentage, :in => 0..100, allow_blank: true
+  validates_inclusion_of :op_fee_percentage, in: 0..100, allow_blank: true
 
   validates :tp_fee_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
-  validates_inclusion_of :tp_fee_percentage, :in => 0..100, allow_blank: true
+  validates_inclusion_of :tp_fee_percentage, in: 0..100, allow_blank: true
 
   def archive
     self.unit.archived = true
@@ -89,18 +89,23 @@ class ResidentialListing < ActiveRecord::Base
     amenities ? amenities.join(", ") : "None".freeze
   end
 
+  # list - list of residential_listings
   # returns the first image for each unit - thumbnail styles only
   def self.get_images(list)
+    return nil if list.nil?
+
     unit_ids = list.pluck(:unit_id)
     imgs = Image.where(unit_id: unit_ids, priority: 0)
     Hash[imgs.map {|img| [img.unit_id, img.file.url(:thumb)]}]
   end
 
-  def self.get_amenities(list)
-    ResidentialAmenity.where(residential_listing_id: list.ids)
-        .select('name').to_a.group_by(&:residential_listing_id)
-  end
+  # list - list of residential_listings
+  # def self.get_amenities(list)
+  #   return nil if list.nil? || !list.kind_of?(Array) || list.length == 0
 
+  #   ResidentialAmenity.where(residential_listing_id: list.ids)
+  #       .select('name').to_a.group_by(&:residential_listing_id)
+  # end
 
   def self.listings_by_neighborhood(user, listing_ids)
     running_list = ResidentialListing.joins(unit: {building: [:company, :landlord]})
@@ -141,8 +146,10 @@ class ResidentialListing < ActiveRecord::Base
     running_list
   end
 
-  def self.export_all(user, params)
-    params = params.symbolize_keys
+  def self.export_all(user, params=nil)
+    if params
+      params = params.symbolize_keys
+    end
     running_list = ResidentialListing.joins(unit: [building: [:company, :landlord]])
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .joins('left join users on users.id = units.primary_agent_id')
@@ -194,22 +201,24 @@ class ResidentialListing < ActiveRecord::Base
         'landlords.id AS landlord_id',
         'units.listing_id', 'units.available_by', 'units.public_url', 'units.exclusive',
         'users.name')
-    running_list = ResidentialListing._filter_query(running_list, user, params)
-    running_list
+
+    if !params && !building_id
+      running_list
+    elsif !params && building_id
+      running_list = running_list.where(building_id: building_id)
+    else
+      running_list = ResidentialListing._filter_query(running_list, user, params)
+    end
   end
 
   def self._filter_query(running_list, user, params)
+    if !params
+      return running_list
+    end
+
     params.delete('controller'.freeze)
     params.delete('action'.freeze)
     params.delete('format'.freeze)
-
-    if !params && !building_id
-      return running_list
-    #elsif !params && building_id
-      # TODO
-      #running_list = running_list.where(building_id: building_id)
-      #return running_list
-    end
 
     # only admins are allowed to view off-market units
     can_view_off_market = user.is_management? ||
@@ -265,59 +274,6 @@ class ResidentialListing < ActiveRecord::Base
       running_list = running_list.where("rent <= ?", rent_max)
     end
 
-    # search neighborhoods
-    if params[:neighborhood_ids]
-      neighborhood_ids = params[:neighborhood_ids][0, 256]
-      neighborhoods = neighborhood_ids.split(",").select{|i| !i.strip.empty?}
-      if neighborhoods.length > 0 # ignore empty selection
-        running_list = running_list
-         .where('neighborhood_id IN (?)', neighborhoods)
-      end
-    end
-
-    if params[:building_feature_ids]
-      features = params[:building_feature_ids][0, 256]
-      features = features.split(",").select{|i| !i.empty?}
-        bldg_ids = Building.joins(:building_amenities).where('building_amenity_id IN (?)', features).pluck(:id)
-        running_list = running_list.where("building_id IN (?)", bldg_ids)
-    end
-
-    # search landlord code
-    if params[:landlord]
-      running_list = running_list
-      .where("code ILIKE ?", "%#{params[:landlord]}%")
-    end
-
-    if params[:listing_id]
-      running_list = running_list
-      .where("units.listing_id = ?", params[:listing_id].to_i)
-    end
-
-    # search pet policy
-    if params[:pet_policy_shorthand]
-      pp = params[:pet_policy_shorthand].downcase
-      policies = nil
-      if pp == "none"
-        policies = PetPolicy.where(name: "no pets", company: user.company)
-      elsif pp == "cats only"
-        policies = PetPolicy.policies_that_allow_cats(user.company, true)
-      elsif pp == "dogs only"
-        policies = PetPolicy.policies_that_allow_dogs(user.company, true)
-      end
-
-      if policies
-        running_list = running_list#.joins(building: :pet_policy)
-          .where('pet_policy_id IN (?)', policies.ids)
-      end
-    end
-
-    if !params[:available_starting].blank?
-      running_list = running_list.where('available_by > ?', params[:available_starting]);
-    end
-    if !params[:available_before].blank?
-      running_list = running_list.where('available_by < ?', params[:available_before]);
-    end
-
     # search beds
     # clean up search terms first
     params.delete('bed_min') if params[:bed_min] == 'Any'
@@ -344,6 +300,57 @@ class ResidentialListing < ActiveRecord::Base
       running_list = running_list.where("baths >= ?", params[:bath_min])
     elsif !params[:bath_min] && params[:bath_max]
       running_list = running_list.where("baths <= ?", params[:bath_max])
+    end
+
+    # search neighborhoods
+    if params[:neighborhood_ids]
+      neighborhood_ids = params[:neighborhood_ids][0, 256]
+      neighborhoods = neighborhood_ids.split(",").select{|i| !i.strip.empty?}
+      if neighborhoods.length > 0 # ignore empty selection
+        running_list = running_list
+         .where('neighborhood_id IN (?)', neighborhoods)
+      end
+    end
+
+    if params[:building_feature_ids]
+      features = params[:building_feature_ids][0, 256]
+      features = features.split(",").select{|i| !i.empty?}
+        bldg_ids = Building.joins(:building_amenities).where('building_amenity_id IN (?)', features).pluck(:id)
+        running_list = running_list.where("building_id IN (?)", bldg_ids)
+    end
+
+    # search landlord code
+    if params[:landlord]
+      running_list = running_list.where("code ILIKE ?", "%#{params[:landlord]}%")
+    end
+
+    if params[:listing_id]
+      running_list = running_list.where("units.listing_id = ?", params[:listing_id].to_i)
+    end
+
+    # search pet policy
+    if params[:pet_policy_shorthand]
+      pp = params[:pet_policy_shorthand].downcase
+      policies = nil
+      if pp == "none"
+        policies = PetPolicy.where(name: "no pets", company: user.company)
+      elsif pp == "cats only"
+        policies = PetPolicy.policies_that_allow_cats(user.company, true)
+      elsif pp == "dogs only"
+        policies = PetPolicy.policies_that_allow_dogs(user.company, true)
+      end
+
+      if policies
+        running_list = running_list#.joins(building: :pet_policy)
+          .where('pet_policy_id IN (?)', policies.ids)
+      end
+    end
+
+    if !params[:available_starting].blank?
+      running_list = running_list.where('available_by > ?', params[:available_starting]);
+    end
+    if !params[:available_before].blank?
+      running_list = running_list.where('available_by < ?', params[:available_before]);
     end
 
     # search by brokers fee
@@ -420,12 +427,16 @@ class ResidentialListing < ActiveRecord::Base
 
     # deep copy photos
     self.unit.images.each {|i|
-      img_copy = Image.new
-      img_copy.file = i.file
-      img_copy.unit_id = @dst.unit.id
-      img_copy.save
+      # img_copy = Image.new
+      # img_copy.file = i.file
+      # img_copy.unit_id = @dst.unit.id
+      # img_copy.save
+      img_copy = i.clone
       @dst.unit.images << img_copy
     }
+
+    # puts "********" + @dst.unit.images.inspect
+
     @dst.save!
   end
 
@@ -484,11 +495,11 @@ class ResidentialListing < ActiveRecord::Base
     end
   end
 
-  def calc_lease_end_date
-    end_date = Date.today
-    end_date = Date.today >> 12
-    end_date
-  end
+  # def calc_lease_end_date
+  #   end_date = Date.today
+  #   end_date = Date.today >> 12
+  #   end_date
+  # end
 
   # collect the data we will need to access from our giant map view
   def self.set_location_data(runits, images, bldg_images)
@@ -627,6 +638,7 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def can_roomshare
+    # puts "can_roomshare #{beds} #{unit.status} #{unit.status == Unit.statuses['pending']}"
     if self.respond_to?(:status)
       beds >= 3 && self.status == Unit.statuses['pending']
     else

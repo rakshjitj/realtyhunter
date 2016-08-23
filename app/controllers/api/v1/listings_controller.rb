@@ -198,6 +198,10 @@ module API
 					bldg_images = Building.get_all_bldg_images(buildings)
           building_amenities = Building.get_amenities(buildings)
 
+          if !bldg_images
+          	puts "\n\n\n******** NO BLDG IMAGES FOUND #{buildings.inspect}"
+          end
+
           buildings = buildings.to_a.group_by(&:building_id)
 
 					output = listings.map do |l|
@@ -213,7 +217,7 @@ module API
 							building_blob:
 								APIBuilding.new({
 			            building: buildings[l.building_id][0],
-			            images: bldg_images[l.building_id],
+			            images: 	bldg_images[l.building_id],
 			            amenities: building_amenities[l.building_id]
 			          })
 						}

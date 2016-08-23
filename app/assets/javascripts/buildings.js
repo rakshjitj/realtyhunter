@@ -163,10 +163,10 @@ Buildings = {};
       map: "#map-canvas",
       location: bldg_address,
       details: ".details"
-    }).bind("geocode:result", function () {
-      console.log(result);
-    }).bind("geocode:error", function () {
-      console.log("[ERROR]: " + result);
+    }).bind("geocode:result", function (result) {
+      // console.log("*****", result);
+    }).bind("geocode:error", function (result) {
+      // console.log("[ERROR]: " + result);
     });
 
     $(".autocomplete-input").geocomplete({
@@ -177,7 +177,7 @@ Buildings = {};
       if (this.value == "New York, NY, USA") {
         this.value = '';
       }
-      console.log(this.value);
+      // console.log("******". result);
 
       // update neighborhood options from google results
       var sublocality = '';
