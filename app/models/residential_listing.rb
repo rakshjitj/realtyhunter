@@ -464,6 +464,7 @@ class ResidentialListing < ActiveRecord::Base
       end
 
       #puts "NEW UNIT NUM #{residential_unit_dup.unit.building_unit}"
+      update_building_counts
       residential_unit_dup
     else
       raise "No unit number, invalid unit number, or unit number already taken specified"
