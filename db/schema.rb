@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160628030503) do
+ActiveRecord::Schema.define(version: 20160825002638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
 
   create_table "announcements", force: :cascade do |t|
     t.string   "note"
@@ -80,7 +81,6 @@ ActiveRecord::Schema.define(version: 20160628030503) do
     t.integer  "active_unit_count",                 default: 0,     null: false
     t.datetime "last_unit_updated_at"
     t.string   "llc_name"
-    t.boolean  "never_watermark_images",            default: false
   end
 
   add_index "buildings", ["documents_id"], name: "index_buildings_on_documents_id", using: :btree
@@ -573,6 +573,9 @@ ActiveRecord::Schema.define(version: 20160628030503) do
     t.date     "rented_date"
     t.boolean  "rlsny",                     default: false
     t.boolean  "share_with_brokers",        default: false
+    t.boolean  "show",                      default: true
+    t.boolean  "favorites",                 default: true
+    t.boolean  "expose_address",            default: false
   end
 
   add_index "sales_listings", ["unit_id"], name: "index_sales_listings_on_unit_id", using: :btree
@@ -599,7 +602,6 @@ ActiveRecord::Schema.define(version: 20160628030503) do
     t.integer  "primary_agent2_id"
     t.integer  "deals_id"
     t.integer  "open_houses_id"
-    t.boolean  "never_watermark_images", default: false
     t.integer  "syndication_status",     default: 0
     t.boolean  "has_stock_photos",       default: false
   end

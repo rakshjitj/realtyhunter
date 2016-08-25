@@ -454,7 +454,7 @@
 		    			<% end %>
 			    		<% if !escape_once(@commercial_unit.property_description).blank? %>
 	            	<%= h raw sanitize @commercial_unit.property_description,
-	            			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span) %>
+	            			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div) %>
 	            <% else %>
 	              -None specified-
 	            <% end %>
@@ -469,7 +469,7 @@
 							<h3>Location Description</h3>
 			    		<% if !escape_once(@commercial_unit.location_description).blank? %>
 	            	<%= h raw sanitize @commercial_unit.location_description,
-	            			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span) %>
+	            			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div) %>
 	            <% else %>
 	              -None specified-
 	            <% end %>
