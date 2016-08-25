@@ -113,7 +113,7 @@ class Unit < ActiveRecord::Base
   def self.get_open_houses(list_of_units)
     unit_ids = list_of_units.pluck('units.id')
     Unit.joins(:open_houses).where(id: unit_ids)
-        .where('open_houses.day > ?', 1.day.ago)
+        .where('open_houses.day >= ?', 1.day.ago)
         .select('units.id', 'open_houses.start_time', 'open_houses.end_time', 'open_houses.day')
         .to_a.group_by(&:id)
   end

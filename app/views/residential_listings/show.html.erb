@@ -369,7 +369,8 @@
 
 					<!-- Open House Schedule Section - START -->
 					<% open_houses = @residential_unit.unit.open_houses %>
-					<% if open_houses.length %>
+
+					<% if open_houses.any? %>
 			    	<br />
 			    	<div class="row">
 			    		<div class="col-xs-12 col-md-3">
@@ -377,7 +378,7 @@
 			    		</div>
 			    		<div class="col-xs-12 col-md-9">
 			    			<% open_houses.each do |oh| %>
-			    				<%= oh.day.strftime('%b-%d-%Y') %>	 <%= oh.start_time.strftime("%I:%M %p") %> to
+			    				<%= oh.day.strftime('%b-%d-%Y') %> <%= oh.start_time.strftime("%I:%M %p") %> -
 			    				<%= oh.end_time.strftime("%I:%M %p") %>
 			    				<br>
 			    			<% end %>
