@@ -46,8 +46,6 @@ module SyndicationInterface
 left join sales_listings on units.id = sales_listings.unit_id left join commercial_listings on units.id = commercial_listings.unit_id')
 		end
 
-		puts "******** COUNT #{listings.count}"
-
 		listings = listings.joins([building: :company])
 			.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
 			.joins('left join landlords on landlords.id = buildings.landlord_id')

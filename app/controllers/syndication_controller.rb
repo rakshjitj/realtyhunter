@@ -33,6 +33,7 @@
       @images = Unit.get_all_images(@listings)
       @bldg_images = Building.get_all_bldg_images(@listings)
       @utilities = Building.get_utilities(@listings)
+      @open_houses = Unit.get_open_houses(@listings)
 
       # can you cache a function like this?
       @primary_agents, @agent_images = Unit.get_primary_agents_and_images(@listings)

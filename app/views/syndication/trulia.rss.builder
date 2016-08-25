@@ -45,23 +45,19 @@ xml.hotPadsItems version:"2.1" do
 				#xml.contactTimes
 			end
 
-			# TODO
-			# <openHouses>
-			# 					<openHouse>	<!-- repeatable	-->
-			# 									<date/>
-			# 									<startTime/>
-			# 									<endTime/>
-			# 									<appointmentRequired/>
-			# 					</openHouse>
-			# 	</openHouses>
-			# xml.openHouses do
-			# 	xml.openHouse do
-			# 		xml.date
-			# 		xml.startTime
-			# 		xml.endTime
-			# 		xml.appointmentRequired
-			# 	end
-			# end
+			if !@open_houses[listing.unit_id].blank?
+				xml.openHouses do
+					@open_houses[listing.unit_id].each do |oh|
+						xml.openHouse do
+							# must match this format:	"YYYY-MM-DD"
+							xml.date oh.day.strftime("%Y-%m-%d")
+							xml.startTime oh.start_time.strftime("%I:%M%p")
+							xml.endTime oh.end_time.strftime("%I:%M%p")
+							# xml.apptOnly
+						end
+					end
+				end
+			end
 
 			tmp_descrip = h raw sanitize listing.description, tags: %w()
 

@@ -109,6 +109,15 @@ class Unit < ActiveRecord::Base
     announcement.broadcast(user)
   end
 
+  # Used by syndication
+  def self.get_open_houses(list_of_units)
+    unit_ids = list_of_units.pluck('units.id')
+    Unit.joins(:open_houses).where(id: unit_ids)
+        .where('open_houses.day > ?', 1.day.ago)
+        .select('units.id', 'open_houses.start_time', 'open_houses.end_time', 'open_houses.day')
+        .to_a.group_by(&:id)
+  end
+
   private
     # TODO: code review - should only be set if none exists
     def generate_unique_id
