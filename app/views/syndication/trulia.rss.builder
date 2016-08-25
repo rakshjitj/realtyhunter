@@ -46,6 +46,14 @@ xml.hotPadsItems version:"2.1" do
 			end
 
 			# TODO
+			# <openHouses>
+			# 					<openHouse>	<!-- repeatable	-->
+			# 									<date/>
+			# 									<startTime/>
+			# 									<endTime/>
+			# 									<appointmentRequired/>
+			# 					</openHouse>
+			# 	</openHouses>
 			# xml.openHouses do
 			# 	xml.openHouse do
 			# 		xml.date

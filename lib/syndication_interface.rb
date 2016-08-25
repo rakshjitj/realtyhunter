@@ -43,11 +43,14 @@ module SyndicationInterface
 			listings = Unit.joins(:residential_listing)
 		else
 			listings = Unit.joins('left join residential_listings on units.id = residential_listings.unit_id
-left join commercial_listings on units.id = commercial_listings.unit_id')
+left join sales_listings on units.id = sales_listings.unit_id left join commercial_listings on units.id = commercial_listings.unit_id')
 		end
 
-		listings = listings.joins(building: [:company, :landlord])
+		puts "******** COUNT #{listings.count}"
+
+		listings = listings.joins([building: :company])
 			.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+			.joins('left join landlords on landlords.id = buildings.landlord_id')
 			.where('units.archived = false')
 			.where('units.status IN (?) OR units.syndication_status = ?',
 					[Unit.statuses["active"], Unit.statuses["pending"]],
@@ -70,10 +73,7 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 		end
 
 		if is_true?(search_params[:must_have_description])
-			# TO DO: could be improved here
-			listings = listings.where("residential_listings.description <> '' OR commercial_listings.property_description <> '' ")
-			#listings = listings.where("residential_listings.description <> ''")
-			#	.where("commercial_listings.property_description <> '' ")
+			listings = listings.where("residential_listings.description <> '' OR commercial_listings.property_description <> ''  OR sales_listings.public_description <> '' ")
 		end
 
 		if is_true?(search_params[:only_residential])
@@ -119,6 +119,9 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 				'residential_listings.lease_start', 'residential_listings.lease_end',
 				'residential_listings.has_fee', 'residential_listings.beds',
 				'residential_listings.baths', 'residential_listings.description',
+				'sales_listings.beds',
+				'sales_listings.baths',
+				'sales_listings.public_description',
 				'commercial_listings.id as c_id',
 				'commercial_listings.lease_term_months',
 				'commercial_listings.property_description',

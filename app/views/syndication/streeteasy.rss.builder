@@ -175,6 +175,13 @@ xml.streeteasy :version => "1.6" do
 				end # details
 
 				# TODO: open houses
+				# <openHouses>
+    #     <openHouse>
+    #       <startsAt/>
+    #       <endsAt/>
+    #       <apptOnly/>
+    #     </openHouse>
+    #   </openHouses>
 
 				if !@primary_agents[listing.unit_id].blank?
 					xml.agents do
