@@ -154,10 +154,13 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'sales_listings.public_description',
 					'residential_listings.favorites as r_favorites',
 					'commercial_listings.favorites as c_favorites',
+					'sales_listings.favorites as s_favorites',
 					'residential_listings.show as r_show',
 					'commercial_listings.show as c_show',
+					'sales_listings.show as s_show',
 					'residential_listings.expose_address as r_expose_address',
 					'commercial_listings.expose_address as c_expose_address',
+					'sales_listings.expose_address as s_expose_address',
 					'residential_listings.floor as r_floor',
 					'commercial_listings.floor as c_floor',
 					'sales_listings.floor as s_floor',
@@ -297,8 +300,10 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 		        'sales_listings.rlsny as s_rlsny',
 						'sales_listings.share_with_brokers as s_share_with_brokers',
 						'sales_listings.tenant_occupied as s_tenant_occupied',
-						# following fields are all from sales_listings
 						'sales_listings.building_size',
+						'sales_listings.show as s_show',
+						'sales_listings.favorites as s_favorites',
+						'sales_listings.expose_address as s_expose_address',
 						:percent_commission, :outside_broker_commission,
 					  :seller_name, :seller_phone, :seller_address,
 					  :year_built, :building_type, :lot_size,
@@ -354,7 +359,8 @@ left join commercial_listings on units.id = commercial_listings.unit_id')
 					'commercial_listings.property_description',
 					'commercial_listings.floor as c_floor',
 					'commercial_listings.sq_footage',
-					'commercial_listings.favorites as c_favorites', 'commercial_listings.show as c_show',
+					'commercial_listings.favorites as c_favorites',
+					'commercial_listings.show as c_show',
 					'commercial_listings.expose_address as c_expose_address')
 
 				listings

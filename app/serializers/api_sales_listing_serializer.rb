@@ -12,7 +12,8 @@ class APISalesListingSerializer < ActiveModel::Serializer
   :seller_name, :seller_phone, :seller_address,
   :year_built, :building_type, :lot_size, :building_size,
   :block_taxes, :lot_taxes, :water_sewer, :insurance,
-  :school_district, :certificate_of_occupancy, :violation_search
+  :school_district, :certificate_of_occupancy, :violation_search,
+  :expose_address, :favorite, :show
 
   # not used in sales:
   # :square_footage, :favorite, :show, :expose_address, :rented_date, :rental_terms, :utilities,
@@ -313,6 +314,18 @@ class APISalesListingSerializer < ActiveModel::Serializer
 
   def violation_search
     object.listing.violation_search
+  end
+
+  def show
+    object.listing.s_show
+  end
+
+  def favorite
+    object.listing.s_favorites
+  end
+
+  def expose_address
+    object.listing.s_expose_address
   end
 
 end
