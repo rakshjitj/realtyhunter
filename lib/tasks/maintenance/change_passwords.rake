@@ -11,9 +11,9 @@ namespace :maintenance do
 
 		@users = User.all
 		@users.each {|u|
-			if u.name != 'Blank Slate'
-				u.update!(password: '123456', password_confirmation: '123456')
-			end
+			#if u.name != 'Blank Slate'
+				u.update!(password: 'myspace123456', password_confirmation: 'myspace123456')
+			#end
 		}
 
 		puts "Done!\n"
