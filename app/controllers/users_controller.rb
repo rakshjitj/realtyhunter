@@ -182,6 +182,8 @@ class UsersController < ApplicationController
     params.delete('controller')
     # don't set_user, that does addtl work
     @user = User.find(params[:id])
+    @user.primary_units = [];
+    @user.primary2_units = [];
     @user.archive
     set_users
     # if this is us, log us out
