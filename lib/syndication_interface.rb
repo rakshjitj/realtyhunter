@@ -34,17 +34,17 @@ module SyndicationInterface
 	# - must belong to this company
 	# - must have at least 1 listing agent assigned
 	def trulia_listings(company_id, search_params)
-		search_params[:only_residential] = 1
+		# search_params[:only_residential] = 1
 		pull_data(company_id, search_params)
 	end
 
 	def pull_data(company_id, search_params)
-		if is_true?(search_params[:only_residential])
-			listings = Unit.joins(:residential_listing)
-		else
+		# if is_true?(search_params[:only_residential])
+		# 	listings = Unit.joins(:residential_listing)
+		# else
 			listings = Unit.joins('left join residential_listings on units.id = residential_listings.unit_id
-left join sales_listings on units.id = sales_listings.unit_id left join commercial_listings on units.id = commercial_listings.unit_id')
-		end
+left join sales_listings on units.id = sales_listings.unit_id')
+		# end
 
 		listings = listings.joins([building: :company])
 			.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
@@ -71,10 +71,35 @@ left join sales_listings on units.id = sales_listings.unit_id left join commerci
 		end
 
 		if is_true?(search_params[:must_have_description])
-			listings = listings.where("residential_listings.description <> '' OR commercial_listings.property_description <> ''  OR sales_listings.public_description <> '' ")
+			listings = listings.where("residential_listings.description <> '' OR sales_listings.public_description <> '' ")
 		end
 
-		if is_true?(search_params[:only_residential])
+		# if is_true?(search_params[:only_residential])
+		# 	listings = listings
+		# 		.select('units.building_unit', 'units.status', 'units.available_by',
+		# 		'units.listing_id', 'units.updated_at', 'units.rent',
+		# 		'buildings.id as building_id',
+		# 		'buildings.administrative_area_level_2_short',
+		# 		'buildings.administrative_area_level_1_short',
+		# 		'buildings.sublocality',
+		# 		'buildings.street_number', 'buildings.route',
+		# 		'buildings.postal_code',
+		# 		'buildings.lat',
+		# 		'buildings.lng',
+		# 		'landlords.code',
+		# 		'neighborhoods.name as neighborhood_name',
+		# 		'neighborhoods.borough as neighborhood_borough',
+		# 		'residential_listings.id AS r_id',
+		# 		'residential_listings.lease_start', 'residential_listings.lease_end',
+		# 		'residential_listings.has_fee', 'residential_listings.beds',
+		# 		'residential_listings.baths', 'residential_listings.description',
+		# 		'sales_listings.id AS s_id',
+		# 		'units.id as unit_id',
+		# 		'units.primary_agent_id',
+		# 		'units.primary_agent2_id',
+		# 		'units.public_url',
+		# 		'units.exclusive')
+		# else
 			listings = listings
 				.select('units.building_unit', 'units.status', 'units.available_by',
 				'units.listing_id', 'units.updated_at', 'units.rent',
@@ -93,42 +118,16 @@ left join sales_listings on units.id = sales_listings.unit_id left join commerci
 				'residential_listings.lease_start', 'residential_listings.lease_end',
 				'residential_listings.has_fee', 'residential_listings.beds',
 				'residential_listings.baths', 'residential_listings.description',
-				'units.id as unit_id',
-				'units.primary_agent_id',
-				'units.primary_agent2_id',
-				'units.public_url',
-				'units.exclusive')
-		else
-			listings = listings
-				.select('units.building_unit', 'units.status', 'units.available_by',
-				'units.listing_id', 'units.updated_at', 'units.rent',
-				'buildings.id as building_id',
-				'buildings.administrative_area_level_2_short',
-				'buildings.administrative_area_level_1_short',
-				'buildings.sublocality',
-				'buildings.street_number', 'buildings.route',
-				'buildings.postal_code',
-				'buildings.lat',
-				'buildings.lng',
-				'landlords.code',
-				'neighborhoods.name as neighborhood_name',
-				'neighborhoods.borough as neighborhood_borough',
-				'residential_listings.id AS r_id',
-				'residential_listings.lease_start', 'residential_listings.lease_end',
-				'residential_listings.has_fee', 'residential_listings.beds',
-				'residential_listings.baths', 'residential_listings.description',
+				'sales_listings.id AS s_id',
 				'sales_listings.beds',
 				'sales_listings.baths',
 				'sales_listings.public_description',
-				'commercial_listings.id as c_id',
-				'commercial_listings.lease_term_months',
-				'commercial_listings.property_description',
 				'units.id as unit_id',
 				'units.primary_agent_id',
 				'units.primary_agent2_id',
 				'units.public_url',
 				'units.exclusive')
-		end
+		# end
 
 		listings
 	end

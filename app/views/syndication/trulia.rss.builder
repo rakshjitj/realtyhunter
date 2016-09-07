@@ -59,7 +59,14 @@ xml.hotPadsItems version:"2.1" do
 				end
 			end
 
-			tmp_descrip = h raw sanitize listing.description, tags: %w()
+			#tmp_descrip = h raw sanitize listing.description, tags: %w()
+			if listing.r_id
+				tmp_descrip = h raw sanitize listing.description,
+        		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
+      elsif listing.s_id
+        tmp_descrip = h raw sanitize listing.public_description,
+        		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
+			end
 
 			xml.previewMessage tmp_descrip ? tmp_descrip[0..255] : tmp_descrip
 			xml.description tmp_descrip

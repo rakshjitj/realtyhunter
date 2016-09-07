@@ -30,8 +30,6 @@ xml.streeteasy :version => "1.6" do
 			# listing type
 			if listing.r_id
 				@ptype = "rental"
-			elsif listing.c_id
-				@ptype = "rental"
 			# else sales
 			# @ptype = "sale"
 			end
@@ -63,9 +61,11 @@ xml.streeteasy :version => "1.6" do
 					xml.availableOn listing.available_by # rentals only
 
 					if listing.r_id
-						xml.description h raw sanitize listing.description, tags: %w()
-					elsif listing.c_id
-						xml.description h raw sanitize listing.property_description, tags: %w()
+						xml.description h raw sanitize listing.description,
+		        		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
+		      elsif listing.s_id
+		        xml.description h raw sanitize listing.public_description,
+		        		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
 					end
 
 					xml.propertyType "rental"
