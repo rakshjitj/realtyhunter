@@ -184,9 +184,9 @@ module API
 						@building_utilities = Building.get_utilities(listings)
 					end
 
-					@images = Unit.get_all_images(listings)
-					@primary_agents = Unit.get_primary_agents(listings)
-					@open_houses = Unit.get_open_houses(listings)
+					@images = Unit.get_all_images(listings) || []
+					@primary_agents = Unit.get_primary_agents(listings) || []
+					@open_houses = Unit.get_open_houses(listings) || []
 
 					# repackage into a format that's easily digestible
 					# by our API renderer
