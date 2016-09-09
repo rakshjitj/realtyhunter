@@ -33,7 +33,7 @@ class Building < ActiveRecord::Base
 	validates :administrative_area_level_2_short, allow_blank: true, length: {maximum: 100}
 	# state
 	validates :administrative_area_level_1_short, presence: true, length: {maximum: 100}
-	validates :postal_code, presence: true, length: {maximum: 15}
+	validates :postal_code, allow_blank: true, length: {maximum: 15}
 	validates :country_short, presence: true, length: {maximum: 100}
 	validates :lat, presence: true, length: {maximum: 100}
 	validates :lng, presence: true, length: {maximum: 100}

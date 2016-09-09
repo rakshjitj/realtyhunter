@@ -31,11 +31,6 @@ class BuildingTest < ActiveSupport::TestCase
     assert_not @bldg.valid?
   end
 
-  test "postal_code should be present" do
-    @bldg.postal_code = "     "
-    assert_not @bldg.valid?
-  end
-
   test "lat should be present" do
     @bldg.lat = "     "
     assert_not @bldg.valid?
