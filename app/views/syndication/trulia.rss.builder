@@ -171,11 +171,23 @@ xml.hotPadsItems version:"2.1" do
 			xml.pricingFrequency "MONTH"
 			#xml.HOA-FEE
 			#xml.deposit
-			xml.numBedrooms listing.beds
-			if listing.baths
-				xml.numFullBaths listing.baths.to_i
 
-				decimal_idx = listing.baths.to_s.index('.')
+			if listing.r_beds
+				xml.numBedrooms listing.r_beds
+			elsif listing.s_beds
+				xml.numBedrooms listing.s_beds
+			end
+
+			if listing.r_baths
+				baths = listing.r_baths
+			elsif listing.s_baths
+				baths = listing.s_baths
+			end
+
+			if baths
+				xml.numFullBaths baths.to_i
+
+				decimal_idx = baths.to_s.index('.')
 				if decimal_idx > -1
 					xml.numHalfBaths 1
 				end

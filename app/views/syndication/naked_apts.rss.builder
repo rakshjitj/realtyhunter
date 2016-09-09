@@ -56,8 +56,18 @@ xml.streeteasy :version => "1.6" do
 						xml.exclusive
 					end
 
-					xml.bedrooms listing.beds
-					xml.bathrooms listing.baths
+					if listing.r_beds
+						xml.bedrooms listing.r_beds
+					elsif listing.s_beds
+						xml.bedrooms listing.s_beds
+					end
+
+					if listing.r_baths
+						xml.bathrooms listing.r_baths
+					elsif listing.s_baths
+						xml.bathrooms listing.s_baths
+					end
+
 					xml.availableOn listing.available_by # rentals only
 
 					if listing.r_id
