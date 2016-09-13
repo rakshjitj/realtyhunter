@@ -50,4 +50,30 @@ class UserMailer < ApplicationMailer
     mail to: managers, subject: "Unassigned Listings Report",
         tag: 'unassigned_report', track_opens:'true', reply_to: 'no-reply@myspacenyc.com'
   end
+
+  def send_primary_agent_removed_notification(user_id, listing)
+    if !user_id || listing.blank?
+      puts "send_primary_agent_removed_notification: no data"
+      return
+    end
+
+    @user = User.where(id: user_id).first
+    @listing = listing
+    mail to: @user.email,
+        subject: "You have been removed as primary agent from #{listing.street_address_and_unit}",
+        tag: 'primary_agent_removal', track_opens: 'true', reply_to: 'no-reply@myspacenyc.com'
+  end
+
+  def send_primary_agent_added_notification(user_id, listing)
+    if !user_id || listing.blank?
+      puts "send_primary_agent_added_notification: no data"
+      return
+    end
+
+    @user = User.where(id: user_id).first
+    @listing = listing
+    mail to: @user.email,
+        subject: "You have been added as primary agent on #{listing.street_address_and_unit}",
+        tag: 'primary_agent_addition', track_opens: 'true', reply_to: 'no-reply@myspacenyc.com'
+  end
 end

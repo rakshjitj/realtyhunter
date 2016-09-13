@@ -152,7 +152,15 @@ class ResidentialListingsController < ApplicationController
     ret1 = nil
     ret2 = nil
     ResidentialListing.transaction do
-      ret1 = @residential_unit.unit.update(residential_listing_params[:unit].merge({updated_at: Time.now}))
+      if @residential_unit.unit.primary_agent_id != residential_listing_params[:unit][:primary_agent_id].to_i
+        Unit.update_primary_agent(
+            residential_listing_params[:unit][:primary_agent_id],
+            @residential_unit.unit.primary_agent_id,
+            @residential_unit)
+      end
+
+      ret1 = @residential_unit.unit.update(
+          residential_listing_params[:unit].merge({updated_at: Time.now}))
       r_params = residential_listing_params
       r_params.delete('unit')
       ret2 = @residential_unit.update(r_params.merge({updated_at: Time.now}))
@@ -260,12 +268,23 @@ class ResidentialListingsController < ApplicationController
 
     if @agent && @listings.length > 0
       @listings.each do |l|
-        l.unit.update_attribute(:primary_agent_id, @agent.id)
+        if l.unit.primary_agent_id != @agent.id
+          if !l.unit.primary_agent_id.blank?
+            UserMailer.send_primary_agent_removed_notification(l.unit.primary_agent_id, l).deliver
+          end
+          l.unit.update_attribute(:primary_agent_id, @agent.id)
+        end
       end
+      @listings.each { |l|
+        UserMailer.send_primary_agent_added_notification(@agent.id, l).deliver
+      }
+
       flash[:success] = "Primary agent successfully assigned!"
-      set_residential_listings
     end
 
+    params.delete('listing_ids')
+    params.delete('primary_agent_id')
+    set_residential_listings
     respond_to do |format|
       format.js
     end
@@ -281,18 +300,27 @@ class ResidentialListingsController < ApplicationController
   end
 
   def unassign
-    @listings = ResidentialListing.joins(:unit)
+    listings = ResidentialListing.joins(:unit)
       .where("units.listing_id IN (?)", params[:listing_ids].split(" "))
 
-    if @listings.length > 0
-      @listings.each do |l|
+    if listings.length > 0
+      listings.each do |l|
+        if (l.unit.primary_agent_id)
+          UserMailer.send_primary_agent_removed_notification(l.unit.primary_agent_id, l).deliver
+        end
+        # this should always be nil for residential, but we'll check here just in case
+        if (l.unit.primary_agent2_id)
+          UserMailer.send_primary_agent_removed_notification(l.unit.primary_agent2_id, l).deliver
+        end
         l.unit.update_attribute(:primary_agent_id, nil)
         l.unit.update_attribute(:primary_agent2_id, nil)
       end
+
       flash[:success] = "Primary agent successfully removed!"
-      set_residential_listings
     end
 
+    params.delete('listing_ids')
+    set_residential_listings
     respond_to do |format|
       format.js
     end

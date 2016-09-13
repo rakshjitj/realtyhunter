@@ -1,3 +1,6 @@
+#
+# deprecated!
+#
 class GenerateResidentialCSV
 	@queue = :generate_csv
 

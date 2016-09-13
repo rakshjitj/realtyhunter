@@ -118,6 +118,15 @@ class Unit < ActiveRecord::Base
         .to_a.group_by(&:id)
   end
 
+  def self.update_primary_agent(new_agent_id, old_agent_id, listing)
+    if !old_agent_id.blank?
+      UserMailer.send_primary_agent_removed_notification(old_agent_id, listing).deliver
+    end
+    if !new_agent_id.blank?
+      UserMailer.send_primary_agent_added_notification(new_agent_id, listing).deliver
+    end
+  end
+
   private
     # TODO: code review - should only be set if none exists
     def generate_unique_id

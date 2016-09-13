@@ -166,6 +166,13 @@ class SalesListingsController < ApplicationController
     ret1 = nil
     ret2 = nil
     SalesListing.transaction do
+      if @sales_unit.unit.primary_agent_id != sales_listing_params[:unit][:primary_agent_id].to_i
+        Unit.update_primary_agent(
+            residential_listing_params[:unit][:primary_agent_id],
+            @sales_unit.unit.primary_agent_id,
+            @sales_unit)
+      end
+
       ret1 = @sales_unit.unit.update(sales_listing_params[:sales_listing][:unit].merge({updated_at: Time.now}))
       r_params = sales_listing_params[:sales_listing]
       r_params.delete('unit')

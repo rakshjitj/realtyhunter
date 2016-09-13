@@ -128,7 +128,20 @@ class CommercialListingsController < ApplicationController
   def update
     ret1 = nil
     ret2 = nil
+
     CommercialListing.transaction do
+      if @commercial_unit.unit.primary_agent_id != commercial_listing_params[:unit][:primary_agent_id].to_i
+        Unit.update_primary_agent(
+            commercial_listing_params[:unit][:primary_agent_id],
+            @commercial_unit.unit.primary_agent_id,
+            @commercial_unit)
+      end
+      if @commercial_unit.unit.primary_agent2_id != commercial_listing_params[:unit][:primary_agent2_id].to_i
+        Unit.update_primary_agent(
+            commercial_listing_params[:unit][:primary_agent2_id],
+            @commercial_unit.unit.primary_agent2_id,
+            @commercial_unit)
+      end
       ret1 = @commercial_unit.unit.update(commercial_listing_params[:unit].merge({updated_at: Time.now}))
       c_params = commercial_listing_params
       c_params.delete('unit')
