@@ -422,21 +422,16 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def deep_copy_imgs(dst_id)
-    #@src = ResidentialListing.find(src_id)
     @dst = ResidentialListing.find(dst_id)
 
     # deep copy photos
-    self.unit.images.each {|i|
-      # img_copy = Image.new
-      # img_copy.file = i.file
-      # img_copy.unit_id = @dst.unit.id
-      # img_copy.save
-      img_copy = i.clone
+    self.unit.images.each { |i|
+      img_copy = Image.new
+      img_copy.file = i.file
+      img_copy.unit_id = @dst.unit.id
+      img_copy.save
       @dst.unit.images << img_copy
     }
-
-    # puts "********" + @dst.unit.images.inspect
-
     @dst.save!
   end
 
