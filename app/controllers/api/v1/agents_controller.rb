@@ -52,7 +52,12 @@ module API
 			end
 
 			def show
-				@agent = User.where(id: params[:id]).where(archived: false).first
+				@agent = User.joins(:employee_title)
+						.where(id: params[:id])
+						.where(archived: false)
+						.where('employee_titles.name = ?', EmployeeTitle.agent.name)
+						.first
+
 				if !@agent
 					@agent = {}
 				end
