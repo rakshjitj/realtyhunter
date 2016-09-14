@@ -52,7 +52,10 @@ module API
 			end
 
 			def show
-				@agent = User.find(params[:id])
+				@agent = User.where(id: params[:id]).where(archived: false).first
+				if !@agent
+					@agent = {}
+				end
 				render json: @agent
 			end
 
