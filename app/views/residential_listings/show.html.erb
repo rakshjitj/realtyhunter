@@ -6,7 +6,7 @@
 
 <% provide(:title, @residential_unit.street_address_and_unit) %>
 
-<div class="res-show-page-wrapper">
+
 <div class="mobile-show-page-wrap no-margin-padding">
 	<div class="row">
 	  <div class="col-xs-12 col-md-8 col-md-offset-2">
@@ -649,55 +649,6 @@
 
 </div>
 
-<!-- Email Modal -->
-<div class="modal fade modal-fullscreen" id="emailModal" tabindex="-1" role="dialog"
-  aria-labelledby="emailModal" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <%= form_tag(send_listings_residential_listings_path, remote:true) do %>
-      <div class="modal-body">
-        <div class="row vertical-padding">
-          <div class="col-md-12">
-            <%= label_tag "residential_listing[recipients]", "Recipients", class: 'required' %>
-            <i><small>Use commas to separate email addresses</small></i>
-            <%= text_field_tag "residential_listing[recipients]", nil, class: 'form-control', required: true %>
-          </div>
-        </div>
 
-        <div class="row vertical-padding">
-          <div class="col-md-12">
-            <%= label_tag "residential_listing[title]", "Title", class: 'required' %>
-            <%= text_field_tag "residential_listing[title]", "Check out this great listing!", class: 'form-control', required: true %>
-          </div>
-        </div>
-
-        <div class="row vertical-padding">
-          <div class="col-md-12">
-            <%= label_tag "residential_listing[message]", "Message" %>
-            <%= text_area_tag "residential_listing[message]", nil, class: 'form-control' %>
-          </div>
-        </div>
-
-        <br />
-        <div class="row vertical-padding">
-          <div class="col-md-12">
-
-          </div>
-        </div>
-
-        <%= hidden_field_tag "residential_listing[listing_ids]", @residential_unit.unit.listing_id %>
-
-      </div>
-      <div class="modal-footer">
-        <%= submit_tag "Send Email", class:"btn btn-warning" %>
-        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
-      </div>
-
-      <% end %>
-
-    </div>
-  </div>
-</div>
-</div><!-- res-show-page-wrapper -->
 
 <% end %><!-- cache -->

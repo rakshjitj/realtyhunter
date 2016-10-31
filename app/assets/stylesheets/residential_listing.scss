@@ -234,31 +234,33 @@
 }
 
 .mobile-show-page-wrap {
-  margin-bottom: -100px; /* the bottom margin is the negative value of the footer's height */
-  height: calc(100vh - 115px);
+  /*height: 100%;*/
+  margin-bottom: 200px;
+  /*margin-bottom: -100px; /* the bottom margin is the negative value of the footer's height * /
+  height: calc(100vh - 115px);*/
   /* iphone5: Portrait and Landscape */
-  @media only screen
+  /*@media only screen
     and (min-device-width: 320px)
     and (max-device-width: 568px)
     and (-webkit-device-pixel-ratio: 2)  {
       height: 460px;
   }
-  /* iphone6: Portrait and Landscape */
+  /* iphone6: Portrait and Landscape * /
   @media only screen
     and (min-device-width: 375px)
     and (max-device-width: 667px)
     and (-webkit-min-device-pixel-ratio: 2) {
     height: calc(100vh - 185px);
-  }
-  /* iphone6+: Portrait and Landscape */
-  @media only screen
+  }*/
+  /* iphone6+: Portrait and Landscape * /
+  /*@media only screen
     and (min-device-width: 414px)
     and (max-device-width: 736px)
     and (-webkit-min-device-pixel-ratio: 3) {
     height: calc(100vh - 140px); // 160
   }
 
-  overflow: scroll;
+  overflow: scroll;*/
 }
 
 /*.mobile-show-bottom-spacer {
@@ -266,17 +268,22 @@
 }*/
 
 .res-show-page-wrapper {
+  /*margin-bottom: 200px;
   height: 100vh;
-  position: relative;
+  position: relative;*/
 }
 
 #footer-mobile-show {
   position: fixed;
-  top: calc(100vh - 65px);
+  left: 0;
+  bottom: 0;
   height: 62px;
   width: 100vw;
+  /*position: fixed;
+  top: calc(100vh - 65px);
+
   left: 0;
-  /* iphone5: Portrait and Landscape */
+  /* iphone5: Portrait and Landscape * /
   @media only screen
     and (min-device-width: 320px)
     and (max-device-width: 568px)
@@ -285,7 +292,7 @@
       width: 100%;
   }
   //iphone6
-  /* Portrait and Landscape */
+  /* Portrait and Landscape * /
   @media only screen
     and (min-device-width: 375px)
     and (max-device-width: 667px)
@@ -294,14 +301,15 @@
     width: 100%;
   }
   //iphone6+
-  /* Portrait and Landscape */
+  /* Portrait and Landscape * /
   @media only screen
     and (min-device-width: 414px)
     and (max-device-width: 736px)
     and (-webkit-min-device-pixel-ratio: 3) {
-    top: calc(100vh - 140px); //135
+    /*top: calc(100vh - 140px); //135* /
+    bottom: 0;
     width: 100%;
-  }
+  }*/
 
   background: #eda800;
 }
@@ -309,7 +317,7 @@
 .nav-button-wrapper {
   display: flex;
   flex-direction: row;
-  flex-basis: 65px;
+  /*flex-basis: 65px;*/
 }
 
 .nav-button-wrapper > .nav-button {
