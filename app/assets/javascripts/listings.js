@@ -87,7 +87,7 @@ Listings = {};
 
   Listings.sendMessage = function(e) {
     Listings.hideSpinner();
-    //console.log(Listings.selectedListings);
+    console.log(Listings.selectedListings);
     $('#email_modal_recipients').val('');
     $('#email_modal_message').val('');
     e.preventDefault();

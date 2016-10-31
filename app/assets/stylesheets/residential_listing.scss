@@ -255,20 +255,21 @@
     and (min-device-width: 414px)
     and (max-device-width: 736px)
     and (-webkit-min-device-pixel-ratio: 3) {
-    height: calc(100vh - 160px);
+    height: calc(100vh - 140px); // 160
   }
 
   overflow: scroll;
 }
 
-.mobile-show-bottom-spacer {
+/*.mobile-show-bottom-spacer {
   height: 62px;
-}
+}*/
 
 .res-show-page-wrapper {
   height: 100vh;
   position: relative;
 }
+
 #footer-mobile-show {
   position: fixed;
   top: calc(100vh - 65px);
@@ -298,7 +299,7 @@
     and (min-device-width: 414px)
     and (max-device-width: 736px)
     and (-webkit-min-device-pixel-ratio: 3) {
-    top: calc(100vh - 135px);
+    top: calc(100vh - 140px); //135
     width: 100%;
   }
 
