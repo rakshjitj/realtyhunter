@@ -2,11 +2,10 @@
 
 <div id="footer-mobile-show" class="hidden">
   <div class="nav-button-wrapper">
-
-  <!-- data-toggle="modal" data-target="#emailModal" -->
-    <a class="nav-button js-mobileShowEmail" id="emailListings" data-toggle="modal" data-target="#emailModal">
-      <i class="fa fa-envelope fa-3x"></i>
-    </a>
+    <!-- Button trigger modal -->
+    <button type="button" class="nav-button" data-toggle="modal" data-target="#emailListing">
+      <i class="resShow-mobileEmailIcon fa fa-envelope fa-3x"></i>
+    </button>
 
     <a class="nav-button"
       href="https://maps.google.com?daddr=<%= @residential_unit.unit.building.formatted_street_address %>">
@@ -16,10 +15,9 @@
   </div>
 </div>
 
-
 <!-- Email Modal -->
-<div class="modal fade modal-fullscreen" id="emailModal" tabindex="-1" role="dialog"
-  aria-labelledby="emailModal" aria-hidden="true">
+<div class="modal fade modal-fullscreen" id="emailListing" tabindex="-1" role="dialog"
+  aria-labelledby="emailListing" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <%= form_tag(send_listings_residential_listings_path, remote:true) do %>

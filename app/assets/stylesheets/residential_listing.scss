@@ -66,6 +66,8 @@
   height: calc(100vh - 115px);
 }
 
+/* TODO: this could be greatly simplified... */
+
 .mobile-filters .card-middle {
   height: calc(100vh - 100px);
   /* iphone5: Portrait and Landscape */
@@ -233,101 +235,33 @@
   background: #eda800;
 }
 
-.mobile-show-page-wrap {
-  /*height: 100%;*/
-  margin-bottom: 200px;
-  /*margin-bottom: -100px; /* the bottom margin is the negative value of the footer's height * /
-  height: calc(100vh - 115px);*/
-  /* iphone5: Portrait and Landscape */
-  /*@media only screen
-    and (min-device-width: 320px)
-    and (max-device-width: 568px)
-    and (-webkit-device-pixel-ratio: 2)  {
-      height: 460px;
-  }
-  /* iphone6: Portrait and Landscape * /
-  @media only screen
-    and (min-device-width: 375px)
-    and (max-device-width: 667px)
-    and (-webkit-min-device-pixel-ratio: 2) {
-    height: calc(100vh - 185px);
-  }*/
-  /* iphone6+: Portrait and Landscape * /
-  /*@media only screen
-    and (min-device-width: 414px)
-    and (max-device-width: 736px)
-    and (-webkit-min-device-pixel-ratio: 3) {
-    height: calc(100vh - 140px); // 160
-  }
-
-  overflow: scroll;*/
-}
-
-/*.mobile-show-bottom-spacer {
-  height: 62px;
-}*/
-
-.res-show-page-wrapper {
-  /*margin-bottom: 200px;
-  height: 100vh;
-  position: relative;*/
-}
-
 #footer-mobile-show {
   position: fixed;
   left: 0;
+  right: 0;
   bottom: 0;
   height: 62px;
-  width: 100vw;
-  /*position: fixed;
-  top: calc(100vh - 65px);
-
-  left: 0;
-  /* iphone5: Portrait and Landscape * /
-  @media only screen
-    and (min-device-width: 320px)
-    and (max-device-width: 568px)
-    and (-webkit-device-pixel-ratio: 2)  {
-      top: 510px;
-      width: 100%;
-  }
-  //iphone6
-  /* Portrait and Landscape * /
-  @media only screen
-    and (min-device-width: 375px)
-    and (max-device-width: 667px)
-    and (-webkit-min-device-pixel-ratio: 2) {
-    top: 557px;
-    width: 100%;
-  }
-  //iphone6+
-  /* Portrait and Landscape * /
-  @media only screen
-    and (min-device-width: 414px)
-    and (max-device-width: 736px)
-    and (-webkit-min-device-pixel-ratio: 3) {
-    /*top: calc(100vh - 140px); //135* /
-    bottom: 0;
-    width: 100%;
-  }*/
-
   background: #eda800;
 }
 
 .nav-button-wrapper {
   display: flex;
   flex-direction: row;
-  /*flex-basis: 65px;*/
 }
 
 .nav-button-wrapper > .nav-button {
   flex: 1;
-  height: 65px;
   margin: 0;
   padding: 10px 0 10px 0;
+  height: 65px;
+  border: 0;
   background-color: #eda800 !important;
   color: black;
   text-align: center;
+}
+
+.resShow-mobileEmailIcon {
+  margin-top: -8px;
 }
 
 .row-list-view {
@@ -367,6 +301,10 @@
 /******* show ******************/
 .inaccuracy-report {
   background-color: #FBEFEF;
+}
+
+.mobile-show-page-wrap .inaccuracy-report {
+  margin-bottom: 100px;
 }
 
 #runit-panel > .panel-body {
