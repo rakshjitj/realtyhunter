@@ -33,7 +33,7 @@ class UnitMailer < ApplicationMailer
     @images = ResidentialListing.get_images(@listings)
     @message = msg
 
-    mail to: recipients, subject: sub, reply_to: @source_agent.email,
+    mail to: recipients, subject: sub, from: @source_agent.email,
       tag: 'sent_residential_listings', track_opens:'true'
   end
 

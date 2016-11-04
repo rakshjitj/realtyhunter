@@ -1,5 +1,11 @@
 $('#notices').html("<%= j(render :partial => "layouts/notices") %>");
 
-$('#emailModal').modal('hide');
+if ($('#emailModal').length) {
+  $('#emailModal').modal('hide');
+}
+
+if ($('#emailListing').length) {
+  $('#emailListing').modal('hide'); // show page - mobile
+}
 
 Listings.hideSpinner();
