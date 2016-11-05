@@ -57,6 +57,10 @@ class Landlord < ActiveRecord::Base
 	    end
 	  end
 
+    if params[:listing_agent_id]
+      running_list = running_list.where("listing_agent_id IN (?)", params[:listing_agent_id])
+    end
+
     status = params[:status]
     if !status.nil?
       status_lowercase = status.downcase
@@ -64,10 +68,10 @@ class Landlord < ActiveRecord::Base
         if status_lowercase == 'active/pending'
           running_list = running_list.joins(buildings: :units)
               .where("units.status IN (?) ",
-                [Unit.statuses['active'], Unit.statuses['pending']])#.uniq
+                [Unit.statuses['active'], Unit.statuses['pending']])
         else
           running_list = running_list.joins(buildings: :units)
-              .where("units.status = ? ", Unit.statuses[status_lowercase])#.uniq
+              .where("units.status = ? ", Unit.statuses[status_lowercase])
         end
       end
     end
@@ -86,7 +90,7 @@ class Landlord < ActiveRecord::Base
 		running_list = running_list.select('landlords.id', 'landlords.code', 'landlords.name',
 				'landlords.updated_at', 'landlords.mobile',
 				'landlords.active_unit_count', 'landlords.total_unit_count',
-				'landlords.last_unit_updated_at')
+				'landlords.last_unit_updated_at', 'landlords.listing_agent_id')
 
 	end
 

@@ -132,6 +132,8 @@ class LandlordsController < ApplicationController
 
     def set_landlords
       @landlords = Landlord.search(params)
+      @listing_agents = User.where(id: Landlord.all.map(&:listing_agent_id))
+
       @landlords = custom_sort
       @landlords = @landlords.page params[:page]
     end

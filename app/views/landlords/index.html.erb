@@ -24,17 +24,30 @@
       <div id="landlord-search-filters" data-search-path="<%= filter_landlords_path %>">
         <%= form_tag landlords_path, method: 'get' do %>
         <div class="row">
-          <div class="col-sm-12 col-md-4 vertical-padding">
+          <div class="col-sm-2 col-md-1 vertical-padding form-label-responsive">
+            <label class="vertical-padding">Code:</label>
+          </div>
+          <div class="col-sm-10 col-md-2 vertical-padding">
             <%= autocomplete_field_tag :filter, params[:filter],
               autocomplete_landlord_code_landlords_path,
               update_elements: {},
               placeholder: "Filter by code",
               size: 30, class:'form-control' %>
           </div>
-          <div class="col-sm-5 col-md-offset-2 col-md-4 form-label-responsive">
-            <label class="vertical-padding">Landlords with units that have this status:</label>
+          <div class="col-sm-2 col-md-2 vertical-padding form-label-responsive">
+            <label class="vertical-padding">Listing agent:</label>
           </div>
-          <div class="col-sm-4 col-md-2">
+          <div class="col-sm-10 col-md-2 vertical-padding">
+            <%= select_tag(:listing_agent_id,
+                options_for_select(@listing_agents.collect {|u| [u.name, u.id]},
+                    [params[:listing_agent_id] ? params[:listing_agent_id].titleize : "Any"]),
+                  {prompt: "Choose one...",
+                  class: 'form-control'}) %>
+          </div>
+          <div class="col-sm-2 col-md-1 vertical-padding form-label-responsive">
+            <label class="vertical-padding">Status:</label>
+          </div>
+          <div class="col-sm-10 col-md-2 vertical-padding">
             <% if current_user.is_management? || current_user.is_listings_manager? %>
               <%= select_tag(:status,
                 options_for_select(['Any', 'Active/Pending', 'Active', 'Pending', 'Off'],
@@ -69,15 +82,10 @@
               <th data-sort="code" class="th-sortable">Code</th>
               <th data-sort="name" class="th-sortable">Name</th>
               <th>Mobile</th>
-              <th data-sort="active_unit_count" class="th-sortable" class="">
-                On-Market Units
-              </th>
-              <th data-sort="total_unit_count" class="th-sortable" class="">
-                Total Units
-              </th>
-              <th data-sort="last_unit_updated_at" class="th-sortable" class="">
-                Last Unit Updated
-              </th>
+              <th data-sort="active_unit_count" class="th-sortable">On-Market Units</th>
+              <th data-sort="total_unit_count" class="th-sortable">Total Units</th>
+              <th data-sort="last_unit_updated_at" class="th-sortable">Last Unit Updated</th>
+              <th data-sort="updated_at" class="th-sortable">Updated</th>
               <th colspan="1"></th>
             </tr>
           </thead>
