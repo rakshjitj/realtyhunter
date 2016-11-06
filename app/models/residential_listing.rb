@@ -6,7 +6,7 @@ class ResidentialListing < ActiveRecord::Base
   belongs_to :unit, touch: true
   accepts_nested_attributes_for :unit #, allow_destroy: true
   before_save :process_custom_amenities
-  after_commit :update_building_counts
+  after_commit :update_building_counts, :trim_audit_log
 
   attr_accessor :include_photos, :inaccuracy_description,
     :pet_policy_shorthand, :available_starting, :available_before, :custom_amenities
@@ -706,6 +706,14 @@ class ResidentialListing < ActiveRecord::Base
       bldg.landlord.update_total_unit_count
       bldg.landlord.update_active_unit_count
       bldg.landlord.last_unit_updated_at = DateTime.now
+    end
+
+    # to keep updates speedy, we cap the audit log at 100 entries per record
+    def trim_audit_log
+      audits_count = audits.count
+      if audits_count > 100
+        audits.first.destroy
+      end
     end
 
 end

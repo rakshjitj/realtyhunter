@@ -14,6 +14,7 @@ class Unit < ActiveRecord::Base
   accepts_nested_attributes_for :open_houses, allow_destroy: true
 
   before_validation :generate_unique_id
+  after_commit :trim_audit_log
 
   scope :unarchived, ->{ where(archived: false) }
   scope :active, ->{ where(status: Unit.statuses["active"]) }
@@ -142,7 +143,14 @@ class Unit < ActiveRecord::Base
           self.listing_id = listing_id
           self.public_url = "http://myspacenyc.com/listing/MYSPACENYC-#{listing_id}"
       end
+    end
 
+    # to keep updates speedy, we cap the audit log at 100 entries per record
+    def trim_audit_log
+      audits_count = audits.count
+      if audits_count > 100
+        audits.first.destroy
+      end
     end
 
 end

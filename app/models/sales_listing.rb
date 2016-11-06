@@ -4,7 +4,7 @@ class SalesListing < ActiveRecord::Base
   has_and_belongs_to_many :sales_amenities
   belongs_to :unit, touch: true
   before_save :process_custom_amenities
-  after_commit :update_building_counts
+  after_commit :update_building_counts, :trim_audit_log
 
   # NOTE: because our accessors clobber the names of some of our
   # building's fields, we reference the intended names here, but change
@@ -506,5 +506,13 @@ class SalesListing < ActiveRecord::Base
       bldg.update_total_unit_count
       bldg.update_active_unit_count
       bldg.last_unit_updated_at = DateTime.now
+    end
+
+    # to keep updates speedy, we cap the audit log at 100 entries per record
+    def trim_audit_log
+      audits_count = audits.count
+      if audits_count > 100
+        audits.first.destroy
+      end
     end
 end
