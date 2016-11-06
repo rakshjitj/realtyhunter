@@ -1,4 +1,5 @@
 class Unit < ActiveRecord::Base
+  audited
 	belongs_to :building, touch: true
   belongs_to :primary_agent, class_name: 'User', touch: true
   belongs_to :primary_agent2, class_name: 'User', touch: true

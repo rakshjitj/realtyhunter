@@ -60,6 +60,7 @@ gem 'rollbar', '~> 2.8.3'
 gem 'activerecord-import'
 gem 'oj'
 gem 'oj_mimic_json'
+gem "audited", "~> 4.3"
 
 # profiling
 # gem 'rack-mini-profiler', require: false

@@ -1,0 +1,19 @@
+class UpdateAudited < ActiveRecord::Migration
+  def change
+    # add_column :audits, :new_audited_changes, :jsonb
+    # Audit.find_each do |audit|
+    #   audit.new_audited_changes = audit.audited_changes
+    #   audit.save!
+    # end
+
+    remove_column :audits, :new_audited_changes, :jsonb
+    add_column :audits, :audited_changes, :text
+
+    # Audit.find_each do |audit|
+    #   audit.audited_changes = audit.new_audited_changes
+    #   audit.save!
+    # end
+
+    # remove_column :audits, :new_audited_changes
+  end
+end

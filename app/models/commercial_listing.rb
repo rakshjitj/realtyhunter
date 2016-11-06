@@ -1,4 +1,5 @@
 class CommercialListing < ActiveRecord::Base
+  audited
   scope :unarchived, ->{where(archived: false)}
   belongs_to :commercial_property_type
   belongs_to :unit, touch: true

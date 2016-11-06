@@ -48,6 +48,9 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     arel (6.0.3)
+    audited (4.3.0)
+      activerecord (>= 4.0, < 5.1)
+      rails-observers (~> 0.1.2)
     autoprefixer-rails (6.3.3.1)
       execjs
     aws-sdk-v1 (1.52.0)
@@ -216,6 +219,8 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
+    rails-observers (0.1.2)
+      activemodel (~> 4.0)
     rails4-autocomplete (1.1.1)
       rails (>= 3.0)
     rails_12factor (0.0.3)
@@ -309,6 +314,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers!
   activerecord-import
+  audited (~> 4.3)
   autoprefixer-rails (~> 6.3.3.1)
   aws-sdk-v1 (~> 1.52.0)
   bcrypt (~> 3.1.7)

@@ -1,4 +1,5 @@
 class SalesListing < ActiveRecord::Base
+  audited
 	scope :unarchived, ->{where(archived: false)}
   has_and_belongs_to_many :sales_amenities
   belongs_to :unit, touch: true

@@ -1,4 +1,5 @@
 class ResidentialListing < ActiveRecord::Base
+  audited
   queue = :residential_listings
   has_and_belongs_to_many :residential_amenities
   has_many :roommates
