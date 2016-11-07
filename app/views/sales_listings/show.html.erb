@@ -511,6 +511,29 @@
 	    		</div>
 	    	</div><!-- row -->
 
+	    	<br>
+		    <% if @sales_unit.unit.audits.length > 0 || @sales_unit.audits.length > 0 %>
+		    	<div class="row history-report">
+		    		<div class="col-xs-12">
+		    			<h3>Recent Changes</h3>
+				    	<% for i in 0..@sales_unit.unit.audits.length-1 %>
+					    	<div class="row">
+					    		<div class="col-xs-12">
+					    			<%= pretty_audit_changes(@sales_unit.unit.audits[i]) %>
+					    		</div>
+					    	</div>
+					    <% end %>
+					    <% for i in 0..@sales_unit.audits.length-1 %>
+					    	<div class="row">
+					    		<div class="col-xs-12">
+					    			<%= pretty_audit_changes(@sales_unit.audits[i]) %>
+					    		</div>
+					    	</div>
+					    <% end %>
+				    <% end %>
+				  </div>
+			  </div>
+
 			</div><!-- panel body -->
 		</div><!-- panel heading -->
 	</div><!-- main centered column -->
