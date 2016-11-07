@@ -450,7 +450,7 @@ class CommercialListing < ActiveRecord::Base
     # to keep updates speedy, we cap the audit log at 100 entries per record
     def trim_audit_log
       audits_count = audits.count
-      if audits_count > 100
+      if audits_count > 50
         audits.first.destroy
       end
     end
