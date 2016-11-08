@@ -517,6 +517,7 @@
 		    		<div class="col-xs-12">
 		    			<h3>Recent Changes</h3>
 				    	<% for i in 0..@sales_unit.unit.audits.length-1 %>
+				    		<% if i > 5; break; end %>
 					    	<div class="row">
 					    		<div class="col-xs-12">
 					    			<%= pretty_audit_changes(@sales_unit.unit.audits[i]) %>
@@ -524,6 +525,7 @@
 					    	</div>
 					    <% end %>
 					    <% for i in 0..@sales_unit.audits.length-1 %>
+					    	<% if i > 5; break; end %>
 					    	<div class="row">
 					    		<div class="col-xs-12">
 					    			<%= pretty_audit_changes(@sales_unit.audits[i]) %>

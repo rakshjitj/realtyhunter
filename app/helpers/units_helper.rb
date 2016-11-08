@@ -25,7 +25,13 @@ module UnitsHelper
 	def pretty_audit_changes(audit)
 		retVal = []
 		audit.audited_changes.each do |key, val|
-		  retVal.push("#{key} from #{val[0]} to #{val[1]}")
+			key = key.gsub('_', ' ')
+			if key == 'rent' || key == 'price'
+				retVal.push("#{key} from $#{val[0]} to $#{val[1]}")
+			else
+				retVal.push("#{key}")
+			end
+
 		end
 
 		"#{audit.user.name} changed #{retVal.join(', ')} on #{audit.created_at}."
