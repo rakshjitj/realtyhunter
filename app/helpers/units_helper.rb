@@ -24,17 +24,23 @@ module UnitsHelper
 
 	def pretty_audit_changes(audit)
 		retVal = []
+
+		viewable_fields = ['beds', 'baths', 'rented date', 'access info', 'description', 'notes',
+				'status']
 		audit.audited_changes.each do |key, val|
 			key = key.gsub('_', ' ')
 			if key == 'rent' || key == 'price'
 				retVal.push("#{key} from $#{val[0]} to $#{val[1]}")
-			else
+			elsif viewable_fields.include? key
 				retVal.push("#{key}")
 			end
-
 		end
 
-		"#{audit.user.name} changed #{retVal.join(', ')} on #{audit.created_at}."
+		if retVal.length > 0
+			"#{audit.user.name} changed #{retVal.join(', ')} on #{audit.created_at}."
+		else
+			"#{audit.user.name} made changes on #{audit.created_at}."
+		end
 	end
 
 end
