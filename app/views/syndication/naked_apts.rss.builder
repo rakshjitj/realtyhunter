@@ -183,30 +183,31 @@ xml.streeteasy :version => "1.6" do
 								# must match this format: 2006-11-20 3:30pm
 								xml.startsAt oh.day.strftime("%Y-%m-%d") + " " + oh.start_time.strftime("%I:%M%p")
 								xml.endsAt oh.day.strftime("%Y-%m-%d") + " " + oh.end_time.strftime("%I:%M%p")
-								# xml.apptOnly
+								xml.apptOnly
 							end
 						end
 					end
 				end
 
-				if @primary_agents[listing.unit_id]
+				if !@primary_agents[listing.unit_id].blank?
 					xml.agents do
 						@primary_agents[listing.unit_id].each do |agent|
-							xml.agent id: agent.id
-							xml.name agent.name
-							xml.company @company.name
-							if @agent_images[agent.id]
-								xml.photo @agent_images[agent.id].file.url(:large)
-							end
-						  xml.url agent.public_url
-					  	xml.email agent.email
-					  	xml.lead_email agent.email
-					  	xml.phone_numbers do
-					  		xml.main agent.mobile_phone_number
-					  		xml.office agent.office_telephone
-					  		xml.cell agent.mobile_phone_number
-					  		xml.fax agent.office_fax
-					  	end
+							xml.agent id: agent.id do
+								xml.name agent.name
+								xml.company @company.name
+								if @agent_images[agent.id]
+									xml.photo @agent_images[agent.id].file.url(:large)
+								end
+							  xml.url agent.public_url
+						  	xml.email agent.email
+						  	xml.lead_email agent.email
+						  	xml.phone_numbers do
+						  		xml.main agent.mobile_phone_number
+						  		xml.office agent.office_telephone
+						  		xml.cell agent.mobile_phone_number
+						  		xml.fax agent.office_fax
+						  	end
+						  end
 						end
 					end
 				end

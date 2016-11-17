@@ -53,7 +53,7 @@ xml.hotPadsItems version:"2.1" do
 							xml.date oh.day.strftime("%Y-%m-%d")
 							xml.startTime oh.start_time.strftime("%I:%M%p")
 							xml.endTime oh.end_time.strftime("%I:%M%p")
-							# xml.apptOnly
+							xml.appointmentRequired
 						end
 					end
 				end
