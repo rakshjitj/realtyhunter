@@ -70,4 +70,12 @@ class UnitMailer < ApplicationMailer
         tag: 'forced_syndication_report', track_opens:'true', reply_to: 'no-reply@myspacenyc.com'
   end
 
+  # managers - list of email addresses
+  # data - list of addresses
+  def send_clear_pending_report(managers, data)
+    @data = data
+    mail to: managers, subject: "Stale Pending Report",
+        tag: 'clear_pending_report', track_opens:'true', reply_to: 'no-reply@myspacenyc.com'
+  end
+
 end
