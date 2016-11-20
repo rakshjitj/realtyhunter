@@ -424,6 +424,10 @@ class SalesListingsController < ApplicationController
         end
       end
 
+      if !data[:public_description].blank?
+        data[:public_description] = data[:public_description].gsub(/&nbsp;/, ' ')
+      end
+
       neighborhood_name = data[:neighborhood]
       data[:neighborhood] = Neighborhood.find_or_create_by(name: neighborhood_name)
 

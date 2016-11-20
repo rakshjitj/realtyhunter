@@ -365,6 +365,10 @@ class CommercialListingsController < ApplicationController
         end
       end
 
+      if !data[:property_description].blank?
+        data[:property_description] = data[:property_description].gsub(/&nbsp;/, ' ')
+      end
+
       data
     end
 end

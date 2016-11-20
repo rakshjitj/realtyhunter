@@ -478,6 +478,10 @@ class ResidentialListingsController < ApplicationController
         end
       end
 
+      if !data[:description].blank?
+        data[:description] = data[:description].gsub(/&nbsp;/, ' ')
+      end
+
       data
     end
 end
