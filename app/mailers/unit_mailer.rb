@@ -78,4 +78,10 @@ class UnitMailer < ApplicationMailer
         tag: 'clear_pending_report', track_opens:'true', reply_to: 'no-reply@myspacenyc.com'
   end
 
+  def send_clear_pending_warning_report(managers, data)
+    @data = data
+    mail to: managers, subject: "Stale Pending Report",
+        tag: 'clear_pending_warning_report', track_opens:'true', reply_to: 'no-reply@myspacenyc.com'
+  end
+
 end

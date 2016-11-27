@@ -16,13 +16,12 @@ namespace :maintenance do
         .where('units.updated_at < ?', 4.weeks.ago)
         # .where('companies.id = ?', company.company_id)
 
-    stale_listings.each {|l| l.unit.update({status: 2})}
-
-    puts "Found #{stale_listings.count} results:"
+    puts "Warning! These listings will be updated to off-status tomorrow. " +
+        "Found #{stale_listings.count} results:"
     puts "\n" + stale_listings.join("\n")
 
     managers = ['info@myspacenyc.com', 'rbujans@myspacenyc.com']
-    UnitMailer.send_clear_pending_report(managers, stale_listings).deliver!
+    UnitMailer.send_clear_pending_warning_report(managers, stale_listings).deliver!
     puts "Email sent to #{managers.inspect}"
     log.info "Email sent to #{managers.inspect}"
 
