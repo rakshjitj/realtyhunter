@@ -21,7 +21,7 @@ namespace :maintenance do
     puts "\n" + stale_listings.join("\n")
 
     managers = ['info@myspacenyc.com', 'rbujans@myspacenyc.com']
-    UnitMailer.send_clear_pending_warning_report(managers, stale_listings).deliver!
+    UnitMailer.send_clear_pending_warning_report(managers, stale_listings).deliver
     puts "Email sent to #{managers.inspect}"
     log.info "Email sent to #{managers.inspect}"
 
