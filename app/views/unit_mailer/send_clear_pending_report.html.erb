@@ -7,9 +7,9 @@
 
 <% if @data.count > 0 %>
   <% @data.each do |listing| %>
-
+    <a href="https://myspace-realty-monster.herokuapp.com/residential_listings/<%= listing.id %>">
       <%= listing.street_address_and_unit %><br>
-
+    </a>
   <% end %>
 <% else %>
   <p>No listings found! Everything looks good.</p>
