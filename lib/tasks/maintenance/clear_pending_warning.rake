@@ -1,6 +1,6 @@
 namespace :maintenance do
   desc "flips stale pending residential listings over to closed"
-  task :clear_pending => :environment do
+  task :clear_pending_warning => :environment do
     log = ActiveSupport::Logger.new('log/change_passwords.log')
     start_time = Time.now
 
