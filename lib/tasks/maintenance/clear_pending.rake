@@ -19,7 +19,8 @@ namespace :maintenance do
     stale_listings.each {|l| l.unit.update({status: 2})}
 
     puts "Found #{stale_listings.count} results:"
-    puts "\n" + stale_listings.join("\n")
+    stale_listings = stale_listings.pluck(:id)
+    puts "******* #{stale_listings.inspect}"
 
     managers = ['info@myspacenyc.com', 'rbujans@myspacenyc.com']
     UnitMailer.send_clear_pending_report(managers, stale_listings).deliver
