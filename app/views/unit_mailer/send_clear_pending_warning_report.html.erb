@@ -5,10 +5,10 @@
   <em>Tomorrow they will be flipped over to 'off-market status'</em> if not otherwise updated.
 </p>
 
-<% if @data.count > 0 %>
-  <% @data.each do |listing| %>
-    <a href="https://myspace-realty-monster.herokuapp.com/residential_listings/<%= listing.id %>">
-      <%= listing.street_address_and_unit %><br>
+<% if @listings && @listings.size > 0 %>
+  <% @listings.each do |l| %>
+    <a href="https://myspace-realty-monster.herokuapp.com/residential_listings/<%= l.id %>">
+      <%= l.street_address_and_unit %><br>
     </a>
   <% end %>
 <% else %>

@@ -18,10 +18,11 @@ namespace :maintenance do
 
     puts "Warning! These listings will be updated to off-status tomorrow. " +
         "Found #{stale_listings.count} results:"
-    puts "\n" + stale_listings.join("\n")
+    # puts "\n" + stale_listings.map(&:).join("\n")
+    stale_listings = stale_listings.pluck(&:id)
 
-    managers = ['info@myspacenyc.com', 'rbujans@myspacenyc.com']
-    UnitMailer.send_clear_pending_warning_report(managers, stale_listings).deliver
+    managers = ['rbujans@myspacenyc.com']
+   UnitMailer.send_clear_pending_warning_report(managers, stale_listings).deliver
     puts "Email sent to #{managers.inspect}"
     log.info "Email sent to #{managers.inspect}"
 

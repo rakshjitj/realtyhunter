@@ -4,8 +4,8 @@ Weekly Stale Pending Report
 Below are the listings marked as *pending* that have not been updated in over 2 weeks.
 *Tomorrow they will be flipped over to 'off-market' status* if not otherwise updated.
 
-<% if @data.count > 0 %>
-  <% @data.each do |listing| %>
+<% if @listings.size > 0 %>
+  <% @listings.each do |listing| %>
 <%= listing.street_address_and_unit %>
 (https://myspace-realty-monster.herokuapp.com/residential_listings/<%= listing.id %>)
 

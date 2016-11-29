@@ -3,6 +3,7 @@ desc "This task is called by the Heroku scheduler add-on"
 task :run_reports => :environment do
   if Date.today.monday?
     Rake::Task["maintenance:clear_pending_warning"].invoke
+    Rake::Task["maintenance:stale_listings_report"].invoke
   end
 
 	if Date.today.tuesday?
@@ -10,8 +11,6 @@ task :run_reports => :environment do
     Rake::Task["maintenance:forced_syndication_report"].invoke
     Rake::Task["maintenance:clear_pending"].invoke
 	end
-
-  Rake::Task["maintenance:stale_listings_report"].invoke
 end
 
 task :run_wufoo_import => :environment do

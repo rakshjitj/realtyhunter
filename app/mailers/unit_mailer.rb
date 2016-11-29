@@ -74,13 +74,17 @@ class UnitMailer < ApplicationMailer
   # data - list of addresses
   def send_clear_pending_report(managers, data)
     @data = data
-    mail to: managers, subject: "Stale Pending Report",
+    mail to: managers, subject: "Clear Pending Report",
         tag: 'clear_pending_report', track_opens:'true', reply_to: 'no-reply@myspacenyc.com'
   end
 
-  def send_clear_pending_warning_report(managers, data)
-    @data = data
-    mail to: managers, subject: "Stale Pending Report",
+  def send_clear_pending_warning_report(managers, ids)
+    @listings = ResidentialListing.where(id: ids)
+        .select('buildings.street_number', 'buildings.route',
+          'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
+          'units.building_unit', 'residential_listings.id').to_a
+
+    mail to: managers, subject: "Clear Pending Report - Warning",
         tag: 'clear_pending_warning_report', track_opens:'true', reply_to: 'no-reply@myspacenyc.com'
   end
 
