@@ -73,7 +73,8 @@ class UnitMailer < ApplicationMailer
   # managers - list of email addresses
   # data - list of addresses
   def send_clear_pending_report(managers, ids)
-    @listings = ResidentialListing.where(id: ids)
+    @listings = ResidentialListing.joins([unit: :building])
+        .where(id: ids)
         .select('buildings.street_number', 'buildings.route',
           'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
           'units.building_unit', 'residential_listings.id').to_a
@@ -83,7 +84,8 @@ class UnitMailer < ApplicationMailer
   end
 
   def send_clear_pending_warning_report(managers, ids)
-    @listings = ResidentialListing.where(id: ids)
+    @listings = ResidentialListing.joins([unit: :building])
+        .where(id: ids)
         .select('buildings.street_number', 'buildings.route',
           'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
           'units.building_unit', 'residential_listings.id').to_a
