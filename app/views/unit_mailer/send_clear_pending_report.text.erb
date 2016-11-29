@@ -5,10 +5,10 @@ Below are the listings marked as *pending* that have not been updated in over 2 
 They have now been moved to 'off-market' status.
 
 
-<% if @data.count > 0 %>
-  <% @data.each do |listing| %>
-<%= listing.street_address_and_unit %>
-(https://myspace-realty-monster.herokuapp.com/residential_listings/<%= listing.id %>)
+<% if @listings && @listings.size > 0 %>
+  <% @listings.each do |l| %>
+<%= l.street_address_and_unit %>
+(https://myspace-realty-monster.herokuapp.com/residential_listings/<%= l.id %>)
 
 
   <% end %>
