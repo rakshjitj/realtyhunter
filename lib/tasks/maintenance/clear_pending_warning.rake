@@ -13,7 +13,7 @@ namespace :maintenance do
         .where('archived = false')
         .where('units.status = ?', Unit.statuses['pending'])
         .where('residential_listings.updated_at < ?', 2.weeks.ago)
-        .where('units.updated_at < ?', 4.weeks.ago)
+        .where('units.updated_at < ?', 2.weeks.ago)
         # .where('companies.id = ?', company.company_id)
 
     puts "Warning! These listings will be updated to off-status tomorrow. " +
