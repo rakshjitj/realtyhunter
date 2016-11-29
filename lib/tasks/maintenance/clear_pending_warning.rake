@@ -9,7 +9,7 @@ namespace :maintenance do
 
     # company = Company.find_by(name: 'MyspaceNYC')
 
-    stale_listings = ResidentialListing.joins(:unit)
+    stale_listings = ResidentialListing.joins([unit: :building])
         .where('archived = false')
         .where('units.status = ?', Unit.statuses['pending'])
         .where('residential_listings.updated_at < ?', 2.weeks.ago)
