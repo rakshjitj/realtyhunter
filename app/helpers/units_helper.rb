@@ -36,10 +36,16 @@ module UnitsHelper
 			end
 		end
 
+
+		user_name = "[System Automated Update]"
+		if audit.user
+			user_name = audit.user.name
+		end
+
 		if retVal.length > 0
-			"#{audit.user.name} changed #{retVal.join(', ')} on #{audit.created_at}."
+			"#{user_name} changed #{retVal.join(', ')} on #{audit.created_at}."
 		else
-			"#{audit.user.name} made changes on #{audit.created_at}."
+			"#{user_name} made changes on #{audit.created_at}."
 		end
 	end
 
