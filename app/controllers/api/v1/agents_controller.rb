@@ -33,7 +33,8 @@ module API
 						'employee_titles.name AS title')
 					.includes(:image)
 
-				@agents = @agents.where('employee_titles.name = ?', EmployeeTitle.agent.name)
+				@agents = @agents.where('employee_titles.name in (?)',
+						[EmployeeTitle.agent.name, EmployeeTitle.senior_agent.name])
 				# updated_at
 				if agent_params[:changed_at] && !agent_params[:changed_at].empty?
 					time = Time.parse(agent_params[:changed_at]).in_time_zone
@@ -55,7 +56,8 @@ module API
 				@agent = User.joins(:employee_title)
 						.where(id: params[:id])
 						.where(archived: false)
-						.where('employee_titles.name = ?', EmployeeTitle.agent.name)
+						.where('employee_titles.name in (?)',
+							[EmployeeTitle.agent.name, EmployeeTitle.senior_agent.name])
 						.first
 
 				if !@agent

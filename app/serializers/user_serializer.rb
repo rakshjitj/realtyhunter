@@ -12,6 +12,8 @@ class UserSerializer < ActiveModel::Serializer
 
   	if employee_title_name == "agent"
 			"Licensed Real-Estate Agent"
+    elsif employee_title_name == "senior agent"
+      "Sr. Licensed Real-Estate Agent"
 		else
 			"Other"
 		end
