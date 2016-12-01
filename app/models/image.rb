@@ -14,11 +14,11 @@ class Image < ActiveRecord::Base
       large: {
         geometry: '2500x2500>',
         rotation: a.instance.rotation,
-        watermark_path: "#{Rails.root}/public/watermark-logo.png"
+        watermark_path: "#{Rails.root}/public/watermark-logo-sm.png"
       },
       original: {
         convert_options: '-auto-orient',
-        watermark_path: "#{Rails.root}/public/watermark-logo.png"
+        watermark_path: "#{Rails.root}/public/watermark-logo-sm.png"
       }
     }},
     #default_url: Rails.root + "/images/:style/missing.png",
