@@ -62,7 +62,7 @@ module Paperclip
       # streeteasy requirement: 30px from edge
       if watermark_path
         command = "composite"
-        params = %W[-gravity #{@position} -geometry +55+50 #{watermark_path} #{tofile(dst)}]
+        params = %W[-gravity #{@position} -geometry +25+25 #{watermark_path} #{tofile(dst)}]
         params << tofile(dst)
         begin
           success = Paperclip.run(command, params.flatten.compact.collect{|e| "'#{e}'"}.join(" "))
