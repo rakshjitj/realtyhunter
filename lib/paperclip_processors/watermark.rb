@@ -25,7 +25,7 @@ module Paperclip
       @whiny            = options[:whiny].nil? ? true : options[:whiny]
       @format           = options[:format]
       @watermark_path   = options[:watermark_path]
-      @position         = options[:position].nil? ? "SouthEast" : options[:position]
+      @position         = options[:position].nil? ? "SouthWest" : options[:position]
       @overlay          = options[:overlay].nil? ? true : false
       @current_format   = File.extname(@file.path)
       @basename         = File.basename(@file.path, @current_format)
@@ -59,6 +59,7 @@ module Paperclip
         raise Paperclip::Errors::CommandNotFoundError, "There was an error resizing and cropping #{@basename}" if @whiny
       end
 
+      # streeteasy requirement: 30px from edge
       if watermark_path
         command = "composite"
         params = %W[-gravity #{@position} -geometry +55+50 #{watermark_path} #{tofile(dst)}]
