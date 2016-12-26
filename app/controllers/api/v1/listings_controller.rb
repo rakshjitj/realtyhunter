@@ -236,7 +236,7 @@ module API
 							# Remove any that fall into this category - most likely leftovers from early testing,
 							# bad code, etc.
 							puts "AH HA FOUND ONE! #{l.listing_id}"
-							#Unit.where(listing_id: l.listing_id).delete_all
+							#Unit.where(listing_id: l.listing_id).destroy_all
 						end
 					end
 

@@ -46,7 +46,7 @@ class AnnouncementsController < ApplicationController
 
   def destroy
     @announcement = Announcement.find(params[:id])
-    @announcement.delete
+    @announcement.destroy
 
     # for residential page
     @announcement_items = Announcement.search({limit: 4})

@@ -90,7 +90,7 @@ module Forms
 
 	  def destroy
 	  	@entry = WufooContactUsForm.find(params[:id])
-	    @entry.delete
+	    @entry.destroy
 	    set_entries
 	    respond_to do |format|
 	      format.html { redirect_to forms_contact_us_url, notice: 'Entry was successfully inactivated.' }
@@ -109,7 +109,7 @@ module Forms
 
 	  def destroy_multiple
 	    if !params[:ids].blank?
-	      WufooContactUsForm.where(id: params[:ids]).delete_all
+	      WufooContactUsForm.where(id: params[:ids]).destroy_all
 	      params.delete('ids')
 	    end
 	    set_entries

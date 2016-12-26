@@ -116,7 +116,7 @@ class RoommatesController < ApplicationController
   # DELETE /residential_units/1
   # DELETE /residential_units/1.json
   def destroy
-    Roommate.delete(@roommate.id)
+    Roommate.destroy(@roommate.id)
     set_roommates
     respond_to do |format|
       format.html { redirect_to roommates_url, notice: 'Roommate was successfully deleted.' }
@@ -134,7 +134,7 @@ class RoommatesController < ApplicationController
 
   def destroy_multiple
     if !params[:ids].blank?
-      Roommate.where(id: params[:ids]).delete_all
+      Roommate.where(id: params[:ids]).destroy_all
       params.delete('ids')
     end
     set_roommates
