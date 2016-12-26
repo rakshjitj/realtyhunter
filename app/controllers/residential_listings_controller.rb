@@ -58,6 +58,10 @@ class ResidentialListingsController < ApplicationController
   end
 
   def edit
+    @buildings = current_user.company.buildings
+        .where(archived: false)
+        .order("formatted_street_address ASC")
+        .collect {|b| [b.street_address, b.id]}
     @panel_title = "Edit listing"
   end
 

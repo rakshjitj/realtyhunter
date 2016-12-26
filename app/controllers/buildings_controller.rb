@@ -62,6 +62,10 @@ class BuildingsController < ApplicationController
 
   # GET /buildings/1/edit
   def edit
+    @landlords = current_user.company.landlords
+      .where(archived: false)
+      .order("code ASC")
+      .collect {|l| [l.code, l.id]}
   end
 
   # POST /buildings
