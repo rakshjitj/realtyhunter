@@ -136,7 +136,7 @@
           </div>
           <div class="col-xs-9 col-md-4">
             <%= unit_form.select(:building_id,
-              options_for_select(current_user.company.buildings.order("formatted_street_address ASC").collect {|b| [b.street_address, b.id]},
+              options_for_select(@buildings,
                 [@residential_unit.unit.building ? @residential_unit.unit.building.id : '']),
               {prompt: "Choose one..."},
               class: 'form-control',

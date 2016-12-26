@@ -54,6 +54,10 @@ class BuildingsController < ApplicationController
     if landlord_id && Landlord.where("id = ?", landlord_id)
       @building.landlord_id = landlord_id
     end
+    @landlords = current_user.company.landlords
+      .where(archived: false)
+      .order("code ASC")
+      .collect {|l| [l.code, l.id]}
   end
 
   # GET /buildings/1/edit
