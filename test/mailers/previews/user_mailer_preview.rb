@@ -23,4 +23,29 @@ class UserMailerPreview < ActionMailer::Preview
     user.create_reset_digest
     UserMailer.added_by_admin(company.id, user.id, user.reset_token)
   end
+
+  def added_by_admin
+    user = User.first
+    company = Company.first
+    user.create_reset_digest
+    UserMailer.added_by_admin(company.id, user.id, user.reset_token)
+  end
+
+  def send_primary_agent_removed_notification
+    user = User.last
+    listing = ResidentialListing.joins(:unit)
+      .select('residential_listings.*', 'units.listing_id')
+      .last
+    UserMailer.send_primary_agent_removed_notification(user.id, listing.listing_id)
+  end
+
+  def send_primary_agent_added_notification
+    user = User.last
+    listing = ResidentialListing.joins(:unit)
+      .select('residential_listings.*', 'units.listing_id')
+      .last
+
+    UserMailer.send_primary_agent_added_notification(user.id, listing.listing_id)
+  end
+
 end

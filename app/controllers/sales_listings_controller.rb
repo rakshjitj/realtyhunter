@@ -167,13 +167,13 @@ class SalesListingsController < ApplicationController
     ret2 = nil
     SalesListing.transaction do
       s_params = sales_listing_params[:sales_listing]
-      puts "11111 #{s_params[:unit]}"
+      # puts "11111 #{s_params[:unit]}"
 
       if @sales_unit.unit.primary_agent_id != s_params[:unit][:primary_agent_id].to_i
         Unit.update_primary_agent(
             s_params[:unit][:primary_agent_id],
             @sales_unit.unit.primary_agent_id,
-            @sales_unit)
+            @sales_unit.unit.listing_id)
       end
 
       ret1 = @sales_unit.unit.update(s_params[:unit].merge({updated_at: Time.now}))

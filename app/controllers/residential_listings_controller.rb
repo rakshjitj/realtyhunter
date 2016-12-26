@@ -163,7 +163,7 @@ class ResidentialListingsController < ApplicationController
         Unit.update_primary_agent(
             residential_listing_params[:unit][:primary_agent_id],
             @residential_unit.unit.primary_agent_id,
-            @residential_unit)
+            @residential_unit.unit.listing_id)
       end
 
       ret1 = @residential_unit.unit.update(
@@ -277,13 +277,14 @@ class ResidentialListingsController < ApplicationController
       @listings.each do |l|
         if l.unit.primary_agent_id != @agent.id
           if !l.unit.primary_agent_id.blank?
-            UserMailer.send_primary_agent_removed_notification(l.unit.primary_agent_id, l).deliver
+            UserMailer.send_primary_agent_removed_notification(
+                l.unit.primary_agent_id, l.unit.listing_id).deliver
           end
           l.unit.update_attribute(:primary_agent_id, @agent.id)
         end
       end
       @listings.each { |l|
-        UserMailer.send_primary_agent_added_notification(@agent.id, l).deliver
+        UserMailer.send_primary_agent_added_notification(@agent.id, l.unit.listing_id).deliver
       }
 
       flash[:success] = "Primary agent successfully assigned!"
@@ -313,11 +314,13 @@ class ResidentialListingsController < ApplicationController
     if listings.length > 0
       listings.each do |l|
         if (l.unit.primary_agent_id)
-          UserMailer.send_primary_agent_removed_notification(l.unit.primary_agent_id, l).deliver
+          UserMailer.send_primary_agent_removed_notification(
+              l.unit.primary_agent_id, l.unit.listing_id).deliver
         end
         # this should always be nil for residential, but we'll check here just in case
         if (l.unit.primary_agent2_id)
-          UserMailer.send_primary_agent_removed_notification(l.unit.primary_agent2_id, l).deliver
+          UserMailer.send_primary_agent_removed_notification(
+              l.unit.primary_agent2_id, l.unit.listing_id).deliver
         end
         l.unit.update_attribute(:primary_agent_id, nil)
         l.unit.update_attribute(:primary_agent2_id, nil)
