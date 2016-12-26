@@ -7,9 +7,8 @@ namespace :maintenance do
 		Building.all.each do |bldg|
 			puts "Updating building [#{bldg.id}]"
 			if bldg.units.length > 0
-				bldg.update_columns(
-					total_unit_count: bldg.units.unarchived.count,
-					active_unit_count: bldg.units.unarchived.count)
+        bldg.update_total_unit_count
+        bldg.update_active_unit_count
 				if bldg.units.count > 0
 					bldg.update_attributes(last_unit_updated_at: bldg.units.first.updated_at)
 				end
