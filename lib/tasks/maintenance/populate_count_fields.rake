@@ -6,12 +6,11 @@ namespace :maintenance do
 
 		Building.all.each do |bldg|
 			puts "Updating building [#{bldg.id}]"
+      bldg.update_total_unit_count
+      bldg.update_active_unit_count
+
 			if bldg.units.length > 0
-        bldg.update_total_unit_count
-        bldg.update_active_unit_count
-				if bldg.units.count > 0
-					bldg.update_attributes(last_unit_updated_at: bldg.units.first.updated_at)
-				end
+				bldg.update_attributes(last_unit_updated_at: bldg.units.first.updated_at)
 			end
 		end
 

@@ -37,11 +37,13 @@ class Landlord < ActiveRecord::Base
   end
 
 	def update_active_unit_count
-		self.update_attribute(:active_unit_count, buildings.reduce(0){|sum, bldg| sum + bldg.active_units.count })
+		self.update_attribute(:active_unit_count,
+        buildings.unarchived.reduce(0){|sum, bldg| sum + bldg.active_units.count })
 	end
 
 	def update_total_unit_count
-		self.update_attribute(:total_unit_count, buildings.reduce(0){|sum, bldg| sum + bldg.units.count })
+		self.update_attribute(:total_unit_count,
+        buildings.unarchived.reduce(0){|sum, bldg| sum + bldg.units.count })
 	end
 
 	def self._search(running_list, params)

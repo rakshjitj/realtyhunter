@@ -71,7 +71,7 @@ class Building < ActiveRecord::Base
 	end
 
 	def update_active_unit_count
-    active_count = units.where('status = ?', Unit.statuses['active']).count
+    active_count = units.unarchived.where('status = ?', Unit.statuses['active']).count
     self.update_attribute(:active_unit_count, active_count)
 	end
 
