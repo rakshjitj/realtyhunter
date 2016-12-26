@@ -81,19 +81,26 @@ class Landlord < ActiveRecord::Base
     running_list.uniq
 	end
 
-	def self.search_csv(params)
-		running_list = Landlord.unarchived.includes(:buildings)
+	def self.search_csv(params, user)
+		running_list = Landlord.unarchived.joins(:company)
+      .joins('left join users on users.id = landlords.listing_agent_id')
+      .includes(:buildings)
+      .where('companies.id = ?', user.company_id)
+      .select('landlords.*', 'users.name as listing_agent_name')
 		self._search(running_list, params)
 	end
 
-	def self.search(params)
-		running_list = Landlord.unarchived
+	def self.search(params, user)
+		running_list = Landlord.unarchived.joins(:company)
+      .joins('left join users on users.id = landlords.listing_agent_id')
+      .where('companies.id = ?', user.company_id)
+
     running_list = self._search(running_list, params)
 		running_list = running_list.select('landlords.id', 'landlords.code', 'landlords.name',
 				'landlords.updated_at', 'landlords.mobile',
 				'landlords.active_unit_count', 'landlords.total_unit_count',
-				'landlords.last_unit_updated_at', 'landlords.listing_agent_id')
-
+				'landlords.last_unit_updated_at', 'landlords.listing_agent_id',
+        'users.name as listing_agent_name')
 	end
 
 	def residential_units(status=nil)

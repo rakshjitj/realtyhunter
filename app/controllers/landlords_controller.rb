@@ -131,7 +131,7 @@ class LandlordsController < ApplicationController
     end
 
     def set_landlords
-      @landlords = Landlord.search(params)
+      @landlords = Landlord.search(params, current_user)
       @listing_agents = User.where(id: Landlord.all.map(&:listing_agent_id))
 
       @landlords = custom_sort
@@ -139,7 +139,7 @@ class LandlordsController < ApplicationController
     end
 
     def set_landlords_csv
-      @landlords = Landlord.search_csv(params)
+      @landlords = Landlord.search_csv(params, current_user)
       @landlords = custom_sort
     end
 
