@@ -1,14 +1,14 @@
 <%- headers = [
   'Full Address', 'Unit', 'Price', 'Lease Term', 'Lease Start',
   'Lease End', 'Closed Date', 'Move In Date', 'Commission', 'State',
-  'Notes', 'Landlord Code', 'Unit ID', 'Primary Agent',
+  'Notes', 'Landlord Code', 'Primary Agent',
   'Created At', 'Updated At', 'Archived',
 	] -%>
 
 <%= CSV.generate_line headers %>
 <%- @deals.each do |deal| -%>
 
-  <%= [deal.full_address,
+  <%= [deal.street_address2,
     deal.building_unit,
     deal.price,
     "#{deal.lease_term} Months",
@@ -20,10 +20,9 @@
     deal.state.titleize,
     deal.deal_notes,
     deal.landlord_code,
-    deal.unit_id,
-    deal.user_id ? deal.user.name : '-None Specified-',
+    deal.user ? deal.user.name : '-None Specified-',
     deal.created_at,
     deal.updated_at,
-    deal.archived
+    deal.archived ? 'Yes' : 'No'
     ].to_csv.html_safe %>
 <%- end -%>

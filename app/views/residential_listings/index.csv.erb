@@ -12,9 +12,10 @@
 <%= CSV.generate_line headers %>
 <%- @residential_units.each do |listing| -%>
 
-  <%= ['"' + listing.formatted_street_address + '"', listing.building_unit, listing.neighborhood_name,
+  <%= [listing.formatted_street_address, listing.building_unit, listing.neighborhood_name,
       listing.exclusive ? 'Yes' : 'No', listing.can_roomshare ? 'Yes' : 'No',
-      listing.beds, listing.baths, listing.notes, listing.description, listing.lease_start,
+      listing.beds, listing.baths, listing.notes,
+      listing.description.gsub('"', '""'), listing.lease_start,
       listing.lease_end,
       listing.has_fee ? 'Yes' : 'No', listing.op_fee_percentage, listing.tp_fee_percentage,
       listing.tenant_occupied ? 'Yes' : 'No',

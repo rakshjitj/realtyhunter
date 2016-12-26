@@ -1,8 +1,8 @@
 <%- headers = [
-	'Name', 
-	'Phone Number', 
+	'Name',
+	'Phone Number',
 	'Email',
-	'How Did You Hear About Us?', 
+	'How Did You Hear About Us?',
 	'Licensed Agent?',
   'Where Do You Live?',
 	'Archived',
@@ -10,14 +10,14 @@
 <%= CSV.generate_line headers %>
 <%- @entries.each do |entry| -%>
   <%= [
-  	entry.name, 
-  	entry.phone_number, 
+  	entry.name,
+  	entry.phone_number,
   	entry.email,
-  	entry.how_did_you_hear_about_us, 
+  	entry.how_did_you_hear_about_us,
     entry.licensed_agent,
     entry.what_neighborhood_do_you_live_in,
-  	entry.archived,
-		entry.created_at, 
+  	entry.archived ? 'Yes' : 'No',
+		entry.created_at,
   	entry.updated_at
   	].to_csv.html_safe %>
 <%- end -%>

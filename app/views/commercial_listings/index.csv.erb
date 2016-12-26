@@ -12,7 +12,7 @@
 <%= CSV.generate_line headers %>
 <%- @commercial_units.each do |listing| -%>
 
-  <%= ['"' + listing.formatted_street_address + '"', listing.building_unit, listing.neighborhood_name,
+  <%= [listing.formatted_street_address, listing.building_unit, listing.neighborhood_name,
       listing.exclusive ? 'Yes' : 'No',
       listing.sq_footage, listing.floor, listing.building_size,
       listing.build_to_suit ? 'Yes' : 'No', listing.minimum_divisible, listing.maximum_contiguous,

@@ -19,13 +19,13 @@
 <%= CSV.generate_line headers %>
 <%- @buildings.each do |building| -%>
 
-  <%= ['"' + building.street_address + '"',
+  <%= [building.street_address,
     building.neighborhood_name,
     building.sublocality, #borough
   	building.administrative_area_level_2_short,
 		building.administrative_area_level_1_short,
     building.postal_code,
-    building.notes,
+    (building.notes || "").gsub('"', '""'),
 		building.landlord_code,
     @amenities[building.id] ? @amenities[building.id].map{|a| a.name.titleize}.join(', ') : nil,
     @utilities[building.id] ? @utilities[building.id].map{|a| a.utility_name.titleize}.join(', ') : nil,

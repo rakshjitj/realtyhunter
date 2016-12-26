@@ -80,6 +80,11 @@ class Deal < ActiveRecord::Base
   def self.search_csv(params)
     deals = Deal.unarchived
       .joins(unit: :building)
+      .select('deals.*',
+        'units.id as unit_id', 'units.building_unit',
+        'buildings.street_number || \' \' || buildings.route as street_address2',
+        'buildings.formatted_street_address')
+
 
     if !params[:address].blank?
       deals = deals.where("buildings.formatted_street_address ilike ?", params[:address])

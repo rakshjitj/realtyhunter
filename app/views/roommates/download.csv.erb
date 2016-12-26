@@ -27,7 +27,7 @@
   	roommate.neighborhood_name,
   	roommate.do_you_have_pets,
   	roommate.created_by,
-  	roommate.archived,
+  	roommate.archived ? 'Yes' : 'No',
 		roommate.user_name.blank? ? 'Website' : roommate.user_name,
   	roommate.created_at,
   	roommate.updated_at
