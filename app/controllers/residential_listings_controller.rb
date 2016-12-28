@@ -276,16 +276,10 @@ class ResidentialListingsController < ApplicationController
     if @agent && @listings.length > 0
       @listings.each do |l|
         if l.unit.primary_agent_id != @agent.id
-          if !l.unit.primary_agent_id.blank?
-            UserMailer.send_primary_agent_removed_notification(
-                l.unit.primary_agent_id, l.unit.listing_id).deliver
-          end
+          Unit.update_primary_agent(l.unit.primary_agent_id, @agent.id, l.unit.listing_id)
           l.unit.update_attribute(:primary_agent_id, @agent.id)
         end
       end
-      @listings.each { |l|
-        UserMailer.send_primary_agent_added_notification(@agent.id, l.unit.listing_id).deliver
-      }
 
       flash[:success] = "Primary agent successfully assigned!"
     end
@@ -313,15 +307,7 @@ class ResidentialListingsController < ApplicationController
 
     if listings.length > 0
       listings.each do |l|
-        if (l.unit.primary_agent_id)
-          UserMailer.send_primary_agent_removed_notification(
-              l.unit.primary_agent_id, l.unit.listing_id).deliver
-        end
-        # this should always be nil for residential, but we'll check here just in case
-        if (l.unit.primary_agent2_id)
-          UserMailer.send_primary_agent_removed_notification(
-              l.unit.primary_agent2_id, l.unit.listing_id).deliver
-        end
+        Unit.update_primary_agent(l.unit.primary_agent_id, nil, l.unit.listing_id)
         l.unit.update_attribute(:primary_agent_id, nil)
         l.unit.update_attribute(:primary_agent2_id, nil)
       end
