@@ -5,16 +5,16 @@ $navbarCollapseWidth: 1150px;
 
 /* universal */
 html {
-  height: 100%;
-  width: 100%;
+/*  height: 100%;
+  width: 100%;*/
   margin: 0;
   padding: 0;
 }
 
 body {
   padding-top: 60px;
-  height: 100%;
-  width: 100%;
+  /*height: 100%;
+  width: 100%;*/
   margin: 0;
 }
 
@@ -92,8 +92,8 @@ a:hover.btn-danger {
 }
 
 .container-fluid {
-  position: relative;
-  height: 100%;
+  /*position: relative;
+  height: 100%;*/
   max-width: 1200px !important;
   min-width: 400px !important;
 }
@@ -108,20 +108,15 @@ a:hover.btn-danger {
 .main-content {
   position: absolute;
   top: 100px;
+
+  /*height: 100%;
   left: 0;
-  right: 0;
-  height: 100%;
+  width: 100%;
+  right: 0;*/
+
   @media (max-width: $navbarCollapseWidth) {
     top: 50px;
   }
-}
-
-.mobile-container {
-  position: relative;
-  // perspective: 800px;
-  top: -50px;
-  width: 100%;
-  height: 100%;
 }
 
 .title-logo {
@@ -642,4 +637,9 @@ label.required:after {
 #landlords .panel-body,
 #buildings .panel-body {
   padding-bottom: 0;
+}
+
+
+#section-name {
+  display: inline-block;
 }

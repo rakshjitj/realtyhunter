@@ -1,3 +1,5 @@
+$mobileFooterHeight: 65px;
+
 .map-hr {
   margin-top: 0 !important;
 }
@@ -18,9 +20,12 @@
 }
 
 #r-big-map-mobile {
+  height: calc(100% - 65px); /* account for the footer height */
+  width: 100%;
+/*
   // everybody else
   height: calc(100vh - 115px);
-  /* iphone5: Portrait and Landscape */
+  /* iphone5: Portrait and Landscape * /
   @media only screen
     and (min-device-width: 320px)
     and (max-device-width: 568px)
@@ -28,7 +33,7 @@
       height: 460px;
   }
   //iphone6
-  /* Portrait and Landscape */
+  /* Portrait and Landscape * /
   @media only screen
     and (min-device-width: 375px)
     and (max-device-width: 667px)
@@ -36,7 +41,7 @@
     height: calc(100vh - 185px);
   }
   //iphone6+
-  /* Portrait and Landscape */
+  /* Portrait and Landscape * /
   @media only screen
     and (min-device-width: 414px)
     and (max-device-width: 736px)
@@ -48,7 +53,7 @@
   order: 2;
   flex: 2;
   overflow: hidden;
-  background-color: #e8e0d8;
+  background-color: #e8e0d8;*/
 }
 
 #c-big-map {

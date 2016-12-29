@@ -57,29 +57,39 @@
 }
 
 /********* mobile *****************/
+/* We always want the mobile container to display full screen. Cards must be full height
+and width so that it's middle content can expand to fill all available space */
+.mobile-container {
+  position: fixed;
+  top: 51px; /* Display underneath top header bar */
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
 
-.card-wrapper {
+/*.card-wrapper {
   position: absolute;
   top: 50px;
   left: 0;
   right: 0;
-  height: calc(100vh - 50px);
-
-  /* iphone5: Portrait and Landscape */
+  bottom: 0;
+  /*height: calc(100vh - 50px);*/
+/*
+  /* iphone5: Portrait and Landscape * /
   @media only screen
     and (min-device-width: 320px)
     and (max-device-width: 568px)
     and (-webkit-device-pixel-ratio: 2)  {
       //height: 475px;
   }
-  /* iPhone 6: Portrait and Landscape */
+  /* iPhone 6: Portrait and Landscape * /
   @media only screen
     and (min-device-width: 375px)
     and (max-device-width: 667px)
     and (-webkit-min-device-pixel-ratio: 2) {
     height: calc(100vh - 120px);
   }
-  /* iphone6+: Portrait and Landscape */
+  /* iphone6+: Portrait and Landscape * /
   @media only screen
     and (min-device-width: 414px)
     and (max-device-width: 736px)
@@ -92,18 +102,24 @@
   ::-webkit-scrollbar {
     display: none;
   }
-}
+}*/
 
 .card {
-  position: absolute;
-  visibility: hidden;
-  display: none;
   width: 100%;
+  height: 100%;
+  /*visibility: hidden;*/
+  display: none;
   overflow: hidden;
+  /*position: absolute;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;*/
 }
 
 .card-visible {
-  visibility: visible;
+  /*visibility: visible;*/
   display: block;
 }
 
@@ -112,5 +128,6 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
 }

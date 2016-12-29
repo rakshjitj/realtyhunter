@@ -422,7 +422,6 @@
   // called on index & show pages
   ResidentialListings.initMobileIndex = function() {
     $('#residential-desktop').remove();
-    // $('#residential-mobile').removeClass('hidden');
     $('#residential-mobile input').keydown(ResidentialListings.preventEnter);
 
     $('.js-show-mobile-filters').click(function(e) {

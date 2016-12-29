@@ -1,11 +1,8 @@
 <% provide(:title, 'Residential Listings') %>
 <div id="residential-mobile" class="no-margin-padding">
-  <div id="section-name" data-name="residential_listings">
+  <div id="section-name" class="mobile-container" data-name="residential_listings">
 
-    <div class="mobile-container hidden-md hidden-lg">
-      <div class="card-wrapper">
-
-        <div class="card main card-visible">
+        <div class="card main card-visible hidden-md hidden-lg">
           <div class="card-contents">
             <div id="r-big-map-mobile" data-map-points="<%= @map_infos %>"></div>
             <%= render 'residential_listings/footer_index_mobile' %>
@@ -21,11 +18,10 @@
                 </div>
               </div>
             </div>
+
             <div class="card-middle">
-              <div class="announcements-wrapper">
-                <div class="announcements-mobile"></div>
-              </div>
             </div>
+
             <%= render 'residential_listings/footer_index_mobile' %>
           </div>
         </div>
@@ -34,14 +30,28 @@
           <div class="card-contents">
             <div class="card-middle">
               <% if @favorite_units.count > 0 %>
-                <h4 class="minor-header minor-spacing">FAVORITE LISTINGS</h4>
+                <div class="card-nav">
+                  <div class="card-nav-inner">
+                    <div class="middle">
+                      <h4>Favorite Listings</h4>
+                    </div>
+                  </div>
+                </div>
+                <!--h4 class="minor-header minor-spacing">Favorite Listings</h4-->
                 <div class="favorites-table">
                   <%= render partial: 'residential_listings/mobile_favorites_view',
                       collection: @favorite_units, as: :residential_listing,
                       locals: {res_images: @res_images, bldg_images: @bldg_images} %>
                 </div>
               <% end %>
-              <h4 class="minor-header">RENTAL LISTINGS</h4>
+              <div class="card-nav">
+                <div class="card-nav-inner">
+                  <div class="middle">
+                    <h4>Rental Listings</h4>
+                  </div>
+                </div>
+              </div>
+              <!--h4 class="minor-header">RENTAL LISTINGS</h4-->
               <div class="infinite-table">
                 <%= render partial: 'residential_listings/mobile_list_view',
                     collection: @residential_units, as: :residential_listing,
@@ -75,10 +85,12 @@
 
             <div class="card-middle">
               <div class="row vertical-padding">
-                <div class="col-xs-3">
+                <div class="col-xs-12">
                   <%= label_tag(:address, "Address", class: 'field-label-sm') %>
                 </div>
-                <div class="col-xs-8 col-sm-left-padding">
+              </div>
+              <div class="mobileFilters-address-row row no-vertical-padding">
+                <div class="col-xs-12">
                 <%= autocomplete_field_tag :address, params[:address],
                     autocomplete_building_formatted_street_address_residential_listings_path,
                     update_elements: {},
@@ -219,7 +231,7 @@
 
               <div class="row vertical-padding">
                 <div class="col-xs-12">
-                  <div class="js-reset-filters sm-margin-right">
+                  <div class="js-reset-filters resetButton">
                     <a class='field-label-sm link-reset-filters btn btn-warning btn-block'>
                       Reset Filters
                     </a>
@@ -229,8 +241,6 @@
               <div class="row vertical-padding end-of-page-padding"></div>
             </div><!-- here -->
           </div>
-        </div>
-      </div>
-    </div>
+
   </div>
 </div>
