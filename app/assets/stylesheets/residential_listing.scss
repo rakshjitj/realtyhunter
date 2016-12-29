@@ -61,12 +61,14 @@ $mobile-footer-height: 65px;
 .announcements .card-middle {
   height: calc(100% - 110px); /* account for the header & footer height */
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .list-view .card-middle {
   height: calc(100% - 65px); /* account for the footer height */
   overflow-y: auto;
   overflow-x: hidden; /* in case there is a broken img link during development */
+  -webkit-overflow-scrolling: touch;
 }
 
 .mobile-announcement {

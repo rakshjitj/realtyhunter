@@ -85,4 +85,5 @@ and width so that it's middle content can expand to fill all available space */
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
