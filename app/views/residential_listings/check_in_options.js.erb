@@ -1,0 +1,31 @@
+$('.checkIn-form').removeClass('hidden');
+$('.checkIn-form').html("<%= j(render partial: "check_in_helper", locals: { check_in_listings: @check_in_listings }) %>");
+
+$('.checkIn-form select[name="listing_id"]').change(function(e) {
+  if (this.selectedIndex > 0) {
+    $('.checkIn-form .submit-btn').removeClass('disabled');
+    $('.checkIn-form .submit-btn').prop('disabled', false);
+  } else {
+    $('.checkIn-form .submit-btn').addClass('disabled');
+    $('.checkIn-form .submit-btn').prop('disabled', true);
+  }
+});
+
+$('.js-submit-check-in').click(function(e) {
+  $('.checkIn-form').addClass('hidden');
+  $('.checkIn-spinner').addClass('hidden');
+  $('.checkIn-confirmationMsg').removeClass('hidden');
+  $('.card.check-in').addClass('fadeToInvisible');
+
+  setTimeout(function() {
+    ResidentialListings.closeCheckInCard();
+    ResidentialListings.showCard('main', e);
+    RHMapbox.centerOnMe();
+  }, 3000);
+});
+
+$('.js-cancel-check-in').click(function(e) {
+  ResidentialListings.closeCheckInCard();
+  ResidentialListings.showCard('main', e);
+  RHMapbox.centerOnMe();
+});

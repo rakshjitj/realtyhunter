@@ -8,9 +8,10 @@ class Unit < ActiveRecord::Base
   has_one :residential_listing, dependent: :destroy
   has_one :commercial_listing, dependent: :destroy
   has_one :sales_listing, dependent: :destroy
-  has_many :announcements, dependent: :destroy
-  has_many :deals, dependent: :destroy
+  has_many :announcements
+  has_many :deals
   has_many :open_houses, dependent: :destroy
+  has_many :checkins, dependent: :destroy
   accepts_nested_attributes_for :open_houses, allow_destroy: true
 
   before_validation :generate_unique_id

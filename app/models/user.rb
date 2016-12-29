@@ -22,6 +22,7 @@
   has_one :image, dependent: :destroy
   has_many :announcements
   has_many :deals
+  has_many :checkins, dependent: :destroy
 
 	before_create :create_activation_digest
   before_create :set_auth_token # for API

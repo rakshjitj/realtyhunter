@@ -81,13 +81,38 @@
   };
 
   ResidentialListings.queryAnnouncementsOnMobile = function(limit) {
-    // console.log('res announce');
     $.ajax({
       url: '/residential_listings/update_announcements_mobile',
       data: {
         limit: limit ? limit : 4,
       }
     });
+  }
+
+  ResidentialListings.closeCheckInCard = function() {
+    $('.checkIn-form').html('');
+    $('.checkIn-form').addClass('hidden');
+    $('.card.check-in').removeClass('fadeToInvisible');
+    $('.checkIn-confirmationMsg').addClass('hidden');
+  };
+
+  ResidentialListings.queryCheckinOptions = function() {
+    $('.checkIn-spinner').removeClass('hidden');
+    $('.checkIn-confirmationMsg').addClass('hidden');
+
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        // do_something(position.coords.latitude, position.coords.longitude);
+        $.ajax({
+          url: '/residential_listings/check_in_options',
+          data: {
+            current_location: [position.coords.latitude, position.coords.longitude],
+            distance: 500 // feet
+          }
+        });
+      });
+    }
+    /* otherwise, geolocation IS NOT available */
   }
 
   // update the announcements every 60 seconds
@@ -408,6 +433,7 @@
 
   ResidentialListings.showCard = function(cardName, e) {
     $('.card.main').removeClass('card-visible');
+    $('.card.check-in').removeClass('card-visible');
     $('.card.mobile-filters').removeClass('card-visible');
     $('.card.announcements').removeClass('card-visible');
     $('.card.list-view').removeClass('card-visible');
@@ -426,6 +452,11 @@
 
     $('.js-show-mobile-filters').click(function(e) {
       ResidentialListings.showCard('mobile-filters', e);
+    });
+
+    $('.js-show-check-in').click(function(e) {
+      ResidentialListings.showCard('check-in', e);
+      ResidentialListings.queryCheckinOptions();
     });
 
     $('.js-show-announcements').click(function() {

@@ -322,6 +322,25 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
+  def check_in_options
+    @check_in_listings = ResidentialListing.get_check_in_options(
+        params[:current_location], params[:distance])
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def check_in
+    return unless params[:listing_id]
+
+    unit = Unit.where('units.listing_id = ?', params[:listing_id]).first
+    if unit
+      unit.checkins << Checkin.create!(user: current_user)
+    end
+
+    head :ok#, content_type: "text/html" #render no output
+  end
+
   protected
 
     def correct_stale_record_version

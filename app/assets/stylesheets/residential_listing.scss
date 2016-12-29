@@ -57,6 +57,11 @@ $mobile-footer-height: 65px;
   display: none;
 }
 
+.fadeToInvisible {
+  opacity: 0;
+  transition: opacity 2s ease-in 1s;
+}
+
 /********* mobile *****************/
 .announcements .card-middle {
   height: calc(100% - 110px); /* account for the header & footer height */
@@ -158,6 +163,31 @@ $mobile-footer-height: 65px;
 
 .footer-wrapper {
   position: relative;
+}
+
+.checkIn-description {
+  margin-top: 50px;
+  margin-bottom: 25px;
+}
+
+.checkIn-row {
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+
+.checkIn-spinner {
+  margin: auto;
+  position: relative;
+  left: calc(50% - 50px);
+  top: 50px;
+}
+
+.checkIn-form {
+  position: absolute;
+  top: 175px;
+  width: 100%;
+  height: 100%;
+  background-color: white;
 }
 
 /* index page footer */

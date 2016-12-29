@@ -681,6 +681,27 @@ class ResidentialListing < ActiveRecord::Base
     self.save
   end
 
+  def self.get_check_in_options(current_position, max_distance)
+    return unless current_position
+    return unless max_distance
+
+    max_distance = max_distance.to_i
+    buildings = Building.joins(:units)
+        .where('units.archived = false')
+        .where('buildings.archived = false')
+        .where("status = ?", Unit.statuses["active"]).to_a
+
+    buildings = buildings.select{|b| b.distanceTo(current_position) < max_distance}
+
+    listings = ResidentialListing.joins([unit: :building])
+        .where('units.archived = false')
+        .where('buildings.archived = false')
+        .where("status = ?", Unit.statuses["active"])
+        .where('buildings.id IN (?)', buildings.map(&:id))
+
+    listings
+  end
+
   private
     def process_custom_amenities
       if custom_amenities

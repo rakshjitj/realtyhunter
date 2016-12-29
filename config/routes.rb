@@ -131,6 +131,8 @@ Rails.application.routes.draw do
       post 'assign'
       get 'unassign_modal'
       post 'unassign'
+      post 'check_in'
+      get 'check_in_options'
     end
   end
 
