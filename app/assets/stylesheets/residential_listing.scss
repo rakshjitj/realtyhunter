@@ -58,94 +58,15 @@ $mobile-footer-height: 65px;
 }
 
 /********* mobile *****************/
-.card-middle {
-  /*order: 2;
-  flex-grow: 2;
-  overflow: auto;
-  width: 100%;
-  height: calc(100vh - 115px);*/
-}
-
-/* TODO: this could be greatly simplified... */
-
-.mobile-filters .card-middle {
-  /*height: calc(100vh - 100px);*/
-  /* iphone5: Portrait and Landscape * /
-  /*@media only screen
-    and (min-device-width: 320px)
-    and (max-device-width: 568px)
-    and (-webkit-device-pixel-ratio: 2)  {
-      height: 475px;
-  }
-  /* iPhone 6: Portrait and Landscape * /
-  @media only screen
-    and (min-device-width: 375px)
-    and (max-device-width: 667px)
-    and (-webkit-min-device-pixel-ratio: 2) {
-    height: calc(100vh - 160px);
-  }
-  /* iphone6+: Portrait and Landscape * /
-  @media only screen
-    and (min-device-width: 414px)
-    and (max-device-width: 736px)
-    and (-webkit-min-device-pixel-ratio: 3) {
-    height: calc(100vh - 160px);
-  }*/
-}
-
 .announcements .card-middle {
   height: calc(100% - 110px); /* account for the header & footer height */
   overflow-y: auto;
-  /*height: calc(100vh - 165px);
-  /* iphone5: Portrait and Landscape * /
-  @media only screen
-    and (min-device-width: 320px)
-    and (max-device-width: 568px)
-    and (-webkit-device-pixel-ratio: 2)  {
-      height: 410px;
-  }
-  /* iPhone 6: Portrait and Landscape * /
-  @media only screen
-    and (min-device-width: 375px)
-    and (max-device-width: 667px)
-    and (-webkit-min-device-pixel-ratio: 2) {
-    height: calc(100vh - 235px);
-  }
-  /* iphone6+: Portrait and Landscape * /
-  @media only screen
-    and (min-device-width: 414px)
-    and (max-device-width: 736px)
-    and (-webkit-min-device-pixel-ratio: 3) {
-    height: calc(100vh - 235px);
-  }*/
 }
 
 .list-view .card-middle {
   height: calc(100% - 65px); /* account for the footer height */
   overflow-y: auto;
   overflow-x: hidden; /* in case there is a broken img link during development */
-  /*height: calc(100vh - 115px);
-  /* iphone5: Portrait and Landscape * /
-  @media only screen
-    and (min-device-width: 320px)
-    and (max-device-width: 568px)
-    and (-webkit-device-pixel-ratio: 2)  {
-      height: 460px;
-  }
-  /* iPhone 6: Portrait and Landscape * /
-  @media only screen
-    and (min-device-width: 375px)
-    and (max-device-width: 667px)
-    and (-webkit-min-device-pixel-ratio: 2) {
-    height: calc(100vh - 185px);
-  }
-  /* iphone6+: Portrait and Landscape * /
-  @media only screen
-    and (min-device-width: 414px)
-    and (max-device-width: 736px)
-    and (-webkit-min-device-pixel-ratio: 3) {
-    height: calc(100vh - 185px);
-  }*/
 }
 
 .mobile-announcement {
@@ -153,10 +74,6 @@ $mobile-footer-height: 65px;
 }
 
 .card-nav {
-  /*order: 1;
-  flex-basis: 50px;
-  height: 100%;
-  height: 50px;*/
   display: inline-block;
   width: 100%;
   background-color: #eda800;
@@ -243,9 +160,6 @@ $mobile-footer-height: 65px;
 
 /* index page footer */
 .footer-mobile-residential {
-  /*order: 3;
-  flex-basis: 65px;
-  */
   position: fixed;
   bottom: 0;
   width: 100%;
