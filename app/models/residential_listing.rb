@@ -716,7 +716,7 @@ class ResidentialListing < ActiveRecord::Base
         .where('buildings.id IN (?)', buildings.map(&:id))
         .select(
           'residential_listings.id',
-          'buildings.street_number || \' \' || buildings.route as full_address',
+          'buildings.street_number || \' \' || buildings.route || \' #\' || units.building_unit as full_address',
           'units.listing_id')
     listings
   end
