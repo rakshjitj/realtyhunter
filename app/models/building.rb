@@ -241,7 +241,7 @@ class Building < ActiveRecord::Base
         .to_a.group_by(&:id)
   end
 
-  # computes the distance between 2 buildings
+  # computes the distance between 2 buildings using haversine formula
   # loc2 = [lat, lng]
   def distanceTo loc2
     loc1 = [self.lat.to_f, self.lng.to_f]
@@ -262,6 +262,14 @@ class Building < ActiveRecord::Base
 
     rm * c * 3 # Delta in feet
   end
+
+  # Computes the distance between 2 buildings using pythagoras theorem. It's less accurate but
+  # more performant.
+  # def distanceTo loc2
+  #   loc1 = [self.lat.to_f, self.lng.to_f]
+  #   loc2 = [loc2[0].to_f, loc2[1].to_f]
+  #   Math.sqrt( (loc2[0]-loc1[0])**2 + (loc2[1]-loc1[1])**2 )
+  # end
 
   private
 

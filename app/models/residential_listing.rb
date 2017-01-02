@@ -8,6 +8,22 @@ class ResidentialListing < ActiveRecord::Base
   before_save :process_custom_amenities
   after_commit :update_building_counts, :trim_audit_log
 
+  # scope :active, ->{
+  #   joins(:unit)
+  #   .where('units.status = ?', Unit.statuses["active"])
+  #   .where('units.archived = false')
+  # }
+  # scope :pending, ->{
+  #   joins(:unit)
+  #   .where('units.status = ?', Unit.statuses["pending"])
+  #   .where('units.archived = false')
+  # }
+  # scope :off_market, ->{
+  #   joins(:unit)
+  #   .where('units.status = ?', Unit.statuses["off"])
+  #   .where('units.archived = false')
+  # }
+
   attr_accessor :include_photos, :inaccuracy_description,
     :pet_policy_shorthand, :available_starting, :available_before, :custom_amenities
 
@@ -689,7 +705,7 @@ class ResidentialListing < ActiveRecord::Base
     buildings = Building.joins(:units)
         .where('units.archived = false')
         .where('buildings.archived = false')
-        .where("status = ?", Unit.statuses["active"]).to_a
+        .where("status = ?", Unit.statuses["active"])
 
     buildings = buildings.select{|b| b.distanceTo(current_position) < max_distance}
 
@@ -698,7 +714,10 @@ class ResidentialListing < ActiveRecord::Base
         .where('buildings.archived = false')
         .where("status = ?", Unit.statuses["active"])
         .where('buildings.id IN (?)', buildings.map(&:id))
-
+        .select(
+          'residential_listings.id',
+          'buildings.street_number || \' \' || buildings.route as full_address',
+          'units.listing_id')
     listings
   end
 

@@ -3,7 +3,7 @@
     <div class="row checkIn-row">
       <div class="col-xs-10 col-xs-offset-1">
         <%= select_tag(:listing_id,
-            options_for_select(@check_in_listings.collect{|l| [l.street_address_and_unit, l.unit.listing_id]}),
+            options_for_select(@check_in_listings.collect {|l| [l.full_address, l.listing_id]}),
             {prompt: "Choose one...",
             class: 'form-control'}) %>
       </div>
