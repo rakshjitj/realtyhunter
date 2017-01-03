@@ -1,4 +1,18 @@
-<header role="banner" class="navbar navbar-desktop navbar-fixed-top navbar-inverse">
+<div class="print-header text-center visible-print-block">
+  <h3 class="title-logo">REALTYHUNTER</h3> -
+  <% if logged_in? %>
+    <h4 class="title-user-name"><%= current_user.name %></h4>
+    <% if !current_user.mobile_phone_number.empty?%>
+      <br>
+      <p class="title-user-details"><%= current_user.mobile_phone_number %></p>
+    <% end %>
+    <% if !current_user.email.empty?%>
+      / <p class="title-user-details"><%= current_user.email %></p>
+    <% end %>
+  <% end %>
+</div>
+
+<header role="banner" class="navbar navbar-desktop navbar-fixed-top navbar-inverse hidden-print">
   <div class="container-fluid">
 
     <div class="navbar-header">
@@ -9,7 +23,8 @@
 
 
     <% if logged_in? %>
-    <div class="navbar-inverse side-collapse in">
+
+    <div class="navbar-inverse side-collapse in hidden-print">
       <nav role="navigation" class="navbar-collapse">
         <ul class="nav navbar-nav">
 
@@ -69,12 +84,12 @@
 
                 <!-- **************** ANNOUNCEMENTS **************** -->
                 <% if current_user.is_management? || current_user.is_listings_manager? %>
-                  <li><%= link_to "Announcements", new_announcement_path %></li>                  
+                  <li><%= link_to "Announcements", new_announcement_path %></li>
                 <% end %>
 
                 <!-- **************** FORMS **************** -->
                 <% if current_user.is_wufoo_forms? %>
-                  <li role="separator" class="divider"></li>                  
+                  <li role="separator" class="divider"></li>
                   <li class="dropdown-header">WuFoo Forms</li>
                   <li>
                     <%= link_to forms_careers_path do %>
