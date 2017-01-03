@@ -44,7 +44,7 @@
 
       <i class="fa fa-spinner fa-pulse fa-5x res-spinner-desktop listings-spinner-desktop"></i>
 
-      <div class="res-desktop-search-filters" id="res-search-filters" data-search-path="<%= filter_residential_listings_path %>">
+      <div class="res-desktop-search-filters hidden-print" id="res-search-filters" data-search-path="<%= filter_residential_listings_path %>">
         <%= form_tag residential_listings_path, method: 'get' do %>
           <div class="row vertical-margin-lg">
             <div class="col-xs-3">
@@ -372,7 +372,7 @@
             <th data-sort="residential_listings.updated_at" class="th-sortable">Updated</th>
             <th data-sort="units.status" class="th-sortable">Status</th>
             <% if current_user.is_management? || current_user.is_listings_manager? %>
-              <th colspan="1"></th>
+              <th colspan="1" class="hidden-print"></th>
             <% end %>
           </tr>
         </thead>

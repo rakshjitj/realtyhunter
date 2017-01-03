@@ -1,0 +1,61 @@
+$grid-float-breakpoint: 1150px;
+$navbarCollapseWidth: 1150px;
+
+@import "announcements.scss";
+@import "custom.scss";
+@import "listings.scss";
+@import "map.scss";
+@import "residential_listing.scss";
+@import "user.scss";
+@import "scaffolds.scss";
+
+@import "navbar.scss";
+@import "modal-tweaks.scss";
+@import "dropzone/dropzone";
+@import "jquery.ui.all";
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import 'bootstrap-datetimepicker';
+@import "bootsy";
+@import 'awesome-bootstrap-checkbox';
+@import 'selectize';
+@import 'selectize.default';
+
+@media print {
+  /*div.info, div#editStuff, div#navigation, div#debug {*/
+  nav, header, footer, video, audio,
+      .btn, .announcements, .inaccuracy-report, .history-report,
+      #sales-search-filters {
+    display: none;
+  }
+
+  @page {
+    margin: 0.5cm;
+  }
+
+  body {
+    font: 12pt Georgia, "Times New Roman", Times, serif;
+    line-height: 1.3;
+  }
+
+ /* header:before {
+    display: block;
+    content: "Thank you for printing our content at www.smashing-winery.com. Please check back soon for new offers on delicious wine from our winery.";
+    margin-bottom: 10px;
+    border: 1px solid #bbb;
+    padding: 3px 5px;
+    font-style: italic;
+  }*/
+
+  a {
+    color: #000;
+  }
+
+  a:after {
+    display: none;
+  }
+
+  .map-walkscore-tabs {
+    page-break-before: always;
+  }
+}

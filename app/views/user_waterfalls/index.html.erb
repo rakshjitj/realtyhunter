@@ -16,11 +16,13 @@
   </div>
 </div>
 
-<%= render partial: 'user_waterfalls/form',
-  locals:{ entry: @new_entry, title: "Enter a new waterfall connection"} %>
+<div class="hidden-print">
+  <%= render partial: 'user_waterfalls/form',
+      locals:{ entry: @new_entry, title: "Enter a new waterfall connection"} %>
 
-<hr />
-<div class="row row-sm-padding">
+</div>
+
+<div class="row row-sm-padding hidden-print">
   <div class="col-md-12">
     <i class="fa fa-spinner fa-pulse fa-5x forms-spinner-desktop"></i>
 
@@ -83,7 +85,7 @@
               <th data-sort="child_agent_name" class="th-sortable">Waterfall Agent</th>
               <th data-sort="level" class="th-sortable">Tier</th>
               <th data-sort="rate" class="th-sortable">Percentage</th>
-              <th colspan="1"></th>
+              <th colspan="1" clss="hidden-print"></th>
             </tr>
           </thead>
 

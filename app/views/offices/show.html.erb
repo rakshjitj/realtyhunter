@@ -8,7 +8,7 @@
             <h1><%= @office.name.titleize %> Office</h1>
             <%= @office.company.name %>
           </div>
-          <div class="col-sm-5 form-label-responsive page-header-buttons-lg">
+          <div class="col-sm-5 form-label-responsive page-header-buttons-lg hidden-print">
             <% if current_user.is_company_admin? %>
               <%= link_to 'Edit', edit_company_office_path(@office.company, @office) %> |
             <% end %>

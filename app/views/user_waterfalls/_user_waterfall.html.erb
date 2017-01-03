@@ -23,7 +23,7 @@
     <%= trim_zeros entry.rate %> %
   </td>
 
-  <td>
+  <td class="hidden-print">
     <%= link_to 'Delete', delete_modal_user_waterfall_path(entry),
       data: { toggle: "modal", target: "#waterfallDeleteModal", params: params}, remote: true %>
     <%= link_to 'Edit', edit_modal_user_waterfall_path(entry),

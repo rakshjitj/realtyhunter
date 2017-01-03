@@ -71,7 +71,7 @@
 
 			<div class="panel-body">
 				<% if current_user.is_management? || current_user.is_listings_manager? || current_user.is_photo_manager? %>
-		  		<div class="row">
+		  		<div class="row hidden-print">
 			  		<div class="col-xs-12">
 			  			<%= link_to 'All units', sales_listings_path %> |
 			  			<% if !current_user.is_photo_manager? %>
@@ -472,7 +472,7 @@
 	    	<% end %>
 
 	    	<br />
-	    	<div class="row">
+	    	<div class="row map-walkscore-tabs">
 	    		<div class="col-md-12">
 	    			<!-- Nav tabs -->
 				    <ul class="nav nav-tabs" role="tablist">

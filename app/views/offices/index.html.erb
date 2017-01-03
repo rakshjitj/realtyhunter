@@ -4,12 +4,12 @@
   <div class="col-sm-7">
     <h1><%= @company.name %> Offices</h1>
   </div>
-  <div class="hidden-xs hidden-sm col-sm-5 form-label-responsive page-header-buttons">
+  <div class="hidden-xs hidden-sm col-sm-5 form-label-responsive page-header-buttons hidden-print">
     <% if current_user.is_company_admin? %>
       <%= link_to 'New Office', new_company_office_path %>
     <% end %>
   </div>
-  <div class="hidden-md hidden-lg col-sm-5 col-sm-left-padding form-label-responsive page-header-buttons-lg">
+  <div class="hidden-md hidden-lg col-sm-5 col-sm-left-padding form-label-responsive page-header-buttons-lg hidden-print">
   <% if current_user.is_company_admin? %>
       <%= link_to 'New Office', new_company_office_path %>
     <% end %>
@@ -27,7 +27,7 @@
           <th>Street Address</th>
           <th>Telephone</th>
           <th>Fax</th>
-          <th colspan="1"></th>
+          <th colspan="1" class="hidden-print"></th>
         </tr>
       </thead>
       <tbody>

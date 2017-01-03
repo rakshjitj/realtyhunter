@@ -40,7 +40,7 @@
   <% if current_user.is_management? ||
         current_user.is_listings_manager? ||
         current_user.is_photo_manager? %>
-    <td>
+    <td class="hidden-print">
       <%= link_to 'Edit', edit_building_path(building) %>
 
       <% if !current_user.is_photo_manager? %>

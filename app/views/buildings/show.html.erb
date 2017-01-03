@@ -30,7 +30,7 @@
 			</div><!-- panel-heading -->
 
 		  <div class="panel-body">
-		  	<div class="row">
+		  	<div class="row hidden-print">
 		  		<div class="col-xs-12 col-md-6 vertical-margin-lg">
 		  			<%= link_to 'View all', buildings_path %>
 						<% if current_user.is_management? || current_user.is_listings_manager? %>
@@ -201,13 +201,15 @@
 				</div><!-- row -->
 
 				<br />
-	    	<div class="row">
+	    	<div class="row map-walkscore-tabs">
 	    		<div class="col-md-12">
 	    			<!-- Nav tabs -->
 				    <ul class="nav nav-tabs" role="tablist">
-				      <li role="google-map-tab" class="active"><a href="#google-map-tab" aria-controls="google-map-tab"
-				      	role="tab" data-toggle="tab">Map</a></li>
-				      <li role="walkscore"><a href="#walkscore" aria-controls="walkscore" role="tab" data-toggle="tab">Walkscore</a></li>
+				      <li role="google-map-tab" class="active"><a href="#google-map-tab"
+				      		aria-controls="google-map-tab" role="tab" data-toggle="tab">Map</a>
+				      </li>
+				      <li role="walkscore"><a href="#walkscore" aria-controls="walkscore" role="tab"
+				      		data-toggle="tab">Walkscore</a></li>
 				    </ul>
 
 	    			<div class="tab-content">

@@ -7,7 +7,7 @@
       <div class="col-sm-6">
         <h1><%= @company.name %></h1>
       </div>
-      <div class="hidden-xs hidden-sm col-sm-6 form-label-responsive page-header-buttons">
+      <div class="hidden-xs hidden-sm col-sm-6 form-label-responsive page-header-buttons hidden-print">
         <%= link_to 'All Companies', companies_path %> |
         <% if current_user.is_company_admin? %>
           <%= link_to 'Edit', edit_company_path(@company) %> |

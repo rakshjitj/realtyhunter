@@ -14,7 +14,7 @@
         <div class="col-sm-6">
           <h1><%= @user.name %></h1>
         </div>
-        <div class="col-sm-6 form-label-responsive page-header-buttons-lg">
+        <div class="col-sm-6 form-label-responsive page-header-buttons-lg hidden-print">
           <% if can? :manage, @user %>
             <%= link_to 'Edit', edit_user_path(@user) %>
             <% @prev_link = true %>
@@ -122,7 +122,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 user-bio">
               <%= @user.bio %>
             </div>
           </div>

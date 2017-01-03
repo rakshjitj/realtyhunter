@@ -24,7 +24,7 @@
 
   <td><%= deal.closed_date %></td>
 
-  <td>
+  <td class="hidden-print">
     <%= link_to 'Edit', edit_deal_path(deal) %>
     <%= link_to 'Delete', delete_modal_deal_path(deal),
       data: {toggle: "modal", target: "#dealDeleteModal", params: params}, remote: true %>
