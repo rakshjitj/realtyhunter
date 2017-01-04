@@ -22,14 +22,15 @@ $navbarCollapseWidth: 1150px;
 @import 'selectize.default';
 
 @media print {
+  body {
+    -webkit-print-color-adjust: economy;
+    print-color-adjust: economy;
+  }
+
   header, nav, footer, video, audio,
       .btn, .announcements, .inaccuracy-report, .history-report {
     display: none;
   }
-
-  /*@page {
-    margin: 0.5cm;
-  }*/
 
   /*body {
     font: 12pt Georgia, "Times New Roman", Times, serif;

@@ -14,13 +14,6 @@ body {
   margin: 0;
 }
 
-/* Don't print link hrefs */
-@media print {
-  a[href]:after {
-    content: none
-  }
-}
-
 .margin-vertical {
   margin-top: 5px;
   margin-bottom: 5px;
