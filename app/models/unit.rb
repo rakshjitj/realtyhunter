@@ -122,9 +122,6 @@ class Unit < ActiveRecord::Base
   end
 
   def self.update_primary_agent(new_agent_id, old_agent_id, listing_id)
-    if !old_agent_id.blank?
-      UserMailer.send_primary_agent_removed_notification(old_agent_id, listing_id).deliver
-    end
     if !new_agent_id.blank?
       UserMailer.send_primary_agent_added_notification(new_agent_id, listing_id).deliver
     end
