@@ -64,11 +64,19 @@ class ApplicationController < ActionController::Base
 
     # Confirms a logged-in user.
     def logged_in_user
-      unless logged_in?
+      # check if session has expired
+      if logged_in?
+        if session[:expires_at].nil? || session[:expires_at].to_time < Time.current
+          log_out
+        end
+      else
+        # prompt for login before viewing restricted areas
         store_location
         flash[:danger] = "Please log in."
         redirect_to login_url
       end
+
+
     end
 
 	  def expire_hsts

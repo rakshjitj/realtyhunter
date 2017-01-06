@@ -2,6 +2,7 @@ module SessionsHelper
 	# Logs in the given user.
   def log_in(user)
     session[:user_id] = user.id
+    session[:expires_at] = Time.current + 24.hours
     user.update_columns(last_login_at: Time.zone.now)
   end
 
@@ -42,7 +43,8 @@ module SessionsHelper
   # Logs out the current user.
   def log_out
     forget(current_user)
-    session.delete(:user_id)
+    # session.delete(:user_id)
+    reset_session
     @current_user = nil
   end
 
