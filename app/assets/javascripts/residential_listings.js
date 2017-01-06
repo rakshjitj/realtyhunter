@@ -102,8 +102,10 @@
 
     if ("geolocation" in navigator) {
       // console.log('calling');
+      console.log('***** queryCheckinOptions');
       navigator.geolocation.getCurrentPosition(function() {});
       navigator.geolocation.getCurrentPosition(function(position) {
+        console.log('***** queryCheckinOptions - got position');
         // console.log('initial', position);
         $.ajax({
           url: '/residential_listings/check_in_options',
@@ -112,6 +114,9 @@
             distance: 200 // feet
           }
         });
+      }, function() {}, {
+        timeout: 30 * 1000,
+        maximumAge: Infinity
       });
     }
   }
@@ -448,11 +453,13 @@
 
   // called on index & show pages
   ResidentialListings.initMobileIndex = function() {
+    console.log('***** init');
     navigator.geolocation.getCurrentPosition(function(position) {
+      console.log('***** init - got position');
       // console.log('initial', position);
     }, function() {}, {
-      maximumAge: 10 * 1000,
-      timeout: 30 * 1000
+      timeout: 30 * 1000,
+      maximumAge: Infinity
     });
 
     $('#residential-desktop').remove();
