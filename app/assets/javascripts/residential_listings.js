@@ -101,8 +101,10 @@
     $('.checkIn-confirmationMsg').addClass('hidden');
 
     if ("geolocation" in navigator) {
+      console.log('calling');
+      navigator.geolocation.getCurrentPosition(function() {});
       navigator.geolocation.getCurrentPosition(function(position) {
-        // do_something(position.coords.latitude, position.coords.longitude);
+        console.log('initial', position);
         $.ajax({
           url: '/residential_listings/check_in_options',
           data: {
@@ -112,7 +114,6 @@
         });
       });
     }
-    /* otherwise, geolocation IS NOT available */
   }
 
   // update the announcements every 60 seconds
@@ -447,6 +448,13 @@
 
   // called on index & show pages
   ResidentialListings.initMobileIndex = function() {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      console.log('initial', position);
+    }, function() {}, {
+      maximumAge: 10 * 1000,
+      timeout: 30 * 1000
+    });
+
     $('#residential-desktop').remove();
     $('#residential-mobile input').keydown(ResidentialListings.preventEnter);
 
