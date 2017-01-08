@@ -3,9 +3,10 @@ class DealsController < ApplicationController
   skip_load_resource only: :create
   before_action :set_deal, except: [:index, :new, :create, :filter,
     :autocomplete_building_formatted_street_address, :autocomplete_landlord_code,
-    :get_units]
+    :autocomplete_user_name, :get_units]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
+  autocomplete :user, :name, full: true
 
 	def index
     respond_to do |format|
@@ -151,7 +152,7 @@ class DealsController < ApplicationController
 
     def deal_params
     	data = params.permit(:sort_by, :direction, :page, :address, :agent, :closed_date_start,
-        :closed_date_end, :landlord_code, :state,
+        :closed_date_end, :landlord_code, :state, :user_name,
     		deal: [:lock_version, :price, :client, :lease_term, :lease_start_date, :lease_expiration_date,
     			:closed_date, :move_in_date, :commission, :deal_notes, :listing_type, :is_sale_deal,
     			:unit_id, :user_id, :building_unit, :building_id, :landlord_code, :state])

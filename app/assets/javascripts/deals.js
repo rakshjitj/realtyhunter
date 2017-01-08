@@ -28,6 +28,7 @@ Deals = {};
       closed_date_start: $('#deals #closed_date_start').val(),
       closed_date_end: $('#deals #closed_date_end').val(),
       state: $('#deals #state').val(),
+      user_name: $('#deals #name').val(),
       sort_by: sortByCol,
       direction: sortDirection,
     };
@@ -86,6 +87,8 @@ Deals = {};
     $('#deals #closed_date_start').blur(Deals.throttledSearch);
     $('#deals #closed_date_end').blur(Deals.throttledSearch);
     $('#deals #state').change(Deals.throttledSearch);
+    $('#deals #name').bind('railsAutocomplete.select', Deals.throttledSearch);
+    $('#deals #name').change(Deals.throttledSearch);
 
     // edit
     if ($('#deals #deal_building_id').length) {

@@ -364,6 +364,7 @@ Rails.application.routes.draw do
       get :get_units
       get :autocomplete_building_formatted_street_address
       get :autocomplete_landlord_code
+      get :autocomplete_user_name
     end
   end
 end

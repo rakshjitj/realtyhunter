@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170108181724) do
+ActiveRecord::Schema.define(version: 20170108192527) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -244,7 +244,10 @@ ActiveRecord::Schema.define(version: 20170108181724) do
     t.string   "full_address"
     t.string   "building_unit"
     t.integer  "state",                 default: 0,     null: false
+    t.integer  "rented_by_agent_id"
   end
+
+  add_index "deals", ["rented_by_agent_id"], name: "index_deals_on_rented_by_agent_id", using: :btree
 
   create_table "documents", force: :cascade do |t|
     t.string   "file_file_name"

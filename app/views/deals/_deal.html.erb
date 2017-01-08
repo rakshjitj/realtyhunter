@@ -3,6 +3,18 @@
 
   <td><%= deal.building_unit %></td>
 
+  <!-- closing agent -->
+  <td><%= deal.name %> </td>
+
+  <!-- closed by primary agent? -->
+  <td>
+    <%if !deal.rented_by_agent_id %>
+      Unknown
+    <% else %>
+      <%= deal.closing_agent_id == deal.rented_by_agent_id ? 'Yes' : 'No' %>
+    <% end %>
+  </td>
+
   <td>
     <!-- NOTE: Currently we have the Client model created, but no saved data -->
     <!-- The Client model is completely unused. -->

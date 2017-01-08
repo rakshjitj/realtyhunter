@@ -1,7 +1,8 @@
 class Deal < ActiveRecord::Base
 	scope :unarchived, ->{where(archived: false)}
 	belongs_to :unit
-  belongs_to :user
+  belongs_to :user, class_name: 'User', touch: true
+  belongs_to :rented_by_agent, class_name: 'User', touch: true
   has_many :clients
 
   enum state: [:accepted, :rejected, :dead]
@@ -46,14 +47,20 @@ class Deal < ActiveRecord::Base
     output
   end
 
+# listings = Unit.joins('left join residential_listings on units.id = residential_listings.unit_id
+# left join sales_listings on units.id = sales_listings.unit_id')
+
   def self.search(params)
     deals = Deal.unarchived
       .joins(unit: :building)
+      .joins(:user)
       .select('deals.id', 'deals.archived', 'deals.price', 'deals.closed_date', 'deals.commission',
         'deals.updated_at', 'deals.created_at', 'deals.state',
         'units.id as unit_id', 'units.building_unit',
         'buildings.street_number || \' \' || buildings.route as street_address2',
-        'buildings.formatted_street_address')
+        'buildings.formatted_street_address', 'users.name',
+        'users.id as closing_agent_id',
+        'rented_by_agent_id')
 
     if !params[:address].blank?
       deals = deals.where("buildings.formatted_street_address ilike ?", "%#{params[:address]}%")
@@ -61,6 +68,10 @@ class Deal < ActiveRecord::Base
 
     if !params[:landlord_code].blank?
       deals = deals.where("deals.landlord_code ilike ?", "%#{params[:landlord_code]}%")
+    end
+
+    if !params[:user_name].blank?
+      deals = deals.where("users.name ilike ?", "%#{params[:user_name]}%")
     end
 
     if !params[:closed_date_start].blank?

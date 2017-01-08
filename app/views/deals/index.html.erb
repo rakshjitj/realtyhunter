@@ -82,6 +82,19 @@
               params[:state] ? params[:state].titleize : "Accepted"), class: 'form-control') %>
           </div>
         </div>
+
+        <div class="row">
+          <div class="col-xs-3 col-md-1 vertical-margin-lg">
+            <%= label_tag(:name, "Closing Agent:") %>
+          </div>
+          <div class="col-xs-9 col-md-3 vertical-margin-lg">
+            <%= autocomplete_field_tag :name, params[:user_name],
+                autocomplete_user_name_deals_path,
+                update_elements: {},
+                placeholder: "Closing agent name",
+                class:'form-control' %>
+          </div>
+        </div>
         <% end %><!-- form end -->
 
       </div>
@@ -111,6 +124,8 @@
           <tr>
             <th data-sort="street_address2" class="th-sortable">Address</th>
             <th data-sort="building_unit" class="th-sortable">Unit</th>
+            <th data-sort="user" class="">Closing Agent</th>
+            <th class="">Rented by Primary</th>
             <th data-sort="client" class="">Client</th>
             <th data-sort="price" class="th-sortable">Price</th>
             <th data-sort="commission" class="">Commission</th>

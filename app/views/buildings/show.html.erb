@@ -243,11 +243,11 @@
 				<br>
 	    	<div class="row inaccuracy-report">
 	    		<div class="col-xs-12">
-		    		<h3>Inaccuracy Report</h3>
+		    		<h3>Provide Feedback</h3>
 		    		<%= form_for(@building,
 		    				url: send_inaccuracy_building_path(@building)) do |f| %>
 							<div class="modal-body2">
-								<p>Something wrong at <%= @building.street_address %>?
+								<p>What is your feedback for <%= @building.street_address %>?
 								The more detail you can provide, the better.</p>
 								<br>
 							  <%= f.text_area :inaccuracy_description, rows: 5, class: 'form-control' %>
