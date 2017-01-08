@@ -10,7 +10,7 @@ class UnitMailer < ApplicationMailer
     @reporter = User.where(id: reporter_id).first
 
     mail to: 'info@myspacenyc.com',
-    	subject: "Inaccuracy Reported for #{@listing.street_address_and_unit}",
+    	subject: "Feedback provided for #{@listing.street_address_and_unit}",
     	reply_to: @reporter.email,
       tag: 'residential_inaccuracy',
       track_opens:'true'
@@ -21,7 +21,7 @@ class UnitMailer < ApplicationMailer
     @reporter = User.where(id: reporter_id).first
     @message = message
     mail to: 'info@myspacenyc.com',
-    	subject: "Inaccuracy Reported for Commercial Unit: #{@listing.street_address_and_unit}",
+    	subject: "Feedback provided for commercial Unit: #{@listing.street_address_and_unit}",
     	reply_to: @reporter.email,
       tag: 'commercial_inaccuracy',
       track_opens:'true'

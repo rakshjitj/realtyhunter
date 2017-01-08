@@ -4,7 +4,7 @@ class BuildingMailer < ApplicationMailer
     @reporter = User.where(id: reporter_id).first
     @message = message
     mail to: 'info@myspacenyc.com',
-    	subject: "Inaccuracy Reported for #{@building.street_address}",
+    	subject: "Feedback provided for #{@building.street_address}",
         reply_to: @reporter.email,
         tag: 'building_inaccuracy',
         track_opens:'true'
