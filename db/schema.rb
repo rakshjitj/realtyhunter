@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170108192527) do
+ActiveRecord::Schema.define(version: 20170108212154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,9 +104,11 @@ ActiveRecord::Schema.define(version: 20170108192527) do
     t.integer  "active_unit_count",                 default: 0,     null: false
     t.datetime "last_unit_updated_at"
     t.string   "llc_name"
+    t.integer  "feedback_id"
   end
 
   add_index "buildings", ["documents_id"], name: "index_buildings_on_documents_id", using: :btree
+  add_index "buildings", ["feedback_id"], name: "index_buildings_on_feedback_id", using: :btree
   add_index "buildings", ["formatted_street_address"], name: "index_buildings_on_formatted_street_address", using: :btree
   add_index "buildings", ["images_id"], name: "index_buildings_on_images_id", using: :btree
   add_index "buildings", ["updated_at"], name: "index_buildings_on_updated_at", order: {"updated_at"=>:desc}, using: :btree
@@ -268,6 +270,20 @@ ActiveRecord::Schema.define(version: 20170108192527) do
   end
 
   add_index "employee_titles", ["users_id"], name: "index_employee_titles_on_users_id", using: :btree
+
+  create_table "feedbacks", force: :cascade do |t|
+    t.integer  "unit_id"
+    t.integer  "building_id"
+    t.integer  "user_id"
+    t.text     "description"
+    t.boolean  "price_drop_request", default: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
+  add_index "feedbacks", ["building_id"], name: "index_feedbacks_on_building_id", using: :btree
+  add_index "feedbacks", ["unit_id"], name: "index_feedbacks_on_unit_id", using: :btree
+  add_index "feedbacks", ["user_id"], name: "index_feedbacks_on_user_id", using: :btree
 
   create_table "images", force: :cascade do |t|
     t.string   "file_file_name"
@@ -639,10 +655,12 @@ ActiveRecord::Schema.define(version: 20170108192527) do
     t.boolean  "has_stock_photos",              default: false
     t.integer  "checkins_id"
     t.boolean  "is_exclusive_agreement_signed", default: false
+    t.integer  "feedback_id"
   end
 
   add_index "units", ["commercial_listing_id"], name: "index_units_on_commercial_listing_id", using: :btree
   add_index "units", ["documents_id"], name: "index_units_on_documents_id", using: :btree
+  add_index "units", ["feedback_id"], name: "index_units_on_feedback_id", using: :btree
   add_index "units", ["images_id"], name: "index_units_on_images_id", using: :btree
   add_index "units", ["open_houses_id"], name: "index_units_on_open_houses_id", using: :btree
   add_index "units", ["primary_agent2_id"], name: "index_units_on_primary_agent2_id", using: :btree
@@ -696,12 +714,14 @@ ActiveRecord::Schema.define(version: 20170108192527) do
     t.integer  "announcements_id"
     t.integer  "deals_id"
     t.integer  "checkins_id"
+    t.integer  "feedback_id"
   end
 
   add_index "users", ["announcements_id"], name: "index_users_on_announcements_id", using: :btree
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["employee_title_id"], name: "index_users_on_employee_title_id", using: :btree
+  add_index "users", ["feedback_id"], name: "index_users_on_feedback_id", using: :btree
   add_index "users", ["manager_id"], name: "index_users_on_manager_id", using: :btree
   add_index "users", ["name"], name: "index_users_on_name", using: :btree
   add_index "users", ["office_id"], name: "index_users_on_office_id", using: :btree

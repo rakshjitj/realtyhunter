@@ -4,7 +4,7 @@ class UnitMailerPreview < ActionMailer::Preview
   def inaccuracy_reported
     listing = ResidentialListing.all.first
     reporter = User.where(email: 'rbujans@myspacenyc.com').first
-    UnitMailer.inaccuracy_reported(listing.id, reporter.id, 'This apartment is dirty!')
+    UnitMailer.inaccuracy_reported(listing.id, reporter.id, 'This apartment is dirty!', true)
   end
 
   def send_residential_listings

@@ -216,7 +216,8 @@ class ResidentialListingsController < ApplicationController
   # triggers email to staff notifying them of the inaccuracy
   def send_inaccuracy
     @residential_unit.send_inaccuracy_report(current_user,
-        residential_listing_params[:inaccuracy_description])
+        residential_listing_params[:inaccuracy_description],
+        params[:price_drop_request])
     flash[:success] = "Report submitted! Thank you."
     respond_to do |format|
       format.html { redirect_to @residential_unit }

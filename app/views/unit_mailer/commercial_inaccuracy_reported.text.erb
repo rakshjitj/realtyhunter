@@ -1,5 +1,13 @@
 <%= @reporter.name %> has submitted this error report:
 
+<% if @price_drop_request %>
+
+
+*** Requesting a price drop ***
+
+
+<% end %>
+
 <%= @message %>
 
 Please login and update the unit's info.

@@ -212,14 +212,6 @@ class SalesListingsController < ApplicationController
     end
   end
 
-  # GET
-  # handles ajax call. uses latest data in modal
-  def inaccuracy_modal
-    respond_to do |format|
-      format.js
-    end
-  end
-
   # sends listings info to clients
   def send_listings
     recipients = sales_listing_params[:recipients].split(/[\,,\s]/)
@@ -236,7 +228,9 @@ class SalesListingsController < ApplicationController
   # PATCH
   # triggers email to staff notifying them of the inaccuracy
   def send_inaccuracy
-    @sales_unit.send_inaccuracy_report(current_user, sales_listing_params[:inaccuracy_description])
+    @sales_unit.send_inaccuracy_report(current_user,
+        sales_listing_params[:sales_listing][:inaccuracy_description],
+        params[:price_drop_request])
     flash[:success] = "Report submitted! Thank you."
     respond_to do |format|
       format.html { redirect_to @sales_unit }
@@ -384,7 +378,7 @@ class SalesListingsController < ApplicationController
     def sales_listing_params
       data = params.permit(
         :sort_by, :direction, :page, :filter,
-        :beds, :baths, :include_photos, :inaccuracy_description,
+        :beds, :baths, :include_photos,
         :available_starting, :available_before,
         :street_number, :route, :intersection,
         :neighborhood, :formatted_street_address,
@@ -399,7 +393,7 @@ class SalesListingsController < ApplicationController
           :seller_phone, :seller_address, :year_built, :building_type, :lot_size,
           :building_size, :block_taxes, :lot_taxes, :water_sewer, :insurance,
           :school_district, :certificate_of_occupancy, :violation_search, :tenant_occupied,
-          :internal_notes, :public_description,
+          :internal_notes, :public_description, :inaccuracy_description,
           :floor, :total_room_count, :condition, :showing_instruction, :commission_amount, :cyof,
           :rented_date, :rlsny, :share_with_brokers, :favorites, :show, :expose_address,
           :unit => [:building_unit, :rent, :available_by, :access_info, :status, :exclusive,

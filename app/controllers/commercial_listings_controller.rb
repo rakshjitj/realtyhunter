@@ -187,18 +187,12 @@ class CommercialListingsController < ApplicationController
     end
   end
 
-  # GET
-  # handles ajax call. uses latest data in modal
-  # def inaccuracy_modal
-  #   respond_to do |format|
-  #     format.js
-  #   end
-  # end
-
   # PATCH
   # triggers email to staff notifying them of the inaccuracy
   def send_inaccuracy
-    @commercial_unit.send_inaccuracy_report(current_user, commercial_listing_params[:inaccuracy_description])
+    @commercial_unit.send_inaccuracy_report(current_user,
+        commercial_listing_params[:inaccuracy_description],
+        params[:price_drop_request])
     flash[:success] = "Report submitted! Thank you."
     respond_to do |format|
       format.html { redirect_to @commercial_unit }
@@ -353,9 +347,9 @@ class CommercialListingsController < ApplicationController
         :lease_type, :is_sublease, :property_description, :location_description,
         :construction_status, :lease_term_months, :primary_agent_id,
         :rate_is_negotiable, :total_lot_size, :property_type, :commercial_property_type_id,
-        :commercial_unit_id, :inaccuracy_description, :has_basement, :basement_sq_footage,
-        :has_ventilation, :key_money_required, :key_money_amt, :listing_title, :liquor_eligible,
-        :favorites, :show, :expose_address,
+        :commercial_unit_id, :inaccuracy_description, :has_basement,
+        :basement_sq_footage, :has_ventilation, :key_money_required, :key_money_amt, :listing_title,
+        :liquor_eligible, :favorites, :show, :expose_address,
         unit: [:building_unit, :rent, :available_by, :access_info, :status,
           :building_id, :primary_agent_id, :primary_agent2_id, :listing_agent_id, :exclusive,
           :syndication_status],

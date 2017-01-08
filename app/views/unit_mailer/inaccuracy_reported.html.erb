@@ -1,5 +1,9 @@
 <h2><%= @reporter.name %> has submitted this error report:</h2>
 
+<% if @price_drop_request %>
+  <p style="color: #3333FF; font-weight: bold;">*** Requesting a price drop ***</p>
+<% end %>
+
 <p><%= @message %></p>
 
 <br />

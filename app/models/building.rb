@@ -11,6 +11,7 @@ class Building < ActiveRecord::Base
 	belongs_to :pet_policy, touch: true
 	belongs_to :rental_term, touch: true
 	has_many :units, dependent: :destroy
+  has_many :feedbacks, dependent: :destroy
 
 	has_many :images, dependent: :destroy
   has_many :documents, dependent: :destroy
@@ -183,7 +184,16 @@ class Building < ActiveRecord::Base
   end
 
   def send_inaccuracy_report(reporter, message)
-    BuildingMailer.inaccuracy_reported(self.id, reporter.id, message).deliver
+    if reporter && !message.blank?
+      Feedback.create!({
+        user_id: reporter.id,
+        building_id: self.id,
+        description: message
+      })
+      BuildingMailer.inaccuracy_reported(self.id, reporter.id, message).deliver
+    else
+      raise "Invalid params specified while sending feedback"
+    end
   end
 
   def residential_units(status=nil)

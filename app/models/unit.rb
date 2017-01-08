@@ -10,6 +10,7 @@ class Unit < ActiveRecord::Base
   has_one :sales_listing, dependent: :destroy
   has_many :announcements
   has_many :deals
+  has_many :feedbacks, dependent: :destroy
   has_many :open_houses, dependent: :destroy
   has_many :checkins, dependent: :destroy
   accepts_nested_attributes_for :open_houses, allow_destroy: true
@@ -121,6 +122,7 @@ class Unit < ActiveRecord::Base
         .to_a.group_by(&:id)
   end
 
+  # todo: should really be called notify_new_agent
   def self.update_primary_agent(new_agent_id, old_agent_id, listing_id)
     if !new_agent_id.blank?
       UserMailer.send_primary_agent_added_notification(new_agent_id, listing_id).deliver

@@ -274,11 +274,17 @@ class CommercialListing < ActiveRecord::Base
     end
   end
 
-  def send_inaccuracy_report(reporter, message)
-    if reporter
+  def send_inaccuracy_report(reporter, message, price_drop_request)
+    if reporter && !message.blank?
+      Feedback.create!({
+        user_id: reporter.id,
+        unit_id: self.id,
+        description: message,
+        price_drop_request: price_drop_request
+      })
       UnitMailer.commercial_inaccuracy_reported(self.id, reporter.id, message).deliver
     else
-      raise "No reporter specified"
+      raise "Invalid params specified while sending feedback"
     end
   end
 

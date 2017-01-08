@@ -1,6 +1,6 @@
 class UnitMailer < ApplicationMailer
 
-  def inaccuracy_reported(listing_id, reporter_id, message)
+  def inaccuracy_reported(listing_id, reporter_id, message, price_drop_request)
     @message = message
     @listing = ResidentialListing.where(id: listing_id).first
     if !@listing
@@ -8,19 +8,24 @@ class UnitMailer < ApplicationMailer
     end
 
     @reporter = User.where(id: reporter_id).first
+    @price_drop_request = price_drop_request
 
     mail to: 'info@myspacenyc.com',
+      cc: @reporter.email,
     	subject: "Feedback provided for #{@listing.street_address_and_unit}",
     	reply_to: @reporter.email,
       tag: 'residential_inaccuracy',
       track_opens:'true'
   end
 
-  def commercial_inaccuracy_reported(listing_id, reporter_id, message)
+  def commercial_inaccuracy_reported(listing_id, reporter_id, message, price_drop_request)
+    @message = message
     @listing = CommercialListing.where(id: listing_id).first
     @reporter = User.where(id: reporter_id).first
-    @message = message
+    @price_drop_request = price_drop_request
+
     mail to: 'info@myspacenyc.com',
+      cc: @reporter.email,
     	subject: "Feedback provided for commercial Unit: #{@listing.street_address_and_unit}",
     	reply_to: @reporter.email,
       tag: 'commercial_inaccuracy',
