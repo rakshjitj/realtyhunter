@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170108212154) do
+ActiveRecord::Schema.define(version: 20170108231749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -630,18 +630,18 @@ ActiveRecord::Schema.define(version: 20170108212154) do
   add_index "sales_listings", ["unit_id"], name: "index_sales_listings_on_unit_id", using: :btree
 
   create_table "units", force: :cascade do |t|
-    t.boolean  "archived",                      default: false
+    t.boolean  "archived",                       default: false
     t.integer  "listing_id"
     t.string   "building_unit"
     t.integer  "rent"
     t.datetime "available_by"
     t.string   "access_info"
-    t.integer  "status",                        default: 0
+    t.integer  "status",                         default: 0
     t.integer  "building_id"
     t.integer  "primary_agent_id"
     t.integer  "images_id"
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
     t.integer  "residential_listing_id"
     t.integer  "commercial_listing_id"
     t.string   "public_url"
@@ -651,11 +651,12 @@ ActiveRecord::Schema.define(version: 20170108212154) do
     t.integer  "primary_agent2_id"
     t.integer  "deals_id"
     t.integer  "open_houses_id"
-    t.integer  "syndication_status",            default: 0
-    t.boolean  "has_stock_photos",              default: false
+    t.integer  "syndication_status",             default: 0
+    t.boolean  "has_stock_photos",               default: false
     t.integer  "checkins_id"
-    t.boolean  "is_exclusive_agreement_signed", default: false
+    t.boolean  "is_exclusive_agreement_signed",  default: false
     t.integer  "feedback_id"
+    t.datetime "exclusive_agreement_expires_at"
   end
 
   add_index "units", ["commercial_listing_id"], name: "index_units_on_commercial_listing_id", using: :btree

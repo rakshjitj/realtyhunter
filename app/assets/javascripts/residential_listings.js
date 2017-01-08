@@ -421,11 +421,23 @@
     });
   };
 
+  ResidentialListings.toggleExpirationDateUI = function() {
+    if ($('#residential_listing_unit_is_exclusive_agreement_signed')[0].checked) {
+      $('.row-is_exclusive_agreement_signed').removeClass('hidden');
+    } else {
+      $('.row-is_exclusive_agreement_signed').addClass('hidden');
+    }
+  };
+
   ResidentialListings.initEditor = function() {
     $('.has-fee').click(ResidentialListings.toggleFeeOptions);
     ResidentialListings.toggleFeeOptions();
     // when creating a new listing, inherit TP/OP from building's landlord
     $('#residential_listing_unit_building_id').change(ResidentialListings.inheritFeeOptions);
+    // when toggling whether there's a signed exclusive agreement
+    ResidentialListings.toggleExpirationDateUI();
+    $('#residential_listing_unit_is_exclusive_agreement_signed').click(
+        ResidentialListings.toggleExpirationDateUI);
 
     // for drag n dropping photos/docs
     // disable auto discover
