@@ -357,6 +357,11 @@
                         checked: @residential_unit.unit.exclusive %>
                     <%= f.label :exclusive, "Exclusive listing" %>
                   </div>
+                  <div class="checkbox checkbox-warning checkbox-inline exclusive-checkbox">
+                    <%= unit_form.check_box :is_exclusive_agreement_signed, class: "styled",
+                        checked: @residential_unit.unit.is_exclusive_agreement_signed %>
+                    <%= f.label :is_exclusive_agreement_signed, "Exclusive agreement signed" %>
+                  </div>
                 <% end %>
               </div>
             </div>

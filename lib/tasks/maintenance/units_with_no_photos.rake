@@ -1,7 +1,7 @@
 namespace :maintenance do
-	desc "clean up to match latest schema changes"
+	desc "units with no photos"
 	task :units_with_no_photos => :environment do
-		log = ActiveSupport::Logger.new('log/change_passwords.log')
+		log = ActiveSupport::Logger.new('log/units_with_no_photos.log')
 		start_time = Time.now
 
 	  company = Company.find_by(name: 'MyspaceNYC')
