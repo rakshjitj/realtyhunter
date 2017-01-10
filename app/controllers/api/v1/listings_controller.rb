@@ -216,7 +216,7 @@ module API
 							building_utilities: @building_utilities[l.building_id],
 							primary_agents: @primary_agents[l.unit_id],
 							images: @images[l.unit_id],
-							open_houses: @open_houses[l.unit_id],
+							open_houses: @open_houses[l.unit_id] || [],
 							building_blob:
 								APIBuilding.new({
 			            building: buildings[l.building_id][0],
