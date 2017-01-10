@@ -469,7 +469,11 @@ class ResidentialListingsController < ApplicationController
 
         # convert into a datetime obj
         if !data[:unit][:available_by].blank?
-          data[:unit][:available_by] = Date::strptime(data[:unit][:available_by], "%m/%d/%Y")
+          begin
+            data[:unit][:available_by] = Date::strptime(data[:unit][:available_by], "%m/%d/%Y")
+          rescue
+            data[:unit].delete(:available_by)
+          end
         end
 
         if data[:unit][:open_houses_attributes]
