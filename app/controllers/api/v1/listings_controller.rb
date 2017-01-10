@@ -16,11 +16,14 @@ module API
 
 			def index
 				restrict_results
+				rescue
+					render json: {}
 			end
 
 			def show
 				# id in this case refers to the unit's listing id
 				listings = all_listings_search(@user.company_id, {id: params[:id], status: 'active,pending'})
+
 				if listings && listings.length == 0
 					render json: {}
 				else

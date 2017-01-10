@@ -50,6 +50,9 @@ module API
 					AgentBlob.new({users: @agents})
 				#end
 				render json: blob
+
+				rescue
+					render json: {}
 			end
 
 			def show
