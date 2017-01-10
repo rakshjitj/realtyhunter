@@ -54,12 +54,13 @@ class SessionsController < ApplicationController
   end
 
   def user_home
-    redirect_to root_path unless current_user
-
-    if current_user.is_external_vendor?
+    # redirect_to root_path unless current_user
+    if current_user && current_user.is_external_vendor?
       redirect_to current_user
-    else
+    elsif current_user
       redirect_to residential_listings_path
+    else
+      redirect_to root_path
     end
   end
 
