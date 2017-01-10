@@ -9,8 +9,9 @@ namespace :maintenance do
       bldg.update_total_unit_count
       bldg.update_active_unit_count
 
-			if bldg.units.length > 0
-				bldg.update_attributes(last_unit_updated_at: bldg.units.unarchived.first.updated_at)
+      unarchived_units = bldg.units.unarchived
+			if unarchived_units > 0
+				bldg.update_attributes(last_unit_updated_at: unarchived_units.first.updated_at)
 			end
 		end
 
