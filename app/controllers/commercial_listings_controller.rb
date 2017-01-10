@@ -148,7 +148,7 @@ class CommercialListingsController < ApplicationController
         Unit.update_primary_agent(
             commercial_listing_params[:unit][:primary_agent2_id],
             @commercial_unit.unit.primary_agent2_id,
-            @commercial_unit.listing_id)
+            @commercial_unit.unit.listing_id)
       end
       ret1 = @commercial_unit.unit.update(commercial_listing_params[:unit].merge({updated_at: Time.now}))
       c_params = commercial_listing_params
