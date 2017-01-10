@@ -10,7 +10,7 @@ namespace :maintenance do
       bldg.update_active_unit_count
 
       unarchived_units = bldg.units.unarchived
-			if unarchived_units > 0
+			if unarchived_units.count > 0
 				bldg.update_attributes(last_unit_updated_at: unarchived_units.first.updated_at)
 			end
 		end
@@ -21,8 +21,9 @@ namespace :maintenance do
       ll.update_active_unit_count
 
       bldgs = ll.buildings.joins(:units).order('updated_at DESC')
-      if bldgs.count > 0
-      	ll.update_attributes(last_unit_updated_at: bldgs.unarchived.first.updated_at)
+      unarchived_bldgs = bldgs.unarchived
+      if unarchived_bldgs.count > 0
+      	ll.update_attributes(last_unit_updated_at: unarchived_bldgs.first.updated_at)
       end
 		end
 
