@@ -126,7 +126,7 @@ CommercialListings = {};
           contentString += '$' + unit.rent + '</a></div>';
       if (i == 5) {
         contentString += '<div class="contentRow">' +
-        '<a href="https://myspace-realty-monster.herokuapp.com/commercial_listings?building_id='
+        '<a href="https://myspace-realty-monster.herokuapp.com/buildings/'
         + info['building_id'] + '">View more...</a></div>';
         break;
       }

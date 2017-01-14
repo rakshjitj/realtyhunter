@@ -193,7 +193,7 @@
         + unit.beds + ' bd / '
         + unit.baths + ' baths $' + unit.rent + '</a></div>';
       if (i == 5) {
-        contentString += '<div class="contentRow"><a href="https://myspace-realty-monster.herokuapp.com/residential_listings?building_id='
+        contentString += '<div class="contentRow"><a href="https://myspace-realty-monster.herokuapp.com/buildings/'
           + info['building_id'] + '">View more...</a></div>';
         break;
       }
