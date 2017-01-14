@@ -534,29 +534,23 @@
 		    	</div>
 		    </div>
 
-		    <% if @sales_unit.unit.audits.length > 0 || @sales_unit.audits.length > 0 %>
-		    	<div class="row history-report">
+		    <% sorted_changelist = pretty_audit_changes(@sales_unit) %>
+		    <% if sorted_changelist.keys.length > 0 %>
+			    <div class="row history-report">
 		    		<div class="col-xs-12">
 		    			<h3>Recent Changes</h3>
-				    	<% for i in 0..@sales_unit.unit.audits.length-1 %>
-				    		<% if i > 5; break; end %>
-					    	<div class="row">
-					    		<div class="col-xs-12">
-					    			<%= pretty_audit_changes(@sales_unit.unit.audits[i]) %>
+				    	<% sorted_changelist.each do |k, record_list| %>
+				    		<% for i in 0..record_list.length - 1 %>
+				    			<div class="row">
+				    				<div class="col-xs-12">
+						    			<%= record_list[i] %>
+						    		</div>
 					    		</div>
-					    	</div>
-					    <% end %>
-					    <% for i in 0..@sales_unit.audits.length-1 %>
-					    	<% if i > 5; break; end %>
-					    	<div class="row">
-					    		<div class="col-xs-12">
-					    			<%= pretty_audit_changes(@sales_unit.audits[i]) %>
-					    		</div>
-					    	</div>
-					    <% end %>
-				    <% end %>
-				  </div>
-			  </div>
+				    		<% end %>
+				    	<% end %>
+				  	</div>
+				  </div><!-- row -->
+				<% end %>
 
 			</div><!-- panel body -->
 		</div><!-- panel heading -->
