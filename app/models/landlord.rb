@@ -1,4 +1,5 @@
 class Landlord < ActiveRecord::Base
+  audited
 	scope :unarchived, ->{where(archived: false)}
 
 	has_many :buildings, dependent: :destroy
