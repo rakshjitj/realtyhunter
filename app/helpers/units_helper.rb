@@ -64,10 +64,13 @@ module UnitsHelper
 			audit = listing.unit.audits[i]
 			formatted_audit = _pretty_print_one_audit(audit)
 			creation_unix_time = audit.created_at.to_time.to_i
-			if !output[creation_unix_time]
-				output[creation_unix_time] = [formatted_audit]
-			else
-				output[creation_unix_time].push(formatted_audit)
+			# changes triggered by the listing being created are meaninglesss
+			if creation_unix_time != listing.unit.created_at.to_time.to_i
+				if !output[creation_unix_time]
+					output[creation_unix_time] = [formatted_audit]
+				else
+					output[creation_unix_time].push(formatted_audit)
+				end
 			end
 		end
 
@@ -77,10 +80,13 @@ module UnitsHelper
 			formatted_audit = _pretty_print_one_audit(audit)
 
 			creation_unix_time = audit.created_at.to_time.to_i
-			if !output[creation_unix_time]
-				output[creation_unix_time] = [formatted_audit]
-			else
-				output[creation_unix_time].push(formatted_audit)
+			# changes triggered by the listing being created are meaninglesss
+			if creation_unix_time != listing.created_at.to_time.to_i
+				if !output[creation_unix_time]
+					output[creation_unix_time] = [formatted_audit]
+				else
+					output[creation_unix_time].push(formatted_audit)
+				end
 			end
 		end
 

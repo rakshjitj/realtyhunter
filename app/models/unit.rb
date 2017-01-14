@@ -1,5 +1,6 @@
 class Unit < ActiveRecord::Base
-  audited
+  audited except: [:created_at, :updated_at]
+
 	belongs_to :building, touch: true
   belongs_to :primary_agent, class_name: 'User', touch: true
   belongs_to :primary_agent2, class_name: 'User', touch: true
@@ -145,12 +146,19 @@ class Unit < ActiveRecord::Base
       end
     end
 
-    # to keep updates speedy, we cap the audit log at 100 entries per record
+
     def trim_audit_log
-      audits_count = audits.count
+      # to keep updates speedy, we cap the audit log at 100 entries per record
+      audits_count = audits.length
       if audits_count > 50
         audits.first.destroy
       end
+
+      # we also discard the initial audit record, which is triggered upon creation
+      if audits_count && audits.first.created_at.to_time.to_i == self.created_at.to_time.to_i
+        audits.first.destroy
+      end
+
     end
 
 end

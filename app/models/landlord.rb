@@ -1,5 +1,6 @@
 class Landlord < ActiveRecord::Base
-  audited
+  audited except: [:created_at, :updated_at]
+
 	scope :unarchived, ->{where(archived: false)}
 
 	has_many :buildings, dependent: :destroy
@@ -23,6 +24,7 @@ class Landlord < ActiveRecord::Base
 		format: { with: VALID_TELEPHONE_REGEX }
 
 	before_save :clean_up_important_fields
+  after_commit :trim_audit_log
 
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
 	validates :email, allow_blank: true, length: {maximum: 100},
@@ -122,6 +124,19 @@ class Landlord < ActiveRecord::Base
 
 			self.name = name.gsub(/\A\p{Space}*|\p{Space}*\z/, '')
 			self.code = code.gsub(/\A\p{Space}*|\p{Space}*\z/, '')
+    end
+
+    def trim_audit_log
+      # to keep updates speedy, we cap the audit log at 100 entries per record
+      audits_count = audits.length
+      if audits_count > 50
+        audits.first.destroy
+      end
+
+      # we also discard the initial audit record, which is triggered upon creation
+      if audits_count > 0 && audits.first.created_at.to_time.to_i == self.created_at.to_time.to_i
+        audits.first.destroy
+      end
     end
 
 end
