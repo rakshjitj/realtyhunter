@@ -1,4 +1,10 @@
-<% provide(:title, @residential_unit.street_address_and_unit) %>
+<% cache([@residential_unit, current_user.employee_title.name, request.variant.to_s,
+ 		@residential_unit.unit.updated_at,
+ 		@residential_unit.unit.building.updated_at,
+ 		@residential_unit.unit.building.landlord.updated_at
+ 		]) do %>
+
+ <% provide(:title, @residential_unit.street_address_and_unit) %>
 
 <div class="mobile-show-page-wrap no-margin-padding">
 	<div class="row">
@@ -670,3 +676,4 @@
 
 </div>
 
+<% end %><!-- cache -->
