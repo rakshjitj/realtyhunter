@@ -1,5 +1,5 @@
 class Unit < ActiveRecord::Base
-  audited except: [:created_at, :updated_at]
+  audited except: [:created_at, :updated_at], on: [:update]
 
 	belongs_to :building, touch: true
   belongs_to :primary_agent, class_name: 'User', touch: true
@@ -155,7 +155,7 @@ class Unit < ActiveRecord::Base
       end
 
       # we also discard the initial audit record, which is triggered upon creation
-      if audits_count && audits.first.created_at.to_time.to_i == self.created_at.to_time.to_i
+      if audits_count > 0 && audits.first.created_at.to_time.to_i == self.created_at.to_time.to_i
         audits.first.destroy
       end
 

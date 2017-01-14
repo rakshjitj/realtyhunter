@@ -1,5 +1,5 @@
 class SalesListing < ActiveRecord::Base
-  audited except: [:created_at, :updated_at]
+  audited except: [:created_at, :updated_at], on: [:update]
 
 	scope :unarchived, ->{where(archived: false)}
   has_and_belongs_to_many :sales_amenities

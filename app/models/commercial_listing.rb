@@ -1,5 +1,5 @@
 class CommercialListing < ActiveRecord::Base
-  audited except: [:created_at, :updated_at]
+  audited except: [:created_at, :updated_at], on: [:update]
 
   scope :unarchived, ->{where(archived: false)}
   belongs_to :commercial_property_type
