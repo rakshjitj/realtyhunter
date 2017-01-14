@@ -518,16 +518,14 @@
             </div>
           </div>
 
-
-
           <div class="row vertical-margin-lg">
             <div class="col-md-4">
-              <%= f.label :property_description, class: 'required' %>
+              <%= f.label :exclusive, "Exclusivity Options" %>
             </div>
             <div class="col-md-8">
               <div class="row">
                 <div class="col-xs-12">
-                  <small><em>Exclusive listings will display the full address when syndicated.
+                  <small class="explainer-text"><em>Exclusive listings will display the full address when syndicated.
                     Must have a description AND assigned agent in order to be syndicated.</em>
                   </small>
                   <br><br>
@@ -539,65 +537,79 @@
                     </div>
                   <% end %>
                 </div>
-              </div>
-
-              <div class="row">
-                <div class="col-xs-5 col-sm-4">
-                  <%= f.label :show, "Show", class: 'required' %>
-                </div>
-                <div class="col-xs-3 col-sm-2">
-                  <div class="radio radio-warning radio-inline">
-                    <%= f.radio_button :show, true, checked: @commercial_unit.show %>
-                    <%= f.label :show_true, "Yes" %>
-                  </div>
-                </div>
-                <div class="col-xs-3 col-sm-2">
-                  <div class="radio radio-warning radio-inline">
-                    <%= f.radio_button :show, false, checked: !@commercial_unit.show %>
-                    <%= f.label :show_false, "No" %>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-5 col-sm-4">
-                  <%= f.label :favorites, "Favorite", class: 'required' %>
-                </div>
-                <div class="col-xs-3 col-sm-2">
-                  <div class="radio radio-warning radio-inline">
-                    <%= f.radio_button :favorites, true, checked: @commercial_unit.favorites %>
-                    <%= f.label :favorites_true, "Yes" %>
-                  </div>
-                </div>
-                <div class="col-xs-3 col-sm-2">
-                  <div class="radio radio-warning radio-inline">
-                    <%= f.radio_button :favorites, false, checked: !@commercial_unit.favorites %>
-                    <%= f.label :favorites_false, "No" %>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-5 col-sm-4">
-                  <%= f.label :expose_address, "Expose Address", class: 'required' %>
-                </div>
-                <div class="col-xs-3 col-sm-2">
-                  <div class="radio radio-warning radio-inline">
-                    <%= f.radio_button :expose_address, true,
-                        checked: @commercial_unit.expose_address %>
-                    <%= f.label :expose_address_true, "Yes" %>
-                  </div>
-                </div>
-                <div class="col-xs-3 col-sm-2">
-                  <div class="radio radio-warning radio-inline">
-                    <%= f.radio_button :expose_address, false,
-                        checked: !@commercial_unit.expose_address %>
-                    <%= f.label :expose_address_false, "No" %>
-                  </div>
-                </div>
-              </div>
-              <br>
-              <br>
+              </div><!-- row -->
               <div class="row">
                 <div class="col-xs-12">
+                  <div class="row">
+                    <div class="col-xs-5 col-sm-4">
+                      <%= f.label :show, "Show", class: 'required' %>
+                    </div>
+                    <div class="col-xs-3 col-sm-2">
+                      <div class="radio radio-warning radio-inline">
+                        <%= f.radio_button :show, true, checked: @commercial_unit.show %>
+                        <%= f.label :show_true, "Yes" %>
+                      </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-2">
+                      <div class="radio radio-warning radio-inline">
+                        <%= f.radio_button :show, false, checked: !@commercial_unit.show %>
+                        <%= f.label :show_false, "No" %>
+                      </div>
+                    </div>
+                  </div><!-- row -->
+                  <div class="row">
+                    <div class="col-xs-5 col-sm-4">
+                      <%= f.label :favorites, "Favorite", class: 'required' %>
+                    </div>
+                    <div class="col-xs-3 col-sm-2">
+                      <div class="radio radio-warning radio-inline">
+                        <%= f.radio_button :favorites, true, checked: @commercial_unit.favorites %>
+                        <%= f.label :favorites_true, "Yes" %>
+                      </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-2">
+                      <div class="radio radio-warning radio-inline">
+                        <%= f.radio_button :favorites, false, checked: !@commercial_unit.favorites %>
+                        <%= f.label :favorites_false, "No" %>
+                      </div>
+                    </div>
+                  </div><!-- row -->
+                  <div class="row">
+                    <div class="col-xs-5 col-sm-4">
+                      <%= f.label :expose_address, "Expose Address", class: 'required' %>
+                    </div>
+                    <div class="col-xs-3 col-sm-2">
+                      <div class="radio radio-warning radio-inline">
+                        <%= f.radio_button :expose_address, true,
+                            checked: @commercial_unit.expose_address %>
+                        <%= f.label :expose_address_true, "Yes" %>
+                      </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-2">
+                      <div class="radio radio-warning radio-inline">
+                        <%= f.radio_button :expose_address, false,
+                            checked: !@commercial_unit.expose_address %>
+                        <%= f.label :expose_address_false, "No" %>
+                      </div>
+                    </div>
+                  </div><!-- row -->
+                </div>
+              </div><!-- row -->
+            </div>
+          </div><!-- row -->
+
+          <br>
+          <div class="row vertical-margin-lg">
+            <div class="col-md-4">
+              <%= f.label :property_description, class: 'required' %>
+            </div>
+            <div class="col-md-8">
+              <div class="row">
+                <div class="col-xs-12">
+                  <small class="explainer-text"><em>
+                    Tip: Enter 2 blank lines to separate paragraphs.
+                  </small></em>
+                  <br><br>
                   <%= f.bootsy_area :property_description, class: 'form-control',
                       rows: 15,
                       required: true %>

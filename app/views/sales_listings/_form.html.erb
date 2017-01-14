@@ -336,15 +336,14 @@
             </div>
           </div>
 
-          <br />
-          <div class="row">
+          <div class="row vertical-margin-lg">
             <div class="col-md-3">
-              <%= f.label :public_description %>
+              <%= f.label :exclusive, "Exclusivity Options" %>
             </div>
             <div class="col-md-9">
               <div class="row">
                 <div class="col-xs-12">
-                  <small><em>
+                  <small class="explainer-text"><em>
                     Exclusive listings will display the full address when syndicated.
                     Must have a description AND assigned agent in order to be syndicated.
                   </em></small>
@@ -357,83 +356,94 @@
                     </div>
                   <% end %>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-5 col-sm-4">
-                  <%= f.label :show, "Show", class: 'required' %>
-                </div>
-                <div class="col-xs-3 col-sm-2">
-                  <div class="radio radio-warning radio-inline">
-                    <%= f.radio_button :show, true, checked: @sales_unit.show %>
-                    <%= f.label :show_true, "Yes" %>
-                  </div>
-                </div>
-                <div class="col-xs-3 col-sm-2">
-                  <div class="radio radio-warning radio-inline">
-                    <%= f.radio_button :show, false, checked: !@sales_unit.show %>
-                    <%= f.label :show_false, "No" %>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-5 col-sm-4">
-                  <%= f.label :favorites, "Favorite", class: 'required' %>
-                </div>
-                <div class="col-xs-3 col-sm-2">
-                  <div class="radio radio-warning radio-inline">
-                    <%= f.radio_button :favorites, true, checked: @sales_unit.favorites %>
-                    <%= f.label :favorites_true, "Yes" %>
-                  </div>
-                </div>
-                <div class="col-xs-3 col-sm-2">
-                  <div class="radio radio-warning radio-inline">
-                    <%= f.radio_button :favorites, false, checked: !@sales_unit.favorites %>
-                    <%= f.label :favorites_false, "No" %>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-5 col-sm-4">
-                  <%= f.label :expose_address, "Expose Address", class: 'required' %>
-                </div>
-                <div class="col-xs-3 col-sm-2">
-                  <div class="radio radio-warning radio-inline">
-                    <%= f.radio_button :expose_address, true, checked: @sales_unit.expose_address %>
-                    <%= f.label :expose_address_true, "Yes" %>
-                  </div>
-                </div>
-                <div class="col-xs-3 col-sm-2">
-                  <div class="radio radio-warning radio-inline">
-                    <%= f.radio_button :expose_address, false, checked: !@sales_unit.expose_address %>
-                    <%= f.label :expose_address_false, "No" %>
-                  </div>
-                </div>
-              </div>
-
-              <%= f.fields_for @sales_unit.unit do |unit_form| %>
-              <div class="row">
-                <div class="col-xs-6 col-sm-4">
-                  <%= unit_form.label :syndication_status, "Should syndicate", class: 'required' %>
-                </div>
-                <div class="col-xs-9 col-md-6">
-                  <%= unit_form.select(:syndication_status,
-                    options_for_select(['Syndicate if matches criteria', 'Force syndicate', 'Never syndicate'],
-                      [@sales_unit.unit.syndication_status]),
-                    {prompt: "Choose one..."},
-                    class: 'form-control',
-                    include_blank: true) %>
-                </div>
-              </div>
-              <% end %>
-
-              <br>
+              </div><!-- row -->
               <div class="row">
                 <div class="col-xs-12">
-                  <%= f.bootsy_area :public_description, class: 'form-control', rows: 15 %>
+                  <div class="row">
+                    <div class="col-xs-5 col-sm-4">
+                      <%= f.label :show, "Show", class: 'required' %>
+                    </div>
+                    <div class="col-xs-3 col-sm-2">
+                      <div class="radio radio-warning radio-inline">
+                        <%= f.radio_button :show, true, checked: @sales_unit.show %>
+                        <%= f.label :show_true, "Yes" %>
+                      </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-2">
+                      <div class="radio radio-warning radio-inline">
+                        <%= f.radio_button :show, false, checked: !@sales_unit.show %>
+                        <%= f.label :show_false, "No" %>
+                      </div>
+                    </div>
+                  </div><!-- row -->
+                  <div class="row">
+                    <div class="col-xs-5 col-sm-4">
+                      <%= f.label :favorites, "Favorite", class: 'required' %>
+                    </div>
+                    <div class="col-xs-3 col-sm-2">
+                      <div class="radio radio-warning radio-inline">
+                        <%= f.radio_button :favorites, true, checked: @sales_unit.favorites %>
+                        <%= f.label :favorites_true, "Yes" %>
+                      </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-2">
+                      <div class="radio radio-warning radio-inline">
+                        <%= f.radio_button :favorites, false, checked: !@sales_unit.favorites %>
+                        <%= f.label :favorites_false, "No" %>
+                      </div>
+                    </div>
+                  </div><!-- row -->
+                  <div class="row">
+                    <div class="col-xs-5 col-sm-4">
+                      <%= f.label :expose_address, "Expose Address", class: 'required' %>
+                    </div>
+                    <div class="col-xs-3 col-sm-2">
+                      <div class="radio radio-warning radio-inline">
+                        <%= f.radio_button :expose_address, true, checked: @sales_unit.expose_address %>
+                        <%= f.label :expose_address_true, "Yes" %>
+                      </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-2">
+                      <div class="radio radio-warning radio-inline">
+                        <%= f.radio_button :expose_address, false, checked: !@sales_unit.expose_address %>
+                        <%= f.label :expose_address_false, "No" %>
+                      </div>
+                    </div>
+                  </div><!-- row -->
+                  <%= f.fields_for @sales_unit.unit do |unit_form| %>
+                    <div class="row">
+                      <div class="col-xs-6 col-sm-4">
+                        <%= unit_form.label :syndication_status, "Should syndicate", class: 'required' %>
+                      </div>
+                      <div class="col-xs-9 col-md-6">
+                        <%= unit_form.select(:syndication_status,
+                          options_for_select(['Syndicate if matches criteria', 'Force syndicate', 'Never syndicate'],
+                            [@sales_unit.unit.syndication_status]),
+                          {prompt: "Choose one..."},
+                          class: 'form-control',
+                          include_blank: true) %>
+                      </div>
+                    </div><!-- row -->
+                  <% end %>
+
                 </div>
-              </div>
+              </div><!-- row -->
             </div>
-          </div>
+          </div><!-- row -->
+
+          <br />
+          <div class="row">
+            <div class="col-md-3">
+              <%= f.label :public_description %>
+            </div>
+            <div class="col-md-9">
+              <small class="explainer-text"><em>
+                Tip: Enter 2 blank lines to separate paragraphs.
+              </small></em>
+              <br><br>
+              <%= f.bootsy_area :public_description, class: 'form-control', rows: 15 %>
+            </div>
+          </div><!-- row -->
 
           <br />
           <div class="row">
