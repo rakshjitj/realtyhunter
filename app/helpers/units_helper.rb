@@ -27,7 +27,7 @@ module UnitsHelper
 	# Ex: Bob changed status, access info, rent from $500 to $1000 on MM/DD/YYY.
 	def _pretty_print_one_audit(audit)
 		retVal = []
-		viewable_fields = ['beds', 'baths', 'rented date', 'access info', 'description', 'notes',
+		viewable_fields = ['beds', 'baths', 'access info', 'description', 'notes',
 				'status', 'primary agent id', 'primary agent id2']
 
 		audit.audited_changes.each do |key, val|
