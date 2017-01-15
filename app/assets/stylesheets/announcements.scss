@@ -14,31 +14,17 @@
 	background-color: rgba(249, 167, 176, 0.6) !important; // red
 }
 
-.announcement {
-	padding-top: 0px;
-	padding-bottom: 5px !important;
-	.padding-left-sm2 {
-		.padding-left: 0px;
-	}
-	.padding-top {
-		padding-top: 5px;
-	}
-	.padding-right {
-		padding-right: 10px !important;
-	}
-}
-
-.announcement-fixed-height .well {
-	height: 80px;
+.announcement-fixed-height .announcement-description {
+	margin: 0;
+	height: 50px;
 	overflow: hidden;
 }
 
-.well {
-	padding: 10px 19px 10px 10px !important;
-	// padding-top: 10px !important;
-	// padding-bottom: 10px !important;
+.announcement.well {
+	padding: 5px 5px 5px 7px;
 }
 
 .listings-top-row {
 	padding-top: 10px;
 }
+

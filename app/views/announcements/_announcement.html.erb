@@ -15,38 +15,36 @@
 
 	<!-- if we are on any other page, this announcement should turn into a
 		link that takes you to announcements/index -->
+
 	<% if params[:action] != 'index' %>
 		<a href="/announcements">
 	<% end %>
-	<div class="row">
-		<!-- we are on the /residential_listings/index -->
-		<!-- we are somewhere under /announcements -->
-		<div class="col-xs-9 padding-left-sm2 padding-top inside-well">
-			<p>
-				<% if shorten_text %>
-					<%= h raw sanitize trim_announcement("#{announcement.note.gsub(/\n/, '<br>') } - #{announcement.sender_name}"), tags: %w(br) %>
-				<% else %>
-					<%= h raw sanitize announcement.note.gsub(/\n/, '<br>'), tags: %w(br) %> - <%= announcement.sender_name %>
-				<% end %>
-			</p>
-		</div>
-		<div class="col-xs-3 padding-top text-right">
-			<small><em class="padding-right"><%= time_ago_in_words(announcement.updated_at) %></em></small>
 
-			<% if params[:controller] == 'announcements' &&
-					(current_user.is_management? || current_user.is_listings_manager?) %>
-				<br>
-				<small><em class="padding-right">
-					<%= link_to 'Delete', delete_modal_announcement_path(announcement),
-	          	data: { toggle: "modal", target: "#annDeleteModal", params: params}, remote: true %>
-				</em></small>
-			<% end %>
-		</div>
-	</div>
-	<!-- end link_to -->
+    <p class="announcement-description">
+      <% if shorten_text %>
+        <%= h raw sanitize trim_announcement("#{announcement.note.gsub(/\n/, '<br>') } - #{announcement.sender_name}"), tags: %w(br) %>
+      <% else %>
+        <%= h raw sanitize announcement.note.gsub(/\n/, '<br>'), tags: %w(br) %> - <%= announcement.sender_name %>
+      <% end %>
+    </p>
+  	<!-- end link_to -->
 	<% if params[:action] != 'announcements' %>
 		</a>
 	<% end %>
+
+  <div class="text-right announcement-auxilaryText">
+    <small><em><%= time_ago_in_words(announcement.updated_at) %></em></small>
+
+    <% if params[:controller] == 'announcements' &&
+        (current_user.is_management? || current_user.is_listings_manager?) %>
+      <br>
+      <small><em>
+        <%= link_to 'Delete', delete_modal_announcement_path(announcement),
+            data: { toggle: "modal", target: "#annDeleteModal"}, remote: true %>
+      </em></small>
+    <% end %>
+  </div>
+
 
 	<!-- if we are on any other page, this announcement should turn into a
 		link that takes you to announcements/index -->
