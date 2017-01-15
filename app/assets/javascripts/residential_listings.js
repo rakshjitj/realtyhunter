@@ -101,11 +101,8 @@
     $('.checkIn-confirmationMsg').addClass('hidden');
 
     if ("geolocation" in navigator) {
-      // console.log('calling');
-      console.log('***** queryCheckinOptions');
       navigator.geolocation.getCurrentPosition(function() {});
       navigator.geolocation.getCurrentPosition(function(position) {
-        console.log('***** queryCheckinOptions - got position');
         // console.log('initial', position);
         $.ajax({
           url: '/residential_listings/check_in_options',
@@ -465,10 +462,7 @@
 
   // called on index & show pages
   ResidentialListings.initMobileIndex = function() {
-    console.log('***** init');
     navigator.geolocation.getCurrentPosition(function(position) {
-      console.log('***** init - got position');
-      // console.log('initial', position);
     }, function() {}, {
       timeout: 30 * 1000,
       maximumAge: Infinity
