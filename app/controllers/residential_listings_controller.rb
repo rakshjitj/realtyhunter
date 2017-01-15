@@ -478,7 +478,11 @@ class ResidentialListingsController < ApplicationController
 
         if data[:unit][:open_houses_attributes]
           data[:unit][:open_houses_attributes].each do |idx, oh_data|
-            oh_data[:day] = Date::strptime(oh_data[:day], "%m/%d/%Y")
+            begin
+              oh_data[:day] = Date::strptime(oh_data[:day], "%m/%d/%Y")
+            rescue
+              oh_data.delete(:day)
+            end
           end
         end
       end
