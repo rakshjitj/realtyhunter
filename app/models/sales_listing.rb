@@ -1,5 +1,5 @@
 class SalesListing < ActiveRecord::Base
-  audited except: [:created_at, :updated_at], on: [:update]
+  audited except: [:created_at, :updated_at]
 
 	scope :unarchived, ->{where(archived: false)}
   has_and_belongs_to_many :sales_amenities
@@ -524,7 +524,7 @@ class SalesListing < ActiveRecord::Base
 
       # we also discard the initial audit record, which is triggered upon creation
       if audits_count > 0 && audits.first.created_at.to_time.to_i == self.created_at.to_time.to_i
-        audits.first.destroy
+        audits.first.comment('created')
       end
     end
 end

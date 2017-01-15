@@ -1,5 +1,5 @@
 class ResidentialListing < ActiveRecord::Base
-  audited except: [:created_at, :updated_at], on: [:update]
+  audited except: [:created_at, :updated_at]
 
   queue = :residential_listings
   has_and_belongs_to_many :residential_amenities
@@ -759,12 +759,7 @@ class ResidentialListing < ActiveRecord::Base
       # to keep updates speedy, we cap the audit log at 100 entries per record
       audits_count = audits.length
       if audits_count > 50
-        audits.first.destroy
-      end
-
-      # we also discard the initial audit record, which is triggered upon creation
-      if audits_count > 0 && audits.first.created_at.to_time.to_i == self.created_at.to_time.to_i
-        audits.first.destroy
+        audits.first.comment('created')
       end
     end
 

@@ -81,7 +81,8 @@ module UnitsHelper
 
 			creation_unix_time = audit.created_at.to_time.to_i
 			# changes triggered by the listing being created are meaninglesss
-			if creation_unix_time != listing.created_at.to_time.to_i
+			if creation_unix_time != listing.created_at.to_time.to_i &&
+					audit.comment.blank?
 				if !output[creation_unix_time]
 					output[creation_unix_time] = [formatted_audit]
 				else
