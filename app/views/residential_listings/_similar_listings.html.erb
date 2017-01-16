@@ -1,5 +1,8 @@
-<h3>Similar Listings</h3>
-
+<div class="row similarListings">
+    <div class="col-xs-12">
+      <h3>Similar Listings</h3>
+    </div>
+</div>
 <div class="row similarListings">
   <!-- we are guaranteed to have a max of 3 items -->
   <% @similar_listings && @similar_listings.each do |sl| %>
@@ -40,4 +43,3 @@
   <% end %>
 
 </div>
-
