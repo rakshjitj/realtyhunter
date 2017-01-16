@@ -727,6 +727,7 @@ class ResidentialListing < ActiveRecord::Base
         .where(beds: self.beds)
         .where(baths: self.baths)
         .where("buildings.neighborhood_id = ?", self.unit.building.neighborhood_id)
+        .where('residential_listings.id != ?', self.id)
 
     criteria = ResidentialAmenity.where(name:
         ['private yard', 'doorman', 'patio', 'gym', 'roof access', 'yard', 'washer/dryer in unit'])
@@ -740,6 +741,7 @@ class ResidentialListing < ActiveRecord::Base
     end
 
     # randomize selection, and limit to 3
+    # exclude ourselves
     similar_listings.uniq.sample(3)
   end
 
