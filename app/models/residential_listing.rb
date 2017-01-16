@@ -774,7 +774,7 @@ class ResidentialListing < ActiveRecord::Base
       # to keep updates speedy, we cap the audit log at 100 entries per record
       audits_count = audits.length
       if audits_count > 50
-        audits.first.comment('created')
+        audits.first.update_attributes!(comment: 'created')
       end
     end
 
