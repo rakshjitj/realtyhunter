@@ -9,11 +9,13 @@ class ResidentialListing < ActiveRecord::Base
   before_save :process_custom_amenities
   after_commit :update_building_counts, :trim_audit_log
 
-  # scope :active, ->{
-  #   joins(:unit)
-  #   .where('units.status = ?', Unit.statuses["active"])
-  #   .where('units.archived = false')
-  # }
+  scope :active, ->{
+    joins([unit: :building])
+    .where('units.status = ?', Unit.statuses["active"])
+    .where('units.archived = false')
+    .where('buildings.archived = false')
+  }
+
   # scope :pending, ->{
   #   joins(:unit)
   #   .where('units.status = ?', Unit.statuses["pending"])
@@ -116,14 +118,6 @@ class ResidentialListing < ActiveRecord::Base
     imgs = Image.where(unit_id: unit_ids, priority: 0)
     Hash[imgs.map {|img| [img.unit_id, img.file.url(:thumb)]}]
   end
-
-  # list - list of residential_listings
-  # def self.get_amenities(list)
-  #   return nil if list.nil? || !list.kind_of?(Array) || list.length == 0
-
-  #   ResidentialAmenity.where(residential_listing_id: list.ids)
-  #       .select('name').to_a.group_by(&:residential_listing_id)
-  # end
 
   def self.listings_by_neighborhood(user, listing_ids)
     running_list = ResidentialListing.joins(unit: {building: [:company, :landlord]})
@@ -726,6 +720,27 @@ class ResidentialListing < ActiveRecord::Base
           'buildings.street_number || \' \' || buildings.route || \' #\' || units.building_unit as full_address',
           'units.listing_id')
     listings
+  end
+
+  def find_similar
+    similar_listings = ResidentialListing.active
+        .where(beds: self.beds)
+        .where(baths: self.baths)
+        .where("buildings.neighborhood_id = ?", self.unit.building.neighborhood_id)
+
+    criteria = ResidentialAmenity.where(name:
+        ['private yard', 'doorman', 'patio', 'gym', 'roof access', 'yard', 'washer/dryer in unit'])
+    matching_amenities = self.residential_amenities.where(id: criteria.pluck(:id))
+
+    # We only match on a handful of amenities that are consider big ticket items.
+    if matching_amenities.length > 0 && similar_listings && similar_listings.length > 1
+      similar_listings = ResidentialListing.joins(:residential_amenities)
+        .where('residential_amenities.id IN (?)', matching_amenities.pluck(:id))
+        .where('residential_listings.id IN (?)', similar_listings.pluck(:id))
+    end
+
+    # randomize selection, and limit to 3
+    similar_listings.uniq.sample(3)
   end
 
   private

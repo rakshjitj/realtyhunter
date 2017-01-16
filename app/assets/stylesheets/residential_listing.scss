@@ -62,6 +62,10 @@ $mobile-footer-height: 65px;
   transition: opacity 2s ease-in 1s;
 }
 
+.similarListings {
+  background-color: #FDF6DF;
+}
+
 /********* mobile *****************/
 .announcements .card-middle {
   height: calc(100% - 110px); /* account for the header & footer height */

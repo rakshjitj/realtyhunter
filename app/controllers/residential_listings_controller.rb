@@ -353,6 +353,8 @@ class ResidentialListingsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_residential_listing
       @residential_unit = ResidentialListing.find_unarchived(params[:id])
+
+      @similar_listings = @residential_unit.find_similar
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that listing is not active."
       redirect_to action: 'index'

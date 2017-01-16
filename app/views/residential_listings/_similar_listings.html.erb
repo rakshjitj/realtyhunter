@@ -1,0 +1,43 @@
+<h3>Similar Listings</h3>
+
+<div class="row similarListings">
+  <!-- we are guaranteed to have a max of 3 items -->
+  <% @similar_listings && @similar_listings.each do |sl| %>
+    <div class="col-sm-4">
+      <br>
+      <div class="img-col">
+        <!-- display building image first, if any are found -->
+        <% if sl.unit.building.images[0] %>
+          <%= link_to(image_tag(sl.unit.building.images[0],
+              alt: sl.unit.building.images[0]), sl) %>
+        <!-- otherwise, pick the first residential photo -->
+        <% elsif sl.unit.images[0] %>
+          <%= link_to(image_tag(sl.unit.images[0],
+              alt: sl.unit.images[0]), sl) %>
+        <% else %>
+          <!-- otherwise, fall back on placeholder image -->
+          <%= link_to(image_tag("listing_soon_thumb.png".freeze, alt: "Image coming soon",
+              class: 'img-responsive',
+              size: "100x100"), sl) %>
+        <% end %>
+      </div>
+      <div class="similarListing-info">
+        <%= link_to "#{sl.street_address_and_unit}".freeze, residential_listing_path(sl.id) %><br />
+        <small>
+          $<%= sl.unit.rent %>,
+          <%= pluralize(sl.beds, 'Bed') %>, <%= pluralize(trim_zeros(sl.baths), 'Bath') %><br>
+          <%= sl.unit.building.neighborhood.name %><br>
+        </small>
+        <br>
+      </div>
+    </div>
+
+  <% end %>
+  <% if !@similar_listings || @similar_listings.size == 0 %>
+    <div class="col-md-12">
+      We have no other listings similar to this. This listing is quite unique!
+    </div>
+  <% end %>
+
+</div>
+
