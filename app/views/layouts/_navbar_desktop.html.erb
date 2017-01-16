@@ -53,10 +53,12 @@
           <!-- **************** BUILDING **************** -->
           <li><%= link_to "Buildings", buildings_path %></li>
 
-          <% if current_user.is_management? %>
+          <% if current_user.is_management? || current_user.is_listings_manager? %>
             <!-- **************** LANDLORDS **************** -->
             <li><%= link_to "Landlords", landlords_path %></li>
+          <% end %>
 
+          <% if current_user.is_management? %>
             <!-- **************** DEALS **************** -->
             <li><%= link_to "Deals", deals_path %></li>
           <% end %>

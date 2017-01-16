@@ -11,6 +11,7 @@ namespace :maintenance do
 
     units = ResidentialListing.joins(unit: :building)
       .where('units.archived = false')
+      .where('buildings.archived = false')
       .where("units.status = ?", Unit.statuses['active'])
       .order('buildings.street_number')
 

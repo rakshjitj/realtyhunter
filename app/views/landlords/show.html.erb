@@ -25,13 +25,15 @@
       </div><!-- panel-heading -->
 
       <div class="panel-body">
-        <div class="row">
-          <div class="col-xs-12 col-md-6 vertical-margin-lg">
-            <%= link_to 'Edit', edit_landlord_path(@landlord) %> |
-            <%= link_to 'View all', landlords_path %> |
-            <%= link_to 'Add building', new_building_path(landlord_id: @landlord.id) %><br  />
+        <% if current_user.is_management? %>
+          <div class="row">
+            <div class="col-xs-12 col-md-6 vertical-margin-lg">
+              <%= link_to 'Edit', edit_landlord_path(@landlord) %> |
+              <%= link_to 'View all', landlords_path %> |
+              <%= link_to 'Add building', new_building_path(landlord_id: @landlord.id) %><br  />
+            </div>
           </div>
-        </div>
+        <% end %>
 
         <br>
         <div class="row">

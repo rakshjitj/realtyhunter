@@ -280,7 +280,7 @@
 				    			<strong>Landlord:</strong>
 				    		</div>
 				    		<div class="col-xs-7">
-				    			<% if current_user.is_management? %>
+				    			<% if current_user.is_management? || current_user.is_listings_manager? %>
 										<%= link_to @residential_unit.unit.building.landlord.code, @residential_unit.unit.building.landlord %>
 									<% else %>
 										<%= @residential_unit.unit.building.landlord.code %>

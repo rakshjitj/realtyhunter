@@ -111,7 +111,7 @@
 						<% if @building.landlord %>
 							<p>
 							  <strong>Landlord Code:</strong>
-							  <% if current_user.is_management? %>
+							  <% if current_user.is_management? || current_user.is_listings_manager? %>
 								  <%= link_to @building.landlord.code, landlord_path(@building.landlord) %>
 								<% else %>
 									<%= @building.landlord.code %>

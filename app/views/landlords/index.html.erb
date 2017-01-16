@@ -4,14 +4,16 @@
   <div class="col-sm-6">
     <h1>Landlords</h1>
   </div>
-  <div class="hidden-xs hidden-sm col-sm-6 form-label-responsive page-header-buttons">
-    <%= link_to 'Add a Landlord', new_landlord_path, class: 'btn btn-warning btn-sm link-as-button' %>
-    <%= link_to 'Export to CSV', landlords_path(params.merge(format: 'csv').symbolize_keys), class: 'btn btn-warning btn-sm link-as-button' %>
-  </div>
-  <div class="hidden-md hidden-lg col-sm-6 col-sm-left-padding form-label-responsive page-header-buttons">
-    <%= link_to 'Add a Landlord', new_landlord_path, class: 'btn btn-warning btn-sm link-as-button' %>
-    <%= link_to 'Export to CSV', landlords_path(params.merge(format: 'csv').symbolize_keys), class: 'btn btn-warning btn-sm link-as-button' %>
-  </div>
+  <% if current_user.is_management? %>
+    <div class="hidden-xs hidden-sm col-sm-6 form-label-responsive page-header-buttons">
+      <%= link_to 'Add a Landlord', new_landlord_path, class: 'btn btn-warning btn-sm link-as-button' %>
+      <%= link_to 'Export to CSV', landlords_path(params.merge(format: 'csv').symbolize_keys), class: 'btn btn-warning btn-sm link-as-button' %>
+    </div>
+    <div class="hidden-md hidden-lg col-sm-6 col-sm-left-padding form-label-responsive page-header-buttons">
+      <%= link_to 'Add a Landlord', new_landlord_path, class: 'btn btn-warning btn-sm link-as-button' %>
+      <%= link_to 'Export to CSV', landlords_path(params.merge(format: 'csv').symbolize_keys), class: 'btn btn-warning btn-sm link-as-button' %>
+    </div>
+  <% end %>
 </div>
 
 <!-- put this here so that clicking on the buttons above won't trigger the spinner -->
@@ -64,6 +66,7 @@
     </div><!-- col -->
   </div><!-- row -->
 
+  <br>
   <div class="row">
     <div class="col-xs-12 vertical-padding">
       <span class="totals">

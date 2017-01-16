@@ -20,9 +20,11 @@
   </td>
   <td><%= landlord.updated_at %></td>
   <td class="hidden-print">
-    <%= link_to 'Edit', edit_landlord_path(landlord) %>
-    <br>
-    <%= link_to 'Delete', delete_modal_landlord_path(landlord),
-    data: {toggle: "modal", target: "#landlordDeleteModal", params: params}, remote: true %>
+    <% if current_user.is_management? %>
+      <%= link_to 'Edit', edit_landlord_path(landlord) %>
+      <br>
+      <%= link_to 'Delete', delete_modal_landlord_path(landlord),
+      data: {toggle: "modal", target: "#landlordDeleteModal", params: params}, remote: true %>
+    <% end %>
   </td>
 </tr>

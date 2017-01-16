@@ -387,7 +387,7 @@
 						    <strong>Landlord</strong>
 						  </div>
 						  <div class="col-xs-6">
-						    <% if current_user.is_management? %>
+						    <% if current_user.is_management? || current_user.is_listings_manager? %>
 									<%= link_to @commercial_unit.unit.building.landlord.code, @commercial_unit.unit.building.landlord %>
 								<% else %>
 									<%= @commercial_unit.unit.building.landlord.code %>
