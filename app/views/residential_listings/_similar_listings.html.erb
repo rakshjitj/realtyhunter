@@ -11,12 +11,12 @@
       <div class="img-col">
         <!-- display building image first, if any are found -->
         <% if sl.unit.building.images[0] %>
-          <%= link_to(image_tag(sl.unit.building.images[0],
-              alt: sl.unit.building.images[0]), sl) %>
+          <%= link_to(image_tag(sl.unit.building.images[0].file.url(:thumb),
+              alt: sl.unit.building.images[0].file.url(:thumb)), sl) %>
         <!-- otherwise, pick the first residential photo -->
         <% elsif sl.unit.images[0] %>
-          <%= link_to(image_tag(sl.unit.images[0],
-              alt: sl.unit.images[0]), sl) %>
+          <%= link_to(image_tag(sl.unit.images[0].file.url(:thumb),
+              alt: sl.unit.images[0].file.url(:thumb)), sl) %>
         <% else %>
           <!-- otherwise, fall back on placeholder image -->
           <%= link_to(image_tag("listing_soon_thumb.png".freeze, alt: "Image coming soon",
