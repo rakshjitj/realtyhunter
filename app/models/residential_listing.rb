@@ -45,7 +45,6 @@ class ResidentialListing < ActiveRecord::Base
   def archive
     self.unit.archived = true
     self.unit.save
-    update_building_counts
   end
 
   def self.find_unarchived(id)
@@ -471,7 +470,7 @@ class ResidentialListing < ActiveRecord::Base
       end
 
       #puts "NEW UNIT NUM #{residential_unit_dup.unit.building_unit}"
-      update_building_counts
+      #update_building_counts
       residential_unit_dup
     else
       raise "No unit number, invalid unit number, or unit number already taken specified"
