@@ -276,7 +276,7 @@ class CommercialListing < ActiveRecord::Base
   end
 
   def send_inaccuracy_report(reporter, message, price_drop_request)
-    if reporter && !message.blank?
+    if reporter && (!message.blank? || price_drop_request)
       Feedback.create!({
         user_id: reporter.id,
         unit_id: self.id,

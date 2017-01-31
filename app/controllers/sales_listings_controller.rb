@@ -228,10 +228,13 @@ class SalesListingsController < ApplicationController
   # PATCH
   # triggers email to staff notifying them of the inaccuracy
   def send_inaccuracy
-    @sales_unit.send_inaccuracy_report(current_user,
-        sales_listing_params[:sales_listing][:inaccuracy_description],
-        params[:price_drop_request])
-    flash[:success] = "Report submitted! Thank you."
+    if !sales_listing_params[:sales_listing][:inaccuracy_description].blank? ||
+        params[:price_drop_request]
+      @sales_unit.send_inaccuracy_report(current_user,
+          sales_listing_params[:sales_listing][:inaccuracy_description],
+          params[:price_drop_request])
+      flash[:success] = "Report submitted! Thank you."
+    end
     respond_to do |format|
       format.html { redirect_to @sales_unit }
       format.js { }

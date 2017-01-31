@@ -4,5 +4,5 @@ class Feedback < ActiveRecord::Base
   belongs_to :unit
   belongs_to :building
 
-  validates :description, allow_blank: false, length: {maximum: 2000}
+  validates :description, allow_blank: true, length: {maximum: 2000}
 end

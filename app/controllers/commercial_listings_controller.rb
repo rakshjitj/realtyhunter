@@ -190,10 +190,13 @@ class CommercialListingsController < ApplicationController
   # PATCH
   # triggers email to staff notifying them of the inaccuracy
   def send_inaccuracy
-    @commercial_unit.send_inaccuracy_report(current_user,
-        commercial_listing_params[:inaccuracy_description],
-        params[:price_drop_request])
-    flash[:success] = "Report submitted! Thank you."
+    if !commercial_listing_params[:inaccuracy_description].blank? ||
+        params[:price_drop_request]
+      @commercial_unit.send_inaccuracy_report(current_user,
+          commercial_listing_params[:inaccuracy_description],
+          params[:price_drop_request])
+      flash[:success] = "Report submitted! Thank you."
+    end
     respond_to do |format|
       format.html { redirect_to @commercial_unit }
       format.js { }
