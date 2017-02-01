@@ -177,6 +177,10 @@ class ResidentialListingsController < ApplicationController
       flash[:success] = "Unit successfully updated!"
       redirect_to residential_listing_path(@residential_unit)
     else
+      @buildings = current_user.company.buildings
+        .where(archived: false)
+        .order("formatted_street_address ASC")
+        .collect {|b| [b.street_address, b.id]}
       render 'edit'
     end
   end
@@ -479,7 +483,6 @@ class ResidentialListingsController < ApplicationController
             begin
               oh_data[:day] = Date::strptime(oh_data[:day], "%m/%d/%Y")
             rescue
-              oh_data.delete(:day)
             end
           end
         end

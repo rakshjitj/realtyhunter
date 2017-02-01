@@ -140,7 +140,7 @@
                 [@residential_unit.unit.building ? @residential_unit.unit.building.id : '']),
               {prompt: "Choose one..."},
               class: 'form-control',
-              :include_blank => true) %>
+              include_blank: true) %>
           </div>
         </div>
         <% end %>
@@ -238,7 +238,7 @@
                   <!-- date -->
                   <div class="col-xs-4">
                     <div class='input-group date datepicker'
-                        data-available-by="<%= @residential_unit.unit.open_houses[i] ? @residential_unit.unit.open_houses[i].day.strftime("%m/%d/%Y") : '' %>">
+                        data-available-by="<%= @residential_unit.unit.open_houses[i] && @residential_unit.unit.open_houses[i].day ? @residential_unit.unit.open_houses[i].day.strftime("%m/%d/%Y") : '' %>">
 
                       <%= oh.text_field :day,
                         placeholder: "Available", class:"form-control", size:30 %>

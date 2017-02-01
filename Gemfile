@@ -61,6 +61,7 @@ gem 'activerecord-import'
 gem 'oj'
 gem 'oj_mimic_json'
 gem "audited", "~> 4.3"
+gem 'validates_timeliness', '~> 4.0'
 
 # profiling
 # gem 'rack-mini-profiler', require: false
