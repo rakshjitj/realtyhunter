@@ -18,7 +18,11 @@ class @GoogleAnalytics
       m.parentNode.insertBefore a, m
       return
     ) window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga'
-    ga 'create', GoogleAnalytics.analyticsId(), 'auto'
+
+    current_user_id = $('.data-current-user-id').data('currentUserId')
+    ga 'create', GoogleAnalytics.analyticsId(), 'auto',
+      userId: current_user_id
+    # console.log 'page changed', current_user_id
 
     # If Turbolinks is supported, set up a callback to track pageviews on page:change.
     # If it isn't supported, just track the pageview now.
@@ -31,8 +35,6 @@ class @GoogleAnalytics
 
   @trackPageview: (url) ->
     unless GoogleAnalytics.isLocalRequest()
-      console.log 'page changed', GoogleAnalytics.analyticsId()
-      ga('set', 'userId', {{USER_ID}}); // Set the user ID using signed-in user_id.
       ga 'send',
         hitType: 'pageview'
         page: location.pathname
