@@ -24,7 +24,7 @@ class @GoogleAnalytics
 
   @trackPageview: (url) ->
     unless GoogleAnalytics.isLocalRequest()
-        current_user_id = $('data-current-user-id').data()
+        current_user_id = $('.data-current-user-id').data('currentUserId')
         # ga('set', 'userId', {{USER_ID}}); // Set the user ID using signed-in user_id.
         window._gaq.push ["set", "userId", current_user_id ]
         # alert current_user_id
