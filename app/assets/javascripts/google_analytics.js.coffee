@@ -24,6 +24,8 @@ class @GoogleAnalytics
 
   @trackPageview: (url) ->
     unless GoogleAnalytics.isLocalRequest()
+        # ga('set', 'userId', {{USER_ID}}); // Set the user ID using signed-in user_id.
+        # window._gaq.push ['set', 'userId', <%= current_user.id %>]
       if url
         window._gaq.push ["_trackPageview", url]
       else
