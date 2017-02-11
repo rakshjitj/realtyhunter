@@ -41,6 +41,8 @@
   <%= render 'layouts/navbar_mobile' %>
   <%= render 'layouts/navbar_desktop' %>
 
+  <div class="data-current-user-id" data-current-user="<%= current_user ? current_user.id : nil %>"></div>
+
   <div id="main-container">
     <div class="main-content">
 
