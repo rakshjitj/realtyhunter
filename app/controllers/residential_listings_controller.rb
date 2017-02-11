@@ -82,6 +82,10 @@ class ResidentialListingsController < ApplicationController
     if ret1.save && @residential_unit.save
       redirect_to @residential_unit
     else
+      @buildings = current_user.company.buildings
+        .where(archived: false)
+        .order("formatted_street_address ASC")
+        .collect {|b| [b.street_address, b.id]}
       render 'new'
     end
   end
@@ -105,6 +109,10 @@ class ResidentialListingsController < ApplicationController
       @residential_unit = residential_unit_dup
       render js: "window.location.pathname = '#{residential_listing_path(@residential_unit)}'"
     else
+      @buildings = current_user.company.buildings
+        .where(archived: false)
+        .order("formatted_street_address ASC")
+        .collect {|b| [b.street_address, b.id]}
       # TODO: not sure how to handle this best...
       flash[:warning] = "Duplication failed!"
       respond_to do |format|
