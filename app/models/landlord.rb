@@ -1,5 +1,5 @@
 class Landlord < ActiveRecord::Base
-  audited except: [:created_at, :updated_at]
+  audited except: [:created_at, :updated_at, :active_unit_count, :total_unit_count]
 
 	scope :unarchived, ->{where(archived: false)}
 
