@@ -49,7 +49,8 @@ gem 'resque_mailer'
 gem 'delayed_paperclip', '>= 2.9.1'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '>= 4.14.30'
-gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
+# gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
+gem 'active_model_serializers', '~> 0.10.0'
 gem 'bootsy'
 gem 'wuparty' # wufoo
 #gem "brakeman", :require => false
