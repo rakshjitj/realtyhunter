@@ -30,11 +30,11 @@ class @GoogleAnalytics
       GoogleAnalytics.trackPageview()
 
   @trackPageview: (url) ->
-    console.log 'page changed', GoogleAnalytics.analyticsId()
     unless GoogleAnalytics.isLocalRequest()
-    ga 'send',
-      hitType: 'pageview'
-      page: location.pathname
+      console.log 'page changed', GoogleAnalytics.analyticsId()
+      ga 'send',
+        hitType: 'pageview'
+        page: location.pathname
 
   @isLocalRequest: ->
     GoogleAnalytics.documentDomainIncludes "local"
