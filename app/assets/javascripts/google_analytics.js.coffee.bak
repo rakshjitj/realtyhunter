@@ -22,7 +22,7 @@ class @GoogleAnalytics
     current_user_id = $('.data-current-user-id').data('currentUserId')
     ga 'create', GoogleAnalytics.analyticsId(), 'auto',
       userId: current_user_id
-    # console.log 'page changed', current_user_id
+    console.log 'ga page changed', current_user_id
 
     # If Turbolinks is supported, set up a callback to track pageviews on page:change.
     # If it isn't supported, just track the pageview now.
@@ -34,10 +34,11 @@ class @GoogleAnalytics
       GoogleAnalytics.trackPageview()
 
   @trackPageview: (url) ->
-    unless GoogleAnalytics.isLocalRequest()
-      ga 'send',
-        hitType: 'pageview'
-        page: location.pathname
+    console.log 'load!'
+    # unless GoogleAnalytics.isLocalRequest()
+    ga 'send',
+      hitType: 'pageview'
+      page: location.pathname
 
   @isLocalRequest: ->
     GoogleAnalytics.documentDomainIncludes "local"
