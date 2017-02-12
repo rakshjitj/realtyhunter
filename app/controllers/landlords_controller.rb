@@ -4,6 +4,7 @@ class LandlordsController < ApplicationController
   before_action :set_landlord, except: [:index, :new, :create, :filter,
     :filter_listings, :autocomplete_landlord_code]
   autocomplete :landlord, :code, where: {archived: false}, full: true
+  include KnackInterface
 
   # GET /landlords
   # GET /landlords.json
@@ -62,6 +63,7 @@ class LandlordsController < ApplicationController
     @landlord = Landlord.new(format_params_before_save)
     @landlord.company = current_user.company
     if @landlord.save
+      # TODO: Resque.enqueue(CreateLandlord, @landlord.id) # send to Knack
       redirect_to landlord_path(@landlord)
     else
       # error

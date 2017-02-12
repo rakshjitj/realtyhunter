@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170131125042) do
+ActiveRecord::Schema.define(version: 20170212220534) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 20170131125042) do
     t.datetime "last_unit_updated_at"
     t.string   "llc_name"
     t.integer  "feedback_id"
+    t.string   "knack_id"
   end
 
   add_index "buildings", ["documents_id"], name: "index_buildings_on_documents_id", using: :btree
@@ -342,6 +343,7 @@ ActiveRecord::Schema.define(version: 20170131125042) do
     t.integer  "total_unit_count",                  default: 0,     null: false
     t.integer  "active_unit_count",                 default: 0,     null: false
     t.datetime "last_unit_updated_at"
+    t.string   "knack_id"
   end
 
   add_index "landlords", ["buildings_id"], name: "index_landlords_on_buildings_id", using: :btree
@@ -467,6 +469,7 @@ ActiveRecord::Schema.define(version: 20170131125042) do
     t.boolean  "share_with_brokers",  default: false
     t.boolean  "rls_flag",            default: false
     t.boolean  "streeteasy_flag",     default: false
+    t.string   "knack_id"
   end
 
   add_index "residential_listings", ["roommates_id"], name: "index_residential_listings_on_roommates_id", using: :btree

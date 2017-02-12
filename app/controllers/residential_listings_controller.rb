@@ -6,6 +6,7 @@ class ResidentialListingsController < ApplicationController
     :inaccuracy_modal, :send_inaccuracy, :refresh_images, :refresh_documents]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
+  include KnackInterface
 
   def index
     respond_to do |format|
@@ -80,6 +81,7 @@ class ResidentialListingsController < ApplicationController
     end
 
     if ret1.save && @residential_unit.save
+      # TODO: Resque.enqueue(CreateResidentialListing, @residential_unit.id) # send to Knack
       redirect_to @residential_unit
     else
       @buildings = current_user.company.buildings

@@ -4,6 +4,7 @@ class BuildingsController < ApplicationController
   before_action :set_building, except: [:index, :new, :create, :filter, :filter_listings,
     :refresh_images, :neighborhood_options, :autocomplete_building_formatted_street_address]
   autocomplete :building, :formatted_street_address, where: {archived: false}, full: true
+  include KnackInterface
 
   # GET /buildings
   # GET /buildings.json
@@ -86,6 +87,7 @@ class BuildingsController < ApplicationController
         @formatted_street_address = building_params[:building][:formatted_street_address]
         bldg_params = format_params_before_save(true)
         if @building.save(bldg_params)
+          # TODO: Resque.enqueue(CreateBuilding, @building.id) # send to Knack
           redirect_to @building
         else
           # error
