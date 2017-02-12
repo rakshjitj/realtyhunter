@@ -56,6 +56,8 @@ class Image < ActiveRecord::Base
 		:content_type => { :content_type => /\Aimage\/.*\Z/ },
 		:size => { :less_than => 4.megabyte }
 
+  validate :file_dimensions
+
   def to_builder
     Jbuilder.new do |i|
     end
@@ -94,4 +96,12 @@ class Image < ActiveRecord::Base
         Image.reorder_by_unit(unit_id)
       end
     end
+
+    def file_dimensions(width = 1024, height = 768)
+      dimensions = Paperclip::Geometry.from_file(file.queued_for_write[:original].path)
+      unless dimensions.width >= width && dimensions.height >= height
+        errors.add :file, "Width must be #{width}px and height must be #{height}px"
+      end
+    end
+
 end
