@@ -25,9 +25,9 @@ class ListingImageSerializer < ActiveModel::Serializer
   end
 
   # todo: not used. remove!
-  def id
-  	nil
-  end
+  # def id
+  # 	nil
+  # end
 
   def thumbnail
   	object.file.url(:thumb)
