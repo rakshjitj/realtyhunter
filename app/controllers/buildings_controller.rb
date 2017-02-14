@@ -87,7 +87,7 @@ class BuildingsController < ApplicationController
         @formatted_street_address = building_params[:building][:formatted_street_address]
         bldg_params = format_params_before_save(true)
         if @building.save(bldg_params)
-          TODO: Resque.enqueue(CreateBuilding, @building.id) # send to Knack
+          Resque.enqueue(CreateBuilding, @building.id) # send to Knack
           redirect_to @building
         else
           # error
