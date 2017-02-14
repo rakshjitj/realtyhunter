@@ -16,11 +16,10 @@ module KnackInterface
 
     def self.knack_request(request_type, url, data = nil)
       # don't send dev/test data
-      # return unless Rails.env.production?
+      return unless Rails.env.production?
 
       uri = URI.parse(url)
       if request_type == 'create'
-        puts "**** POST"
         request = Net::HTTP::Post.new(uri)
       elsif request_type == 'update'
         request = Net::HTTP::Put.new(uri)
@@ -100,7 +99,7 @@ module KnackInterface
 
       knack_response = create_request(LANDLORD_URL, data)
       if knack_response[:id]
-        landlord.update_attribute(:knack_id, knack_response[:id])
+        landlord.update_column(:knack_id, knack_response[:id])
       end
     end
   end
@@ -156,7 +155,7 @@ module KnackInterface
 
       knack_response = create_request(BUILDING_URL, data)
       if knack_response[:id]
-        building.update_attribute(:knack_id, knack_response[:id])
+        building.update_column(:knack_id, knack_response[:id])
       end
     end
   end
@@ -204,7 +203,7 @@ module KnackInterface
 
       knack_response = create_request(RESIDENTIAL_LISTING_URL, data)
       if knack_response[:id]
-        listing.update_attribute(:knack_id, knack_response[:id])
+        listing.update_column(:knack_id, knack_response[:id])
       end
     end
   end
@@ -242,7 +241,7 @@ module KnackInterface
             code = record["field_95"]
             landlord = Landlord.where(code: code).first
             if landlord
-              landlord.update_attribute(:knack_id, record["id"])
+              landlord.update_column(:knack_id, record["id"])
               puts "UPDATED #{landlord.code} #{landlord.knack_id}"
             else
               puts "Skipping: Landlord not found with code #{code}"
@@ -271,7 +270,7 @@ module KnackInterface
               .where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
               .first
             if building
-              building.update_attribute(:knack_id, record["id"])
+              building.update_column(:knack_id, record["id"])
               puts "UPDATED #{building.formatted_street_address} #{building.knack_id}"
             else
               puts "Skipping: Building not found with address #{address}"
