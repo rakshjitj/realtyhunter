@@ -14,21 +14,31 @@ module KnackInterface
       'content-type': 'application/json'
     }
 
-    def self.send_request(data, url)
+    def self.knack_request(request_type, url, data = nil)
       # don't send dev/test data
-     return unless Rails.env.production?
-
-      data.each do |k, v|
-        data.delete(k) unless !data[k].nil?
-      end
+      # return unless Rails.env.production?
 
       uri = URI.parse(url)
-      request = Net::HTTP::Post.new(uri)
+      if request_type == 'create'
+        puts "**** POST"
+        request = Net::HTTP::Post.new(uri)
+      elsif request_type == 'update'
+        request = Net::HTTP::Put.new(uri)
+      else
+        request = Net::HTTP::Get.new(uri)
+      end
+
       HEADERS.each do |k, v|
         request[k] = v
       end
-      request.body = data.to_json
-      # puts request.body
+
+      if request_type != 'get'
+        data.each do |k, v|
+          data.delete(k) unless !data[k].nil?
+        end
+        request.body = data.to_json
+        # puts request.body
+      end
 
       res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
         http.request(request)
@@ -36,38 +46,29 @@ module KnackInterface
 
       case res
       when Net::HTTPSuccess, Net::HTTPRedirection
-
         json_response = JSON.parse(res.body)
-        puts 'SUCCESS - Received Knack ID ' + json_response['id']
-        {id: json_response['id']}
+        json_response
       else
         puts res.body.inspect
       end
     end
 
-    def self.pull_request(url)
-      uri = URI.parse(url)
-      request = Net::HTTP::Get.new(uri)
-      HEADERS.each do |k, v|
-        request[k] = v
-      end
-      # puts request.body
+    def self.create_request(url, data)
+      json_response = self.knack_request('create', url, data)
+      puts 'SUCCESS - Received Knack ID ' + json_response['id']
+      {id: json_response['id']}
+    end
 
-      res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
-        http.request(request)
-      end
+    def self.update_request(url, data)
+      json_response = self.knack_request('update', url, data)
+      puts 'SUCCESS - Received Knack ID ' + json_response['id']
+      {id: json_response['id']}
+    end
 
-      case res
-      when Net::HTTPSuccess, Net::HTTPRedirection
-
-        json_response = JSON.parse(res.body)
-        puts "SUCCESS - Received Knack records for #{url}"
-        json_response
-        # puts json_response['records'].inspect
-        #{ records: json_response['records']}
-      else
-        puts res.body.inspect
-      end
+    def self.get_request(url)
+      json_response = self.knack_request('get', url)
+      puts "SUCCESS - Received Knack records for #{url}"
+      json_response
     end
   end
 
@@ -76,29 +77,55 @@ module KnackInterface
 
     def self.perform(landlord_id)
       landlord = Landlord.where(id: landlord_id).first
+      return if landlord.knack_id # its already been created
+
       data = {
         field_95:  landlord.code, # ll code
         field_96:  landlord.name, # company
         field_342: !landlord.formatted_street_address.blank? ? landlord.formatted_street_address : '-None-', # address,
-        field_345: landlord.contact_name, # contacts
-        field_347: landlord.office_phone, # contact phone number
+        field_345: landlord.contact_name ? landlord.contact_name : '-None-', # contacts
+        field_347: landlord.office_phone ? landlord.office_phone : '-None-', # contact phone number
         field_357: landlord.mobile, # optional: contact mobile
-        # field_346: landlord.contact_name, # optional: office contact -- TODO: What is this?
-        # field_103: landlord.office_phone, # optional: Office Phone
+        # field_346: landlord.contact_name, # optional: office contact (extra, not used in RH)
+        # field_103: landlord.office_phone, # optional: Office Phone (extra, not used in RH)
         field_100: !landlord.email.blank? ? landlord.email : nil, # optional: Email
         field_348: !landlord.fax.blank? ? landlord.fax : nil, # optional: fax
-        # field_349: '', # optional: Office Contact 2
-        # field_104: '', # optional: Phone 2
-        # field_101: '', # optional: Email 2
+        # field_349: '', # optional: Office Contact 2 (extra, not used in RH)
+        # field_104: '', # optional: Phone 2 (extra, not used in RH)
+        # field_101: '', # optional: Email 2 (extra, not used in RH)
         # field_344: '', # optional: Additional Management info
         field_351: !landlord.website.blank? ? landlord.website : nil, # optional: Website
         field_358: landlord.op_fee_percentage, # optional: OP
       }
 
-      knack_response = send_request(data, LANDLORD_URL)
+      knack_response = create_request(LANDLORD_URL, data)
       if knack_response[:id]
         landlord.update_attribute(:knack_id, knack_response[:id])
       end
+    end
+  end
+
+  class UpdateLandlord < KnackBase
+    @queue = :knack
+
+    def self.perform(landlord_id)
+      landlord = Landlord.where(id: landlord_id).first
+      return unless landlord.knack_id
+
+      data = {
+        field_95:  landlord.code, # ll code
+        field_96:  landlord.name, # company
+        field_342: !landlord.formatted_street_address.blank? ? landlord.formatted_street_address : '-None-', # address,
+        field_345: landlord.contact_name ? landlord.contact_name : '-None-', # contacts
+        field_347: landlord.office_phone ? landlord.office_phone : '-None-', # contact phone number
+        field_357: landlord.mobile, # optional: contact mobile
+        field_100: !landlord.email.blank? ? landlord.email : nil, # optional: Email
+        field_348: !landlord.fax.blank? ? landlord.fax : nil, # optional: fax
+        field_351: !landlord.website.blank? ? landlord.website : nil, # optional: Website
+        field_358: landlord.op_fee_percentage, # optional: OP
+      }
+
+      knack_response = update_request(LANDLORD_URL + '/' + landlord.knack_id, data)
     end
   end
 
@@ -107,6 +134,8 @@ module KnackInterface
 
     def self.perform(building_id)
       building = Building.where(id: building_id).first
+      return if building.knack_id # its already been created
+
       data = {
         field_134: building.landlord.knack_id, # landlord connection,
         field_124: building.llc_name, # optional: LLC Name
@@ -119,16 +148,41 @@ module KnackInterface
         field_120: "#{building.total_unit_count}", # Number Of Units
         field_359: building.neighborhood ? building.neighborhood.name : '-None-', # Neighborhood
         field_690: building.notes, # optional: Note
-        # field_710: building. # optional: Listing Agent
-        # field_711: building.landlord.name, # optional: Listing Landlord
+        # field_710: building. # optional: Listing Agent (manually entered, not used here)
+        # field_711: building.landlord.name, # optional: Listing Landlord (manually entered, not used here)
         # field_719: building. # optional: Building Op
         # field_852: # optional: Building Manager
       }
 
-      knack_response = send_request(data, BUILDING_URL)
+      knack_response = create_request(BUILDING_URL, data)
       if knack_response[:id]
         building.update_attribute(:knack_id, knack_response[:id])
       end
+    end
+  end
+
+  class UpdateBuilding < KnackBase
+    @queue = :knack
+
+    def self.perform(building_id)
+      building = Building.where(id: building_id).first
+      return unless building.knack_id
+
+      data = {
+        field_134: building.landlord.knack_id, # landlord connection,
+        field_124: building.llc_name, # optional: LLC Name
+        field_745: { # Address 1
+          street: building.street_number + building.route,
+          city: building.sublocality,
+          state: building.administrative_area_level_1_short,
+          zip: building.postal_code
+        },
+        field_120: "#{building.total_unit_count}", # Number Of Units
+        field_359: building.neighborhood ? building.neighborhood.name : '-None-', # Neighborhood
+        field_690: building.notes, # optional: Note
+      }
+
+      knack_response = update_request(BUILDING_URL + '/' + building.knack_id, data)
     end
   end
 
@@ -137,19 +191,41 @@ module KnackInterface
 
     def self.perform(listing_id)
       listing = ResidentialListing.where(id: listing_id).first
+      return if listing.knack_id # its already been created
+
       data = {
         field_387: listing.unit.building.knack_id, # building connection
         field_137: listing.unit.building_unit, # unit number
         field_140: listing.beds == 0 ? 'Studio' : listing.beds, # Bedroom Count
-        field_146: listing.baths, # optional: Bathroom
+        field_146: listing.baths, # Bathroom
         field_141: listing.unit.rent, # Rent
         field_700: listing.op_fee_percentage # Unit OP
       }
 
-      knack_response = send_request(data, RESIDENTIAL_LISTING_URL)
+      knack_response = create_request(RESIDENTIAL_LISTING_URL, data)
       if knack_response[:id]
         listing.update_attribute(:knack_id, knack_response[:id])
       end
+    end
+  end
+
+  class UpdateResidentialListing < KnackBase
+    @queue = :knack
+
+    def self.perform(listing_id)
+      listing = ResidentialListing.where(id: listing_id).first
+      return unless listing.knack_id
+
+      data = {
+        field_387: listing.unit.building.knack_id, # building connection
+        field_137: listing.unit.building_unit, # unit number
+        field_140: listing.beds == 0 ? 'Studio' : listing.beds, # Bedroom Count
+        field_146: listing.baths, # Bathroom
+        field_141: listing.unit.rent, # Rent
+        field_700: listing.op_fee_percentage # Unit OP
+      }
+
+      knack_response = update_request(RESIDENTIAL_LISTING_URL + '/' + listing.knack_id, data)
     end
   end
 
@@ -157,7 +233,7 @@ module KnackInterface
     @queue = :knack
 
     def self.perform
-      knack_response = pull_request(LANDLORD_URL)
+      knack_response = get_request(LANDLORD_URL + "?page=1&rows_per_page=1000")
 
       while knack_response["current_page"].to_i < knack_response["total_pages"].to_i do
         if knack_response["records"]
@@ -173,8 +249,8 @@ module KnackInterface
             end
           end
         end
-        new_page = knack_response[:current_page].to_i + 1
-        knack_response = pull_request(LANDLORD_URL + "?page=#{new_page}&rows_per_page=1000")
+        new_page = knack_response["current_page"].to_i + 1
+        knack_response = get_request(LANDLORD_URL + "?page=#{new_page}&rows_per_page=1000")
       end
     end
   end
@@ -183,9 +259,10 @@ module KnackInterface
     @queue = :knack
 
     def self.perform
-      knack_response = pull_request(BUILDING_URL)
+      knack_response = get_request(BUILDING_URL + "?page=1&rows_per_page=1000")
 
       while knack_response["current_page"].to_i < knack_response["total_pages"].to_i do
+        puts "#{knack_response["current_page"].to_i} #{knack_response["total_pages"].to_i}"
         if knack_response["records"]
           records = knack_response["records"]
           records.each do |record|
@@ -201,8 +278,9 @@ module KnackInterface
             end
           end
         end
-        new_page = knack_response[:current_page].to_i + 1
-        knack_response = pull_request(BUILDING_URL + "?page=#{new_page}&rows_per_page=1000")
+        new_page = knack_response["current_page"].to_i + 1
+        # puts "new page req #{new_page}"
+        knack_response = get_request(BUILDING_URL + "?page=#{new_page}&rows_per_page=1000")
       end
     end
   end

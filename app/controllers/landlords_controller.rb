@@ -63,7 +63,7 @@ class LandlordsController < ApplicationController
     @landlord = Landlord.new(format_params_before_save)
     @landlord.company = current_user.company
     if @landlord.save
-      # TODO: Resque.enqueue(CreateLandlord, @landlord.id) # send to Knack
+      Resque.enqueue(CreateLandlord, @landlord.id) # send to Knack
       redirect_to landlord_path(@landlord)
     else
       # error
@@ -75,6 +75,7 @@ class LandlordsController < ApplicationController
   # PATCH/PUT /landlords/1.json
   def update
     if @landlord.update(format_params_before_save.merge({updated_at: Time.now}))
+      # Resque.enqueue(UpdateLandlord, @landlord.id) # send to Knack
       flash[:success] = "Landlord updated!"
       redirect_to landlord_path(@landlord)
     else

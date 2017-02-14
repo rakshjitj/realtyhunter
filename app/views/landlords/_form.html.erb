@@ -22,7 +22,7 @@
             <%= f.label :code, class: 'required' %>
           </div>
           <div class="col-xs-9">
-              <%= f.text_field :code, :required => true, class: 'form-control' %>
+              <%= f.text_field :code, required: true, class: 'form-control' %>
           </div>
         </div>
 
@@ -33,7 +33,7 @@
               <%= f.label :name, class: 'required' %>
             </div>
             <div class="col-xs-9">
-                <%= f.text_field :name, :required => true, class: 'form-control' %>
+                <%= f.text_field :name, required: true, class: 'form-control' %>
             </div>
           </div>
         </div>
@@ -41,11 +41,11 @@
         <br />
         <div class="row">
           <div class="col-xs-3 form-label-responsive">
-            <%= f.label :contact_name %>
+            <%= f.label :contact_name, class: 'required' %>
           </div>
           <div class="col-xs-9">
             <div class="field">
-              <%= f.text_field :contact_name, class: 'form-control' %>
+              <%= f.text_field :contact_name, required: true, class: 'form-control' %>
             </div>
           </div>
         </div>
@@ -53,11 +53,11 @@
         <br />
         <div class="row">
           <div class="col-xs-3 form-label-responsive">
-            <%= f.label :office_phone %>
+            <%= f.label :office_phone, class: 'required'%>
           </div>
           <div class="col-xs-9">
             <div class="field">
-              <%= f.text_field :office_phone, class: 'form-control' %>
+              <%= f.text_field :office_phone, required: true, class: 'form-control' %>
             </div>
           </div>
         </div>
@@ -113,11 +113,12 @@
         <br />
         <div class="row">
           <div class="col-xs-3 form-label-responsive">
-            <%= f.label :formatted_street_address, "Street Address" %>
+            <%= f.label :formatted_street_address, "Street Address", class: 'required' %>
           </div>
           <div class="col-xs-9">
             <div class="field">
-              <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input', placeholder: "123 Main St" %>
+              <%= f.text_field :formatted_street_address, class: 'form-control autocomplete-input',
+                  required: true, placeholder: "123 Main St" %>
             </div>
           </div>
         </div>

@@ -184,6 +184,7 @@ class ResidentialListingsController < ApplicationController
     end
     # update res
     if ret1 && ret2
+      # Resque.enqueue(UpdateResidentialListing, @residential_unit.id) # send to Knack
       flash[:success] = "Unit successfully updated!"
       redirect_to residential_listing_path(@residential_unit)
     else

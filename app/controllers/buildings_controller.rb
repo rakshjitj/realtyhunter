@@ -100,6 +100,7 @@ class BuildingsController < ApplicationController
   # PATCH/PUT /buildings/1.json
   def update
     if @building.update(format_params_before_save(false).merge({updated_at: Time.now}))
+      # Resque.enqueue(UpdateBuilding, @building.id) # send to Knack
       flash[:success] = "Building updated!"
       redirect_to building_path(@building)
     else
