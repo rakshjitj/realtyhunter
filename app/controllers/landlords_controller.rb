@@ -75,7 +75,7 @@ class LandlordsController < ApplicationController
   # PATCH/PUT /landlords/1.json
   def update
     if @landlord.update(format_params_before_save.merge({updated_at: Time.now}))
-      # Resque.enqueue(UpdateLandlord, @landlord.id) # send to Knack
+      Resque.enqueue(UpdateLandlord, @landlord.id) # send to Knack
       flash[:success] = "Landlord updated!"
       redirect_to landlord_path(@landlord)
     else

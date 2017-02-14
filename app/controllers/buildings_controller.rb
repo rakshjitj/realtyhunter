@@ -87,7 +87,7 @@ class BuildingsController < ApplicationController
         @formatted_street_address = building_params[:building][:formatted_street_address]
         bldg_params = format_params_before_save(true)
         if @building.save(bldg_params)
-          # TODO: Resque.enqueue(CreateBuilding, @building.id) # send to Knack
+          TODO: Resque.enqueue(CreateBuilding, @building.id) # send to Knack
           redirect_to @building
         else
           # error
@@ -100,7 +100,7 @@ class BuildingsController < ApplicationController
   # PATCH/PUT /buildings/1.json
   def update
     if @building.update(format_params_before_save(false).merge({updated_at: Time.now}))
-      # Resque.enqueue(UpdateBuilding, @building.id) # send to Knack
+      Resque.enqueue(UpdateBuilding, @building.id) # send to Knack
       flash[:success] = "Building updated!"
       redirect_to building_path(@building)
     else
