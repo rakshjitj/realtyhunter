@@ -447,11 +447,9 @@ class CommercialListing < ActiveRecord::Base
       bldg = self.unit.building
       bldg.update_total_unit_count
       bldg.update_active_unit_count
-      bldg.last_unit_updated_at = DateTime.now
 
       bldg.landlord.update_total_unit_count
       bldg.landlord.update_active_unit_count
-      bldg.landlord.last_unit_updated_at = DateTime.now
     end
 
     def trim_audit_log

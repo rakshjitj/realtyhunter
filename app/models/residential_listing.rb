@@ -1,5 +1,5 @@
 class ResidentialListing < ActiveRecord::Base
-  audited except: [:created_at, :updated_at]
+  audited except: [:created_at, :updated_at, :knack_id]
 
   queue = :residential_listings
   has_and_belongs_to_many :residential_amenities
@@ -764,11 +764,8 @@ class ResidentialListing < ActiveRecord::Base
       bldg = self.unit.building
       bldg.update_total_unit_count
       bldg.update_active_unit_count
-      bldg.last_unit_updated_at = DateTime.now
-
       bldg.landlord.update_total_unit_count
       bldg.landlord.update_active_unit_count
-      bldg.landlord.last_unit_updated_at = DateTime.now
     end
 
     def trim_audit_log

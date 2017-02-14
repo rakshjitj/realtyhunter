@@ -1,13 +1,13 @@
 class Landlord < ActiveRecord::Base
-  audited except: [:created_at, :updated_at, :active_unit_count, :total_unit_count]
+  audited except: [:created_at, :updated_at, :active_unit_count, :total_unit_count, :knack_id]
 
 	scope :unarchived, ->{where(archived: false)}
 
 	has_many :buildings, dependent: :destroy
-	belongs_to :company, touch: true
+	belongs_to :company #, touch: true
 	validates :company_id, presence: true
 
-  belongs_to :listing_agent, :class_name => 'User', touch: true
+  belongs_to :listing_agent, :class_name => 'User' #, touch: true
   validates :listing_agent_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
 
 	validates :code, presence: true, length: {maximum: 100},
@@ -40,12 +40,12 @@ class Landlord < ActiveRecord::Base
   end
 
 	def update_active_unit_count
-		self.update_attribute(:active_unit_count,
+		self.update_columns(active_unit_count:
         buildings.unarchived.reduce(0){|sum, bldg| sum + bldg.active_units.count })
 	end
 
 	def update_total_unit_count
-		self.update_attribute(:total_unit_count,
+		self.update_columns(total_unit_count:
         buildings.unarchived.reduce(0){|sum, bldg| sum + bldg.units.count })
 	end
 

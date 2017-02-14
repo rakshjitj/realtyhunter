@@ -5,11 +5,11 @@ class Building < ActiveRecord::Base
   before_save :process_custom_amenities
   before_save :process_custom_utilities
 
-	belongs_to :company, touch: true
-	belongs_to :landlord, touch: true
-	belongs_to :neighborhood, touch: true
-	belongs_to :pet_policy, touch: true
-	belongs_to :rental_term, touch: true
+	belongs_to :company #, touch: true
+	belongs_to :landlord #, touch: true
+	belongs_to :neighborhood #, touch: true
+	belongs_to :pet_policy # , touch: true
+	belongs_to :rental_term #, touch: true
 	has_many :units, dependent: :destroy
   has_many :feedbacks, dependent: :destroy
 
@@ -68,12 +68,12 @@ class Building < ActiveRecord::Base
 	end
 
 	def update_total_unit_count
-    self.update_attribute(:total_unit_count, units.unarchived.count)
+    self.update_column(:total_unit_count, units.unarchived.count)
 	end
 
 	def update_active_unit_count
     active_count = units.unarchived.where('status = ?', Unit.statuses['active']).count
-    self.update_attribute(:active_unit_count, active_count)
+    self.update_column(:active_unit_count, active_count)
 	end
 
   # get first image as thumbnail
