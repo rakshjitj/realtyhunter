@@ -91,6 +91,32 @@ module UnitsHelper
 			end
 		end
 
+		# now look at the unit's images
+		puts "*********#{listing.unit.images.inspect}"
+		if listing.unit.images.any?
+			for j in 0..listing.unit.images.length-1
+				image = listing.unit.images[j]
+				if image.audits.any?
+					for i in 0..image.audits.length-1
+						audit = image.audits[i]
+						if audit.user
+							user_name = audit.user.name
+						else
+							user_name = "[System Automated Update]"
+						end
+
+						formatted_audit = "#{user_name} updated images on " + audit.created_at.strftime("%b-%d-%Y %I:%M %P")
+						creation_unix_time = audit.created_at.to_time.to_i
+						if !output[creation_unix_time]
+							output[creation_unix_time] = [formatted_audit]
+						else
+							output[creation_unix_time].push(formatted_audit)
+						end
+					end
+				end
+			end
+		end
+
 		output = output.sort{|a, b| b[0] <=> a[0]}
 		output.take(10).to_h
 	end
