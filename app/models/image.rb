@@ -97,11 +97,20 @@ class Image < ActiveRecord::Base
       end
     end
 
-    def file_dimensions(width = 1024, height = 768)
+    def file_dimensions
       if file.queued_for_write[:original]
         dimensions = Paperclip::Geometry.from_file(file.queued_for_write[:original].path)
-        unless dimensions.width >= width && dimensions.height >= height
-          errors.add :file, "Width must be #{width}px and height must be #{height}px"
+        # unless dimensions.width >= width && dimensions.height >= height
+        #   errors.add :file, "Width must be #{width}px and height must be #{height}px"
+        # end
+        min_width = 1024
+        min_height = 768
+        max_width = 1350
+        max_height = 900
+        error_msg = "Image dimensions must be between #{min_width}x#{min_height} and #{max_width}x#{max_height} px"
+        unless dimensions.width >= min_width && dimensions.width <= max_width &&
+          dimensions.height = min_height && dimensions.height <= max_height
+            errors.add :file, error_msg
         end
       end
     end
