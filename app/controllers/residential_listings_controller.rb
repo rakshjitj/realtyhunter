@@ -356,7 +356,11 @@ class ResidentialListingsController < ApplicationController
 
     def correct_stale_record_version
       @residential_unit.reload
-      params[:residential_listing].delete('lock_version')
+      @buildings = current_user.company.buildings
+        .where(archived: false)
+        .order("formatted_street_address ASC")
+        .collect {|b| [b.street_address, b.id]}
+      params[:residential_listing]. delete('lock_version')
     end
 
   private
