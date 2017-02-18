@@ -12,7 +12,7 @@ class UnitImagesController < ApplicationController
     # dropzone expects a json response code
     if @image.save(image_params)
       @unit.images << @image
-      # update_listing_timestamp(@image)
+      update_listing_timestamp(@image)
 
       if params[:residential_listing_id] && !params[:residential_listing_id].empty?
         render json: { message: "success", fileID: @image.id, unitID: @unit.id, runitID: @unit.residential_listing.id },
@@ -71,12 +71,20 @@ class UnitImagesController < ApplicationController
 
   private
     def update_listing_timestamp(img)
+
       if img.unit.residential_listing
-        img.unit.residential_listing.update_columns(updated_at: Time.now)
+        listing = img.unit.residential_listing
+        # img.unit.residential_listing.update_columns(updated_at: Time.now)
       elsif img.unit.commercial_listing
-        img.unit.commercial_listing.update_columns(updated_at: Time.now)
+        listing = img.unit.commercial_listing
+        # img.unit.commercial_listing.update_columns(updated_at: Time.now)
       elsif img.unit.sales_listing
-        img.unit.sales_listing.update_columns(updated_at: Time.now)
+        listing = img.unit.sales_listing
+        # img.unit.sales_listing.update_columns(updated_at: Time.now)
+      end
+
+      if listing
+        listing.update_columns(updated_at: Time.now)
       end
     end
 
