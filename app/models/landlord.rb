@@ -135,7 +135,7 @@ class Landlord < ActiveRecord::Base
 
       # we also discard the initial audit record, which is triggered upon creation
       if audits_count > 0 && audits.first.created_at.to_time.to_i == self.created_at.to_time.to_i
-        audits.first.update_attributes!(comment: 'created')
+        audits.first.update(comment: 'created')
       end
     end
 
