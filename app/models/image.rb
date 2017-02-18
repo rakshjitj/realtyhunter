@@ -1,4 +1,5 @@
 class Image < ActiveRecord::Base
+  audited except: [:created_at, :updated_at]
 	belongs_to :building, touch: true
 	belongs_to :unit, touch: true
   default_scope { order("priority ASC") }
