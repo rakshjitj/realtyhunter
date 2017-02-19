@@ -202,7 +202,7 @@ module KnackInterface
 
       if listing.unit.status == Unit.statuses["active"]
         status = 'Activated'
-      elif listing.unit.status == Unit.statuses["pending"]
+      elsif listing.unit.status == Unit.statuses["pending"]
         status = 'Pending'
       else
         status = 'Deactivated'
@@ -215,7 +215,7 @@ module KnackInterface
         field_146: listing.baths, # Bathroom
         field_141: listing.unit.rent, # Rent
         field_700: listing.op_fee_percentage, # Unit OP
-        field_880: status # optional: status
+        field_880: status # status
       }
 
       if is_now_active
@@ -242,7 +242,7 @@ module KnackInterface
 
       if listing.unit.status == Unit.statuses["active"]
         status = 'Activated'
-      elif listing.unit.status == Unit.statuses["pending"]
+      elsif listing.unit.status == Unit.statuses["pending"]
         status = 'Pending'
       else
         status = 'Deactivated'
@@ -255,7 +255,7 @@ module KnackInterface
         field_146: listing.baths, # Bathroom
         field_141: listing.unit.rent, # Rent
         field_700: listing.op_fee_percentage, # Unit OP
-        field_880: status # optional: status
+        field_880: status # status
       }
 
       if is_now_active
