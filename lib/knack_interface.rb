@@ -281,7 +281,7 @@ module KnackInterface
           records = knack_response["records"]
           records.each do |record|
             code = record["field_95"]
-            landlord = Landlord.where(code: code).first
+            landlord = Landlord.where('code ILIKE ?', "%#{code}%").first
             if landlord
               landlord.update_column(:knack_id, record["id"])
               puts "UPDATED #{landlord.code} - #{landlord.knack_id}"
