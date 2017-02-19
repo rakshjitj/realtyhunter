@@ -307,7 +307,11 @@ module KnackInterface
         if knack_response["records"]
           records = knack_response["records"]
           records.each do |record|
-            address = record["field_745_raw"]["street"]
+            address = record["field_745_raw"]["street"].strip
+            address.sub!('Avenue', 'Ave')
+            address.sub!('Street', 'St')
+            address.sub!('Place', 'Pl')
+
             building = Building
               .where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
               .first
