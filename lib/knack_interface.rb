@@ -240,8 +240,6 @@ module KnackInterface
       listing = ResidentialListing.where(id: listing_id).first
       return unless listing.knack_id # don't update knack unless it exists
 
-      listing.unit.status = Unit.statuses["pending"]
-
       if listing.unit.status == 'active'
         status = 'Activated'
       elsif listing.unit.status == 'pending'
@@ -259,8 +257,6 @@ module KnackInterface
         field_700: listing.op_fee_percentage, # Unit OP
         field_880: status # status
       }
-
-      puts data.inspect
 
       if is_now_active
         # optional: date listing became 'active' mm/dd/yyyy
