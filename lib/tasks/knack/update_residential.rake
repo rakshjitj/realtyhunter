@@ -10,7 +10,8 @@ namespace :knack do
     log.info "Sending updated residential listing to knack..."
 
     cr = UpdateResidentialListing
-    cr.perform(13706) # 173 Herkimer
+    is_now_active = true
+    cr.perform(13706, is_now_active) # 173 Herkimer
 
     puts "Done!\n"
     log.info "Done!\n"

@@ -92,7 +92,7 @@ module UnitsHelper
 		end
 
 		# now look at the unit's images
-		puts "*********#{listing.unit.images.inspect}"
+		# puts "*********#{listing.unit.images.inspect}"
 		if listing.unit.images.any?
 			for j in 0..listing.unit.images.length-1
 				image = listing.unit.images[j]

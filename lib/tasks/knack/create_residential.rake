@@ -10,7 +10,8 @@ namespace :knack do
     log.info "Sending building to knack..."
 
     cr = CreateResidentialListing
-    cr.perform(13706) # 173 Herkimer
+    is_now_active = nil
+    cr.perform(13706, is_now_active) # 173 Herkimer
     # Resque.enqueue(CreateResidentialListing, listing.id) # 173 Herkimer
 
     puts "Done!\n"

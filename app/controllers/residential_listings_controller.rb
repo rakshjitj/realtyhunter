@@ -67,21 +67,23 @@ class ResidentialListingsController < ApplicationController
   end
 
   def create
-    ret1 = nil
+    new_unit = nil
     ResidentialListing.transaction do
-      ret1 = Unit.new(residential_listing_params[:unit])
+      new_unit = Unit.new(residential_listing_params[:unit])
       r_params = residential_listing_params
       r_params.delete('unit')
       @residential_unit = ResidentialListing.new(r_params)
-      @residential_unit.unit = ret1
+      @residential_unit.unit = new_unit
     end
 
-    if !ret1.available_by?
-      ret1.available_by = Date.today
+    if !new_unit.available_by?
+      new_unit.available_by = Date.today
     end
 
-    if ret1.save && @residential_unit.save
-      # TODO: Resque.enqueue(CreateResidentialListing, @residential_unit.id) # send to Knack
+    if new_unit.save && @residential_unit.save
+      # keep track of whether this listing just came on or off the market
+      is_now_active = @residential_unit.unit.status == Unit.statuses['active']
+      Resque.enqueue(CreateResidentialListing, @residential_unit.id, is_now_active) # send to Knack
       redirect_to @residential_unit
     else
       @buildings = current_user.company.buildings
@@ -166,8 +168,9 @@ class ResidentialListingsController < ApplicationController
   end
 
   def update
-    ret1 = nil
-    ret2 = nil
+    unit_updated = nil
+    listing_updated = nil
+    is_now_active = nil
     ResidentialListing.transaction do
       if @residential_unit.unit.primary_agent_id != residential_listing_params[:unit][:primary_agent_id].to_i
         Unit.update_primary_agent(
@@ -176,15 +179,22 @@ class ResidentialListingsController < ApplicationController
             @residential_unit.unit.listing_id)
       end
 
-      ret1 = @residential_unit.unit.update(
+      # keep track of whether this listing just came on or off the market
+      if @residential_unit.unit.status != residential_listing_params[:unit][:status] &&
+          residential_listing_params[:unit][:status] != 'pending'
+        is_now_active = residential_listing_params[:unit][:status] == Unit.statuses["active"]
+      end
+
+      # update fields on the unit first, then update fields on the residential_listing
+      unit_updated = @residential_unit.unit.update(
           residential_listing_params[:unit].merge({updated_at: Time.now}))
       r_params = residential_listing_params
       r_params.delete('unit')
-      ret2 = @residential_unit.update(r_params.merge({updated_at: Time.now}))
+      listing_updated = @residential_unit.update(r_params.merge({updated_at: Time.now}))
     end
     # update res
-    if ret1 && ret2
-      # Resque.enqueue(UpdateResidentialListing, @residential_unit.id) # send to Knack
+    if unit_updated && listing_updated
+      Resque.enqueue(UpdateResidentialListing, @residential_unit.id, is_now_active) # send to Knack
       flash[:success] = "Unit successfully updated!"
       redirect_to residential_listing_path(@residential_unit)
     else
