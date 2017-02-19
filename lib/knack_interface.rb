@@ -16,7 +16,7 @@ module KnackInterface
 
     def self.knack_request(request_type, url, data = nil)
       # don't send dev/test data
-      return {} unless Rails.env.production?
+      # return {} unless Rails.env.production?
 
       uri = URI.parse(url)
       if request_type == 'create'
@@ -221,7 +221,7 @@ module KnackInterface
       if is_now_active
         # optional: date listing became 'active' mm/dd/yyyy
         data[:field_878] = Date.today.strftime("%m/%d/%Y")
-      elif !is_now_active.nil? && !is_now_active
+      elsif !is_now_active.nil? && !is_now_active
         # optional: date listing went off market mm/dd/yyyy
         data[:field_879] = Date.today.strftime("%m/%d/%Y")
       end
@@ -239,6 +239,7 @@ module KnackInterface
     def self.perform(listing_id, is_now_active=nil)
       listing = ResidentialListing.where(id: listing_id).first
       return unless listing.knack_id # don't update knack unless it exists
+
 
       if listing.unit.status == Unit.statuses["active"]
         status = 'Activated'
@@ -261,7 +262,7 @@ module KnackInterface
       if is_now_active
         # optional: date listing became 'active' mm/dd/yyyy
         data[:field_878] = Date.today.strftime("%m/%d/%Y")
-      elif !is_now_active.nil? && !is_now_active
+      elsif !is_now_active.nil? && !is_now_active
         # optional: date listing went off market mm/dd/yyyy
         data[:field_879] = Date.today.strftime("%m/%d/%Y")
       end
