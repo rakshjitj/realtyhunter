@@ -10,7 +10,7 @@ namespace :maintenance do
     log.info "Removing expired open houses..."
 
     # can use delete_all because there are no dependent callbacks/objects depending on open houses
-    open_houses = OpenHouse.where("open_houses.day < ?", 1.day.ago)
+    open_houses = OpenHouse.where("open_houses.day < ?", 0.day.ago)
     open_houses.delete_all
 
     puts "Done!\n"
