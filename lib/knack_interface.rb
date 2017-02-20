@@ -238,7 +238,20 @@ module KnackInterface
 
     def self.perform(listing_id, is_now_active=nil)
       listing = ResidentialListing.where(id: listing_id).first
+
       return unless listing.knack_id # don't update knack unless it exists
+      # If we have missing data, create it in Knack first
+      # if !listiing.knack_id
+      #   if !listing.unit.building.landlord.knack_id
+      #     cl = CreateLandlord
+      #     cl.perform(listing.unit.building.landlord.id)
+      #   end
+
+      #   if !listing.unit.building.knack_id
+      #     cb = CreateBuilding
+      #     cb.perform(listing.unit.building.id)
+      #   end
+      # end
 
       if listing.unit.status == 'active'
         status = 'Activated'
@@ -307,6 +320,7 @@ module KnackInterface
         if knack_response["records"]
           records = knack_response["records"]
           records.each do |record|
+            original_address = record["field_745_raw"]["street"]
             address = record["field_745_raw"]["street"].strip
             building = Building
               .where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
@@ -317,6 +331,7 @@ module KnackInterface
               address.sub!('Street', 'St')
               address.sub!('Place', 'Pl')
               address.sub!('Road', 'Rd')
+              address.sub!('Avenue', 'Ave')
               building = Building
                 .where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
                 .first
@@ -326,8 +341,8 @@ module KnackInterface
               building.update_column(:knack_id, record["id"])
               puts "UPDATED #{building.formatted_street_address} - #{building.knack_id}"
             else
-              address.sub!('Avenue', 'Ave')
-              puts "Skipping: Building not found with address #{address}"
+
+              puts "Skipping: Building not found with address [#{original_address}] or [#{address}]"
             end
           end
         end
