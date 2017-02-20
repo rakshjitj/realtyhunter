@@ -332,6 +332,13 @@ module KnackInterface
               address.sub!('Place', 'Pl')
               address.sub!('Road', 'Rd')
               address.sub!('Avenue', 'Ave')
+              address.sub!('East', 'E')
+              address.sub!('North', 'N')
+              address.sub!('South', 'S')
+              address.sub!('West', 'W')
+              address.sub!('Saint', 'St')
+              address.sub!('Boulevard', 'Blvd')
+              address.sub!('Parkway', 'Pkwy')
               building = Building
                 .where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
                 .first
