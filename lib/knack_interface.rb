@@ -322,9 +322,15 @@ module KnackInterface
           records.each do |record|
             original_address = record["field_745_raw"]["street"]
             address = record["field_745_raw"]["street"].strip
+            # sometimes route and formatted_street_address differ in terms of abbreviations
             building = Building
               .where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
               .first
+            if !building
+              building = Building
+                .where('buildings.route ILIKE ?', "%#{address}%")
+                .first
+            end
 
             # see if replacements help
             substitutions = [
@@ -348,6 +354,12 @@ module KnackInterface
                 building = Building
                   .where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
                   .first
+                # sometimes route and formatted_street_address differ in terms of abbreviations
+                if !building
+                  building = Building
+                    .where('buildings.route ILIKE ?', "%#{address}%")
+                    .first
+                end
                 i += 1
               end
             end
