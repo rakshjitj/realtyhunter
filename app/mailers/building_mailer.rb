@@ -10,4 +10,13 @@ class BuildingMailer < ApplicationMailer
         tag: 'building_inaccuracy',
         track_opens:'true'
   end
+
+  def send_creation_notification(building_id)
+    @building = Building.where(id: building_id).first
+    mail to: ['uricohen646@gmail.com', 'rbujans@myspacenyc.com'],
+      subject: "New building created: #{@building.street_address}",
+        reply_to: 'uricohen646@gmail.com',
+        tag: 'building_created',
+        track_opens:'true'
+  end
 end

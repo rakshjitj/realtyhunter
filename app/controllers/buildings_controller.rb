@@ -88,6 +88,8 @@ class BuildingsController < ApplicationController
         bldg_params = format_params_before_save(true)
         if @building.save(bldg_params)
           Resque.enqueue(CreateBuilding, @building.id) # send to Knack
+          # notify staff
+          @building.send_creation_notification
           redirect_to @building
         else
           # error

@@ -196,6 +196,10 @@ class Building < ActiveRecord::Base
     end
   end
 
+  def send_creation_notification
+    BuildingMailer.send_creation_notification(self.id).deliver
+  end
+
   def residential_units(status=nil)
     ResidentialListing.for_buildings([id], status)
   end
