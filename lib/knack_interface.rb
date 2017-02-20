@@ -308,17 +308,25 @@ module KnackInterface
           records = knack_response["records"]
           records.each do |record|
             address = record["field_745_raw"]["street"].strip
-            address.sub!('Avenue', 'Ave')
-            address.sub!('Street', 'St')
-            address.sub!('Place', 'Pl')
-
             building = Building
               .where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
               .first
+
+            # see if replacements help
+            if !building
+              address.sub!('Street', 'St')
+              address.sub!('Place', 'Pl')
+              address.sub!('Road', 'Rd')
+              building = Building
+                .where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
+                .first
+            end
+
             if building
               building.update_column(:knack_id, record["id"])
               puts "UPDATED #{building.formatted_street_address} - #{building.knack_id}"
             else
+              address.sub!('Avenue', 'Ave')
               puts "Skipping: Building not found with address #{address}"
             end
           end
