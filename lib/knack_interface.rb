@@ -327,21 +327,29 @@ module KnackInterface
               .first
 
             # see if replacements help
-            if !building
-              address.sub!('Street', 'St')
-              address.sub!('Place', 'Pl')
-              address.sub!('Road', 'Rd')
-              address.sub!('Avenue', 'Ave')
-              address.sub!('East', 'E')
-              address.sub!('North', 'N')
-              address.sub!('South', 'S')
-              address.sub!('West', 'W')
-              address.sub!('Saint', 'St')
-              address.sub!('Boulevard', 'Blvd')
-              address.sub!('Parkway', 'Pkwy')
-              building = Building
-                .where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
-                .first
+            substitutions = [
+              ['Street', 'St'],
+              ['Place', 'Pl'],
+              ['Road', 'Rd'],
+              ['Avenue', 'Ave'],
+              ['Boulevard', 'Blvd'],
+              ['Parkway', 'Pkwy'],
+              ['East', 'E'],
+              ['North', 'N'],
+              ['South', 'S'],
+              ['West', 'W'],
+              ['Saint', 'St']
+            ]
+
+            i = 0
+            while !building && i < substitutions.length do
+              if !building
+                address.sub!(substitutions[i][0], substitutions[i][1])
+                building = Building
+                  .where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
+                  .first
+                i += 1
+              end
             end
 
             if building
