@@ -6,8 +6,8 @@ namespace :knack do
     log = ActiveSupport::Logger.new('log/create_residential.log')
     start_time = Time.now
 
-    puts "Sending building to knack..."
-    log.info "Sending building to knack..."
+    puts "Sending res listing to knack..."
+    log.info "Sending res listing to knack..."
 
     cr = CreateResidentialListing
     is_now_active = nil
