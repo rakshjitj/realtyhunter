@@ -3,11 +3,7 @@ class BuildingsController < ApplicationController
   skip_load_resource only: :create
   before_action :set_building, except: [:index, :new, :create, :filter, :filter_listings,
     :refresh_images, :neighborhood_options, :autocomplete_building_formatted_street_address]
-  autocomplete :building, :formatted_street_address,
-      where: {archived: false},
-      full: true,
-      extra_data: [:route, :street_number],
-      display_value: :street_address
+  autocomplete :building, :formatted_street_address, full: true
 
   include KnackInterface
 

@@ -4,11 +4,7 @@ class SalesListingsController < ApplicationController
   before_action :set_sales_listing, except: [:new, :create, :index, :filter,
     :print_list, :neighborhoods_modal, :features_modal, :neighborhood_options,
     :remove_unit_feature, :remove_bldg_feature, :remove_neighborhood, :fee_options]
-  autocomplete :building, :formatted_street_address,
-      where: {archived: false},
-      full: true,
-      extra_data: [:route, :street_number],
-      display_value: :street_address
+  autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
 
   def index
