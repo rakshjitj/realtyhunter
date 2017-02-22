@@ -85,6 +85,7 @@ module KnackInterface
     def self.perform(landlord_id)
       landlord = Landlord.where(id: landlord_id).first
       return if landlord.knack_id # its already been created
+      puts "Creating landlord..."
 
       data = {
         field_95:  landlord.code, # ll code
@@ -117,7 +118,6 @@ module KnackInterface
 
     def self.perform(landlord_id)
       landlord = Landlord.where(id: landlord_id).first
-      return unless landlord.knack_id # don't update knack unless the link exists
 
       data = {
         field_95:  landlord.code, # ll code
@@ -141,7 +141,13 @@ module KnackInterface
 
     def self.perform(building_id)
       building = Building.where(id: building_id).first
-      # return if building.knack_id # its already been created
+      # If we have missing data, create it in Knack first
+      if !building.landlord.knack_id
+        cl = CreateLandlord
+        cl.perform(building.landlord.id)
+      end
+      return if building.knack_id # its already been created
+      puts "Creating building..."
 
       data = {
         field_134: [building.landlord.knack_id], # landlord connection,
@@ -173,7 +179,11 @@ module KnackInterface
 
     def self.perform(building_id)
       building = Building.where(id: building_id).first
-      return unless building.knack_id # don't update knack unless it exists
+      # If we have missing data, create it in Knack first
+      if !building.landlord.knack_id
+        cl = CreateLandlord
+        cl.perform(building.landlord.id)
+      end
 
       data = {
         field_134: [building.landlord.knack_id], # landlord connection,
@@ -198,7 +208,13 @@ module KnackInterface
 
     def self.perform(listing_id, is_now_active=nil)
       listing = ResidentialListing.where(id: listing_id).first
-      # return if listing.knack_id # its already been created
+      # If we have missing data, create it in Knack first
+      if !listing.unit.building.knack_id
+        cb = CreateBuilding
+        cb.perform(listing.unit.building.id)
+      end
+      return if listing.knack_id # its already been created
+      puts "Creating residential listing..."
 
       if listing.unit.status == 'active'
         status = 'Activated'
@@ -239,19 +255,12 @@ module KnackInterface
     def self.perform(listing_id, is_now_active=nil)
       listing = ResidentialListing.where(id: listing_id).first
 
-      return unless listing.knack_id # don't update knack unless it exists
       # If we have missing data, create it in Knack first
-      # if !listiing.knack_id
-      #   if !listing.unit.building.landlord.knack_id
-      #     cl = CreateLandlord
-      #     cl.perform(listing.unit.building.landlord.id)
-      #   end
-
-      #   if !listing.unit.building.knack_id
-      #     cb = CreateBuilding
-      #     cb.perform(listing.unit.building.id)
-      #   end
-      # end
+      if !listing.unit.building.knack_id
+        cb = CreateBuilding
+        cb.perform(listing.unit.building.id)
+      end
+      return unless listing.knack_id # don't update knack unless it exists
 
       if listing.unit.status == 'active'
         status = 'Activated'
@@ -354,14 +363,14 @@ module KnackInterface
                 building = Building
                   .where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
                   .first
-                # sometimes route and formatted_street_address differ in terms of abbreviations
-                if !building
-                  building = Building
-                    .where('buildings.route ILIKE ?', "%#{address}%")
-                    .first
-                end
-                i += 1
               end
+              # sometimes route and formatted_street_address differ in terms of abbreviations
+              if !building
+                building = Building
+                  .where('buildings.route ILIKE ?', "%#{address}%")
+                  .first
+              end
+              i += 1
             end
 
             if building
