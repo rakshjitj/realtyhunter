@@ -411,9 +411,9 @@ module KnackInterface
               .first
             if listing
               listing.update_column(:knack_id, record["id"])
-              puts "UPDATED #{listing.unit.building.formatted_street_address} ##{building_unit} - #{listing.knack_id}"
+              puts "UPDATED #{listing.unit.building.formatted_street_address} ##{building_unit} - #{building_knack_id}"
             else
-              puts "Skipping: Residential Listings not found with address #{building_address} #{building_unit} - #{listing.knack_id}"
+              puts "Skipping: Residential Listings not found with address #{building_address} #{building_unit} - #{building_knack_id}"
             end
           end
         end
