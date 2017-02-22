@@ -4,7 +4,11 @@ class ResidentialListingsController < ApplicationController
   before_action :set_residential_listing, only: [:show, :edit, :duplicate_modal, :duplicate,
     :mark_app_submitted, :update, :delete_modal, :destroy,
     :inaccuracy_modal, :send_inaccuracy, :refresh_images, :refresh_documents]
-  autocomplete :building, :formatted_street_address, full: true
+  autocomplete :building, :formatted_street_address,
+      where: {archived: false},
+      full: true,
+      extra_data: [:route, :street_number],
+      display_value: :street_address
   autocomplete :landlord, :code, full: true
   include KnackInterface
 

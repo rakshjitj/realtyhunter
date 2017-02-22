@@ -3,7 +3,11 @@ class CommercialListingsController < ApplicationController
   skip_load_resource only: [:create, :update_subtype]
   before_action :set_commercial_listing, except: [:new, :create, :index, :filter,
     :neighborhoods_modal, :features_modal, :print_public, :print_private, :send_message]
-  autocomplete :building, :formatted_street_address, full: true
+  autocomplete :building, :formatted_street_address,
+      where: {archived: false},
+      full: true,
+      extra_data: [:route, :street_number],
+      display_value: :street_address
   autocomplete :landlord, :code, full: true
 
   def index
