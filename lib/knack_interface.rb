@@ -401,13 +401,14 @@ module KnackInterface
           records = knack_response["records"]
           records.each do |record|
             building_knack_id = record["field_387_raw"][0]["id"]
+            # we identify buildings by knack id. the address is just displayed as printed output
             building_address = record["field_387_raw"][0]["identifier"].strip # building address
             idx = building_address.index('<br')
             building_address = building_address.slice(0, idx)
             building_unit = record["field_137_raw"].strip
 
             listing = ResidentialListing.joins(unit: :building)
-              .where('units.building_unit = ?', building_unit)
+              .where('units.building_unit ILIKE ?', "%#{building_unit}%")
               .where('buildings.knack_id =  ?', building_knack_id)
               .first
             if listing
