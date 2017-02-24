@@ -83,9 +83,12 @@ module KnackInterface
     @queue = :knack
 
     def self.perform(landlord_id)
-      landlord = Landlord.where(id: landlord_id).first
-      return if landlord.knack_id # its already been created
       puts "Creating landlord..."
+      landlord = Landlord.where(id: landlord_id).first
+      if landlord.knack_id # its already been created
+        puts "...landlord #{landlord_id} already exists in knack"
+        return
+      end
 
       data = {
         field_95:  landlord.code, # ll code
@@ -117,7 +120,13 @@ module KnackInterface
     @queue = :knack
 
     def self.perform(landlord_id)
+      puts "Updating landlord #{landlord_id} in knack..."
+
       landlord = Landlord.where(id: landlord_id).first
+      if !landlord.knack_id
+        cl = CreateLandlord
+        return cl.perform(landlord_id)
+      end
 
       data = {
         field_95:  landlord.code, # ll code
@@ -140,14 +149,18 @@ module KnackInterface
     @queue = :knack
 
     def self.perform(building_id)
+      puts "Creating building in knack..."
       building = Building.where(id: building_id).first
       # If we have missing data, create it in Knack first
       if !building.landlord.knack_id
         cl = CreateLandlord
         cl.perform(building.landlord.id)
+        building = Building.where(id: building_id).first
       end
-      return if building.knack_id # its already been created
-      puts "Creating building..."
+      if building.knack_id # its already been created
+        puts "... building #{building_id }already exists in knack"
+        return
+      end
 
       data = {
         field_134: [building.landlord.knack_id], # landlord connection,
@@ -178,11 +191,18 @@ module KnackInterface
     @queue = :knack
 
     def self.perform(building_id)
+      puts "Updating building #{building_id} in knack..."
       building = Building.where(id: building_id).first
       # If we have missing data, create it in Knack first
       if !building.landlord.knack_id
         cl = CreateLandlord
         cl.perform(building.landlord.id)
+        building = Building.where(id: building_id).first
+      end
+
+      if !building.knack_id
+        cb = CreateBuilding
+        return cb.perform(building_id)
       end
 
       data = {
@@ -207,14 +227,19 @@ module KnackInterface
     @queue = :knack
 
     def self.perform(listing_id, is_now_active=nil)
+      puts "Creating residential listing #{listing_id}..."
       listing = ResidentialListing.where(id: listing_id).first
       # If we have missing data, create it in Knack first
       if !listing.unit.building.knack_id
         cb = CreateBuilding
         cb.perform(listing.unit.building.id)
+        listing = ResidentialListing.where(id: listing_id).first
       end
-      return if listing.knack_id # its already been created
-      puts "Creating residential listing..."
+      # return if listing.knack_id # its already been created
+      if listing.knack_id
+        puts "...listing #{listing_id }already created in knack"
+        return
+      end
 
       if listing.unit.status == 'active'
         status = 'Activated'
@@ -253,14 +278,19 @@ module KnackInterface
     @queue = :knack
 
     def self.perform(listing_id, is_now_active=nil)
+      puts "Updating listing #{listing_id} in knack..."
       listing = ResidentialListing.where(id: listing_id).first
 
       # If we have missing data, create it in Knack first
       if !listing.unit.building.knack_id
         cb = CreateBuilding
         cb.perform(listing.unit.building.id)
+        listing = ResidentialListing.where(id: listing_id).first
       end
-      return unless listing.knack_id # don't update knack unless it exists
+      if !listing.knack_id
+        cr = CreateResidentialListing
+        return cr.perform(listing_id, is_now_active)
+      end
 
       if listing.unit.status == 'active'
         status = 'Activated'
@@ -386,6 +416,42 @@ module KnackInterface
         # puts "new page req #{new_page}"
         knack_response = get_request(BUILDING_URL + "?page=#{new_page}&rows_per_page=1000")
       end
+    end
+  end
+
+  class FindDupeBuildings < KnackBase
+    @queue = :knack
+
+    def self.perform
+      knack_response = get_request(BUILDING_URL + "?page=1&rows_per_page=1000")
+      address_list = {}
+
+      while knack_response["current_page"].to_i < (knack_response["total_pages"].to_i + 1) do
+        # puts "#{knack_response["current_page"].to_i} #{knack_response["total_pages"].to_i}"
+        if knack_response["records"]
+          records = knack_response["records"]
+          records.each do |record|
+            original_address = record["field_745_raw"]["street"]
+            address = record["field_745_raw"]["street"].strip
+
+            if !address_list[address]
+              address_list[address] = 1
+            else
+              address_list[address] += 1
+            end
+          end
+        end
+        new_page = knack_response["current_page"].to_i + 1
+        # puts "new page req #{new_page}"
+        knack_response = get_request(BUILDING_URL + "?page=#{new_page}&rows_per_page=1000")
+      end
+
+      address_list.each do |key, value|
+        if value > 1
+          puts "#{key}: #{value}"
+        end
+      end
+
     end
   end
 

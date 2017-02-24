@@ -9,8 +9,14 @@ namespace :knack do
     puts "Sending updated building to knack..."
     log.info "Sending updated building to knack..."
 
+    id = 3631
+    b = Building.find(id)
+    # clear out old data
+    # b.update_attribute(:knack_id, nil)
+    # b.landlord.update_attribute(:knack_id, nil)
+    # re-add it to knack
     cb = UpdateBuilding
-    cb.perform(3631) # 173 Herkimer
+    cb.perform(id) # 173 Herkimer
 
     puts "Done!\n"
     log.info "Done!\n"
