@@ -158,7 +158,7 @@ module KnackInterface
         building = Building.where(id: building_id).first
       end
       if building.knack_id # its already been created
-        puts "... building #{building_id }already exists in knack"
+        puts "... building #{building_id} already exists in knack"
         return
       end
 
@@ -237,7 +237,7 @@ module KnackInterface
       end
       # return if listing.knack_id # its already been created
       if listing.knack_id
-        puts "...listing #{listing_id }already created in knack"
+        puts "...listing #{listing_id} already created in knack"
         return
       end
 
