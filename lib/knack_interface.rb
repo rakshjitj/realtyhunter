@@ -95,7 +95,7 @@ module KnackInterface
         field_96:  landlord.name, # company
         field_342: !landlord.formatted_street_address.blank? ? landlord.formatted_street_address : '-None-', # address,
         field_345: landlord.contact_name ? landlord.contact_name : '-None-', # contacts
-        field_347: landlord.office_phone ? landlord.office_phone : '-None-', # contact phone number
+        field_347: landlord.office_phone ? landlord.office_phone : '555-555-5555', # contact phone number
         field_357: landlord.mobile, # optional: contact mobile
         # field_346: landlord.contact_name, # optional: office contact (extra, not used in RH)
         # field_103: landlord.office_phone, # optional: Office Phone (extra, not used in RH)
