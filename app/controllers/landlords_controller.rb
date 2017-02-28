@@ -64,6 +64,8 @@ class LandlordsController < ApplicationController
     @landlord.company = current_user.company
     if @landlord.save
       Resque.enqueue(CreateLandlord, @landlord.id) # send to Knack
+      # notify staff
+      @landlord.send_creation_notification
       redirect_to landlord_path(@landlord)
     else
       # error

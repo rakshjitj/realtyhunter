@@ -116,6 +116,10 @@ class Landlord < ActiveRecord::Base
     CommercialListing.for_buildings(bldg_ids, status)
   end
 
+  def send_creation_notification
+    LandlordMailer.send_creation_notification(self.id).deliver
+  end
+
 	private
     def clean_up_important_fields
     	if email
