@@ -16,7 +16,7 @@ module KnackInterface
 
     def self.knack_request(request_type, url, data = nil)
       # don't send dev/test data
-      # return {} unless Rails.env.production?
+      return {} unless Rails.env.production?
 
       uri = URI.parse(url)
       if request_type == 'create'
@@ -105,9 +105,10 @@ module KnackInterface
         # field_349: '', # optional: Office Contact 2 (extra, not used in RH)
         # field_104: '', # optional: Phone 2 (extra, not used in RH)
         # field_101: '', # optional: Email 2 (extra, not used in RH)
-        # field_344: '', # optional: Additional Management info
+        field_344: !landlord.management_info? ? landlord.management_info : nil, # optional: Additional Management info
         field_351: !landlord.website.blank? ? landlord.website : nil, # optional: Website
         field_358: landlord.op_fee_percentage, # optional: OP
+        field_907: !landlord.notes? ? landlord.notes : nil, # optional: notes
       }
 
       knack_response = self.create_request(LANDLORD_URL, data)
