@@ -104,10 +104,10 @@ module KnackInterface
         # field_349: '', # optional: Office Contact 2 (extra, not used in RH)
         # field_104: '', # optional: Phone 2 (extra, not used in RH)
         # field_101: '', # optional: Email 2 (extra, not used in RH)
-        field_344: !landlord.management_info? ? landlord.management_info : nil, # optional: Additional Management info
+        field_344: !landlord.management_info.blank? ? landlord.management_info : nil, # optional: Additional Management info
         field_351: !landlord.website.blank? ? landlord.website : nil, # optional: Website
         field_358: landlord.op_fee_percentage, # optional: OP
-        field_907: !landlord.notes? ? landlord.notes : nil, # optional: notes
+        field_907: !landlord.notes.blank? ? landlord.notes : nil, # optional: notes
       }
 
       knack_response = self.create_request(LANDLORD_URL, data)
@@ -138,10 +138,10 @@ module KnackInterface
         field_357: landlord.mobile, # optional: contact mobile
         field_100: !landlord.email.blank? ? landlord.email : nil, # optional: Email
         field_348: !landlord.fax.blank? ? landlord.fax : nil, # optional: fax
-        field_344: !landlord.management_info? ? landlord.management_info : nil, # optional: Additional Management info
+        field_344: !landlord.management_info.blank? ? landlord.management_info : nil, # optional: Additional Management info
         field_351: !landlord.website.blank? ? landlord.website : nil, # optional: Website
         field_358: landlord.op_fee_percentage, # optional: OP
-        field_907: !landlord.notes? ? landlord.notes : nil, # optional: notes
+        field_907: !landlord.notes.blank? ? landlord.notes : nil, # optional: notes
       }
 
       knack_response = update_request(LANDLORD_URL + '/' + landlord.knack_id, data)
