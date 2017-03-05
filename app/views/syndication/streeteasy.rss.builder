@@ -70,6 +70,10 @@ xml.streeteasy :version => "1.6" do
 						xml.bedrooms listing.s_beds
 					end
 
+					if listing.r_total_room_count
+						xml.totalrooms listing.r_total_room_count
+					end
+
 					if listing.r_baths
 						xml.bathrooms listing.r_baths
 					elsif listing.s_baths
