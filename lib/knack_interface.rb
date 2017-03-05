@@ -90,7 +90,6 @@ module KnackInterface
         return
       end
 
-      puts "\n\n**** PHONE #{landlord.office_phone}"
       data = {
         field_95:  landlord.code, # ll code
         field_96:  landlord.name, # company
@@ -139,8 +138,10 @@ module KnackInterface
         field_357: landlord.mobile, # optional: contact mobile
         field_100: !landlord.email.blank? ? landlord.email : nil, # optional: Email
         field_348: !landlord.fax.blank? ? landlord.fax : nil, # optional: fax
+        field_344: !landlord.management_info? ? landlord.management_info : nil, # optional: Additional Management info
         field_351: !landlord.website.blank? ? landlord.website : nil, # optional: Website
         field_358: landlord.op_fee_percentage, # optional: OP
+        field_907: !landlord.notes? ? landlord.notes : nil, # optional: notes
       }
 
       knack_response = update_request(LANDLORD_URL + '/' + landlord.knack_id, data)
