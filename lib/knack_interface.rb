@@ -16,7 +16,7 @@ module KnackInterface
 
     def self.knack_request(request_type, url, data = nil)
       # don't send dev/test data
-      return {} unless Rails.env.production?
+      # return {} unless Rails.env.production?
 
       uri = URI.parse(url)
       if request_type == 'create'
@@ -238,7 +238,6 @@ module KnackInterface
         cb.perform(listing.unit.building.id)
         listing = ResidentialListing.where(id: listing_id).first
       end
-      # return if listing.knack_id # its already been created
       if listing.knack_id
         puts "...listing #{listing_id} already created in knack"
         return
@@ -281,8 +280,9 @@ module KnackInterface
     @queue = :knack
 
     def self.perform(listing_id, is_now_active=nil)
-      puts "Updating listing #{listing_id} in knack..."
+      puts "Updating residential listing #{listing_id} in knack..."
       listing = ResidentialListing.where(id: listing_id).first
+      puts "LISTING KNACK ID #{listing.knack_id}"
 
       # If we have missing data, create it in Knack first
       if !listing.unit.building.knack_id
@@ -290,6 +290,7 @@ module KnackInterface
         cb.perform(listing.unit.building.id)
         listing = ResidentialListing.where(id: listing_id).first
       end
+
       if !listing.knack_id
         cr = CreateResidentialListing
         return cr.perform(listing_id, is_now_active)
@@ -368,11 +369,11 @@ module KnackInterface
             building = Building
               .where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
               .first
-            if !building
-              building = Building
-                .where('buildings.route ILIKE ?', "%#{address}%")
-                .first
-            end
+            # if !building
+            #   building = Building
+            #     .where('buildings.route ILIKE ?', "%#{address}%")
+            #     .first
+            # end
 
             # see if replacements help
             substitutions = [
@@ -394,21 +395,21 @@ module KnackInterface
               if !building
                 address.sub!(substitutions[i][0], substitutions[i][1])
                 building = Building
-                  .where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
+                  .where('buildings.formatted_street_address ILIKE ?', "#{address}%")
                   .first
               end
               # sometimes route and formatted_street_address differ in terms of abbreviations
-              if !building
-                building = Building
-                  .where('buildings.route ILIKE ?', "%#{address}%")
-                  .first
-              end
+              # if !building
+              #   building = Building
+              #     .where('buildings.route ILIKE ?', "%#{address}%")
+              #     .first
+              # end
               i += 1
             end
 
             if building
               building.update_column(:knack_id, record["id"])
-              puts "UPDATED #{building.formatted_street_address} - #{building.knack_id}"
+              puts "UPDATED #{building.formatted_street_address} - #{address} #{building.knack_id}"
             else
 
               puts "Skipping: Building not found with address [#{original_address}] or [#{address}]"
