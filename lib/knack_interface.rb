@@ -337,7 +337,7 @@ module KnackInterface
           records = knack_response["records"]
           records.each do |record|
             code = record["field_95"]
-            landlord = Landlord.where('code ILIKE ?', "%#{code}%").first
+            landlord = Landlord.where('code ILIKE ?', "#{code}").first
             if landlord
               landlord.update_column(:knack_id, record["id"])
               puts "UPDATED #{landlord.code} - #{landlord.knack_id}"
@@ -395,7 +395,7 @@ module KnackInterface
               if !building
                 address.sub!(substitutions[i][0], substitutions[i][1])
                 building = Building
-                  .where('buildings.formatted_street_address ILIKE ?', "#{address}%")
+                  .where('buildings.formatted_street_address ILIKE ?', "#{address}")
                   .first
               end
               # sometimes route and formatted_street_address differ in terms of abbreviations
@@ -478,14 +478,14 @@ module KnackInterface
             building_unit = record["field_137_raw"].strip
 
             listing = ResidentialListing.joins(unit: :building)
-              .where('units.building_unit ILIKE ?', "%#{building_unit}%")
+              .where('units.building_unit ILIKE ?', "#{building_unit}")
               .where('buildings.knack_id =  ?', building_knack_id)
               .first
             if listing
               listing.update_column(:knack_id, record["id"])
               puts "UPDATED #{listing.unit.building.formatted_street_address} ##{building_unit} - #{building_knack_id}"
             else
-              puts "Skipping: Residential Listings not found with address #{building_address} #{building_unit} - #{building_knack_id}"
+              puts "Skipping: Residential Listings not found with address [#{building_address} #{building_unit}] - #{building_knack_id}"
             end
           end
         end
