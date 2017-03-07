@@ -367,7 +367,7 @@ module KnackInterface
             address = record["field_745_raw"]["street"].strip
             # sometimes route and formatted_street_address differ in terms of abbreviations
             building = Building
-              .where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
+              .where('buildings.formatted_street_address ILIKE ?', "#{address}")
               .first
             # if !building
             #   building = Building
