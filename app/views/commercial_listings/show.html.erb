@@ -66,7 +66,7 @@
 		  				<% if !current_user.is_photo_manager? %>
 					  		<%= link_to 'Edit', edit_commercial_listing_path(@commercial_unit) %>
 					  		| <%= link_to 'Duplicate', duplicate_modal_commercial_listing_path(@commercial_unit),
-			      				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
+			      				data: { toggle: "modal", target: "#cunitDuplicateModal"}, remote: true %>
 			      	<% else %>
 			      		<%= link_to 'Manage photos', edit_commercial_listing_path(@commercial_unit) %>
 			      	<% end %>

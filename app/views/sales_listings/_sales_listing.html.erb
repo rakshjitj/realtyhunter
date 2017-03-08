@@ -74,10 +74,10 @@
       <% if !current_user.is_photo_manager? %>
         <%= link_to 'Edit', edit_sales_listing_path(sales_listing) %>
         <br /><%= link_to 'Delete', delete_modal_sales_listing_path(sales_listing),
-          data: { toggle: "modal", target: "#unitDeleteModal", params: params}, remote: true %>
+          data: { toggle: "modal", target: "#sunitDeleteModal", params: params}, remote: true %>
         <br />
         <%= link_to 'Duplicate', duplicate_modal_sales_listing_path(sales_listing),
-          data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %><br />
+          data: { toggle: "modal", target: "#sunitDuplicateModal"}, remote: true %><br />
         <%= link_to 'Announcement', new_announcement_path(
             { address: sales_listing.formatted_street_address2 }) %>
       <% else %>

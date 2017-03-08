@@ -132,6 +132,19 @@ class BuildingsController < ApplicationController
     end
   end
 
+  def delete_residential_listing_modal
+    @params_copy = params
+    @params_copy.delete('action')
+    @params_copy.delete('controller')
+    @params_copy.delete('id')
+    @residential_unit = ResidentialListing.find_unarchived(params[:listing_id])
+    @params_copy.delete('listing_id')
+    # puts @params_copy.inspect
+    respond_to do |format|
+      format.js {render 'residential_listings/delete_modal'}
+    end
+  end
+
   # DELETE /buildings/1
   # DELETE /buildings/1.json
   def destroy

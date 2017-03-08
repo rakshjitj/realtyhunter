@@ -1,7 +1,7 @@
-$('#unitDuplicateModal #placeholder-body').html("<%= j(render :partial => "duplicate_modal_helper", locals: { residential_unit: @residential_unit }) %>");
+$('#runitDuplicateModal #placeholder-body').html("<%= j(render :partial => "residential_listings/duplicate_modal_helper", locals: { residential_unit: @residential_unit }) %>");
 
-$('#unitDuplicateModal .submit-link').click( function(event) {
- 	$('#unitDuplicateModal').modal('hide');
+$('#runitDuplicateModal .submit-link').click( function(event) {
+ 	$('#runitDuplicateModal').modal('hide');
 });
 
-$('#unitDuplicateModal').modal('show');
+$('#runitDuplicateModal').modal('show');

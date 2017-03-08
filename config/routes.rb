@@ -92,6 +92,7 @@ Rails.application.routes.draw do
     get :autocomplete_building_formatted_street_address, :on => :collection
     member do
       get 'delete_modal'
+      get 'delete_residential_listing_modal'
       get 'inaccuracy_modal'
       patch 'send_inaccuracy'
       get 'refresh_images'

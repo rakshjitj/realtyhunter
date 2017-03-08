@@ -88,7 +88,7 @@
 					  		<% if !current_user.is_photo_manager? %>
 				  				<%= link_to 'Edit', edit_residential_listing_path(@residential_unit.id) %>
 					        | <%= link_to 'Duplicate', duplicate_modal_residential_listing_path(@residential_unit),
-					    				data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
+					    				data: { toggle: "modal", target: "#runitDuplicateModal"}, remote: true %>
 					    	<% else %>
 					    		<%= link_to 'Manage photos', edit_residential_listing_path(@residential_unit.id) %>
 					    	<% end %>

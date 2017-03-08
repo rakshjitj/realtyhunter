@@ -135,17 +135,22 @@
           current_user.is_listings_manager? ||
           current_user.is_photo_manager? %>
       <td class="hidden-print">
-
         <% if !current_user.is_photo_manager? %>
           <%= link_to 'Edit', edit_residential_listing_path(residential_listing) %>
-          <br><%= link_to 'Delete', delete_modal_residential_listing_path(residential_listing),
-            data: { toggle: "modal", target: "#unitDeleteModal", params: params}, remote: true %>
           <br>
+          <% if controller_name == 'residential_listings' %>
+            <%= link_to 'Delete', delete_modal_path(residential_listing),
+              data: { toggle: "modal", target: "#runitDeleteModal", params: params}, remote: true %>
+            <br>
+          <% else %>
+            <%= link_to 'Delete', delete_residential_listing_modal_building_path(
+              id: residential_listing.unit.building.id, listing_id: residential_listing),
+              data: { toggle: "modal", target: "#runitDeleteModal", params: params}, remote: true %>
+            <br>
+          <% end %>
+          <!-- hide the delete link on landlord and user pages -->
           <%= link_to 'Duplicate', duplicate_modal_residential_listing_path(residential_listing),
-            data: { toggle: "modal", target: "#unitDuplicateModal"}, remote: true %>
-          <!--br>
-          < % = link_to 'Announcement', new_announcement_path(
-            { address: residential_listing.formatted_street_address }) %-->
+            data: { toggle: "modal", target: "#runitDuplicateModal"}, remote: true %>
         <% else %>
           <%= link_to 'Manage Photos', edit_residential_listing_path(residential_listing) %>
         <% end %>
