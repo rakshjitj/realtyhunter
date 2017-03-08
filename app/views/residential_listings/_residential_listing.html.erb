@@ -139,7 +139,7 @@
           <%= link_to 'Edit', edit_residential_listing_path(residential_listing) %>
           <br>
           <% if controller_name == 'residential_listings' %>
-            <%= link_to 'Delete', delete_modal_path(residential_listing),
+            <%= link_to 'Delete', delete_modal_residential_listing_path(residential_listing),
               data: { toggle: "modal", target: "#runitDeleteModal", params: params}, remote: true %>
             <br>
           <% else %>
