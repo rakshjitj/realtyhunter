@@ -178,6 +178,7 @@ xml.hotPadsItems version:"2.1" do
 				xml.numBedrooms listing.s_beds
 			end
 
+			baths = nil
 			if listing.r_baths
 				baths = listing.r_baths
 			elsif listing.s_baths
@@ -185,13 +186,14 @@ xml.hotPadsItems version:"2.1" do
 			end
 
 			if baths
-				xml.numFullBaths baths.to_i
+				xml.numFullBaths baths.floor.to_i
 
-				decimal_idx = baths.to_s.index('.')
-				if decimal_idx > -1
+				decimal_idx = baths.to_s.index('.5')
+				if !decimal_idx.nil?
 					xml.numHalfBaths 1
 				end
 			end
+
 			#xml.squareFeet
 			if listing.available_by
 				xml.dateAvailable listing.available_by.strftime("%Y-%m-%d")

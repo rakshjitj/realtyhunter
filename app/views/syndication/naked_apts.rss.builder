@@ -66,10 +66,20 @@ xml.streeteasy :version => "1.6" do
 						xml.totalrooms listing.r_total_room_count
 					end
 
+					baths = nil
 					if listing.r_baths
-						xml.bathrooms listing.r_baths
+						baths = listing.r_baths
 					elsif listing.s_baths
-						xml.bathrooms listing.s_baths
+						baths = listing.s_baths
+					end
+
+					if baths
+						xml.bathrooms baths.floor.to_i
+
+						decimal_idx = baths.to_s.index('.5')
+						if !decimal_idx.nil?
+							xml.half_baths 1
+						end
 					end
 
 					xml.availableOn listing.available_by # rentals only
