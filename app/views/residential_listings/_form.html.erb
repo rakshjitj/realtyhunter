@@ -252,14 +252,14 @@
                   <!-- start time -->
                   <div class="col-xs-3">
                     Start time:<br>
-                    <%= oh.time_select :start_time,
+                    <%= oh.time_select :start_time, default: {hour: '8'},
                       class: 'form-control', minute_step: 15, ampm: true, ignore_date: true, required: true %>
                   </div>
 
                   <!-- end time -->
                   <div class="col-xs-3">
                     End time:<br>
-                    <%= oh.time_select :end_time,
+                    <%= oh.time_select :end_time, default: {hour: '22'},
                         class: 'form-control', minute_step: 15, ampm: true, ignore_date: true, required: true %>
                   </div>
 
