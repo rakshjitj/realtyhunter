@@ -212,7 +212,7 @@ module KnackInterface
         field_134: [building.landlord.knack_id], # landlord connection,
         field_124: building.llc_name, # optional: LLC Name
         field_745: { # Address 1
-          street: building.street_number + building.route,
+          street: building.street_number + ' ' + building.route,
           city: building.sublocality,
           state: building.administrative_area_level_1_short,
           zip: building.postal_code
