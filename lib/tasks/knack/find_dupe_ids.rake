@@ -13,19 +13,26 @@ namespace :knack do
     listings = ResidentialListing.where.not(knack_id: nil)
     listings.each do |l|
         if knack_ids.key? l.knack_id
-            knack_ids[l.knack_id] = knack_ids[l.knack_id] + 1
+            knack_ids[l.knack_id] << {
+              id: l.id,
+              address: l.street_address_and_unit
+            }
         else
-            knack_ids[l.knack_id] = 1
+            knack_ids[l.knack_id] = [{
+              id: l.id,
+              address: l.street_address_and_unit
+            }]
         end
     end
 
-    knack_ids.each do |k,v|
-        if v > 1
-          puts "#{k} - #{v}"
-          log.info  "#{k} - #{v}"
+    knack_ids.each do |knack_id, list|
+        if list.count > 1
+          list.each do |item|
+            puts "Address:#{item[:address]} ID:#{item[:id]} Knack ID:#{knack_id}"
+            log.info "Address:#{item[:address]} ID:#{item[:id]} Knack ID:#{knack_id}"
+          end
         end
     end
-
 
     puts "Done!\n"
     log.info "Done!\n"
