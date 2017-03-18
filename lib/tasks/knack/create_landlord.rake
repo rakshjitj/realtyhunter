@@ -12,7 +12,7 @@ namespace :knack do
     landlord = Landlord.where(code: '101 Bedford').first
     cl = CreateLandlord
     cl.perform(landlord.id)
-    #Resque.enqueue(CreateLandlord, landlord.id)
+    # Resque.enqueue(CreateLandlord, landlord.id)
 
     puts "Done!\n"
     log.info "Done!\n"

@@ -22,6 +22,7 @@ namespace :knack do
     knack_ids.each do |k,v|
         if v > 1
           puts "#{k} - #{v}"
+          log.info  "#{k} - #{v}"
         end
     end
 

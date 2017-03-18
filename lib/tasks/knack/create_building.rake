@@ -9,12 +9,10 @@ namespace :knack do
     puts "Sending building to knack..."
     log.info "Sending building to knack..."
 
-    cb = CreateBuilding
-    cb.perform(3631) # 173 Herkimer
-
-    # cr = CreateResidentialListing
-    # cr.perform(13706) # 173 Herkimer
-    # Resque.enqueue(CreateResidential, listing.id) # 173 Herkimer
+    building = Building.where(id: 3631).first
+    # cb = CreateBuilding
+    # cb.perform(3631) # 173 Herkimer
+    Resque.enqueue(CreateBuilding, building.id)
 
     puts "Done!\n"
     log.info "Done!\n"

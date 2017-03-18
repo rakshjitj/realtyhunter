@@ -9,10 +9,11 @@ namespace :knack do
     puts "Sending res listing to knack..."
     log.info "Sending res listing to knack..."
 
+    listing = ResidentialListing.where(id: 13706).first
     cr = CreateResidentialListing
     is_now_active = nil
-    cr.perform(13706, is_now_active) # 173 Herkimer
-    # Resque.enqueue(CreateResidentialListing, listing.id) # 173 Herkimer
+    # cr.perform(13706, is_now_active) # 173 Herkimer
+    Resque.enqueue(CreateResidentialListing, listing.id, is_now_active) # 173 Herkimer
 
     puts "Done!\n"
     log.info "Done!\n"

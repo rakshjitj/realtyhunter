@@ -10,9 +10,9 @@ namespace :knack do
     log.info "Sending updated landlord to knack..."
 
     landlord = Landlord.where(code: '101 Bedford').first
-    cl = UpdateLandlord
-    cl.perform(landlord.id)
-    #Resque.enqueue(UpdateLandlord, landlord.id)
+    # cl = UpdateLandlord
+    # cl.perform(landlord.id)
+    Resque.enqueue(UpdateLandlord, landlord.id)
 
     puts "Done!\n"
     log.info "Done!\n"

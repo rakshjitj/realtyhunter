@@ -11,14 +11,15 @@ namespace :knack do
 
     id = 13706
     is_now_active = true
-    r = ResidentialListing.find(id)
+    listing = ResidentialListing.find(id)
     # clear out old data
     # r.update_attribute(:knack_id, nil)
     # r.unit.building.update_attribute(:knack_id, nil)
     # r.unit.building.landlord.update_attribute(:knack_id, nil)
     # re-add it to knack
-    cr = UpdateResidentialListing
-    cr.perform(id, is_now_active) # 173 Herkimer
+    # cr = UpdateResidentialListing
+    # cr.perform(id, is_now_active) # 173 Herkimer
+    Resque.enqueue(UpdateResidentialListing, listing.id, is_now_active) # 173 Herkimer
 
     puts "Done!\n"
     log.info "Done!\n"
