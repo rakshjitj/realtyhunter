@@ -111,6 +111,9 @@ class ResidentialListingsController < ApplicationController
 
     if residential_unit_dup.valid?
       @residential_unit = residential_unit_dup
+      # keep track of whether this listing just came on or off the market
+      is_now_active = @residential_unit.unit.status == 'active'
+      Resque.enqueue(CreateResidentialListing, @residential_unit.id, is_now_active) # send to Knack
       render js: "window.location.pathname = '#{residential_listing_path(@residential_unit)}'"
     else
       @buildings = current_user.company.buildings
