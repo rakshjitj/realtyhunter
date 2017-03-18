@@ -16,7 +16,7 @@ module KnackInterface
 
     def self.knack_request(request_type, url, data = nil)
       # don't send dev/test data
-      # return {} unless Rails.env.production?
+      return {} unless Rails.env.production?
 
       uri = URI.parse(url)
       if request_type == 'create'
@@ -106,7 +106,7 @@ module KnackInterface
         # field_101: '', # optional: Email 2 (extra, not used in RH)
         field_344: !landlord.management_info.blank? ? landlord.management_info : nil, # optional: Additional Management info
         field_351: !landlord.website.blank? ? landlord.website : nil, # optional: Website
-        field_358: landlord.op_fee_percentage, # optional: OP
+        field_358: !landlord.op_fee_percentage.blank? ? "0.#{landlord.op_fee_percentage}" : nil, # optional: OP
         field_907: !landlord.notes.blank? ? landlord.notes : nil, # optional: notes
       }
 
@@ -140,7 +140,7 @@ module KnackInterface
         field_348: !landlord.fax.blank? ? landlord.fax : nil, # optional: fax
         field_344: !landlord.management_info.blank? ? landlord.management_info : nil, # optional: Additional Management info
         field_351: !landlord.website.blank? ? landlord.website : nil, # optional: Website
-        field_358: landlord.op_fee_percentage, # optional: OP
+        field_358: !landlord.op_fee_percentage.blank? ? "0.#{landlord.op_fee_percentage}" : nil, # optional: OP
         field_907: !landlord.notes.blank? ? landlord.notes : nil, # optional: notes
       }
 
