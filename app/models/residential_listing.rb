@@ -455,7 +455,7 @@ class ResidentialListing < ActiveRecord::Base
       if unit_dup.save!
 
         residential_unit_dup = self.dup
-        residential_unit_dup.update(unit_id: unit_dup.id)
+        residential_unit_dup.update(unit_id: unit_dup.id, knack_id: nil)
 
         self.residential_amenities.each {|a|
           residential_unit_dup.residential_amenities << a
