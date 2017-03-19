@@ -233,14 +233,9 @@ class SalesListing < ActiveRecord::Base
     # search by status
     if params[:status]
       status = params[:status].downcase
-      included = ['active + pending', 'active', 'pending', 'off'].include?(status)
+      included = ['active', 'on market', 'contract out', 'inescrow', 'closed'].include?(status)
       if included
-        if status == 'active + pending'
-          @running_list = @running_list.where("status = ? or status = ?",
-            Unit.statuses["active"], Unit.statuses["pending"])
-        else
-          @running_list = @running_list.where("status = ?", Unit.statuses[status])
-        end
+        @running_list = @running_list.where("status = ?", Unit.statuses[status])
       end
     end
 

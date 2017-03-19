@@ -138,11 +138,11 @@
                     current_user.is_listings_manager? ||
                     current_user.is_photo_manager? %>
                 <%= select_tag(:status,
-                  options_for_select(['Any', 'Active + Pending', 'Active', 'Pending', 'Off'],
+                  options_for_select(['Any', 'Active/Pending', 'Active', 'Pending', 'Off'],
                   params[:status] ? params[:status].titleize : "Active"), class: 'form-control') %>
               <% else %>
                 <%= select_tag(:status,
-                  options_for_select(['Any', 'Active + Pending', 'Active', 'Pending'],
+                  options_for_select(['Any', 'Active/Pending', 'Active', 'Pending'],
                   params[:status] ? params[:status].titleize : "Active"), class: 'form-control') %>
               <% end %>
             </div>

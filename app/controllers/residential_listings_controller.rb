@@ -410,6 +410,14 @@ class ResidentialListingsController < ApplicationController
       if request.variant != ":phone"
         @favorite_units = @residential_units.where(favorites: true)
       end
+
+      # convert params back into something the form can recognize
+      if !params[:bed_min].blank? && params[:bed_min] == 0
+        params[:bed_min] = 'Studio/Loft'
+      end
+      if !params[:bed_max].blank? && params[:bed_max] == 0
+        params[:bed_max] = 'Studio/Loft'
+      end
     end
 
     # returns all data for export

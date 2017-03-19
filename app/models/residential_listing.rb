@@ -261,9 +261,9 @@ class ResidentialListing < ActiveRecord::Base
     # search by status
     if params[:status]
       status = params[:status].downcase
-      included = ['active + pending', 'active', 'pending', 'off'].include?(status)
+      included = ['active/pending', 'active', 'pending', 'off'].include?(status)
       if included
-        if status == 'active + pending'
+        if status == 'active/pending'
           running_list = running_list.where("status = ? or status = ?",
             Unit.statuses["active"], Unit.statuses["pending"])
         else
