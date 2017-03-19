@@ -18,7 +18,7 @@ namespace :maintenance do
 		end
 
 		results.each do |r|
-			puts "#{r.street_number} #{r.route} - Listing ID: #{r.listing_id}"
+			puts "#{r.street_number} #{r.route} - Building ID: #{r.id}"
 		end
 
 	end
