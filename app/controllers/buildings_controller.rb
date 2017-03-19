@@ -266,8 +266,8 @@ class BuildingsController < ApplicationController
     # Need to take in additional params here. Can't rename them, or the geocode plugin
     # will not map to them correctly
     def building_params
-      params.permit(:sort_by, :direction, :page, :filter, :status, :status_listings, :street_number,
-        :route, :intersection, :neighborhood,
+      data = params.permit(:sort_by, :direction, :page, :filter, :status, :status_listings, :street_number,
+        :route, :route_short, :intersection, :neighborhood,
         :sublocality, :administrative_area_level_2_short,
         :administrative_area_level_1_short, :inaccuracy_description, :request_price_drop,
         :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id, :file,
@@ -275,5 +275,14 @@ class BuildingsController < ApplicationController
           :inaccuracy_description, :pet_policy_id, :rental_term_id, :custom_rental_term, :file,
           :custom_amenities, :custom_utilities, :neighborhood_id, :neighborhood, :llc_name,
           building_amenity_ids: [], images_files: [], utility_ids: [] ])
+
+      # this parameter was introduced later on, and we don't want to update the database field's
+      # name. Instead, just transfer the param value into the field that lines up with our db.
+      if !data[:route_short].blank?
+        data[:route] = data[:route_short]
+        data.delete('route_short')
+      end
+
+      data
     end
 end

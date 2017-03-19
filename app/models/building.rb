@@ -19,8 +19,8 @@ class Building < ActiveRecord::Base
 	has_and_belongs_to_many :building_amenities
 	has_and_belongs_to_many :utilities
 
-	attr_accessor :building, :inaccuracy_description,
-    :custom_rental_term, :custom_amenities, :custom_utilities, :custom_neighborhood_id
+	attr_accessor :building, :inaccuracy_description, :custom_rental_term, :custom_amenities,
+    :custom_utilities, :custom_neighborhood_id, :route_short
 
   # can't be unique. we might have archived copies with the same address
 	validates :formatted_street_address, presence: true, length: {maximum: 200}
