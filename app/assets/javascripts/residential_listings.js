@@ -108,7 +108,7 @@
           url: '/residential_listings/check_in_options',
           data: {
             current_location: [position.coords.latitude, position.coords.longitude],
-            distance: 200 // feet
+            distance: 300 // feet
           }
         });
       }, function() {}, {
