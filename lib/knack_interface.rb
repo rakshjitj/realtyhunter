@@ -258,7 +258,8 @@ module KnackInterface
         field_146: listing.baths, # Bathroom
         field_141: listing.unit.rent, # Rent
         field_700: listing.op_fee_percentage, # Unit OP
-        field_880: status # status
+        field_880: status, # status
+        field_983: listing.unit.primary_agent ? listing.unit.primary_agent.name : nil, # primary agent name
       }
 
       if is_now_active
@@ -311,7 +312,8 @@ module KnackInterface
         field_146: listing.baths, # Bathroom
         field_141: listing.unit.rent, # Rent
         field_700: listing.op_fee_percentage, # Unit OP
-        field_880: status # status
+        field_880: status, # status
+        field_983: listing.unit.primary_agent ? listing.unit.primary_agent.name : nil, # primary agent name
       }
 
       if is_now_active
