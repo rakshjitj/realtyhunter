@@ -12,8 +12,8 @@ namespace :maintenance do
     stale_listings = ResidentialListing.joins(:unit)
         .where('archived = false')
         .where('units.status = ?', Unit.statuses['pending'])
-        .where('residential_listings.updated_at < ?', 2.weeks.ago)
-        .where('units.updated_at < ?', 2.weeks.ago)
+        .where('residential_listings.updated_at < ?', 4.weeks.ago)
+        .where('units.updated_at < ?', 4.weeks.ago)
         # .where('companies.id = ?', company.company_id)
 
     stale_listings.each {|l| l.unit.update({status: 2})}
