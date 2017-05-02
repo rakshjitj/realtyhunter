@@ -37,6 +37,10 @@ module SyndicationInterface
 		pull_data(company_id, search_params)
 	end
 
+	def nestio_listings(company_id, search_params)
+		pull_data(company_id, search_params)
+	end
+
 	def pull_data(company_id, search_params)
 		listings = Unit.joins('left join residential_listings on units.id = residential_listings.unit_id
 left join sales_listings on units.id = sales_listings.unit_id')
@@ -88,10 +92,13 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'residential_listings.has_fee', 'residential_listings.beds as r_beds',
 			'residential_listings.baths as r_baths', 'residential_listings.description',
 			'residential_listings.total_room_count as r_total_room_count',
+			'residential_listings.floor',
+			'residential_listings.tenant_occupied as r_tenant_occupied',
 			'sales_listings.id AS s_id',
 			'sales_listings.beds as s_beds',
 			'sales_listings.baths as s_baths',
 			'sales_listings.public_description',
+			'sales_listings.tenant_occupied as s_tenant_occupied',
 			'units.id as unit_id',
 			'units.primary_agent_id',
 			'units.primary_agent2_id',

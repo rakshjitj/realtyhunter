@@ -226,6 +226,7 @@ Rails.application.routes.draw do
       get 'naked_apts'
       get 'streeteasy'
       get 'trulia'
+      get 'nestio'
     end
   end
 

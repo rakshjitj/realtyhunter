@@ -25,13 +25,7 @@ xml.streeteasy :version => "1.6" do
 			# 	@status = "active"
 			# elsif listing.status == "pending"
 			# 	@status = "off-market"
-			# elsif listing.status == "offer_submitted"
-			# 	@status = "contract-out"
-			# elsif listing.status == "offer_accepted"
-			# 	@status = "in-contract"
-		 #  elsif listing.status == "binder_signed"
-			# 	@status = "contract-signed"
-			# elsif listing.status == "off" #||
+			# elsif listing.status == "off"
 			# 	@status == "rented"
 			# end
 
@@ -64,20 +58,20 @@ xml.streeteasy :version => "1.6" do
 						xml.exclusive
 					end
 
-					if listing.r_beds
-						xml.bedrooms listing.r_beds
-					elsif listing.s_beds
-						xml.bedrooms listing.s_beds
+					if !listing.r_beds.nil?
+						xml.bedrooms listing.r_beds.to_i
+					elsif !listing.s_beds.nil?
+						xml.bedrooms listing.s_beds.to_i
 					end
 
-					if listing.r_total_room_count
-						xml.totalrooms listing.r_total_room_count
+					if !listing.r_total_room_count?
+						xml.totalrooms listing.r_total_room_count.to_i
 					end
 
 					baths = nil
-					if listing.r_baths
+					if !listing.r_baths.nil?
 						baths = listing.r_baths
-					elsif listing.s_baths
+					elsif !listing.s_baths.nil?
 						baths = listing.s_baths
 					end
 
@@ -236,12 +230,12 @@ xml.streeteasy :version => "1.6" do
 				xml.media do
 					if @bldg_images[listing.building_id]
 						@bldg_images[listing.building_id].each do |i|
-							xml.photo url:i.file.url(:large), position: i.priority, desription:""
+							xml.photo url:i.file.url(:large), position: i.priority, description:""
 						end
 					end
 					if @images[listing.unit_id]
 						@images[listing.unit_id].each do |i|
-							xml.photo url:i.file.url(:large), position: i.priority, desription:""
+							xml.photo url:i.file.url(:large), position: i.priority, description:""
 						end
 					end
 				end
