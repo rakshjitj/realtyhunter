@@ -134,7 +134,7 @@ xml.streeteasy :version => "1.6" do
 
           end
 
-          xml.tag! 'property-type', "residential"
+          xml.tag! 'property-type', "apartment"
 
           xml.tag! 'provider-listingid', listing.listing_id
 
