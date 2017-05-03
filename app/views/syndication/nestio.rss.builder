@@ -116,19 +116,25 @@ xml.streeteasy :version => "1.6" do
           # TODO: our output needs to be sanitized here
           if @pet_policies[listing.building_id] && @pet_policies[listing.building_id][0].pet_policy_name
             policy = @pet_policies[listing.building_id][0].pet_policy_name
+
+
             if policy == 'pets allowed'
               xml.tag! 'pets-policy', 'pets ok'
-            elsif policy == 'pets upon approval'
-              xml.tag! 'pets-policy', 'case by case'
-            else
+            elsif policy == 'no pets'
+              xml.tag! 'no pets'
+            elsif policy == 'small pets ok (<30 lbs)' || policy == 'cats/small dogs'
+              xml.tag! 'small pets'
+            elsif policy == 'cats only'
               xml.tag! 'pets-policy', policy
+            elsif policy == 'dogs only'
+              xml.tag! 'pets-policy', policy
+            else
+              xml.tag! 'pets-policy', 'case by case'
             end
-
 
           end
 
-          # TODO: update this to be more accurate once we have more info
-          xml.tag! 'property-type', "apartment"
+          xml.tag! 'property-type', "residential"
 
           xml.tag! 'provider-listingid', listing.listing_id
 
