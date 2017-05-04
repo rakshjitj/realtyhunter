@@ -17,43 +17,25 @@ xml.streeteasy :version => "1.6" do
         next
       end
 
-      # status should always be reported as active
-      # translate status
-      @status = 'active'
-      # if listing.status == "active"
-      #   @status = "active"
-      # elsif listing.status == "pending"
-      #   @status = "off-market"
-      # elsif listing.status == "off"
-      #   @status == "rented"
-      # end
-
-      # listing type
-      if listing.r_id
-        @ptype = "rental"
-      # else sales
-      # @ptype = "sale"
-      end
-
       xml.property do# type: @ptype, status: @status, id: listing.listing_id, url: listing.public_url do
-        if listing.r_id
-          xml.status 'for rent'
-        elsif listing.s_id
-          xml.status 'for sale'
+        if listing.status == "active"
+          xml.status "active"
+        elsif listing.status == "pending"
+          xml.status "in contract"
+        else
+          # we leave this here for completion. as of right now, this is never used.
+          xml.status "rented"
         end
 
-        # if listing.has_fee
-          xml.tag! 'rental-terms' do
-            xml.tag! 'rental-broker-fee', listing.has_fee ? 'Yes' : 'No'
-            if !listing.lease_start.nil?
-              xml.tag! 'lease-min-length-months', listing.lease_start
-            end
-            if !listing.lease_end.nil?
-              xml.tag! 'lease-min-length-months', listing.lease_end
-            end
+        xml.tag! 'rental-terms' do
+          xml.tag! 'rental-broker-fee', listing.has_fee ? 'Yes' : 'No'
+          if !listing.lease_start.nil?
+            xml.tag! 'lease-min-length-months', listing.lease_start
           end
-          # xml.noFee
-        # end
+          if !listing.lease_end.nil?
+            xml.tag! 'lease-min-length-months', listing.lease_end
+          end
+        end
 
         xml.location do
           xml.tag! 'unit-number', listing.building_unit
@@ -61,7 +43,6 @@ xml.streeteasy :version => "1.6" do
           xml.tag! 'city-name', listing.sublocality
           xml.tag! 'state-code', listing.administrative_area_level_1_short
           xml.zipcode listing.postal_code
-          # xml.neighborhood listing.neighborhood_name
         end
 
         xml.details do
@@ -169,11 +150,6 @@ xml.streeteasy :version => "1.6" do
             @primary_agents[listing.unit_id].each do |agent|
               xml.agent do
                 xml.tag! 'agent-name', agent.name
-                # xml.company @company.name
-                # if @agent_images[agent.id]
-                #   xml.photo url:@agent_images[agent.id].file.url(:large)
-                # end
-                # xml.url agent.public_url
                 xml.tag! 'agent-email', agent.email
                 xml.tag! 'agent-phone', agent.mobile_phone_number
               end
@@ -238,8 +214,8 @@ xml.streeteasy :version => "1.6" do
                   end
                 else
                   @other_amenities << bm
-                end # case
-              end
+                end
+              end # case
             end
             if @other_amenities.length > 0
               xml.tag! 'building-other-amenities' do
@@ -249,13 +225,6 @@ xml.streeteasy :version => "1.6" do
               end # building-other-amenities
             end # other_amenities
           end
-
-          # TOOD
-          # xml.appliances
-          #   xml.tag! 'has-washer'
-          #   xml.tag! 'has-dryer'
-          #   xml.tag! 'has-dishwasher'
-          # end
 
       end # property
     end # listings.each
