@@ -21,7 +21,7 @@ xml.streeteasy :version => "1.6" do
         if listing.status == "active"
           xml.status "active"
         elsif listing.status == "pending"
-          xml.status "in contract"
+          xml.status "in-contract"
         else
           # we leave this here for completion. as of right now, this is never used.
           xml.status "rented"
