@@ -95,10 +95,11 @@
 							</p>
 						<% end %>
 
-						<% if !@building.notes.blank? %>
+						<% if !escape_once(@building.notes).blank? %>
 							<p>
 							  <strong>Building Notes:</strong>
-							  <%= @building.notes %>
+		            <%= h raw sanitize @building.notes,
+		            		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div) %>
 							</p>
 						<% end %>
 

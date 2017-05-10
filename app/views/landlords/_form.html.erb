@@ -209,7 +209,11 @@
         <div class="row">
           <div class="col-xs-12">
             <%= f.label :notes, "Notes (will be shared on listings)" %><br />
-            <%= f.text_area :notes, class: 'form-control', rows: 4 %>
+            <small class="explainer-text"><em>
+              Tip: Enter 2 blank lines to separate paragraphs.
+            </small></em>
+            <br><br>
+            <%= f.bootsy_area :notes, class: 'form-control', rows: 15 %>
           </div>
         </div>
 
@@ -225,7 +229,11 @@
         <div class="row">
           <div class="col-xs-12">
             <%= f.label :management_info, "Additional Management Info" %><br>
-            <%= f.text_area :management_info, class: 'form-control', rows: 4 %>
+            <small class="explainer-text"><em>
+              Tip: Enter 2 blank lines to separate paragraphs.
+            </small></em>
+            <br><br>
+            <%= f.bootsy_area :management_info, class: 'form-control', rows: 15 %>
           </div>
         </div>
 

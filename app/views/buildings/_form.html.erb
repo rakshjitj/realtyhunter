@@ -104,7 +104,11 @@
       <div class="col-md-12">
         <div class="field">
           <%= f.label :notes, "Building Notes" %><br>
-          <%= f.text_area :notes, class: 'form-control', rows: 5 %>
+          <small class="explainer-text"><em>
+            Tip: Enter 2 blank lines to separate paragraphs.
+          </small></em>
+          <br><br>
+          <%= f.bootsy_area :notes, class: 'form-control', rows: 15 %>
         </div>
       </div>
     </div>

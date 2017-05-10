@@ -108,17 +108,17 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-xs-4 col-md-3">
-            <strong>Listing Agent %</strong>
-          </div>
-          <div class="col-xs-8 col-md-3">
-            <% if !@landlord.listing_agent_percentage.nil? %>
+        <% if !@landlord.listing_agent_percentage.nil? %>
+          <div class="row">
+            <div class="col-xs-4 col-md-3">
+              <strong>Listing Agent %</strong>
+            </div>
+            <div class="col-xs-8 col-md-3">
               <%= @landlord.listing_agent_percentage %>%
-            <% end %>
+            </div>
+            <!-- spacer -->
           </div>
-          <!-- spacer -->
-        </div>
+        <% end %>
 
         <br>
         <div class="row">
@@ -130,41 +130,49 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-md-12">
-            <br />
-            <strong>Source of updates</strong>
+        <% if !@landlord.update_source.blank? %>
+          <div class="row">
+            <div class="col-md-12">
+              <br />
+              <strong>Source of updates</strong>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <%= @landlord.update_source %>
+          <div class="row">
+            <div class="col-md-12">
+              <%= @landlord.update_source %>
+            </div>
           </div>
-        </div>
+        <% end %>
 
-        <div class="row">
-          <div class="col-md-12">
-            <br />
-            <strong>Notes (Shared on listings)</strong>
+        <% if !escape_once(@landlord.notes).blank? %>
+          <div class="row">
+            <div class="col-md-12">
+              <br />
+              <strong>Notes (Shared on listings)</strong>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <%= @landlord.notes %>
+          <div class="row">
+            <div class="col-md-12">
+              <%= h raw sanitize @landlord.notes,
+                  tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div) %>
+            </div>
           </div>
-        </div>
+        <% end %>
 
-        <div class="row">
-          <div class="col-md-12">
-            <br />
-            <strong>Additional Management info</strong>
+        <% if !escape_once(@landlord.management_info).blank? %>
+          <div class="row">
+            <div class="col-md-12">
+              <br />
+              <strong>Additional management info</strong>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <%= @landlord.management_info %>
+          <div class="row">
+            <div class="col-md-12">
+              <%= h raw sanitize @landlord.management_info,
+                  tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div) %>
+            </div>
           </div>
-        </div>
+        <% end %>
 
         <div class="row">
           <div class="col-md-12">
