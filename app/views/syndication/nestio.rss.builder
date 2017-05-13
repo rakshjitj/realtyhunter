@@ -18,8 +18,6 @@ xml.streeteasy :version => "1.6" do
         next
       end
 
-      # status should always be reported as active
-      # translate status
       # @status = 'active'
       if listing.status == "active"
         @status = "active"
