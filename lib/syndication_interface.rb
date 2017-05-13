@@ -46,7 +46,6 @@ module SyndicationInterface
 	def pull_data(company_id, search_params)
 		listings = Unit.joins('left join residential_listings on units.id = residential_listings.unit_id
 left join sales_listings on units.id = sales_listings.unit_id')
-
 		# Notes:
 		# - Left join on the landlords because sales listings do not have a landlord defined.
 		# - Since we are joining of the base Unit table, make sure no commerical listings are included.
@@ -57,13 +56,13 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			.where('units.archived = false')
 			.where('units.status IN (?) OR units.syndication_status = ?',
 					[Unit.statuses["active"], Unit.statuses["pending"]],
-						Unit.syndication_statuses['Force syndicate'])
+					Unit.syndication_statuses['Force syndicate'])
+			.where('residential_listings.id IS NOT NULL OR sales_listings.id IS NOT NULL')
+			.where('companies.id = ?', company_id)
 			.where('units.syndication_status IN (?)', [
 					Unit.syndication_statuses['Syndicate if matches criteria'],
 					Unit.syndication_statuses['Force syndicate']
 				])
-			.where('residential_listings.id IS NOT NULL OR sales_listings.id IS NOT NULL')
-			.where('companies.id = ?', company_id)
 
 		if is_true?(search_params[:has_primary_agent])
 			listings = listings.where('units.primary_agent_id > 0')
@@ -115,8 +114,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'units.public_url',
 			'units.exclusive')
 
-
-		puts "\n\n\n****** #{listings.length}"
-		listings
+		# puts "\n\n\n****** #{listings.length}"
+		listings.uniq
 	end
 end
