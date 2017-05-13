@@ -95,12 +95,6 @@ xml.streeteasy :version => "1.6" do
 
 					xml.propertyType "rental"
 
-					# 	if @pet_policies[listing.building_id]
-					# 		xml.pets @pet_policies[listing.building_id][0].pet_policy_name
-					# 	else
-					# 		xml.pets nil
-					# 	end
-
 					# streeteasy has their own approved list of amenities
 					# doorman, gym, pool, elevator, garage, parking, balcony, storage, patio, fireplace
 					# washerDryer, dishwasher, furnished, pets, other
@@ -146,13 +140,19 @@ xml.streeteasy :version => "1.6" do
 											xml.washerDryer
 										end
 										@laundry_included = true
-									when "pets allowed", "cats only"
+									when "case by case",  "cats only", "cats/small dogs", "dogs only", "monthly pet fee" ,
+											"pet deposit required", "pets allowed", "pets ok", "pets upon approval", "small pets ok (<30lbs)"
 										xml.pets
-									# pets TODO
 									else
 										@other_amenities << bm
 								end # case
 							end
+						end
+
+						pets_allowed = ["case by case",  "cats only", "cats/small dogs", "dogs only", "monthly pet fee" ,
+								"pet deposit required", "pets allowed", "pets ok", "pets upon approval", "small pets ok (<30lbs)"]
+						if @pet_policies[listing.building_id] && pets_allowed.include?(@pet_policies[listing.building_id][0].pet_policy_name)
+							xml.pets
 						end
 
 						if @residential_amenities && @residential_amenities[listing.unit_id]

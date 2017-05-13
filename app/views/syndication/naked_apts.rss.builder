@@ -145,9 +145,6 @@ xml.streeteasy :version => "1.6" do
 											xml.washerDryer
 										end
 										@laundry_included = true
-									when "pets allowed", "cats only"
-										xml.pets
-									# pets TODO
 									else
 										@other_amenities << bm
 								end # case
@@ -186,8 +183,14 @@ xml.streeteasy :version => "1.6" do
 						if !@other_amenities.blank?
 							xml.other @other_amenities.join(", ")
 						end
-
 					end # amenities
+
+					pets_allowed = ["case by case",  "cats only", "cats/small dogs", "dogs only", "monthly pet fee" ,
+	            "pet deposit required", "pets allowed", "pets ok", "pets upon approval", "small pets ok (<30lbs)"]
+	        if @pet_policies[listing.building_id] && pets_allowed.include?(@pet_policies[listing.building_id][0].pet_policy_name)
+	          xml.pets
+	        end
+
 				end # details
 
 				if !@open_houses[listing.unit_id].blank?
