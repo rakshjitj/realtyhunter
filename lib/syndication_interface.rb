@@ -12,7 +12,7 @@ module SyndicationInterface
 	# - must be exclusive OR no-fee (though we choose to hide anything unless it's exclusive...)
 	# - must have at least 1 listing agent assigned
 	def naked_apts_listings(company_id, search_params)
-		#search_params[:exclusive] = 1
+		search_params[:has_primary_agent] = 1
 		search_params[:has_fee_exclusive] = 1
 		pull_data(company_id, search_params)
 	end
@@ -24,6 +24,7 @@ module SyndicationInterface
 	# - must have at least 1 listing agent assigned
 	# - must have a description
 	def streeteasy_listings(company_id, search_params)
+		search_params[:has_primary_agent] = 1
 		search_params[:exclusive] = 1
 		search_params[:must_have_description] = 1
 		pull_data(company_id, search_params)
@@ -34,6 +35,7 @@ module SyndicationInterface
 	# - must belong to this company
 	# - must have at least 1 listing agent assigned
 	def trulia_listings(company_id, search_params)
+		search_params[:has_primary_agent] = 1
 		pull_data(company_id, search_params)
 	end
 
@@ -45,6 +47,10 @@ module SyndicationInterface
 		listings = Unit.joins('left join residential_listings on units.id = residential_listings.unit_id
 left join sales_listings on units.id = sales_listings.unit_id')
 
+		# Notes:
+		# - Left join on the landlords because sales listings do not have a landlord defined.
+		# - Since we are joining of the base Unit table, make sure no commerical listings are included.
+		 #  We want to only include units that are sales or residential listings.
 		listings = listings.joins([building: :company])
 			.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
 			.joins('left join landlords on landlords.id = buildings.landlord_id')
@@ -52,12 +58,16 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			.where('units.status IN (?) OR units.syndication_status = ?',
 					[Unit.statuses["active"], Unit.statuses["pending"]],
 						Unit.syndication_statuses['Force syndicate'])
-			.where('units.primary_agent_id > 0')
 			.where('units.syndication_status IN (?)', [
 					Unit.syndication_statuses['Syndicate if matches criteria'],
 					Unit.syndication_statuses['Force syndicate']
 				])
+			.where('residential_listings.id IS NOT NULL OR sales_listings.id IS NOT NULL')
 			.where('companies.id = ?', company_id)
+
+		if is_true?(search_params[:has_primary_agent])
+			listings = listings.where('units.primary_agent_id > 0')
+		end
 
 		# naked requires all no-fee listings to be exposed
 		# so we have to filter out the non-exclusive ones on our end
@@ -105,6 +115,8 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'units.public_url',
 			'units.exclusive')
 
+
+		puts "\n\n\n****** #{listings.length}"
 		listings
 	end
 end
