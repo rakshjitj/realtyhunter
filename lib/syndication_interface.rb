@@ -54,15 +54,23 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			.joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
 			.joins('left join landlords on landlords.id = buildings.landlord_id')
 			.where('units.archived = false')
-			.where('units.status IN (?) OR units.syndication_status = ?',
-					[Unit.statuses["active"], Unit.statuses["pending"]],
-					Unit.syndication_statuses['Force syndicate'])
 			.where('residential_listings.id IS NOT NULL OR sales_listings.id IS NOT NULL')
 			.where('companies.id = ?', company_id)
-			.where('units.syndication_status IN (?)', [
+
+		# Nestio is still viewed as another "internal system". We send them our data, but we treat this
+		# as more of different "frontend" for our listings. Ignore the syndication status flag in their case.
+		if is_true?(search_params[:is_nestio])
+			listings = listings.where('units.status IN (?)',
+					[Unit.statuses["active"], Unit.statuses["pending"]])
+		else
+			listings = listings.where('units.status IN (?) OR units.syndication_status = ?',
+					[Unit.statuses["active"], Unit.statuses["pending"]],
+					Unit.syndication_statuses['Force syndicate'])
+				.where('units.syndication_status IN (?)', [
 					Unit.syndication_statuses['Syndicate if matches criteria'],
 					Unit.syndication_statuses['Force syndicate']
 				])
+		end
 
 		if is_true?(search_params[:has_primary_agent])
 			listings = listings.where('units.primary_agent_id > 0')
