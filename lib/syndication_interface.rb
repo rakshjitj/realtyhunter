@@ -40,6 +40,7 @@ module SyndicationInterface
 	end
 
 	def nestio_listings(company_id, search_params)
+		search_params[:is_nestio] = 1
 		pull_data(company_id, search_params)
 	end
 
