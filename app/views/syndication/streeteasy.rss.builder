@@ -29,8 +29,8 @@ xml.streeteasy :version => "1.6" do
 			# listing type
 			if listing.r_id
 				@ptype = "rental"
-			# else sales
-			# @ptype = "sale"
+			elsif listing.s_id
+				@ptype = "sale"
 			end
 
 			xml.property type: @ptype, status: @status, id: listing.listing_id, url: listing.public_url do
@@ -90,7 +90,7 @@ xml.streeteasy :version => "1.6" do
 		        		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
 					end
 
-					xml.propertyType "rental"
+					xml.propertyType @ptype
 
 					# streeteasy has their own approved list of amenities
 					# doorman, gym, pool, elevator, garage, parking, balcony, storage, patio, fireplace
@@ -137,9 +137,6 @@ xml.streeteasy :version => "1.6" do
 											xml.washerDryer
 										end
 										@laundry_included = true
-									when "case by case",  "cats only", "cats/small dogs", "dogs only", "monthly pet fee" ,
-											"pet deposit required", "pets allowed", "pets ok", "pets upon approval", "small pets ok (<30lbs)"
-										xml.pets
 									else
 										@other_amenities << bm
 								end # case
