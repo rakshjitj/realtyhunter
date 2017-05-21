@@ -18,13 +18,13 @@ xml.streeteasy :version => "1.6" do
 	  		next
 	  	end
 
-			if listing.status == "active"
+			# if listing.status == "active"
 				@status = "active"
-			elsif listing.status == "pending"
-				@status = "in-contract"
+			# elsif listing.status == "pending"
+				# @status = "in-contract"
 			# elsif listing.status == "off"
 			# 	@status == "rented"
-			end
+			# end
 
 			# listing type
 			if listing.r_id
@@ -90,7 +90,12 @@ xml.streeteasy :version => "1.6" do
 		        		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
 					end
 
-					xml.propertyType @ptype
+					if listing.r_id
+						xml.propertyType "rental"
+					elsif listing.s_id
+						xml.propertyType "house"
+					end
+					# xml.propertyType @ptype
 
 					# streeteasy has their own approved list of amenities
 					# doorman, gym, pool, elevator, garage, parking, balcony, storage, patio, fireplace
