@@ -135,12 +135,12 @@ xml.streeteasy :version => "1.6" do
                     end
                   when "fireplace"
                     xml.fireplace
-                  when "laundry in building"
-                    if !attribute_found["washerDryer"]
-                      attribute_found["washerDryer"] = 1
-                      xml.washerDryer
-                    end
-                    @laundry_included = true
+                  # when "laundry in building"
+                  #   if !attribute_found["washerDryer"]
+                  #     attribute_found["washerDryer"] = 1
+                  #     xml.washerDryer
+                  #   end
+                  #   @laundry_included = true
                   else
                     @other_amenities << bm
                 end # case

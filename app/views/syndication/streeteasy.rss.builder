@@ -136,12 +136,12 @@ xml.streeteasy :version => "1.6" do
 										end
 									when "fireplace"
 										xml.fireplace
-									when "laundry in building"
-										if !attribute_found["washerDryer"]
-											attribute_found["washerDryer"] = 1
-											xml.washerDryer
-										end
-										@laundry_included = true
+									# when "laundry in building"
+									# 	if !attribute_found["washerDryer"]
+									# 		attribute_found["washerDryer"] = 1
+									# 		xml.washerDryer
+									# 	end
+									# 	@laundry_included = true
 									else
 										@other_amenities << bm
 								end # case
@@ -164,11 +164,11 @@ xml.streeteasy :version => "1.6" do
 										xml.storage
 									when "private yard", "shared yard"
 										xml.patio # outdoor space ?
-									# when "washer/dryer hookups", "washer/dryer in unit"
-									# 	if !attribute_found["washerDryer"]
-									# 		attribute_found["washerDryer"] = 1
-									# 		xml.washerDryer
-									# 	end
+									when "washer/dryer hookups", "washer/dryer in unit"
+										if !attribute_found["washerDryer"]
+											attribute_found["washerDryer"] = 1
+											xml.washerDryer
+										end
 									when "dishwasher"
 										xml.dishwasher
 									when "furnished"
