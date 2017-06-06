@@ -1,5 +1,5 @@
-workers Integer(ENV['WEB_CONCURRENCY'] || 2)
-threads_count = Integer(ENV['MAX_THREADS'] || 4)
+workers Integer(ENV['WEB_CONCURRENCY'] || 10) # 2, could be 3
+threads_count = Integer(ENV['MAX_THREADS'] || 4) # could try reducing to 3, but don't go above 5
 threads threads_count, threads_count
 
 preload_app!
