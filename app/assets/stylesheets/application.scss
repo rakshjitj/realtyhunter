@@ -1,6 +1,7 @@
 $grid-float-breakpoint: 1150px;
 $navbarCollapseWidth: 1150px;
 
+// TODO: these should be listed below the dependencies above
 @import "announcements.scss";
 @import "custom.scss";
 @import "listings.scss";
@@ -10,10 +11,15 @@ $navbarCollapseWidth: 1150px;
 @import "scaffolds.scss";
 @import "navbar.scss";
 
+// TODO: these should be listed at the top of the file
 @import "modal-tweaks.scss";
 @import "dropzone/dropzone";
-@import 'jquery-ui/all.css';
-@import 'jquery-ui/theme.css';
+@import 'jquery-ui/all';
+@import 'jquery-ui/autocomplete';
+@import 'jquery-ui/base';
+@import 'jquery-ui/core';
+@import 'jquery-ui/menu';
+@import 'jquery-ui/theme';
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import 'bootstrap-datetimepicker';
@@ -21,3 +27,4 @@ $navbarCollapseWidth: 1150px;
 @import 'awesome-bootstrap-checkbox';
 @import 'selectize';
 @import 'selectize.default';
+
