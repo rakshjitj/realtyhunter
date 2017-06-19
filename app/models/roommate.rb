@@ -2,7 +2,7 @@
 # Data pulled from Wufoo form or roommate referral form on RealtyHunter.
 #
 #
-class Roommate < ActiveRecord::Base
+class Roommate < ApplicationRecord
   belongs_to :user, touch: true
   belongs_to :neighborhood, touch: true
   belongs_to :company, touch: true

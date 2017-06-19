@@ -9,8 +9,8 @@
       <h1>Waterfall Plan</h1>
     </div>
     <div class="col-md-6 form-label-responsive">
-      <%= link_to 'Export to CSV', user_waterfalls_path(params.merge(format: 'csv').symbolize_keys),
-          class:"btn btn-sm btn-warning link-as-button" %>
+      <%= link_to 'Export to CSV', user_waterfalls_path(params.permit!.merge(format: 'csv')),
+          class:"btn btn-sm btn-warning link-as-button", target: :_blank %>
     </div>
 
   </div>

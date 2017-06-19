@@ -38,6 +38,4 @@ Company = {};
 
 })();
 
-$(document).on('ready page:load', Company.initialize);
-
-$(document).on('page:restore', Company.initialize);
+document.addEventListener('turbolinks:load', Company.initialize);

@@ -112,7 +112,5 @@ Deals = {};
   };
 })();
 
-$(document).on('ready page:load', Deals.ready);
-
-$(document).on('page:restore', Deals.ready);
+document.addEventListener('turbolinks:load', Deals.ready);
 

@@ -300,6 +300,4 @@ $(document).on('keyup',function(evt) {
   }
 });
 
-$(document).on('ready page:load', Roommates.initialize);
-
-$(document).on('page:restore', Roommates.initialize);
+document.addEventListener('turbolinks:load', Roommates.initialize);

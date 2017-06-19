@@ -99,6 +99,4 @@ ContactUs = {};
 
 })();
 
-$(document).on('ready page:load', ContactUs.initialize);
-
-$(document).on('page:restore', ContactUs.initialize);
+document.addEventListener('turbolinks:load', ContactUs.initialize);

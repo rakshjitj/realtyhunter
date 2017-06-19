@@ -125,6 +125,4 @@ Partner = {};
 
 })();
 
-$(document).on('ready page:load', Partner.initialize);
-
-$(document).on('page:restore', Partner.initialize);
+document.addEventListener('turbolinks:load', Partner.initialize);

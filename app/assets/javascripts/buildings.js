@@ -262,6 +262,4 @@ $(document).on('keyup',function (evt) {
   }
 });
 
-$(document).on('ready page:load', Buildings.ready);
-
-$(document).on('page:restore', Buildings.ready);
+document.addEventListener('turbolinks:load', Buildings.ready);

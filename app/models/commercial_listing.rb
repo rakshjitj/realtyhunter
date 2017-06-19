@@ -1,4 +1,4 @@
-class CommercialListing < ActiveRecord::Base
+class CommercialListing < ApplicationRecord
   audited except: [:created_at, :updated_at]
 
   scope :unarchived, ->{where(archived: false)}
@@ -85,7 +85,7 @@ class CommercialListing < ActiveRecord::Base
   end
 
   def self.export_all(user, params)
-    params = params.symbolize_keys
+    # params = params.symbolize_keys
     running_list = CommercialListing
       .joins([:commercial_property_type, unit: [building: [:company, :landlord]]])
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
@@ -354,10 +354,10 @@ class CommercialListing < ActiveRecord::Base
         if status_lowercase == 'active/pending'
           listings = listings
               .where("units.status IN (?) ",
-                [Unit.statuses['active'], Unit.statuses['pending']])#.uniq
+                [Unit.statuses['active'], Unit.statuses['pending']])
         else
           listings = listings
-              .where("units.status = ? ", Unit.statuses[status_lowercase])#.uniq
+              .where("units.status = ? ", Unit.statuses[status_lowercase])
         end
       end
     end
@@ -419,7 +419,7 @@ class CommercialListing < ActiveRecord::Base
 
     images = CommercialListing.get_images(listings)
     bldg_images = Building.get_bldg_images_from_units(listings)
-    return listings.uniq, images, bldg_images
+    return listings.distinct, images, bldg_images
   end
 
   def self.listings_by_id(user, listing_ids)

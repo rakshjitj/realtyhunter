@@ -4,6 +4,10 @@ CommercialListings = {};
   CommercialListings.timer;
   CommercialListings.selectedNeighborhoodIds = null;
 
+  CommercialListings.wasAlreadyInitialized = function() {
+    return !!$('.commercial_listings').attr('initialized');
+  }
+
   CommercialListings.updatePropertySubTypes = function (ptype) {
     var id = $('#commercial').attr('data-unit-id');
     $.ajax({
@@ -44,7 +48,7 @@ CommercialListings = {};
       };
 
     if (CommercialListings.selectedNeighborhoodIds && CommercialListings.selectedNeighborhoodIds.length) {
-      data['neighborhood_ids'] = CommercialListings.selectedNeighborhoodIds;
+      data.neighborhood_ids = CommercialListings.selectedNeighborhoodIds;
     }
 
     var searchParams = [];
@@ -366,16 +370,18 @@ CommercialListings = {};
   CommercialListings.ready = function() {
     CommercialListings.clearTimer();
 
-    var editPage = $('.commercial_listings.edit').length;
-    var newPage = $('.commercial_listings.new').length;
-    var indexPage = $('.commercial_listings.index').length;
-    // new and edit pages both render the same form template, so init them using the same code
-    if (editPage || newPage) {
-      CommercialListings.initEditor();
-    } else if (indexPage) {
-      CommercialListings.initIndex();
-    } else {
-      CommercialListings.initShow();
+    if (!CommercialListings.wasAlreadyInitialized()) {
+      var editPage = $('.commercial_listings.edit').length;
+      var newPage = $('.commercial_listings.new').length;
+      var indexPage = $('.commercial_listings.index').length;
+      // new and edit pages both render the same form template, so init them using the same code
+      if (editPage || newPage) {
+        CommercialListings.initEditor();
+      } else if (indexPage) {
+        CommercialListings.initIndex();
+      } else {
+        CommercialListings.initShow();
+      }
     }
   }
 
@@ -387,6 +393,8 @@ $(document).on('keyup',function(evt) {
   }
 });
 
-$(document).on('ready page:load', CommercialListings.ready);
+document.addEventListener('turbolinks:load', CommercialListings.ready);
 
-$(document).on('page:restore', CommercialListings.ready);
+document.addEventListener("turbolinks:before-cache", function() {
+  $('.commercial_listings').attr('initialized', 'true');
+})

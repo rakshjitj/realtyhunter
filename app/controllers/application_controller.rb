@@ -8,8 +8,8 @@ class ApplicationController < ActionController::Base
   #before_action :set_locale
   before_action ->{ @remote_ip = request.headers['REMOTE_ADDR'] }
   before_action :detect_device_variant
-  before_filter :check_rack_mini_profiler
-  after_filter  :clear_xhr_flash
+  # before_action :check_rack_mini_profiler # for profiling purposes only
+  after_action  :clear_xhr_flash
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message

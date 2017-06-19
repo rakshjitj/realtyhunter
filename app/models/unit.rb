@@ -1,4 +1,4 @@
-class Unit < ActiveRecord::Base
+class Unit < ApplicationRecord
   audited except: [:created_at, :updated_at], on: [:update]
 
 	belongs_to :building #, touch: true

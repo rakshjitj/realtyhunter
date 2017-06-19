@@ -110,6 +110,4 @@ Users = {};
   };
 })();
 
-$(document).on('ready page:load', Users.ready);
-
-$(document).on('page:restore', Users.ready);
+$(document).on('turbolinks:load', Users.ready);

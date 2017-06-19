@@ -4,7 +4,7 @@
   <div class="col-md-12 hidden-xs hidden-sm">
     <div class="announcements">
       <div class="row row-sm-padding announcement-fixed-height listings-top-row">
-        <% @announcement_items.each_index do |idx| %>
+        <% @announcement_items.each_with_index do |val,idx| %>
           <% if idx % 4 == 0 && idx > 0 %>
             </div>
             <div class="row row-sm-padding announcement-fixed-height">
@@ -12,7 +12,7 @@
 
           <div class="col-md-3">
             <%= render partial: 'announcements/announcement',
-              locals: { announcement: @announcement_items[idx], shorten_text: true } %>
+              locals: { announcement: val, shorten_text: true } %>
           </div>
 
         <% end %>

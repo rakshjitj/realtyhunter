@@ -1,4 +1,4 @@
-class Client < ActiveRecord::Base
+class Client < ApplicationRecord
 	scope :unarchived, ->{where(archived: false)}
 	belongs_to :deal
 

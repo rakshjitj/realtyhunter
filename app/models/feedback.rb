@@ -1,4 +1,4 @@
-class Feedback < ActiveRecord::Base
+class Feedback < ApplicationRecord
   default_scope { order("updated_at DESC") }
   belongs_to :user
   belongs_to :unit

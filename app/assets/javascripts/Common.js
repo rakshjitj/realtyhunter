@@ -1,6 +1,77 @@
 Common = {};
 
 (function() {
+  // commonInits should run on every page load, even with turbolinks enabled
+  Common.miscInits = function () {
+    // initialize our dropzone widgets manually,
+    Dropzone.autoDiscover = false;
+
+    // change all date input fields to auto-open the calendar
+    $('.datepicker').each(function() {
+      $(this).datetimepicker({
+        viewMode: 'days',
+        format: 'MM/DD/YYYY',
+        allowInputToggle: true
+      });
+    });
+    $('.datepicker').each(function() {
+      var date_value = $(this).attr('data-available-by');
+      if (date_value) {
+        $(this).data("DateTimePicker").date(date_value);
+      }
+    });
+
+    $('input[type=number]').mousewheel(function(){
+      event.preventDefault();
+    });
+
+    // submit login form on enter
+    $('#session_password').keydown(function(e) {
+        if (e.keyCode == 13) {
+          $(this).closest('form').submit();
+        }
+    });
+
+    // .modal-backdrop classes
+    $(".modal-transparent").on('show.bs.modal', function () {
+      setTimeout( function() {
+        $(".modal-backdrop").addClass("modal-backdrop-transparent");
+      }, 0);
+    });
+    $(".modal-transparent").on('hidden.bs.modal', function () {
+      $(".modal-backdrop").addClass("modal-backdrop-transparent");
+    });
+
+    $(".modal-fullscreen").on('show.bs.modal', function () {
+      setTimeout( function() {
+        $(".modal-backdrop").addClass("modal-backdrop-fullscreen");
+      }, 0);
+    });
+    $(".modal-fullscreen").on('hidden.bs.modal', function () {
+      $(".modal-backdrop").addClass("modal-backdrop-fullscreen");
+    });
+
+    Common.detectPhoneNumbers();
+
+    // navbar
+    var sideslider = $('[data-toggle=collapse-side]');
+    var sel = sideslider.attr('data-target');
+    var sel2 = sideslider.attr('data-target-2');
+    sideslider.click(function(event){
+      $(sel).toggleClass('in');
+      $(sel2).toggleClass('out');
+    });
+
+    if (Common.onMobileDevice()) {
+      $('.navbar-desktop').remove();
+    } else {
+      $('.navbar-mobile').remove();
+    }
+
+    // disbled due to issues when navigating backwards in turbolinks
+    //Common.reinitInfiniteScroll();
+  };
+
   // disabling infinite scroll due to issues when navigating backwards in turbolinks
   // todo: check at a future date to see if the issue has been resolved
   Common.reinitInfiniteScroll = function () {

@@ -159,6 +159,4 @@ $(document).on('keyup',function(evt) {
   }
 });
 
-$(document).on('ready page:load', Landlords.ready);
-
-$(document).on('page:restore', Landlords.ready);
+document.addEventListener('turbolinks:load', Landlords.ready);

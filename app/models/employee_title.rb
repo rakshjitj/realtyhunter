@@ -1,4 +1,4 @@
-class EmployeeTitle < ActiveRecord::Base
+class EmployeeTitle < ApplicationRecord
 	has_many :users
 	before_save :sanitize_name
 

@@ -1,4 +1,4 @@
-class SalesListing < ActiveRecord::Base
+class SalesListing < ApplicationRecord
   audited except: [:created_at, :updated_at]
 
 	scope :unarchived, ->{where(archived: false)}

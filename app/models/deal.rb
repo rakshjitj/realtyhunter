@@ -1,4 +1,4 @@
-class Deal < ActiveRecord::Base
+class Deal < ApplicationRecord
 	scope :unarchived, ->{where(archived: false)}
 	belongs_to :unit
   belongs_to :user, class_name: 'User', touch: true

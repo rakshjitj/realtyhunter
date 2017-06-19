@@ -47,8 +47,8 @@
   <div class="col-sm-3 vertical-align2 totals form-label-responsive">
     <% if current_user.is_management? && action_name == "employees" %>
       <%= link_to 'Export to CSV',
-          employees_company_path(current_user.company, params.merge(format: 'csv').symbolize_keys),
-          class:"btn btn-sm btn-warning link-as-button" %>
+          employees_company_path(current_user.company, params.permit!.merge(format: 'csv')),
+          class:"btn btn-sm btn-warning link-as-button", target: :_blank %>
     <% end %>
   </div>
 

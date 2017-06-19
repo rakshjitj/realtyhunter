@@ -7,6 +7,10 @@
   ResidentialListings.selectedUnitAmenityIds = null;
   ResidentialListings.selectedBuildingAmenityIds = null;
 
+  ResidentialListings.wasAlreadyInitialized = function() {
+    return !!$('.residential_listings').attr('initialized');
+  }
+
   // for searching on the index page
   ResidentialListings.doSearch = function (sortByCol, sortDirection) {
     Listings.showSpinner();
@@ -43,29 +47,29 @@
         streeteasy_filter: $('#streeteasy_filter').val(),
         primary_agent_id:  $('#primary_agent_id').val(),
         sort_by: sortByCol,
-        direction: sortDirection,
+        direction: sortDirection
       };
 
-      if (ResidentialListings.selectedNeighborhoodIds && ResidentialListings.selectedNeighborhoodIds.length) {
-        data['neighborhood_ids'] = ResidentialListings.selectedNeighborhoodIds;
-      }
-      if (ResidentialListings.selectedUnitAmenityIds && ResidentialListings.selectedUnitAmenityIds.length) {
-        data['unit_feature_ids'] = ResidentialListings.selectedUnitAmenityIds;
-      }
-      if (ResidentialListings.selectedBuildingAmenityIds && ResidentialListings.selectedBuildingAmenityIds.length) {
-        data['building_feature_ids'] = ResidentialListings.selectedBuildingAmenityIds;
-      }
+    if (ResidentialListings.selectedNeighborhoodIds && ResidentialListings.selectedNeighborhoodIds.length) {
+      data.neighborhood_ids = ResidentialListings.selectedNeighborhoodIds;
+    }
+    if (ResidentialListings.selectedUnitAmenityIds && ResidentialListings.selectedUnitAmenityIds.length) {
+      data.unit_feature_ids = ResidentialListings.selectedUnitAmenityIds;
+    }
+    if (ResidentialListings.selectedBuildingAmenityIds && ResidentialListings.selectedBuildingAmenityIds.length) {
+      data.building_feature_ids = ResidentialListings.selectedBuildingAmenityIds;
+    }
 
-      var searchParams = [];
-      for(var key in data) {
-        if (data.hasOwnProperty(key) && data[key]) {
-          searchParams.push(key + "=" + data[key]);
-        } else {
-          // console.log('OTHER: ', key);
-        }
+    var searchParams = [];
+    for (var key in data) {
+      if (data.hasOwnProperty(key) && data[key]) {
+        searchParams.push(key + "=" + data[key]);
+      } else {
+        // console.log('OTHER: ', key);
       }
+    }
 
-      window.location.search = searchParams.join('&');
+    window.location.search = searchParams.join('&');
   };
 
   ResidentialListings.clearAnnouncementsTimer = function() {
@@ -528,7 +532,7 @@
       RHMapbox.centerOnMe();
     }
 
-     $('#neighborhood-select-multiple').selectize({
+    ResidentialListings.neighborhoodSelectize = $('#neighborhood-select-multiple').selectize({
       plugins: ['remove_button'],
       hideSelected: true,
       maxItems: 100,
@@ -581,39 +585,48 @@
       Listings.hideSpinner();
     });
 
-     $('#neighborhood-select-multiple').selectize({
-      plugins: ['remove_button'],
-      hideSelected: true,
-      maxItems: 100,
-      items: ResidentialListings.selectedNeighborhoodIds,
-      onChange: function(value) {
-        ResidentialListings.selectedNeighborhoodIds = value;
-        // console.log(ResidentialListings.selectedNeighborhoodIds);
-      },
-      // onBlur: ResidentialListings.throttledSearch
-    });
+    var alreadyInitialized = !!$('#neighborhood-select-multiple').parent().attr('initialized');
+    if (!alreadyInitialized) {
+      $('#neighborhood-select-multiple').selectize({
+        plugins: ['remove_button'],
+        hideSelected: true,
+        maxItems: 100,
+        items: ResidentialListings.selectedNeighborhoodIds,
+        onChange: function(value) {
+          ResidentialListings.selectedNeighborhoodIds = value;
+          // console.log(ResidentialListings.selectedNeighborhoodIds);
+        },
+        // onBlur: ResidentialListings.throttledSearch
+      });
 
-    $('#unit-amenities-select-multiple').selectize({
-      plugins: ['remove_button'],
-      hideSelected: true,
-      maxItems: 100,
-      items: ResidentialListings.selectedUnitAmenityIds,
-      onChange: function(value) {
-        ResidentialListings.selectedUnitAmenityIds = value;
-      },
-      // onBlur: ResidentialListings.throttledSearch
-    });
+      $('#neighborhood-select-multiple').attr('initialized', 'true');
+    }
 
-    $('#building-amenities-select-multiple').selectize({
-      plugins: ['remove_button'],
-      hideSelected: true,
-      maxItems: 100,
-      items: ResidentialListings.selectedBuildingAmenityIds,
-      onChange: function(value) {
-        ResidentialListings.selectedBuildingAmenityIds = value;
-      },
-      // onBlur: ResidentialListings.throttledSearch
-    });
+    if (!$('#unit-amenities-select-multiple')[0].selectize) {
+      $('#unit-amenities-select-multiple').selectize({
+        plugins: ['remove_button'],
+        hideSelected: true,
+        maxItems: 100,
+        items: ResidentialListings.selectedUnitAmenityIds,
+        onChange: function(value) {
+          ResidentialListings.selectedUnitAmenityIds = value;
+        },
+        // onBlur: ResidentialListings.throttledSearch
+      });
+    }
+
+    if (!$('#building-amenities-select-multiple')[0].selectize) {
+      $('#building-amenities-select-multiple').selectize({
+        plugins: ['remove_button'],
+        hideSelected: true,
+        maxItems: 100,
+        items: ResidentialListings.selectedBuildingAmenityIds,
+        onChange: function(value) {
+          ResidentialListings.selectedBuildingAmenityIds = value;
+        },
+        // onBlur: ResidentialListings.throttledSearch
+      });
+    }
 
     // just above main listings table - selecting listings menu dropdown
     $('#emailListings').click(Listings.sendMessage);
@@ -680,17 +693,19 @@
   ResidentialListings.ready = function() {
     ResidentialListings.clearTimer();
 
-    var editPage = $('.residential_listings.edit').length;
-    var newPage = $('.residential_listings.new').length;
-    var indexPage = $('.residential_listings.index').length;
+    if (!ResidentialListings.wasAlreadyInitialized()) {
+      var editPage = $('.residential_listings.edit').length;
+      var newPage = $('.residential_listings.new').length;
+      var indexPage = $('.residential_listings.index').length;
 
-    // new and edit pages both render the same form template, so init them using the same code
-    if (editPage || newPage) {
-      ResidentialListings.initEditor();
-    } else if (indexPage) {
-      ResidentialListings.initIndex();
-    } else {
-      ResidentialListings.initShow();
+      // new and edit pages both render the same form template, so init them using the same code
+      if (editPage || newPage) {
+        ResidentialListings.initEditor();
+      } else if (indexPage) {
+        ResidentialListings.initIndex();
+      } else {
+        ResidentialListings.initShow();
+      }
     }
   };
 
@@ -701,10 +716,6 @@ $(document).on('keyup',function(evt) {
     Listings.hideSpinner();
   }
 });
-
-$(document).on('ready page:load', ResidentialListings.ready);
-
-$(document).on('page:restore', ResidentialListings.ready);
 
 // When dynamically adding open house fields through the edit form, make sure
 // the calendar widget is triggered
@@ -717,3 +728,9 @@ $(document).on('fields_added.nested_form_fields', function() {
     });
   });
 });
+
+document.addEventListener('turbolinks:load', ResidentialListings.ready);
+
+document.addEventListener("turbolinks:before-cache", function() {
+  $('.residential_listings').attr('initialized', 'true');
+})

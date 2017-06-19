@@ -1,4 +1,4 @@
-class Document < ActiveRecord::Base
+class Document < ApplicationRecord
 	belongs_to :building, touch: true
 	belongs_to :unit, touch: true
   default_scope { order("priority ASC") }
@@ -7,14 +7,14 @@ class Document < ActiveRecord::Base
 	# This method associates the attribute ":file" with a file attachment
   has_attached_file :file, styles: {
       original: {convert_options: '-auto-orient'},
-    }, 
-    convert_options: { :all => '-auto-orient' }, 
+    },
+    convert_options: { :all => '-auto-orient' },
     source_file_options: { :all => '-auto-orient' }
   process_in_background :file
 
   # Validate filename
   validates_attachment_file_name :file, :matches => [
-    /pdf\Z/, /doc\Z/, /xls\Z/, /xlsx\Z/, 
+    /pdf\Z/, /doc\Z/, /xls\Z/, /xlsx\Z/,
     /PDF\Z/, /DOC\Z/, /XLS\Z/, /XLSX\Z/]
 
 	# Validate the attached document content is image/jpg, image/png, etc

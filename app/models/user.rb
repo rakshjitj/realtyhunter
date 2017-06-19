@@ -1,9 +1,10 @@
-  class User < ActiveRecord::Base
+class User < ApplicationRecord
+  audited except: [:created_at, :updated_at]
   rolify
   default_scope { order("users.name ASC") }
   scope :unarchived, ->{where(archived: false)}
 
-  has_and_belongs_to_many :roles, :join_table => :users_roles
+  # has_and_belongs_to_many :roles, :join_table => :users_roles
   belongs_to :office, touch: true
   belongs_to :company, touch: true
   belongs_to :manager, :class_name => "User"
@@ -72,7 +73,7 @@
         end
       end
     end
-    listings#.uniq
+    listings
   end
 
   # primary units only currently

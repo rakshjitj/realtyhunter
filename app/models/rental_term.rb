@@ -1,10 +1,10 @@
-class RentalTerm < ActiveRecord::Base
+class RentalTerm < ApplicationRecord
 	belongs_to :company, touch: true
 	has_many :buildings
 	before_save :downcase_name
 
 	validates :company, presence: true
-	
+
 	private
 
 		def downcase_name

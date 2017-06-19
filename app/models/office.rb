@@ -1,4 +1,4 @@
-class Office < ActiveRecord::Base
+class Office < ApplicationRecord
 	belongs_to :company, touch: true
 	has_many :users
 

@@ -3,7 +3,7 @@
 module SyndicationInterface
 
 	def is_true?(string)
-	  ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(string)
+	  ActiveModel::Type::Boolean.new.cast(string)
 	end
 
 	# search these conditions

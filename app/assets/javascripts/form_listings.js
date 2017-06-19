@@ -109,4 +109,5 @@ FormListings = {};
 
 })();
 
-$(document).ready(FormListings.initialize);
+// document.addEventListener("DOMContentLoaded", FormListings.initialize);
+document.addEventListener('turbolinks:load', FormListings.initialize);

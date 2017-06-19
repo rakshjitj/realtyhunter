@@ -94,6 +94,4 @@ Careers = {};
 
 })();
 
-$(document).on('ready page:load', Careers.initialize);
-
-$(document).on('page:restore', Careers.initialize);
+document.addEventListener('turbolinks:load', Careers.initialize);

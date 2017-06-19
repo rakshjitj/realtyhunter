@@ -1,4 +1,4 @@
-class ResidentialListing < ActiveRecord::Base
+class ResidentialListing < ApplicationRecord
   audited except: [:created_at, :updated_at, :knack_id]
 
   queue = :residential_listings
@@ -158,9 +158,9 @@ class ResidentialListing < ActiveRecord::Base
   end
 
   def self.export_all(user, params=nil)
-    if params
-      params = params.symbolize_keys
-    end
+    # if params
+    #   params = params.symbolize_keys
+    # end
     running_list = ResidentialListing.joins(unit: [building: [:company, :landlord]])
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .joins('left join users on users.id = units.primary_agent_id')
@@ -429,7 +429,7 @@ class ResidentialListing < ActiveRecord::Base
       end
     end
 
-    running_list.uniq
+    running_list.distinct
   end
 
   def deep_copy_imgs(dst_id)
@@ -629,10 +629,10 @@ class ResidentialListing < ActiveRecord::Base
         if status_lowercase == 'active/pending'
           listings = listings
               .where("units.status IN (?) ",
-                [Unit.statuses['active'], Unit.statuses['pending']]).uniq
+                [Unit.statuses['active'], Unit.statuses['pending']]).distinct
         else
           listings = listings
-              .where("units.status = ? ", Unit.statuses[status_lowercase]).uniq
+              .where("units.status = ? ", Unit.statuses[status_lowercase]).distinct
         end
       end
     end
@@ -741,7 +741,7 @@ class ResidentialListing < ActiveRecord::Base
 
     # randomize selection, and limit to 3
     # exclude ourselves
-    similar_listings.uniq.sample(3)
+    similar_listings.distinct.sample(3)
   end
 
   private

@@ -1,4 +1,4 @@
-class OpenHouse < ActiveRecord::Base
+class OpenHouse < ApplicationRecord
   belongs_to :unit, touch: true
 
   validates_date :day, allow_blank: false,

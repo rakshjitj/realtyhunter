@@ -1,10 +1,6 @@
 $grid-float-breakpoint: 1150px;
 $navbarCollapseWidth: 1150px;
 
-// @import "mapbox";
-// @import "MarkerCluster";
-// @import "MarkerCluster.Default";
-
 @import "announcements.scss";
 @import "custom.scss";
 @import "listings.scss";
@@ -12,11 +8,12 @@ $navbarCollapseWidth: 1150px;
 @import "residential_listing.scss";
 @import "user.scss";
 @import "scaffolds.scss";
-
 @import "navbar.scss";
+
 @import "modal-tweaks.scss";
 @import "dropzone/dropzone";
-@import "jquery.ui.all";
+@import 'jquery-ui/all.css';
+@import 'jquery-ui/theme.css';
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import 'bootstrap-datetimepicker';

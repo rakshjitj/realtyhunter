@@ -1,6 +1,5 @@
-class RoomsharingApplication < ActiveRecord::Base
+class RoomsharingApplication < ApplicationRecord
 	belongs_to :user, dependent: :destroy
-	#has_one :unit, dependent: :destroy
 
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
 

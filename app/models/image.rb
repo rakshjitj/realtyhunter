@@ -1,4 +1,4 @@
-class Image < ActiveRecord::Base
+class Image < ApplicationRecord
   audited
 	belongs_to :building, touch: true
 	belongs_to :unit, touch: true

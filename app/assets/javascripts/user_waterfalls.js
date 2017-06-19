@@ -136,6 +136,4 @@ UserWaterfalls = {};
 
 })();
 
-$(document).on('ready page:load', UserWaterfalls.initialize);
-
-$(document).on('page:restore', UserWaterfalls.initialize);
+document.addEventListener('turbolinks:load', UserWaterfalls.initialize);

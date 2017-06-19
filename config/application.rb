@@ -49,6 +49,8 @@ module RealtyHunter
     config.active_job.queue_adapter = :resque
     config.action_view.embed_authenticity_token_in_remote_forms = true
     config.time_zone = 'Eastern Time (US & Canada)'
+    ActiveSupport.halt_callback_chains_on_return_false = false
+    config.active_record.time_zone_aware_types = [:datetime, :time]
   end
 end
 

@@ -6,6 +6,10 @@ SalesListings = {};
   SalesListings.selectedUnitAmenityIds = null;
   SalesListings.selectedBuildingAmenityIds = null;
 
+  SalesListings.wasAlreadyInitialized = function() {
+    return !!$('.sales_listings').attr('initialized');
+  }
+
   // for searching on the index page
   SalesListings.doSearch = function (sortByCol, sortDirection) {
     Listings.showSpinner();
@@ -43,13 +47,13 @@ SalesListings = {};
     };
 
     if (SalesListings.selectedNeighborhoodIds && SalesListings.selectedNeighborhoodIds.length) {
-        data['neighborhood_ids'] = SalesListings.selectedNeighborhoodIds;
+        data.neighborhood_ids = SalesListings.selectedNeighborhoodIds;
       }
       if (SalesListings.selectedUnitAmenityIds && SalesListings.selectedUnitAmenityIds.length) {
-        data['unit_feature_ids'] = SalesListings.selectedUnitAmenityIds;
+        data.unit_feature_ids = SalesListings.selectedUnitAmenityIds;
       }
       if (SalesListings.selectedBuildingAmenityIds && SalesListings.selectedBuildingAmenityIds.length) {
-        data['building_feature_ids'] = SalesListings.selectedBuildingAmenityIds;
+        data.building_feature_ids = SalesListings.selectedBuildingAmenityIds;
       }
 
     var searchParams = [];
@@ -500,30 +504,36 @@ SalesListings = {};
       SalesListings.selectedUnitAmenityIds =
           SalesListings.selectedUnitAmenityIds.split(',');
     }
-    $('#unit-amenities-select-multiple').selectize({
-      plugins: ['remove_button'],
-      hideSelected: true,
-      maxItems: 100,
-      items: SalesListings.selectedUnitAmenityIds,
-      onChange: function(value) {
-        SalesListings.selectedUnitAmenityIds = value;
-      }
-    });
+
+    if (!$('#unit-amenities-select-multiple')[0].selectize) {
+      $('#unit-amenities-select-multiple').selectize({
+        plugins: ['remove_button'],
+        hideSelected: true,
+        maxItems: 100,
+        items: SalesListings.selectedUnitAmenityIds,
+        onChange: function(value) {
+          SalesListings.selectedUnitAmenityIds = value;
+        }
+      });
+    }
 
     SalesListings.selectedBuildingAmenityIds = Common.getURLParameterByName('building_feature_ids');
     if (SalesListings.selectedBuildingAmenityIds) {
       SalesListings.selectedBuildingAmenityIds =
           SalesListings.selectedBuildingAmenityIds.split(',');
     }
-    $('#building-amenities-select-multiple').selectize({
-      plugins: ['remove_button'],
-      hideSelected: true,
-      maxItems: 100,
-      items: SalesListings.selectedBuildingAmenityIds,
-      onChange: function(value) {
-        SalesListings.selectedBuildingAmenityIds = value;
-      }
-    });
+
+    if (!$('#building-amenities-select-multiple')[0].selectize) {
+      $('#building-amenities-select-multiple').selectize({
+        plugins: ['remove_button'],
+        hideSelected: true,
+        maxItems: 100,
+        items: SalesListings.selectedBuildingAmenityIds,
+        onChange: function(value) {
+          SalesListings.selectedBuildingAmenityIds = value;
+        }
+      });
+    }
 
     var available_by = $('#sales .datepicker').attr('data-available-by');
     if (available_by) {
@@ -552,19 +562,21 @@ SalesListings = {};
   SalesListings.ready = function() {
     SalesListings.clearTimer();
 
-    var editPage = $('.sales_listings.edit').length;
-    var newPage = $('.sales_listings.new').length;
-    var indexPage = $('.sales_listings.index').length;
+    if (!SalesListings.wasAlreadyInitialized()) {
+      var editPage = $('.sales_listings.edit').length;
+      var newPage = $('.sales_listings.new').length;
+      var indexPage = $('.sales_listings.index').length;
 
-    // new and edit pages both render the same form template, so init them using the same code
-    if (editPage || newPage) {
-      SalesListings.initEditor();
-    } else if (indexPage) {
-      SalesListings.initIndex();
-    } else {
-      SalesListings.initShow();
-    }
-  };
+      // new and edit pages both render the same form template, so init them using the same code
+      if (editPage || newPage) {
+        SalesListings.initEditor();
+      } else if (indexPage) {
+        SalesListings.initIndex();
+      } else {
+        SalesListings.initShow();
+      }
+    };
+  }
 })();
 
 $(document).on('keyup',function(evt) {
@@ -573,7 +585,8 @@ $(document).on('keyup',function(evt) {
   }
 });
 
-$(document).on('ready page:load', SalesListings.ready);
+document.addEventListener('turbolinks:load', SalesListings.ready);
 
-$(document).on('page:restore', SalesListings.ready);
-
+document.addEventListener("turbolinks:before-cache", function() {
+  $('.sales_listings').attr('initialized', 'true');
+})

@@ -1,4 +1,4 @@
-class Building < ActiveRecord::Base
+class Building < ApplicationRecord
 	scope :unarchived, ->{where(archived: false)}
 
   before_save :process_rental_term
@@ -116,7 +116,7 @@ class Building < ActiveRecord::Base
       end
     end
 
-    running_list#.uniq
+    running_list
   end
 
 	def self.search(query_str, status)
@@ -140,7 +140,7 @@ class Building < ActiveRecord::Base
 
   # adds in landlord
   def self.export_all(query_str, status)
-    running_list = Building.joins(:landlord)
+    running_list = Building.joins(:landlord).joins(:rental_term)
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('buildings.archived = false')
       .select(
@@ -153,7 +153,8 @@ class Building < ActiveRecord::Base
         'buildings.updated_at', 'buildings.created_at',
         'buildings.last_unit_updated_at',
         'buildings.total_unit_count',
-        'buildings.active_unit_count')
+        'buildings.active_unit_count',
+        'rental_terms.id as rental_term_id', 'rental_terms.name')
 
     running_list = Building._filter_query(running_list, query_str, status)
     running_list

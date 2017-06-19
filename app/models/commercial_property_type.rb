@@ -1,4 +1,4 @@
-class CommercialPropertyType < ActiveRecord::Base
+class CommercialPropertyType < ApplicationRecord
 	belongs_to :company, touch: true
 	has_many :commercial_units
 

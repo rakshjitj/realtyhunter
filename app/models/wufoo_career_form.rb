@@ -1,7 +1,7 @@
 #
 # Encapsulates data from Wufoo form
 #
-class WufooCareerForm < ActiveRecord::Base
+class WufooCareerForm < ApplicationRecord
 	belongs_to :company, touch: true
 
   scope :unarchived, ->{where(archived: false)}

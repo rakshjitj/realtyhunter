@@ -1,4 +1,4 @@
-class Company < ActiveRecord::Base
+class Company < ApplicationRecord
 	include Bootsy::Container
 	default_scope { order("name ASC") }
 	scope :unarchived, ->{where(archived: false)}
@@ -123,7 +123,7 @@ class Company < ActiveRecord::Base
       running_list = running_list.where('name ILIKE ?', "%#{term}%").all
     end
 
-    running_list.uniq
+    running_list.distinct
   end
 
 	# Create the default environment options for the company.

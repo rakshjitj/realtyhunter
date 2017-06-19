@@ -1,4 +1,4 @@
-class Landlord < ActiveRecord::Base
+class Landlord < ApplicationRecord
   audited except: [:created_at, :updated_at, :active_unit_count, :total_unit_count, :knack_id]
 
 	scope :unarchived, ->{where(archived: false)}
@@ -81,7 +81,7 @@ class Landlord < ActiveRecord::Base
       end
     end
 
-    running_list.uniq
+    running_list.distinct
 	end
 
 	def self.search_csv(params, user)

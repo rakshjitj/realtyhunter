@@ -1,4 +1,4 @@
-class BuildingAmenity < ActiveRecord::Base
+class BuildingAmenity < ApplicationRecord
 	belongs_to :company, touch: true
 	has_and_belongs_to_many :buildings
 	before_save :downcase_name

@@ -16,7 +16,5 @@ Offices = {};
 
 })();
 
-$(document).on('ready page:load', Offices.init);
-
-$(document).on('page:restore', Offices.init);
+document.addEventListener('turbolinks:load', Offices.init);
 

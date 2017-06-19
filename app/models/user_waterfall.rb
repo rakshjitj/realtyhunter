@@ -1,4 +1,4 @@
-class UserWaterfall < ActiveRecord::Base
+class UserWaterfall < ApplicationRecord
 	belongs_to :parent_agent, class_name: 'User', touch: true, dependent: :destroy
 	belongs_to :child_agent, class_name: 'User', touch: true, dependent: :destroy
 	scope :unarchived, ->{where(archived: false)}

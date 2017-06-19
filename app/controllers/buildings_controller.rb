@@ -219,6 +219,7 @@ class BuildingsController < ApplicationController
       @amenities = Building.get_amenities_from_buildings(@buildings)
       @utilities = Building.get_utilities_from_buildings(@buildings)
       @buildings = custom_sort
+      # @buildings = _filter_query
     end
 
     def set_buildings

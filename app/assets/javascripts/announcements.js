@@ -56,6 +56,7 @@ Announcements = {};
 
   Announcements.initialize = function () {
     if ($('.announcements').length) {
+      Forms.hideSpinner();
       $('#announcements #created_start').blur(Announcements.throttledSearch);
       $('#announcements #created_end').blur(Announcements.throttledSearch);
       $('#announcements #category_filter').change(Announcements.throttledSearch);
@@ -65,6 +66,4 @@ Announcements = {};
   };
 })();
 
-$(document).on('ready page:load', Announcements.initialize);
-
-$(document).on('page:restore', Announcements.initialize);
+document.addEventListener('turbolinks:load', Announcements.initialize);
