@@ -180,10 +180,28 @@ xml.streeteasy :version => "1.6" do
               xml.other @other_amenities.join(", ")
             end
 
-            pets_allowed = ["case by case",  "cats only", "cats/small dogs", "dogs only", "monthly pet fee" ,
-              "pet deposit required", "pets allowed", "pets ok", "pets upon approval", "small pets ok (<30lbs)"]
-            if @pet_policies[listing.building_id] && pets_allowed.include?(@pet_policies[listing.building_id][0].pet_policy_name)
-              xml.pets
+            if @pet_policies[listing.building_id]
+              pets_allowed = [
+                "monthly pet fee",
+                "pet deposit required",
+                "pets allowed",
+                "pets ok",
+                "pets upon approval"
+              ]
+              if pets_allowed.include?(@pet_policies[listing.building_id][0].pet_policy_name)
+                xml.pets "Pets Allowed"
+              elsif @pet_policies[listing.building_id][0].pet_policy_name == 'no pets'
+                xml.pets "No Pets"
+              elsif @pet_policies[listing.building_id][0].pet_policy_name == 'case by case'
+                xml.pets "Case By Case"
+              elsif @pet_policies[listing.building_id][0].pet_policy_name == 'cats only'
+                xml.pets "Cats Only"
+              elsif @pet_policies[listing.building_id][0].pet_policy_name == 'dogs only'
+                xml.pets "Dogs Only"
+              elsif @pet_policies[listing.building_id][0].pet_policy_name == 'small pets ok (<30lbs)' ||
+                  @pet_policies[listing.building_id][0].pet_policy_name == 'cats/small dogs'
+                xml.pets "Small Pets"
+              end
             end
 
           end # amenities
