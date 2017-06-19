@@ -191,7 +191,7 @@ class User < ApplicationRecord
       .select('users.company_id', 'users.archived', 'users.id',
         'users.name', 'users.email', 'users.activated', 'users.approved', 'users.last_login_at',
         'employee_titles.name AS employee_title_name', 'employee_titles.id AS employee_title_id',
-        'offices.name AS office_name', 'offices.id as office_id')
+        'offices.name AS office_name', 'offices.id as office_id', 'users.manager_id')
 
     if !query_params
       return running_list
