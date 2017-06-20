@@ -18,6 +18,7 @@ class ResidentialListingsController < ApplicationController
         set_residential_listings
       end
       format.js do
+        puts "\n\n\n*********\n\n\n"
         set_residential_listings
       end
       format.csv do
