@@ -10,46 +10,55 @@ class Image < ApplicationRecord
     styles: lambda { |a| {
       thumb: {
         geometry: '100x100>',
-        rotation: a.instance.rotation
+        rotation: a.instance.rotation,
+        no_watermark: true,
       },
       large: {
         geometry: '2500x2500>',
         rotation: a.instance.rotation,
         watermark_path: "#{Rails.root}/public/watermark-logo-sm.png"
       },
+      large_unmarked: { # no watermarks applied
+        geometry: '2500x2500>',
+        rotation: a.instance.rotation,
+        no_watermark: true,
+      },
       original: {
         convert_options: '-auto-orient',
-        watermark_path: "#{Rails.root}/public/watermark-logo-sm.png"
+        no_watermark: true,
       }
     }},
     #default_url: Rails.root + "/images/:style/missing.png",
-    only_process: [:thumb, :large], #, :original
+    # disabled becauses we want to process everything upfront:
+    # only_process: [:thumb, :large, :large_unmarked], #:thumb, :large,
     convert_options: { all: '-auto-orient' },
     source_file_options: { all: '-auto-orient' },
     # processors: [:rotator, :watermark]
-    processors: lambda { |p|
-      p.apply_processors
+    processors: lambda { |instance|
+      instance.apply_processors
     }
 
-  # process_in_background :file, processing_image_url: :processing_image_fallback,
+  # NOTE: We need access to all our images immediately, so don't process in the background
+  # process_in_background :file, #processing_image_url: :processing_image_fallback,
   #   only_process: [:large, :original]
-    #processing_image_url: Rails.root + "/images/:style/image_uploading.jpg",
+  #   #processing_image_url: Rails.root + "/images/:style/image_uploading.jpg",
 
   def apply_processors
-    if self.user_id.present? or self.company_id.present?
+    if user_id.present? or company_id.present? or file.options[:no_watermark]
       [:compression]
     else
       [:watermark, :compression]
     end
   end
 
-  def processing_image_fallback
-    options = file.options
-    options[:interpolator].interpolate(options[:url], file, :original)
-  end
+  # def processing_image_fallback
+  #   options = file.options
+  #   options[:interpolator].interpolate(options[:url], file, :original)
+  # end
 
   # Validate filename
-  validates_attachment_file_name :file, :matches => [/png\Z/, /jpe?g\Z/, /gif\Z/, /PNG\Z/, /JPE?G\Z/, /GIF\Z/]
+  validates_attachment_file_name :file,
+      :matches => [/png\Z/, /jpe?g\Z/, /gif\Z/, /PNG\Z/, /JPE?G\Z/, /GIF\Z/]
 
 	# Validate the attached image content is image/jpg, image/png, etc
   validates_attachment :file,

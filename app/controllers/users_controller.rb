@@ -159,7 +159,6 @@ class UsersController < ApplicationController
       # add new image
       @user.image = Image.create(user_params)
       @user.update_columns(updated_at: Time.now)
-      @user.image.file.reprocess_without_delay!(:large)
       flash[:success] = "Profile image updated!"
       redirect_to @user
   end

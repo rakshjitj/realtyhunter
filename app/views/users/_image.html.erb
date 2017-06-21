@@ -1,8 +1,8 @@
 <% if @user.image %>
   <!-- display existing image -->
   <div class="img-medium">
-    <%= image_tag @user.image.file.url(:large), :class => 'img-responsive',
-      alt: @user.image.file.url(:large) %>
+    <%= image_tag @user.image.file.url(:large_unmarked), :class => 'img-responsive',
+      alt: @user.image.file.url(:large_unmarked) %>
 
     <!-- remove image -->
     <% if current_user.is_management? %>

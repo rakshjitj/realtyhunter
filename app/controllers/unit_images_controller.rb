@@ -71,7 +71,6 @@ class UnitImagesController < ApplicationController
 
   private
     def update_listing_timestamp(img)
-
       if img.unit.residential_listing
         listing = img.unit.residential_listing
         # img.unit.residential_listing.update_columns(updated_at: Time.now)
@@ -88,7 +87,6 @@ class UnitImagesController < ApplicationController
       end
     end
 
-    # Use callbacks to share common setup or constraints between actions.
     def set_image
       @image = Image.find(params[:id])
       # puts "********** set_image ******** #{@image.inspect}"

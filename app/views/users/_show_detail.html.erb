@@ -61,9 +61,9 @@
     <div class="row">
       <div class="col-sm-6">
         <% if @user.image %>
-          <% if @user.image.file.exists?(:large) %>
-            <%= image_tag @user.image.file.url(:large), class: 'img-responsive',
-              alt: @user.image.file.url(:large) %>
+          <% if @user.image.file.exists?(:large_unmarked) %>
+            <%= image_tag @user.image.file.url(:large_unmarked), class: 'img-responsive',
+              alt: @user.image.file.url(:large_unmarked) %>
           <% end %>
         <% else %>
           <!-- placeholder image -->
