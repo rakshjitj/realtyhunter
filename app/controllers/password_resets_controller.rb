@@ -9,7 +9,11 @@ class PasswordResetsController < ApplicationController
   end
 
   def create
-    @user = User.where(email: params[:password_reset][:email].downcase).first
+    @user = User
+        .where(email: params[:password_reset][:email].downcase)
+        .where(archived: false)
+        .where(activated: true)
+        .first
     if @user
       @user.send_password_reset_email
       flash[:info] = "Email sent with password reset instructions"

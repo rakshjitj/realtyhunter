@@ -160,7 +160,14 @@ class User < ApplicationRecord
   # Sends password reset email.
   def send_password_reset_email
     create_reset_digest
-    UserMailer.password_reset(id, reset_token).deliver
+    @user = User
+        .where(id: id)
+        .where(archived: false)
+        .where(activated: true)
+        .first
+    if @user
+      UserMailer.password_reset(id, reset_token).deliver
+    end
   end
 
   def assign_random_password

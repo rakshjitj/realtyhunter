@@ -29,10 +29,16 @@ class UserMailer < ApplicationMailer
   #   en.user_mailer.password_reset.subject
   #
   def password_reset(user_id, reset_token)
-    @user = User.where(id: user_id).first
-    @reset_token = reset_token
-    mail to: @user.email, subject: "Password reset", tag: 'user_password_reset',
-        track_opens:'true', reply_to: 'no-reply@myspacenyc.com'
+    @user = User
+        .where(id: user_id)
+        .where(archived: false)
+        .where(activated: true)
+        .first
+    if (@user)
+      @reset_token = reset_token
+      mail to: @user.email, subject: "Password reset", tag: 'user_password_reset',
+          track_opens:'true', reply_to: 'no-reply@myspacenyc.com'
+    end
   end
 
   def added_by_admin(company_id, user_id, reset_token)
