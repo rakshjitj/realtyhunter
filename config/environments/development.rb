@@ -48,13 +48,14 @@ Rails.application.configure do
 
   config.paperclip_defaults = {
     storage: :s3,
+    path: '/:class/:attachment/:id_partition/:style/:filename',
     s3_protocol: 'http',
     s3_credentials: {
       bucket: ENV['S3_AVATAR_BUCKET'],
       access_key_id: ENV['AWS_ACCESS_KEY_ID'],
       secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
+      s3_region: ENV["AWS_REGION"],
     },
-    s3_region: ENV["AWS_REGION"],
     # s3_headers: {
     #   'Cache-Control': 'max-age=315576000',
     #   'Expires': 10.years.from_now.httpdate
