@@ -1,8 +1,8 @@
 <% if @company.image %>
   <!-- display existing image -->
   <div class="img-medium">
-    <%= image_tag @company.image.file.url(:large_unmarked), :class => 'img-responsive center-block',
-      alt: @company.image.file.url(:large_unmarked) %>
+    <%= image_tag @company.image.file.url(:large), :class => 'img-responsive center-block',
+      alt: @company.image.file.url(:large) %>
     <!-- remove image -->
     <%= link_to "Remove", destroy_image_company_path(@company), remote: true, method: :delete,
       class: 'btn btn-xs btn-link center-block',

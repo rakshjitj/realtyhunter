@@ -107,6 +107,10 @@ class BuildingsController < ApplicationController
       flash[:success] = "Building updated!"
       redirect_to building_path(@building)
     else
+      @landlords = current_user.company.landlords
+        .where(archived: false)
+        .order("code ASC")
+        .collect {|l| [l.code, l.id]}
       render 'edit'
     end
   end
