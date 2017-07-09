@@ -1,6 +1,6 @@
 $('#waterfallDeleteModal .modal-body').html("<%= j(render partial: "delete_modal_helper", locals: { entry: @entry }) %>");
 
-$('#waterfallDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', user_waterfall_path(@entry, @params_copy), remote: true, method: :delete, class: 'btn btn-danger link-as-button delete-btn', id: 'delete-link') %>");
+$('#waterfallDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', user_waterfall_path(@entry, @params_copy.permit!), remote: true, method: :delete, class: 'btn btn-danger link-as-button delete-btn', id: 'delete-link') %>");
 $('#waterfallDeleteModal .delete-btn').click( function(event) {
 	$('#waterfallDeleteModal').modal('hide');
 	event.preventDefault();

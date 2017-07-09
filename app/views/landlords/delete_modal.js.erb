@@ -1,5 +1,5 @@
 $('#landlordDeleteModal .modal-body').html("<%= j(render :partial => "delete_modal_helper", locals: { landlord: @landlord }) %>");
-$('#landlordDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', landlord_path(@landlord, @params_copy), remote: true, method: :delete, class: 'btn btn-danger delete-btn link-as-button', id: 'delete-link') %>");
+$('#landlordDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', landlord_path(@landlord, @params_copy.permit!), remote: true, method: :delete, class: 'btn btn-danger delete-btn link-as-button', id: 'delete-link') %>");
 $('#landlordDeleteModal').modal('show');
 
 $('#landlordDeleteModal .delete-btn').click( function(event) {

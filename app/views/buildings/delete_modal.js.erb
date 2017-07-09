@@ -1,6 +1,6 @@
 $('#bldgDeleteModal .modal-body').html("<%= j(render :partial => "delete_modal_helper", locals: { building: @building }) %>");
 
-$('#bldgDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', building_path(@building, @params_copy), remote: true, method: :delete, class: 'btn btn-danger link-as-button delete-btn', id: 'delete-link') %>");
+$('#bldgDeleteModal .delete-btn').replaceWith("<%= j(link_to 'Delete', building_path(@building, @params_copy.permit!), remote: true, method: :delete, class: 'btn btn-danger link-as-button delete-btn', id: 'delete-link') %>");
 $('#bldgDeleteModal .delete-btn').click( function(event) {
 	$('#bldgDeleteModal').modal('hide');
 	event.preventDefault();
