@@ -55,12 +55,15 @@ class CommercialListingsController < ApplicationController
   end
 
   def edit
-    @buildings = current_user.company.buildings
-        .where(archived: false)
-        .order("formatted_street_address ASC")
-        .collect {|b| [b.street_address, b.id]}
     @panel_title = "Edit listing"
-    set_property_types
+    if @commercial_unit
+      @buildings = current_user.company.buildings
+          .where(archived: false)
+          .order("formatted_street_address ASC")
+          .collect {|b| [b.street_address, b.id]}
+      set_property_types
+      @panel_title = @commercial_unit.unit.building.street_address + ' - Editing'
+    end
   end
 
   def update_subtype
@@ -264,6 +267,10 @@ class CommercialListingsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_commercial_listing
       @commercial_unit = CommercialListing.find_unarchived(params[:id])
+      if @commercial_unit.nil?
+        flash[:warning] = "Sorry, that listing is not active."
+        redirect_to action: 'index'
+      end
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that listing is not active."
       redirect_to action: 'index'
