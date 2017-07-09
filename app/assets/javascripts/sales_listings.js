@@ -6,9 +6,9 @@ SalesListings = {};
   SalesListings.selectedUnitAmenityIds = null;
   SalesListings.selectedBuildingAmenityIds = null;
 
-  SalesListings.wasAlreadyInitialized = function() {
-    return !!$('.sales_listings').attr('initialized');
-  }
+  // SalesListings.wasAlreadyInitialized = function() {
+  //   return !!$('.sales_listings').attr('initialized');
+  // }
 
   // for searching on the index page
   SalesListings.doSearch = function (sortByCol, sortDirection) {
@@ -562,7 +562,7 @@ SalesListings = {};
   SalesListings.ready = function() {
     SalesListings.clearTimer();
 
-    if (!SalesListings.wasAlreadyInitialized()) {
+    // if (!SalesListings.wasAlreadyInitialized()) {
       var editPage = $('.sales_listings.edit').length;
       var newPage = $('.sales_listings.new').length;
       var indexPage = $('.sales_listings.index').length;
@@ -575,7 +575,7 @@ SalesListings = {};
       } else {
         SalesListings.initShow();
       }
-    };
+    // };
   }
 })();
 
@@ -587,6 +587,6 @@ $(document).on('keyup',function(evt) {
 
 document.addEventListener('turbolinks:load', SalesListings.ready);
 
-document.addEventListener("turbolinks:before-cache", function() {
-  $('.sales_listings').attr('initialized', 'true');
-})
+// document.addEventListener("turbolinks:before-cache", function() {
+//   $('.sales_listings').attr('initialized', 'true');
+// })

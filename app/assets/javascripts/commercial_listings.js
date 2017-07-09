@@ -4,9 +4,9 @@ CommercialListings = {};
   CommercialListings.timer;
   CommercialListings.selectedNeighborhoodIds = null;
 
-  CommercialListings.wasAlreadyInitialized = function() {
-    return !!$('.commercial_listings').attr('initialized');
-  }
+  // CommercialListings.wasAlreadyInitialized = function() {
+  //   return !!$('.commercial_listings').attr('initialized');
+  // }
 
   CommercialListings.updatePropertySubTypes = function (ptype) {
     var id = $('#commercial').attr('data-unit-id');
@@ -370,7 +370,7 @@ CommercialListings = {};
   CommercialListings.ready = function() {
     CommercialListings.clearTimer();
 
-    if (!CommercialListings.wasAlreadyInitialized()) {
+    // if (!CommercialListings.wasAlreadyInitialized()) {
       var editPage = $('.commercial_listings.edit').length;
       var newPage = $('.commercial_listings.new').length;
       var indexPage = $('.commercial_listings.index').length;
@@ -382,7 +382,7 @@ CommercialListings = {};
       } else {
         CommercialListings.initShow();
       }
-    }
+    // }
   }
 
 })();
@@ -395,6 +395,6 @@ $(document).on('keyup',function(evt) {
 
 document.addEventListener('turbolinks:load', CommercialListings.ready);
 
-document.addEventListener("turbolinks:before-cache", function() {
-  $('.commercial_listings').attr('initialized', 'true');
-})
+// document.addEventListener("turbolinks:before-cache", function() {
+//   $('.commercial_listings').attr('initialized', 'true');
+// })

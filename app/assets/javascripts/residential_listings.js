@@ -7,9 +7,9 @@
   ResidentialListings.selectedUnitAmenityIds = null;
   ResidentialListings.selectedBuildingAmenityIds = null;
 
-  ResidentialListings.wasAlreadyInitialized = function() {
-    return !!$('.residential_listings').attr('initialized');
-  }
+  // ResidentialListings.wasAlreadyInitialized = function() {
+  //   return !!$('.residential_listings').attr('initialized');
+  // }
 
   // for searching on the index page
   ResidentialListings.doSearch = function (sortByCol, sortDirection) {
@@ -693,7 +693,7 @@
   ResidentialListings.ready = function() {
     ResidentialListings.clearTimer();
 
-    if (!ResidentialListings.wasAlreadyInitialized()) {
+    // if (!ResidentialListings.wasAlreadyInitialized()) {
       var editPage = $('.residential_listings.edit').length;
       var newPage = $('.residential_listings.new').length;
       var indexPage = $('.residential_listings.index').length;
@@ -706,7 +706,7 @@
       } else {
         ResidentialListings.initShow();
       }
-    }
+    // }
   };
 
 })();
@@ -731,6 +731,6 @@ $(document).on('fields_added.nested_form_fields', function() {
 
 document.addEventListener('turbolinks:load', ResidentialListings.ready);
 
-document.addEventListener("turbolinks:before-cache", function() {
-  $('.residential_listings').attr('initialized', 'true');
-})
+// document.addEventListener("turbolinks:before-cache", function() {
+//   $('.residential_listings').attr('initialized', 'true');
+// })
