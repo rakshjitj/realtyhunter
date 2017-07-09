@@ -382,6 +382,9 @@ class ResidentialListingsController < ApplicationController
       @residential_unit = ResidentialListing.find_unarchived(params[:id])
       if @residential_unit
         @similar_listings = @residential_unit.find_similar
+      else
+        flash[:warning] = "Sorry, that listing is not active."
+        redirect_to action: 'index'
       end
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "Sorry, that listing is not active."
