@@ -6,7 +6,6 @@
 
 	if (location.hostname !== "localhost" && location.hostname !== "127.0.0.1") {
 	  var current_user_id = document.querySelector('.data-current-user-id').getAttribute('data-current-user-id');
-	  console.log('hi', current_user_id);
 	  ga('create', 'UA-89727031-1', 'auto', {userId: current_user_id});
 	  ga('send', 'pageview');
 	}
