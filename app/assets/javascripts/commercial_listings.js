@@ -4,9 +4,9 @@ CommercialListings = {};
   CommercialListings.timer;
   CommercialListings.selectedNeighborhoodIds = null;
 
-  // CommercialListings.wasAlreadyInitialized = function() {
-  //   return !!$('.commercial_listings').attr('initialized');
-  // }
+  CommercialListings.wasAlreadyInitialized = function() {
+    return !!$('.commercial_listings').attr('initialized');
+  }
 
   CommercialListings.updatePropertySubTypes = function (ptype) {
     var id = $('#commercial').attr('data-unit-id');
@@ -344,22 +344,24 @@ CommercialListings = {};
       e.preventDefault();
     });
 
-    CommercialListings.selectedNeighborhoodIds = Common.getURLParameterByName('neighborhood_ids');
-    if (CommercialListings.selectedNeighborhoodIds) {
-      CommercialListings.selectedNeighborhoodIds =
-          CommercialListings.selectedNeighborhoodIds.split(',');
-    }
+    if (!CommercialListings.wasAlreadyInitialized()) {
+      CommercialListings.selectedNeighborhoodIds = Common.getURLParameterByName('neighborhood_ids');
+      if (CommercialListings.selectedNeighborhoodIds) {
+        CommercialListings.selectedNeighborhoodIds =
+            CommercialListings.selectedNeighborhoodIds.split(',');
+      }
 
-    $('#neighborhood-select-multiple').selectize({
-      plugins: ['remove_button'],
-      hideSelected: true,
-      maxItems: 100,
-      items: CommercialListings.selectedNeighborhoodIds,
-      onChange: function(value) {
-        CommercialListings.selectedNeighborhoodIds = value;
-      },
-      //onBlur: CommercialListings.throttledSearch
-    });
+      $('#neighborhood-select-multiple').selectize({
+        plugins: ['remove_button'],
+        hideSelected: true,
+        maxItems: 100,
+        items: CommercialListings.selectedNeighborhoodIds,
+        onChange: function(value) {
+          CommercialListings.selectedNeighborhoodIds = value;
+        },
+        //onBlur: CommercialListings.throttledSearch
+      });
+    }
   }
 
   CommercialListings.initShow = function() {
@@ -370,19 +372,17 @@ CommercialListings = {};
   CommercialListings.ready = function() {
     CommercialListings.clearTimer();
 
-    // if (!CommercialListings.wasAlreadyInitialized()) {
-      var editPage = $('.commercial_listings.edit').length;
-      var newPage = $('.commercial_listings.new').length;
-      var indexPage = $('.commercial_listings.index').length;
-      // new and edit pages both render the same form template, so init them using the same code
-      if (editPage || newPage) {
-        CommercialListings.initEditor();
-      } else if (indexPage) {
-        CommercialListings.initIndex();
-      } else {
-        CommercialListings.initShow();
-      }
-    // }
+    var editPage = $('.commercial_listings.edit').length;
+    var newPage = $('.commercial_listings.new').length;
+    var indexPage = $('.commercial_listings.index').length;
+    // new and edit pages both render the same form template, so init them using the same code
+    if (editPage || newPage) {
+      CommercialListings.initEditor();
+    } else if (indexPage) {
+      CommercialListings.initIndex();
+    } else {
+      CommercialListings.initShow();
+    }
   }
 
 })();
@@ -395,6 +395,6 @@ $(document).on('keyup',function(evt) {
 
 document.addEventListener('turbolinks:load', CommercialListings.ready);
 
-// document.addEventListener("turbolinks:before-cache", function() {
-//   $('.commercial_listings').attr('initialized', 'true');
-// })
+document.addEventListener("turbolinks:before-cache", function() {
+  $('.commercial_listings').attr('initialized', 'true');
+})

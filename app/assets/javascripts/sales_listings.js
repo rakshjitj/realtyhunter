@@ -6,9 +6,9 @@ SalesListings = {};
   SalesListings.selectedUnitAmenityIds = null;
   SalesListings.selectedBuildingAmenityIds = null;
 
-  // SalesListings.wasAlreadyInitialized = function() {
-  //   return !!$('.sales_listings').attr('initialized');
-  // }
+  SalesListings.wasAlreadyInitialized = function() {
+    return !!$('.sales_listings').attr('initialized');
+  }
 
   // for searching on the index page
   SalesListings.doSearch = function (sortByCol, sortDirection) {
@@ -489,32 +489,10 @@ SalesListings = {};
           SalesListings.selectedNeighborhoodIds.split(',');
     }
 
-    $('#neighborhood-select-multiple').selectize({
-      plugins: ['remove_button'],
-      hideSelected: true,
-      maxItems: 100,
-      items: SalesListings.selectedNeighborhoodIds,
-      onChange: function(value) {
-        SalesListings.selectedNeighborhoodIds = value;
-      }
-    });
-
     SalesListings.selectedUnitAmenityIds = Common.getURLParameterByName('unit_feature_ids');
     if (SalesListings.selectedUnitAmenityIds) {
       SalesListings.selectedUnitAmenityIds =
           SalesListings.selectedUnitAmenityIds.split(',');
-    }
-
-    if (!$('#unit-amenities-select-multiple')[0].selectize) {
-      $('#unit-amenities-select-multiple').selectize({
-        plugins: ['remove_button'],
-        hideSelected: true,
-        maxItems: 100,
-        items: SalesListings.selectedUnitAmenityIds,
-        onChange: function(value) {
-          SalesListings.selectedUnitAmenityIds = value;
-        }
-      });
     }
 
     SalesListings.selectedBuildingAmenityIds = Common.getURLParameterByName('building_feature_ids');
@@ -523,16 +501,40 @@ SalesListings = {};
           SalesListings.selectedBuildingAmenityIds.split(',');
     }
 
-    if (!$('#building-amenities-select-multiple')[0].selectize) {
-      $('#building-amenities-select-multiple').selectize({
+    if (!SalesListings.wasAlreadyInitialized()) {
+      $('#neighborhood-select-multiple').selectize({
         plugins: ['remove_button'],
         hideSelected: true,
         maxItems: 100,
-        items: SalesListings.selectedBuildingAmenityIds,
+        items: SalesListings.selectedNeighborhoodIds,
         onChange: function(value) {
-          SalesListings.selectedBuildingAmenityIds = value;
+          SalesListings.selectedNeighborhoodIds = value;
         }
       });
+
+      if (!$('#unit-amenities-select-multiple')[0].selectize) {
+        $('#unit-amenities-select-multiple').selectize({
+          plugins: ['remove_button'],
+          hideSelected: true,
+          maxItems: 100,
+          items: SalesListings.selectedUnitAmenityIds,
+          onChange: function(value) {
+            SalesListings.selectedUnitAmenityIds = value;
+          }
+        });
+      }
+
+      if (!$('#building-amenities-select-multiple')[0].selectize) {
+        $('#building-amenities-select-multiple').selectize({
+          plugins: ['remove_button'],
+          hideSelected: true,
+          maxItems: 100,
+          items: SalesListings.selectedBuildingAmenityIds,
+          onChange: function(value) {
+            SalesListings.selectedBuildingAmenityIds = value;
+          }
+        });
+      }
     }
 
     var available_by = $('#sales .datepicker').attr('data-available-by');
@@ -562,20 +564,18 @@ SalesListings = {};
   SalesListings.ready = function() {
     SalesListings.clearTimer();
 
-    // if (!SalesListings.wasAlreadyInitialized()) {
-      var editPage = $('.sales_listings.edit').length;
-      var newPage = $('.sales_listings.new').length;
-      var indexPage = $('.sales_listings.index').length;
+    var editPage = $('.sales_listings.edit').length;
+    var newPage = $('.sales_listings.new').length;
+    var indexPage = $('.sales_listings.index').length;
 
-      // new and edit pages both render the same form template, so init them using the same code
-      if (editPage || newPage) {
-        SalesListings.initEditor();
-      } else if (indexPage) {
-        SalesListings.initIndex();
-      } else {
-        SalesListings.initShow();
-      }
-    // };
+    // new and edit pages both render the same form template, so init them using the same code
+    if (editPage || newPage) {
+      SalesListings.initEditor();
+    } else if (indexPage) {
+      SalesListings.initIndex();
+    } else {
+      SalesListings.initShow();
+    }
   }
 })();
 
@@ -587,6 +587,6 @@ $(document).on('keyup',function(evt) {
 
 document.addEventListener('turbolinks:load', SalesListings.ready);
 
-// document.addEventListener("turbolinks:before-cache", function() {
-//   $('.sales_listings').attr('initialized', 'true');
-// })
+document.addEventListener("turbolinks:before-cache", function() {
+  $('.sales_listings').attr('initialized', 'true');
+})
