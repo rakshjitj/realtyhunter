@@ -229,6 +229,7 @@ xml.streeteasy :version => "1.6" do
               xml.agent id: 113 do
                 xml.name "Shawn Mullahy"
                 xml.email "smullahy@myspacenyc.com"
+                xml.lead_email "smullahy@myspacenyc.com"
                 xml.phone_numbers do
                   xml.office "(929) 229-2245"
                 end
@@ -238,6 +239,7 @@ xml.streeteasy :version => "1.6" do
               xml.agent id: 113 do
                 xml.name "Shawn Mullahy"
                 xml.email "smullahy@myspacenyc.com"
+                xml.lead_email "smullahy@myspacenyc.com"
                 xml.phone_numbers do
                   xml.office "(929) 229-2245"
                 end
