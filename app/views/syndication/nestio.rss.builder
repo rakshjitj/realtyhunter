@@ -240,6 +240,25 @@ xml.streeteasy :version => "1.6" do
                 end
               end
             end
+            # this is a forcibly set "agent" that we include on certain hard-coded listings
+            if listing.listing_id == 1842370 # 806 Franklin #409, assigned to Belle
+              xml.agent id: 113 do
+                xml.name "Shawn Mullahy"
+                xml.email "smullahy@myspacenyc.com"
+                xml.phone_numbers do
+                  xml.office "(929) 229-2245"
+                end
+              end
+            end
+            if listing.listing_id == 7211245 # 806 Franklin #815, assigned to Jordan
+              xml.agent id: 113 do
+                xml.name "Shawn Mullahy"
+                xml.email "smullahy@myspacenyc.com"
+                xml.phone_numbers do
+                  xml.office "(929) 229-2245"
+                end
+              end
+            end # end forced
           end
         end
 
