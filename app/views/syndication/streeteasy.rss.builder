@@ -205,6 +205,18 @@ xml.streeteasy :version => "1.6" do
 
 				if !@primary_agents[listing.unit_id].blank?
 					xml.agents do
+						# On all residential listings, set the company account as the first "agent".
+            # This is used for accounting purposes, as Streeteasy charges a fee per ad.
+            if listing.r_id
+              xml.agent id: 114 do
+                xml.name "Myspace NYC"
+                xml.email "info+streeteasy@myspacenyc.com"
+                xml.lead_email "info+streeteasy@myspacenyc.com"
+                xml.phone_numbers do
+                  xml.office "(929) 229-2245"
+                end
+              end
+            end # end forced
 						@primary_agents[listing.unit_id].each do |agent|
 							xml.agent id: agent.id do
 								xml.name agent.name
@@ -223,28 +235,6 @@ xml.streeteasy :version => "1.6" do
 						  	end
 						  end
 						end
-						# this is a forcibly set "agent" that we include on certain hard-coded listings
-						# this is a forcibly set "agent" that we include on certain hard-coded listings
-            if listing.listing_id == 1842370 # 806 Franklin #409, assigned to Belle
-              xml.agent id: 113 do
-                xml.name "Shawn Mullahy"
-                xml.email "smullahy@myspacenyc.com"
-                xml.lead_email "smullahy@myspacenyc.com"
-                xml.phone_numbers do
-                  xml.office "(929) 229-2245"
-                end
-              end
-            end
-            if listing.listing_id == 7211245 # 806 Franklin #815, assigned to Jordan
-              xml.agent id: 113 do
-                xml.name "Shawn Mullahy"
-                xml.email "smullahy@myspacenyc.com"
-                xml.lead_email "smullahy@myspacenyc.com"
-                xml.phone_numbers do
-                  xml.office "(929) 229-2245"
-                end
-              end
-            end # end forced
 					end
 				end
 
