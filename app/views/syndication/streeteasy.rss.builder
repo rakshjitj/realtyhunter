@@ -1,9 +1,14 @@
-# todo: before re-enabling caching here, need to figure out how to expire the cache here
+# This module is designed to match StreetEasy's feed format
+# http://streeteasy.com/home/feed_format
+#
+# Our url looks like http:localhost:3000/syndication/1/streeteasy
+#
+# Todo: before re-enabling caching here, need to figure out how to expire the cache here
 # when a building photo is updated. the building photo is displayed before listings photos,
 # but adding/removing building photos does not update the listing object.
 #cache "streeteasy/#{@listings.ids.join('')}-#{@listings.ids.count}-#{@listings.maximum(:updated_at).to_i}" do
 
-# url looks like <base_url>/syndication/1/streeteasy
+
 xml.instruct! :xml, :version => "1.0"
 xml.streeteasy :version => "1.6" do
   xml.properties do
