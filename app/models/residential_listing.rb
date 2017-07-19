@@ -423,6 +423,7 @@ class ResidentialListing < ApplicationRecord
               Unit.syndication_statuses['Syndicate if matches criteria'],
               Unit.syndication_statuses['Force syndicate']
             ])
+          .where('residential_listings.streeteasy_flag = TRUE')
       elsif params[:streeteasy_filter] == 'No'
         running_list = running_list.where('units.exclusive = FALSE')
         running_list = running_list.where("residential_listings.description = ''")
