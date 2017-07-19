@@ -658,7 +658,7 @@
           </div>
           <div class="col-xs-9 col-md-7">
             <div class="checkbox checkbox-warning checkbox-inline">
-              <%= f.check_box :rls_flag, class:"styled",
+              <%= f.check_box :rls_flag, class: "styled",
                   checked: @residential_unit ? @residential_unit.rls_flag : false %>
               <label></label>
             </div>
@@ -671,7 +671,7 @@
           </div>
           <div class="col-xs-9 col-md-7">
             <div class="checkbox checkbox-warning checkbox-inline">
-              <%= f.check_box :streeteasy_flag, class:"styled",
+              <%= f.check_box :streeteasy_flag, class: "styled",
                   checked: @residential_unit ? @residential_unit.streeteasy_flag : false %>
               <label></label>
             </div>
@@ -679,18 +679,28 @@
         </div>
 
         <%= f.fields_for @residential_unit.unit do |unit_form| %>
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-4">
-            <%= unit_form.label :has_stock_photos, "Has Stock Photos" %>
-          </div>
-          <div class="col-xs-9 col-md-7">
-            <div class="checkbox checkbox-warning checkbox-inline">
-              <%= unit_form.check_box :has_stock_photos, class:"styled",
-                  checked: @residential_unit ? @residential_unit.unit.has_stock_photos : false %>
-              <label></label>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4">
+              <%= unit_form.label :has_stock_photos, "Has Stock Photos" %>
+            </div>
+            <div class="col-xs-9 col-md-7">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= unit_form.check_box :has_stock_photos, class: "styled",
+                    checked: @residential_unit ? @residential_unit.unit.has_stock_photos : false %>
+                <label></label>
+              </div>
             </div>
           </div>
-        </div>
+
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4">
+              <%= unit_form.label :public_url, "Public URL" %>
+            </div>
+            <div class="col-xs-9 col-md-7">
+              <%= unit_form.text_field :public_url,
+                placeholder: "www.mywebsite.com", class: "form-control", size:50 %>
+            </div>
+          </div>
         <% end %>
 
         <br>
