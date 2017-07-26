@@ -28,6 +28,7 @@ xml.streeteasy :version => "1.6" do
       end
 
       # listing type
+
       if listing.r_id
         @ptype = "rental"
       elsif listing.s_id
@@ -83,6 +84,14 @@ xml.streeteasy :version => "1.6" do
 
           xml.availableOn listing.available_by # rentals only
 
+          if !listing.lease_start.nil?
+            xml.lease_term_min listing.lease_start
+          end
+
+          if !listing.lease_end.nil?
+            xml.lease_term_max listing.lease_end
+          end
+
           if listing.r_id
             xml.description h raw sanitize listing.description,
                 tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
@@ -95,6 +104,14 @@ xml.streeteasy :version => "1.6" do
             xml.propertyType "rental"
           elsif listing.s_id
             xml.propertyType "house"
+          end
+
+          xml.internal do
+            if !listing.r_note.nil?
+              xml.private_notes listing.r_note
+            elsif !listing.s_note.nil?
+              xml.private_notes listing.s_note
+            end
           end
 
           # streeteasy has their own approved list of amenities
