@@ -106,14 +106,6 @@ xml.streeteasy :version => "1.6" do
             xml.propertyType "house"
           end
 
-          xml.internal do
-            if !listing.r_note.nil?
-              xml.private_notes listing.r_note
-            elsif !listing.s_note.nil?
-              xml.private_notes listing.s_note
-            end
-          end
-
           # streeteasy has their own approved list of amenities
           # doorman, gym, pool, elevator, garage, parking, balcony, storage, patio, fireplace
           # washerDryer, dishwasher, furnished, pets, other
@@ -163,7 +155,7 @@ xml.streeteasy :version => "1.6" do
                 end # case
               end
             end
-
+          
             if @residential_amenities && @residential_amenities[listing.unit_id]
               @residential_amenities[listing.unit_id].map{|a| a.name}.each do |rm|
 
@@ -236,7 +228,13 @@ xml.streeteasy :version => "1.6" do
             end
           end
         end
-
+        xml.internal do
+          if !listing.r_note.nil? && !listing.r_note.strip.empty?
+            xml.private_notes listing.r_note.strip
+          elsif !listing.s_note.nil? && !listing.s_note.strip.empty?
+            xml.private_notes listing.s_note.strip
+          end
+        end
         if !@primary_agents[listing.unit_id].blank?
           xml.agents do
             # On all residential listings, set the company account as the first "agent".
@@ -256,7 +254,7 @@ xml.streeteasy :version => "1.6" do
                 xml.name agent.name
                 xml.company @company.name
                 if @agent_images[agent.id]
-                  xml.photo url:@agent_images[agent.id].file.url(:large)
+                  #xml.photo url:@agent_images[agent.id].file.url(:large)
                 end
                 xml.url agent.public_url
                 xml.email agent.email
@@ -275,12 +273,12 @@ xml.streeteasy :version => "1.6" do
         xml.media do
           if @bldg_images[listing.building_id]
             @bldg_images[listing.building_id].each do |i|
-              xml.photo url:i.file.url(:large), position: i.priority, description:""
+              #xml.photo url:i.file.url(:large), position: i.priority, description:""
             end
           end
           if @images[listing.unit_id]
             @images[listing.unit_id].each do |i|
-              xml.photo url:i.file.url(:large), position: i.priority, description:""
+              #xml.photo url:i.file.url(:large), position: i.priority, description:""
             end
           end
         end
