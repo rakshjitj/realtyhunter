@@ -228,13 +228,17 @@ xml.streeteasy :version => "1.6" do
             end
           end
         end
-        xml.internal do
-          if !listing.r_note.nil? && !listing.r_note.strip.empty?
+        
+        if !listing.r_note.nil? && !listing.r_note.strip.empty?
+          xml.internal do
             xml.private_notes listing.r_note.strip
-          elsif !listing.s_note.nil? && !listing.s_note.strip.empty?
+          end
+        elsif !listing.s_note.nil? && !listing.s_note.strip.empty?
+          xml.internal do
             xml.private_notes listing.s_note.strip
           end
         end
+        
         if !@primary_agents[listing.unit_id].blank?
           xml.agents do
             # On all residential listings, set the company account as the first "agent".
