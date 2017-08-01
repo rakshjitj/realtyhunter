@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -15,7 +14,6 @@ ActiveRecord::Schema.define(version: 20170212220534) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "pg_stat_statements"
 
   create_table "announcements", force: :cascade do |t|
     t.string   "note"
@@ -41,17 +39,16 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.string   "remote_address"
     t.string   "request_uuid"
     t.datetime "created_at"
+    t.index ["associated_id", "associated_type"], name: "associated_index", using: :btree
+    t.index ["auditable_id", "auditable_type"], name: "auditable_index", using: :btree
+    t.index ["created_at"], name: "index_audits_on_created_at", using: :btree
+    t.index ["request_uuid"], name: "index_audits_on_request_uuid", using: :btree
+    t.index ["user_id", "user_type"], name: "user_index", using: :btree
   end
 
-  add_index "audits", ["associated_id", "associated_type"], name: "associated_index", using: :btree
-  add_index "audits", ["auditable_id", "auditable_type"], name: "auditable_index", using: :btree
-  add_index "audits", ["created_at"], name: "index_audits_on_created_at", using: :btree
-  add_index "audits", ["request_uuid"], name: "index_audits_on_request_uuid", using: :btree
-  add_index "audits", ["user_id", "user_type"], name: "user_index", using: :btree
-
   create_table "bootsy_image_galleries", force: :cascade do |t|
-    t.integer  "bootsy_resource_id"
     t.string   "bootsy_resource_type"
+    t.integer  "bootsy_resource_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -106,13 +103,12 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.string   "llc_name"
     t.integer  "feedback_id"
     t.string   "knack_id"
+    t.index ["documents_id"], name: "index_buildings_on_documents_id", using: :btree
+    t.index ["feedback_id"], name: "index_buildings_on_feedback_id", using: :btree
+    t.index ["formatted_street_address"], name: "index_buildings_on_formatted_street_address", using: :btree
+    t.index ["images_id"], name: "index_buildings_on_images_id", using: :btree
+    t.index ["updated_at"], name: "index_buildings_on_updated_at", order: { updated_at: :desc }, using: :btree
   end
-
-  add_index "buildings", ["documents_id"], name: "index_buildings_on_documents_id", using: :btree
-  add_index "buildings", ["feedback_id"], name: "index_buildings_on_feedback_id", using: :btree
-  add_index "buildings", ["formatted_street_address"], name: "index_buildings_on_formatted_street_address", using: :btree
-  add_index "buildings", ["images_id"], name: "index_buildings_on_images_id", using: :btree
-  add_index "buildings", ["updated_at"], name: "index_buildings_on_updated_at", order: {"updated_at"=>:desc}, using: :btree
 
   create_table "buildings_utilities", id: false, force: :cascade do |t|
     t.integer "building_id"
@@ -164,12 +160,11 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.integer  "key_money_amt"
     t.string   "listing_title"
     t.integer  "lock_version",                default: 0,     null: false
+    t.boolean  "expose_address",              default: false
     t.boolean  "favorites",                   default: true
     t.boolean  "show",                        default: true
-    t.boolean  "expose_address",              default: false
+    t.index ["unit_id"], name: "index_commercial_listings_on_unit_id", using: :btree
   end
-
-  add_index "commercial_listings", ["unit_id"], name: "index_commercial_listings_on_unit_id", using: :btree
 
   create_table "commercial_property_types", force: :cascade do |t|
     t.integer  "company_id"
@@ -177,6 +172,26 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.string   "property_sub_type"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+  end
+
+  create_table "commercial_units", force: :cascade do |t|
+    t.integer "sq_footage"
+    t.integer "floor"
+    t.integer "building_size"
+    t.boolean "build_to_suit",               default: false
+    t.integer "minimum_divisble"
+    t.integer "maximum_contiguous"
+    t.integer "lease_type"
+    t.boolean "is_sublease",                 default: false
+    t.string  "property_description"
+    t.string  "location_description"
+    t.integer "construction_status",         default: 0
+    t.integer "no_parking_spaces"
+    t.integer "pct_procurement_fee"
+    t.integer "lease_term_months"
+    t.boolean "rate_is_negotiable"
+    t.integer "total_lot_size"
+    t.integer "commercial_property_type_id"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -205,24 +220,23 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.integer  "wufoo_listings_forms_id"
     t.integer  "wufoo_career_forms_id"
     t.integer  "lock_version",              default: 0,     null: false
+    t.index ["building_amenities_id"], name: "index_companies_on_building_amenities_id", using: :btree
+    t.index ["buildings_id"], name: "index_companies_on_buildings_id", using: :btree
+    t.index ["landlords_id"], name: "index_companies_on_landlords_id", using: :btree
+    t.index ["name"], name: "index_companies_on_name", using: :btree
+    t.index ["offices_id"], name: "index_companies_on_offices_id", using: :btree
+    t.index ["pet_policies_id"], name: "index_companies_on_pet_policies_id", using: :btree
+    t.index ["rental_terms_id"], name: "index_companies_on_rental_terms_id", using: :btree
+    t.index ["residential_amenities_id"], name: "index_companies_on_residential_amenities_id", using: :btree
+    t.index ["roommates_id"], name: "index_companies_on_roommates_id", using: :btree
+    t.index ["sales_amenities_id"], name: "index_companies_on_sales_amenities_id", using: :btree
+    t.index ["users_id"], name: "index_companies_on_users_id", using: :btree
+    t.index ["utilities_id"], name: "index_companies_on_utilities_id", using: :btree
+    t.index ["wufoo_career_forms_id"], name: "index_companies_on_wufoo_career_forms_id", using: :btree
+    t.index ["wufoo_contact_us_forms_id"], name: "index_companies_on_wufoo_contact_us_forms_id", using: :btree
+    t.index ["wufoo_listings_forms_id"], name: "index_companies_on_wufoo_listings_forms_id", using: :btree
+    t.index ["wufoo_partner_forms_id"], name: "index_companies_on_wufoo_partner_forms_id", using: :btree
   end
-
-  add_index "companies", ["building_amenities_id"], name: "index_companies_on_building_amenities_id", using: :btree
-  add_index "companies", ["buildings_id"], name: "index_companies_on_buildings_id", using: :btree
-  add_index "companies", ["landlords_id"], name: "index_companies_on_landlords_id", using: :btree
-  add_index "companies", ["name"], name: "index_companies_on_name", using: :btree
-  add_index "companies", ["offices_id"], name: "index_companies_on_offices_id", using: :btree
-  add_index "companies", ["pet_policies_id"], name: "index_companies_on_pet_policies_id", using: :btree
-  add_index "companies", ["rental_terms_id"], name: "index_companies_on_rental_terms_id", using: :btree
-  add_index "companies", ["residential_amenities_id"], name: "index_companies_on_residential_amenities_id", using: :btree
-  add_index "companies", ["roommates_id"], name: "index_companies_on_roommates_id", using: :btree
-  add_index "companies", ["sales_amenities_id"], name: "index_companies_on_sales_amenities_id", using: :btree
-  add_index "companies", ["users_id"], name: "index_companies_on_users_id", using: :btree
-  add_index "companies", ["utilities_id"], name: "index_companies_on_utilities_id", using: :btree
-  add_index "companies", ["wufoo_career_forms_id"], name: "index_companies_on_wufoo_career_forms_id", using: :btree
-  add_index "companies", ["wufoo_contact_us_forms_id"], name: "index_companies_on_wufoo_contact_us_forms_id", using: :btree
-  add_index "companies", ["wufoo_listings_forms_id"], name: "index_companies_on_wufoo_listings_forms_id", using: :btree
-  add_index "companies", ["wufoo_partner_forms_id"], name: "index_companies_on_wufoo_partner_forms_id", using: :btree
 
   create_table "deals", force: :cascade do |t|
     t.string   "price"
@@ -248,9 +262,8 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.string   "building_unit"
     t.integer  "state",                 default: 0,     null: false
     t.integer  "rented_by_agent_id"
+    t.index ["rented_by_agent_id"], name: "index_deals_on_rented_by_agent_id", using: :btree
   end
-
-  add_index "deals", ["rented_by_agent_id"], name: "index_deals_on_rented_by_agent_id", using: :btree
 
   create_table "documents", force: :cascade do |t|
     t.string   "file_file_name"
@@ -268,9 +281,8 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.integer  "users_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["users_id"], name: "index_employee_titles_on_users_id", using: :btree
   end
-
-  add_index "employee_titles", ["users_id"], name: "index_employee_titles_on_users_id", using: :btree
 
   create_table "feedbacks", force: :cascade do |t|
     t.integer  "unit_id"
@@ -280,11 +292,10 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.boolean  "price_drop_request", default: false
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
+    t.index ["building_id"], name: "index_feedbacks_on_building_id", using: :btree
+    t.index ["unit_id"], name: "index_feedbacks_on_unit_id", using: :btree
+    t.index ["user_id"], name: "index_feedbacks_on_user_id", using: :btree
   end
-
-  add_index "feedbacks", ["building_id"], name: "index_feedbacks_on_building_id", using: :btree
-  add_index "feedbacks", ["unit_id"], name: "index_feedbacks_on_unit_id", using: :btree
-  add_index "feedbacks", ["user_id"], name: "index_feedbacks_on_user_id", using: :btree
 
   create_table "images", force: :cascade do |t|
     t.string   "file_file_name"
@@ -298,11 +309,10 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.integer  "user_id"
     t.integer  "company_id"
     t.integer  "rotation",          default: 0, null: false
+    t.index ["building_id"], name: "index_images_on_building_id", using: :btree
+    t.index ["unit_id"], name: "index_images_on_unit_id", using: :btree
+    t.index ["user_id"], name: "index_images_on_user_id", using: :btree
   end
-
-  add_index "images", ["building_id"], name: "index_images_on_building_id", using: :btree
-  add_index "images", ["unit_id"], name: "index_images_on_unit_id", using: :btree
-  add_index "images", ["user_id"], name: "index_images_on_user_id", using: :btree
 
   create_table "landlords", force: :cascade do |t|
     t.boolean  "archived",                          default: false
@@ -344,12 +354,11 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.integer  "active_unit_count",                 default: 0,     null: false
     t.datetime "last_unit_updated_at"
     t.string   "knack_id"
+    t.index ["buildings_id"], name: "index_landlords_on_buildings_id", using: :btree
+    t.index ["code"], name: "index_landlords_on_code", using: :btree
+    t.index ["listing_agent_id"], name: "index_landlords_on_listing_agent_id", using: :btree
+    t.index ["updated_at"], name: "index_landlords_on_updated_at", order: { updated_at: :desc }, using: :btree
   end
-
-  add_index "landlords", ["buildings_id"], name: "index_landlords_on_buildings_id", using: :btree
-  add_index "landlords", ["code"], name: "index_landlords_on_code", using: :btree
-  add_index "landlords", ["listing_agent_id"], name: "index_landlords_on_listing_agent_id", using: :btree
-  add_index "landlords", ["updated_at"], name: "index_landlords_on_updated_at", order: {"updated_at"=>:desc}, using: :btree
 
   create_table "neighborhoods", force: :cascade do |t|
     t.boolean  "archived",     default: false
@@ -361,10 +370,9 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.integer  "roommates_id"
+    t.index ["buildings_id"], name: "index_neighborhoods_on_buildings_id", using: :btree
+    t.index ["roommates_id"], name: "index_neighborhoods_on_roommates_id", using: :btree
   end
-
-  add_index "neighborhoods", ["buildings_id"], name: "index_neighborhoods_on_buildings_id", using: :btree
-  add_index "neighborhoods", ["roommates_id"], name: "index_neighborhoods_on_roommates_id", using: :btree
 
   create_table "offices", force: :cascade do |t|
     t.boolean  "archived",                          default: false
@@ -387,9 +395,8 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.integer  "users_id"
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
+    t.index ["users_id"], name: "index_offices_on_users_id", using: :btree
   end
-
-  add_index "offices", ["users_id"], name: "index_offices_on_users_id", using: :btree
 
   create_table "open_houses", force: :cascade do |t|
     t.time     "start_time"
@@ -398,9 +405,8 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.integer  "unit_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["unit_id"], name: "index_open_houses_on_unit_id", using: :btree
   end
-
-  add_index "open_houses", ["unit_id"], name: "index_open_houses_on_unit_id", using: :btree
 
   create_table "pet_policies", force: :cascade do |t|
     t.string   "name"
@@ -408,9 +414,8 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.integer  "building_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["building_id"], name: "index_pet_policies_on_building_id", using: :btree
   end
-
-  add_index "pet_policies", ["building_id"], name: "index_pet_policies_on_building_id", using: :btree
 
   create_table "rental_terms", force: :cascade do |t|
     t.string   "name"
@@ -418,9 +423,8 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.integer  "building_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["building_id"], name: "index_rental_terms_on_building_id", using: :btree
   end
-
-  add_index "rental_terms", ["building_id"], name: "index_rental_terms_on_building_id", using: :btree
 
   create_table "residential_amenities", force: :cascade do |t|
     t.string   "name"
@@ -436,14 +440,12 @@ ActiveRecord::Schema.define(version: 20170212220534) do
 
   create_table "residential_amenities_units", id: false, force: :cascade do |t|
     t.integer "residential_amenity_id"
-    t.integer "residential_listing_id"
   end
 
   create_table "residential_listings", force: :cascade do |t|
     t.integer  "beds"
     t.float    "baths"
     t.string   "notes"
-    t.string   "description"
     t.string   "lease_start"
     t.string   "lease_end"
     t.boolean  "has_fee"
@@ -455,9 +457,9 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.integer  "unit_id"
     t.integer  "lock_version",        default: 0,     null: false
     t.integer  "roommates_id"
-    t.boolean  "favorites",           default: false
-    t.boolean  "show",                default: true
-    t.boolean  "expose_address",      default: false
+    t.boolean  "rls_flag",            default: false
+    t.boolean  "streeteasy_flag",     default: false
+    t.string   "knack_id"
     t.integer  "floor"
     t.integer  "total_room_count"
     t.string   "condition"
@@ -467,25 +469,38 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.date     "rented_date"
     t.boolean  "rlsny",               default: false
     t.boolean  "share_with_brokers",  default: false
-    t.boolean  "rls_flag",            default: false
-    t.boolean  "streeteasy_flag",     default: false
-    t.string   "knack_id"
+    t.boolean  "expose_address",      default: false
+    t.boolean  "favorites",           default: false
+    t.boolean  "show",                default: true
+    t.index ["roommates_id"], name: "index_residential_listings_on_roommates_id", using: :btree
+    t.index ["unit_id"], name: "index_residential_listings_on_unit_id", using: :btree
+    t.index ["updated_at"], name: "index_residential_listings_on_updated_at", order: { updated_at: :desc }, using: :btree
   end
 
-  add_index "residential_listings", ["roommates_id"], name: "index_residential_listings_on_roommates_id", using: :btree
-  add_index "residential_listings", ["unit_id"], name: "index_residential_listings_on_unit_id", using: :btree
-  add_index "residential_listings", ["updated_at"], name: "index_residential_listings_on_updated_at", order: {"updated_at"=>:desc}, using: :btree
+  create_table "residential_units", force: :cascade do |t|
+    t.integer "beds"
+    t.float   "baths"
+    t.string  "notes"
+    t.string  "lease_start"
+    t.string  "lease_end"
+    t.boolean "has_fee"
+    t.integer "op_fee_percentage"
+    t.integer "tp_fee_percentage"
+    t.boolean "tenant_occupied",   default: false
+    t.string  "description"
+    t.index ["baths"], name: "index_residential_units_on_baths", using: :btree
+    t.index ["beds"], name: "index_residential_units_on_beds", using: :btree
+  end
 
   create_table "roles", force: :cascade do |t|
     t.string   "name"
-    t.integer  "resource_id"
     t.string   "resource_type"
+    t.integer  "resource_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
+    t.index ["name"], name: "index_roles_on_name", using: :btree
   end
-
-  add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
-  add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
   create_table "roommates", force: :cascade do |t|
     t.string   "name"
@@ -573,9 +588,8 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.string   "orderStatus"
     t.date     "dob"
     t.string   "report_url"
+    t.index ["user_id"], name: "index_roomsharing_applications_on_user_id", using: :btree
   end
-
-  add_index "roomsharing_applications", ["user_id"], name: "index_roomsharing_applications_on_user_id", using: :btree
 
   create_table "sales_amenities", force: :cascade do |t|
     t.string   "name"
@@ -616,6 +630,9 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.string   "certificate_of_occupancy"
     t.string   "violation_search"
     t.integer  "lock_version",              default: 0,     null: false
+    t.boolean  "show",                      default: true
+    t.boolean  "favorites",                 default: true
+    t.boolean  "expose_address",            default: false
     t.integer  "floor"
     t.integer  "total_room_count"
     t.string   "condition"
@@ -625,12 +642,8 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.date     "rented_date"
     t.boolean  "rlsny",                     default: false
     t.boolean  "share_with_brokers",        default: false
-    t.boolean  "show",                      default: true
-    t.boolean  "favorites",                 default: true
-    t.boolean  "expose_address",            default: false
+    t.index ["unit_id"], name: "index_sales_listings_on_unit_id", using: :btree
   end
-
-  add_index "sales_listings", ["unit_id"], name: "index_sales_listings_on_unit_id", using: :btree
 
   create_table "units", force: :cascade do |t|
     t.boolean  "archived",                       default: false
@@ -647,7 +660,6 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.datetime "updated_at",                                     null: false
     t.integer  "residential_listing_id"
     t.integer  "commercial_listing_id"
-    t.string   "public_url"
     t.integer  "sales_listing_id"
     t.boolean  "exclusive"
     t.integer  "documents_id"
@@ -660,21 +672,21 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.boolean  "is_exclusive_agreement_signed",  default: false
     t.integer  "feedback_id"
     t.datetime "exclusive_agreement_expires_at"
+    t.string   "public_url"
+    t.index ["commercial_listing_id"], name: "index_units_on_commercial_listing_id", using: :btree
+    t.index ["documents_id"], name: "index_units_on_documents_id", using: :btree
+    t.index ["feedback_id"], name: "index_units_on_feedback_id", using: :btree
+    t.index ["images_id"], name: "index_units_on_images_id", using: :btree
+    t.index ["open_houses_id"], name: "index_units_on_open_houses_id", using: :btree
+    t.index ["primary_agent2_id"], name: "index_units_on_primary_agent2_id", using: :btree
+    t.index ["primary_agent_id"], name: "index_units_on_primary_agent_id", using: :btree
+    t.index ["rent"], name: "index_units_on_rent", using: :btree
+    t.index ["residential_listing_id"], name: "index_units_on_residential_listing_id", using: :btree
+    t.index ["sales_listing_id"], name: "index_units_on_sales_listing_id", using: :btree
+    t.index ["status"], name: "index_units_on_status", using: :btree
+    t.index ["updated_at", "status", "archived"], name: "index_units_on_updated_at_and_status_and_archived", using: :btree
+    t.index ["updated_at"], name: "index_units_on_updated_at", using: :btree
   end
-
-  add_index "units", ["commercial_listing_id"], name: "index_units_on_commercial_listing_id", using: :btree
-  add_index "units", ["documents_id"], name: "index_units_on_documents_id", using: :btree
-  add_index "units", ["feedback_id"], name: "index_units_on_feedback_id", using: :btree
-  add_index "units", ["images_id"], name: "index_units_on_images_id", using: :btree
-  add_index "units", ["open_houses_id"], name: "index_units_on_open_houses_id", using: :btree
-  add_index "units", ["primary_agent2_id"], name: "index_units_on_primary_agent2_id", using: :btree
-  add_index "units", ["primary_agent_id"], name: "index_units_on_primary_agent_id", using: :btree
-  add_index "units", ["rent"], name: "index_units_on_rent", using: :btree
-  add_index "units", ["residential_listing_id"], name: "index_units_on_residential_listing_id", using: :btree
-  add_index "units", ["sales_listing_id"], name: "index_units_on_sales_listing_id", using: :btree
-  add_index "units", ["status"], name: "index_units_on_status", using: :btree
-  add_index "units", ["updated_at", "status", "archived"], name: "index_units_on_updated_at_and_status_and_archived", using: :btree
-  add_index "units", ["updated_at"], name: "index_units_on_updated_at", using: :btree
 
   create_table "user_waterfalls", force: :cascade do |t|
     t.integer  "parent_agent_id"
@@ -712,32 +724,30 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.integer  "manager_id"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
-    t.string   "public_url"
     t.integer  "roommates_id"
     t.integer  "lock_version",        default: 0,     null: false
     t.integer  "announcements_id"
     t.integer  "deals_id"
     t.integer  "checkins_id"
     t.integer  "feedback_id"
+    t.string   "public_url"
+    t.index ["announcements_id"], name: "index_users_on_announcements_id", using: :btree
+    t.index ["auth_token"], name: "index_users_on_auth_token", using: :btree
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["employee_title_id"], name: "index_users_on_employee_title_id", using: :btree
+    t.index ["feedback_id"], name: "index_users_on_feedback_id", using: :btree
+    t.index ["manager_id"], name: "index_users_on_manager_id", using: :btree
+    t.index ["name"], name: "index_users_on_name", using: :btree
+    t.index ["office_id"], name: "index_users_on_office_id", using: :btree
+    t.index ["roommates_id"], name: "index_users_on_roommates_id", using: :btree
+    t.index ["updated_at"], name: "index_users_on_updated_at", order: { updated_at: :desc }, using: :btree
   end
-
-  add_index "users", ["announcements_id"], name: "index_users_on_announcements_id", using: :btree
-  add_index "users", ["auth_token"], name: "index_users_on_auth_token", using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["employee_title_id"], name: "index_users_on_employee_title_id", using: :btree
-  add_index "users", ["feedback_id"], name: "index_users_on_feedback_id", using: :btree
-  add_index "users", ["manager_id"], name: "index_users_on_manager_id", using: :btree
-  add_index "users", ["name"], name: "index_users_on_name", using: :btree
-  add_index "users", ["office_id"], name: "index_users_on_office_id", using: :btree
-  add_index "users", ["roommates_id"], name: "index_users_on_roommates_id", using: :btree
-  add_index "users", ["updated_at"], name: "index_users_on_updated_at", order: {"updated_at"=>:desc}, using: :btree
 
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "role_id"
+    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
   end
-
-  add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
 
   create_table "utilities", force: :cascade do |t|
     t.string   "name"

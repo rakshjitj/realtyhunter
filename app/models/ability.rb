@@ -60,13 +60,6 @@ class Ability
     can :manage, Deal
   end
 
-  def wufoo_permissions
-    can :manage, WufooContactUsForm
-    can :manage, WufooListingsForm
-    can :manage, WufooPartnerForm
-    can :manage, WufooCareerForm
-  end
-
   def agent_permissions(user)
     #can [:new, :create, ], Roommate, :user_id => user.id
     #cannot :index, Roommate, :company_id => user.company.id
@@ -110,7 +103,6 @@ class Ability
         can :manage, Landlord do |landlord|
           !landlord.company_id || landlord.company_id == user.company_id
         end
-        wufoo_permissions()
 
       # user can enter in all kinds of data
       # if labelled "posting admin", then this is an agent who has been
@@ -147,7 +139,6 @@ class Ability
           landlord.company_id == user.company_id
         end
         can :filter, Landlord, company_id: user.company_id
-        wufoo_permissions()
       end
 
       common_permissions(user)

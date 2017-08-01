@@ -19,10 +19,6 @@ class Company < ApplicationRecord
 	has_many :commercial_property_types
 	# the following are from wufoo
 	has_many :roommates, dependent: :destroy
-	has_many :wufoo_contact_us_forms, dependent: :destroy
-	has_many :wufoo_partner_forms, dependent: :destroy
-	has_many :wufoo_career_forms, dependent: :destroy
-	#has_many :wufoo_listings_forms, dependent: :destroy
 
 	#attr_accessor :agent_types, :employee_titles
 	#attr_access :building_amenities

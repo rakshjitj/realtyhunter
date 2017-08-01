@@ -1,4 +1,4 @@
-class AddNewFieldsToResidentialListings < ActiveRecord::Migration
+class AddRebnyFields < ActiveRecord::Migration
   def change
     add_column :residential_listings, :floor, :integer
     add_column :residential_listings, :total_room_count, :integer

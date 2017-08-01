@@ -52,7 +52,6 @@ gem 'bootstrap3-datetimepicker-rails', '>= 4.14.30'
 # gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'bootsy' # rich text editor for <textarea> elements
-gem 'wuparty' # wufoo forms
 #gem "brakeman", :require => false
 gem 'selectize-rails'
 gem 'nested_form_fields'

@@ -68,9 +68,6 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <%= current_user.company.name %>
-                <% if total_unread_forms_count > 0 && current_user.is_management? %>
-                  <span class="total_forms_badge badge"><%= total_unread_forms_count %></span>
-                <% end %>
                 <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
@@ -87,33 +84,6 @@
                 <!-- **************** ANNOUNCEMENTS **************** -->
                 <% if current_user.is_management? || current_user.is_listings_manager? %>
                   <li><%= link_to "Announcements", new_announcement_path %></li>
-                <% end %>
-
-                <!-- **************** FORMS **************** -->
-                <% if current_user.is_wufoo_forms? %>
-                  <li role="separator" class="divider"></li>
-                  <li class="dropdown-header">WuFoo Forms</li>
-                  <li>
-                    <%= link_to forms_careers_path do %>
-                      Careers <% if unread_careers_count > 0 %>
-                        <span class="careers_badge badge"><%= unread_careers_count %></span>
-                      <% end %>
-                    <% end %>
-                  </li>
-                  <li>
-                    <%= link_to forms_contact_us_path do %>
-                      Contact Us <% if unread_contact_us_count > 0 %>
-                        <span class="contact_us_badge badge"><%= unread_contact_us_count %></span>
-                      <% end %>
-                    <% end %>
-                  </li>
-                  <li>
-                    <%= link_to forms_partner_index_path do %>
-                      Partner With Us <% if unread_partner_count > 0 %>
-                        <span class="partner_badge badge"><%= unread_partner_count %></span>
-                      <% end %>
-                    <% end %>
-                  </li>
                 <% end %>
               </ul>
             </li>

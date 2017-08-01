@@ -17,7 +17,7 @@ class User < ApplicationRecord
   has_many :primary2_units, class_name: 'Unit', :foreign_key => 'primary_agent2_id'
   # A unit can have only 1 listing agent
   has_many :listed_units,  class_name: 'Unit', :foreign_key => 'listing_agent_id'
-  has_many :roommates, class_name: 'WufooRoommatesWebForm'
+  has_many :roommates#, class_name: 'WufooRoommatesWebForm'
   has_many :roomsharing_applications
   has_many :user_waterfalls, class_name: 'UserWatefall', foreign_key: 'parent_agent_id'
   has_one :image, dependent: :destroy
@@ -319,18 +319,6 @@ class User < ApplicationRecord
     else
       Role.where('name NOT IN (?)', management_roles)
     end
-  end
-
-  # wufoo forms permission
-  def is_wufoo_forms?
-    wufoo_roles = [
-      :super_admin,
-      :company_admin,
-      :manager]
-    wufoo_roles.each do |r|
-      return true if self.has_role? r
-    end
-    false
   end
 
   def make_manager

@@ -30,8 +30,8 @@
 
 # ### Ok, let's get started! ######
 
-# @company = Company.create({name: "MyspaceNYC", website: "www.myspacenyc.com"})
-# @company2 = Company.create({name: "Nooklyn", website: "www.nooklyn.com"})
+ @company = Company.create({name: "MyspaceNYC", website: "www.myspacenyc.com"})
+ @company2 = Company.create({name: "Nooklyn", website: "www.nooklyn.com"})
 
 # # 53.times do |n|
 # #   Company.create({name: FFaker::Company::name})

@@ -257,69 +257,6 @@ Rails.application.routes.draw do
     end
   end
 
-  namespace :forms do
-    resources :contact_us, only: [:index, :destroy] do
-      member do
-        get 'delete_modal'
-        get 'hide_modal'
-        patch 'hide'
-        get 'unarchive_modal'
-        post 'unarchive'
-        get 'detail_modal'
-      end
-      collection do
-        get 'filter'
-        post 'send_message'
-        get 'download'
-        patch 'mark_read'
-        get :autocomplete_wufoo_contact_us_form_name
-        get 'destroy_multiple_modal'
-        delete 'destroy_multiple'
-      end
-    end
-
-    resources :partner, only: [:index, :destroy] do
-      member do
-        get 'delete_modal'
-        get 'hide_modal'
-        patch 'hide'
-        get 'unarchive_modal'
-        post 'unarchive'
-        get 'detail_modal'
-      end
-      collection do
-        get 'filter'
-        post 'send_message'
-        get 'download'
-        patch 'mark_read'
-        get :autocomplete_wufoo_partner_form_name
-        get :autocomplete_wufoo_partner_form_address_street_address
-        get 'destroy_multiple_modal'
-        delete 'destroy_multiple'
-      end
-    end
-
-    resources :careers, only: [:index, :destroy] do
-      member do
-        get 'delete_modal'
-        get 'hide_modal'
-        patch 'hide'
-        get 'unarchive_modal' # unhide
-        post 'unarchive' # unhide
-        get 'detail_modal'
-      end
-      collection do
-        get 'filter'
-        post 'send_message'
-        get 'download'
-        patch 'mark_read'
-        get :autocomplete_wufoo_career_form_name
-        get 'destroy_multiple_modal'
-        delete 'destroy_multiple'
-      end
-    end
-  end
-
   resources :roomsharing_applications do
     member do
       get 'delete_modal'
