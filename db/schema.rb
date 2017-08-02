@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170212220534) do
+ActiveRecord::Schema.define(version: 20170802093713) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
 
   create_table "announcements", force: :cascade do |t|
     t.string   "note"
@@ -47,8 +48,8 @@ ActiveRecord::Schema.define(version: 20170212220534) do
   end
 
   create_table "bootsy_image_galleries", force: :cascade do |t|
-    t.string   "bootsy_resource_type"
     t.integer  "bootsy_resource_id"
+    t.string   "bootsy_resource_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -160,9 +161,9 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.integer  "key_money_amt"
     t.string   "listing_title"
     t.integer  "lock_version",                default: 0,     null: false
-    t.boolean  "expose_address",              default: false
     t.boolean  "favorites",                   default: true
     t.boolean  "show",                        default: true
+    t.boolean  "expose_address",              default: false
     t.index ["unit_id"], name: "index_commercial_listings_on_unit_id", using: :btree
   end
 
@@ -440,12 +441,14 @@ ActiveRecord::Schema.define(version: 20170212220534) do
 
   create_table "residential_amenities_units", id: false, force: :cascade do |t|
     t.integer "residential_amenity_id"
+    t.integer "residential_listing_id"
   end
 
   create_table "residential_listings", force: :cascade do |t|
     t.integer  "beds"
     t.float    "baths"
     t.string   "notes"
+    t.string   "description"
     t.string   "lease_start"
     t.string   "lease_end"
     t.boolean  "has_fee"
@@ -457,9 +460,9 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.integer  "unit_id"
     t.integer  "lock_version",        default: 0,     null: false
     t.integer  "roommates_id"
-    t.boolean  "rls_flag",            default: false
-    t.boolean  "streeteasy_flag",     default: false
-    t.string   "knack_id"
+    t.boolean  "favorites",           default: false
+    t.boolean  "show",                default: true
+    t.boolean  "expose_address",      default: false
     t.integer  "floor"
     t.integer  "total_room_count"
     t.string   "condition"
@@ -469,9 +472,9 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.date     "rented_date"
     t.boolean  "rlsny",               default: false
     t.boolean  "share_with_brokers",  default: false
-    t.boolean  "expose_address",      default: false
-    t.boolean  "favorites",           default: false
-    t.boolean  "show",                default: true
+    t.boolean  "rls_flag",            default: false
+    t.boolean  "streeteasy_flag",     default: false
+    t.string   "knack_id"
     t.index ["roommates_id"], name: "index_residential_listings_on_roommates_id", using: :btree
     t.index ["unit_id"], name: "index_residential_listings_on_unit_id", using: :btree
     t.index ["updated_at"], name: "index_residential_listings_on_updated_at", order: { updated_at: :desc }, using: :btree
@@ -494,8 +497,8 @@ ActiveRecord::Schema.define(version: 20170212220534) do
 
   create_table "roles", force: :cascade do |t|
     t.string   "name"
-    t.string   "resource_type"
     t.integer  "resource_id"
+    t.string   "resource_type"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
@@ -630,9 +633,6 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.string   "certificate_of_occupancy"
     t.string   "violation_search"
     t.integer  "lock_version",              default: 0,     null: false
-    t.boolean  "show",                      default: true
-    t.boolean  "favorites",                 default: true
-    t.boolean  "expose_address",            default: false
     t.integer  "floor"
     t.integer  "total_room_count"
     t.string   "condition"
@@ -642,6 +642,9 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.date     "rented_date"
     t.boolean  "rlsny",                     default: false
     t.boolean  "share_with_brokers",        default: false
+    t.boolean  "show",                      default: true
+    t.boolean  "favorites",                 default: true
+    t.boolean  "expose_address",            default: false
     t.index ["unit_id"], name: "index_sales_listings_on_unit_id", using: :btree
   end
 
@@ -660,6 +663,7 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.datetime "updated_at",                                     null: false
     t.integer  "residential_listing_id"
     t.integer  "commercial_listing_id"
+    t.string   "public_url"
     t.integer  "sales_listing_id"
     t.boolean  "exclusive"
     t.integer  "documents_id"
@@ -672,7 +676,6 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.boolean  "is_exclusive_agreement_signed",  default: false
     t.integer  "feedback_id"
     t.datetime "exclusive_agreement_expires_at"
-    t.string   "public_url"
     t.index ["commercial_listing_id"], name: "index_units_on_commercial_listing_id", using: :btree
     t.index ["documents_id"], name: "index_units_on_documents_id", using: :btree
     t.index ["feedback_id"], name: "index_units_on_feedback_id", using: :btree
@@ -724,13 +727,13 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.integer  "manager_id"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.string   "public_url"
     t.integer  "roommates_id"
     t.integer  "lock_version",        default: 0,     null: false
     t.integer  "announcements_id"
     t.integer  "deals_id"
     t.integer  "checkins_id"
     t.integer  "feedback_id"
-    t.string   "public_url"
     t.index ["announcements_id"], name: "index_users_on_announcements_id", using: :btree
     t.index ["auth_token"], name: "index_users_on_auth_token", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -754,80 +757,6 @@ ActiveRecord::Schema.define(version: 20170212220534) do
     t.integer  "company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "wufoo_career_forms", force: :cascade do |t|
-    t.string   "name"
-    t.string   "phone_number"
-    t.string   "email"
-    t.string   "how_did_you_hear_about_us"
-    t.string   "what_neighborhood_do_you_live_in"
-    t.string   "licensed_agent"
-    t.string   "resume_upload"
-    t.string   "created_by"
-    t.string   "internal_notes"
-    t.integer  "company_id"
-    t.boolean  "archived",                         default: false
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
-    t.boolean  "read",                             default: false
-  end
-
-  create_table "wufoo_contact_us_forms", force: :cascade do |t|
-    t.string   "name"
-    t.string   "phone_number"
-    t.string   "email"
-    t.string   "how_did_you_hear_about_us"
-    t.integer  "min_price"
-    t.integer  "max_price"
-    t.string   "any_notes_for_us"
-    t.string   "created_by"
-    t.integer  "company_id"
-    t.boolean  "archived",                  default: false
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
-    t.boolean  "read",                      default: false
-  end
-
-  create_table "wufoo_listings_forms", force: :cascade do |t|
-    t.string   "name"
-    t.string   "email"
-    t.string   "phone_number"
-    t.string   "message"
-    t.boolean  "is_residential"
-    t.boolean  "is_commercial"
-    t.string   "created_by"
-    t.boolean  "archived",       default: false
-    t.integer  "company_id"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-  end
-
-  create_table "wufoo_partner_forms", force: :cascade do |t|
-    t.string   "name"
-    t.string   "email"
-    t.string   "phone_number"
-    t.string   "how_did_you_hear_about_us"
-    t.string   "address_street_address"
-    t.string   "address_address_line_2"
-    t.string   "address_city"
-    t.string   "address_state_province_region"
-    t.string   "address_postal_zip_code"
-    t.string   "address_country"
-    t.string   "number_of_bedrooms"
-    t.boolean  "renovated"
-    t.boolean  "utilities_heat_included"
-    t.boolean  "utilities_hot_water_included"
-    t.boolean  "utilities_gas_included"
-    t.boolean  "utilities_electric_included"
-    t.boolean  "utilities_no_utilities_included"
-    t.datetime "move_in_date"
-    t.string   "created_by"
-    t.boolean  "archived",                        default: false
-    t.integer  "company_id"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
-    t.boolean  "read",                            default: false
   end
 
 end
