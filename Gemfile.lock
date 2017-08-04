@@ -116,8 +116,6 @@ GEM
       activesupport (>= 4.2.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    httparty (0.15.5)
-      multi_xml (>= 0.5.2)
     i18n (0.8.4)
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
@@ -164,8 +162,6 @@ GEM
     momentjs-rails (2.17.1)
       railties (>= 3.1)
     multi_json (1.12.1)
-    multi_xml (0.6.0)
-    multipart-post (2.0.0)
     mustermann (1.0.0)
     nested_form_fields (0.8)
       coffee-rails (>= 3.2.1)
@@ -317,10 +313,6 @@ GEM
     wicked_pdf (1.0.5)
     wkhtmltopdf-binary-edge (0.12.2.1)
     wkhtmltopdf-heroku (2.12.2.4)
-    wuparty (1.2.5)
-      httparty (>= 0.6.1)
-      mime-types (>= 1.16)
-      multipart-post (>= 1.0.1)
 
 PLATFORMS
   ruby
@@ -383,10 +375,9 @@ DEPENDENCIES
   wicked_pdf (= 1.0.5)
   wkhtmltopdf-binary-edge (~> 0.12.2.1)
   wkhtmltopdf-heroku (~> 2.12.2.1)
-  wuparty
 
 RUBY VERSION
    ruby 2.4.1p111
 
 BUNDLED WITH
-   1.15.1
+   1.15.2
