@@ -1,6 +1,6 @@
 namespace :maintenance do
 	desc "Update total room count for residential and sales listing"
-	task :update_total_rooms_count => :environment do
+	task :update_total_room_count => :environment do
 		log = ActiveSupport::Logger.new('log/total_rooms_count.log')
 		start_time = Time.now
 
