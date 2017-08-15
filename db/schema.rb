@@ -175,26 +175,6 @@ ActiveRecord::Schema.define(version: 20170802093713) do
     t.datetime "updated_at",        null: false
   end
 
-  create_table "commercial_units", force: :cascade do |t|
-    t.integer "sq_footage"
-    t.integer "floor"
-    t.integer "building_size"
-    t.boolean "build_to_suit",               default: false
-    t.integer "minimum_divisble"
-    t.integer "maximum_contiguous"
-    t.integer "lease_type"
-    t.boolean "is_sublease",                 default: false
-    t.string  "property_description"
-    t.string  "location_description"
-    t.integer "construction_status",         default: 0
-    t.integer "no_parking_spaces"
-    t.integer "pct_procurement_fee"
-    t.integer "lease_term_months"
-    t.boolean "rate_is_negotiable"
-    t.integer "total_lot_size"
-    t.integer "commercial_property_type_id"
-  end
-
   create_table "companies", force: :cascade do |t|
     t.boolean  "archived",                  default: false
     t.string   "name"
@@ -478,21 +458,6 @@ ActiveRecord::Schema.define(version: 20170802093713) do
     t.index ["roommates_id"], name: "index_residential_listings_on_roommates_id", using: :btree
     t.index ["unit_id"], name: "index_residential_listings_on_unit_id", using: :btree
     t.index ["updated_at"], name: "index_residential_listings_on_updated_at", order: { updated_at: :desc }, using: :btree
-  end
-
-  create_table "residential_units", force: :cascade do |t|
-    t.integer "beds"
-    t.float   "baths"
-    t.string  "notes"
-    t.string  "lease_start"
-    t.string  "lease_end"
-    t.boolean "has_fee"
-    t.integer "op_fee_percentage"
-    t.integer "tp_fee_percentage"
-    t.boolean "tenant_occupied",   default: false
-    t.string  "description"
-    t.index ["baths"], name: "index_residential_units_on_baths", using: :btree
-    t.index ["beds"], name: "index_residential_units_on_beds", using: :btree
   end
 
   create_table "roles", force: :cascade do |t|
