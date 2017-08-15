@@ -63,10 +63,10 @@ xml.streeteasy :version => "1.6" do
             xml.bedrooms listing.s_beds.to_i
           end
 
-          if !listing.r_total_room_count.nil?
+          if listing.r_total_room_count
             xml.totalrooms listing.r_total_room_count.to_i
-          elsif !listing.r_id.nil?
-            xml.totalrooms
+          else
+            xml.totalrooms listing.s_total_room_count.to_i
           end
 
           baths = nil
@@ -157,7 +157,7 @@ xml.streeteasy :version => "1.6" do
                 end # case
               end
             end
-
+          
             if @residential_amenities && @residential_amenities[listing.unit_id]
               @residential_amenities[listing.unit_id].map{|a| a.name}.each do |rm|
 
@@ -230,7 +230,7 @@ xml.streeteasy :version => "1.6" do
             end
           end
         end
-
+        
         if !listing.r_note.nil? && !listing.r_note.strip.empty?
           xml.internal do
             xml.private_notes listing.r_note.strip
@@ -240,7 +240,7 @@ xml.streeteasy :version => "1.6" do
             xml.private_notes listing.s_note.strip
           end
         end
-
+        
         if !@primary_agents[listing.unit_id].blank?
           xml.agents do
             # On all residential listings, set the company account as the first "agent".
