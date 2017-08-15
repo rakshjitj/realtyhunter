@@ -534,6 +534,10 @@ class ResidentialListingsController < ApplicationController
           data[:has_fee] = false
         end
       end
+      
+      if data[:total_room_count].blank?
+        data[:total_room_count] = (data[:beds].to_i + 2).to_s
+      end
 
       if !data[:include_photos].nil?
         if data[:include_photos] == "1".freeze
