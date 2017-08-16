@@ -68,7 +68,8 @@ xml.streeteasy :version => "1.6" do
 
 					if listing.r_total_room_count
 			        	xml.totalrooms listing.r_total_room_count.to_i
-			        else
+			        end
+			        if listing.s_total_room_count
 			        	xml.totalrooms listing.s_total_room_count.to_i
 			        end
 
