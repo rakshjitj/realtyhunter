@@ -1,7 +1,7 @@
-<%- headers = [ 'Address','Primary Agent', 'Beds', 'Price', 'Neighborhood' ] -%>
+<%- headers = [ 'Address','Primary Agent', 'Beds', 'Price', 'Neighborhood', 'Updated At' ] -%>
 
 <%= CSV.generate_line headers %>
 <%- @residential_units.each do |listing| -%>
 
-  <%= ["#{listing.street_number} #{listing.route} ##{listing.building_unit}", listing.name ?  listing.name : '', listing.beds, listing.rent, listing.neighborhood_name ].to_csv.html_safe %>
+  <%= ["#{listing.street_number} #{listing.route} ##{listing.building_unit}", listing.name ?  listing.name : '', listing.beds, listing.rent, listing.neighborhood_name, listing.updated_at ].to_csv.html_safe %>
 <%- end -%>
