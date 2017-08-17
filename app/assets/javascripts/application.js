@@ -40,9 +40,6 @@ document.addEventListener('turbolinks:load', Common.miscInits);
 // debugging
 $(window).unload(function() {
 	Deals.clearTimer();
-	Careers.clearTimer();
-	ContactUs.clearTimer();
-	Partner.clearTimer();
 	Announcements.clearTimer();
   ResidentialListings.clearAnnouncementsTimer();
   ResidentialListings.clearTimer();
