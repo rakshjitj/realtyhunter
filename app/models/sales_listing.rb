@@ -30,7 +30,7 @@ class SalesListing < ApplicationRecord
 
 	validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }
 	validates :baths, presence: true, :numericality => { :less_than_or_equal_to => 11 }
-
+  validates :total_room_count, presence: true
   def archive
     self.unit.archived = true
     self.unit.save

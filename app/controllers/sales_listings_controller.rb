@@ -423,6 +423,10 @@ class SalesListingsController < ApplicationController
         end
       end
 
+      if data[:total_room_count].blank?
+        data[:total_room_count] = (data[:beds].to_i + 2).to_s
+      end
+
       if !data[:public_description].blank?
         data[:public_description] = data[:public_description].gsub(/&nbsp;/, ' ')
       end
