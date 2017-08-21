@@ -424,7 +424,7 @@ class SalesListingsController < ApplicationController
       end
 
       if data[:total_room_count].blank?
-        data[:total_room_count] = (data[:beds].to_i + 2).to_s
+        data[:total_room_count] = (data[:beds].to_i + 2)
       end
 
       if !data[:public_description].blank?
