@@ -13,9 +13,9 @@ class BuildingMailer < ApplicationMailer
 
   def send_creation_notification(building_id)
     @building = Building.where(id: building_id).first
-    mail to: ['uricohen646@gmail.com', 'rbujans@myspacenyc.com'],
+    mail to: ['uricohen646@gmail.com', 'rbujans@myspacenyc.com', 'aseinos@myspacenyc.com'],
       subject: "New building created: #{@building.street_address}",
-        reply_to: 'uricohen646@gmail.com',
+        reply_to: ['uricohen646@gmail.com', 'aseinos@myspacenyc.com'],
         tag: 'building_created',
         track_opens:'true'
   end
