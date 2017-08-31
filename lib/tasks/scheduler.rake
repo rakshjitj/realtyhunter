@@ -20,4 +20,5 @@ task :run_reports => :environment do
 	end
 
   Rake::Task["maintenance:sweep_open_houses"].invoke
+  Rake::Task["maintenance:nestio_scanner"].invoke
 end
