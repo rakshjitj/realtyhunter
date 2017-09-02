@@ -38,7 +38,12 @@ xml.streeteasy :version => "1.6" do
 				@ptype = "sale"
 			end
 
-			xml.property type: @ptype, status: @status, id: listing.listing_id, url: listing.public_url do
+			public_url = listing.public_url
+			if !public_url
+				public_url = 'http://www.myspace-nyc.com/'
+			end
+
+			xml.property type: @ptype, status: @status, id: listing.listing_id, url: public_url do
 				xml.location do
 					# note we don't want to give out the building number for rentals!
 					xml.address listing.street_number + " " + listing.route
