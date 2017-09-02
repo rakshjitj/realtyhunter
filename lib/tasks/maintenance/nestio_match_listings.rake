@@ -1,7 +1,7 @@
 namespace :maintenance do
 	desc 'update units public url with new URL from Nestio'
-	task nestio_scanner: :environment do
-		log = ActiveSupport::Logger.new('log/nestio_scanner.log')
+	task nestio_match_listings: :environment do
+		log = ActiveSupport::Logger.new('log/nestio_match_listings.log')
 		start_time = Time.now
 
 		mechanize = Mechanize.new
@@ -23,11 +23,6 @@ namespace :maintenance do
 		end
 
 		nestio_url = "https://nestiolistings.com/api/v2/listings/residential/rentals/?key=65c4bf89794a410aac9ba57eda1e78b1"
-		# clear any old cache laying around, as delete_all will not trigger our
-		# after_destroy callbacks
-		#Rails.cache.clear
-		# clear old data
-		#ResidentialListing.delete_all
 
 		# begin pulling down new data
 		total_pages = 99
@@ -67,16 +62,19 @@ namespace :maintenance do
 	      item = items[i]
 
 	      listing_id = item['description'][/MyspaceNYCListingID.*/].split(":")[1].strip.to_i
-				unit = Unit.find_by(listing_id: listing_id)
+				unit = Unit.where(listing_id: listing_id).first
 				nestio_id = item['id']
 				public_url = "http://www.myspace-nyc.com/listings/#{nestio_id}/"
-				# puts "#{unit.public_url == public_url} #{unit.public_url} #{public_url}"
-				if unit && unit.public_url != public_url
+				if !unit
+					puts "Listing id [#{listing_id}] nestio id: [#{nestio_id}]"
+					#puts "#{unit.public_url != public_url} #{unit.public_url} #{public_url}"
+				end
+
+				if unit && (unit.public_url != public_url)
 					puts "[#{i}] #{item['building']['street_address']} #{item['unit_number']} - updating unit"
 	      	log.info "[#{i}] #{item['building']['street_address']} #{item['unit_number']} - updating unit"
 					unit.update_columns(public_url: public_url)
 				end
-				# sleep(3)
 	    end
 	  end
 	  if !done
