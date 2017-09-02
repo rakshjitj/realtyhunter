@@ -232,7 +232,7 @@ xml.streeteasy :version => "1.6" do
 								if @agent_images[agent.id]
 									xml.photo url:@agent_images[agent.id].file.url(:large)
 								end
-							  xml.url agent.public_url
+							  # xml.url agent.public_url
 						  	xml.email agent.email
 						  	xml.lead_email agent.email
 						  	xml.phone_numbers do

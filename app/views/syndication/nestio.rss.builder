@@ -96,10 +96,10 @@ xml.streeteasy :version => "1.6" do
           end
 
           if listing.r_id
-            xml.description h raw sanitize listing.description + ' MyspaceNYCListingID: ' + listing.listing_id.to_s,
+            xml.description h raw sanitize listing.description + ' MyspaceNYCListingID: ' + listing.listing_id,
                 tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
           elsif listing.s_id
-            xml.description h raw sanitize listing.public_description + ' MyspaceNYCListingID: ' + listing.listing_id.to_s,
+            xml.description h raw sanitize listing.public_description + ' MyspaceNYCListingID: ' + listing.listing_id,
                 tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
           end
 
@@ -158,7 +158,7 @@ xml.streeteasy :version => "1.6" do
                 end # case
               end
             end
-          
+
             if @residential_amenities && @residential_amenities[listing.unit_id]
               @residential_amenities[listing.unit_id].map{|a| a.name}.each do |rm|
 
@@ -231,7 +231,7 @@ xml.streeteasy :version => "1.6" do
             end
           end
         end
-        
+
         if !listing.r_note.nil? && !listing.r_note.strip.empty?
           xml.internal do
             xml.private_notes listing.r_note.strip
@@ -241,7 +241,7 @@ xml.streeteasy :version => "1.6" do
             xml.private_notes listing.s_note.strip
           end
         end
-        
+
         if !@primary_agents[listing.unit_id].blank?
           xml.agents do
             # On all residential listings, set the company account as the first "agent".
@@ -263,7 +263,7 @@ xml.streeteasy :version => "1.6" do
                 if @agent_images[agent.id]
                   #xml.photo url:@agent_images[agent.id].file.url(:large)
                 end
-                xml.url agent.public_url
+                # xml.url agent.public_url
                 xml.email agent.email
                 xml.lead_email agent.email
                 xml.phone_numbers do
