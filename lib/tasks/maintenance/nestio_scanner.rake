@@ -69,13 +69,13 @@ namespace :maintenance do
 	      listing_id = item['description'][/MyspaceNYCListingID.*/].split(":")[1].strip.to_i
 				unit = Unit.find_by(listing_id: listing_id)
 				nestio_id = item['id']
-				public_url = "http://www.myspace-nyc.com/listing/#{nestio_id}/"
+				public_url = "http://www.myspace-nyc.com/listings/#{nestio_id}/"
+				# puts "#{unit.public_url == public_url} #{unit.public_url} #{public_url}"
 				if unit && unit.public_url != public_url
 					puts "[#{i}] #{item['building']['street_address']} #{item['unit_number']} - updating unit"
 	      	log.info "[#{i}] #{item['building']['street_address']} #{item['unit_number']} - updating unit"
 					unit.update_columns(public_url: public_url)
 				end
-
 				# sleep(3)
 	    end
 	  end

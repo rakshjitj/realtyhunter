@@ -142,7 +142,6 @@ class Unit < ApplicationRecord
           end
 
           self.listing_id = listing_id
-          self.public_url = "http://www.myspace-nyc.com/listing/MYSPACENYC-#{listing_id}"
       end
     end
 
