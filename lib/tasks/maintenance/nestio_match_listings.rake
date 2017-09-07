@@ -55,9 +55,6 @@ namespace :maintenance do
 	  	end
 	  	json_data = JSON.parse page.body
 	  	max_id = json_data['pointer']['next_id']
-	    total_pages = json_data['total_pages']
-	    page = json_data['page']
-	    total_items = json_data['total_items']
 	    items = json_data['items']
 	    
 
@@ -69,6 +66,7 @@ namespace :maintenance do
 	      #   break
 	      # end
 	      item = items[i]
+
 	      if item.nil?
 	      	done = true
 	    	break
