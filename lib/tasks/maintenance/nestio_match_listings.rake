@@ -6,6 +6,7 @@ namespace :maintenance do
 
 		mechanize = Mechanize.new
 		mechanize.user_agent_alias = "Mac Safari"
+		mechanize.add_auth('https://nestiolistings.com/api/v2/sync/listings/?listing_type=rentals&listing_type=sales', '65c4bf89794a410aac9ba57eda1e78b1', '')
 		mechanize.follow_meta_refresh = true
 
 		def number_or_nil(string)
@@ -21,14 +22,14 @@ namespace :maintenance do
 	    log.info "Task finished at #{end_time} and last #{duration} minutes."
 	    log.close
 		end
-
-		nestio_url = "https://nestiolistings.com/api/v2/listings/residential/rentals/?key=65c4bf89794a410aac9ba57eda1e78b1"
+		
+		nestio_url = "https://nestiolistings.com/api/v2/sync/listings/?listing_type=rentals&listing_type=sales"
 
 		# begin pulling down new data
 		total_pages = 99
 	  page = 1
 	  page_count_limit = 50
-
+	  max_id = 1
 		puts "Pulling Nestio data for all listings...";
 		log.info "Pulling Nestio data for all listings...";
 
@@ -42,25 +43,36 @@ namespace :maintenance do
 	  	# try not to exceed google's rate limit
 	  	puts "Page #{j} ----------------------------"
 	  	log.info "Page #{j} ----------------------------"
-
-	  	page = mechanize.get("#{nestio_url}&page=#{j}")
+	  	
+	  	# if page != 1
+	  	# 	max_id = pointer['next_id']
+	  	# end
+	  	 
+	  	if page != 1
+	  		page = mechanize.get("#{nestio_url}&max_id=#{max_id}")	
+	  	else
+	  		page = mechanize.get("#{nestio_url}")
+	  	end
 	  	json_data = JSON.parse page.body
-
+	  	max_id = json_data['pointer']['next_id']
 	    total_pages = json_data['total_pages']
 	    page = json_data['page']
 	    total_items = json_data['total_items']
 	    items = json_data['items']
+	    
 
 	    for i in 0..page_count_limit-1
 
-	      count = (page-1) * page_count_limit + i
-	      if count >= json_data['total_items']
-	        done = true
-	        break
-	      end
-
+	      # count = (page-1) * page_count_limit + i
+	      # if count >= json_data['total_items']
+	      #   done = true
+	      #   break
+	      # end
 	      item = items[i]
-
+	      if item.nil?
+	      	done = true
+	    	break
+	      end
 	      listing_id = item['description'][/MyspaceNYCListingID.*/].split(":")[1].strip.to_i
 				unit = Unit.where(listing_id: listing_id).first
 				nestio_id = item['id']
@@ -76,6 +88,8 @@ namespace :maintenance do
 					unit.update_columns(public_url: public_url)
 				end
 	    end
+
+
 	  end
 	  if !done
 		  mark_done(log, start_time)
