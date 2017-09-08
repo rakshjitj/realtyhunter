@@ -24,31 +24,12 @@ namespace :maintenance do
 		end
 		
 		nestio_url = "https://nestiolistings.com/api/v2/sync/listings/?listing_type=rentals&listing_type=sales"
-
-		# begin pulling down new data
-		# total_pages = 99
-	 #  page = 1
-	 #  page_count_limit = 50
-	  max_id = 1
+	  	
+	  	max_id = 1
+		
 		puts "Pulling Nestio data for all listings...";
 		log.info "Pulling Nestio data for all listings...";
 
-	  # done = false
-	  # for j in 1..total_pages
-	  # 	if done
-	  # 		mark_done(log, start_time)
-	  # 		break
-	  # 	end
-
-	  	# try not to exceed google's rate limit
-	  	# puts "Page #{j} ----------------------------"
-	  	# log.info "Page #{j} ----------------------------"
-	  	
-	  	# if page != 1
-	  	# 	max_id = pointer['next_id']
-	  	# end
-	  	 
-	  	# if page != 1
 	  	done = false
 	  	for j in 0..100
 	  		if done
@@ -61,20 +42,12 @@ namespace :maintenance do
 		  		page = mechanize.get("#{nestio_url}&max_id=#{max_id}")
 		  	end
 		  	
-		  	# else
-		  	# 	page = mechanize.get("#{nestio_url}")
-		  	# end
 		  	json_data = JSON.parse page.body
 		  	max_id = json_data['pointer']['next_id']
 		    items = json_data['items']
 
 		    for i in 0..items.count-1
 
-		      # count = (page-1) * page_count_limit + i
-		      # if count >= json_data['total_items']
-		      #   done = true
-		      #   break
-		      # end
 		      item = items[i]
 		      if max_id.nil?
 		      	done = true
