@@ -22,56 +22,42 @@ namespace :maintenance do
 	    log.info "Task finished at #{end_time} and last #{duration} minutes."
 	    log.close
 		end
-		
+
 		nestio_url = "https://nestiolistings.com/api/v2/sync/listings/?listing_type=rentals&listing_type=sales"
-	  	
-	  	max_id = 1
-		
+
+	  next_page_ptr = nil
 		puts "Pulling Nestio data for all listings...";
 		log.info "Pulling Nestio data for all listings...";
 
-	  	done = false
-	  	for j in 0..100
-	  		if done
-		  		mark_done(log, start_time)
-		  		break
-		  	end
-	  		if j == 1
-		  		page = mechanize.get("#{nestio_url}")
-		  	else 
-		  		page = mechanize.get("#{nestio_url}&max_id=#{max_id}")
-		  	end
-		  	
-		  	json_data = JSON.parse page.body
-		  	max_id = json_data['pointer']['next_id']
-		    items = json_data['items']
+		page = mechanize.get("#{nestio_url}")
+  	has_more_data = true
+  	while has_more_data do
+  		json_data = JSON.parse page.body
+	  	items = json_data['items']
 
-		    for i in 0..items.count-1
+	    for i in 0..items.count-1
+	      item = items[i]
+	      listing_id = item['description'][/MyspaceNYCListingID.*/].split(":")[1].strip.to_i
+				unit = Unit.where(listing_id: listing_id).first
+				nestio_id = item['id']
+				public_url = "http://www.myspace-nyc.com/listings/#{nestio_id}/"
+				# if !unit
+					# puts "Missing unit - Listing id [#{listing_id}] nestio id: [#{nestio_id}]"
+				# end
 
-		      item = items[i]
-		      if max_id.nil?
-		      	done = true
-		      end
-		      listing_id = item['description'][/MyspaceNYCListingID.*/].split(":")[1].strip.to_i
-					unit = Unit.where(listing_id: listing_id).first
-					nestio_id = item['id']
-					public_url = "http://www.myspace-nyc.com/listings/#{nestio_id}/"
-					if !unit
-						puts "Listing id [#{listing_id}] nestio id: [#{nestio_id}]"
-						#puts "#{unit.public_url != public_url} #{unit.public_url} #{public_url}"
-					end
+				if unit && (unit.public_url != public_url)
+					puts "[#{i}] #{item['building']['street_address']} #{item['unit_number']} - updating unit"
+	      	log.info "[#{i}] #{item['building']['street_address']} #{item['unit_number']} - updating unit"
+					unit.update_columns(public_url: public_url)
+				end
+	    end
 
-					if unit && (unit.public_url != public_url)
-						puts "[#{i}] #{item['building']['street_address']} #{item['unit_number']} - updating unit"
-		      	log.info "[#{i}] #{item['building']['street_address']} #{item['unit_number']} - updating unit"
-						unit.update_columns(public_url: public_url)
-					end
-		    end
-		end    
-		
-	  # end
-	  if !done
-		  mark_done(log, start_time)
+	    next_page_ptr = json_data['pointer']['next_id']
+	  	has_more_data = !next_page_ptr.nil?
+  		puts "PAGE #{next_page_ptr}"
+  		page = mechanize.get("#{nestio_url}&max_id=#{next_page_ptr}")
 		end
+
+		 mark_done(log, start_time)
 	end
 end
