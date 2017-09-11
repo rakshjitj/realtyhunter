@@ -37,7 +37,9 @@ namespace :maintenance do
 
 	    for i in 0..items.count-1
 	      item = items[i]
-	      listing_id = item['description'][/MyspaceNYCListingID.*/].split(":")[1].strip.to_i
+	      if item['description'][/MyspaceNYCListingID.*/]
+			listing_id = item['description'][/MyspaceNYCListingID.*/].split(":")[1].strip.to_i
+	      end
 				unit = Unit.where(listing_id: listing_id).first
 				nestio_id = item['id']
 				public_url = "http://www.myspace-nyc.com/listings/#{nestio_id}/"
