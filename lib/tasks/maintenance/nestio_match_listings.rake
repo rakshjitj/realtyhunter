@@ -39,6 +39,8 @@ namespace :maintenance do
 	      item = items[i]
 	      if item['description'][/MyspaceNYCListingID.*/]
 			listing_id = item['description'][/MyspaceNYCListingID.*/].split(":")[1].strip.to_i
+		  else
+		  	log.info "#{i} found without Listing id"
 	      end
 				unit = Unit.where(listing_id: listing_id).first
 				nestio_id = item['id']
