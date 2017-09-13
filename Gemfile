@@ -64,7 +64,8 @@ gem 'multi_json'
 # gem 'oj_mimic_json'
 gem "audited", "~> 4.3"
 gem 'validates_timeliness', '~> 4.0'
-
+#This gem is use for copy data on clipborad
+gem 'clipboard-rails'
 # profiling
 # gem 'rack-mini-profiler', require: false
 # gem 'flamegraph'

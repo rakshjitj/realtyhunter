@@ -544,7 +544,8 @@ class ResidentialListing < ApplicationRecord
         building_unit: runit.building_unit,
         beds: runit.beds,
         baths: runit.baths,
-        rent: runit.rent
+        rent: runit.rent,
+        public_url: runit.unit.public_url
         }
 
       if bldg_images[runit.building_id]
