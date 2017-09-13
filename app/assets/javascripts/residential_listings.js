@@ -193,7 +193,7 @@
         + '<a href="https://myspace-realty-monster.herokuapp.com/residential_listings/'
         + unit.id + '">#' + unit.building_unit + ' ' +
         + unit.beds + ' bd / '
-        + unit.baths + ' baths $' + unit.rent + '</a><i data-clipboard-action="copy" data-clipboard-target="#copycontent_'+i+'" class="fa fa-camera-retro"></i></div>';
+        + unit.baths + ' baths $' + unit.rent + '</a> <i data-clipboard-action="copy" data-clipboard-target="#copycontent_'+i+'" class="fa fa-camera-retro"></i></div>';
       if (i == 5) {
         contentString += '<div class="contentRow"><a href="https://myspace-realty-monster.herokuapp.com/buildings/'
           + info['building_id'] + '">View more...</a></div>';
