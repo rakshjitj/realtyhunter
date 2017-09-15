@@ -47,34 +47,3 @@ $(window).unload(function() {
   CommercialListings.clearTimer();
   SalesListings.clearTimer();
 });
-var clipboard = new Clipboard('.fa-camera-retro', {text: function (trigger) {
-	var retrive_id = trigger.getAttribute('data-clipboard-target')
-	var get_href = $(retrive_id).attr('href');
-	return get_href
-}
-});
-$('.fa-camera-retro').tooltip({
-  trigger: 'click',
-  placement: 'bottom'
-});
-
-function setTooltip(btn, message) {
-  $(btn).tooltip('hide')
-    .attr('data-original-title', message)
-    .tooltip('show');
-}
-
-function hideTooltip(btn) {
-  setTimeout(function() {
-    $(btn).tooltip('hide');
-  }, 1000);
-}
-clipboard.on('success', function(e) {
-  setTooltip(e.trigger, 'Link copied to clipboard');
-  hideTooltip(e.trigger);
-});
-
-clipboard.on('error', function(e) {
-  setTooltip(e.trigger, 'Failed!');
-  hideTooltip(e.trigger);
-});
