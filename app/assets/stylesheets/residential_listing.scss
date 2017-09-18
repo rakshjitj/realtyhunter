@@ -282,3 +282,9 @@ $mobile-footer-height: 65px;
 #runit-panel > .panel-body {
   padding-bottom: 0;
 }
+.leaflet-popup-content{
+  width: 180px !important;
+}
+.fa.fa-clone {
+    padding: 5px;
+}
