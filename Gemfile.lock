@@ -85,6 +85,7 @@ GEM
     case_transform (0.2)
       activesupport
     climate_control (0.2.0)
+    clipboard-rails (1.7.1)
     cocaine (0.5.8)
       climate_control (>= 0.0.3, < 1.0)
     coffee-rails (4.2.2)
@@ -331,6 +332,7 @@ DEPENDENCIES
   bootsy
   byebug (~> 8.2.2)
   cancancan (~> 1.10)
+  clipboard-rails
   connection_pool (~> 2.2.0)
   database_cleaner
   delayed_paperclip (>= 2.9.1)

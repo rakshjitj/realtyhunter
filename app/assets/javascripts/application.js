@@ -31,6 +31,7 @@
 //= require jquery.infinite-pages
 //= require jquery.touchSwipe.min
 //= require nested_form_fields
+//= require clipboard
 // must be last:
 //= require turbolinks
 

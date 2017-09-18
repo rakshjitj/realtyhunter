@@ -4,7 +4,7 @@
   <!--   -->
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=0.9, maximum-scale=1.0, minimal-ui">
   <title><%= full_title(yield(:title)) %></title>
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <!-- used for listings index pages -->
   <link href='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css' rel='stylesheet' />
@@ -71,7 +71,7 @@
   <script type="text/javascript" data-turbolinks-eval="false"
       src="https://maps.googleapis.com/maps/api/js?libraries=places&key=<%= ENV['GOOGLE_MAPS_KEY'] %>">
   </script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': true, 'data-turbolinks-eval':"false" %>
 
 </body>

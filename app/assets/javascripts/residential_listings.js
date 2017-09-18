@@ -188,11 +188,19 @@
       }
 
       var shouldHighlightRow = imgCount == 1 && info['units'].length > 1;
+      
+      if (unit.public_url != null){
+        var set_icon = '<i data-clipboard-action="copy" data-clipboard-target="#copycontent_'+i+'" class="fa fa-clone" aria-hidden="true"></i>'        
+      }else{
+        var set_icon = ''
+      }
+      
       contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
+        + '<a id = "copycontent_'+i+'" href='+unit.public_url+'></a>'
         + '<a href="https://myspace-realty-monster.herokuapp.com/residential_listings/'
         + unit.id + '">#' + unit.building_unit + ' ' +
         + unit.beds + ' bd / '
-        + unit.baths + ' baths $' + unit.rent + '</a></div>';
+        + unit.baths + ' baths $' + unit.rent + '</a> '+ set_icon +'</div>';
       if (i == 5) {
         contentString += '<div class="contentRow"><a href="https://myspace-realty-monster.herokuapp.com/buildings/'
           + info['building_id'] + '">View more...</a></div>';
@@ -710,6 +718,38 @@
       ResidentialListings.initShow();
     }
   };
+  // Code for copy to clipboard public_url on pinup
+  var clipboard = new Clipboard('.fa-clone', {text: function (trigger) {
+    var retrive_id = trigger.getAttribute('data-clipboard-target')
+    var get_href = $(retrive_id).attr('href');
+    return get_href
+  }
+  });
+  $('.fa-clone').tooltip({
+    trigger: 'click',
+    placement: 'bottom'
+  });
+
+  function setTooltip(btn, message) {
+    $(btn).tooltip('hide')
+      .attr('data-original-title', message)
+      .tooltip('show');
+  }
+
+  function hideTooltip(btn) {
+    setTimeout(function() {
+      $(btn).tooltip('hide');
+    }, 1000);
+  }
+  clipboard.on('success', function(e) {
+    setTooltip(e.trigger, 'Link copied to clipboard');
+    hideTooltip(e.trigger);
+  });
+
+  clipboard.on('error', function(e) {
+    setTooltip(e.trigger, 'Failed!');
+    hideTooltip(e.trigger);
+  });
 
 })();
 
