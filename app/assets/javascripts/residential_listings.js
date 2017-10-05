@@ -190,26 +190,24 @@
       var shouldHighlightRow = imgCount == 1 && info['units'].length > 1;
       
       if (unit.public_url != null){
-        var set_icon = '<input type = "radio" class = "test"  id = "copylinkup_'+i+'" name = "copylink" value = '+ i +' data-clipboard-target="#copycontent_'+i+'">'
+        var set_icon = '<i data-clipboard-action="copy" data-clipboard-target="#copycontent_'+i+'" class="fa fa-clone" aria-hidden="true"></i>'        
       }else{
         var set_icon = ''
       }
-
-
+      
       contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
-        + ''+set_icon+''
         + '<a id = "copycontent_'+i+'" href='+unit.public_url+'></a>'
         + '<a href="https://myspace-realty-monster.herokuapp.com/residential_listings/'
         + unit.id + '">#' + unit.building_unit + ' ' +
         + unit.beds + ' bd / '
-        + unit.baths + ' baths $' + unit.rent + '</a></div>';
+        + unit.baths + ' baths $' + unit.rent + '</a> '+ set_icon +'</div>';
       if (i == 5) {
         contentString += '<div class="contentRow"><a href="https://myspace-realty-monster.herokuapp.com/buildings/'
           + info['building_id'] + '">View more...</a></div>';
         break;
       }
     }
-    contentString += '<button type="button" class = "finalcopylink" >Copy Link!</button>'
+
     output =
       '<div class="slideshow">' +
         slideshowContent +
@@ -721,25 +719,8 @@
     }
   };
   // Code for copy to clipboard public_url on pinup
-  var clipcopy = new Clipboard('.test', {text: function (trigger) {
-    var retrive_id = trigger.getAttribute('id')
-    var find_id = trigger.getAttribute('data-clipboard-target')
-    var abc = "#" + retrive_id
-    $(abc).change(function() {
-      var clipboard = new Clipboard('.finalcopylink', {text: function (trigger) {
-        var get_href = $(find_id).attr('href');
-        setTooltip(trigger, 'Link copied to clipboard');
-        hideTooltip(trigger);
-        return get_href
-      }
-      });
-    });
-  }
-  });
   var clipboard = new Clipboard('.fa-clone', {text: function (trigger) {
-
     var retrive_id = trigger.getAttribute('data-clipboard-target')
-    console.log(retrive_id);
     var get_href = $(retrive_id).attr('href');
     return get_href
   }
