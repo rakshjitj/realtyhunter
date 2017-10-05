@@ -28,3 +28,26 @@ $navbarCollapseWidth: 1150px;
 @import 'selectize';
 @import 'selectize.default';
 
+.finalcopylink {
+    display: inline-block;
+    padding: 8px 10px;
+    font-size: 18px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #000;
+    border: none;
+    border-radius: 15px;
+    -webkit-box-shadow: 0 9px #999;
+    box-shadow: 0 5px #999;
+}
+
+.finalcopylink:hover {background-color: #3e8e41}
+
+.finalcopylink:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
