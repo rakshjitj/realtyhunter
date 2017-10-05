@@ -209,9 +209,7 @@
         break;
       }
     }
-    if (unit.public_url != null){
-      contentString += '<button type="button" class = "finalcopylink" >Copy Link!</button>'
-    }
+    contentString += '<button type="button" class = "finalcopylink" >Copy Link!</button>'
     output =
       '<div class="slideshow">' +
         slideshowContent +
