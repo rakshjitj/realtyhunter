@@ -189,8 +189,15 @@
 
       var shouldHighlightRow = imgCount == 1 && info['units'].length > 1;
       
+      if (unit.public_url != null){
+        var set_icon = '<input type = "radio" class = "test"  id = "copylinkup_'+i+'" name = "copylink" value = '+ i +' data-clipboard-target="#copycontent_'+i+'">'
+      }else{
+        var set_icon = ''
+      }
+
+
       contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
-        + '<input type = "radio" class = "test"  id = "copylinkup_'+i+'" name = "copylink" value = '+ i +' data-clipboard-target="#copycontent_'+i+'"> '
+        + ''+set_icon+''
         + '<a id = "copycontent_'+i+'" href='+unit.public_url+'></a>'
         + '<a href="https://myspace-realty-monster.herokuapp.com/residential_listings/'
         + unit.id + '">#' + unit.building_unit + ' ' +
