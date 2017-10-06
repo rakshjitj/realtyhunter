@@ -36,7 +36,7 @@ module SyndicationInterface
 		search_params[:has_primary_agent] = 1
 		search_params[:exclusive] = 1
 		search_params[:must_have_description] = 1
-		# search_params[:must_have_streeteasy_flag] = 1
+		search_params[:must_have_streeteasy_flag] = 1
 		pull_data(company_id, search_params)
 	end
 
