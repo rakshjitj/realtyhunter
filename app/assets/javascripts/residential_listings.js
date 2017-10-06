@@ -190,24 +190,26 @@
       var shouldHighlightRow = imgCount == 1 && info['units'].length > 1;
       
       if (unit.public_url != null){
-        var set_icon = '<i data-clipboard-action="copy" data-clipboard-target="#copycontent_'+i+'" class="fa fa-clone" aria-hidden="true"></i>'        
+        var set_icon = '<input type = "radio" class = "rd_copy_btn"  id = "copylinkup_'+i+'" name = "copylink" value = '+ i +' data-clipboard-target="#copycontent_'+i+'">'
       }else{
         var set_icon = ''
       }
-      
+
+
       contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
+        + ''+set_icon+''
         + '<a id = "copycontent_'+i+'" href='+unit.public_url+'></a>'
         + '<a href="https://myspace-realty-monster.herokuapp.com/residential_listings/'
         + unit.id + '">#' + unit.building_unit + ' ' +
         + unit.beds + ' bd / '
-        + unit.baths + ' baths $' + unit.rent + '</a> '+ set_icon +'</div>';
+        + unit.baths + ' baths $' + unit.rent + '</a></div>';
       if (i == 5) {
         contentString += '<div class="contentRow"><a href="https://myspace-realty-monster.herokuapp.com/buildings/'
           + info['building_id'] + '">View more...</a></div>';
         break;
       }
     }
-
+    contentString += '<button type="button" class = "finalcopylink" >Copy Link!</button>'
     output =
       '<div class="slideshow">' +
         slideshowContent +
@@ -718,37 +720,43 @@
       ResidentialListings.initShow();
     }
   };
-  // Code for copy to clipboard public_url on pinup
-  var clipboard = new Clipboard('.fa-clone', {text: function (trigger) {
-    var retrive_id = trigger.getAttribute('data-clipboard-target')
-    var get_href = $(retrive_id).attr('href');
-    return get_href
-  }
-  });
-  $('.fa-clone').tooltip({
-    trigger: 'click',
-    placement: 'bottom'
-  });
 
-  function setTooltip(btn, message) {
-    $(btn).tooltip('hide')
-      .attr('data-original-title', message)
-      .tooltip('show');
-  }
+  $(document).on("change", ".rd_copy_btn", function () {
+    var id = $(this).val();
+    var find_id = "#copycontent_" + id;
+    var public_url = $(find_id).attr('href');
+    $(".finalcopylink").html("Copy Link!")
+    var clipboard = new Clipboard('.finalcopylink', {text: function (trigger) {
+      $(".finalcopylink").html("Copied!")
+      return public_url
+    }
+    });
+    $('.finalcopylink').tooltip({
+      trigger: 'click',
+      placement: 'bottom'
+    });
 
-  function hideTooltip(btn) {
-    setTimeout(function() {
-      $(btn).tooltip('hide');
-    }, 1000);
-  }
-  clipboard.on('success', function(e) {
-    setTooltip(e.trigger, 'Link copied to clipboard');
-    hideTooltip(e.trigger);
-  });
+    function setTooltip(btn, message) {
+      $(btn).tooltip('hide')
+        .attr('data-original-title', message)
+        .tooltip('show');
+    }
 
-  clipboard.on('error', function(e) {
-    setTooltip(e.trigger, 'Failed!');
-    hideTooltip(e.trigger);
+    function hideTooltip(btn) {
+      setTimeout(function() {
+        $(btn).tooltip('hide');
+      }, 1000);
+    }
+    clipboard.on('success', function(e) {
+      setTooltip(e.trigger, 'Link copied to clipboard');
+      hideTooltip(e.trigger);
+    });
+
+    clipboard.on('error', function(e) {
+      setTooltip(e.trigger, 'Failed!');
+      hideTooltip(e.trigger);
+    });
+
   });
 
 })();
