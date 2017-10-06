@@ -209,7 +209,7 @@
         break;
       }
     }
-    contentString += '<button type="button" class = "finalcopylink" >Copy Link!</button>'
+    // contentString += '<button type="button" class = "finalcopylink" >Copy Link!</button>'
     output =
       '<div class="slideshow">' +
         slideshowContent +
@@ -720,43 +720,39 @@
       ResidentialListings.initShow();
     }
   };
+  // Code for copy to clipboard public_url on pinup
+  var clipboard = new Clipboard('.rd_copy_btn', {text: function (trigger) {
+    var retrive_id = trigger.getAttribute('id');
+    var find_id = trigger.getAttribute('data-clipboard-target');
+    var get_href = $(find_id).attr('href');
+    return get_href
+  }
+  });
+  
+  $('.rd_copy_btn').tooltip({
+    trigger: 'click',
+    placement: 'bottom'
+  });
 
-  $(document).on("change", ".rd_copy_btn", function () {
-    var id = $(this).val();
-    var find_id = "#copycontent_" + id;
-    var public_url = $(find_id).attr('href');
-    $(".finalcopylink").html("Copy Link!")
-    var clipboard = new Clipboard('.finalcopylink', {text: function (trigger) {
-      $(".finalcopylink").html("Copied!")
-      return public_url
-    }
-    });
-    $('.finalcopylink').tooltip({
-      trigger: 'click',
-      placement: 'bottom'
-    });
+  function setTooltip(btn, message) {
+    $(btn).tooltip('hide')
+      .attr('data-original-title', message)
+      .tooltip('show');
+  }
 
-    function setTooltip(btn, message) {
-      $(btn).tooltip('hide')
-        .attr('data-original-title', message)
-        .tooltip('show');
-    }
+  function hideTooltip(btn) {
+    setTimeout(function() {
+      $(btn).tooltip('hide');
+    }, 1000);
+  }
+  clipboard.on('success', function(e) {
+    setTooltip(e.trigger, 'Link copied to clipboard');
+    hideTooltip(e.trigger);
+  });
 
-    function hideTooltip(btn) {
-      setTimeout(function() {
-        $(btn).tooltip('hide');
-      }, 1000);
-    }
-    clipboard.on('success', function(e) {
-      setTooltip(e.trigger, 'Link copied to clipboard');
-      hideTooltip(e.trigger);
-    });
-
-    clipboard.on('error', function(e) {
-      setTooltip(e.trigger, 'Failed!');
-      hideTooltip(e.trigger);
-    });
-
+  clipboard.on('error', function(e) {
+    setTooltip(e.trigger, 'Failed!');
+    hideTooltip(e.trigger);
   });
 
 })();
