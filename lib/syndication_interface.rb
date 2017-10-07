@@ -107,7 +107,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 
 		# make sure our staff has approved this listing for syndication to Streeteasy/Nestio
 		if is_true?(search_params[:must_have_streeteasy_flag])
-			listings = listings.where("residential_listings.streeteasy_flag = TRUE")
+			listings = listings.where("residential_listings.streeteasy_flag = TRUE or sales_listings.streeteasy_flag = TRUE")
 		end
 
 		listings = listings
