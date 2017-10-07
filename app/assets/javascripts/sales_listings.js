@@ -71,21 +71,6 @@ SalesListings = {};
     }
   };
 
-  // SalesListings.enablePassiveUpdates = function() {
-    // if (!Common.onMobileDevice()) {
-    //   SalesListings.passiveRealTimeUpdate();
-    // }
-  // }
-
-  // if a user remains on this page for an extended amount of time,
-  // refresh the page every so often. We want to make sure they are
-  // always viewing the latest data.
-  // SalesListings.passiveRealTimeUpdate = function() {
-  //   SalesListings.clearTimer();
-  //   // update every few minutes
-   //  SalesListings.timer = setTimeout(SalesListings.doSearch, 60 * 10 * 1000);
-  // };
-
   // search as user types
   SalesListings.throttledSearch = function () {
     //clear any interval on key up
@@ -373,11 +358,6 @@ SalesListings = {};
   };
 
   SalesListings.initEditor = function() {
-    var available_by = $('#sales .datepicker').attr('data-available-by');
-    if (available_by) {
-      $('#sales .datepicker').data("DateTimePicker").date(available_by);
-    }
-
     // for address autocompletion in form
     var bldg_address = $('#map-canvas').attr('data-address') ? $('#map-canvas').attr('data-address') : 'New York, NY, USA';
     $(".autocomplete-input").geocomplete({
@@ -552,8 +532,6 @@ SalesListings = {};
       var action = $(this).data('action');
       if (action in Listings.indexMenuActions) Listings.indexMenuActions[action]();
     });
-
-    // SalesListings.passiveRealTimeUpdate();
   };
 
   SalesListings.initShow = function() {
