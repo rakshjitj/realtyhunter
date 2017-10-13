@@ -105,9 +105,14 @@ left join sales_listings on units.id = sales_listings.unit_id')
 					"residential_listings.description <> '' OR sales_listings.public_description <> '' ")
 		end
 
-		# make sure our staff has approved this listing for syndication to Streeteasy/Nestio
+    # Make sure our staff has approved this listing for syndication to Streeteasy/Nestio.
+    # WARNING: DO NOT TURN THIS OFF without consulting the owner of Myspace. Streeteasy
+    # has instituted a new policy where they are charging $3 per day, per ad that is
+    # syndicated to them. Without this flag in place, we may potentially send them hundreds of
+    # listings and incur large fees.
 		if is_true?(search_params[:must_have_streeteasy_flag])
-			listings = listings.where("residential_listings.streeteasy_flag = TRUE or sales_listings.streeteasy_flag = TRUE")
+      listings = listings.where("residential_listings.streeteasy_flag = TRUE or
+          sales_listings.streeteasy_flag = TRUE")
 		end
 
 		listings = listings
