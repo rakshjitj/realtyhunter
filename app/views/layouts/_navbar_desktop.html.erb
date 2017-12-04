@@ -31,7 +31,7 @@
           <li><%= link_to "Rentals", residential_listings_path %></li>
           <li><%= link_to "Commercial", commercial_listings_path %></li>
           <li><%= link_to "Sales", sales_listings_path %></li>
-
+          <li><%= link_to "Add Open Houses", add_open_hours_path %></li>
           <!-- **************** ROOMSHARING **************** -->
           <% if current_user.has_role? :roomsharing %>
             <li class="dropdown">
@@ -133,7 +133,7 @@
 </header>
 <script type="text/javascript">
   var logo_page_reload = window.location.href;
-  if (logo_page_reload == "https://myspace-realty-monster.herokuapp.com/user_home"){
+  if (logo_page_reload == "http://localhost:3000/user_home"){
     location.reload(true);
   }
 </script>
