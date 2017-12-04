@@ -171,7 +171,6 @@ class ResidentialListingsController < ApplicationController
   end
 
   def update
-    exit
     unit_updated = nil
     listing_updated = nil
     is_now_active = nil
