@@ -293,7 +293,7 @@ Rails.application.routes.draw do
     end
   end
   get 'announce' => 'announcements#new'
-
+  get 'add_open_hours' => 'units#add_open_hours'
   resources :deals do
     member do
       get 'delete_modal'
