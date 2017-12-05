@@ -28,7 +28,7 @@
   <div class="col-xs-12" style="margin-top: 25px;margin-bottom: 25px;text-align: center;">
     <button id='res-search-trigger', class="search-trigger btn btn-warning btn-sm form-control" style="width: 26%;" >Search</button>
   </div>
-  
+
   <div class="col-xs-4" style="margin-top: 25px;">
     From
   	<div class='input-group date datepicker' data-available-by="<%= Time.now.strftime('%m-%d-%Y') %>">
@@ -101,7 +101,7 @@
                     <% if unit.status == 'active' || unit.status == 'panding' %>
                       <tr>
                         <%# abort unit.images.first.file.url.inspect %>
-                        <td class="img-col"><%= image_tag(unit.images.first.file.url(:thumb)) %></td>
+                        <td class="img-col"><%= image_tag(unit.images.first.file.url(:thumb)) if unit.images.first %></td>
                         <td><%= unit.building.formatted_street_address %></td>
                         <td><%= unit.building_unit  %></td>
                         <td><%= unit.residential_listing.beds %> Beds/<%= unit.residential_listing.baths.to_i %> Bath</td>
