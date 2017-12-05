@@ -415,7 +415,7 @@ class ResidentialListing < ApplicationRecord
         a = Unit.all
         unit = []
         a.each do |b|
-          if b.images.count < 2
+          if b.images.count <= 2
             if b.images.blank?
               unit << b.id
             else
