@@ -412,8 +412,23 @@ class ResidentialListing < ApplicationRecord
     end
 
     if params[:no_images] == 'true'
-        #running_list = running_list.select { |list_item| list_item.unit.images.count < 2 }
-        #abort running_list.inspect
+        a = Unit.all
+        unit = []
+        a.each do |b|
+          if b.images.count < 2
+            if b.images.blank?
+              unit << b.id
+            else
+              unit << b.images.first.unit_id
+            end
+          end
+        end
+        running_list = running_list.where("unit_id IN (?)", unit)
+        # abort running_list.all.map(&:id).length.inspect
+        # running_list = running_list.select { |list_item| list_item.unit.images.distinct.count < 2 }
+        # #running_list = ResidentialListing.where(id: running_list.map(&:id))
+        # abort running_list.class.inspect
+        # abort ResidentialListing.where(id: running_list.map(&:id)).inspect
     end
 
     # primary agent
