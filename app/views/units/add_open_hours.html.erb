@@ -105,7 +105,7 @@
                       <tr>
                         <%# abort unit.images.first.file.url.inspect %>
                         <td class="img-col"><%= image_tag(unit.images.first.file.url(:thumb)) if unit.images.first %></td>
-                        <td><%= link_to(unit.building.formatted_street_address, residential_listing_path(unit.residential_listing.id)) %></td>
+                        <td><%= link_to(unit.building.formatted_street_address, residential_listing_path(unit.residential_listing.id), target: :_blank) %></td>
                         <td><%= unit.building_unit  %></td>
                         <td><%= unit.residential_listing.beds %> Beds/<%= unit.residential_listing.baths.to_i %> Bath</td>
                         <td>$<%= unit.rent %></td>
@@ -128,7 +128,7 @@
                     <tr>
                       <%# abort unit.images.first.file.url.inspect %>
                       <td class="img-col"><%= image_tag(unit.images.first.file.url(:thumb)) if unit.images.first %></td>
-                      <td><%= link_to(unit.building.formatted_street_address, residential_listing_path(unit.residential_listing.id)) if unit.residential_listing %></td>
+                      <td><%= link_to(unit.building.formatted_street_address, residential_listing_path(unit.residential_listing.id), target: :_blank) if unit.residential_listing %></td>
                       <td><%= unit.building_unit  %></td>
                       <td><%= unit.residential_listing.beds if unit.residential_listing %> Beds/<%= unit.residential_listing.baths.to_i if unit.residential_listing %> Bath</td>
                       <td>$<%= unit.rent %></td>
@@ -149,7 +149,7 @@
                     <tr>
                       <%# abort unit.images.first.file.url.inspect %>
                       <td class="img-col"><%= image_tag(res_list.unit.images.first.file.url(:thumb)) if res_list.unit.images.first %></td>
-                      <td><%= link_to(res_list.unit.building.formatted_street_address, residential_listing_path(res_list.unit.residential_listing.id)) %></td>
+                      <td><%= link_to(res_list.unit.building.formatted_street_address, residential_listing_path(res_list.unit.residential_listing.id), target: :_blank) %></td>
                       <td><%= res_list.unit.building_unit  %></td>
                       <td><%= res_list.beds %> Beds/<%= res_list.baths.to_i %> Bath</td>
                       <td>$<%= res_list.unit.rent %></td>
@@ -227,6 +227,9 @@
 
     $("#res-search-trigger").click("click", function(){
       $("#live_button").attr("value","search");
+    });
+    $("#res-update-trigger").click("click", function(){
+      $("#live_button").attr("value","update");
     });
 
     $("#till_day").blur(function() {
