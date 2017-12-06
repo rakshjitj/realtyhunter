@@ -27,6 +27,7 @@
 
   <div class="col-xs-12" style="margin-top: 25px;margin-bottom: 25px;text-align: center;">
     <button id='res-search-trigger', class="search-trigger btn btn-warning btn-sm form-control" style="width: 26%;" >Search</button>
+    <span><%= @total_unit %> Units found</span>
   </div>
 
   <div class="col-xs-4" style="margin-top: 25px;">
@@ -97,16 +98,18 @@
             <% if !@landlord.nil? %>
               <% @landlord.each do |landlord| %>
                 <% landlord.buildings.each do |building| %>
+                  <% i = 0 %>
                   <% building.units.each do |unit| %>
-                    <% if unit.status == 'active' || unit.status == 'panding' %>
+                    <%# abort unit.archived.inspect %>
+                    <% if (unit.status == 'active' || unit.status == 'pending') && unit.archived == false %>
                       <tr>
                         <%# abort unit.images.first.file.url.inspect %>
                         <td class="img-col"><%= image_tag(unit.images.first.file.url(:thumb)) if unit.images.first %></td>
-                        <td><%= unit.building.formatted_street_address %></td>
+                        <td><%= link_to(unit.building.formatted_street_address, residential_listing_path(unit.residential_listing.id)) %></td>
                         <td><%= unit.building_unit  %></td>
                         <td><%= unit.residential_listing.beds %> Beds/<%= unit.residential_listing.baths.to_i %> Bath</td>
                         <td>$<%= unit.rent %></td>
-                        <td><%= unit.available_by.strftime("%b %d") %></td>
+                        <td><%= unit.available_by.strftime("%b %d") if unit.available_by %></td>
                         <td><%= unit.access_info %></td>
                         <td><%= unit.building.landlord.code %></td>
                         <td><%= unit.primary_agent.name if unit.primary_agent%></td>
@@ -121,15 +124,15 @@
             <% if !@buildings.nil? %>
               <% @buildings.each do |building| %>
                 <% building.units.each do |unit| %>
-                  <% if unit.status == 'active' || unit.status == 'panding' %>
+                  <% if (unit.status == 'active' || unit.status == 'pending') && unit.archived == false %>
                     <tr>
                       <%# abort unit.images.first.file.url.inspect %>
                       <td class="img-col"><%= image_tag(unit.images.first.file.url(:thumb)) if unit.images.first %></td>
-                      <td><%= unit.building.formatted_street_address %></td>
+                      <td><%= link_to(unit.building.formatted_street_address, residential_listing_path(unit.residential_listing.id)) if unit.residential_listing %></td>
                       <td><%= unit.building_unit  %></td>
-                      <td><%= unit.residential_listing.beds %> Beds/<%= unit.residential_listing.baths.to_i %> Bath</td>
+                      <td><%= unit.residential_listing.beds if unit.residential_listing %> Beds/<%= unit.residential_listing.baths.to_i if unit.residential_listing %> Bath</td>
                       <td>$<%= unit.rent %></td>
-                      <td><%= unit.available_by.strftime("%b %d") %></td>
+                      <td><%= unit.available_by.strftime("%b %d") if unit.available_by %></td>
                       <td><%= unit.access_info %></td>
                       <td><%= unit.building.landlord.code %></td>
                       <td><%= unit.primary_agent.name if unit.primary_agent%></td>
@@ -142,11 +145,11 @@
             <% end %>
             <% if !@residential_units.nil? %>
               <% @residential_units.each do |res_list| %>
-                <% if res_list.unit.status == 'active' || res_list.unit.status == 'panding' %>
+                <% if res_list.unit.status == 'active' || res_list.unit.status == 'pending' %>
                     <tr>
                       <%# abort unit.images.first.file.url.inspect %>
                       <td class="img-col"><%= image_tag(res_list.unit.images.first.file.url(:thumb)) if res_list.unit.images.first %></td>
-                      <td><%= res_list.unit.building.formatted_street_address %></td>
+                      <td><%= link_to(res_list.unit.building.formatted_street_address, residential_listing_path(res_list.unit.residential_listing.id)) %></td>
                       <td><%= res_list.unit.building_unit  %></td>
                       <td><%= res_list.beds %> Beds/<%= res_list.baths.to_i %> Bath</td>
                       <td>$<%= res_list.unit.rent %></td>
@@ -224,6 +227,16 @@
 
     $("#res-search-trigger").click("click", function(){
       $("#live_button").attr("value","search");
+    });
+
+    $("#till_day").blur(function() {
+      var startDate = document.getElementById("from_day").value;
+      var endDate = document.getElementById("till_day").value;
+
+      if ((Date.parse(endDate) <= Date.parse(startDate))) {
+        alert("End date should be greater than Start date");
+        document.getElementById("till_day").value = startDate;
+      }
     });
   })();
 </script>
