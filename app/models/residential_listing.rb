@@ -412,18 +412,24 @@ class ResidentialListing < ApplicationRecord
     end
 
     if params[:no_images] == 'true'
-        a = Unit.all
-        unit = []
-        a.each do |b|
-          if b.images.count <= 2
-            if b.images.blank?
-              unit << b.id
-            else
-              unit << b.images.first.unit_id
-            end
-          end
-        end
-        running_list = running_list.where("unit_id IN (?)", unit)
+        less_two = Unit.joins(:images).group("units.id").having("count(units.id)<3")
+        find_less_two = less_two.all.map(&:id)
+        nil_rec = Unit.includes(:images).where(images: { unit_id: nil })
+        find_nil = nil_rec.all.map(&:id)
+        unit_id_collect = find_less_two + find_nil
+        #abort find_all_collect.inspect
+        # all_unit = Unit.all
+        # unit_id_collect = []
+        # all_unit.each do |each_unit|
+        #   if each_unit.images.count <= 2
+        #     if each_unit.images.blank?
+        #       unit_id_collect << each_unit.id
+        #     else
+        #       unit_id_collect << each_unit.images.first.unit_id
+        #     end
+        #   end
+        # end
+        running_list = running_list.where("unit_id IN (?)", unit_id_collect)
         # abort running_list.all.map(&:id).length.inspect
         # running_list = running_list.select { |list_item| list_item.unit.images.distinct.count < 2 }
         # #running_list = ResidentialListing.where(id: running_list.map(&:id))
