@@ -236,7 +236,7 @@
       var startDate = document.getElementById("from_day").value;
       var endDate = document.getElementById("till_day").value;
 
-      if ((Date.parse(endDate) <= Date.parse(startDate))) {
+      if ((Date.parse(endDate) < Date.parse(startDate))) {
         alert("End date should be greater than Start date");
         document.getElementById("till_day").value = startDate;
       }
