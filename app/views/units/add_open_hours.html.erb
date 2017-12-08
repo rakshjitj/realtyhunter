@@ -145,7 +145,7 @@
             <% end %>
             <% if !@residential_units.nil? %>
               <% @residential_units.each do |res_list| %>
-                <% if res_list.unit.status == 'active' || res_list.unit.status == 'pending' %>
+                <% if (res_list.unit.status == 'active' || res_list.unit.status == 'pending') && res_list.unit.archived == false %>
                     <tr>
                       <%# abort unit.images.first.file.url.inspect %>
                       <td class="img-col"><%= image_tag(res_list.unit.images.first.file.url(:thumb)) if res_list.unit.images.first %></td>
@@ -241,5 +241,15 @@
         document.getElementById("till_day").value = startDate;
       }
     });
+    $("#res-update-trigger").click(function(){
+      var startDate = document.getElementById("from_day").value;
+      var endDate = document.getElementById("till_day").value;
+      if(confirm("Do you really want create OpenHouse in between  " + startDate + "  to  " + endDate + "  Dates")){
+        document.forms[0].submit();
+      }
+      else{
+        return false;
+      }
+    })
   })();
 </script>

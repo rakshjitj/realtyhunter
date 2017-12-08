@@ -99,8 +99,9 @@ class UnitsController < ApplicationController
       @collect_unit = []
 
       landlord = Landlord.where("code LIKE ?", "%#{params[:landlord]}%")
-
-      total_days = total_days + 1
+      if !total_days.nil?
+        total_days = total_days + 1
+      end
 
       @landlord = landlord
 
@@ -115,16 +116,19 @@ class UnitsController < ApplicationController
               unit.each do |in_unit|
 
                 @collect_unit << in_unit
-
+                #abort params[:from_day].blank?.inspect
                 if params[:from_day]
-                  a = Date::strptime(params[:from_day], "%m/%d/%Y")
-                  #abort total_days.inspect
-                  total_days.times do |r|
-                    b = a + r.days
-                    if params[:live_button] == "update"
-                      OpenHouse.create(day: b, unit_id: in_unit.id, start_time: total_start_time, end_time: total_end_time)
+                  if !params[:from_day].blank?
+                    a = Date::strptime(params[:from_day], "%m/%d/%Y")
+                    total_days.times do |r|
+                      b = a + r.days
+                      if params[:live_button] == "update"
+                        OpenHouse.create(day: b, unit_id: in_unit.id, start_time: total_start_time, end_time: total_end_time)
+                      end
                     end
                   end
+                  #abort total_days.inspect
+
                 end
               end
 
@@ -147,7 +151,9 @@ class UnitsController < ApplicationController
       building = Building.where("formatted_street_address LIKE ?", "%#{params[:address]}%")
       @buildings = building
       collect_unit = []
-      total_days = total_days + 1
+      if !total_days.nil?
+        total_days = total_days + 1
+      end
       building.each do |build|
         unit = build.units.where(status: [0,1])
         if !unit.blank?
@@ -160,7 +166,7 @@ class UnitsController < ApplicationController
               total_days.times do |r|
                 b = a + r.days
                 if params[:live_button] == "update"
-                  OpenHouse.create(day: b, unit_id: in_unit.id, start_time: total_start_time, end_time: total_end_time)
+                  #OpenHouse.create(day: b, unit_id: in_unit.id, start_time: total_start_time, end_time: total_end_time)
                 end
               end
             end
@@ -178,24 +184,32 @@ class UnitsController < ApplicationController
     if !params[:streeteasy_filter].blank?
       if params[:streeteasy_filter] != "Any"
         residential_units = ResidentialListing.search(params, current_user, params[:building_id])
-        @total_unit = residential_units.length
+        collect_unit = []
         @residential_units = residential_units
-        total_days = total_days + 1
+        if !total_days.nil?
+          total_days = total_days + 1
+        end
         residential_units.each do |res_unit|
+          #abort res_unit.unit.status.inspect
+          if res_unit.unit.status == "active" or res_unit.unit.status == "pending"
+            collect_unit << res_unit.unit
+          end
           if params[:from_day]
             a = Date::strptime(params[:from_day], "%m/%d/%Y")
 
             total_days.times do |r|
               b = a + r.days
               if params[:live_button] == "update"
-                OpenHouse.create(day: b, unit_id: res_unit.unit.id, start_time: total_start_time, end_time: total_end_time)
+                #OpenHouse.create(day: b, unit_id: res_unit.unit.id, start_time: total_start_time, end_time: total_end_time)
               end
+
             end
             if params[:live_button] == "update"
               flash[:success] = "Open Houses Hours successfully Added"
             end
           end
         end
+        @total_unit = collect_unit.length
       end
     end
   end
