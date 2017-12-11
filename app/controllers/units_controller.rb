@@ -166,7 +166,7 @@ class UnitsController < ApplicationController
               total_days.times do |r|
                 b = a + r.days
                 if params[:live_button] == "update"
-                  #OpenHouse.create(day: b, unit_id: in_unit.id, start_time: total_start_time, end_time: total_end_time)
+                  OpenHouse.create(day: b, unit_id: in_unit.id, start_time: total_start_time, end_time: total_end_time)
                 end
               end
             end
@@ -200,7 +200,7 @@ class UnitsController < ApplicationController
             total_days.times do |r|
               b = a + r.days
               if params[:live_button] == "update"
-                #OpenHouse.create(day: b, unit_id: res_unit.unit.id, start_time: total_start_time, end_time: total_end_time)
+                OpenHouse.create(day: b, unit_id: res_unit.unit.id, start_time: total_start_time, end_time: total_end_time)
               end
 
             end
