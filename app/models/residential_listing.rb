@@ -445,20 +445,22 @@ class ResidentialListing < ApplicationRecord
 
     if !params[:streeteasy_filter].blank?
       if params[:streeteasy_filter] == 'Yes'
-        running_list = running_list.where('units.exclusive = TRUE')
-          .where("residential_listings.description <> ''")
-          .where('units.status IN (?) OR units.syndication_status = ?',
-              [Unit.statuses["active"], Unit.statuses["pending"]],
-              Unit.syndication_statuses['Force syndicate'])
-          .where('units.primary_agent_id > 0')
-          .where('units.syndication_status IN (?)', [
-              Unit.syndication_statuses['Syndicate if matches criteria'],
-              Unit.syndication_statuses['Force syndicate']
-            ])
-          .where('residential_listings.streeteasy_flag = TRUE')
+        running_list = running_list.where('residential_listings.streeteasy_flag = TRUE')
+        # running_list = running_list.where('units.exclusive = TRUE')
+        #   .where("residential_listings.description <> ''")
+        #   .where('units.status IN (?) OR units.syndication_status = ?',
+        #       [Unit.statuses["active"], Unit.statuses["pending"]],
+        #       Unit.syndication_statuses['Force syndicate'])
+        #   .where('units.primary_agent_id > 0')
+        #   .where('units.syndication_status IN (?)', [
+        #       Unit.syndication_statuses['Syndicate if matches criteria'],
+        #       Unit.syndication_statuses['Force syndicate']
+        #     ])
+        #   .where('residential_listings.streeteasy_flag = TRUE')
       elsif params[:streeteasy_filter] == 'No'
-        running_list = running_list.where('units.exclusive = FALSE')
-        running_list = running_list.where("residential_listings.description = ''")
+        running_list = running_list.where('residential_listings.streeteasy_flag = FALSE')
+        #running_list = running_list.where('units.exclusive = FALSE')
+        #running_list = running_list.where("residential_listings.description = ''")
       end
     end
 
