@@ -303,7 +303,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:lock_version, :email, :name, :mobile_phone_number,
+      params.require(:user).permit(:lock_version, :email, :streeteasy_email, :name, :mobile_phone_number,:streeteasy_mobile_number,
         :bio, :password, :password_confirmation, :avatar, :remove_avatar,
         :remote_avatar_url, :phone_number, :status, :mobile_phone_number,
         :employee_title_id, :company_id, :office_id, :file,

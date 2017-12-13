@@ -35,8 +35,15 @@ class User < ApplicationRecord
 						format: { with: VALID_EMAIL_REGEX },
             uniqueness: { case_sensitive: false }
 
+  validates :streeteasy_email, presence: true, length: {maximum: 100},
+            format: { with: VALID_EMAIL_REGEX },
+            uniqueness: { case_sensitive: false }
+
   VALID_TELEPHONE_REGEX = /\A(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?\z/
   validates :mobile_phone_number, length: {maximum: 25}, allow_blank: true, #presence: true,
+    format: { with: VALID_TELEPHONE_REGEX }
+
+  validates :streeteasy_mobile_number, length: {maximum: 25}, presence: true, #presence: true,
     format: { with: VALID_TELEPHONE_REGEX }
 
   validates :name, presence: true, length: {maximum: 50}

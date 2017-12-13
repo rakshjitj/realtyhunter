@@ -89,7 +89,7 @@ class Unit < ApplicationRecord
       .joins(:office)
       .joins('inner join units on users.id = units.primary_agent_id OR users.id = units.primary_agent2_id')
       .where('units.id IN (?)', list.pluck("units.id"))
-      .select('users.id', 'name', 'email', 'mobile_phone_number', 'phone_number', 'public_url',
+      .select('users.id', 'name', 'email', 'streeteasy_email', 'mobile_phone_number', 'streeteasy_mobile_number', 'phone_number', 'public_url',
         'offices.telephone AS office_telephone', 'offices.fax AS office_fax', 'units.id as unit_id')
 
     images = Image.where(user_id: users.ids).index_by(&:user_id)

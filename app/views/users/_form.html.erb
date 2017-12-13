@@ -24,6 +24,11 @@
       </div>
 
       <div class="field">
+        <%= f.label :streeteasy_email, "StreetEasy Email" %><br>
+        <%= f.email_field :streeteasy_email, class: 'form-control' %>
+      </div>
+
+      <div class="field">
         <%= f.label :name, "Name", class: 'required' %><br>
         <%= f.text_field :name, class: 'form-control',
             required: true %>
@@ -32,6 +37,11 @@
         <%= f.label :mobile_phone_number, "Mobile", class: 'required' %><br>
         <%= f.telephone_field :mobile_phone_number, placeholder: "(XXX)XXX-XXXX",
             class: 'form-control', required: true %>
+      </div>
+      <div class="field">
+        <%= f.label :streeteasy_mobile_number, "StreetEasy Mobile" %><br>
+        <%= f.telephone_field :streeteasy_mobile_number, placeholder: "(XXX)XXX-XXXX",
+            class: 'form-control' %>
       </div>
       <% if current_user.is_management? %>
         <div class="field">
