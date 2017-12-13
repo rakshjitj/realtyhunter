@@ -24,7 +24,7 @@
       </div>
 
       <div class="field">
-        <%= f.label :streeteasy_email, "StreetEasy Email" %><br>
+        <%= f.label :streeteasy_email, "StreetEasy Email", class: 'required' %><br>
         <%= f.email_field :streeteasy_email, class: 'form-control' %>
       </div>
 
@@ -39,7 +39,7 @@
             class: 'form-control', required: true %>
       </div>
       <div class="field">
-        <%= f.label :streeteasy_mobile_number, "StreetEasy Mobile" %><br>
+        <%= f.label :streeteasy_mobile_number, "StreetEasy Mobile", class: 'required' %><br>
         <%= f.telephone_field :streeteasy_mobile_number, placeholder: "(XXX)XXX-XXXX",
             class: 'form-control' %>
       </div>
