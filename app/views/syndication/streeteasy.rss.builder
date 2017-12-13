@@ -238,12 +238,12 @@ xml.streeteasy :version => "1.6" do
 									xml.photo url:@agent_images[agent.id].file.url(:large)
 								end
 							  # xml.url agent.public_url
-						  	xml.email agent.email
-						  	xml.lead_email agent.email
+						  	xml.email agent.streeteasy_email
+						  	xml.lead_email agent.streeteasy_email
 						  	xml.phone_numbers do
-						  		xml.main agent.mobile_phone_number
+						  		xml.main agent.streeteasy_mobile_number
 						  		xml.office agent.office_telephone
-						  		xml.cell agent.mobile_phone_number
+						  		xml.cell agent.streeteasy_mobile_number
 						  		xml.fax agent.office_fax
 						  	end
 						  end
