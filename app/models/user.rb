@@ -43,7 +43,7 @@ class User < ApplicationRecord
   validates :mobile_phone_number, length: {maximum: 25}, allow_blank: true, #presence: true,
     format: { with: VALID_TELEPHONE_REGEX }
 
-  validates :streeteasy_mobile_number, length: {maximum: 25}, presence: true, #presence: true,
+  validates :streeteasy_mobile_number, length: {maximum: 25}, allow_blank: true, #presence: true,
     format: { with: VALID_TELEPHONE_REGEX }
 
   validates :name, presence: true, length: {maximum: 50}
