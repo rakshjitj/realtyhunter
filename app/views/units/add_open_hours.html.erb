@@ -149,13 +149,16 @@
                     <tr>
                       <%# abort unit.images.first.file.url.inspect %>
                       <td class="img-col"><%= image_tag(res_list.unit.images.first.file.url(:thumb)) if res_list.unit.images.first %></td>
-                      <td><%= link_to(res_list.unit.building.formatted_street_address, residential_listing_path(res_list.unit.residential_listing.id), target: :_blank) %></td>
+                      <%# abort res_list.unit.building.formatted_street_address.inspect %>
+                      <% if res_list.unit.building %>
+                        <td><%= link_to(res_list.unit.building.formatted_street_address, residential_listing_path(res_list.unit.residential_listing.id), target: :_blank) %></td>
+                      <% end %>
                       <td><%= res_list.unit.building_unit  %></td>
                       <td><%= res_list.beds %> Beds/<%= res_list.baths.to_i %> Bath</td>
                       <td>$<%= res_list.unit.rent %></td>
                       <td><%= res_list.unit.available_by.strftime("%b %d") if res_list.unit.available_by %></td>
                       <td><%= res_list.unit.access_info %></td>
-                      <td><%= res_list.unit.building.landlord.code %></td>
+                      <td><%= res_list.unit.building.landlord.code if res_list.unit.building %></td>
                       <td><%= res_list.unit.primary_agent.name if res_list.unit.primary_agent%></td>
                       <td><%= time_ago_in_words(res_list.unit.updated_at) %></td>
                       <td><%= res_list.unit.status %></td>
