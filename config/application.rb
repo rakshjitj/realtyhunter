@@ -51,6 +51,7 @@ module RealtyHunter
     config.time_zone = 'Eastern Time (US & Canada)'
     ActiveSupport.halt_callback_chains_on_return_false = false
     config.active_record.time_zone_aware_types = [:datetime, :time]
+    config.assets.initialize_on_precompile = false
   end
 end
 
