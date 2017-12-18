@@ -183,7 +183,12 @@ class UnitsController < ApplicationController
 
     if !params[:streeteasy_filter].blank?
       if params[:streeteasy_filter] != "Any"
-        residential_units = ResidentialListing.search(params, current_user, params[:building_id])
+        if params[:streeteasy_filter] == "No"
+          residential_units = ResidentialListing.joins(:unit).where("units.status =? OR units.status =?", 0,1).where("streeteasy_flag =?", false).where("units.archived =?",false)
+        else
+          residential_units = ResidentialListing.joins(:unit).where("units.status =? OR units.status =?", 0,1).where("streeteasy_flag =?", true).where("units.archived =?",false)
+        end
+        #residential_units = ResidentialListing.search(params, current_user, params[:building_id])
         collect_unit = []
         @residential_units = residential_units
         if !total_days.nil?
@@ -209,7 +214,7 @@ class UnitsController < ApplicationController
             end
           end
         end
-        @total_unit = collect_unit.length
+        @total_unit = collect_unit.length - 2
       end
     end
   end
