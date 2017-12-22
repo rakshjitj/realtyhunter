@@ -69,7 +69,7 @@ class Ability
     can :read, Utility, company_id: user.company.id
     can :read, Building, company_id: user.company_id
 
-    can :read, ResidentialListing do |residential_listing|
+    can :manage, ResidentialListing do |residential_listing|
       residential_listing.unit.building.company_id == user.company_id
     end
     can :read, SalesListing do |sales_listing|

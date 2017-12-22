@@ -1,7 +1,8 @@
 class ResidentialListingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource only: :create
-  before_action :set_residential_listing, only: [:show, :edit, :duplicate_modal, :duplicate,
+  before_action :set_specific_residential_listing, only: [:specific_edit]
+  before_action :set_residential_listing, only: [:show, :edit, :specific_edit, :duplicate_modal, :duplicate,
     :mark_app_submitted, :update, :delete_modal, :destroy,
     :inaccuracy_modal, :send_inaccuracy, :refresh_images, :refresh_documents]
   autocomplete :building, :formatted_street_address, full: true
@@ -64,6 +65,76 @@ class ResidentialListingsController < ApplicationController
         .order("formatted_street_address ASC")
         .collect {|b| [b.street_address, b.id]}
     @panel_title = "Edit listing"
+  end
+
+  def specific_edit
+    @buildings = current_user.company.buildings
+        .where(archived: false)
+        .order("formatted_street_address ASC")
+        .collect {|b| [b.street_address, b.id]}
+    @panel_title = "Edit listing"
+  end
+
+  def specific_update
+    #abort params[:residential_listing][:unit][:open_houses_attributes].to_a.inspect
+    #abort params[:id].inspect
+    #abort params[:residential_listing][:unit][:open_houses_attributes].to_a[1][1].inspect
+    residential_listing = ResidentialListing.find(params[:id])
+
+    # residential_listing.residential_amenities.each.map{ |a| "#{a.id}" }
+    # abort params[:residential_listing][:residential_amenity_ids].inspect
+    residential_listing.residential_amenities.delete_all
+    params[:residential_listing][:residential_amenity_ids].each do |id|
+      if !id.blank?
+        #abort residential_listing.residential_amenities.find(id).present?.inspect
+        te = ResidentialAmenity.find(id)
+        if residential_listing.residential_amenities.blank?
+          #abort residential_listing.residential_amenities.inspect
+          residential_listing.residential_amenities << te
+        else
+        #   #abort residential_listing.residential_amenities.find(id).present?.inspect
+        #   if !residential_listing.residential_amenities.find(id).present?
+        #     abort residential_listing.residential_amenities.find(id).present?.inspect
+             residential_listing.residential_amenities << te
+        #   end
+        end
+          #residential_listing.residential_amenities << haha
+      end
+    end
+
+
+    tee = residential_listing.update_columns(lock_version: params[:residential_listing][:lock_version],beds: params[:residential_listing][:beds], baths: params[:residential_listing][:baths], tenant_occupied: params[:residential_listing][:tenant_occupied], lease_start: params[:residential_listing][:lease_start], lease_end: params[:residential_listing][:lease_end], description: params[:residential_listing][:description], floor: params[:residential_listing][:floor], total_room_count: params[:residential_listing][:total_room_count], condition: params[:residential_listing][:condition], showing_instruction: params[:residential_listing][:showing_instruction])
+
+    unit_available_by = Date::strptime(params[:residential_listing][:unit][:available_by], "%m/%d/%Y") + 1.day
+    unit = residential_listing.unit
+    tee = unit.update_columns(available_by: unit_available_by, access_info: params[:residential_listing][:unit][:access_info], has_stock_photos: params[:residential_listing][:unit][:has_stock_photos])
+
+    #find_open_house.delete_all
+    params[:residential_listing][:unit][:open_houses_attributes].to_a.each do |a|
+      if a[1][:"_destroy"].present?
+        tt = OpenHouse.find(a[1][:id])
+
+        tt.destroy
+        #exit
+      end
+      #abort a[1][:day].inspect
+      day = Date::strptime(a[1][:day], "%m/%d/%Y")
+      #abort a[1][:"start_time(5i)"].inspect
+      start_time =  a[1][:"start_time(4i)"] + ":" + a[1][:"start_time(5i)"] + ":" + "00"
+      end_time =  a[1][:"end_time(4i)"] + ":" + a[1][:"end_time(5i)"] + ":" + "00"
+      unit_id = unit.id
+      find_open_house = OpenHouse.where(unit_id: unit_id, day: day)
+      if !a[1][:"_destroy"].present?
+        if find_open_house.blank?
+          #abort a[1].inspect
+          openhouse = OpenHouse.create(day: day, start_time: start_time, end_time: end_time, unit_id: unit_id)
+          #abort openhouse.inspect
+        end
+      end
+    end
+
+      flash[:success] = 'Residential unit was successfully Updated.'
+      redirect_to residential_listing_url(residential_listing)
   end
 
   def create
@@ -174,6 +245,7 @@ class ResidentialListingsController < ApplicationController
     unit_updated = nil
     listing_updated = nil
     is_now_active = nil
+
     # ResidentialListing.transaction do
       if @residential_unit.unit.primary_agent_id != residential_listing_params[:unit][:primary_agent_id].to_i
         Unit.update_primary_agent(
@@ -382,6 +454,19 @@ class ResidentialListingsController < ApplicationController
       @residential_unit = ResidentialListing.find_unarchived(params[:id])
       if @residential_unit
         @similar_listings = @residential_unit.find_similar
+      else
+        flash[:warning] = "Sorry, that listing is not active."
+        redirect_to action: 'index'
+      end
+    rescue ActiveRecord::RecordNotFound
+      flash[:warning] = "Sorry, that listing is not active."
+      redirect_to action: 'index'
+    end
+
+    def set_specific_residential_listing
+      @specific_residential_unit = ResidentialListing.find_unarchived(params[:id])
+      if @specific_residential_unit
+        @similar_listings = @specific_residential_unit.find_similar
       else
         flash[:warning] = "Sorry, that listing is not active."
         redirect_to action: 'index'

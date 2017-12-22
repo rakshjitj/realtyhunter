@@ -137,6 +137,9 @@ Rails.application.routes.draw do
     end
   end
 
+  get "/specific_residential_listing/:id/edit" => "residential_listings#specific_edit", as: :specific_edit
+  patch "/specific_residential_listing/:id" => "residential_listings#specific_update", as: :specific_update
+
   resources :sales_listings, concerns: [:unit_images_uploadable, :documents_uploadable] do
     get :autocomplete_building_formatted_street_address, :on => :collection
     get :autocomplete_seller_name, :on => :collection

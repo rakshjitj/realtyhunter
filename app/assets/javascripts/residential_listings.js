@@ -434,13 +434,25 @@
     });
   };
 
-  ResidentialListings.toggleExpirationDateUI = function() {
-    if ($('#residential_listing_unit_is_exclusive_agreement_signed')[0].checked) {
-      $('.row-is_exclusive_agreement_signed').removeClass('hidden');
-    } else {
-      $('.row-is_exclusive_agreement_signed').addClass('hidden');
-    }
-  };
+  var isMobileVersion = document.getElementsByClassName('specific_edit');
+  if (isMobileVersion.length > 0) {
+    ResidentialListings.toggleExpirationDateUI = function() {
+      if ($('#residential_listing_tenant_occupied')[0].checked) {
+        $('.row-is_exclusive_agreement_signed').removeClass('hidden');
+      } else {
+        $('.row-is_exclusive_agreement_signed').addClass('hidden');
+      }
+    };
+  }
+  else{
+    ResidentialListings.toggleExpirationDateUI = function() {
+      if ($('#residential_listing_unit_is_exclusive_agreement_signed')[0].checked) {
+        $('.row-is_exclusive_agreement_signed').removeClass('hidden');
+      } else {
+        $('.row-is_exclusive_agreement_signed').addClass('hidden');
+      }
+    };
+  }
 
   ResidentialListings.initEditor = function() {
     $('.has-fee').click(ResidentialListings.toggleFeeOptions);
@@ -448,9 +460,17 @@
     // when creating a new listing, inherit TP/OP from building's landlord
     $('#residential_listing_unit_building_id').change(ResidentialListings.inheritFeeOptions);
     // when toggling whether there's a signed exclusive agreement
-    ResidentialListings.toggleExpirationDateUI();
+    var isMobileVersion = document.getElementsByClassName('specific_edit');
+    if (isMobileVersion.length > 0) {
+      ResidentialListings.toggleExpirationDateUI();
+      $('#residential_listing_unit_is_exclusive_agreement_signed').click(
+        ResidentialListings.toggleExpirationDateUI);
+    }
+    else{
+      ResidentialListings.toggleExpirationDateUI();
     $('#residential_listing_unit_is_exclusive_agreement_signed').click(
         ResidentialListings.toggleExpirationDateUI);
+    }
 
     // for drag n dropping photos/docs
     // disable auto discover
@@ -708,13 +728,14 @@
 
   ResidentialListings.ready = function() {
     ResidentialListings.clearTimer();
-
+    
+    var specificEditPage = $('.residential_listings.specific_edit').length;
     var editPage = $('.residential_listings.edit').length;
     var newPage = $('.residential_listings.new').length;
     var indexPage = $('.residential_listings.index').length;
 
     // new and edit pages both render the same form template, so init them using the same code
-    if (editPage || newPage) {
+    if (editPage || newPage || specificEditPage) {
       ResidentialListings.initEditor();
     } else if (indexPage) {
       ResidentialListings.initIndex();
