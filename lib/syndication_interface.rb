@@ -118,6 +118,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 		listings = listings
 			.select('units.building_unit', 'units.status', 'units.available_by',
 			'units.listing_id', 'units.updated_at', 'units.rent',
+			'units.streeteasy_listing_email', 'units.streeteasy_listing_number',
 			'buildings.id as building_id',
 			'buildings.administrative_area_level_2_short',
 			'buildings.administrative_area_level_1_short',
