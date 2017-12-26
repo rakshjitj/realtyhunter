@@ -11,6 +11,7 @@ namespace :maintenance do
 		@images.each do |image|
 			puts "update image #{image.id}"
 			image.update_columns(large_image_url: image.file(:large))
+			image.update_columns(thumb_image_url: image.file(:thumb))
 			puts "image url updated successfully"
 		end
 
