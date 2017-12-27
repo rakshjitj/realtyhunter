@@ -238,6 +238,16 @@ xml.streeteasy :version => "1.6" do
 									xml.photo url:@agent_images[agent.id].file.url(:large)
 								end
 							  # xml.url agent.public_url
+							if listing.listing_id == 5123855
+								xml.email 'jmccray@myspacenyc.com'
+								xml.lead_email agent.streeteasy_email
+								xml.phone_numbers do
+									xml.main agent.streeteasy_mobile_number
+									xml.office agent.office_telephone
+									xml.cell agent.streeteasy_mobile_number
+									xml.fax agent.office_fax
+								end
+							end
 						  	xml.email agent.streeteasy_email
 						  	xml.lead_email agent.streeteasy_email
 						  	xml.phone_numbers do
