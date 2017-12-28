@@ -156,28 +156,6 @@
         </div>
         <% end %>
 
-        <%= f.fields_for @residential_unit.unit do |unit_form| %>
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-2">
-            <%= f.label :streeteasy_listing_email %>
-          </div>
-          <div class="col-xs-9 col-md-4">
-            <%= unit_form.text_field :streeteasy_listing_email, class: 'form-control' %>
-          </div>
-        </div>
-        <% end %>
-
-        <%= f.fields_for @residential_unit.unit do |unit_form| %>
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-2">
-            <%= f.label :streeteasy_listing_number %>
-          </div>
-          <div class="col-xs-9 col-md-4">
-            <%= unit_form.text_field :streeteasy_listing_number, class: 'form-control' %>
-          </div>
-        </div>
-        <% end %>
-
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
             <%= f.label :beds, class: 'required' %>
@@ -581,6 +559,28 @@
             <% end %>
           </div>
         </div>
+
+        <%#= f.fields_for @residential_unit.unit do |unit_form| %>
+        <!-- <div class="row vertical-margin-lg">
+          <div class="col-xs-3 col-md-4">
+            <%#= f.label :streeteasy_listing_email %>
+          </div>
+          <div class="col-xs-9 col-md-4">
+            <%#= unit_form.text_field :streeteasy_listing_email, class: 'form-control' %>
+          </div>
+        </div> -->
+        <%# end %>
+
+        <%#= f.fields_for @residential_unit.unit do |unit_form| %>
+        <!-- <div class="row vertical-margin-lg">
+          <div class="col-xs-3 col-md-4">
+            <%#= f.label :streeteasy_listing_number %>
+          </div>
+          <div class="col-xs-9 col-md-4">
+            <%#= unit_form.text_field :streeteasy_listing_number, value: 'info@myspacenyc.com', class: 'form-control' %>
+          </div>
+        </div> -->
+        <%# end %>
 
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-4">
