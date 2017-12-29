@@ -462,7 +462,7 @@
     // when toggling whether there's a signed exclusive agreement
     var isMobileVersion = document.getElementsByClassName('specific_edit');
     if (isMobileVersion.length > 0) {
-      ResidentialListings.toggleExpirationDateUI();
+      // ResidentialListings.toggleExpirationDateUI();
       $('#residential_listing_unit_is_exclusive_agreement_signed').click(
         ResidentialListings.toggleExpirationDateUI);
     }
