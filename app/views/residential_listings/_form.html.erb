@@ -742,6 +742,20 @@
 
 </div>
 <script type="text/javascript">
+  (function()
+    {
+      if( window.localStorage )
+      {
+        if( !localStorage.getItem( 'firstLoad' ) )
+        {
+          localStorage[ 'firstLoad' ] = true;
+          window.location.reload();
+        }
+        else
+          localStorage.removeItem( 'firstLoad' );
+      }
+    })();
+
   $("#access-btn").click(function(){
     address = $("#residential_listing_unit_building_id :selected").text();
     unit = $("#residential_listing_unit_building_unit").val();
