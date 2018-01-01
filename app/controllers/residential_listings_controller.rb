@@ -241,12 +241,33 @@ class ResidentialListingsController < ApplicationController
       layout:   "/layouts/pdf_layout.html"
   end
 
+  def access_email_generate
+    UnitMailer.send_access_information(params[:address],params[:unit], params[:rent], params[:access_info], params[:tenant_occupied]).deliver!
+  end
+
   def update
     unit_updated = nil
     listing_updated = nil
     is_now_active = nil
-
     # ResidentialListing.transaction do
+      #exit
+
+      if params[:update_status_info] == "update_and_email"
+        #abort params[:residential_listing][:unit][:status].inspect
+        #send an email when price change
+        if params[:residential_listing][:unit][:rent].to_i != @residential_unit.unit.rent
+          UnitMailer.send_price_change(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent], @residential_unit.unit.rent, params[:residential_listing][:notes], params[:residential_listing][:unit][:access_info]).deliver!
+        end
+        if params[:residential_listing][:unit][:status] == "Off" && @residential_unit.unit.status != params[:residential_listing][:unit][:status].downcase
+          UnitMailer.send_status_off(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit]).deliver!
+        elsif params[:residential_listing][:unit][:status] == "Pending" && @residential_unit.unit.status != params[:residential_listing][:unit][:status].downcase
+          UnitMailer.send_status_pending(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit]).deliver!
+        elsif params[:residential_listing][:unit][:status] == "Active" && @residential_unit.unit.status != params[:residential_listing][:unit][:status].downcase
+          UnitMailer.send_status_active(params[:residential_listing][:unit][:available_by],params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent],params[:residential_listing][:residential_amenity_ids].reject(&:empty?),params[:residential_listing][:notes],params[:residential_listing][:unit][:access_info],params[:id],params[:residential_listing][:lease_start], params[:residential_listing][:lease_end],params[:residential_listing][:op_fee_percentage], params[:residential_listing][:tp_fee_percentage]).deliver!
+        end
+      else
+      end
+
       if @residential_unit.unit.primary_agent_id != residential_listing_params[:unit][:primary_agent_id].to_i
         Unit.update_primary_agent(
             residential_listing_params[:unit][:primary_agent_id],
@@ -269,6 +290,7 @@ class ResidentialListingsController < ApplicationController
     # end
     # update res
     if unit_updated && listing_updated
+
       Resque.enqueue(UpdateResidentialListing, @residential_unit.id, is_now_active) # send to Knack
       flash[:success] = "Unit successfully updated!"
       redirect_to residential_listing_path(@residential_unit)

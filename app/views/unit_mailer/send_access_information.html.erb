@@ -1,0 +1,17 @@
+<h3>Access Info :</h3>
+<h4>Address : <%= @address %></h4>
+<h4>Unit : <%= @unit %></h4>
+<h4>Price : <%= @rent %></h4>
+<h4>Access Info : <%= @access_info %></h4>
+<% if @tenant_occupied == "false" %>
+	<% tenant_occupied = "No" %>
+<% else %>
+	<% tenant_occupied = "Yes" %>
+<% end %>
+<h4>Tenant Occupied : <%= tenant_occupied %></h4>
+<div>
+	<h4>
+		<div>Thanks & Regards</div>
+		<div>MySpaceNYC</div>
+	</h4>
+</div>

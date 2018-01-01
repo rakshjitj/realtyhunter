@@ -68,4 +68,14 @@ Rails.application.configure do
 
   config.cache_store = :redis_store, "redis://localhost:6379/0/cache", {expires_in: 1.day}
   config.action_controller.perform_caching = true
+  config.action_mailer.delivery_method = :smtp #:test
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.smtp_settings = {
+  :address              => "smtp.postmarkapp.com",
+  :port                 => 587,
+  :domain               => 'myspacenyc.com',
+  :user_name            => '4ffc058c-7aa0-4dd7-a686-e252c09465cb',
+  :password             => '4ffc058c-7aa0-4dd7-a686-e252c09465cb',
+  :authentication       => 'plain',
+  :enable_starttls_auto => true  }
 end

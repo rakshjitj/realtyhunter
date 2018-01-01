@@ -99,4 +99,71 @@ class UnitMailer < ApplicationMailer
         tag: 'clear_pending_warning_report', track_opens:'true', reply_to: 'no-reply@myspacenyc.com'
   end
 
+  def send_access_information(address,unit,rent,access_info,tenant_occupied)
+    #exit
+    @address = address
+    #abort @address.inspect
+    @unit = unit
+    @rent = rent
+    @access_info = access_info
+    @tenant_occupied = tenant_occupied
+    mail(to: 'rakshit@aristainfotech.com', subject: "Access", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  end
+
+  def send_status_off(building,building_unit)
+    @building = Building.find(building).formatted_street_address
+    @building_unit = building_unit
+    mail(to: 'rakshit@aristainfotech.com', subject: "Take Off", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  end
+
+  def send_status_pending(building,building_unit)
+    @building = Building.find(building).formatted_street_address
+    @building_unit = building_unit
+    mail(to: 'rakshit@aristainfotech.com', subject: "Pending", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  end
+
+  def send_price_change(building,building_unit,rent,old_rent,notes,access_info)
+    @building = Building.find(building).formatted_street_address
+    @building_unit = building_unit
+    @old_rent = old_rent
+    @rent = rent
+    @notes = notes
+    @access_info = access_info
+    mail(to: 'rakshit@aristainfotech.com', subject: "Price Change", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  end
+
+  def send_status_active(available,building,building_unit,rent,residential_amenity,notes,access_info,id,lease_start,lease_end,op_fee_percentage,tp_fee_percentage)
+    @available = available
+    @building = Building.find(building).formatted_street_address
+    @building_unit = building_unit
+    @rent = rent
+    @all_residential_amenity = ""
+    residential_amenity.each do |res_a|
+      @all_residential_amenity +=  ResidentialAmenity.find(res_a).name + ","
+    end
+    @notes = notes
+    @access_info = access_info
+    @pet_policy = ResidentialListing.find(id).unit.building.pet_policy.name
+    @lease_start = lease_start
+    @lease_end = lease_end
+    @op_fee_percentage = op_fee_percentage
+    @tp_fee_percentage = tp_fee_percentage
+    mail(to: 'rakshit@aristainfotech.com', subject: "Back on Market", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  end
+
+  def send_new_rental_unit_added(available,address,building_unit,rent,residential_amenities,notes,access_info,pet_policy,lease_start,lease_end, op_fee_percentage,tp_fee_percentage)
+    @available = available
+    @building = address
+    @building_unit = building_unit
+    @rent = rent
+    @residential_amenities = residential_amenities
+    @notes = notes
+    @access_info = access_info
+    @pet_policy = pet_policy
+    @lease_start = lease_start
+    @lease_end = lease_end
+    @op_fee_percentage = op_fee_percentage
+    @tp_fee_percentage = tp_fee_percentage
+    mail(to: 'rakshit@aristainfotech.com', subject: "New Unit", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  end
 end
