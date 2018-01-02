@@ -103,11 +103,11 @@ class ResidentialListingsController < ApplicationController
     end
 
 
-    tee = residential_listing.update_columns(lock_version: params[:residential_listing][:lock_version],beds: params[:residential_listing][:beds], baths: params[:residential_listing][:baths], tenant_occupied: params[:residential_listing][:tenant_occupied], lease_start: params[:residential_listing][:lease_start], lease_end: params[:residential_listing][:lease_end], description: params[:residential_listing][:description], floor: params[:residential_listing][:floor], total_room_count: params[:residential_listing][:total_room_count], condition: params[:residential_listing][:condition], showing_instruction: params[:residential_listing][:showing_instruction])
+    tee = residential_listing.update_columns(lock_version: params[:residential_listing][:lock_version], lease_start: params[:residential_listing][:lease_start], lease_end: params[:residential_listing][:lease_end], description: params[:residential_listing][:description])
 
-    unit_available_by = Date::strptime(params[:residential_listing][:unit][:available_by], "%m/%d/%Y") + 1.day
+    #unit_available_by = Date::strptime(params[:residential_listing][:unit][:available_by], "%m/%d/%Y") + 1.day
     unit = residential_listing.unit
-    tee = unit.update_columns(available_by: unit_available_by, access_info: params[:residential_listing][:unit][:access_info], has_stock_photos: params[:residential_listing][:unit][:has_stock_photos])
+    tee = unit.update_columns(has_stock_photos: params[:residential_listing][:unit][:has_stock_photos])
 
     #find_open_house.delete_all
     params[:residential_listing][:unit][:open_houses_attributes].to_a.each do |a|

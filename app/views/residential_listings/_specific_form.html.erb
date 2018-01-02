@@ -156,25 +156,25 @@
         </div>
         <%# end %> -->
 
-        <div class="row vertical-margin-lg">
+        <!-- <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
-            <%= f.label :beds, class: 'required' %>
+            <%#= f.label :beds, class: 'required' %>
           </div>
           <div class="col-xs-9 col-md-4">
-            <%= f.number_field :beds, class: 'form-control',
+            <%#= f.number_field :beds, class: 'form-control',
               in: 0.0..10.0, :required => true %>
           </div>
-        </div>
+        </div> -->
 
-        <div class="row vertical-margin-lg">
+        <!-- <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
-            <%= f.label :baths, class: 'required' %>
+            <%#= f.label :baths, class: 'required' %>
           </div>
           <div class="col-xs-9 col-md-4">
-            <%= f.number_field :baths, class: 'form-control', step: 0.5, in: 0.0..10.0,
+            <%#= f.number_field :baths, class: 'form-control', step: 0.5, in: 0.0..10.0,
             :required => true %>
           </div>
-        </div>
+        </div> -->
 
         <!-- <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
@@ -187,16 +187,16 @@
           </div>
         </div> -->
 
-        <div class="row vertical-margin-lg">
-          <%= f.fields_for @specific_residential_unit.unit do |unit_form| %>
+        <!-- <div class="row vertical-margin-lg">
+          <%#= f.fields_for @specific_residential_unit.unit do |unit_form| %>
             <div class="col-xs-3 col-md-2">
-              <%= unit_form.label :available_by, "Available", class: 'required' %>
+              <%#= unit_form.label :available_by, "Available", class: 'required' %>
             </div>
             <div class="col-xs-9 col-md-4">
               <div class='input-group date datepicker'
-                data-available-by="<%= @specific_residential_unit.unit.available_by ? @specific_residential_unit.unit.available_by.strftime("%m/%d/%Y") : '' %>">
+                data-available-by="<%#= @specific_residential_unit.unit.available_by ? @specific_residential_unit.unit.available_by.strftime("%m/%d/%Y") : '' %>">
 
-                <%= unit_form.text_field :available_by,
+                <%#= unit_form.text_field :available_by,
                   placeholder: "Available", class:"form-control", size:30 %>
 
                 <label class="input-group-addon btn" for="date">
@@ -204,25 +204,25 @@
                 </label>
               </div>
             </div>
-          <% end %>
-        </div>
+          <%# end %>
+        </div> -->
 
-        <div class="row vertical-margin-lg">
+        <!-- <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
-            <%= f.label :access_info %>
+            <%#= f.label :access_info %>
           </div>
           <div class="col-xs-9 col-md-9">
             <div class="checkbox checkbox-warning inline">
-              <%= f.check_box :tenant_occupied, checked: @specific_residential_unit.tenant_occupied,
+              <%#= f.check_box :tenant_occupied, checked: @specific_residential_unit.tenant_occupied,
                   class: 'styled' %>
-              <%= f.label :tenant_occupied %>
+              <%#= f.label :tenant_occupied %>
             </div>
 
-            <%= f.fields_for @specific_residential_unit.unit do |unit_form| %>
-              <%= unit_form.text_area :access_info, class: 'form-control', rows: 4 %>
-            <% end %>
+            <%#= f.fields_for @specific_residential_unit.unit do |unit_form| %>
+              <%#= unit_form.text_area :access_info, class: 'form-control', rows: 4 %>
+            <%# end %>
           </div>
-        </div>
+        </div> -->
 
         <!-- Open House -->
         <div class="row vertical-margin-lg">
@@ -320,12 +320,12 @@
 
             </div><!-- row -->
 
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-md-11 vertical-margin-lg">
-                <%= f.text_field :custom_amenities, class: 'form-control',
+                <%#= f.text_field :custom_amenities, class: 'form-control',
                 placeholder: "Or enter new amenities, comma separated" %>
               </div>
-            </div>
+            </div> -->
 
           </div><!-- col -->
         </div>
@@ -572,44 +572,44 @@
           </div>
         </div> -->
 
-        <div class="row vertical-margin-lg">
+        <!-- <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-4">
-            <%= f.label :floor %>
+            <%#= f.label :floor %>
           </div>
           <div class="col-xs-9 col-md-7">
-            <%= f.number_field :floor, class: 'form-control' %>
+            <%#= f.number_field :floor, class: 'form-control' %>
           </div>
-        </div>
+        </div> -->
 
-        <div class="row vertical-margin-lg">
+        <!-- <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-4">
-            <%= f.label :total_room_count, class: 'required' %>
+            <%#= f.label :total_room_count, class: 'required' %>
           </div>
           <div class="col-xs-9 col-md-7">
-            <%= f.number_field :total_room_count, class: 'form-control' %>
+            <%#= f.number_field :total_room_count, class: 'form-control' %>
           </div>
-        </div>
+        </div> -->
 
-        <div class="row vertical-margin-lg">
+        <!-- <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-4">
-            <%= f.label :condition %>
+            <%#= f.label :condition %>
           </div>
           <div class="col-xs-9 col-md-7">
-              <%= f.select(:condition,
+              <%#= f.select(:condition,
                 options_for_select(["New Mint", "Excellent", "Good", "Fair", "Wreck", "Estate"], @specific_residential_unit.condition), {prompt: "Choose one..."},
                 class: 'form-control',
                 :include_blank => true) %>
           </div>
-        </div>
+        </div> -->
 
-        <div class="row vertical-margin-lg">
+        <!-- <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-4">
-            <%= f.label :showing_instruction %>
+            <%#= f.label :showing_instruction %>
           </div>
           <div class="col-xs-9 col-md-7">
-            <%= f.text_field :showing_instruction, class: 'form-control' %>
+            <%#= f.text_field :showing_instruction, class: 'form-control' %>
           </div>
-        </div>
+        </div> -->
 
         <!-- <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-4">
