@@ -1,0 +1,15 @@
+
+<h2>New Unit : (<%= @residential_listing.length %> New Unit of day)<h2>
+<% count = 0 %>
+<% @residential_listing.each do |res_list| %>
+	<% count = count + 1 %>
+	<h3><%= count %>) Unit</h3>
+	<h4>Address : <%= res_list.unit.building.formatted_street_address %></h4>
+	<h4>Unit : <%= res_list.unit.building_unit %></h4>
+<% end %>
+<div>
+	<h4>
+		<div>Thanks & Regards</div>
+		<div>MySpaceNYC</div>
+	</h4>
+</div>

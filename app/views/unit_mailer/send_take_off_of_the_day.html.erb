@@ -1,0 +1,14 @@
+<h3>Aparments Take Off : (<%= @day_off_list.count %> Take Off of day)</h3>
+<% count = 0 %>
+<% @day_off_list.each do |day_off_list| %>
+	<% count = count + 1 %>
+	<h4><%= count %> ) Unit</h4>
+	<h4>Address : <%= Unit.find(day_off_list.auditable_id).building.formatted_street_address %></h4>
+	<h4>Unit : <%= Unit.find(day_off_list.auditable_id).building_unit %></h4>
+<% end %>
+<div>
+	<h4>
+		<div>Thanks & Regards</div>
+		<div>MySpaceNYC</div>
+	</h4>
+</div>

@@ -151,19 +151,92 @@ class UnitMailer < ApplicationMailer
     mail(to: 'rakshit@aristainfotech.com', subject: "Back on Market", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
-  def send_new_rental_unit_added(available,address,building_unit,rent,residential_amenities,notes,access_info,pet_policy,lease_start,lease_end, op_fee_percentage,tp_fee_percentage)
-    @available = available
-    @building = address
-    @building_unit = building_unit
-    @rent = rent
-    @residential_amenities = residential_amenities
-    @notes = notes
-    @access_info = access_info
-    @pet_policy = pet_policy
-    @lease_start = lease_start
-    @lease_end = lease_end
-    @op_fee_percentage = op_fee_percentage
-    @tp_fee_percentage = tp_fee_percentage
+  # def send_new_rental_unit_added(available,address,building_unit,rent,residential_amenities,notes,access_info,pet_policy,lease_start,lease_end, op_fee_percentage,tp_fee_percentage)
+  #   @available = available
+  #   @building = address
+  #   @building_unit = building_unit
+  #   @rent = rent
+  #   @residential_amenities = residential_amenities
+  #   @notes = notes
+  #   @access_info = access_info
+  #   @pet_policy = pet_policy
+  #   @lease_start = lease_start
+  #   @lease_end = lease_end
+  #   @op_fee_percentage = op_fee_percentage
+  #   @tp_fee_percentage = tp_fee_percentage
+  #   mail(to: 'rakshit@aristainfotech.com', subject: "New Unit", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  # end
+
+  #send email every hour at new unit added
+  def send_new_rental_unit_added(residential_listing)
+    @residential_listing = residential_listing
     mail(to: 'rakshit@aristainfotech.com', subject: "New Unit", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  end
+
+  #send email at the end of Day how many new unit added
+  def send_new_rental_unit_added_of_the_day(residential_listing)
+    @residential_listing = residential_listing
+    mail(to: 'rakshit@aristainfotech.com', subject: "New Unit", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  end
+
+  #send email at the end of the day for total Off status unit
+  def send_take_off_of_the_day(day_list)
+    @day_list = day_list
+    #abort @day_list[404].inspect
+    @day_off_list = []
+    @day_list.each do |day_list|
+      if day_list.audited_changes.to_a[0][0] == "status"
+        if day_list.audited_changes.to_a[0][1][1] == "off"
+          @day_off_list << day_list
+        end
+      end
+    end
+    mail(to: 'rakshit@aristainfotech.com', subject: "Take Off", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  end
+
+  #send email at the end of the day for total Pending status unit
+  def send_pending_of_the_day(day_list)
+    @day_list = day_list
+    #abort @day_list[404].inspect
+    @day_off_list = []
+    @day_list.each do |day_list|
+      if day_list.audited_changes.to_a[0][0] == "status"
+        if day_list.audited_changes.to_a[0][1][1] == "pending"
+          @day_off_list << day_list
+        end
+      end
+    end
+    mail(to: 'rakshit@aristainfotech.com', subject: "Pending", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  end
+
+  #send email at the end of the day for total Active status unit
+  def send_back_on_market_of_the_day(day_list)
+    @day_list = day_list
+    #abort @day_list[404].inspect
+    @day_off_list = []
+    @day_list.each do |day_list|
+      if day_list.audited_changes.to_a[0][0] == "status"
+        if day_list.audited_changes.to_a[0][1][1] == "active"
+          @day_off_list << day_list
+        end
+      end
+    end
+    mail(to: 'rakshit@aristainfotech.com', subject: "Back On Market", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  end
+
+  #send email at the end of the day for total Active status unit
+  def send_price_change_of_the_day(day_list)
+    @day_list = day_list
+    #abort @day_list[412].inspect
+    @day_off_list = []
+    @day_list.each do |day_list|
+      #abort day_list.audited_changes.include?("rent").inspect
+      if day_list.audited_changes.include?("rent") == true
+          @day_off_list << day_list
+      end
+    end
+    #@day_off_list = @day_off_list.uniq{|x| x.auditable_id}
+    #abort @day_off_list.uniq{|x| x.auditable_id}.count.inspect
+    mail(to: 'rakshit@aristainfotech.com', subject: "Price Change", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 end

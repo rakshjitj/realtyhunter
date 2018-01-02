@@ -1,17 +1,35 @@
+<!-- <h3>New Rental Unit is added :</h3>
+<h4>Available : <%#= @available %></h4>
+<h4>Address : <%#= @building %></h4>
+<h4>Unit : <%#= @building_unit %></h4>
+<h4>Rent : <%#= @rent %></h4>
+<h4>Unit Amenities : <%#= @residential_amenities %></h4>
+<h4>Internal Notes : <%#= @notes %></h4>
+<h4>Access Info : <%#= @access_info %></h4>
+<h4>Pet Policy : <%#= @pet_policy %></h4>
+<h4>Lease Start : <%#= @lease_start %></h4>
+<h4>Lease End : <%#= @lease_end %></h4>
+<h4>Broker Fee : <%#= @tp_fee_percentage %></h4>
+<h4>Owner Pay : <%#= @op_fee_percentage %></h4> -->
 <h3>New Rental Unit is added :</h3>
-<h4>Available : <%= @available %></h4>
-<h4>Address : <%= @building %></h4>
-<h4>Unit : <%= @building_unit %></h4>
-<h4>Rent : <%= @rent %></h4>
-<h4>Unit Amenities : <%= @residential_amenities %></h4>
-<h4>Internal Notes : <%= @notes %></h4>
-<h4>Access Info : <%= @access_info %></h4>
-<h4>Pet Policy : <%= @pet_policy %></h4>
-<h4>Lease Start : <%= @lease_start %></h4>
-<h4>Lease End : <%= @lease_end %></h4>
-<h4>Broker Fee : <%= @tp_fee_percentage %></h4>
-<h4>Owner Pay : <%= @op_fee_percentage %></h4>
-<h4></h4>
+<h4>Total <%= @residential_listing.length %> Unit Added<h4>
+<% count = 0 %>
+<% @residential_listing.each do |res_list| %>
+	<% count = count + 1 %>
+	<h3><%= count %>) Unit</h3>
+	<h4>Available : <%= res_list.unit.available_by.strftime("%m/%d/%Y") %></h4>
+	<h4>Address : <%= res_list.unit.building.formatted_street_address %></h4>
+	<h4>Unit : <%= res_list.unit.building_unit %></h4>
+	<h4>Rent : <%= res_list.unit.rent %></h4>
+	<h4>Unit Amenities : <%= res_list.residential_amenities.each.map(&:name).join(",") %></h4>
+	<h4>Internal Notes : <%= res_list.notes %></h4>
+	<h4>Access Info : <%= res_list.unit.access_info %></h4>
+	<h4>Pet Policy : <%= res_list.unit.building.pet_policy.name %></h4>
+	<h4>Lease Start : <%= res_list.lease_start %></h4>
+	<h4>Lease End : <%= res_list.lease_end %></h4>
+	<h4>Broker Fee : <%= res_list.tp_fee_percentage %></h4>
+	<h4>Owner Pay : <%= res_list.op_fee_percentage %></h4>
+<% end %>
 <div>
 	<h4>
 		<div>Thanks & Regards</div>
