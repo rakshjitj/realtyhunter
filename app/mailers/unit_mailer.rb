@@ -107,19 +107,19 @@ class UnitMailer < ApplicationMailer
     @rent = rent
     @access_info = access_info
     @tenant_occupied = tenant_occupied
-    mail(to: 'rakshit@aristainfotech.com', subject: "Access", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Access", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   def send_status_off(building,building_unit)
     @building = Building.find(building).formatted_street_address
     @building_unit = building_unit
-    mail(to: 'rakshit@aristainfotech.com', subject: "Take Off", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Take Off", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   def send_status_pending(building,building_unit)
     @building = Building.find(building).formatted_street_address
     @building_unit = building_unit
-    mail(to: 'rakshit@aristainfotech.com', subject: "Pending", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Pending", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   def send_price_change(building,building_unit,rent,old_rent,notes,access_info)
@@ -129,7 +129,7 @@ class UnitMailer < ApplicationMailer
     @rent = rent
     @notes = notes
     @access_info = access_info
-    mail(to: 'rakshit@aristainfotech.com', subject: "Price Change", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Price Change", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   def send_status_active(available,building,building_unit,rent,residential_amenity,notes,access_info,id,lease_start,lease_end,op_fee_percentage,tp_fee_percentage)
@@ -148,7 +148,7 @@ class UnitMailer < ApplicationMailer
     @lease_end = lease_end
     @op_fee_percentage = op_fee_percentage
     @tp_fee_percentage = tp_fee_percentage
-    mail(to: 'rakshit@aristainfotech.com', subject: "Back on Market", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Back on Market", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   # def send_new_rental_unit_added(available,address,building_unit,rent,residential_amenities,notes,access_info,pet_policy,lease_start,lease_end, op_fee_percentage,tp_fee_percentage)
@@ -170,13 +170,13 @@ class UnitMailer < ApplicationMailer
   #send email every hour at new unit added
   def send_new_rental_unit_added(residential_listing)
     @residential_listing = residential_listing
-    mail(to: 'rakshit@aristainfotech.com', subject: "New Unit", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "New Unit", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   #send email at the end of Day how many new unit added
   def send_new_rental_unit_added_of_the_day(residential_listing)
     @residential_listing = residential_listing
-    mail(to: 'rakshit@aristainfotech.com', subject: "New Unit", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "New Unit", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   #send email at the end of the day for total Off status unit
@@ -191,7 +191,7 @@ class UnitMailer < ApplicationMailer
         end
       end
     end
-    mail(to: 'rakshit@aristainfotech.com', subject: "Take Off", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Take Off", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   #send email at the end of the day for total Pending status unit
@@ -206,7 +206,7 @@ class UnitMailer < ApplicationMailer
         end
       end
     end
-    mail(to: 'rakshit@aristainfotech.com', subject: "Pending", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Pending", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   #send email at the end of the day for total Active status unit
@@ -221,7 +221,7 @@ class UnitMailer < ApplicationMailer
         end
       end
     end
-    mail(to: 'rakshit@aristainfotech.com', subject: "Back On Market", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Back On Market", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   #send email at the end of the day for total Active status unit
@@ -237,6 +237,6 @@ class UnitMailer < ApplicationMailer
     end
     #@day_off_list = @day_off_list.uniq{|x| x.auditable_id}
     #abort @day_off_list.uniq{|x| x.auditable_id}.count.inspect
-    mail(to: 'rakshit@aristainfotech.com', subject: "Price Change", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Price Change", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 end
