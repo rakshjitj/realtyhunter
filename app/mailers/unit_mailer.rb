@@ -107,34 +107,42 @@ class UnitMailer < ApplicationMailer
     @rent = rent
     @access_info = access_info
     @tenant_occupied = tenant_occupied
-    mail(to: 'bparekh@myspacenyc.com', subject: "Access", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Access #{@address}##{@unit}", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   def send_status_off(building,building_unit)
     @building = Building.find(building).formatted_street_address
+    street_number = Building.find(building).street_number
+    route = Building.find(building).route
     @building_unit = building_unit
-    mail(to: 'bparekh@myspacenyc.com', subject: "Take Off", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Take Off #{street_number} #{route}##{building_unit}", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   def send_status_pending(building,building_unit)
     @building = Building.find(building).formatted_street_address
+    street_number = Building.find(building).street_number
+    route = Building.find(building).route
     @building_unit = building_unit
-    mail(to: 'bparekh@myspacenyc.com', subject: "Pending", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Pending #{street_number} #{route}##{building_unit}", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   def send_price_change(building,building_unit,rent,old_rent,notes,access_info)
     @building = Building.find(building).formatted_street_address
+    street_number = Building.find(building).street_number
+    route = Building.find(building).route
     @building_unit = building_unit
     @old_rent = old_rent
     @rent = rent
     @notes = notes
     @access_info = access_info
-    mail(to: 'bparekh@myspacenyc.com', subject: "Price Change", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Price Change #{street_number} #{route}##{building_unit}", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   def send_status_active(available,building,building_unit,rent,residential_amenity,notes,access_info,id,lease_start,lease_end,op_fee_percentage,tp_fee_percentage)
     @available = available
     @building = Building.find(building).formatted_street_address
+    street_number = Building.find(building).street_number
+    route = Building.find(building).route
     @building_unit = building_unit
     @rent = rent
     @all_residential_amenity = ""
@@ -148,7 +156,7 @@ class UnitMailer < ApplicationMailer
     @lease_end = lease_end
     @op_fee_percentage = op_fee_percentage
     @tp_fee_percentage = tp_fee_percentage
-    mail(to: 'bparekh@myspacenyc.com', subject: "Back on Market", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Back on Market #{street_number} #{route}##{building_unit}", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   # def send_new_rental_unit_added(available,address,building_unit,rent,residential_amenities,notes,access_info,pet_policy,lease_start,lease_end, op_fee_percentage,tp_fee_percentage)
