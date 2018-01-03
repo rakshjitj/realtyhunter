@@ -29,6 +29,8 @@
 
           <li><%= link_to "Profile", current_user %></li>
 
+          <li><%= link_to "Search", rental_mobile_search_path() %></li>
+
           <% if current_user.is_manager? %>
             <li><%= link_to "My Team Members", subordinates_user_path(current_user) %></li>
           <% end %>

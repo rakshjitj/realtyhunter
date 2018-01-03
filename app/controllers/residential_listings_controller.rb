@@ -67,6 +67,43 @@ class ResidentialListingsController < ApplicationController
     @panel_title = "Edit listing"
   end
 
+  def rental_mobile_search
+
+  end
+
+  def rental_mobile_search_result
+    #@result = Building.where("formatted_street_address LIKE ?", "%#{params[:address]}%")
+    running_list = ResidentialListing.joins(unit: {building: [:company, :landlord]})
+      .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
+      .joins('left join users on users.id = units.primary_agent_id')
+      .where('units.archived = false')
+      .where('companies.id = ?', current_user.company_id)
+      .select('buildings.formatted_street_address',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
+        'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
+        'units.building_unit', 'units.status','units.rent', 'residential_listings.beds',
+        'units.primary_agent_id',  'units.has_stock_photos',
+        'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
+        'residential_listings.id', 'residential_listings.baths','units.access_info',
+        'residential_listings.favorites',
+        'residential_listings.has_fee', 'residential_listings.updated_at',
+        'residential_listings.tenant_occupied',
+        'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
+        'landlords.code',
+        'landlords.id AS landlord_id',
+        'units.listing_id', 'units.available_by', 'units.public_url', 'units.exclusive',
+        'users.name')
+      #abort running_list.inspect
+    if !params && !building_id
+      running_list
+    elsif !params && building_id
+      running_list = running_list.where(building_id: building_id)
+    else
+      running_list = ResidentialListing._filter_query(running_list, current_user, params)
+    end
+    @result = running_list
+  end
+
   def specific_edit
     @buildings = current_user.company.buildings
         .where(archived: false)

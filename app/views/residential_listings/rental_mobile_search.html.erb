@@ -1,0 +1,29 @@
+<%= form_tag rental_mobile_search_result_path, method: 'get' do %>
+  <div class="row vertical-margin-lg">
+    <div class="col-xs-3">
+      <%= label_tag(:address, "Address") %>
+    </div>
+    <div class="col-xs-8 col-sm-left-padding">
+      <%= autocomplete_field_tag :address, params[:address],
+          autocomplete_building_formatted_street_address_residential_listings_path,
+          update_elements: {},
+          placeholder: "123 Main St",
+          class:'form-control' %>
+    </div>
+  </div>
+  <div class="row vertical-padding">
+    <div class="col-xs-3">
+      <%= label_tag(:unit, "Unit") %>
+    </div>
+    <div class="col-xs-8 col-sm-left-padding">
+      <%= text_field_tag :unit, params[:unit], class:"form-control" %>
+    </div>
+  </div>
+  <div class="row vertical-padding">
+    <div class="col-xs-11 col-sm-left-padding">
+      <button id='res-search-trigger', class="search-trigger btn btn-warning btn-sm form-control">
+        Search
+      </button>
+    </div>
+  </div>
+<% end %>

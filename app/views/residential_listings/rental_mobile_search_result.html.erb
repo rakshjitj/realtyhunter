@@ -1,0 +1,31 @@
+<span id="infinite-table-container">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-striped table-hover table-condensed infinite-table-res">
+        <thead>
+          <tr>
+            <th class="img-col"><!-- first image --></th>
+            <th data-sort="formatted_street_address" class="th-sortable">Address</th>
+            <th data-sort="building_unit" class="th-sortable">Unit</th>
+          </tr>
+        </thead>
+
+        <tbody class="residential_units_table_body">
+          <% @result.each do |res| %>
+            <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= res.unit.listing_id %>" >
+              <td class="img-col">
+                <%= image_tag(res.unit.images.first.file(:thumb)) %>
+              </td>
+              <td>
+                <%= link_to "#{res.unit.building.street_number} #{res.unit.building.route}", residential_listing_path(res.id) %>
+              </td>
+              <td>
+                <%= res.unit.building_unit %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</span>
