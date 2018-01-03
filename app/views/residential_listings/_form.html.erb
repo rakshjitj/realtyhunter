@@ -723,7 +723,8 @@
               <%= f.submit class: "btn btn-warning btn-block" %>
             </div>
             <div class="actions col-md-3">
-              <%= submit_tag "Access", type: 'button', id: "access-btn", class: "btn btn-warning btn-block" %>
+              <%= f.submit "Access" ,class: "btn btn-warning btn-block", id: "listing_access" %>
+              <%#= submit_tag "Access", type: 'button', id: "access-btn", class: "btn btn-warning btn-block" %>
             </div>
             <div class="actions col-md-3">
               <%= f.submit "Update and Email" ,class: "btn btn-warning btn-block", id: "listing_update_and_email" %>
@@ -756,23 +757,26 @@
       }
     })();
 
-  $("#access-btn").click(function(){
-    address = $("#residential_listing_unit_building_id :selected").text();
-    unit = $("#residential_listing_unit_building_unit").val();
-    rent = $("#residential_listing_unit_rent").val()
-    access_info = $("#residential_listing_unit_access_info").val()
-    tenant_occupied = $("#residential_listing_tenant_occupied").prop("checked")
-    $.ajax({
-        //dataType: "text", // you want a difference between normal and ajax-calls, and json is standard
-        type: "POST",
-        url: '/residential_listings/access_email_generate', //sumbits it to the given url of the form
-        //data: {email_val: {address: valuesToSubmit, unit_number: unit }},
-        data: 'address='+address+'&unit='+unit+'&rent='+ rent+'&access_info='+access_info+'&tenant_occupied='+tenant_occupied,
-    }).success(function(data){
-        alert("Email Send Successfully");
-    });
-  });
+  // $("#access-btn").click(function(){
+  //   address = $("#residential_listing_unit_building_id :selected").text();
+  //   unit = $("#residential_listing_unit_building_unit").val();
+  //   rent = $("#residential_listing_unit_rent").val()
+  //   access_info = $("#residential_listing_unit_access_info").val()
+  //   tenant_occupied = $("#residential_listing_tenant_occupied").prop("checked")
+  //   $.ajax({
+  //       //dataType: "text", // you want a difference between normal and ajax-calls, and json is standard
+  //       type: "POST",
+  //       url: '/residential_listings/access_email_generate', //sumbits it to the given url of the form
+  //       //data: {email_val: {address: valuesToSubmit, unit_number: unit }},
+  //       data: 'address='+address+'&unit='+unit+'&rent='+ rent+'&access_info='+access_info+'&tenant_occupied='+tenant_occupied,
+  //   }).success(function(data){
+  //       alert("Email Send Successfully");
+  //   });
+  // });
   $("#listing_update_and_email").click(function(){
     $("#update_status_info").attr("value", "update_and_email")
+  })
+  $("#listing_access").click(function(){
+    $("#update_status_info").attr("value", "access")
   })
 </script>
