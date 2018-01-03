@@ -104,7 +104,8 @@ Rails.application.routes.draw do
       get 'neighborhood_options'
     end
   end
-
+  get 'residential_listings/rental_mobile_search' => "residential_listings#rental_mobile_search", as: :rental_mobile_search
+  get 'residential_listings/search_result' => "residential_listings#rental_mobile_search_result", as: :rental_mobile_search_result
   resources :residential_listings, concerns: [:unit_images_uploadable, :documents_uploadable] do
     get :autocomplete_building_formatted_street_address, :on => :collection
     get :autocomplete_landlord_code, :on => :collection
@@ -140,7 +141,7 @@ Rails.application.routes.draw do
   get "/specific_residential_listing/:id/edit" => "residential_listings#specific_edit", as: :specific_edit
   patch "/specific_residential_listing/:id" => "residential_listings#specific_update", as: :specific_update
   post "residential_listings/access_email_generate" => "residential_listings#access_email_generate", as: :access_email_generate
-
+  
   resources :sales_listings, concerns: [:unit_images_uploadable, :documents_uploadable] do
     get :autocomplete_building_formatted_street_address, :on => :collection
     get :autocomplete_seller_name, :on => :collection
