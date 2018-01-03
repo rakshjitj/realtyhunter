@@ -214,7 +214,11 @@ class UnitsController < ApplicationController
             end
           end
         end
-        @total_unit = collect_unit.length - 2
+        if params[:streeteasy_filter] == "Yes"
+          @total_unit = collect_unit.length
+        else
+          @total_unit = collect_unit.length - 2
+        end
       end
     end
   end
