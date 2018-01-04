@@ -103,12 +103,14 @@ class UnitMailer < ApplicationMailer
     #exit
     @address = Building.find(building).formatted_street_address
     #abort @address.inspect
+    street_number = Building.find(building).street_number
+    route = Building.find(building).route
     @unit = unit
     @rent = rent
     @access_info = access_info
     @tenant_occupied = tenant_occupied
     @user_name = user_name
-    mail(to: 'bparekh@myspacenyc.com', subject: "Access #{@address}##{@unit}", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Access (#{street_number} #{route}##{@unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   #send email when anyone change status to Off
@@ -118,7 +120,7 @@ class UnitMailer < ApplicationMailer
     route = Building.find(building).route
     @building_unit = building_unit
     @user_name = user_name
-    mail(to: 'bparekh@myspacenyc.com', subject: "Take Off #{street_number} #{route}##{building_unit}", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Take Off (#{street_number} #{route}##{building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   #send email when anyone change status to Pending
@@ -128,7 +130,7 @@ class UnitMailer < ApplicationMailer
     route = Building.find(building).route
     @building_unit = building_unit
     @user_name = user_name
-    mail(to: 'bparekh@myspacenyc.com', subject: "Pending #{street_number} #{route}##{building_unit}", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Pending (#{street_number} #{route}##{building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   #send email when anyone Change Price
@@ -142,7 +144,7 @@ class UnitMailer < ApplicationMailer
     @notes = notes
     @access_info = access_info
     @user_name = user_name
-    mail(to: 'bparekh@myspacenyc.com', subject: "Price Change #{street_number} #{route}##{building_unit}", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Price Change (#{street_number} #{route}##{building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   #send email when anyone change status to Active
@@ -165,7 +167,19 @@ class UnitMailer < ApplicationMailer
     @op_fee_percentage = op_fee_percentage
     @tp_fee_percentage = tp_fee_percentage
     @user_name = user_name
-    mail(to: 'bparekh@myspacenyc.com', subject: "Back on Market #{street_number} #{route}##{building_unit}", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Back on Market (#{street_number} #{route}##{building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  end
+
+  #send an email when available date changed
+  def send_available_by_info(building,building_unit,rent,available, user_name)
+    @building = Building.find(building).formatted_street_address
+    street_number = Building.find(building).street_number
+    route = Building.find(building).route
+    @building_unit = building_unit
+    @rent = rent
+    @available = available
+    @user_name = user_name
+    mail(to: 'rakshit@aristainfotech.com', subject: "Available (#{street_number} #{route}##{building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   # def send_new_rental_unit_added(available,address,building_unit,rent,residential_amenities,notes,access_info,pet_policy,lease_start,lease_end, op_fee_percentage,tp_fee_percentage)
