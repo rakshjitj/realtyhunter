@@ -182,6 +182,16 @@ class UnitMailer < ApplicationMailer
     mail(to: 'rakshit@aristainfotech.com', subject: "Available (#{street_number} #{route}##{building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
+  #send an email when any one change any thing in listing
+  def send_details_of_user_activity(building,building_unit,user_name)
+    @building = Building.find(building).formatted_street_address
+    street_number = Building.find(building).street_number
+    route = Building.find(building).route
+    @building_unit = building_unit
+    @time = Time.now().strftime('%m/%d/%Y %I:%M:%S %p')
+    @user_name = user_name
+    mail(to: 'rakshit@aristainfotech.com', subject: "Unit Update (#{street_number} #{route}##{@building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  end
   # def send_new_rental_unit_added(available,address,building_unit,rent,residential_amenities,notes,access_info,pet_policy,lease_start,lease_end, op_fee_percentage,tp_fee_percentage)
   #   @available = available
   #   @building = address

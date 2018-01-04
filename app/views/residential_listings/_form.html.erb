@@ -720,7 +720,7 @@
         <div class="row vertical-margin-lg">
           <div class="col-md-12 col-md-offset-3">
             <div class="actions col-md-3">
-              <%= f.submit class: "btn btn-warning btn-block" %>
+              <%= f.submit class: "btn btn-warning btn-block", id: "listing_update" %>
             </div>
             <div class="actions col-md-3">
               <%= f.submit "Access" ,class: "btn btn-warning btn-block", id: "listing_access" %>
@@ -778,5 +778,8 @@
   })
   $("#listing_access").click(function(){
     $("#update_status_info").attr("value", "access")
+  })
+  $("#listing_update").click(function(){
+    $("#update_status_info").attr("value", "update")
   })
 </script>
