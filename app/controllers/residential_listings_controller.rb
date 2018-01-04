@@ -278,21 +278,18 @@ class ResidentialListingsController < ApplicationController
       layout:   "/layouts/pdf_layout.html"
   end
 
-  def access_email_generate
-    UnitMailer.send_access_information(params[:address],params[:unit], params[:rent], params[:access_info], params[:tenant_occupied]).deliver!
-  end
+  # def access_email_generate
+  #   UnitMailer.send_access_information(params[:address],params[:unit], params[:rent], params[:access_info], params[:tenant_occupied]).deliver!
+  # end
 
-  def update
-    unit_updated = nil
-    listing_updated = nil
-    is_now_active = nil
-
+  #email option normalization
+  def send_email_with_specific_senerio
     if params[:residential_listing][:unit][:available_by] != @residential_unit.unit.available_by.strftime("%m/%d/%Y")
       UnitMailer.send_available_by_info(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent],params[:residential_listing][:unit][:available_by], current_user.name).deliver!
     end
 
     if params[:update_status_info] == "update"
-      UnitMailer.send_details_of_user_activity(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],current_user.name).deliver!
+      #UnitMailer.send_details_of_user_activity(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],current_user.name).deliver!
     end
     # ResidentialListing.transaction do
       if params[:update_status_info] == "access"
@@ -318,7 +315,16 @@ class ResidentialListingsController < ApplicationController
           UnitMailer.send_status_active(params[:residential_listing][:unit][:available_by],params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent],params[:residential_listing][:residential_amenity_ids].reject(&:empty?),params[:residential_listing][:notes],params[:residential_listing][:unit][:access_info],params[:id],params[:residential_listing][:lease_start], params[:residential_listing][:lease_end],params[:residential_listing][:op_fee_percentage], params[:residential_listing][:tp_fee_percentage], current_user.name).deliver!
         end
       else
-      end
+      end    
+  end  
+
+  def update
+    unit_updated = nil
+    listing_updated = nil
+    is_now_active = nil
+
+    #email option normalization
+    send_email_with_specific_senerio()
 
       if @residential_unit.unit.primary_agent_id != residential_listing_params[:unit][:primary_agent_id].to_i
         Unit.update_primary_agent(
