@@ -289,7 +289,7 @@ class ResidentialListingsController < ApplicationController
     end
 
     if params[:update_status_info] == "update"
-      #UnitMailer.send_details_of_user_activity(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],current_user.name).deliver!
+      UnitMailer.send_details_of_user_activity(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],current_user.name).deliver!
     end
     # ResidentialListing.transaction do
       if params[:update_status_info] == "access"

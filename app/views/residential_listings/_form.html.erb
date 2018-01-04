@@ -723,11 +723,11 @@
               <%= f.submit class: "btn btn-warning btn-block", id: "listing_update" %>
             </div>
             <div class="actions col-md-3">
-              <%#= f.submit "Access" ,class: "btn btn-warning btn-block", id: "listing_access" %>
+              <%= f.submit "Access" ,class: "btn btn-warning btn-block", id: "listing_access" %>
               <%#= submit_tag "Access", type: 'button', id: "access-btn", class: "btn btn-warning btn-block" %>
             </div>
             <div class="actions col-md-3">
-              <%#= f.submit "Update and Email" ,class: "btn btn-warning btn-block", id: "listing_update_and_email" %>
+              <%= f.submit "Update and Email" ,class: "btn btn-warning btn-block", id: "listing_update_and_email" %>
             </div>
           </div>
         </div>
@@ -775,12 +775,12 @@
   // });
   
 
-  // $("#listing_update_and_email").click(function(){
-  //   $("#update_status_info").attr("value", "update_and_email")
-  // })
-  // $("#listing_access").click(function(){
-  //   $("#update_status_info").attr("value", "access")
-  // })
+  $("#listing_update_and_email").click(function(){
+    $("#update_status_info").attr("value", "update_and_email")
+  })
+  $("#listing_access").click(function(){
+    $("#update_status_info").attr("value", "access")
+  })
   $("#listing_update").click(function(){
     $("#update_status_info").attr("value", "update")
   })
