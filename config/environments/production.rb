@@ -117,4 +117,25 @@
       jpeg: '-copy none -optimize'
     }
   }
+  config.action_controller.perform_caching = true
+  config.action_mailer.delivery_method = :smtp #:test
+  config.action_mailer.perform_deliveries = true
+  # config.action_mailer.smtp_settings = {
+  # :address              => "smtp.postmarkapp.com",
+  # :port                 => 587,
+  # :domain               => 'myspacenyc.com',
+  # :user_name            => '4ffc058c-7aa0-4dd7-a686-e252c09465cb',
+  # :password             => '4ffc058c-7aa0-4dd7-a686-e252c09465cb',
+  # :authentication       => 'plain',
+  # :enable_starttls_auto => true  }
+
+  config.action_mailer.smtp_settings = {
+    address:              'smtp.gmail.com',
+    port:                 587,
+    domain:               'gmail.com',
+    user_name:            'myspacenycuri@gmail.com',
+    password:             'myspace@123',
+    authentication:       :plain,
+    enable_starttls_auto: true
+  }
 end
