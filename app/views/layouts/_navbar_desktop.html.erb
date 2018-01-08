@@ -34,6 +34,7 @@
           <% if current_user.is_management? %>
             <li><%= link_to "Add Open Houses", add_open_hours_path %></li>
           <% end %>
+          <li><%= link_to "New Client", "https://myspacenyc.com/internal/" %></li>
           <!-- **************** ROOMSHARING **************** -->
           <% if current_user.has_role? :roomsharing %>
             <li class="dropdown">

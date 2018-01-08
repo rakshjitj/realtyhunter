@@ -189,6 +189,7 @@ class ResidentialListingsController < ApplicationController
     end
 
     if new_unit.save && @residential_unit.save
+      UnitMailer.send_email_at_new_unit_create(params[:residential_listing][:unit][:building_id], params[:residential_listing][:unit][:building_unit],params[:residential_listing][:beds],params[:residential_listing][:baths],params[:residential_listing][:unit][:rent],params[:residential_listing][:residential_amenity_ids].reject(&:empty?),params[:residential_listing][:unit][:access_info],params[:residential_listing][:notes],params[:residential_listing][:unit][:available_by],params[:residential_listing][:tp_fee_percentage],params[:residential_listing][:op_fee_percentage], params[:residential_listing][:lease_start], params[:residential_listing][:lease_end],current_user.name).deliver!
       # keep track of whether this listing just came on or off the market
       is_now_active = @residential_unit.unit.status == 'active'
       Resque.enqueue(CreateResidentialListing, @residential_unit.id, is_now_active) # send to Knack
@@ -216,9 +217,9 @@ class ResidentialListingsController < ApplicationController
     residential_unit_dup = @residential_unit.duplicate(
       residential_listing_params[:unit][:building_unit],
       residential_listing_params[:include_photos])
-
     if residential_unit_dup.valid?
       @residential_unit = residential_unit_dup
+      UnitMailer.send_email_at_new_unit_duplicate(@residential_unit.unit.building.id, residential_listing_params[:unit][:building_unit],@residential_unit.beds,@residential_unit.baths,@residential_unit.unit.rent,@residential_unit.residential_amenities.each.map(&:name).join(","),@residential_unit.unit.access_info,@residential_unit.notes,@residential_unit.unit.available_by.strftime("%m/%d/%Y"),@residential_unit.tp_fee_percentage,@residential_unit.op_fee_percentage, @residential_unit.lease_start, @residential_unit.lease_end,current_user.name).deliver!
       # keep track of whether this listing just came on or off the market
       is_now_active = @residential_unit.unit.status == 'active'
       Resque.enqueue(CreateResidentialListing, @residential_unit.id, is_now_active) # send to Knack
