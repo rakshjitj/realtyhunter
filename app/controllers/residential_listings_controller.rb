@@ -342,6 +342,9 @@ class ResidentialListingsController < ApplicationController
       listing_updated = @residential_unit.update(r_params.merge({updated_at: Time.now}))
     # end
     # update res
+    if params[:residential_listing][:unit][:status] == "Off"
+      @residential_unit.update_columns(streeteasy_flag: false)
+    end
     if unit_updated && listing_updated
 
       Resque.enqueue(UpdateResidentialListing, @residential_unit.id, is_now_active) # send to Knack
