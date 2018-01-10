@@ -114,7 +114,7 @@ class UnitMailer < ApplicationMailer
   end
 
   #send email when new unit created using add unit button
-  def send_email_at_new_unit_create(building,building_unit,beds,baths,rent,residential_amenity,access_info,notes,available,tp_fee_percentage,op_fee_percentage,lease_start,lease_end, user_name)
+  def send_email_at_new_unit_create(building,building_unit,beds,baths,rent,residential_amenity,access_info,notes,available,has_fee,tp_fee_percentage,op_fee_percentage,lease_start,lease_end, user_name)
     @building = Building.find(building).formatted_street_address
     street_number = Building.find(building).street_number
     route = Building.find(building).route
@@ -129,6 +129,7 @@ class UnitMailer < ApplicationMailer
     @access_info = access_info
     @notes = notes
     @available = available
+    @has_fee = has_fee
     @tp_fee_percentage = tp_fee_percentage
     @op_fee_percentage = op_fee_percentage
     @lease_start = lease_start
@@ -160,7 +161,7 @@ class UnitMailer < ApplicationMailer
   # end
 
   #send email when some one click on unit email button
-  def send_unit_email(building,building_unit,beds,baths,rent,residential_amenity,access_info,notes,available,tp_fee_percentage,op_fee_percentage,lease_start,lease_end, user_name)
+  def send_unit_email(building,building_unit,beds,baths,rent,residential_amenity,access_info,notes,available,has_fee,tp_fee_percentage,op_fee_percentage,lease_start,lease_end, user_name)
     @building = Building.find(building).formatted_street_address
     street_number = Building.find(building).street_number
     route = Building.find(building).route
@@ -175,6 +176,7 @@ class UnitMailer < ApplicationMailer
     @access_info = access_info
     @notes = notes
     @available = available
+    @has_fee = has_fee
     @tp_fee_percentage = tp_fee_percentage
     @op_fee_percentage = op_fee_percentage
     @lease_start = lease_start
@@ -219,7 +221,7 @@ class UnitMailer < ApplicationMailer
   end
 
   #send email when anyone change status to Active
-  def send_status_active(available,building,building_unit,rent,residential_amenity,notes,access_info,id,lease_start,lease_end,op_fee_percentage,tp_fee_percentage, user_name)
+  def send_status_active(available,building,building_unit,rent,residential_amenity,notes,access_info,id,lease_start,lease_end,has_fee,op_fee_percentage,tp_fee_percentage, user_name)
     @available = available
     @building = Building.find(building).formatted_street_address
     street_number = Building.find(building).street_number
@@ -235,6 +237,7 @@ class UnitMailer < ApplicationMailer
     @pet_policy = ResidentialListing.find(id).unit.building.pet_policy.name
     @lease_start = lease_start
     @lease_end = lease_end
+    @has_fee = has_fee
     @op_fee_percentage = op_fee_percentage
     @tp_fee_percentage = tp_fee_percentage
     @user_name = user_name

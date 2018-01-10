@@ -189,7 +189,7 @@ class ResidentialListingsController < ApplicationController
     end
 
     if new_unit.save && @residential_unit.save
-      UnitMailer.send_email_at_new_unit_create(params[:residential_listing][:unit][:building_id], params[:residential_listing][:unit][:building_unit],params[:residential_listing][:beds],params[:residential_listing][:baths],params[:residential_listing][:unit][:rent],params[:residential_listing][:residential_amenity_ids].reject(&:empty?),params[:residential_listing][:unit][:access_info],params[:residential_listing][:notes],params[:residential_listing][:unit][:available_by],params[:residential_listing][:tp_fee_percentage],params[:residential_listing][:op_fee_percentage], params[:residential_listing][:lease_start], params[:residential_listing][:lease_end],current_user.name).deliver!
+      UnitMailer.send_email_at_new_unit_create(params[:residential_listing][:unit][:building_id], params[:residential_listing][:unit][:building_unit],params[:residential_listing][:beds],params[:residential_listing][:baths],params[:residential_listing][:unit][:rent],params[:residential_listing][:residential_amenity_ids].reject(&:empty?),params[:residential_listing][:unit][:access_info],params[:residential_listing][:notes],params[:residential_listing][:unit][:available_by],params[:residential_listing][:has_fee],params[:residential_listing][:tp_fee_percentage],params[:residential_listing][:op_fee_percentage], params[:residential_listing][:lease_start], params[:residential_listing][:lease_end],current_user.name).deliver!
       # keep track of whether this listing just came on or off the market
       is_now_active = @residential_unit.unit.status == 'active'
       Resque.enqueue(CreateResidentialListing, @residential_unit.id, is_now_active) # send to Knack
@@ -301,7 +301,7 @@ class ResidentialListingsController < ApplicationController
 
     #email send when anyone click on unit email button
     if params[:update_status_info] == "unit_email"
-      UnitMailer.send_unit_email(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:beds],params[:residential_listing][:baths],params[:residential_listing][:unit][:rent],params[:residential_listing][:residential_amenity_ids].reject(&:empty?),params[:residential_listing][:unit][:access_info],params[:residential_listing][:notes],params[:residential_listing][:unit][:available_by], params[:residential_listing][:tp_fee_percentage],params[:residential_listing][:op_fee_percentage],params[:residential_listing][:lease_start], params[:residential_listing][:lease_end],current_user.name).deliver!
+      UnitMailer.send_unit_email(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:beds],params[:residential_listing][:baths],params[:residential_listing][:unit][:rent],params[:residential_listing][:residential_amenity_ids].reject(&:empty?),params[:residential_listing][:unit][:access_info],params[:residential_listing][:notes],params[:residential_listing][:unit][:available_by],params[:residential_listing][:has_fee],params[:residential_listing][:tp_fee_percentage],params[:residential_listing][:op_fee_percentage],params[:residential_listing][:lease_start], params[:residential_listing][:lease_end],current_user.name).deliver!
     end
 
     # ResidentialListing.transaction do
@@ -325,7 +325,7 @@ class ResidentialListingsController < ApplicationController
         elsif params[:residential_listing][:unit][:status] == "Pending" && @residential_unit.unit.status != params[:residential_listing][:unit][:status].downcase
           UnitMailer.send_status_pending(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit], current_user.name).deliver!
         elsif params[:residential_listing][:unit][:status] == "Active" && @residential_unit.unit.status != params[:residential_listing][:unit][:status].downcase
-          UnitMailer.send_status_active(params[:residential_listing][:unit][:available_by],params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent],params[:residential_listing][:residential_amenity_ids].reject(&:empty?),params[:residential_listing][:notes],params[:residential_listing][:unit][:access_info],params[:id],params[:residential_listing][:lease_start], params[:residential_listing][:lease_end],params[:residential_listing][:op_fee_percentage], params[:residential_listing][:tp_fee_percentage], current_user.name).deliver!
+          UnitMailer.send_status_active(params[:residential_listing][:unit][:available_by],params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent],params[:residential_listing][:residential_amenity_ids].reject(&:empty?),params[:residential_listing][:notes],params[:residential_listing][:unit][:access_info],params[:id],params[:residential_listing][:lease_start], params[:residential_listing][:lease_end],params[:residential_listing][:has_fee],params[:residential_listing][:op_fee_percentage], params[:residential_listing][:tp_fee_percentage], current_user.name).deliver!
         end
       else
       end  
