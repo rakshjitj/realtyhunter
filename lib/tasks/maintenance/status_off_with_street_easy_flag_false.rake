@@ -5,10 +5,10 @@ namespace :maintenance do
 		log = ActiveSupport::Logger.new('log/status_off_with_street_easy_flag_false.log')
 		start_time = Time.now
 
-		puts "Streeteasy flag false when status off..."
-		log.info "Streeteasy flag false when status off..."
+		puts "Streeteasy flag false when status off and pending..."
+		log.info "Streeteasy flag false when status off and pending..."
 
-		@residential_unit = Unit.where(status: 2)
+		@residential_unit = Unit.where(status: [1,2])
 		@residential_unit.each do |res_unit|
 			if res_unit.residential_listing
 				res_unit.residential_listing.update_columns(streeteasy_flag: false)
