@@ -351,7 +351,7 @@ class ResidentialListingsController < ApplicationController
       listing_updated = @residential_unit.update(r_params.merge({updated_at: Time.now}))
     # end
     # update res
-    if params[:residential_listing][:unit][:status] == "Off"
+    if params[:residential_listing][:unit][:status] == "Off" || params[:residential_listing][:unit][:status] == "Pending"
       @residential_unit.update_columns(streeteasy_flag: false)
     end
     if unit_updated && listing_updated
