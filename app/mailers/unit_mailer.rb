@@ -138,7 +138,29 @@ class UnitMailer < ApplicationMailer
     mail(to: 'bparekh@myspacenyc.com', subject: "New Unit (#{street_number} #{route}##{building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
-  def send_email_at_new_unit_duplicate(building,building_unit,beds,baths,rent,residential_amenity,access_info,notes,available,tp_fee_percentage,op_fee_percentage,lease_start,lease_end, user_name)
+  # def send_email_at_new_unit_duplicate(building,building_unit,beds,baths,rent,residential_amenity,access_info,notes,available,tp_fee_percentage,op_fee_percentage,lease_start,lease_end, user_name)
+  #   @building = Building.find(building).formatted_street_address
+  #   street_number = Building.find(building).street_number
+  #   route = Building.find(building).route
+  #   @building_unit = building_unit
+  #   @beds = beds
+  #   @baths = baths
+  #   @rent = rent
+  #   @all_residential_amenity = residential_amenity
+  #   @access_info = access_info
+  #   @notes = notes
+  #   @available = available
+  #   @tp_fee_percentage = tp_fee_percentage
+  #   @op_fee_percentage = op_fee_percentage
+  #   @lease_start = lease_start
+  #   @lease_end = lease_end
+  #   @landlord = Building.find(building).landlord.code
+  #   @user_name = user_name
+  #   mail(to: 'rakshit@aristainfotech.com', subject: "New Unit Duplicated (#{street_number} #{route}##{building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  # end
+
+  #send email when some one click on unit email button
+  def send_unit_email(building,building_unit,beds,baths,rent,residential_amenity,access_info,notes,available,tp_fee_percentage,op_fee_percentage,lease_start,lease_end, user_name)
     @building = Building.find(building).formatted_street_address
     street_number = Building.find(building).street_number
     route = Building.find(building).route
@@ -146,7 +168,10 @@ class UnitMailer < ApplicationMailer
     @beds = beds
     @baths = baths
     @rent = rent
-    @all_residential_amenity = residential_amenity
+    @all_residential_amenity = ""
+    residential_amenity.each do |res_a|
+      @all_residential_amenity +=  ResidentialAmenity.find(res_a).name + ","
+    end
     @access_info = access_info
     @notes = notes
     @available = available
@@ -156,7 +181,7 @@ class UnitMailer < ApplicationMailer
     @lease_end = lease_end
     @landlord = Building.find(building).landlord.code
     @user_name = user_name
-    mail(to: 'bparekh@myspacenyc.com', subject: "New Unit Duplicated (#{street_number} #{route}##{building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'bparekh@myspacenyc.com', subject: "Unit Email (#{street_number} #{route}##{building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   #send email when anyone change status to Off
