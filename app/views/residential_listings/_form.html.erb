@@ -718,7 +718,7 @@
         <%= hidden_field_tag :update_status_info %>
         <br>
         <div class="row vertical-margin-lg">
-          <div class="col-md-12 col-md-offset-0">
+          <div class="col-md-12 col-md-offset-3">
             <div class="actions col-md-3">
               <%= f.submit class: "btn btn-warning btn-block", id: "listing_update" %>
             </div>
@@ -798,9 +798,6 @@
 
     if ( status == "Off" || status == "Pending"){
       $("#residential_listing_streeteasy_flag").prop("checked", "");
-    }
-    else{
-      $("#residential_listing_streeteasy_flag").prop("checked", "checked")
     }
   });
 </script>
