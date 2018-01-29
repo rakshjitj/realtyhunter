@@ -221,15 +221,37 @@ xml.streeteasy :version => "1.6" do
 						# On all residential listings, set the company account as the first "agent".
             # This is used for accounting purposes, as Streeteasy charges a fee per ad.
             if listing.r_id
-              xml.agent id: 114 do
-                xml.name "Myspace NYC"
-                xml.email "info+streeteasy@myspacenyc.com"
-                xml.lead_email "info+streeteasy@myspacenyc.com"
-                xml.phone_numbers do
-                  xml.office "(929) 229-2245"
-                end
-              end
+				unit = Unit.where(listing_id: listing.listing_id)[0].residential_listing
+				if unit.streeteasy_flag == true
+	              xml.agent id: 114 do
+	                xml.name "Myspace NYC"
+	                xml.email "info+streeteasy@myspacenyc.com"
+	                xml.lead_email "info+streeteasy@myspacenyc.com"
+	                xml.phone_numbers do
+	                  xml.office "(929) 229-2245"
+	                end
+	              end
+	            end
+				if unit.streeteasy_flag_one == true
+					user = User.find(listing.streeteasy_primary_agent_id)
+					xml.agent id: user.id do
+						xml.name user.name
+						xml.company @company.name
+						if user.image
+							xml.photo url:user.image.file.url(:large)
+						end
+					end
+					xml.email user.streeteasy_email
+					xml.lead_email user.streeteasy_email
+					xml.phone_numbers do
+						xml.main user.streeteasy_mobile_number
+						xml.office user.office.telephone
+						xml.cell user.streeteasy_mobile_number
+						xml.fax user.office.fax
+					end
+				end
             end # end forced
+
 						@primary_agents[listing.unit_id].each do |agent|
 							xml.agent id: agent.id do
 								xml.name agent.name

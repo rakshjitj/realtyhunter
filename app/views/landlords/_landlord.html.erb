@@ -9,6 +9,13 @@
       --
     <% end %>
   </td>
+  <td>
+    <% if landlord.listing_agent_percentage %>
+      <%= landlord.listing_agent_percentage %>
+    <% else %>
+      --
+    <% end %>
+  </td>
   <td><%= landlord.active_unit_count %></td>
   <td><%= landlord.total_unit_count %></td>
   <td>

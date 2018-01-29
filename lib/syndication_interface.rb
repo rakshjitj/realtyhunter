@@ -111,7 +111,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
     # syndicated to them. Without this flag in place, we may potentially send them hundreds of
     # listings and incur large fees.
 		if is_true?(search_params[:must_have_streeteasy_flag])
-      listings = listings.where("residential_listings.streeteasy_flag = TRUE or
+      listings = listings.where("residential_listings.streeteasy_flag = TRUE or residential_listings.streeteasy_flag_one = TRUE or
           sales_listings.streeteasy_flag = TRUE")
 		end
 
@@ -148,6 +148,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'units.id as unit_id',
 			'units.primary_agent_id',
 			'units.primary_agent2_id',
+			'units.streeteasy_primary_agent_id',
 			'units.public_url',
 			'units.exclusive')
 

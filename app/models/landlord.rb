@@ -103,7 +103,7 @@ class Landlord < ApplicationRecord
 				'landlords.updated_at', 'landlords.mobile',
 				'landlords.active_unit_count', 'landlords.total_unit_count',
 				'landlords.last_unit_updated_at', 'landlords.listing_agent_id',
-        'users.name as listing_agent_name')
+        'users.name as listing_agent_name', 'landlords.listing_agent_percentage')
 	end
 
 	def residential_units(status=nil)
