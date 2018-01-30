@@ -110,7 +110,17 @@
     <!-- ****** PRIMARY AGENT ****************************************** -->
     <td>
       <% if residential_listing.name %>
+        <%# abort residential_listing.name.inspect %>
         <%= link_to residential_listing.name, user_path(residential_listing.primary_agent_id) %>
+      <% else %>
+        --
+      <% end %>
+    </td>
+
+    <!-- ****** StreetEasy PRIMARY AGENT ****************************************** -->
+    <td>
+      <% if !residential_listing.unit.streeteasy_primary_agent_id.nil? %>
+        <%= link_to User.find(residential_listing.unit.streeteasy_primary_agent_id).name, user_path(residential_listing.unit.streeteasy_primary_agent_id) %>
       <% else %>
         --
       <% end %>
