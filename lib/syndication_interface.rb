@@ -86,7 +86,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 		end
 
 		if is_true?(search_params[:has_primary_agent])
-			listings = listings.where('units.primary_agent_id > 0')
+			listings = listings.where('units.primary_agent_id > 0 OR units.streeteasy_primary_agent_id > 0')
 		end
 
 		# naked requires all no-fee listings to be exposed

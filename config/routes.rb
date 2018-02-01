@@ -104,6 +104,7 @@ Rails.application.routes.draw do
       get 'neighborhood_options'
     end
   end
+  get 'residential_listings_active_by_agent/:id/:streeteasy_status' => "residential_listings#streeteasy_active_by_agent", as: :streeteasy_active_by_agent
   get 'residential_listings/rental_mobile_search' => "residential_listings#rental_mobile_search", as: :rental_mobile_search
   get 'residential_listings/search_result' => "residential_listings#rental_mobile_search_result", as: :rental_mobile_search_result
   resources :residential_listings, concerns: [:unit_images_uploadable, :documents_uploadable] do

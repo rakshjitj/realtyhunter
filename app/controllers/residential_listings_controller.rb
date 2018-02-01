@@ -283,6 +283,23 @@ class ResidentialListingsController < ApplicationController
   #   UnitMailer.send_access_information(params[:address],params[:unit], params[:rent], params[:access_info], params[:tenant_occupied]).deliver!
   # end 
 
+  def streeteasy_active_by_agent
+    residential_listing = ResidentialListing.find(params[:id])
+
+    if params[:streeteasy_status] == "true"
+      residential_listing.update(streeteasy_flag_one: true, updated_at: Time.now())
+      flash[:success] = "listing active on Streeteasy"
+    else
+      residential_listing.update(streeteasy_flag_one: false, updated_at: Time.now())
+      flash[:success] = "listing deactive on Streeteasy"
+    end
+    residential_listing.unit.update(streeteasy_primary_agent_id: current_user.id, updated_at: Time.now())
+
+    redirect_to 'http://localhost:3000/residential_listings?bed_min=Any&bed_max=Any&bath_min=Any&bath_max=Any&pet_policy_shorthand=Any&status=Active&has_fee=Any&streeteasy_filter=No'
+    rescue ActionController::RedirectBackError
+    redirect_to root_path
+  end
+
   def update
     unit_updated = nil
     listing_updated = nil
