@@ -29,6 +29,9 @@
         <ul class="nav navbar-nav">
 
           <li><%= link_to "Rentals", residential_listings_path %></li>
+          <% if current_user.is_streeteasy_agent? %>
+            <li><%= link_to "Claim for Streeteasy", claim_for_streeteasy_path %></li>
+          <% end %>
           <li><%= link_to "Commercial", commercial_listings_path %></li>
           <li><%= link_to "Sales", sales_listings_path %></li>
           <% if current_user.is_management? %>

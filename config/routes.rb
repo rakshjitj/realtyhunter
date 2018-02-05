@@ -104,6 +104,7 @@ Rails.application.routes.draw do
       get 'neighborhood_options'
     end
   end
+  get 'residential_listings/claim_for_streeteasy' => "residential_listings#claim_for_streeteasy", as: :claim_for_streeteasy
   get 'residential_listings_active_by_agent/:id/:streeteasy_status' => "residential_listings#streeteasy_active_by_agent", as: :streeteasy_active_by_agent
   get 'residential_listings/rental_mobile_search' => "residential_listings#rental_mobile_search", as: :rental_mobile_search
   get 'residential_listings/search_result' => "residential_listings#rental_mobile_search_result", as: :rental_mobile_search_result

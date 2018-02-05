@@ -1,0 +1,91 @@
+ <table class="table table-striped table-hover table-condensed infinite-table-res">
+    <thead>
+      <tr>
+        <th class="img-col"><!-- first image --></th>
+        <th data-sort="formatted_street_address" class="th-sortable">Address</th>
+        <th data-sort="building_unit" class="th-sortable">Unit</th>
+        <th data-sort="bed_and_baths_sorter" class="th-sortable">Beds/Baths</th>
+        <th data-sort="rent" class="th-sortable">Price</th>
+        <th data-sort="available_by" class="th-sortable">Available</th>
+        <th data-sort="code" class="th-sortable">Landlord</th>
+        <th data-sort="name" class="th-sortable">Primary Agent</th>
+        <th data-sort="name" class="th-sortable">StreetEasy Primary Agent</th>
+        <th data-sort="residential_listings.updated_at" class="th-sortable">Updated</th>
+        <th data-sort="units.status" class="th-sortable">Status</th>
+        <% if current_user.is_management? || current_user.is_listings_manager? %>
+          <th colspan="1" class="hidden-print"></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody class="residential_units_table_body">
+    <% @residential_listings.each do |res_list| %>
+      <%#= image_tag res_list.unit.images.first.file(:large) %>
+      <td class="img-col">  
+        <%= link_to image_tag(res_list.unit.images.first.file(:thumb), :alt => "res_list.unit_id", :class => "css"), res_list %>
+        <%#= link_to(image_tag("listing_soon_thumb.png".freeze, alt: "Image coming soon",
+              class: 'img-responsive',
+              size: "100x100"), res_list) %>
+      </td>
+      <td><%#= res_list.street_address %>
+        <%= link_to "#{res_list.street_address}".freeze, residential_listing_path(res_list.id) %><br />
+          <% if res_list.unit.building.neighborhood.name %>
+             <small><%= res_list.unit.building.neighborhood.name %></small>
+          <% end %>
+        </td>
+        <td>
+          <% if res_list.unit.building_unit %>
+            <%= res_list.unit.building_unit %>
+          <% end %>
+        </td>
+        <td>
+          <%= beds_as_str(res_list) %> / <%= baths_as_str(res_list) %>
+        </td>
+        <td>
+          <% if res_list.unit.rent %>
+            $<%= res_list.unit.rent %>
+          <% end %>
+        </td>
+        <td>
+          <% if res_list.unit.available_by %>
+            <%= res_list.unit.available_by.strftime("%b %d") %>
+          <% else %>
+            -
+          <% end %>
+        </td>
+        <td>
+          <% if res_list.unit.building.landlord.code %>
+            <%= res_list.unit.building.landlord.code %>
+          <% end %>
+        </td>
+        <td>
+          <% if res_list.unit.primary_agent %>
+            <%= link_to res_list.unit.primary_agent.name, user_path(res_list.unit.primary_agent_id) %>
+          <% else %>
+            --
+          <% end %>
+        </td>
+        <td>
+          <% if res_list.unit.streeteasy_primary_agent_id %>
+            <%= User.find(res_list.unit.streeteasy_primary_agent_id).name %>
+          <% else %>
+            --
+          <% end %>
+        </td>
+        <td>
+          <%= time_ago_in_words(res_list.updated_at) %>
+        </td>
+        <td>
+          <% if res_list.unit.status == "active" %>
+            <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
+          <% elsif res_list.unit.status == "pending" %>
+            <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
+          <% elsif res_list.unit.status == "off" %>
+            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to "Active StreetEasy", streeteasy_active_by_agent_path(res_list, 'true') %>
+        </td>
+    <% end %>
+  </tbody>
+</table>

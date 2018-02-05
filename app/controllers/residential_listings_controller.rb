@@ -139,6 +139,14 @@ class ResidentialListingsController < ApplicationController
       end
     end
 
+    if params[:residential_listing][:streeteasy_flag_one] == "0"
+      residential_listing.update_columns(streeteasy_claim: true)
+    end
+
+    if params[:residential_listing][:streeteasy_flag_one] == "1"
+      residential_listing.update_columns(streeteasy_flag: false, streeteasy_claim: false)
+      residential_listing.unit.update_columns(primary_agent_id: nil)
+    end
 
     tee = residential_listing.update_columns(lock_version: params[:residential_listing][:lock_version], lease_start: params[:residential_listing][:lease_start], lease_end: params[:residential_listing][:lease_end], description: params[:residential_listing][:description], streeteasy_flag_one: params[:residential_listing][:streeteasy_flag_one])
 
@@ -287,15 +295,15 @@ class ResidentialListingsController < ApplicationController
     residential_listing = ResidentialListing.find(params[:id])
 
     if params[:streeteasy_status] == "true"
-      residential_listing.update(streeteasy_flag_one: true, updated_at: Time.now())
+      residential_listing.update(streeteasy_flag_one: true, streeteasy_claim: false, updated_at: Time.now())
       flash[:success] = "listing active on Streeteasy"
     else
       residential_listing.update(streeteasy_flag_one: false, updated_at: Time.now())
       flash[:success] = "listing deactive on Streeteasy"
     end
-    residential_listing.unit.update(streeteasy_primary_agent_id: current_user.id, updated_at: Time.now())
+    residential_listing.unit.update(primary_agent_id: nil,streeteasy_primary_agent_id: current_user.id, updated_at: Time.now())
 
-    redirect_to 'http://localhost:3000/residential_listings?bed_min=Any&bed_max=Any&bath_min=Any&bath_max=Any&pet_policy_shorthand=Any&status=Active&has_fee=Any&streeteasy_filter=No'
+    redirect_to claim_for_streeteasy_path
     rescue ActionController::RedirectBackError
     redirect_to root_path
   end
@@ -304,6 +312,7 @@ class ResidentialListingsController < ApplicationController
     unit_updated = nil
     listing_updated = nil
     is_now_active = nil
+
     #email option normalization
     #email send when available dates changed
     if params[:residential_listing][:unit][:available_by] != @residential_unit.unit.available_by.strftime("%m/%d/%Y")
@@ -367,6 +376,21 @@ class ResidentialListingsController < ApplicationController
       listing_updated = @residential_unit.update(r_params.merge({updated_at: Time.now}))
     # end
     # update res
+    if params[:residential_listing][:streeteasy_flag] == "1"
+      @residential_unit.unit.update_columns(primary_agent_id: current_user.id)
+    end
+
+    #listing active for streeteasy agent to claim
+    if params[:residential_listing][:streeteasy_flag] == "1" || params[:residential_listing][:streeteasy_flag_one] == "1"
+      @residential_unit.update_columns(streeteasy_claim: false)
+
+    end
+    if params[:residential_listing][:streeteasy_flag_one] == "0" and params[:residential_listing][:streeteasy_flag] == "0" and params[:residential_listing][:unit][:status] == "Active"
+      @residential_unit.update_columns(streeteasy_claim: true)
+    end
+    if params[:residential_listing][:streeteasy_flag] == "0" and params[:residential_listing][:unit][:status] == "Active"
+      @residential_unit.update_columns(streeteasy_claim: true)
+    end
 
     if unit_updated && listing_updated
 
@@ -380,6 +404,10 @@ class ResidentialListingsController < ApplicationController
         .collect {|b| [b.street_address, b.id]}
       render 'edit'
     end
+  end
+
+  def claim_for_streeteasy
+    @residential_listings = ResidentialListing.where(streeteasy_claim: true)
   end
 
   # GET
@@ -681,7 +709,7 @@ class ResidentialListingsController < ApplicationController
         :primary_agent_id, :favorites, :show,
         :expose_address, :floor, :total_room_count, :condition, :showing_instruction,
         :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
-        :rls_flag, :streeteasy_flag, :streeteasy_flag_one,
+        :rls_flag, :streeteasy_flag, :streeteasy_flag_one,:streeteasy_claim,
         unit: [:building_unit, :streeteasy_primary_agent_id, :streeteasy_listing_email, :streeteasy_listing_number, :rent, :available_by, :access_info, :status,
           :exclusive, :building_id, :primary_agent_id, :listing_agent_id,
           :syndication_status, :has_stock_photos, :is_exclusive_agreement_signed,
