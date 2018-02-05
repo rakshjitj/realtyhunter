@@ -387,6 +387,7 @@ class ResidentialListingsController < ApplicationController
     end
     if params[:residential_listing][:streeteasy_flag_one] == "0" and params[:residential_listing][:streeteasy_flag] == "0" and params[:residential_listing][:unit][:status] == "Active"
       @residential_unit.update_columns(streeteasy_claim: true)
+      @residential_unit.unit.update_columns(streeteasy_primary_agent_id: nil, primary_agent_id: nil)
     end
     if params[:residential_listing][:streeteasy_flag] == "0" and params[:residential_listing][:unit][:status] == "Active"
       @residential_unit.update_columns(streeteasy_claim: true)
