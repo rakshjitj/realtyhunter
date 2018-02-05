@@ -116,7 +116,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 		end
 
 		listings = listings
-			.select('units.building_unit', 'units.status', 'units.available_by',
+			.select('units.id', 'units.building_unit', 'units.status', 'units.available_by',
 			'units.listing_id', 'units.updated_at', 'units.rent',
 			'units.streeteasy_listing_email', 'units.streeteasy_listing_number',
 			'buildings.id as building_id',
@@ -138,6 +138,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'residential_listings.total_room_count as r_total_room_count',
 			'residential_listings.floor',
 			'residential_listings.tenant_occupied as r_tenant_occupied',
+			'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_flag_one',
 			'sales_listings.id AS s_id',
 			'sales_listings.beds as s_beds',
 			'sales_listings.baths as s_baths',

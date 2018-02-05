@@ -17,6 +17,11 @@ xml.streeteasy :version => "1.6" do
 
 	  	# NOTE: this is super hacky. We should filter this out before sending
 	  	# to the view.
+	  	# if (!listing.primary_agent_id.blank? or !listing.streeteasy_primary_agent_id.blank?) &&
+	  	# 			@primary_agents[listing.unit_id][0].name == @company.name
+	  	# 	# skip our generic catch-all account
+	  	# 	next
+	  	# end
 	  	if !@primary_agents[listing.unit_id].blank? &&
 	  				@primary_agents[listing.unit_id][0].name == @company.name
 	  		# skip our generic catch-all account
@@ -216,13 +221,17 @@ xml.streeteasy :version => "1.6" do
 					end
 				end
 
-				if !@primary_agents[listing.unit_id].blank?
+				if  !listing.primary_agent_id.blank? || !listing.streeteasy_primary_agent_id.blank?
 					xml.agents do
 						# On all residential listings, set the company account as the first "agent".
             # This is used for accounting purposes, as Streeteasy charges a fee per ad.
+            # if listing.listing_id = 3207478
+            # 	abort Unit.where(listing_id: listing.listing_id)[0].residential_listing.inspect
+            # end
             if listing.r_id
-				unit = Unit.where(listing_id: listing.listing_id)[0].residential_listing
-				if unit.streeteasy_flag == true
+				#unit = Unit.where(listing_id: listing.listing_id)[0].residential_listing
+				#abort listing.residential_listing.inspect
+				if listing.residential_listing.streeteasy_flag == true
 	              xml.agent id: 114 do
 	                xml.name "Myspace NYC"
 	                xml.email "info+streeteasy@myspacenyc.com"
@@ -250,7 +259,7 @@ xml.streeteasy :version => "1.6" do
 						end
 					end
 	            end
-				if unit.streeteasy_flag_one == true
+				if listing.residential_listing.streeteasy_flag_one == true
 					user = User.find(listing.streeteasy_primary_agent_id)
 					xml.agent id: user.id do
 						xml.name user.name
