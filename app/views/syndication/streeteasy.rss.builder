@@ -221,7 +221,7 @@ xml.streeteasy :version => "1.6" do
 					end
 				end
 
-				if  !listing.primary_agent_id.blank? || !listing.streeteasy_primary_agent_id.blank?
+				if  !@primary_agents[listing.unit_id].blank?
 					xml.agents do
 						# On all residential listings, set the company account as the first "agent".
             # This is used for accounting purposes, as Streeteasy charges a fee per ad.
@@ -229,55 +229,33 @@ xml.streeteasy :version => "1.6" do
             # 	abort Unit.where(listing_id: listing.listing_id)[0].residential_listing.inspect
             # end
             if listing.r_id
-				#unit = Unit.where(listing_id: listing.listing_id)[0].residential_listing
-				#abort listing.residential_listing.inspect
-				if listing.residential_listing.streeteasy_flag == true
-	              xml.agent id: 114 do
-	                xml.name "Myspace NYC"
-	                xml.email "info+streeteasy@myspacenyc.com"
-	                xml.lead_email "info+streeteasy@myspacenyc.com"
-	                xml.phone_numbers do
-	                  xml.office "(929) 229-2245"
-	                end
-	              end
-	              @primary_agents[listing.unit_id].each do |agent|
-						xml.agent id: agent.id do
-							xml.name agent.name
-							xml.company @company.name
-							if @agent_images[agent.id]
-								xml.photo url:@agent_images[agent.id].file.url(:large)
-							end
-						  # xml.url agent.public_url
-						xml.email agent.streeteasy_email
-						xml.lead_email agent.streeteasy_email
-						xml.phone_numbers do
-							xml.main agent.streeteasy_mobile_number
-							xml.office agent.office_telephone
-							xml.cell agent.streeteasy_mobile_number
-							xml.fax agent.office_fax
-						end
-						end
-					end
-	            end
-				if listing.residential_listing.streeteasy_flag_one == true
-					user = User.find(listing.streeteasy_primary_agent_id)
-					xml.agent id: user.id do
-						xml.name user.name
-						xml.company @company.name
-						if user.image
-							xml.photo url:user.image.file.url(:large)
-						end
-					end
-					xml.email user.streeteasy_email
-					xml.lead_email user.streeteasy_email
-					xml.phone_numbers do
-						xml.main user.streeteasy_mobile_number
-						xml.office user.office.telephone
-						xml.cell user.streeteasy_mobile_number
-						xml.fax user.office.fax
-					end
-				end
+              xml.agent id: 114 do
+                xml.name "Myspace NYC"
+                xml.email "info+streeteasy@myspacenyc.com"
+                xml.lead_email "info+streeteasy@myspacenyc.com"
+                xml.phone_numbers do
+                  xml.office "(929) 229-2245"
+                end
+              end
             end # end forced
+						@primary_agents[listing.unit_id].each do |agent|
+							xml.agent id: agent.id do
+								xml.name agent.name
+								xml.company @company.name
+								if @agent_images[agent.id]
+									xml.photo url:@agent_images[agent.id].file.url(:large)
+								end
+							  # xml.url agent.public_url
+						  	xml.email agent.streeteasy_email
+						  	xml.lead_email agent.streeteasy_email
+						  	xml.phone_numbers do
+						  		xml.main agent.streeteasy_mobile_number
+						  		xml.office agent.office_telephone
+						  		xml.cell agent.streeteasy_mobile_number
+						  		xml.fax agent.office_fax
+						  	end
+						  end
+						end
 					end
 				end
 
