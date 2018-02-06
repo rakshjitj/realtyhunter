@@ -141,6 +141,7 @@ class ResidentialListingsController < ApplicationController
 
     if params[:residential_listing][:streeteasy_flag_one] == "0"
       residential_listing.update_columns(streeteasy_claim: true)
+      residential_listing.unit.update_columns(streeteasy_primary_agent_id: nil)
     end
 
     if params[:residential_listing][:streeteasy_flag_one] == "1"
@@ -377,7 +378,7 @@ class ResidentialListingsController < ApplicationController
     # end
     # update res
     if params[:residential_listing][:streeteasy_flag] == "1"
-      @residential_unit.unit.update_columns(primary_agent_id: current_user.id)
+      #@residential_unit.unit.update_columns(primary_agent_id: current_user.id)
     end
 
     #listing active for streeteasy agent to claim

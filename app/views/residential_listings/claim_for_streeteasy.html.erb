@@ -22,10 +22,13 @@
         <%#= image_tag res_list.unit.images.first.file(:large) %>
         <tr>
           <td class="img-col">  
-            <%= link_to image_tag(res_list.unit.images.first.file(:thumb), :alt => "res_list.unit_id", :class => "css"), res_list %>
-            <%#= link_to(image_tag("listing_soon_thumb.png".freeze, alt: "Image coming soon",
+            <% if !res_list.unit.images.first.nil? %>
+              <%= link_to image_tag(res_list.unit.images.first.file(:thumb), :alt => "res_list.unit_id", :class => "css"), res_list %>
+            <% else %>
+              <%= link_to(image_tag("listing_soon_thumb.png".freeze, alt: "Image coming soon",
                   class: 'img-responsive',
                   size: "100x100"), res_list) %>
+            <% end %>
           </td>
           <td><%#= res_list.street_address %>
             <%= link_to "#{res_list.street_address}".freeze, residential_listing_path(res_list.id) %><br />
