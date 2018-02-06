@@ -221,7 +221,7 @@ xml.streeteasy :version => "1.6" do
 					end
 				end
 
-				if  !listing.primary_agent_id.blank? || !listing.streeteasy_primary_agent_id.blank?
+				if  !@primary_agents[listing.unit_id].blank?
 					xml.agents do
 						# On all residential listings, set the company account as the first "agent".
             # This is used for accounting purposes, as Streeteasy charges a fee per ad.
