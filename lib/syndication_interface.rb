@@ -86,7 +86,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 		end
 
 		if is_true?(search_params[:has_primary_agent])
-			listings = listings.where('units.primary_agent_id > 0 OR units.streeteasy_primary_agent_id > 0')
+			listings = listings.where('units.primary_agent_id > 0')
 		end
 
 		# naked requires all no-fee listings to be exposed
@@ -111,8 +111,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
     # syndicated to them. Without this flag in place, we may potentially send them hundreds of
     # listings and incur large fees.
 		if is_true?(search_params[:must_have_streeteasy_flag])
-      listings = listings.where("residential_listings.streeteasy_flag = TRUE or residential_listings.streeteasy_flag_one = TRUE or
-          sales_listings.streeteasy_flag = TRUE")
+      listings = listings.where("residential_listings.streeteasy_flag = TRUE or sales_listings.streeteasy_flag = TRUE")
 		end
 
 		listings = listings
@@ -138,7 +137,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'residential_listings.total_room_count as r_total_room_count',
 			'residential_listings.floor',
 			'residential_listings.tenant_occupied as r_tenant_occupied',
-			'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_flag_one',
+			#'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_flag_one',
 			'sales_listings.id AS s_id',
 			'sales_listings.beds as s_beds',
 			'sales_listings.baths as s_baths',

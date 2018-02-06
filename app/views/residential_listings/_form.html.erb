@@ -560,23 +560,23 @@
             <% end %>
           </div>
         </div>
-        <div class="row vertical-margin-lg">
+        <!-- <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-4">
-            <%= f.label :primary_agent_id, "Streeteasy Primary Agent" %>
+            <%#= f.label :primary_agent_id, "Streeteasy Primary Agent" %>
           </div>
           <div class="col-xs-9 col-md-4">
             <%# abort @residential_unit.unit.streeteasy_primary_agent_id.inspect %>
 
-            <%= f.fields_for @residential_unit.unit do |unit_form| %>
-              <%= unit_form.select(:streeteasy_primary_agent_id,
+            <%#= f.fields_for @residential_unit.unit do |unit_form| %>
+              <%#= unit_form.select(:streeteasy_primary_agent_id,
                 options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
                   [@residential_unit.unit.streeteasy_primary_agent_id ? @residential_unit.unit.streeteasy_primary_agent_id : '']),
                 {prompt: "Choose one..."},
                 class: 'form-control',
                 :include_blank => true) %>
-            <% end %>
+            <%# end %>
           </div>
-        </div>
+        </div> -->
 
         <%#= f.fields_for @residential_unit.unit do |unit_form| %>
         <!-- <div class="row vertical-margin-lg">
@@ -718,18 +718,18 @@
           </div>
         </div>
 
-        <div class="row vertical-margin-lg">
+        <!-- <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-4">
-            <%= f.label :streeteasy_flag, "Streeteasy Flag For Agent" %>
+            <%#= f.label :streeteasy_flag, "Streeteasy Flag For Agent" %>
           </div>
           <div class="col-xs-9 col-md-7">
             <div class="checkbox checkbox-warning checkbox-inline">
-              <%= f.check_box :streeteasy_flag_one, class: "styled",
+              <%#= f.check_box :streeteasy_flag_one, class: "styled",
                   checked: @residential_unit ? @residential_unit.streeteasy_flag_one : false %>
               <label></label>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <%= f.fields_for @residential_unit.unit do |unit_form| %>
           <div class="row vertical-margin-lg">
@@ -752,18 +752,18 @@
             <div class="actions col-md-3">
               <%= f.submit class: "btn btn-warning btn-block", id: "listing_update" %>
             </div>
-            <% if params[:action] == "edit" %>
-              <div class="actions col-md-3">
-                <%= f.submit "Access" ,class: "btn btn-warning btn-block", id: "listing_access" %>
+            <%# if params[:action] == "edit" %>
+              <!-- <div class="actions col-md-3">
+                <%#= f.submit "Access" ,class: "btn btn-warning btn-block", id: "listing_access" %>
                 <%#= submit_tag "Access", type: 'button', id: "access-btn", class: "btn btn-warning btn-block" %>
               </div>
               <div class="actions col-md-3">
-                <%= f.submit "Update and Email" ,class: "btn btn-warning btn-block", id: "listing_update_and_email" %>
+                <%#= f.submit "Update and Email" ,class: "btn btn-warning btn-block", id: "listing_update_and_email" %>
               </div>
               <div class="actions col-md-3">
-                <%= f.submit "Unit Email" ,class: "btn btn-warning btn-block", id: "listing_unit_email" %>
-              </div>
-            <% end %>
+                <%#= f.submit "Unit Email" ,class: "btn btn-warning btn-block", id: "listing_unit_email" %>
+              </div> -->
+            <%# end %>
           </div>
         </div>
 
@@ -810,45 +810,45 @@
   // });
   
 
-  $("#listing_update_and_email").click(function(){
-    $("#update_status_info").attr("value", "update_and_email")
-  })
-  $("#listing_access").click(function(){
-    $("#update_status_info").attr("value", "access")
-  })
-  $("#listing_update").click(function(){
-    $("#update_status_info").attr("value", "update")
-  })
-  $("#listing_unit_email").click(function(){
-    $("#update_status_info").attr("value", "unit_email")
-  })
+  // $("#listing_update_and_email").click(function(){
+  //   $("#update_status_info").attr("value", "update_and_email")
+  // })
+  // $("#listing_access").click(function(){
+  //   $("#update_status_info").attr("value", "access")
+  // })
+  // $("#listing_update").click(function(){
+  //   $("#update_status_info").attr("value", "update")
+  // })
+  // $("#listing_unit_email").click(function(){
+  //   $("#update_status_info").attr("value", "unit_email")
+  // })
 
-  $("#residential_listing_unit_status").change(function(){
-    var status = $("#residential_listing_unit_status").val()
+  // $("#residential_listing_unit_status").change(function(){
+  //   var status = $("#residential_listing_unit_status").val()
 
-    if ( status == "Off" || status == "Pending"){
-      $("#residential_listing_streeteasy_flag").prop("checked", "");
-    }
-  });
+  //   if ( status == "Off" || status == "Pending"){
+  //     $("#residential_listing_streeteasy_flag").prop("checked", "");
+  //   }
+  // });
 
-  $("#residential_listing_streeteasy_flag").click(function(){
-    if($("#residential_listing_streeteasy_flag").prop("checked") == true){
-     $("#residential_listing_streeteasy_flag_one").prop("disabled", true);
-    }else{
-      $("#residential_listing_streeteasy_flag_one").prop("disabled", false);
-    }
-  });
-  $("#residential_listing_streeteasy_flag_one").click(function(){
-    if($("#residential_listing_streeteasy_flag_one").prop("checked") == true){
-     $("#residential_listing_streeteasy_flag").prop("disabled", true);
-    }else{
-      $("#residential_listing_streeteasy_flag").prop("disabled", false);
-    }
-  });
-  if($("#residential_listing_streeteasy_flag").prop("checked") == true){
-    $("#residential_listing_streeteasy_flag_one").prop("disabled", true);
-  }
-  if($("#residential_listing_streeteasy_flag_one").prop("checked") == true){
-    $("#residential_listing_streeteasy_flag").prop("disabled", true);
-  }
+  // $("#residential_listing_streeteasy_flag").click(function(){
+  //   if($("#residential_listing_streeteasy_flag").prop("checked") == true){
+  //    $("#residential_listing_streeteasy_flag_one").prop("disabled", true);
+  //   }else{
+  //     $("#residential_listing_streeteasy_flag_one").prop("disabled", false);
+  //   }
+  // });
+  // $("#residential_listing_streeteasy_flag_one").click(function(){
+  //   if($("#residential_listing_streeteasy_flag_one").prop("checked") == true){
+  //    $("#residential_listing_streeteasy_flag").prop("disabled", true);
+  //   }else{
+  //     $("#residential_listing_streeteasy_flag").prop("disabled", false);
+  //   }
+  // });
+  // if($("#residential_listing_streeteasy_flag").prop("checked") == true){
+  //   $("#residential_listing_streeteasy_flag_one").prop("disabled", true);
+  // }
+  // if($("#residential_listing_streeteasy_flag_one").prop("checked") == true){
+  //   $("#residential_listing_streeteasy_flag").prop("disabled", true);
+  // }
 </script>
