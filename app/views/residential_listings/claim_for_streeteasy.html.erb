@@ -32,7 +32,7 @@
           </td>
           <td><%#= res_list.street_address %>
             <%= link_to "#{res_list.street_address}".freeze, residential_listing_path(res_list.id) %><br />
-              <% if res_list.unit.building.neighborhood.name %>
+              <% if res_list.unit.building.neighborhood %>
                  <small><%= res_list.unit.building.neighborhood.name %></small>
               <% end %>
             </td>

@@ -833,6 +833,11 @@
 
   $("#residential_listing_streeteasy_flag").click(function(){
     if($("#residential_listing_streeteasy_flag").prop("checked") == true){
+      if($("#residential_listing_unit_primary_agent_id").val() == "" || $("#residential_listing_description").val() == ""){
+        alert("Please add Primary Agent or Description")
+      }
+    }
+    if($("#residential_listing_streeteasy_flag").prop("checked") == true){
      $("#residential_listing_streeteasy_flag_one").prop("disabled", true);
     }else{
       $("#residential_listing_streeteasy_flag_one").prop("disabled", false);
@@ -851,4 +856,5 @@
   if($("#residential_listing_streeteasy_flag_one").prop("checked") == true){
     $("#residential_listing_streeteasy_flag").prop("disabled", true);
   }
+
 </script>
