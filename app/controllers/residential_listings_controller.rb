@@ -139,15 +139,15 @@ class ResidentialListingsController < ApplicationController
       end
     end
 
-    if params[:residential_listing][:streeteasy_flag_one] == "0"
-      residential_listing.update_columns(streeteasy_claim: true)
-      residential_listing.unit.update_columns(streeteasy_primary_agent_id: nil)
-    end
+    # if params[:residential_listing][:streeteasy_flag_one] == "0"
+    #   residential_listing.update_columns(streeteasy_claim: true)
+    #   residential_listing.unit.update_columns(streeteasy_primary_agent_id: nil)
+    # end
 
-    if params[:residential_listing][:streeteasy_flag_one] == "1"
-      residential_listing.update_columns(streeteasy_flag: false, streeteasy_claim: false)
-      residential_listing.unit.update_columns(primary_agent_id: nil)
-    end
+    # if params[:residential_listing][:streeteasy_flag_one] == "1"
+    #   residential_listing.update_columns(streeteasy_flag: false, streeteasy_claim: false)
+    #   residential_listing.unit.update_columns(primary_agent_id: nil)
+    # end
 
     tee = residential_listing.update_columns(lock_version: params[:residential_listing][:lock_version], lease_start: params[:residential_listing][:lease_start], lease_end: params[:residential_listing][:lease_end], description: params[:residential_listing][:description], streeteasy_flag_one: params[:residential_listing][:streeteasy_flag_one])
 
@@ -292,22 +292,22 @@ class ResidentialListingsController < ApplicationController
   #   UnitMailer.send_access_information(params[:address],params[:unit], params[:rent], params[:access_info], params[:tenant_occupied]).deliver!
   # end 
 
-  def streeteasy_active_by_agent
-    residential_listing = ResidentialListing.find(params[:id])
+  # def streeteasy_active_by_agent
+  #   residential_listing = ResidentialListing.find(params[:id])
 
-    if params[:streeteasy_status] == "true"
-      residential_listing.update(streeteasy_flag_one: true, streeteasy_claim: false, updated_at: Time.now())
-      flash[:success] = "listing active on Streeteasy"
-    else
-      residential_listing.update(streeteasy_flag_one: false, updated_at: Time.now())
-      flash[:success] = "listing deactive on Streeteasy"
-    end
-    residential_listing.unit.update(primary_agent_id: nil,streeteasy_primary_agent_id: current_user.id, updated_at: Time.now())
+  #   if params[:streeteasy_status] == "true"
+  #     residential_listing.update(streeteasy_flag_one: true, streeteasy_claim: false, updated_at: Time.now())
+  #     flash[:success] = "listing active on Streeteasy"
+  #   else
+  #     residential_listing.update(streeteasy_flag_one: false, updated_at: Time.now())
+  #     flash[:success] = "listing deactive on Streeteasy"
+  #   end
+  #   residential_listing.unit.update(primary_agent_id: nil,streeteasy_primary_agent_id: current_user.id, updated_at: Time.now())
 
-    redirect_to claim_for_streeteasy_path
-    rescue ActionController::RedirectBackError
-    redirect_to root_path
-  end
+  #   redirect_to claim_for_streeteasy_path
+  #   rescue ActionController::RedirectBackError
+  #   redirect_to root_path
+  # end
 
   def update
     unit_updated = nil
