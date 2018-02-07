@@ -8,7 +8,7 @@
         <th data-sort="rent" class="th-sortable">Price</th>
         <th data-sort="available_by" class="th-sortable">Available</th>
         <th data-sort="code" class="th-sortable">Landlord</th>
-        <th data-sort="name" class="th-sortable">Primary Agent</th>
+        <!-- <th data-sort="name" class="th-sortable">Primary Agent</th> -->
         <th data-sort="name" class="th-sortable">StreetEasy Primary Agent</th>
         <th data-sort="residential_listings.updated_at" class="th-sortable">Updated</th>
         <th data-sort="units.status" class="th-sortable">Status</th>
@@ -61,13 +61,13 @@
                 <%= res_list.unit.building.landlord.code %>
               <% end %>
             </td>
-            <td>
-              <% if res_list.unit.primary_agent %>
-                <%= link_to res_list.unit.primary_agent.name, user_path(res_list.unit.primary_agent_id) %>
-              <% else %>
-                --
-              <% end %>
-            </td>
+            <!-- <td> -->
+              <%# if res_list.unit.primary_agent %>
+                <%#= link_to res_list.unit.primary_agent.name, user_path(res_list.unit.primary_agent_id) %>
+              <%# else %>
+                
+              <%# end %>
+            <!-- </td> -->
             <td>
               <% if res_list.unit.streeteasy_primary_agent_id %>
                 <%= User.find(res_list.unit.streeteasy_primary_agent_id).name %>
