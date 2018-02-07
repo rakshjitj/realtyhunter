@@ -188,12 +188,13 @@ class UnitMailer < ApplicationMailer
 
   #send email when anyone change status to Off
   def send_status_off(building,building_unit,user_name)
+    
     @building = Building.find(building).formatted_street_address
     street_number = Building.find(building).street_number
     route = Building.find(building).route
     @building_unit = building_unit
     @user_name = user_name
-    mail(to: 'bparekh@myspacenyc.com', subject: "Take Off (#{street_number} #{route}##{building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(from: user_name.email ,to: 'rakshit@aristainfotech.com', subject: "Take Off (#{street_number} #{route}##{building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   #send email when anyone change status to Pending
@@ -241,7 +242,7 @@ class UnitMailer < ApplicationMailer
     @op_fee_percentage = op_fee_percentage
     @tp_fee_percentage = tp_fee_percentage
     @user_name = user_name
-    mail(to: 'bparekh@myspacenyc.com', subject: "Back on Market (#{street_number} #{route}##{building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(from: user_name.email,to: 'rakshit@aristainfotech.com', subject: "Back on Market (#{street_number} #{route}##{building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   #send an email when available date changed

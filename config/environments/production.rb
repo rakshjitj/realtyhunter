@@ -83,8 +83,8 @@
   # }
   #ActionMailer::Base.delivery_method = :smtp
   # use postmark
-  config.action_mailer.delivery_method = :postmark
-  config.action_mailer.postmark_settings = {api_token: ENV['POSTMARK_API_KEY']}
+  # config.action_mailer.delivery_method = :postmark
+  # config.action_mailer.postmark_settings = {api_token: ENV['POSTMARK_API_KEY']} 
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
@@ -134,7 +134,7 @@
     port:                 587,
     domain:               'gmail.com',
     user_name:            'myspacenycuri@gmail.com',
-    password:             'myspace@123',
+    password:             '@#myspacenyc@#123@#',
     authentication:       :plain,
     enable_starttls_auto: true
   }

@@ -283,9 +283,9 @@ class User < ApplicationRecord
     has_role? :listings_manager
   end
 
-  def is_streeteasy_agent?
-    has_role? :streeteasy_agent
-  end
+  # def is_streeteasy_agent?
+  #   has_role? :streeteasy_agent
+  # end
 
   # Many roles can be considered 'managerial' from
   # a staffing point of view. Any employees that work

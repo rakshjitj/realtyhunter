@@ -139,17 +139,17 @@ class ResidentialListingsController < ApplicationController
       end
     end
 
-    if params[:residential_listing][:streeteasy_flag_one] == "0"
-      residential_listing.update_columns(streeteasy_claim: true)
-      residential_listing.unit.update_columns(streeteasy_primary_agent_id: nil)
-    end
+    # if params[:residential_listing][:streeteasy_flag_one] == "0"
+    #   residential_listing.update_columns(streeteasy_claim: true)
+    #   residential_listing.unit.update_columns(streeteasy_primary_agent_id: nil)
+    # end
 
-    if params[:residential_listing][:streeteasy_flag_one] == "1"
-      residential_listing.update_columns(streeteasy_flag: false, streeteasy_claim: false)
-      residential_listing.unit.update_columns(primary_agent_id: nil)
-    end
+    # if params[:residential_listing][:streeteasy_flag_one] == "1"
+    #   residential_listing.update_columns(streeteasy_flag: false, streeteasy_claim: false)
+    #   residential_listing.unit.update_columns(primary_agent_id: nil)
+    # end
 
-    tee = residential_listing.update_columns(lock_version: params[:residential_listing][:lock_version], lease_start: params[:residential_listing][:lease_start], lease_end: params[:residential_listing][:lease_end], description: params[:residential_listing][:description], streeteasy_flag_one: params[:residential_listing][:streeteasy_flag_one])
+    tee = residential_listing.update_columns(lock_version: params[:residential_listing][:lock_version], lease_start: params[:residential_listing][:lease_start], lease_end: params[:residential_listing][:lease_end], description: params[:residential_listing][:description])#, streeteasy_flag_one: params[:residential_listing][:streeteasy_flag_one])
 
     #unit_available_by = Date::strptime(params[:residential_listing][:unit][:available_by], "%m/%d/%Y") + 1.day
     unit = residential_listing.unit
@@ -292,22 +292,22 @@ class ResidentialListingsController < ApplicationController
   #   UnitMailer.send_access_information(params[:address],params[:unit], params[:rent], params[:access_info], params[:tenant_occupied]).deliver!
   # end 
 
-  def streeteasy_active_by_agent
-    residential_listing = ResidentialListing.find(params[:id])
+  # def streeteasy_active_by_agent
+  #   residential_listing = ResidentialListing.find(params[:id])
 
-    if params[:streeteasy_status] == "true"
-      residential_listing.update(streeteasy_flag_one: true, streeteasy_claim: false, updated_at: Time.now())
-      flash[:success] = "listing active on Streeteasy"
-    else
-      residential_listing.update(streeteasy_flag_one: false, updated_at: Time.now())
-      flash[:success] = "listing deactive on Streeteasy"
-    end
-    residential_listing.unit.update(primary_agent_id: nil,streeteasy_primary_agent_id: current_user.id, updated_at: Time.now())
+  #   if params[:streeteasy_status] == "true"
+  #     residential_listing.update(streeteasy_flag_one: true, streeteasy_claim: false, updated_at: Time.now())
+  #     flash[:success] = "listing active on Streeteasy"
+  #   else
+  #     residential_listing.update(streeteasy_flag_one: false, updated_at: Time.now())
+  #     flash[:success] = "listing deactive on Streeteasy"
+  #   end
+  #   residential_listing.unit.update(primary_agent_id: nil,streeteasy_primary_agent_id: current_user.id, updated_at: Time.now())
 
-    redirect_to claim_for_streeteasy_path
-    rescue ActionController::RedirectBackError
-    redirect_to root_path
-  end
+  #   redirect_to claim_for_streeteasy_path
+  #   rescue ActionController::RedirectBackError
+  #   redirect_to root_path
+  # end
 
   def update
     unit_updated = nil
@@ -316,45 +316,45 @@ class ResidentialListingsController < ApplicationController
 
     #email option normalization
     #email send when available dates changed
-    if params[:residential_listing][:unit][:available_by] != @residential_unit.unit.available_by.strftime("%m/%d/%Y")
-      UnitMailer.send_available_by_info(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent],params[:residential_listing][:unit][:available_by], current_user.name).deliver!
-    end
+    # if params[:residential_listing][:unit][:available_by] != @residential_unit.unit.available_by.strftime("%m/%d/%Y")
+    #   UnitMailer.send_available_by_info(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent],params[:residential_listing][:unit][:available_by], current_user.name).deliver!
+    # end
 
-    #email send when anyone click on update button
-    if params[:update_status_info] == "update"
-      UnitMailer.send_details_of_user_activity(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],current_user.name).deliver!
-    end
+    # #email send when anyone click on update button
+    # if params[:update_status_info] == "update"
+    #   UnitMailer.send_details_of_user_activity(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],current_user.name).deliver!
+    # end
 
-    #email send when anyone click on unit email button
-    if params[:update_status_info] == "unit_email"
-      UnitMailer.send_unit_email(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:beds],params[:residential_listing][:baths],params[:residential_listing][:unit][:rent],params[:residential_listing][:residential_amenity_ids].reject(&:empty?),params[:residential_listing][:unit][:access_info],params[:residential_listing][:notes],params[:residential_listing][:unit][:available_by],params[:residential_listing][:has_fee],params[:residential_listing][:tp_fee_percentage],params[:residential_listing][:op_fee_percentage],params[:residential_listing][:lease_start], params[:residential_listing][:lease_end],current_user.name).deliver!
-    end
+    # #email send when anyone click on unit email button
+    # if params[:update_status_info] == "unit_email"
+    #   UnitMailer.send_unit_email(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:beds],params[:residential_listing][:baths],params[:residential_listing][:unit][:rent],params[:residential_listing][:residential_amenity_ids].reject(&:empty?),params[:residential_listing][:unit][:access_info],params[:residential_listing][:notes],params[:residential_listing][:unit][:available_by],params[:residential_listing][:has_fee],params[:residential_listing][:tp_fee_percentage],params[:residential_listing][:op_fee_percentage],params[:residential_listing][:lease_start], params[:residential_listing][:lease_end],current_user.name).deliver!
+    # end
 
-    # ResidentialListing.transaction do
-      if params[:update_status_info] == "access"
-        UnitMailer.send_access_information(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent], params[:residential_listing][:unit][:access_info], params[:residential_listing][:tenant_occupied], current_user.name).deliver!   
-      end
+    # # ResidentialListing.transaction do
+    #   if params[:update_status_info] == "access"
+    #     UnitMailer.send_access_information(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent], params[:residential_listing][:unit][:access_info], params[:residential_listing][:tenant_occupied], current_user.name).deliver!   
+    #   end
 
-      if params[:update_status_info] == "update_and_email" || params[:update_status_info] == "access"
-        #abort params[:residential_listing][:unit][:status].inspect
-        #send an email when price change
-        if params[:residential_listing][:unit][:rent].to_i != @residential_unit.unit.rent
-          UnitMailer.send_price_change(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent], @residential_unit.unit.rent, params[:residential_listing][:notes], params[:residential_listing][:unit][:access_info], current_user.name).deliver!
-        end
-        #send an email when available dates changed
-        if params[:residential_listing][:unit][:available_by] != @residential_unit.unit.available_by.strftime("%m/%d/%Y")
-          UnitMailer.send_available_by_info(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent],params[:residential_listing][:unit][:available_by], current_user.name).deliver!
-        end
-        #send an email when status changed
-        if params[:residential_listing][:unit][:status] == "Off" && @residential_unit.unit.status != params[:residential_listing][:unit][:status].downcase
-          UnitMailer.send_status_off(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit], current_user.name).deliver!
-        elsif params[:residential_listing][:unit][:status] == "Pending" && @residential_unit.unit.status != params[:residential_listing][:unit][:status].downcase
-          UnitMailer.send_status_pending(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit], current_user.name).deliver!
-        elsif params[:residential_listing][:unit][:status] == "Active" && @residential_unit.unit.status != params[:residential_listing][:unit][:status].downcase
-          UnitMailer.send_status_active(params[:residential_listing][:unit][:available_by],params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent],params[:residential_listing][:residential_amenity_ids].reject(&:empty?),params[:residential_listing][:notes],params[:residential_listing][:unit][:access_info],params[:id],params[:residential_listing][:lease_start], params[:residential_listing][:lease_end],params[:residential_listing][:has_fee],params[:residential_listing][:op_fee_percentage], params[:residential_listing][:tp_fee_percentage], current_user.name).deliver!
-        end
-      else
-      end
+    #   if params[:update_status_info] == "update_and_email" || params[:update_status_info] == "access"
+    #     #abort params[:residential_listing][:unit][:status].inspect
+    #     #send an email when price change
+    #     if params[:residential_listing][:unit][:rent].to_i != @residential_unit.unit.rent
+    #       UnitMailer.send_price_change(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent], @residential_unit.unit.rent, params[:residential_listing][:notes], params[:residential_listing][:unit][:access_info], current_user.name).deliver!
+    #     end
+    #     #send an email when available dates changed
+    #     if params[:residential_listing][:unit][:available_by] != @residential_unit.unit.available_by.strftime("%m/%d/%Y")
+    #       UnitMailer.send_available_by_info(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent],params[:residential_listing][:unit][:available_by], current_user.name).deliver!
+    #     end
+    #     #send an email when status changed
+    #     if params[:residential_listing][:unit][:status] == "Off" && @residential_unit.unit.status != params[:residential_listing][:unit][:status].downcase
+    #       UnitMailer.send_status_off(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit], current_user.name).deliver!
+    #     elsif params[:residential_listing][:unit][:status] == "Pending" && @residential_unit.unit.status != params[:residential_listing][:unit][:status].downcase
+    #       UnitMailer.send_status_pending(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit], current_user.name).deliver!
+    #     elsif params[:residential_listing][:unit][:status] == "Active" && @residential_unit.unit.status != params[:residential_listing][:unit][:status].downcase
+    #       UnitMailer.send_status_active(params[:residential_listing][:unit][:available_by],params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent],params[:residential_listing][:residential_amenity_ids].reject(&:empty?),params[:residential_listing][:notes],params[:residential_listing][:unit][:access_info],params[:id],params[:residential_listing][:lease_start], params[:residential_listing][:lease_end],params[:residential_listing][:has_fee],params[:residential_listing][:op_fee_percentage], params[:residential_listing][:tp_fee_percentage], current_user.name).deliver!
+    #     end
+    #   else
+    #   end
 
       if @residential_unit.unit.primary_agent_id != residential_listing_params[:unit][:primary_agent_id].to_i
         Unit.update_primary_agent(
@@ -377,28 +377,28 @@ class ResidentialListingsController < ApplicationController
       listing_updated = @residential_unit.update(r_params.merge({updated_at: Time.now}))
     # end
     # update res
-    if params[:residential_listing][:streeteasy_flag] == "1" and params[:residential_listing][:unit][:status] == "Active" and params[:residential_listing][:unit][:primary_agent_id] == ""
-      flash[:warning] == "You must need to select Primary Agent if you want to disply listing on Streeteast"
-      #@residential_unit.unit.update_columns(primary_agent_id: current_user.id)
-    end
+    # if params[:residential_listing][:streeteasy_flag] == "1" and params[:residential_listing][:unit][:status] == "Active" and params[:residential_listing][:unit][:primary_agent_id] == ""
+    #   flash[:warning] == "You must need to select Primary Agent if you want to disply listing on Streeteast"
+    #   #@residential_unit.unit.update_columns(primary_agent_id: current_user.id)
+    # end
 
-    #listing active for streeteasy agent to claim
-    if params[:residential_listing][:unit][:status] == "Off" || params[:residential_listing][:unit][:status] == "Pending"
-      @residential_unit.update_columns(streeteasy_claim: false)
-      @residential_unit.unit.update_columns(streeteasy_primary_agent_id: nil, primary_agent_id: nil)
-    end
+    # #listing active for streeteasy agent to claim
+    # if params[:residential_listing][:unit][:status] == "Off" || params[:residential_listing][:unit][:status] == "Pending"
+    #   @residential_unit.update_columns(streeteasy_claim: false)
+    #   @residential_unit.unit.update_columns(streeteasy_primary_agent_id: nil, primary_agent_id: nil)
+    # end
 
-    if params[:residential_listing][:streeteasy_flag] == "1" || params[:residential_listing][:streeteasy_flag_one] == "1"
-      @residential_unit.update_columns(streeteasy_claim: false)
+    # if params[:residential_listing][:streeteasy_flag] == "1" || params[:residential_listing][:streeteasy_flag_one] == "1"
+    #   @residential_unit.update_columns(streeteasy_claim: false)
 
-    end
-    if params[:residential_listing][:streeteasy_flag_one] == "0" and params[:residential_listing][:streeteasy_flag] == "0" and params[:residential_listing][:unit][:status] == "Active"
-      @residential_unit.update_columns(streeteasy_claim: true)
-      @residential_unit.unit.update_columns(streeteasy_primary_agent_id: nil, primary_agent_id: nil)
-    end
-    if params[:residential_listing][:streeteasy_flag] == "0" and params[:residential_listing][:unit][:status] == "Active"
-      @residential_unit.update_columns(streeteasy_claim: true)
-    end
+    # end
+    # if params[:residential_listing][:streeteasy_flag_one] == "0" and params[:residential_listing][:streeteasy_flag] == "0" and params[:residential_listing][:unit][:status] == "Active"
+    #   @residential_unit.update_columns(streeteasy_claim: true)
+    #   @residential_unit.unit.update_columns(streeteasy_primary_agent_id: nil, primary_agent_id: nil)
+    # end
+    # if params[:residential_listing][:streeteasy_flag] == "0" and params[:residential_listing][:unit][:status] == "Active"
+    #   @residential_unit.update_columns(streeteasy_claim: true)
+    # end
 
     if unit_updated && listing_updated
 
@@ -414,9 +414,9 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
-  def claim_for_streeteasy
-    @residential_listings = ResidentialListing.where(streeteasy_claim: true)
-  end
+  # def claim_for_streeteasy
+  #   @residential_listings = ResidentialListing.where(streeteasy_claim: true)
+  # end
 
   # GET
   # handles ajax call. uses latest data in modal
@@ -717,8 +717,8 @@ class ResidentialListingsController < ApplicationController
         :primary_agent_id, :favorites, :show,
         :expose_address, :floor, :total_room_count, :condition, :showing_instruction,
         :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
-        :rls_flag, :streeteasy_flag, :streeteasy_flag_one,:streeteasy_claim,
-        unit: [:building_unit, :streeteasy_primary_agent_id, :streeteasy_listing_email, :streeteasy_listing_number, :rent, :available_by, :access_info, :status,
+        :rls_flag, :streeteasy_flag,# :streeteasy_flag_one,:streeteasy_claim,
+        unit: [:building_unit, :streeteasy_listing_email, :streeteasy_listing_number, :rent, :available_by, :access_info, :status,
           :exclusive, :building_id, :primary_agent_id, :listing_agent_id,
           :syndication_status, :has_stock_photos, :is_exclusive_agreement_signed,
           :exclusive_agreement_expires_at, :public_url,
