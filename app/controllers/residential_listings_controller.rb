@@ -717,7 +717,7 @@ class ResidentialListingsController < ApplicationController
         :primary_agent_id, :favorites, :show,
         :expose_address, :floor, :total_room_count, :condition, :showing_instruction,
         :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
-        :rls_flag, :streeteasy_flag,# :streeteasy_flag_one,:streeteasy_claim,
+        :rls_flag, :streeteasy_flag, :streeteasy_flag_one,#:streeteasy_claim,
         unit: [:building_unit, :streeteasy_listing_email, :streeteasy_listing_number, :rent, :available_by, :access_info, :status,
           :exclusive, :building_id, :primary_agent_id, :listing_agent_id,
           :syndication_status, :has_stock_photos, :is_exclusive_agreement_signed,
