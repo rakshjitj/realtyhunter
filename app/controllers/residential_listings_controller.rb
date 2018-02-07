@@ -146,7 +146,6 @@ class ResidentialListingsController < ApplicationController
 
     if params[:residential_listing][:streeteasy_flag_one] == "1"
       residential_listing.update_columns(streeteasy_flag: false, streeteasy_claim: false)
-      residential_listing.unit.update_columns(primary_agent_id: nil)
     end
 
     tee = residential_listing.update_columns(lock_version: params[:residential_listing][:lock_version], lease_start: params[:residential_listing][:lease_start], lease_end: params[:residential_listing][:lease_end], description: params[:residential_listing][:description], streeteasy_flag_one: params[:residential_listing][:streeteasy_flag_one])
@@ -302,7 +301,7 @@ class ResidentialListingsController < ApplicationController
       residential_listing.update(streeteasy_flag_one: false, updated_at: Time.now())
       flash[:success] = "listing deactive on Streeteasy"
     end
-    residential_listing.unit.update(primary_agent_id: nil,streeteasy_primary_agent_id: current_user.id, updated_at: Time.now())
+    residential_listing.unit.update(streeteasy_primary_agent_id: current_user.id, updated_at: Time.now())
 
     redirect_to claim_for_streeteasy_path
     rescue ActionController::RedirectBackError
@@ -313,6 +312,25 @@ class ResidentialListingsController < ApplicationController
     unit_updated = nil
     listing_updated = nil
     is_now_active = nil
+    #abort (@residential_unit.streeteasy_flag).inspect
+    if params[:residential_listing][:streeteasy_flag] == "0" and params[:residential_listing][:unit][:status] == "Active"
+      if params[:residential_listing][:streeteasy_flag] == "0"
+        params[:residential_listing][:streeteasy_flag] = false
+      end
+
+      if @residential_unit.streeteasy_flag != params[:residential_listing][:streeteasy_flag]
+        @residential_unit.update_columns(streeteasy_claim: true)
+        @residential_unit.unit.update_columns(streeteasy_primary_agent_id: nil)
+      end
+    end
+    # if params[:residential_listing][:streeteasy_flag_one] == "0" and params[:residential_listing][:streeteasy_flag] == "0" and params[:residential_listing][:unit][:status] == "Active"
+    #   abort (@residential_unit.streeteasy_flag != params[:residential_listing][:streeteasy_flag]).inspect
+    #   if @residential_unit.streeteasy_flag != params[:residential_listing][:streeteasy_flag]
+    #     exit
+    #     @residential_unit.update_columns(streeteasy_claim: true)
+    #     @residential_unit.unit.update_columns(streeteasy_primary_agent_id: nil, primary_agent_id: nil)
+    #   end
+    # end
 
     #email option normalization
     #email send when available dates changed
@@ -385,20 +403,15 @@ class ResidentialListingsController < ApplicationController
     #listing active for streeteasy agent to claim
     if params[:residential_listing][:unit][:status] == "Off" || params[:residential_listing][:unit][:status] == "Pending"
       @residential_unit.update_columns(streeteasy_claim: false)
-      @residential_unit.unit.update_columns(streeteasy_primary_agent_id: nil, primary_agent_id: nil)
+      @residential_unit.unit.update_columns(streeteasy_primary_agent_id: nil)
     end
 
     if params[:residential_listing][:streeteasy_flag] == "1" || params[:residential_listing][:streeteasy_flag_one] == "1"
       @residential_unit.update_columns(streeteasy_claim: false)
 
     end
-    if params[:residential_listing][:streeteasy_flag_one] == "0" and params[:residential_listing][:streeteasy_flag] == "0" and params[:residential_listing][:unit][:status] == "Active"
-      @residential_unit.update_columns(streeteasy_claim: true)
-      @residential_unit.unit.update_columns(streeteasy_primary_agent_id: nil, primary_agent_id: nil)
-    end
-    if params[:residential_listing][:streeteasy_flag] == "0" and params[:residential_listing][:unit][:status] == "Active"
-      @residential_unit.update_columns(streeteasy_claim: true)
-    end
+    
+
 
     if unit_updated && listing_updated
 

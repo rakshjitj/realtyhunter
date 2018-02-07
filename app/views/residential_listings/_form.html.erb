@@ -571,7 +571,7 @@
               <%= unit_form.select(:streeteasy_primary_agent_id,
                 options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
                   [@residential_unit.unit.streeteasy_primary_agent_id ? @residential_unit.unit.streeteasy_primary_agent_id : '']),
-                {prompt: "Choose one..."},
+                {prompt: "Choose one..."},disabled: true,
                 class: 'form-control',
                 :include_blank => true) %>
             <% end %>
@@ -725,7 +725,7 @@
           <div class="col-xs-9 col-md-7">
             <div class="checkbox checkbox-warning checkbox-inline">
               <%= f.check_box :streeteasy_flag_one, class: "styled",
-                  checked: @residential_unit ? @residential_unit.streeteasy_flag_one : false %>
+                  checked: @residential_unit ? @residential_unit.streeteasy_flag_one : false, disabled: true %>
               <label></label>
             </div>
           </div>
@@ -838,19 +838,8 @@
         alert("Please add Primary Agent or Description")
       }
     }
-    if($("#residential_listing_streeteasy_flag").prop("checked") == true){
-     $("#residential_listing_streeteasy_flag_one").prop("disabled", true);
-    }else{
-      $("#residential_listing_streeteasy_flag_one").prop("disabled", false);
-    }
   });
-  $("#residential_listing_streeteasy_flag_one").click(function(){
-    if($("#residential_listing_streeteasy_flag_one").prop("checked") == true){
-     $("#residential_listing_streeteasy_flag").prop("disabled", true);
-    }else{
-      $("#residential_listing_streeteasy_flag").prop("disabled", false);
-    }
-  });
+  
   if($("#residential_listing_streeteasy_flag").prop("checked") == true){
     $("#residential_listing_streeteasy_flag_one").prop("disabled", true);
   }
