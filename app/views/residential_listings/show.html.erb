@@ -81,7 +81,7 @@
 				</div><!-- panel heading -->
 
 				<div class="panel-body">
-					<% if current_user.id == @residential_unit.unit.primary_agent_id  && !current_user.is_management? %>
+					<% if (current_user.id == @residential_unit.unit.primary_agent_id || current_user.id == @residential_unit.unit.streeteasy_primary_agent_id) && !current_user.is_management? %>
 						<%= link_to 'Edit', specific_edit_path(@residential_unit.id) %>
 					<% end %>
 					<% if current_user.is_management? || current_user.is_listings_manager? || current_user.is_photo_manager? %>
