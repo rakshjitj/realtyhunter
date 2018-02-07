@@ -402,7 +402,7 @@ class ResidentialListingsController < ApplicationController
 
     #listing active for streeteasy agent to claim
     if params[:residential_listing][:unit][:status] == "Off" || params[:residential_listing][:unit][:status] == "Pending"
-      @residential_unit.update_columns(streeteasy_claim: false)
+      @residential_unit.update_columns(streeteasy_claim: false, streeteasy_flag_one: false)
       @residential_unit.unit.update_columns(streeteasy_primary_agent_id: nil)
     end
 
