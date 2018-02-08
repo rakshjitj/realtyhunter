@@ -1,3 +1,4 @@
+<% if current_user.is_streeteasy_agent? %>
  <table class="table table-striped table-hover table-condensed infinite-table-res">
     <thead>
       <tr>
@@ -94,3 +95,4 @@
       <% end %>
   </tbody>
 </table>
+<% end %>

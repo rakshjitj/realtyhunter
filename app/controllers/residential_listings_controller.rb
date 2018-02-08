@@ -428,7 +428,12 @@ class ResidentialListingsController < ApplicationController
   end
 
   def claim_for_streeteasy
-    @residential_listings = ResidentialListing.where(streeteasy_claim: true)
+    if current_user.is_streeteasy_agent?
+      @residential_listings = ResidentialListing.where(streeteasy_claim: true)
+    else 
+      flash[:warning] = "You don't have access to this URL"
+      redirect_to root_path
+    end
   end
 
   # GET
