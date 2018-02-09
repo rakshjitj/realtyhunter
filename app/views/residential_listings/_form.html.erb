@@ -834,8 +834,9 @@
 
   $("#residential_listing_streeteasy_flag").click(function(){
     if($("#residential_listing_streeteasy_flag").prop("checked") == true){
+      $("#residential_listing_unit_exclusive").prop("checked", true);
       if($("#residential_listing_unit_primary_agent_id").val() == "" || $("#residential_listing_description").val() == ""){
-        alert("Please add Primary Agent or Description")
+        alert("Please add Primary Agent or Description");
       }
     }
   });
