@@ -80,13 +80,25 @@ Rails.application.configure do
   # :enable_starttls_auto => true  }
 
   
+  # config.action_mailer.smtp_settings = {
+  #   address:              'smtp.gmail.com',
+  #   port:                 587,
+  #   domain:               'gmail.com',
+  #   user_name:            'myspacenycuri@gmail.com',
+  #   password:             '@#$@#$msnyc@#$@#$msnyc@#$@#$',
+  #   authentication:       :plain,
+  #   enable_starttls_auto: true
+  # }
+
+  config.action_mailer.raise_delivery_errors = false
   config.action_mailer.smtp_settings = {
-    address:              'smtp.gmail.com',
-    port:                 587,
-    domain:               'gmail.com',
-    user_name:            'myspacenycuri@gmail.com',
-    password:             '@#$@#$msnyc@#$@#$msnyc@#$@#$',
-    authentication:       :plain,
-    enable_starttls_auto: true
+      :address              => 'smtp.gmail.com',
+      :port                 => '465',
+      :domain               => 'gmail.com',
+      :user_name            => 'myspacenycuri@gmail.com',
+      :password             => '@#$@#$msnyc@#$@#$msnyc@#$@#$',
+      :authentication       => :login,
+      :ssl                  => true,
+      :openssl_verify_mode  => 'none' #Use this because ssl is activated but we have no certificate installed. So clients need to confirm to use the untrusted url.
   }
 end
