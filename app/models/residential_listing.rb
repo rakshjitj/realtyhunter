@@ -517,7 +517,7 @@ class ResidentialListing < ApplicationRecord
   def self.send_listings(source_agent_id, listing_ids, recipients, sub, msg)
     if source_agent_id
       UnitMailer.send_residential_listings(source_agent_id, listing_ids,
-          recipients, sub, msg).deliver
+          recipients, sub, msg).deliver!
     else
       "No sender specified"
     end

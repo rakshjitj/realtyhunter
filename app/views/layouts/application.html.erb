@@ -68,9 +68,11 @@
       src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
 
   <!-- used for geocoding -->
-  <script type="text/javascript" data-turbolinks-eval="false"
+  <% if action_name != "claim_for_streeteasy" %>
+    <script type="text/javascript" data-turbolinks-eval="false"
       src="https://maps.googleapis.com/maps/api/js?libraries=places&key=<%= ENV['GOOGLE_MAPS_KEY'] %>">
-  </script>
+    </script>
+  <% end %>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': true, 'data-turbolinks-eval':"false" %>
 
