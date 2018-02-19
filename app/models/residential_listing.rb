@@ -236,12 +236,12 @@ class ResidentialListing < ApplicationRecord
     params.delete('format'.freeze)
 
     # only admins are allowed to view off-market units
-    can_view_off_market = user.is_management? ||
-        user.is_listings_manager? ||
-        user.is_photo_manager?
-    if !can_view_off_market
-     running_list = running_list.where.not('status = ?', Unit.statuses['off'])
-    end
+    # can_view_off_market = user.is_management? ||
+    #     user.is_listings_manager? ||
+    #     user.is_photo_manager?
+    # if !can_view_off_market
+    #  running_list = running_list.where.not('status = ?', Unit.statuses['off'])
+    # end
 
     # all search params come in as strings from the url
     # clear out any invalid search params
