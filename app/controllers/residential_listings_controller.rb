@@ -429,17 +429,17 @@ class ResidentialListingsController < ApplicationController
 
   def claim_for_streeteasy
     if current_user.is_streeteasy_agent?
-      #set_residential_listings
-      #@residential_units = ResidentialListing.search(params, current_user, params[:building_id])
+      set_residential_listings
+      @residential_units = ResidentialListing.search(params, current_user, params[:building_id])
       #abort @residential_units.inspect
       #abort @residential_units.each.map(&:id).inspect
       @residential_listings = ResidentialListing.where(streeteasy_claim: true)
-      #@residential_listings = @residential_units.each.map(&:id) & @residential_listings.each.map(&:id)
-      #@residential_listings = ResidentialListing.where(id: @residential_listings)
-      #@map_list = []
-      #@residential_listings.each do |res_list|
-        #@map_list << ["#{res_list.unit.building.street_number}" + " " +"#{res_list.unit.building.route}" + " #" + "#{res_list.unit.building_unit}",res_list.unit.building.lat,res_list.unit.building.lng]
-      #end
+      @residential_listings = @residential_units.each.map(&:id) & @residential_listings.each.map(&:id)
+      @residential_listings = ResidentialListing.where(id: @residential_listings)
+      @map_list = []
+      @residential_listings.each do |res_list|
+        @map_list << ["#{res_list.unit.building.street_number}" + " " +"#{res_list.unit.building.route}" + " #" + "#{res_list.unit.building_unit}",res_list.unit.building.lat,res_list.unit.building.lng]
+      end
     else 
       flash[:warning] = "You don't have access to this URL"
       redirect_to root_path
