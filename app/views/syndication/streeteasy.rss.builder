@@ -267,7 +267,6 @@ xml.streeteasy :version => "1.6" do
 						if user.image
 							xml.photo url:user.image.file.url(:large)
 						end
-					end
 					xml.email user.streeteasy_email
 					xml.lead_email user.streeteasy_email
 					xml.phone_numbers do
@@ -275,6 +274,7 @@ xml.streeteasy :version => "1.6" do
 						xml.office user.office.telephone
 						xml.cell user.streeteasy_mobile_number
 						xml.fax user.office.fax
+					end
 					end
 				end
             end # end forced
