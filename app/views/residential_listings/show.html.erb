@@ -415,6 +415,29 @@
 			    		</div>
 			    	</div>
 			    <% end %>
+			    <%# abort @residential_unit.unit.audits.inspect %>
+			    <% if @residential_unit.unit.audits %>
+					<br />
+					<div class="row">
+						<div class="col-xs-12 col-md-3">
+							<strong>Price Changes</strong>
+						</div>
+						<div class="col-xs-12 col-md-9">
+							<% @residential_unit.unit.audits.each do |audit| %>
+								<%# abort audit.audited_changes.inspect %>
+								<% if audit.audited_changes["rent"] %>
+									<%# abort audit.audited_changes["rent"][0].inspect %>
+								<%# for i in 0..record_list.length - 1 %>
+									<div class="row">
+										<div class="col-xs-12">
+										<%= User.find(audit.user_id).name %> changed rent form <%= audit.audited_changes["rent"][0] %> to <%= audit.audited_changes["rent"][1] %> on <%= audit.created_at.strftime("%b-%d-%Y %I:%M %P") %>
+										</div>
+									</div>
+								<% end %>
+							<% end %>
+						</div>
+					</div><!-- row -->
+				<% end %>
 
 			    <% if !escape_once(@residential_unit.unit.building.landlord.notes).blank? %>
 			    	<br />
@@ -637,8 +660,8 @@
 					    		<% end %>
 					    	<% end %>
 					  	</div>
-					  </div><!-- row -->
-					<% end %>
+					</div><!-- row -->
+				<% end %>
 
 				</div><!-- panel body -->
 			</div><!-- runit-panel -->

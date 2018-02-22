@@ -355,4 +355,13 @@ class UnitMailer < ApplicationMailer
     #abort @day_off_list.uniq{|x| x.auditable_id}.count.inspect
     mail(to: 'bparekh@myspacenyc.com', subject: "Price Change", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
+
+  def send_email_at_claim_for_streeteasy(listing,user)
+    @listing_street_number = listing.unit.building.street_number
+    @listing_route = listing.unit.building.route
+    @listing_unit_number = listing.unit.building_unit
+    @listing_address = @listing_street_number + " " + @listing_route + " #" + @listing_unit_number
+    @user = user
+    mail(to: @user.email, subject: "Claim for Streeteasy (#{@listing_address})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  end
 end

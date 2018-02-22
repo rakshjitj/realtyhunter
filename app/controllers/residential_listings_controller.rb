@@ -140,15 +140,15 @@ class ResidentialListingsController < ApplicationController
     end
 
     if params[:residential_listing][:streeteasy_flag_one] == "0"
-      residential_listing.update_columns(streeteasy_claim: true)
-      residential_listing.unit.update_columns(streeteasy_primary_agent_id: nil)
+      residential_listing.update(streeteasy_claim: true, updated_at: Time.now())
+      residential_listing.unit.update(streeteasy_primary_agent_id: nil)
     end
 
     if params[:residential_listing][:streeteasy_flag_one] == "1"
-      residential_listing.update_columns(streeteasy_flag: false, streeteasy_claim: false)
+      residential_listing.update(streeteasy_flag: false, streeteasy_claim: false, updated_at: Time.now())
     end
 
-    tee = residential_listing.update_columns(lock_version: params[:residential_listing][:lock_version], lease_start: params[:residential_listing][:lease_start], lease_end: params[:residential_listing][:lease_end], description: params[:residential_listing][:description], streeteasy_flag_one: params[:residential_listing][:streeteasy_flag_one])
+    tee = residential_listing.update(lease_start: params[:residential_listing][:lease_start], lease_end: params[:residential_listing][:lease_end], description: params[:residential_listing][:description], streeteasy_flag_one: params[:residential_listing][:streeteasy_flag_one], updated_at: Time.now())
 
     #unit_available_by = Date::strptime(params[:residential_listing][:unit][:available_by], "%m/%d/%Y") + 1.day
     unit = residential_listing.unit
@@ -296,6 +296,7 @@ class ResidentialListingsController < ApplicationController
 
     if params[:streeteasy_status] == "true"
       residential_listing.update(streeteasy_flag_one: true, streeteasy_claim: false, updated_at: Time.now())
+      UnitMailer.send_email_at_claim_for_streeteasy(residential_listing,current_user).deliver!
       flash[:success] = "listing active on Streeteasy"
     else
       residential_listing.update(streeteasy_flag_one: false, updated_at: Time.now())
@@ -402,8 +403,8 @@ class ResidentialListingsController < ApplicationController
 
     #listing active for streeteasy agent to claim
     if params[:residential_listing][:unit][:status] == "Off" || params[:residential_listing][:unit][:status] == "Pending"
-      @residential_unit.update_columns(streeteasy_claim: false, streeteasy_flag_one: false)
-      @residential_unit.unit.update_columns(streeteasy_primary_agent_id: nil)
+      @residential_unit.update_columns(streeteasy_claim: false, streeteasy_flag_one: false, updated_at: Time.now())
+      @residential_unit.unit.update_columns(streeteasy_primary_agent_id: nil, updated_at: Time.now())
     end
 
     if params[:residential_listing][:streeteasy_flag] == "1" || params[:residential_listing][:streeteasy_flag_one] == "1"
