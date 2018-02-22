@@ -199,6 +199,29 @@
         </div>
 
         <br>
+        <% if @landlord.audits %>
+          <br />
+          <div class="row">
+            <div class="col-xs-12 col-md-3 lab_disp">
+              <strong>Recent Listing Agent Changes</strong>
+            </div>
+            <div class="col-xs-12 col-md-9">
+              <% @landlord.audits.each do |audit| %>
+                <%# abort audit.audited_changes.inspect %>
+                <% if audit.audited_changes["listing_agent_id"] %>
+                  <div class="in_audit"></div>
+                  <%# abort audit.user_id.inspect %>
+                <%# for i in 0..record_list.length - 1 %>
+                  <div class="row">
+                    <div class="col-xs-12">
+                    <%= User.find(audit.user_id).name %> changed Listing Agent form <%= User.find(audit.audited_changes["listing_agent_id"][0]).name %> to <%= User.find(audit.audited_changes["listing_agent_id"][1]).name %> on <%= audit.created_at.strftime("%b-%d-%Y %I:%M %P") %>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div><!-- row -->
+        <% end %>
 
       </div><!-- panel-body -->
     </div><!-- ll-panel -->
@@ -219,3 +242,13 @@
 
 </div><!-- section-name -->
 </div><!-- landlords -->
+<script type="text/javascript">
+  (function(){
+    if ($(".in_audit").length > 0){
+      $(".lab_disp").show();
+    }
+    else{
+      $(".lab_disp").hide();
+    }
+  })();
+</script>

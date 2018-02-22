@@ -1,5 +1,6 @@
 class Building < ApplicationRecord
-	scope :unarchived, ->{where(archived: false)}
+	audited except: [:created_at, :updated_at, :knack_id]
+  scope :unarchived, ->{where(archived: false)}
 
   before_save :process_rental_term
   before_save :process_custom_amenities
@@ -45,7 +46,7 @@ class Building < ApplicationRecord
 	validates :company, presence: true
   # don't validate landlord presence here - if this building has sales listings instead of rentals,
   # for example, then there will be a seller instead of a landlord. only rentals have landlord info.
-
+  after_commit :trim_audit_log
   def archive
     self.archived = true
     self.save
@@ -325,6 +326,19 @@ class Building < ApplicationRecord
             end
           end
         }
+      end
+    end
+
+    def trim_audit_log
+      # to keep updates speedy, we cap the audit log at 100 entries per record
+      audits_count = audits.length
+      if audits_count > 50
+        audits.first.destroy
+      end
+
+      # we also discard the initial audit record, which is triggered upon creation
+      if audits_count > 0 && audits.first.created_at.to_time.to_i == self.created_at.to_time.to_i
+        audits.first.update(comment: 'created')
       end
     end
 

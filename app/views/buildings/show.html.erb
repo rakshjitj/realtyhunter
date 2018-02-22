@@ -189,7 +189,30 @@
 						</p>
 					</div>
 				</div><!-- row -->
-
+				<br/>
+				<% if @building.audits %>
+		          <br />
+		          <div class="row">
+		            <div class="col-xs-12 col-md-3 lab_disp">
+		              <strong>Recent Address Changes</strong>
+		            </div>
+		            <div class="col-xs-12 col-md-9">
+		              <% @building.audits.each do |audit| %>
+		                <%# abort audit.audited_changes.inspect %>
+		                <% if audit.audited_changes["formatted_street_address"] %>
+		                  <div class="in_audit"></div>
+		                  <%# abort audit.user_id.inspect %>
+		                <%# for i in 0..record_list.length - 1 %>
+		                  <div class="row">
+		                    <div class="col-xs-12">
+		                    <%= User.find(audit.user_id).name %> changed Address form "<%= audit.audited_changes["formatted_street_address"][0] %>" to "<%= audit.audited_changes["formatted_street_address"][1] %>" on <%= audit.created_at.strftime("%b-%d-%Y %I:%M %P") %>
+		                    </div>
+		                  </div>
+		                <% end %>
+		              <% end %>
+		            </div>
+		          </div><!-- row -->
+		        <% end %>
 				<br />
 	    	<div class="row map-walkscore-tabs">
 	    		<div class="col-md-12">
@@ -271,3 +294,13 @@
 
 </div><!-- section-name -->
 </div><!-- buildings -->
+<script type="text/javascript">
+  (function(){
+    if ($(".in_audit").length > 0){
+      $(".lab_disp").show();
+    }
+    else{
+      $(".lab_disp").hide();
+    }
+  })();
+</script>
