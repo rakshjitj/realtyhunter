@@ -4,6 +4,9 @@
   protect_from_forgery with: :null_session
   include SyndicationInterface
 
+  def index
+    render text: 'test';
+  end
   def naked_apts
     set_listings
   end
