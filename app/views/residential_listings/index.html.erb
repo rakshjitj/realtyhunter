@@ -200,7 +200,7 @@
             </div>
           <% end %>
 
-          <% if current_user.is_company_admin? %>
+          <% if current_user.is_company_admin? || current_user.is_super_admin? %>
             <div class="row vertical-padding">
               <div class="col-xs-5">
                 <%= label_tag :streeteasy_claim, "Claim for Streeteasy" %>

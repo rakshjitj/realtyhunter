@@ -257,6 +257,9 @@ class User < ApplicationRecord
   # def handles_sales?
   #   self.has_role? :sales
   # end
+  def is_super_admin?
+    self.has_role? :super_admin
+  end
 
   def is_company_admin?
     self.has_role? :company_admin
