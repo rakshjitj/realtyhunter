@@ -200,12 +200,15 @@
 		              <% @building.audits.each do |audit| %>
 		                <%# abort audit.audited_changes.inspect %>
 		                <% if audit.audited_changes["formatted_street_address"] %>
-		                  <div class="in_audit"></div>
 		                  <%# abort audit.user_id.inspect %>
 		                <%# for i in 0..record_list.length - 1 %>
 		                  <div class="row">
 		                    <div class="col-xs-12">
-		                    <%= User.find(audit.user_id).name %> changed Address form "<%= audit.audited_changes["formatted_street_address"][0] %>" to "<%= audit.audited_changes["formatted_street_address"][1] %>" on <%= audit.created_at.strftime("%b-%d-%Y %I:%M %P") %>
+		                    <% if audit.audited_changes["formatted_street_address"].is_a?((Integer)) %>
+		                    <% else %>
+								<div class="in_audit"></div>
+									<%= User.find(audit.user_id).name %> changed Address form "<%= audit.audited_changes["formatted_street_address"][0] %>" to "<%= audit.audited_changes["formatted_street_address"][1] %>" on <%= audit.created_at.strftime("%b-%d-%Y %I:%M %P") %>
+		                    <% end %>
 		                    </div>
 		                  </div>
 		                <% end %>
