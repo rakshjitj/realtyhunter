@@ -200,6 +200,20 @@
             </div>
           <% end %>
 
+          <% if current_user.is_company_admin? %>
+            <div class="row vertical-padding">
+              <div class="col-xs-5">
+                <%= label_tag :streeteasy_claim, "Claim for Streeteasy" %>
+              </div>
+              <div class="col-xs-6 col-sm-left-padding">
+                <%= select_tag(:streeteasy_claim,
+                    options_for_select(['Any', 'Yes', 'No'],
+                    [params[:streeteasy_claim] ? params[:streeteasy_claim].titleize : 'Any']),
+                    class: 'form-control') %>
+              </div>
+            </div>
+          <% end %>
+
           <div class="row vertical-padding">
             <div class="col-xs-12">
               <strong>Available</strong>

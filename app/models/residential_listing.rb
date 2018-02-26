@@ -208,7 +208,7 @@ class ResidentialListing < ApplicationRecord
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.favorites','residential_listings.streeteasy_flag_one',
-        'residential_listings.streeteasy_flag',
+        'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_claim',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'residential_listings.tenant_occupied',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
@@ -463,6 +463,17 @@ class ResidentialListing < ApplicationRecord
         running_list = running_list.where('residential_listings.streeteasy_flag = FALSE')
         #running_list = running_list.where('units.exclusive = FALSE')
         #running_list = running_list.where("residential_listings.description = ''")
+      end
+    end
+
+    if !params[:streeteasy_claim].blank?
+      #abort params[:streeteasy_claim].inspect
+      if params[:streeteasy_claim] == 'Yes'
+        #abort running_list.inspect
+        running_list = running_list.where('residential_listings.streeteasy_claim = TRUE')
+      elsif params[:streeteasy_claim] == 'No'
+        #abort running_list.inspect
+        running_list = running_list.where('residential_listings.streeteasy_claim = FALSE AND residential_listings.streeteasy_flag_one = TRUE')
       end
     end
 
