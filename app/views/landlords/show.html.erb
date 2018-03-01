@@ -207,14 +207,18 @@
             </div>
             <div class="col-xs-12 col-md-9">
               <% @landlord.audits.each do |audit| %>
-                <%# abort audit.audited_changes.inspect %>
+                <%# abort audit.audited_changes["listing_agent_id"][0].nil?.inspect %>
                 <% if audit.audited_changes["listing_agent_id"] %>
                   <div class="row">
                     <div class="col-xs-12">
                       <% if audit.audited_changes["listing_agent_id"].is_a?((Integer)) %>
                       <% else %>
                         <div class="in_audit"></div>
-                        <%= User.find(audit.user_id).name %> changed Listing Agent form <%= User.find(audit.audited_changes["listing_agent_id"][0]).name %> to <%= User.find(audit.audited_changes["listing_agent_id"][1]).name %> on <%= audit.created_at.strftime("%b-%d-%Y %I:%M %P") %>
+                        <% if audit.audited_changes["listing_agent_id"][0].nil? %>
+                          <%= User.find(audit.user_id).name %> added Listing Agent <%= User.find(audit.audited_changes["listing_agent_id"][1]).name %> on <%= audit.created_at.strftime("%b-%d-%Y %I:%M %P") %>
+                        <% else %>
+                          <%= User.find(audit.user_id).name %> changed Listing Agent form <%= User.find(audit.audited_changes["listing_agent_id"][0]).name %> to <%= User.find(audit.audited_changes["listing_agent_id"][1]).name %> on <%= audit.created_at.strftime("%b-%d-%Y %I:%M %P") %>
+                        <% end %>
                       <% end %>
                 <%# for i in 0..record_list.length - 1 %>
                     </div>
