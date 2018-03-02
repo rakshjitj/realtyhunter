@@ -134,7 +134,7 @@
       :address              => 'smtp.gmail.com',
       :port                 => '465',
       :domain               => 'gmail.com',
-      :user_name            => 'myspacenycuri@gmail.com',
+      :user_name            => 'myspacenyc@myspacenyc.com',
       :password             => '@#$@#$msnyc@#$@#$msnyc@#$@#$',
       :authentication       => :login,
       :ssl                  => true,
