@@ -324,6 +324,9 @@ class ResidentialListingsController < ApplicationController
         @residential_unit.unit.update_columns(streeteasy_primary_agent_id: nil)
       end
     end
+    if params[:residential_listing][:streeteasy_flag_one] == "0"
+        @residential_unit.unit.update(streeteasy_primary_agent_id: nil, updated_at: Time.now())
+      end
     # if params[:residential_listing][:streeteasy_flag_one] == "0" and params[:residential_listing][:streeteasy_flag] == "0" and params[:residential_listing][:unit][:status] == "Active"
     #   abort (@residential_unit.streeteasy_flag != params[:residential_listing][:streeteasy_flag]).inspect
     #   if @residential_unit.streeteasy_flag != params[:residential_listing][:streeteasy_flag]

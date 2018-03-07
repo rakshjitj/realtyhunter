@@ -129,6 +129,18 @@
     <!-- ****** UPDATED_AT ****************************************** -->
     <td><%= time_ago_in_words(residential_listing.updated_at) %></td>
 
+    <td>
+      <% if residential_listing.unit.audits %>
+        <%# abort residential_listing.unit.audits.inspect %>
+        <% residential_listing.unit.audits.each do |audit| %>
+          <% if audit.audited_changes["rent"] %>
+            <% @disp_date = audit.created_at.strftime("%b-%d-%Y") %>
+          <% end %>
+        <% end %>
+        <%= @disp_date %>
+      <% end %>
+
+    </td>
     <!-- ****** STATUS ****************************************** -->
     <td>
       <% if residential_listing.status == Unit.statuses["active"] %>
