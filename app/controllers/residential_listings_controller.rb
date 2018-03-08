@@ -146,6 +146,7 @@ class ResidentialListingsController < ApplicationController
 
     if params[:residential_listing][:streeteasy_flag_one] == "1"
       residential_listing.update(streeteasy_flag: false, streeteasy_claim: false, updated_at: Time.now())
+      residential_listing.unit.update(streeteasy_primary_agent_id: current_user.id, updated_at: Time.now())
     end
 
     tee = residential_listing.update(lease_start: params[:residential_listing][:lease_start], lease_end: params[:residential_listing][:lease_end], description: params[:residential_listing][:description], streeteasy_flag_one: params[:residential_listing][:streeteasy_flag_one], updated_at: Time.now())
