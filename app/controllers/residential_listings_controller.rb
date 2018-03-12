@@ -260,6 +260,7 @@ class ResidentialListingsController < ApplicationController
     recipients = residential_listing_params[:recipients].split(/[\,,\s]/)
     sub = residential_listing_params[:title]
     msg = residential_listing_params[:message]
+    from = residential_listing_params[:from]
     listing_ids = residential_listing_params[:listing_ids].split(',')
     ResidentialListing.send_listings(current_user.id, listing_ids, recipients, sub, msg)
 
@@ -650,7 +651,7 @@ class ResidentialListingsController < ApplicationController
       @neighborhoods = Neighborhood.unarchived
           .where(state: current_user.office.administrative_area_level_1_short)
           .to_a
-          .group_by(&:borough)
+          .group_by(&:borough_cat)
       @building_amenities = BuildingAmenity.where(company: current_user.company)
       @unit_amenities = ResidentialAmenity.where(company: current_user.company)
 
