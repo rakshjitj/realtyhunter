@@ -1,7 +1,16 @@
-<%- headers = [ 'Address','Primary Agent', 'Beds', 'Price', 'Neighborhood', 'Updated At' ] -%>
-
-<%= CSV.generate_line headers %>
+<%- headers = [ 'Neighborhood', 'Address', 'Unit', 'Beds' , 'Baths', 'Price','Date Available', "Access", 'Landlord','Listing Agent', 'Last Updated', 'Price Changes', "Price Changes Date", 'Appartment Has Description', 'Appartment Has Photos', 'Previous Units in Building'] -%>
+<%= CSV.generate_line(headers).strip %>
 <%- @residential_units.each do |listing| -%>
-
-  <%= ["#{listing.street_number} #{listing.route} ##{listing.building_unit}", listing.name ?  listing.name : '', listing.beds, listing.rent, listing.neighborhood_name, listing.updated_at ].to_csv.html_safe %>
+	<% @retVal = [] %>
+	<% listing.unit.audits.each do |audit| %>
+		<% if !audit.audited_changes["rent"].blank? %>
+			<% @retVal << audit.id %>
+		<% end %>
+	<%end%>
+	<% if !@retVal.blank? %>
+		<% @last_price_change_date = Audit.find(@retVal.last).created_at %>
+	<% end %>
+	<% aa = Building.find(listing.unit.building_id) %>
+	<% aa = aa.units.each.map(&:building_unit) - [listing.building_unit] %>
+  <%= [listing.neighborhood_name ? listing.neighborhood_name : '', "#{listing.street_number} #{listing.route}", listing.building_unit, listing.beds, listing.baths, listing.rent, listing.unit.available_by, listing.unit.access_info, listing.unit.building.landlord.code, listing.unit.building.landlord.listing_agent ? listing.unit.building.landlord.listing_agent.name : '', listing.updated_at, @retVal.blank? ? "No" : "Yes", @retVal.blank? ? "" : @last_price_change_date , listing.description.nil? ? "No" : "Yes", listing.unit.images.blank? ? "No" : "Yes", aa.join(", ")].to_csv.strip.html_safe %>
 <%- end -%>
