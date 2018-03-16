@@ -56,6 +56,11 @@ module SyndicationInterface
 		pull_data(company_id, search_params)
 	end
 
+	def dotsignal_listings(company_id, search_params)
+		search_params[:is_dotsignal] = 1
+		pull_data(company_id, search_params)
+	end
+
 	def pull_data(company_id, search_params)
 		listings = Unit.joins('left join residential_listings on units.id = residential_listings.unit_id
 left join sales_listings on units.id = sales_listings.unit_id')
@@ -73,6 +78,20 @@ left join sales_listings on units.id = sales_listings.unit_id')
 		# Nestio is still viewed as another "internal system". We send them our data, but we treat this
 		# as more of different "frontend" for our listings. Ignore the syndication status flag in their case.
 		if is_true?(search_params[:is_nestio])
+			listings = listings.where('units.status IN (?)',
+					[Unit.statuses["active"], Unit.statuses["pending"]])
+		else
+			listings = listings.where('units.status IN (?) OR units.syndication_status = ?',
+					[Unit.statuses["active"], Unit.statuses["pending"]],
+					Unit.syndication_statuses['Force syndicate'])
+				.where('units.syndication_status IN (?)', [
+					Unit.syndication_statuses['Syndicate if matches criteria'],
+					Unit.syndication_statuses['Force syndicate']
+				])
+		end
+
+		#feed url for dotsignal similar as nestio only url change. feed similar to nestio
+		if is_true?(search_params[:is_dotsignal])
 			listings = listings.where('units.status IN (?)',
 					[Unit.statuses["active"], Unit.statuses["pending"]])
 		else

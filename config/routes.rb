@@ -104,6 +104,8 @@ Rails.application.routes.draw do
       get 'neighborhood_options'
     end
   end
+  post 'residential_listings/generate_custom_email' => "residential_listings#generate_custom_email", as: :generate_custom_email
+  get 'residential_listings/send_custom_email' => "residential_listings#send_custom_email", as: :send_custom_email
   get 'residential_listings/claim_for_streeteasy' => "residential_listings#claim_for_streeteasy", as: :claim_for_streeteasy
   get 'residential_listings_active_by_agent/:id/:streeteasy_status' => "residential_listings#streeteasy_active_by_agent", as: :streeteasy_active_by_agent
   get 'residential_listings/rental_mobile_search' => "residential_listings#rental_mobile_search", as: :rental_mobile_search
@@ -140,6 +142,7 @@ Rails.application.routes.draw do
     end
   end
 
+  
   get "/specific_residential_listing/:id/edit" => "residential_listings#specific_edit", as: :specific_edit
   patch "/specific_residential_listing/:id" => "residential_listings#specific_update", as: :specific_update
   post "residential_listings/access_email_generate" => "residential_listings#access_email_generate", as: :access_email_generate
@@ -234,6 +237,7 @@ Rails.application.routes.draw do
       get 'streeteasy'
       get 'trulia'
       get 'nestio'
+      get 'dotsignal'
     end
   end
 

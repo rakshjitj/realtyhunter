@@ -20,6 +20,10 @@
     set_listings
   end
 
+  def dotsignal
+    set_listings
+  end
+
   def set_listings
     @company = Company.find(syndication_params[:id])
     if @company
@@ -31,6 +35,8 @@
         @listings = trulia_listings(@company.id, syndication_params)
       elsif syndication_params[:action] == 'nestio'
         @listings = nestio_listings(@company.id, {})
+      elsif syndication_params[:action] == 'dotsignal'
+        @listings = dotsignal_listings(@company.id, {})
       end
 
       @pet_policies = Building.get_pet_policies(@listings)
