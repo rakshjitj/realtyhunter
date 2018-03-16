@@ -32,6 +32,7 @@ class Building < ApplicationRecord
 	# borough
 	#:sublocality can be blank
 	# city
+  validates :dotsignal_code, length: {maximum: 5}
 	validates :administrative_area_level_2_short, allow_blank: true, length: {maximum: 100}
 	# state
 	validates :administrative_area_level_1_short, presence: true, length: {maximum: 100}
