@@ -143,7 +143,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'buildings.administrative_area_level_1_short',
 			'buildings.sublocality',
 			'buildings.street_number', 'buildings.route',
-			'buildings.postal_code',
+			'buildings.postal_code', 'buildings.dotsignal_code',
 			'buildings.lat',
 			'buildings.lng',
 			'landlords.code',

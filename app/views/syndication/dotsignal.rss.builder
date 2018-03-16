@@ -45,6 +45,9 @@ xml.streeteasy :version => "1.6" do
           xml.apartment listing.building_unit
           xml.city listing.sublocality
           xml.state listing.administrative_area_level_1_short
+          if !listing.building.dotsignal_code.nil?
+            listing.postal_code = listing.building.dotsignal_code
+          end
           xml.zipcode listing.postal_code
           xml.neighborhood listing.neighborhood_name
         end
