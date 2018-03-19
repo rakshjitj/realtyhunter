@@ -61,12 +61,7 @@
 					  		<p>
 				  				<%= small_header(@residential_unit) %>
 				  			</p>
-							<p>
-								<% if @residential_unit.unit.building.neighborhood %>
-									Neighborhood : <%= @residential_unit.unit.building.neighborhood.name %>
-								<% end %>
-							</p>
-						</div>
+				  		</div>
 				  		<div class="col-xs-12 col-md-5 text-right">
 				  			<h1><%= rent_formatted(@residential_unit.unit.rent) %></h1>
 				  			<p>
