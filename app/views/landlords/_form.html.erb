@@ -113,6 +113,18 @@
         <br />
         <div class="row">
           <div class="col-xs-3 form-label-responsive">
+            <%= f.label :rating, "Landlord Rating" %>
+          </div>
+          <div class="col-xs-9">
+            <div class="field">
+              <%= f.select :rating, [['NA', 0], ['Excellent', 1], ['Good', 2], ['Fair', 3]], {}, {class: "form-control"}%>
+            </div>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-xs-3 form-label-responsive">
             <%= f.label :formatted_street_address, "Street Address", class: 'required' %>
           </div>
           <div class="col-xs-9">

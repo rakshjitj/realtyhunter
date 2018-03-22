@@ -104,6 +104,16 @@ class ResidentialListingsController < ApplicationController
     @result = running_list
   end
 
+  # def send_custom_email
+
+  # end
+
+  # def generate_custom_email
+  #   #abort params[:to_address].split(/\s*,\s*/).inspect
+  #   UnitMailer.send_custom_email_with_mailgun(params[:from_address],params[:to_address], params[:subject],params[:body]).deliver!
+  #   redirect_to send_custom_email_path
+  # end
+
   def specific_edit
     @buildings = current_user.company.buildings
         .where(archived: false)
@@ -740,7 +750,7 @@ class ResidentialListingsController < ApplicationController
       data = params[:residential_listing].permit(
         :lock_version,
         :id,
-        :recipients, :title, :message, :listing_ids, :listing_id,
+        :recipients, :building_rating, :landlord_rating, :title, :message, :listing_ids, :listing_id,
         :tenant_occupied,
         :beds, :baths, :notes, :description, :lease_start, :lease_end,
         :include_photos, :inaccuracy_description,

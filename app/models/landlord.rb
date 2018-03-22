@@ -66,6 +66,21 @@ class Landlord < ApplicationRecord
       running_list = running_list.where("listing_agent_id IN (?)", params[:listing_agent_id])
     end
 
+    rating = params[:rating]
+    if !rating.nil?
+      if rating == "0"
+        running_list = running_list.where("landlords.rating =?", 0)
+      elsif rating == "1"
+        running_list = running_list.where("landlords.rating =?", 1)
+      elsif rating == "2"
+        running_list = running_list.where("landlords.rating =?", 2)
+      elsif rating == "3"
+        running_list = running_list.where("landlords.rating =?", 3)
+      else
+        running_list = running_list
+      end
+    end
+
     status = params[:status]
     if !status.nil?
       status_lowercase = status.downcase
@@ -100,7 +115,7 @@ class Landlord < ApplicationRecord
 
     running_list = self._search(running_list, params)
 		running_list = running_list.select('landlords.id', 'landlords.code', 'landlords.name',
-				'landlords.updated_at', 'landlords.mobile',
+				'landlords.updated_at', 'landlords.mobile', 'landlords.rating',
 				'landlords.active_unit_count', 'landlords.total_unit_count',
 				'landlords.last_unit_updated_at', 'landlords.listing_agent_id',
         'users.name as listing_agent_name', 'landlords.listing_agent_percentage')

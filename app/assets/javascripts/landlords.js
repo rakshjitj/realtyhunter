@@ -42,6 +42,7 @@ Landlords = {};
     var data = {
       filter: $('#filter').val(),
       status: $('#status').val(),
+      rating: $('#rating').val(),
       listing_agent_id: $('#listing_agent_id').val(),
       sort_by: sortByCol,
       direction: sortDirection,
@@ -127,6 +128,7 @@ Landlords = {};
     $('#landlords #filter').keydown(Landlords.preventEnter);
     $('#landlords #filter').change(Landlords.throttledSearch);
     $('#landlords #status').change(Landlords.throttledSearch);
+    $('#landlords #rating').change(Landlords.throttledSearch);
     $('#landlords #listing_agent_id').change(Landlords.throttledSearch);
     $('#landlords #status_listings').change(Landlords.filterListings);
   }

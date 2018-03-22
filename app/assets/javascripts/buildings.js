@@ -41,6 +41,7 @@ Buildings = {};
     var data = {
       filter: $('#filter').val(),
       status: $('#status').val(),
+      rating: $('#rating').val(),
       sort_by: sortByCol,
       direction: sortDirection,
     };
@@ -231,6 +232,7 @@ Buildings = {};
     $('input').keydown(Buildings.preventEnter);
     $('#filter').bind('railsAutocomplete.select', Buildings.throttledBldgSearch);
     $('#filter').change(Buildings.throttledBldgSearch);
+    $('#rating').change(Buildings.throttledBldgSearch);
     $('#status').change(Buildings.throttledBldgSearch);
   }
 

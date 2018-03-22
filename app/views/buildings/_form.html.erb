@@ -99,6 +99,16 @@
           </div>
         </div>
 
+        <br />
+        <div class="row">
+          <div class="col-sm-3">
+            <%= f.label :rating, "Building Rating" %>
+          </div>
+          <div class="col-sm-9">
+            <%= f.select :rating, [['NA', 0], ['Excellent', 1], ['Good', 2], ['Fair', 3]], {}, {class: "form-control"}%>
+          </div>
+        </div>
+
         <div class="neighborhood_options">
           <%= render 'neighborhood_options' %>
         </div>

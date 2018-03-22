@@ -173,7 +173,7 @@ class ResidentialListing < ApplicationRecord
         'units.available_by', 'units.public_url', 'units.access_info', 'units.exclusive',
         'units.id AS unit_id', 'units.primary_agent_id', 'units.has_stock_photos',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
-        'buildings.lat', 'buildings.lng',
+        'buildings.lat', 'buildings.lng', 'buildings.rating',
         'residential_listings.id',
         'residential_listings.beds', 'residential_listings.baths', 'residential_listings.notes',
         'residential_listings.description', 'residential_listings.lease_start',
@@ -182,7 +182,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.tenant_occupied', 'residential_listings.created_at',
         'residential_listings.updated_at','residential_listings.streeteasy_flag','residential_listings.show',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
-        'landlords.code',
+        'landlords.code', 'landlords.rating',
         'landlords.id AS landlord_id',
         'users.name')
 
@@ -202,7 +202,7 @@ class ResidentialListing < ApplicationRecord
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
-        'buildings.lat', 'buildings.lng', 'units.id AS unit_id',
+        'buildings.lat', 'buildings.lng', 'buildings.rating', 'units.id AS unit_id',
         'units.building_unit', 'units.status','units.rent', 'residential_listings.beds',
         'units.primary_agent_id',  'units.has_stock_photos',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
@@ -212,7 +212,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'residential_listings.tenant_occupied',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
-        'landlords.code',
+        'landlords.code', 'landlords.rating',
         'landlords.id AS landlord_id',
         'units.listing_id', 'units.available_by', 'units.public_url', 'units.exclusive',
         'users.name')
@@ -463,6 +463,36 @@ class ResidentialListing < ApplicationRecord
         running_list = running_list.where('residential_listings.streeteasy_flag = FALSE')
         #running_list = running_list.where('units.exclusive = FALSE')
         #running_list = running_list.where("residential_listings.description = ''")
+      end
+    end
+
+    if !params[:building_rating].blank?
+      rating = params[:building_rating]
+      if rating == "0"
+        running_list = running_list.where("buildings.rating =?", 0)
+      elsif rating == "1"
+        running_list = running_list.where("buildings.rating =?", 1)
+      elsif rating == "2"
+        running_list = running_list.where("buildings.rating =?", 2)
+      elsif rating == "3"
+        running_list = running_list.where("buildings.rating =?", 3)
+      else
+        running_list = running_list
+      end
+    end
+
+    if !params[:landlord_rating].blank?
+      rating = params[:landlord_rating]
+      if rating == "0"
+        running_list = running_list.where("landlords.rating =?", 0)
+      elsif rating == "1"
+        running_list = running_list.where("landlords.rating =?", 1)
+      elsif rating == "2"
+        running_list = running_list.where("landlords.rating =?", 2)
+      elsif rating == "3"
+        running_list = running_list.where("landlords.rating =?", 3)
+      else
+        running_list = running_list
       end
     end
 

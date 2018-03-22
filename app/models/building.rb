@@ -96,11 +96,25 @@ class Building < ApplicationRecord
     Image.where(building_id: building_ids).to_a.group_by(&:building_id)
   end
 
-  def self._filter_query(running_list, query_str, status)
+  def self._filter_query(running_list, query_str, status, rating)
     if query_str
       @terms = query_str.split(" ")
       @terms.each do |term|
         running_list = running_list.where('buildings.formatted_street_address ILIKE ? OR buildings.sublocality ILIKE ?', "%#{term}%", "%#{term}%")
+      end
+    end
+
+    if !rating.nil?
+      if rating == "0"
+        running_list = running_list.where("buildings.rating =?", 0)
+      elsif rating == "1"
+        running_list = running_list.where("buildings.rating =?", 1)
+      elsif rating == "2"
+        running_list = running_list.where("buildings.rating =?", 2)
+      elsif rating == "3"
+        running_list = running_list.where("buildings.rating =?", 3)
+      else
+        running_list = running_list
       end
     end
 
@@ -121,13 +135,13 @@ class Building < ApplicationRecord
     running_list
   end
 
-	def self.search(query_str, status)
+	def self.search(query_str, status, rating)
     running_list = Building
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('buildings.archived = false')
       .select(
         'buildings.formatted_street_address', 'buildings.notes',
-        'buildings.id', 'buildings.street_number', 'buildings.route',
+        'buildings.id', 'buildings.street_number', 'buildings.route','buildings.rating',
         'buildings.sublocality', 'buildings.neighborhood_id', 'neighborhoods.name as neighborhood_name',
         'buildings.administrative_area_level_2_short',
         'buildings.administrative_area_level_1_short', 'buildings.postal_code',
@@ -136,19 +150,19 @@ class Building < ApplicationRecord
         'buildings.total_unit_count',
         'buildings.active_unit_count')
 
-    running_list = Building._filter_query(running_list, query_str, status)
+    running_list = Building._filter_query(running_list, query_str, status, rating)
     running_list
 	end
 
   # adds in landlord
-  def self.export_all(query_str, status)
+  def self.export_all(query_str, status, rating)
     running_list = Building.joins(:landlord).joins(:rental_term)
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('buildings.archived = false')
       .select(
         'landlords.code AS landlord_code','landlords.id AS landlord_id',
         'buildings.formatted_street_address', 'buildings.notes',
-        'buildings.id', 'buildings.street_number', 'buildings.route',
+        'buildings.id', 'buildings.street_number', 'buildings.route','buildings.rating',
         'buildings.sublocality', 'buildings.neighborhood_id', 'neighborhoods.name as neighborhood_name',
         'buildings.administrative_area_level_2_short',
         'buildings.administrative_area_level_1_short', 'buildings.postal_code', 'buildings.llc_name',
@@ -158,7 +172,7 @@ class Building < ApplicationRecord
         'buildings.active_unit_count',
         'rental_terms.id as rental_term_id', 'rental_terms.name')
 
-    running_list = Building._filter_query(running_list, query_str, status)
+    running_list = Building._filter_query(running_list, query_str, status, rating)
     running_list
   end
 

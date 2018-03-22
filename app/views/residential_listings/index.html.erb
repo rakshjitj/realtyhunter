@@ -213,7 +213,26 @@
               </div>
             </div>
           <% end %>
-
+          <% if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
+            <div class="row vertical-padding">
+              <div class="col-xs-5">
+                <%= label_tag :building_rating, "Building Rating" %>
+              </div>
+              <div class="col-xs-6 col-sm-left-padding">
+                <%= select_tag(:building_rating, options_for_select([['Any','Any'],['NA', 0], ['Excellent', 1], ['Good', 2], ['Fair', 3]], params[:building_rating] ? params[:building_rating].titleize : "Any"), class: 'form-control') %>
+              </div>
+            </div>
+          <% end %>
+          <% if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
+            <div class="row vertical-padding">
+              <div class="col-xs-5">
+                <%= label_tag :landlord_rating, "Landlord Rating" %>
+              </div>
+              <div class="col-xs-6 col-sm-left-padding">
+                <%= select_tag(:landlord_rating, options_for_select([['Any','Any'],['NA', 0], ['Excellent', 1], ['Good', 2], ['Fair', 3]], params[:landlord_rating] ? params[:landlord_rating].titleize : "Any"), class: 'form-control') %>
+              </div>
+            </div>
+          <% end %>
           <div class="row vertical-padding">
             <div class="col-xs-12">
               <strong>Available</strong>

@@ -49,6 +49,8 @@
         streeteasy_filter: $('#streeteasy_filter').val(),
         streeteasy_claim: $('#streeteasy_claim').val(),
         primary_agent_id:  $('#primary_agent_id').val(),
+        building_rating: $('#building_rating').val(),
+        landlord_rating: $('#landlord_rating').val(),
         sort_by: sortByCol,
         direction: sortDirection
       };

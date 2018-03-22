@@ -219,7 +219,8 @@ class BuildingsController < ApplicationController
     def set_buildings_csv
       @buildings = Building.export_all(
           building_params[:filter],
-          building_params[:status])
+          building_params[:status],
+          building_params[:rating])
       @amenities = Building.get_amenities_from_buildings(@buildings)
       @utilities = Building.get_utilities_from_buildings(@buildings)
       @buildings = custom_sort
@@ -229,7 +230,8 @@ class BuildingsController < ApplicationController
     def set_buildings
       @buildings = Building.search(
         building_params[:filter],
-        building_params[:status])
+        building_params[:status],
+        building_params[:rating])
 
       @buildings = custom_sort
       @buildings = @buildings.page params[:page]
@@ -271,12 +273,12 @@ class BuildingsController < ApplicationController
     # Need to take in additional params here. Can't rename them, or the geocode plugin
     # will not map to them correctly
     def building_params
-      data = params.permit(:sort_by, :direction, :page, :filter, :status, :status_listings, :street_number,
+      data = params.permit(:sort_by, :direction, :page, :filter, :status, :rating, :status_listings, :street_number,
         :route, :route_short, :intersection, :neighborhood,
         :sublocality, :administrative_area_level_2_short,
         :administrative_area_level_1_short, :inaccuracy_description, :request_price_drop,
         :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id, :file,
-        building: [:lock_version, :formatted_street_address, :dotsignal_code, :notes, :landlord_id, :user_id,
+        building: [:lock_version, :formatted_street_address, :dotsignal_code, :rating, :notes, :landlord_id, :user_id,
           :inaccuracy_description, :pet_policy_id, :rental_term_id, :custom_rental_term, :file,
           :custom_amenities, :custom_utilities, :neighborhood_id, :neighborhood, :llc_name,
           building_amenity_ids: [], images_files: [], utility_ids: [] ])
