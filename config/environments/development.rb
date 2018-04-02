@@ -19,8 +19,8 @@ Rails.application.configure do
   host = 'localhost:3000'
   config.action_mailer.default_url_options = { host: host }
   # use postmark
-  config.action_mailer.delivery_method = :postmark
-  config.action_mailer.postmark_settings = {api_token: ENV['POSTMARK_API_KEY']}
+  # config.action_mailer.delivery_method = :postmark
+  # config.action_mailer.postmark_settings = {api_token: ENV['POSTMARK_API_KEY']}
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -95,10 +95,15 @@ Rails.application.configure do
       :address              => 'smtp.gmail.com',
       :port                 => '465',
       :domain               => 'gmail.com',
-      :user_name            => 'myspacenycuri@gmail.com',
+      :user_name            => 'myspacenyc@myspacenyc.com',
       :password             => '@#$@#$msnyc@#$@#$msnyc@#$@#$',
       :authentication       => :login,
       :ssl                  => true,
       :openssl_verify_mode  => 'none' #Use this because ssl is activated but we have no certificate installed. So clients need to confirm to use the untrusted url.
   }
+  # config.action_mailer.delivery_method = :mailgun
+  # config.action_mailer.mailgun_settings = {
+  #   api_key: 'key-2fd5556cb0b623390368f6fd3ca80885',
+  #   domain: 'realtyhunter.org',
+  # }
 end
