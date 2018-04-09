@@ -49,6 +49,10 @@
           <%= f.text_area :bio, class: 'form-control', size: "20x10" %>
         </div>
       <% end %>
+      <div class="field">
+        <%= f.label :agent_hide, "Agent Display On Website or Not?" %>
+        <%= f.check_box :agent_hide %>
+      </div>
 
       <div class="field">
         <%= f.label :office_id, "Office", class: 'required' %><br>
