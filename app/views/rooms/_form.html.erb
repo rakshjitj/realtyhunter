@@ -1,0 +1,119 @@
+<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+<div id="residential" data-unit-id="<%= @residential_unit.id %>">
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><%= @panel_title %></h3>
+  </div>
+  <div class="panel-body">
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <% if !current_user.is_photo_manager? %>
+        <li role="presentation" class="active"><a href="#basic-info" aria-controls="basic-info" role="tab" data-toggle="tab">Basic Info</a></li>
+      <% end %>
+    </ul>
+
+    <div class="tab-content">
+      <!-- ******************** first tabpanel - basic info ********************-->
+      <% if !current_user.is_photo_manager? %>
+      <div role="tabpanel" class="tab-pane fade in active" id="basic-info">
+        <%= form_tag room_update_path, multipart: true do %>
+        <%#= f.hidden_field :lock_version %>
+        <%= render partial: 'shared/error_messages',
+          locals: {model: @residential_unit} %>
+
+          <%#= f.fields_for @residential_unit.unit do |unit_form| %>
+          <%# abort @residential_unit.beds.inspect %>
+          <br>
+            <% @kennel.each do |room| %>
+              <%= fields_for 'rooms[]', room do |r| %>
+                <div class="row vertical-margin-lg">
+                    <div class="col-xs-3 col-md-2">
+                      <%= r.label :status, class: 'required' %>
+                    </div>
+                    <div class="col-xs-9 col-md-4">
+                        <%= r.select :status,
+                          options_for_select({ "Active" => "0", "Pending" => "1", "Off" => "2" },"#{room.status}"),
+                          {prompt: "Choose one..."},
+                          :required => true,
+                          class: "form-control" %>
+                    </div>
+                </div>
+                <%= r.hidden_field :residential_listing_id, value: @residential_unit.id %>
+                <div class="row vertical-margin-lg">
+                    <div class="col-xs-3 col-md-2">
+                      <%= r.label :rent %>
+                    </div>
+                    <div class="col-xs-9 col-md-4">
+                      <%= r.text_field :rent, class: 'form-control' %>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                  <%= r.label :description, "Description" %>
+                </div>
+                <div class="col-md-9">
+                  <small class="explainer-text"><em>
+                    Tip: Enter 2 blank lines to separate paragraphs.
+                  </small></em>
+                  <br><br>
+                  <%= r.bootsy_area :description, class: 'form-control',
+                      rows: 15 %>
+                  <br>
+                </div>
+                <div class="row vertical-margin-lg">
+                    <div class="col-xs-3 col-md-2">
+                      <%= r.label :file %>
+                    </div>
+                    <div class="col-md-12">
+                      <%#= file_field_tag :image, multiple: true %>
+                      <%#= r.file_field "images[]", multiple: true, class: 'form-control' %>
+                      <div class="col-xs-9 col-md-4">
+                        <%= r.file_field :file, multiple: true, class: 'form-control' %>
+                      </div>
+                      <br><br>
+                      <% if room.images.present? %>
+                        <% room.images.each do |img|%>
+                          <div class="img-wrap">
+                            <%= image_tag img.file.url(:thumb), "data-id": "#{img.id}", id: "image_#{img.id}" %>
+                            <span class="close"><%= link_to image_tag("dialog-close.png", border: 0, width: 25, height: 25), room_image_delete_path(img.id), data: {confirm: "Are you sure you want to delete image?"}, id: "link_#{img.id}", remote: true %></span>
+                          </div>
+                        <% end %>
+                      <%end%>
+                    </div>
+                </div>
+              <% end %>
+            <% end %>
+             <div class="row vertical-margin-lg">
+              <div class="col-md-12 col-md-offset-3">
+                <div class="actions col-md-3">
+                  <%= submit_tag "Update Rooms", class: "btn btn-warning btn-block" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <%# end %>
+
+      </div><!-- end tabpanel home -->
+    </div><!-- tab content -->
+  <% end %>
+
+  </div><!-- panelbody -->
+</div><!-- panel -->
+
+</div>
+<script type="text/javascript">
+  (function()
+    {
+      if( window.localStorage )
+      {
+        if( !localStorage.getItem( 'firstLoad' ) )
+        {
+          localStorage[ 'firstLoad' ] = true;
+          window.location.reload();
+        }
+        else
+          localStorage.removeItem( 'firstLoad' );
+      }
+    })();
+</script>

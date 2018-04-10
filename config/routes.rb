@@ -104,6 +104,10 @@ Rails.application.routes.draw do
       get 'neighborhood_options'
     end
   end
+  get 'rooms_image_delete/:id' => "rooms#room_image_delete", as: :room_image_delete
+  post 'rooms/:id' => "rooms#room_update", as: :room_update
+  resources :rooms
+  get 'residential_listings/room_index' => "residential_listings#room_index", as: :room_index
   post 'residential_listings/generate_custom_email' => "residential_listings#generate_custom_email", as: :generate_custom_email
   get 'residential_listings/send_custom_email' => "residential_listings#send_custom_email", as: :send_custom_email
   get 'residential_listings/claim_for_streeteasy' => "residential_listings#claim_for_streeteasy", as: :claim_for_streeteasy

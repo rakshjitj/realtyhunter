@@ -4,6 +4,7 @@ class ResidentialListing < ApplicationRecord
   queue = :residential_listings
   has_and_belongs_to_many :residential_amenities
   has_many :roommates
+  has_many :rooms
   belongs_to :unit, touch: true
   accepts_nested_attributes_for :unit #, allow_destroy: true
   before_save :process_custom_amenities

@@ -4,14 +4,14 @@ class Ability
   def common_permissions(user)
     # everyone can filter, send error reports
     can :filter, Building, company_id: user.company_id
-    can [:filter, :neighborhoods_modal, :features_modal, :print_list], [ResidentialListing, CommercialListing]
-    can [:inaccuracy_modal, :send_inaccuracy, :print_modal, :print_public, :print_private], [ResidentialListing, CommercialListing]
-    can [:autocomplete_building_formatted_street_address], [ResidentialListing, CommercialListing, Building]
-    can [:autocomplete_landlord_code], [ResidentialListing, Landlord]
-    can [:update_announcements, :update_announcements_mobile, :check_in, :check_in_options], [ResidentialListing]
+    can [:filter, :neighborhoods_modal, :features_modal, :print_list], [ResidentialListing, CommercialListing, Room]
+    can [:inaccuracy_modal, :send_inaccuracy, :print_modal, :print_public, :print_private], [ResidentialListing, CommercialListing, Room]
+    can [:autocomplete_building_formatted_street_address], [ResidentialListing, CommercialListing, Building, Room]
+    can [:autocomplete_landlord_code], [ResidentialListing, Landlord, Room]
+    can [:update_announcements, :update_announcements_mobile, :check_in, :check_in_options], [ResidentialListing, Room]
     can [:autocomplete_user_name, :filter, :filter_listings, :coworkers, :subordinates], [User]
 
-    can [:send_listings], [ResidentialListing, CommercialListing]
+    can [:send_listings], [ResidentialListing, CommercialListing, Room]
     # every employee should be able to see their waterfall info
     can :show, UserWaterfall, parent_agent_id: user.id
     can :read, Announcement
@@ -20,7 +20,7 @@ class Ability
   def posting_permissions(user)
     can :manage, Building, :company_id => user.company.id
     can :manage, Announcement
-
+    can :manage, Room
     can :manage, ResidentialListing do |residential_listing|
       !residential_listing.unit || residential_listing.unit.building.company_id == user.company_id
     end
@@ -48,6 +48,7 @@ class Ability
   def common_managerial_permissions(user)
     #can :manage, Roommate, :company_id => user.company.id
     can :manage, Neighborhood
+    can :manage, Room
     can :manage, BuildingAmenity, :company_id => user.company.id
     can :manage, ResidentialAmenity, :company_id => user.company.id
     can :manage, Utility, :company_id => user.company.id
@@ -68,7 +69,7 @@ class Ability
     can :read, ResidentialAmenity, company_id: user.company.id
     can :read, Utility, company_id: user.company.id
     can :read, Building, company_id: user.company_id
-
+    can :manage, Room
     can :manage, ResidentialListing do |residential_listing|
       residential_listing.unit.building.company_id == user.company_id
     end

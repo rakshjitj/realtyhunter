@@ -1,0 +1,762 @@
+<!--% cache([@residential_unit, current_user.employee_title.name, request.variant.to_s,
+ 		@residential_unit.unit.updated_at,
+ 		@residential_unit.unit.building.updated_at,
+ 		@residential_unit.unit.building.landlord.updated_at
+ 		]) do %-->
+
+ <% provide(:title, @residential_unit.street_address_and_unit) %>
+
+<div class="mobile-show-page-wrap no-margin-padding">
+	<div class="row">
+	  <div class="col-xs-12 col-md-8 col-md-offset-2">
+	  	<div id="runit-panel" class="panel panel-default">
+
+	  		<div class="panel-heading hidden-md hidden-lg">
+			    <div class="panel-title">
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-7">
+					  		<h2 class="center">
+					  			<%= @residential_unit.street_address_and_unit %>
+					  			<% if @residential_unit.can_roomshare %> (RS)<% end %>
+					  		</h2>
+					  		<p class="center">
+				  				<%= small_header(@residential_unit) %>
+				  			</p>
+
+					  		<span class="flex-row">
+					  			<span class="flex-even-item">
+					  				<h3>
+					  					<%= rent_formatted(@residential_unit.unit.rent) %>
+					  				</h3>
+					  			</span>
+					  			<span class="flex-even-item text-right">
+					  			<h3>
+					  				<%= beds_as_str(@residential_unit) %> / <%= baths_as_str(@residential_unit) %>
+					  			</h3>
+					  			</span>
+					  		</span>
+
+				  			<span class="flex-row">
+					  			<span class="flex-even-item">
+				  					<%= render 'market_status' %>
+				  				</span>
+				  				<span class="flex-even-item text-right">
+				  					Available <%= @residential_unit.unit.available_by %>
+				  				</span>
+				  			</span>
+				  		</div>
+
+				  	</div><!-- row -->
+				  </div><!-- panel title -->
+				</div><!-- panel heading -->
+
+			  <div class="panel-heading hidden-xs hidden-sm">
+			    <div class="panel-title">
+			    	<div class="row">
+				  		<div class="col-xs-12 col-md-7">
+					  		<h1>
+					  			<%= @residential_unit.street_address_and_unit %>
+					  			<% if @residential_unit.can_roomshare %> (RS)<% end %>
+					  		</h1>
+					  		<p>
+				  				<%= small_header(@residential_unit) %>
+				  			</p>
+				  		</div>
+				  		<div class="col-xs-12 col-md-5 text-right">
+				  			<h1><%= rent_formatted(@residential_unit.unit.rent) %></h1>
+				  			<p>
+					  			<%= beds_as_str(@residential_unit) %>/ <%= baths_as_str(@residential_unit) %>
+				  			</p>
+				  		</div>
+				  	</div><!-- row -->
+				  	<div class="row">
+				  		<div class="col-xs-7">
+				  			<p><%= render 'market_status' %></p>
+				  		</div>
+				  		<div class="col-xs-5 text-right">
+				  			<p>Available <%= @residential_unit.unit.available_by %></p>
+				  		</div>
+				  	</div>
+				  </div><!-- panel title -->
+				</div><!-- panel heading -->
+
+				<div class="panel-body">
+					<% if (current_user.id == @residential_unit.unit.primary_agent_id || current_user.id == @residential_unit.unit.streeteasy_primary_agent_id) && !current_user.is_management? %>
+						<%= link_to 'Edit', specific_edit_path(@residential_unit.id) %>
+					<% end %>
+					<% if current_user.is_management? || current_user.is_listings_manager? || current_user.is_photo_manager? %>
+				  	<div class="row hidden-print">
+					  	<div class="col-sm-12">
+					  		<%= link_to 'All Roomshares', room_index_path %> |
+					  		<% if !current_user.is_photo_manager? %>
+				  				<%= link_to 'Edit', edit_room_path(@residential_unit.id) %>
+					    	<% end %>
+					  	</div>
+					  </div>
+					<% end %>
+
+				  <div class="row">
+				  	<div class="col-sm-12 vertical-margin-lg">
+				  		<% if current_user.is_management? %>
+				  			<% if @residential_unit.unit.status == "active" %>
+				  				<%= form_for(@residential_unit,
+					  				url: mark_app_submitted_residential_listing_path(@residential_unit),
+					  				method: 'patch',
+					  				html: {class: "form-inline inline"}) do |f| %>
+						  			<%= f.submit 'Submit application',
+							  				class: "btn btn-warning btn-sm vertical-margin-sm",
+							  				data: { confirm: "Are you sure you want to put in an application on #{@residential_unit.street_address_and_unit}?" } %>
+							  	<% end %>
+							  <% end %>
+
+					  		<%= link_to 'Make Announcement', new_announcement_path(
+					  			{ address: @residential_unit.unit.building.formatted_street_address }),
+					  			class: "btn btn-warning btn-sm link-as-button vertical-margin-sm" %>
+					  		<%= link_to 'Add a Deal', new_deal_path(
+					  				unit_id: @residential_unit.unit_id,
+					  				user_id: @residential_unit.unit.primary_agent),
+				    			class: 'btn btn-warning btn-sm link-as-button vertical-margin-sm' %>
+					  	<% end %>
+			  		</div>
+			    </div>
+
+		    	<div class="row">
+		    		<div class="col-md-12">
+		    			<!-- begin photos -->
+		    			<% r = 1 %>
+		    			<% @residential_unit.rooms.sort {|x,y| -(y <=> x)}.each do |room| %>
+		    				<div class="col-md-12" style="margin-bottom: 20px;border-bottom: 2px solid #ddd;">
+								<div class="col-md-6">
+									<div class="row">
+					    				<div class="col-xs-5">
+							    			<strong>Room:</strong>
+							    		</div>
+							    		<div class="col-xs-7">
+							    			<%= r %>
+							    		</div>
+							    	</div>
+							    	<div class="row">
+					    				<div class="col-xs-5">
+							    			<strong>Price:</strong>
+							    		</div>
+							    		<div class="col-xs-7">
+							    			<%= room.rent %>
+							    		</div>
+							    	</div>
+							    	<div class="row">
+					    				<div class="col-xs-5">
+							    			<strong>Description:</strong>
+							    		</div>
+							    		<div class="col-xs-7">
+							    			<%= room.description %>
+							    		</div>
+							    	</div>
+							    	<div class="row">
+					    				<div class="col-xs-5">
+							    			<strong>Status:</strong>
+							    		</div>
+							    		<div class="col-xs-7">
+							    			<% if room.status == 0 %>
+						                      <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
+						                    <% elsif room.status == 1 %>
+						                      <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
+						                    <% elsif room.status == 2 %>
+						                      <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+						                    <% end %>
+							    		</div>
+							    	</div>
+				    			</div>
+								<div class="col-md-6">
+								  	<% if room.images.length > 0  %>
+											<div id="residential_unit-carousel_<%= r%>" class="carousel slide" data-ride="carousel" data-interval="false">
+											  <!-- Wrapper for slides -->
+											  <div class="carousel-inner" role="listbox">
+											  <!-- first display building photos... -->
+											  	<% room.images.each do |image| %>
+											  		<div class="item">
+													    <%= image_tag image.file.url(:large), :class => 'img-responsive center-block',
+													      	alt: image.file.url(:large)  %>
+
+												    </div>
+											  	<% end %>
+											  </div>
+
+											  <!-- Controls -->
+											  <% if room.images.length > 1 %>
+												  <a class="left carousel-control" href="#residential_unit-carousel_<%= r%>" role="button" data-slide="prev">
+												    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+												    <span class="sr-only">Previous</span>
+												  </a>
+												  <a class="right carousel-control" href="#residential_unit-carousel_<%= r%>" role="button" data-slide="next">
+												    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+												    <span class="sr-only">Next</span>
+												  </a>
+											  <% end %>
+											</div>
+
+											<!-- clickable navigation -->
+											<!-- first building photos... -->
+											<% if room.images.length > 1 %>
+												<% i = 0 %>
+												<% for i in 0..room.images.length-1 %>
+													<% image = room.images[i] %>
+										  		<a href="#residential_unit-carousel_<%= r%>" data-slide-to="<%= i %>">
+											      <%= image_tag image.file.url(:thumb), :class => 'photo-inline',
+											      	alt: image.file.url(:thumb) %>
+											    </a>
+										  	<% end %>
+										  <% end %>
+
+									  <% else %>
+									  	<!-- placeholder image -->
+				              <%= image_tag "listing_soon.png", alt: "Image coming soon",
+				              	:class => 'img-responsive center-block', width: "80%" %>
+									  <% end %>
+							  <!-- end photos -->
+							 	</div>
+							 	<% r = r + 1 %>
+							</div>
+						<% end %>
+
+		    		</div>
+		    	</div><!-- row -->
+
+		    	<br />
+		    	<div class="row">
+		    		<div class="col-md-6">
+		    			<div class="row">
+		    				<div class="col-xs-5">
+				    			<strong>Building:</strong>
+				    		</div>
+				    		<div class="col-xs-7">
+				    			<%= link_to @residential_unit.unit.building.street_address, @residential_unit.unit.building %>
+				    		</div>
+		    			</div>
+		    			<div class="row">
+		    				<div class="col-xs-5">
+				    			<strong>Unit:</strong>
+				    		</div>
+				    		<div class="col-xs-7">
+				    			<%= @residential_unit.unit.building_unit %>
+				    			<% if @residential_unit.can_roomshare %>
+				    				<strong>(RS)</strong>
+				    			<% end %>
+				    		</div>
+		    			</div>
+		    			<div class="row">
+		    				<div class="col-xs-5">
+				    			<strong>Price:</strong>
+				    		</div>
+				    		<div class="col-xs-7">
+				    			<%= rent_formatted(@residential_unit.unit.rent) %>
+				    		</div>
+		    			</div>
+		    			<div class="row">
+		    				<div class="col-xs-5">
+				    			<strong>Beds/Baths:</strong>
+				    		</div>
+				    		<div class="col-xs-7">
+				    			<%= @residential_unit.beds %> / <%= trim_zeros(@residential_unit.baths) %>
+				    		</div>
+		    			</div>
+		    			<div class="row">
+		    				<div class="col-xs-5">
+				    			<strong>Available:</strong>
+				    		</div>
+				    		<div class="col-xs-7">
+				    			<% if @residential_unit.unit.available_by %>
+										<%= @residential_unit.unit.available_by %>
+									<% else %>
+										-
+									<% end %>
+								</div>
+		    			</div>
+		    			<div class="row">
+		    				<div class="col-xs-5">
+				    			<strong>Rental Term:</strong>
+				    		</div>
+				    		<div class="col-xs-7">
+				    			<% if @residential_unit.unit.building.rental_term %>
+					    			<%= @residential_unit.unit.building.rental_term.name.titleize %>
+					    		<% else %>
+					    			-
+					    		<% end %>
+				    		</div>
+		    			</div>
+		    			<div class="row">
+				    		<div class="col-xs-5">
+				    			<strong>Utilities:</strong>
+				    		</div>
+				    		<div class="col-xs-7">
+				    			<% if !@residential_unit.unit.building.utilities_to_s.empty? %>
+					    			<%= @residential_unit.unit.building.utilities_to_s.titleize %>
+					    		<% else %>
+					    			-
+					    		<% end %>
+				    		</div>
+				    	</div>
+		    		</div>
+
+		    		<div class="col-md-6">
+		    			<div class="row">
+		    				<div class="col-xs-5">
+				    			<strong>Pet Policy:</strong>
+				    		</div>
+				    		<div class="col-xs-7">
+				    			<%= pet_policy(@residential_unit) %>
+				    		</div>
+		    			</div>
+
+		    			<div class="row">
+		    				<div class="col-xs-5">
+				    			<strong>Landlord:</strong>
+				    		</div>
+				    		<div class="col-xs-7">
+				    			<% if current_user.is_management? || current_user.is_listings_manager? %>
+										<%= link_to @residential_unit.unit.building.landlord.code, @residential_unit.unit.building.landlord %>
+									<% else %>
+										<%= @residential_unit.unit.building.landlord.code %>
+									<% end %>
+				    		</div>
+		    			</div>
+		    			<div class="row">
+		    				<div class="col-xs-5">
+				    			<strong>Lease duration:</strong>
+				    		</div>
+				    		<div class="col-xs-7">
+				    			<%= lease_duration(@residential_unit) %>
+				    		</div>
+		    			</div>
+		    			<div class="row">
+		    				<!-- Broker's Fee -->
+				    		<% if @residential_unit.has_fee %>
+				    			<div class="col-xs-5">
+					    			<strong>Tenant Pays:</strong>
+					    		</div>
+					    		<div class="col-xs-7">
+				    			<% if @residential_unit.tp_fee_percentage %>
+					    			<%= @residential_unit.tp_fee_percentage %>%
+					    		<% else %>
+					    			<% if @residential_unit.unit.building.landlord.tp_fee_percentage %>
+					    				<%= @residential_unit.unit.building.landlord.tp_fee_percentage %>%
+					    			<% end %>
+					    		<% end %>
+				    			</div>
+				    		<!-- No Broker's Fee -->
+				    		<% else %>
+				    			<div class="col-xs-5">
+					    			<strong>OP Pays:</strong>
+					    		</div>
+					    		<div class="col-xs-7">
+				    			<% if @residential_unit.op_fee_percentage %>
+					    			<%= @residential_unit.op_fee_percentage %>%
+					    		<% else %>
+					    			<% if @residential_unit.unit.building.landlord.op_fee_percentage %>
+					    				<%= @residential_unit.unit.building.landlord.op_fee_percentage %>%
+					    			<% end %>
+					    		<% end %>
+					    		</div>
+				    		<% end %>
+		    			</div>
+		    			<div class="row">
+		    				<div class="col-xs-5">
+				    			<strong>Primary agent:</strong>
+				    		</div>
+				    		<div class="col-xs-7">
+				    			<% if @residential_unit.unit.primary_agent %>
+				    				<%= link_to @residential_unit.unit.primary_agent.name, @residential_unit.unit.primary_agent %>
+				    			<% end %>
+				    		</div>
+		    			</div>
+		    			<div class="row">
+		    				<div class="col-xs-5">
+				    			<strong>Listing ID:</strong>
+				    		</div>
+				    		<div class="col-xs-7">
+				    			<%= @residential_unit.unit.listing_id %>
+				    		</div>
+		    			</div>
+		    		</div>
+		    	</div>
+
+					<% if @residential_unit.unit.access_info %>
+			    	<br />
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-3">
+			    			<strong>Access info:</strong>
+			    		</div>
+			    		<div class="col-xs-12 col-md-9">
+			    			<div class="disclaimer"><%= occupancy_status(@residential_unit) %></div>
+			    			<% if @residential_unit.unit.has_stock_photos %>
+				    			<div class="disclaimer">Has Stock Photos</div>
+				    		<% end %>
+			    			<div class="access-info">
+				    			<%= @residential_unit.unit.access_info %>
+				    		</div>
+			    		</div>
+			    	</div>
+			    <% end %>
+
+
+					<!-- Open House Schedule Section - START -->
+					<% open_houses = @residential_unit.unit.open_houses %>
+
+					<% if open_houses.any? %>
+			    	<br />
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-3">
+			    			<strong>Open Houses:</strong>
+			    		</div>
+			    		<div class="col-xs-12 col-md-9">
+			    			<% open_houses.each do |oh| %>
+			    				<%= oh.day.strftime('%b-%d-%Y') %> <%= oh.start_time.strftime("%I:%M %p") %> -
+			    				<%= oh.end_time.strftime("%I:%M %p") %>
+			    				<br>
+			    			<% end %>
+			    		</div>
+			    	</div>
+			    <% end %>
+
+		    	<!-- Building info -->
+		    	<% bldg_amenities = @residential_unit.unit.building.amenities_to_s %>
+		    	<% if !bldg_amenities.blank? %>
+			    	<br />
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-3">
+			    			<strong>Building Amenities:</strong>
+			    		</div>
+			    		<div class="col-xs-12 col-md-9">
+			    			<%= bldg_amenities %>
+			    		</div>
+			    	</div>
+			    <% end %>
+
+		    	<!-- Unit info -->
+		    	<% unit_amenities = @residential_unit.amenities_to_s %>
+		    	<% if !unit_amenities.blank? %>
+			    	<br />
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-3">
+			    			<strong>Unit Amenities:</strong>
+			    		</div>
+			    		<div class="col-xs-12 col-md-9">
+			    			<%= unit_amenities %>
+			    		</div>
+			    	</div>
+			    <% end %>
+			    <%# abort @residential_unit.unit.audits.inspect %>
+			    <% if @residential_unit.unit.audits %>
+					<br />
+					<div class="row">
+						<div class="col-xs-12 col-md-3">
+							<strong>Price Changes</strong>
+						</div>
+						<div class="col-xs-12 col-md-9">
+							<% @residential_unit.unit.audits.each do |audit| %>
+								<%# abort audit.audited_changes.inspect %>
+								<% if audit.audited_changes["rent"] %>
+									<%# abort audit.audited_changes["rent"][0].inspect %>
+								<%# for i in 0..record_list.length - 1 %>
+									<div class="row">
+										<div class="col-xs-12">
+										<%= User.find(audit.user_id).name %> changed rent form <%= audit.audited_changes["rent"][0] %> to <%= audit.audited_changes["rent"][1] %> on <%= audit.created_at.strftime("%b-%d-%Y %I:%M %P") %>
+										</div>
+									</div>
+								<% end %>
+							<% end %>
+						</div>
+					</div><!-- row -->
+				<% end %>
+
+			    <% if !escape_once(@residential_unit.unit.building.landlord.notes).blank? %>
+			    	<br />
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-12">
+			    			<strong>Landlord Notes:</strong>
+			    		</div>
+			    	</div>
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-12">
+			    			<%= h raw sanitize @residential_unit.unit.building.landlord.notes,
+		            		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div) %>
+			    		</div>
+			    	</div>
+			    <% end %>
+
+			    <% if !escape_once(@residential_unit.unit.building.notes).blank? %>
+			    	<br />
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-12">
+			    			<strong>Building Notes:</strong>
+			    		</div>
+			    	</div>
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-12">
+	            	<%= h raw sanitize @residential_unit.unit.building.notes,
+	            			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div) %>
+			    		</div>
+			    	</div>
+			    <% end %>
+
+			    <% if !@residential_unit.notes.blank? %>
+			    	<br />
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-12">
+			    			<strong>Private unit notes:</strong>
+			    		</div>
+			    	</div>
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-12">
+			    			<%= @residential_unit.notes %>
+			    		</div>
+			    	</div>
+			    <% end %>
+
+			    <% if !@residential_unit.description.blank? %>
+						<br />
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-12">
+			    			<strong>Public Unit Description:</strong>
+			    		</div>
+			    	</div>
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-12">
+			    			<% if @residential_unit.unit.exclusive? %>
+			    				<strong class="exclusive">Myspace Exclusive!</strong>
+			    				<br />
+			    			<% end %>
+			    			<% if !escape_once(@residential_unit.description).blank? %>
+		            	<%= h raw sanitize @residential_unit.description,
+		            			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div) %>
+		            <% end %>
+			    		</div>
+			    	</div>
+			    <% end %>
+
+			    <% if !@residential_unit.unit.public_url.blank? %>
+			    	<br />
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-12">
+			    			<strong>Public URL:</strong>
+			    		</div>
+			    	</div>
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-12">
+					    	<a href="<%= @residential_unit.unit.public_url %>" target="_blank">
+					    		<%= @residential_unit.unit.public_url %>
+					    	</a>
+					    </div>
+					   </div>
+			    <% end %>
+
+		    	<% if @residential_unit.unit.documents.count > 0 %>
+		    	<br />
+		    	<div class="row">
+		    		<div class="col-md-12">
+		    			<h3>Documents</h3>
+		    		</div>
+		    	</div>
+
+		    	<div class="row">
+		    		<div class="col-md-12">
+		    			<ul>
+		    				<% @residential_unit.unit.documents.each do |document| %>
+								  <li><%= link_to document.file_file_name, document.file.url %></li>
+								<% end %>
+		    			</ul>
+		    		</div>
+		    	</div>
+		    	<% end %>
+
+		    	<!-- draw icons representing roommates -->
+		    	<% if @residential_unit.can_roomshare %>
+			    	<br />
+			    	<div class="row">
+			    		<div class="col-md-12">
+			    			<h3>Assigned Roomates</h3>
+			    		</div>
+			    	</div>
+			    	<div class="row">
+			    		<div class="col-md-12">
+				    		<% for idx in 0..@residential_unit.beds-1 %>
+				    			<div class="roommate_no_photo_icon col-xs-2 center">
+				    				<!-- if the roommate exists -->
+					    			<% if idx < @residential_unit.roommates.count && @residential_unit.roommates[idx] %>
+					    				<% roommate = @residential_unit.roommates[idx] %>
+					    				<!-- if the roommate has a picture -->
+					    				<% if roommate.upload_picture_of_yourself %>
+						    				<%= link_to image_tag(roommate.upload_picture_of_yourself, class: 'img-responsive',
+					      					alt: roommate.upload_picture_of_yourself), roommate %>
+					      			<% else %>
+					      				<!-- otherwise the roommate is valid but has no photo -->
+					      			<% end %>
+				      				<%= link_to roommate.name.titleize, roommate %>
+					    			<% else %>
+					    				<!-- if there's no roommate -->
+					    				Unassigned<br />&nbsp;
+					    			<% end %>
+					    		</div>
+				    		<% end %>
+				    		<br />
+				    	</div>
+				    </div>
+				  <% end %>
+
+		    	<br />
+		    	<div class="row map-walkscore-tabs">
+		    		<div class="col-md-12">
+		    			<!-- Nav tabs -->
+					    <ul class="nav nav-tabs" role="tablist">
+					      <li role="google-map-tab" class="active"><a href="#google-map-tab" aria-controls="google-map-tab"
+					      	role="tab" data-toggle="tab">Map</a></li>
+					      <li role="walkscore"><a href="#walkscore" aria-controls="walkscore" role="tab" data-toggle="tab">Walkscore</a></li>
+					    </ul>
+
+		    			<div class="tab-content">
+					      <!-- ******************** first tablpanel - google maps ******************** -->
+					      <div role="tabpanel" class="tab-pane fade in active" id="google-map-tab">
+					      	<iframe id="map-canvas"
+									  frameborder="0"
+									  src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_MAPS_KEY'] %>
+									    &q=<%= @residential_unit.unit.building.formatted_street_address %>"
+									  allowfullscreen>
+									</iframe>
+					      </div><!-- end tabpanel - google maps -->
+					      <!-- ******************** first tabpanel - walkscore ********************-->
+					      <div role="tabpanel" class="tab-pane fade center" id="walkscore">
+						      <script type='text/javascript'>
+										var ws_wsid = 'gb820f7f75c11494997305a7076a04bfb';
+										var ws_address = '<%= @residential_unit.unit.building.formatted_street_address %>';
+										var ws_format = 'wide';
+										var ws_width = '690';
+										var ws_height = '525';
+									</script>
+									<style type='text/css'>
+										#ws-walkscore-tile{position:relative;text-align:left}#ws-walkscore-tile *{float:none;}
+									</style>
+									<div id='ws-walkscore-tile'></div>
+									<script type='text/javascript' src='http://www.walkscore.com/tile/show-walkscore-tile.php'>
+									</script>
+	    					</div><!-- end tabpanel - walkscore -->
+	    				</div>
+		    		</div>
+		    	</div><!-- row -->
+
+		    	<br>
+		    	<%= render 'residential_listings/similar_listings' %>
+
+					<br>
+		    	<div class="row inaccuracy-report">
+		    		<div class="col-xs-12">
+			    		<h3>Provide Feedback</h3>
+			    		<%= form_for(@residential_unit,
+			    				url: send_inaccuracy_residential_listing_path(@residential_unit)) do |f| %>
+								<div class="modal-body2">
+									<p>
+										What is your feedback for <%= @residential_unit.street_address_and_unit %>?
+										The more detail you can provide, the better.
+									</p>
+									<br>
+
+									<div class="checkbox checkbox-warning inline">
+                		<%= check_box_tag :price_drop_request %>
+		                <label for="roomsharing_filter">
+		                  Request a price drop
+		                </label>
+		              </div>
+
+								  <%= f.text_area :inaccuracy_description, rows: 5, class: 'form-control' %>
+								</div>
+								<div class="modal-footer">
+									<%= f.submit 'Send', class: 'btn btn-danger submit-link' %>
+								</div>
+							<% end %>
+			    	</div>
+			    </div>
+
+			    <% sorted_changelist = pretty_audit_changes(@residential_unit) %>
+			    <% if sorted_changelist.keys.length > 0 %>
+			    	<div class="row history-report">
+			    		<div class="col-xs-12">
+			    			<h3>Recent Changes</h3>
+					    	<% sorted_changelist.each do |k, record_list| %>
+					    		<% for i in 0..record_list.length - 1 %>
+					    			<div class="row">
+					    				<div class="col-xs-12">
+							    			<%= record_list[i] %>
+							    		</div>
+						    		</div>
+					    		<% end %>
+					    	<% end %>
+					  	</div>
+					</div><!-- row -->
+				<% end %>
+
+				</div><!-- panel body -->
+			</div><!-- runit-panel -->
+		</div><!-- main centered column -->
+	</div><!-- row -->
+
+</div>
+
+	<%= render 'residential_listings/footer_show_mobile' %>
+
+<!-- modals that are common to show/index pages -->
+<%# Template Dependency: layouts/modals %>
+<%= render 'layouts/modals' %>
+<%= render 'modals' %>
+
+<!-- Print Modal: only on the show page -->
+<div class="modal fade modal-fullscreen" id="printModal" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Generating Printable PDF</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="row">
+        	<div class="col-md-12">
+        		<p>Please be patient, generating pdfs can take a few moments. </p>
+        		<br />
+        	</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-3 form-label-responsive">
+
+          </div>
+          <div class="col-xs-9">
+            <p>
+              For <strong>internal</strong> use only. Includes sensitive data about listings such as the
+              address, landlord info, current tenant info, etc
+            </p>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-xs-3 form-label-responsive">
+
+          </div>
+          <div class="col-xs-9">
+            <p>For <strong>external</strong> use</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+<script type="text/javascript">
+	window.addEventListener('popstate', function(event) {
+	    // The popstate event is fired each time when the current history entry changes.
+	    location.reload();
+	}, false);
+</script>
+<!--% end %--><!-- cache -->

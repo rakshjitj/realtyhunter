@@ -462,6 +462,16 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
+  def room_index
+    @residential_listings = ResidentialListing.where(roomshare_department: true)
+    @residential_units = ResidentialListing.search(params, current_user, params[:building_id])
+
+    @residential_listings = @residential_units.each.map(&:id) & @residential_listings.each.map(&:id)
+    @residential_listings = ResidentialListing.where(id: @residential_listings)
+    set_residential_listings
+
+  end
+
   # GET
   # handles ajax call. uses latest data in modal
   def delete_modal
@@ -671,8 +681,14 @@ class ResidentialListingsController < ApplicationController
       custom_sort
 
       # display all found listings on the map
-      @map_infos = ResidentialListing.set_location_data(
+      #@residential_units = @residential_units.to_a & @residential_listings.to_a
+      if action_name == "room_index"
+        @map_infos = ResidentialListing.set_location_data(
+          @residential_units.to_a & @residential_listings.to_a, @res_images, @bldg_images)
+      else
+        @map_infos = ResidentialListing.set_location_data(
           @residential_units.to_a, @res_images, @bldg_images)
+      end
 
       # only get data + images for paginated responses
       @residential_units = @residential_units.page params[:page]
@@ -728,7 +744,17 @@ class ResidentialListingsController < ApplicationController
       end
 
       @residential_units = ResidentialListing.search(params, current_user, params[:building_id])
+      # remove listing who has more then 2 rooms booked
+      @residential_units.each do |res_list|
+        if !res_list.rooms.blank?
+          if res_list.rooms.where(status: [1,2]).count > 2
+            @residential_units = @residential_units.where("residential_listings.id != :id", id: res_list.id)
+          end
+        end
+      end
+      #end of more then 2 rooms book code
 
+      #abort @residential_units.inspect
       @announcement_items = Announcement.search({limit: 4})
     end
 
@@ -757,7 +783,7 @@ class ResidentialListingsController < ApplicationController
         :has_fee, :op_fee_percentage, :tp_fee_percentage,
         :available_starting, :available_before, :custom_amenities,
         :roomsharing_filter, :unassigned_filter, :tenant_occupied_filter, :streeteasy_filter,
-        :no_description,:no_images,
+        :no_description,:no_images, :roomshare_department,
         :primary_agent_id, :favorites, :show,
         :expose_address, :floor, :total_room_count, :condition, :showing_instruction,
         :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,

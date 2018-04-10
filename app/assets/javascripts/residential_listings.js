@@ -736,11 +736,14 @@
     var editPage = $('.residential_listings.edit').length;
     var newPage = $('.residential_listings.new').length;
     var indexPage = $('.residential_listings.index').length;
+    var indexPageIn = $('.residential_listings.room_index').length;
 
     // new and edit pages both render the same form template, so init them using the same code
     if (editPage || newPage || specificEditPage) {
       ResidentialListings.initEditor();
     } else if (indexPage) {
+      ResidentialListings.initIndex();
+    }else if (indexPageIn) {
       ResidentialListings.initIndex();
     } else {
       ResidentialListings.initShow();

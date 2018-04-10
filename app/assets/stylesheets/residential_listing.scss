@@ -288,3 +288,13 @@ $mobile-footer-height: 65px;
 .fa.fa-clone {
     padding: 5px;
 }
+.img-wrap {
+    position: relative;
+    float: left;
+    margin-left: 25px;
+    margin-bottom: 25px;
+}
+.img-wrap .close {
+    position: relative;
+    z-index: 100;
+}

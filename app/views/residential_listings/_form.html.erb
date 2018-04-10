@@ -750,6 +750,22 @@
             </div>
           </div>
         <% end %>
+
+        <div id="roomshare_disp">
+          <div class="row vertical-margin-lg">
+              <div class="col-xs-3 col-md-4">
+                <%= f.label :roomshare_department, "Add to Roomshare Department" %>
+              </div>
+              <div class="col-xs-9 col-md-7">
+                <div class="checkbox checkbox-warning checkbox-inline">
+                  <%= f.check_box :roomshare_department, class: "styled",
+                      checked: @residential_unit ? @residential_unit.roomshare_department : false %>
+                  <label></label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <%= hidden_field_tag :update_status_info %>
         <br>
         <div class="row vertical-margin-lg">
@@ -796,6 +812,13 @@
           localStorage.removeItem( 'firstLoad' );
       }
     })();
+
+    if($("#residential_listing_beds").val() >= 3){
+      $("#roomshare_disp").css("display", "block");
+    }
+    else{
+     $("#roomshare_disp").css("display", "none");
+    }
 
   // $("#access-btn").click(function(){
   //   address = $("#residential_listing_unit_building_id :selected").text();
@@ -850,7 +873,7 @@
   $("#residential_listing_streeteasy_flag_one").click(function(){
     if($("#residential_listing_streeteasy_flag_one").prop("checked") == true && $("#residential_listing_unit_streeteasy_primary_agent_id").val() == ""){
       alert("You are not allow to claim this property")
-      return false;
+      
     }
     if($("#residential_listing_streeteasy_flag").prop("checked") == false){
       $("#residential_listing_streeteasy_flag").prop("disabled", false);

@@ -1,0 +1,148 @@
+<!-- Duplicate Modal -->
+<div class="modal fade modal-fullscreen" id="runitDuplicateModal" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Duplicate this unit</h4>
+      </div>
+      <div id="placeholder-body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Take off Modal -->
+<div class="modal fade modal-fullscreen" id="unitTakeOffModal" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Take Off Market</h4>
+      </div>
+      <div id="placeholder-body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Assign Modal -->
+<div class="modal fade modal-fullscreen" id="unitAssignModal" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Assign Primary Agent</h4>
+      </div>
+      <%= form_tag(assign_residential_listings_path, remote:true) do %>
+        <div class="modal-body">
+          You've selected the following listings:
+        </div>
+        <div class="modal-footer">
+          <%= submit_tag "Assign", class:"btn btn-warning btn-submit" %>
+          <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Unassign Modal -->
+<div class="modal fade modal-fullscreen" id="unitUnassignModal" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Remove Primary Agent</h4>
+      </div>
+        <%= form_tag(unassign_residential_listings_path, remote:true) do %>
+        <div class="modal-body">
+          <p>Are you sure you want to remove the primary agent from the folowing listings?</p>
+        </div>
+        <div class="modal-footer">
+          <%= submit_tag "Unassign", class:"btn btn-warning btn-submit" %>
+          <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Email Modal -->
+<div class="modal fade modal-fullscreen" id="emailModal" tabindex="-1" role="dialog"
+  aria-labelledby="emailModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <%= form_tag(send_listings_residential_listings_path, remote:true) do %>
+      <div class="modal-body">
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "residential_listing[from]", "From", class: 'required' %>
+            <%= text_field_tag "residential_listing[from]", nil, class: 'form-control', required: true %>
+          </div>
+        </div>
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "residential_listing[recipients]", "Recipients", class: 'required' %>
+            <i><small>Use commas to separate email addresses</small></i>
+            <%= text_field_tag "residential_listing[recipients]", nil, class: 'form-control', required: true %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "residential_listing[title]", "Title", class: 'required' %>
+            <%= text_field_tag "residential_listing[title]", "Check out these great listings!", class: 'form-control', required: true %>
+          </div>
+        </div>
+
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+            <%= label_tag "residential_listing[message]", "Message" %>
+            <%= text_area_tag "residential_listing[message]", nil, class: 'form-control' %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row vertical-padding">
+          <div class="col-md-12">
+
+          </div>
+        </div>
+
+        <%= hidden_field_tag "residential_listing[listing_ids]" %>
+
+      </div>
+      <div class="modal-footer">
+        <%= submit_tag "Send Email", class:"btn btn-warning" %>
+        <button type="button" class="btn btn-default horizontal-padding" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
+      </div>
+
+      <% end %>
+
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade modal-fullscreen" id="runitDeleteModal" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Delete Unit</h4>
+      </div>
+      <div class="modal-body">
+        Placeholder
+      </div>
+      <div class="modal-footer">
+        <button class="delete-btn">Placeholder</button>
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -2,6 +2,7 @@ class Image < ApplicationRecord
   audited
 	belongs_to :building, touch: true
 	belongs_to :unit, touch: true
+  belongs_to :room, touch: true
   default_scope { order("priority ASC") }
   after_save :check_priority
 

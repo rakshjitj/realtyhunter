@@ -1,0 +1,59 @@
+<div id="residential">
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Send Email</h3>
+  </div>
+  <div class="panel-body">
+    <div class="tab-content">
+      
+        <!-- ******************** third tabpanel - documents ******************** -->
+        
+            <%= form_for(:residential_listing,:url => generate_custom_email_path,
+              html: {multipart: true, class: "dropzone", id: "runit-dropzone-docs"}, method: :post) do |f| %>
+              <div class="fallback">
+              	<div>
+              		<%= label_tag "From" %>
+              	</div>
+                <div>
+                	<%= text_field_tag :from_address %><br><br>
+                </div>
+                <div>
+              		<%= label_tag "To" %>
+              	</div>
+                <div>
+                	<%= text_field_tag :to_address %><br><br>
+                </div>
+                <div>
+              		<%= label_tag "subject" %>
+              	</div>
+                <div>
+                	<%= text_field_tag :subject %><br><br>
+                </div>
+                <div>
+              		<%= label_tag "Body" %>
+              	</div>
+                <div>
+                	<%= text_area_tag :body %><br><br>
+                </div>
+
+                <%= f.submit "Send" %>
+              </div>
+            <% end %>
+
+            <br />
+            <div class="row">
+              <div class="col-md-12">
+               
+                <div class="documents sortable">
+                  
+                </div>
+              </div>
+            </div>
+
+        
+        </div><!-- end tabpanel docs -->
+  </div><!-- panelbody -->
+</div><!-- panel -->
+
+</div>
