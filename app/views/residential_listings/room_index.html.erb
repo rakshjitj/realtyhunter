@@ -285,9 +285,9 @@
         <th data-sort="available_by" class="th-sortable">Available</th>
         <th data-sort="code" class="th-sortable">Landlord</th>
         <!-- <th data-sort="name" class="th-sortable">Primary Agent</th> -->
-        <th data-sort="name" class="th-sortable">StreetEasy Primary Agent</th>
+        <!-- <th data-sort="name" class="th-sortable">StreetEasy Primary Agent</th>
         <th data-sort="name" class="th-sortable">Listing Agent</th>
-        <th data-sort="number" class="th-sortable">Listing Agent Number</th>
+        <th data-sort="number" class="th-sortable">Listing Agent Number</th> -->
         <th data-sort="residential_listings.updated_at" class="th-sortable">Updated</th>
         <th data-sort="units.status" class="th-sortable">Status</th>
         <% if current_user.is_management? || current_user.is_listings_manager? %>
@@ -355,27 +355,27 @@
                 <%= res_list.unit.building.landlord.code %>
               <% end %>
             </td>
-            <td>
-              <% if res_list.unit.streeteasy_primary_agent_id %>
-                <%= User.find(res_list.unit.streeteasy_primary_agent_id).name %>
-              <% else %>
-                --
-              <% end %>
-            </td>
-            <td>
-              <% if res_list.unit.building.landlord.listing_agent %>
-                <%= res_list.unit.building.landlord.listing_agent.name %>
-              <% else %>
-                --
-              <% end %>
-            </td>
-            <td>
-              <% if res_list.unit.building.landlord.listing_agent %>
-                <%= res_list.unit.building.landlord.listing_agent.mobile_phone_number %>
-              <% else %>
-                --
-              <% end %>
-            </td>
+            <!-- <td>
+              <%# if res_list.unit.streeteasy_primary_agent_id %>
+                <%#= User.find(res_list.unit.streeteasy_primary_agent_id).name %>
+              <%# else %>
+
+              <%# end %>
+            </td> -->
+            <!-- <td>
+              <%# if res_list.unit.building.landlord.listing_agent %>
+                <%#= res_list.unit.building.landlord.listing_agent.name %>
+              <%# else %>
+
+              <%# end %>
+            </td> -->
+            <!-- <td>
+              <%# if res_list.unit.building.landlord.listing_agent %>
+                <%#= res_list.unit.building.landlord.listing_agent.mobile_phone_number %>
+              <%# else %>
+
+              <%# end %>
+            </td> -->
             <td>
               <%= time_ago_in_words(res_list.updated_at) %>
             </td>

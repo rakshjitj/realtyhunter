@@ -62,8 +62,6 @@
           <% if current_user.is_management? %>
             <li><%= link_to "Add Open Houses", add_open_hours_path %></li>
           <% end %>
-          <li><%= link_to "Send Email", send_custom_email_path %></li>
-          <li><%= link_to "New Client", "https://myspacenyc.com/internal/" %></li>
           <!-- **************** ROOMSHARING **************** -->
           <%# if current_user.has_role? :roomsharing %>
             <!-- <li class="dropdown">
@@ -141,6 +139,8 @@
 
               <li><%= link_to "Profile", current_user %></li>
               <li><%= link_to "My Waterfall", user_waterfall_path(current_user) %></li>
+              <li><%= link_to "Send Email", send_custom_email_path %></li>
+              <li><%= link_to "New Client Application", "https://myspacenyc.com/internal/" %></li>
               <% if current_user.is_manager? %>
                 <li><%= link_to "My Team Members", subordinates_user_path(current_user) %></li>
               <% end %>

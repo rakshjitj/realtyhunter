@@ -747,7 +747,7 @@ class ResidentialListingsController < ApplicationController
       # remove listing who has more then 2 rooms booked
       @residential_units.each do |res_list|
         if !res_list.rooms.blank?
-          if res_list.rooms.where(status: [1,2]).count > 2
+          if res_list.rooms.where(status: [1,2]).count >= 2
             @residential_units = @residential_units.where("residential_listings.id != :id", id: res_list.id)
           end
         end

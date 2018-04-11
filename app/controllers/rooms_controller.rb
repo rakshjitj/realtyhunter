@@ -66,7 +66,7 @@ class RoomsController < ApplicationController
               i = {key => v, :room_id => @room.id}
               #abort @i.inspect
               #abort i.inspect
-              @room.images.create!(i)
+              @room.images.create(i)
             end
             # abort @i.inspect
           end
