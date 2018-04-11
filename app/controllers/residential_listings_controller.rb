@@ -745,13 +745,13 @@ class ResidentialListingsController < ApplicationController
 
       @residential_units = ResidentialListing.search(params, current_user, params[:building_id])
       # remove listing who has more then 2 rooms booked
-      @residential_units.each do |res_list|
-        if !res_list.rooms.blank?
-          if res_list.rooms.where(status: [1,2]).count >= 2
-            @residential_units = @residential_units.where("residential_listings.id != :id", id: res_list.id)
-          end
-        end
-      end
+      # @residential_units.each do |res_list|
+      #   if !res_list.rooms.blank?
+      #     if res_list.rooms.where(status: [1,2]).count >= 2
+      #       @residential_units = @residential_units.where("residential_listings.id != :id", id: res_list.id)
+      #     end
+      #   end
+      # end
       #end of more then 2 rooms book code
 
       #abort @residential_units.inspect

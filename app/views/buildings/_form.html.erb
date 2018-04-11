@@ -136,6 +136,20 @@
     <br />
     <div class="row">
       <div class="col-md-12">
+        <div class="field">
+          <%= f.label :description, "Public Description" %><br>
+          <small class="explainer-text"><em>
+            Tip: Enter 2 blank lines to separate paragraphs.
+          </small></em>
+          <br><br>
+          <%= f.bootsy_area :description, class: 'form-control', rows: 15 %>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <div class="row">
+      <div class="col-md-12">
         <%= f.label :building_amenity_ids, "Building-Level Amenities" %>
       </div>
     </div>
