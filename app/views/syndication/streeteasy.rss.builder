@@ -237,7 +237,7 @@ xml.streeteasy :version => "1.6" do
 	                xml.email "info+streeteasy@myspacenyc.com"
 	                xml.lead_email "info+streeteasy@myspacenyc.com"
 	                xml.phone_numbers do
-	                  xml.office "(929) 229-2245"
+	                  xml.office "(929) 274-8181"
 	                end
 	              end
 	              @primary_agents[listing.unit_id].each do |agent|
