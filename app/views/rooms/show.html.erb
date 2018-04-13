@@ -132,7 +132,7 @@
 							    			<strong>Room:</strong>
 							    		</div>
 							    		<div class="col-xs-7">
-							    			<%= r %>
+											<%= r.to_s(26).tr("123456789abcdefghijklmnopq", "ABCDEFGHIJKLMNOPQRSTUVWXYZ") %>
 							    		</div>
 							    	</div>
 							    	<div class="row">
@@ -148,7 +148,7 @@
 							    			<strong>Description:</strong>
 							    		</div>
 							    		<div class="col-xs-7">
-							    			<%= room.description %>
+											<%= room.description.html_safe %>
 							    		</div>
 							    	</div>
 							    	<div class="row">

@@ -2,6 +2,11 @@
 
 <!-- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=initialize"></script> -->
 <div class="row">
+  <div class="col-sm-6">
+    <h1>Roomshare Listings</h1>
+  </div>
+</div>
+<div class="row">
   <div class="col-md-3">
     <!-- <i class="fa fa-spinner fa-pulse fa-5x res-spinner-desktop listings-spinner-desktop"></i> -->
     <div class="res-desktop-search-filters hidden-print" id="res-search-filters" data-search-path="<%= filter_residential_listings_path %>">
@@ -329,7 +334,7 @@
               <% i = 1 %>
               <% res_list.rooms.each do |room| %>
                 
-                <p><%= "Room " + i.to_s %> :
+                <p><%= "Room " + i.to_s(26).tr("123456789abcdefghijklmnopq", "ABCDEFGHIJKLMNOPQRSTUVWXYZ") %> :
                   <p>$<%= room.rent %>
                     <% if room.status == 0 %>
                       <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>

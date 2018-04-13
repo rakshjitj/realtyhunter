@@ -26,8 +26,10 @@
           <%#= f.fields_for @residential_unit.unit do |unit_form| %>
           <%# abort @residential_unit.beds.inspect %>
           <br>
+            <% co = 1 %>
             <% @kennel.each do |room| %>
               <%= fields_for 'rooms[]', room do |r| %>
+                <h4><strong>Room <%= co.to_s(26).tr("123456789abcdefghijklmnopq", "ABCDEFGHIJKLMNOPQRSTUVWXYZ") %></strong></h4>
                 <div class="row vertical-margin-lg">
                     <div class="col-xs-3 col-md-2">
                       <%= r.label :status, class: 'required' %>
@@ -83,6 +85,7 @@
                     </div>
                 </div>
               <% end %>
+              <% co = co + 1 %>
             <% end %>
              <div class="row vertical-margin-lg">
               <div class="col-md-12 col-md-offset-3">
