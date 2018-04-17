@@ -236,11 +236,9 @@ xml.streeteasy :version => "1.6" do
 	                xml.name "Myspace NYC"
 	                xml.email "info+streeteasy@myspacenyc.com"
 	                xml.lead_email "info+streeteasy@myspacenyc.com"
-	                if listing.listing_id != 8108625
-		                xml.phone_numbers do
-		                  xml.office "9292748181"
-		                end
-		            end
+	                xml.phone_numbers do
+	                  xml.office "9292748181"
+	                end
 	              end
 	              @primary_agents[listing.unit_id].each do |agent|
 						xml.agent id: agent.id do
