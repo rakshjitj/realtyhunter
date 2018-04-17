@@ -411,7 +411,7 @@ class ResidentialListing < ApplicationRecord
     end
 
     if params[:no_description] == 'true'
-      running_list = running_list.where("length(description) < 20")
+      running_list = running_list.where("length(residential_listings.description) < 20")
     end
 
     if params[:no_images] == 'true'
