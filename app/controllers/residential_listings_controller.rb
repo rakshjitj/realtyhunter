@@ -468,6 +468,22 @@ class ResidentialListingsController < ApplicationController
 
     @residential_listings = @residential_units.each.map(&:id) & @residential_listings.each.map(&:id)
     @residential_listings = ResidentialListing.where(id: @residential_listings)
+
+    @room_active = 0
+    @room_pending = 0
+    @room_off = 0
+
+    @residential_listings.each do |room_count|
+      room_count.rooms.each do |room|
+        if room.status == 0
+         @room_active = @room_active + 1
+        elsif room.status == 1
+          @room_pending = @room_pending + 1
+        elsif room.status == 2
+          @room_off = @room_off + 1
+        end
+      end
+    end
     set_residential_listings
 
   end
