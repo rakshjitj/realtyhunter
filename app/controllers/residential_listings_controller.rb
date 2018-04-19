@@ -468,7 +468,7 @@ class ResidentialListingsController < ApplicationController
 
     @residential_listings = @residential_units.each.map(&:id) & @residential_listings.each.map(&:id)
     @residential_listings = ResidentialListing.where(id: @residential_listings)
-
+    #room count code as per roooms status start
     @room_active = 0
     @room_pending = 0
     @room_off = 0
@@ -484,6 +484,7 @@ class ResidentialListingsController < ApplicationController
         end
       end
     end
+    #room count code as per roooms status End
     set_residential_listings
 
   end
