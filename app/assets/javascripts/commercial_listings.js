@@ -108,7 +108,7 @@ CommercialListings = {};
 
       if (unit.image) {
         slideshowContent += '<div class="image' + (!firstImageAdded ? ' active' : '') + '">' +
-            '<a href="https://myspace-realty-monster.herokuapp.com/commercial_listings/' +
+            '<a href="http://realtyhunter.org:3000/commercial_listings/' +
             unit.id + '">' +
             '<img src="' + unit.image + '" />' +
             '</div>';
@@ -118,7 +118,7 @@ CommercialListings = {};
 
       var shouldHighlightRow = imgCount == 1 && info['units'].length > 1;
       contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">' +
-          '<a href="https://myspace-realty-monster.herokuapp.com/commercial_listings/' +
+          '<a href="http://realtyhunter.org:3000/commercial_listings/' +
           unit.id + '">';
           if (unit.building_unit) {
             contentString += '#' + unit.building_unit + ' ';
@@ -130,7 +130,7 @@ CommercialListings = {};
           contentString += '$' + unit.rent + '</a></div>';
       if (i == 5) {
         contentString += '<div class="contentRow">' +
-        '<a href="https://myspace-realty-monster.herokuapp.com/buildings/'
+        '<a href="http://realtyhunter.org:3000/buildings/'
         + info['building_id'] + '">View more...</a></div>';
         break;
       }
