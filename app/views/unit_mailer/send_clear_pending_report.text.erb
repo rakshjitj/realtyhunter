@@ -8,7 +8,7 @@ They have now been moved to 'off-market' status.
 <% if @listings && @listings.size > 0 %>
   <% @listings.each do |l| %>
 <%= l.street_address_and_unit %>
-(https://myspace-realty-monster.herokuapp.com/residential_listings/<%= l.id %>)
+(http://realtyhunter.org:3000/residential_listings/<%= l.id %>)
 
 
   <% end %>
