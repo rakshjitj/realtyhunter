@@ -14,7 +14,9 @@
           <% @result.each do |res| %>
             <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= res.unit.listing_id %>" >
               <td class="img-col">
-                <%= image_tag(res.unit.images.first.file(:thumb)) %>
+                <% if !res.unit.images.blank? %>
+                  <%= image_tag(res.unit.images.first.file(:thumb)) %>
+                <% end %>
               </td>
               <td>
                 <%= link_to "#{res.unit.building.street_number} #{res.unit.building.route}", residential_listing_path(res.id) %>
