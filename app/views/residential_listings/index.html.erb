@@ -21,6 +21,16 @@
             residential_listings_path(params.permit!.merge(format: 'csv')),
             class: 'btn btn-sm btn-warning link-as-button management-action-button',
             target: :_blank %>
+        <% if current_user.email == "rakshit@aristainfotech.com" %>
+          <%= link_to 'Export Main CSV',
+              index_main_path(params.permit!.merge(format: 'csv')),
+              class: 'btn btn-sm btn-warning link-as-button management-action-button',
+              target: :_blank %>
+          <%= link_to 'Export Streeteasy CSV',
+              index_streeteasy_path(params.permit!.merge(format: 'csv')),
+              class: 'btn btn-sm btn-warning link-as-button management-action-button',
+              target: :_blank %>
+        <% end %>
       <% end %>
     </div>
     <div class="hidden-md hidden-lg col-sm-5 col-sm-left-padding form-label-responsive page-header-buttons">
