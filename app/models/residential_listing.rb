@@ -118,9 +118,7 @@ class ResidentialListing < ApplicationRecord
 
     unit_ids = list.pluck(:unit_id)
     imgs = Image.where(unit_id: unit_ids, priority: 0)
-    # if !imgs.blank?
-    #   Hash[imgs.map {|img| [img.unit_id, img.file.url(:thumb)]}]
-    # end
+    Hash[imgs.map {|img| [img.unit_id, img.file.url(:thumb)]}]
   end
 
   def self.listings_by_neighborhood(user, listing_ids)
