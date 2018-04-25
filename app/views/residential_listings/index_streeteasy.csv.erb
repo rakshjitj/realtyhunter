@@ -1,0 +1,13 @@
+<%- headers = [ 'id', 'User Name', 'streeteasy_flag_first', 'streeteasy_flag_second' , 'streeteasy_flag_created_at' ] -%>
+<%= CSV.generate_line(headers).strip %>
+<%- @residential_units.each do |listing| -%>
+	<% listing.audits.each do |list| %>
+		<% if list.audited_changes.include?("streeteasy_flag") == true %>
+			<% if list.audited_changes["streeteasy_flag"] == false || list.audited_changes["streeteasy_flag"] == true %>
+				<%= [ list.auditable_id, User.find(list.user_id).name, list.audited_changes["streeteasy_flag"], "", list.created_at ].to_csv.strip.html_safe %>
+			<% else %>
+				<%= [ list.auditable_id, User.find(list.user_id).name, list.audited_changes["streeteasy_flag"][0], list.audited_changes["streeteasy_flag"][1], list.created_at ].to_csv.strip.html_safe %>
+			<% end %>
+		<% end %>
+	<% end %>
+<%- end -%>

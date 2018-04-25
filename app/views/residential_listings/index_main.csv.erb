@@ -1,0 +1,13 @@
+<%- headers = [ 'id', 'Address', 'exclusive', 'description' , 'primary_agent_present', 'syndication_status','show','streeteasy_flag', 'status','Primary Agent', 'Office', 'Listing Agent', 'Beds', 'Previous Price', 'Current Price', 'Price Change Date', 'Neighborhood', 'Updated At' ] -%>
+<%= CSV.generate_line(headers).strip %>
+<%- @residential_units.each do |listing| -%>
+	<% retVal = [] %>
+	<% chtime = "" %>
+	<% listing.unit.audits.each do |p| %>
+		<% if p.audited_changes.to_a[0][0] == "rent" %>
+			<% chtime.replace(p.created_at.to_s) %>
+			<% retVal.replace(p.audited_changes.to_a[0][1]) %>
+		<% end %>
+	<% end %>
+  <%= [listing.id,"#{listing.street_number} #{listing.route} ##{listing.building_unit}", listing.unit.exclusive, listing.description.present?, listing.unit.primary_agent ? listing.unit.primary_agent_id : '',listing.unit.syndication_status, listing.show, listing.streeteasy_flag, listing.unit.status, listing.name ?  listing.name : '', listing.unit.primary_agent ? listing.unit.primary_agent.office.name : '',listing.unit.building.landlord.listing_agent ? listing.unit.building.landlord.listing_agent.name : '', listing.beds, retVal[0], listing.rent, chtime, listing.neighborhood_name, listing.updated_at ].to_csv.strip.html_safe %>
+<%- end -%>
