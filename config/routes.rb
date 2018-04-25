@@ -104,6 +104,8 @@ Rails.application.routes.draw do
       get 'neighborhood_options'
     end
   end
+  get 'residential_listings/index_streeteasy' => "residential_listings#index_streeteasy", as: :index_streeteasy
+  get 'residential_listings/index_main' => "residential_listings#index_main", as: :index_main
   get 'rooms_image_delete/:id' => "rooms#room_image_delete", as: :room_image_delete
   post 'rooms/:id' => "rooms#room_update", as: :room_update
   resources :rooms
