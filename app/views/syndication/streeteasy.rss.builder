@@ -12,6 +12,7 @@
 xml.instruct! :xml, :version => "1.0"
 xml.streeteasy :version => "1.6" do
   xml.properties do
+  	#exit
 	  @listings.each do |listing|
 
 	  	# NOTE: this is super hacky. We should filter this out before sending
