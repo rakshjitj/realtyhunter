@@ -140,7 +140,7 @@
               <li><%= link_to "Profile", current_user %></li>
               <li><%= link_to "My Waterfall", user_waterfall_path(current_user) %></li>
               <!-- <li><%#= link_to "Send Email", send_custom_email_path %></li> -->
-              <li><%= link_to "New Client Application", "https://myspacenyc.com/internal/" %></li>
+              <li><%= link_to "Website Agent Login", "https://myspacenyc.com/agents-login/" %></li>
               <% if current_user.is_manager? %>
                 <li><%= link_to "My Team Members", subordinates_user_path(current_user) %></li>
               <% end %>
