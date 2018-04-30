@@ -266,7 +266,18 @@
         <%= f.text_field :llc_name, class: 'form-control' %>
       </div>
     </div>
-
+    <div class="row vertical-margin-lg">
+      <div class="col-xs-3 col-md-4">
+        <%= f.label :featured, "Featured Building" %>
+      </div>
+      <div class="col-xs-9 col-md-7">
+        <div class="checkbox checkbox-warning checkbox-inline">
+          <%= f.check_box :featured, class: "styled",
+              checked: @building ? @building.featured : false %>
+          <label></label>
+        </div>
+      </div>
+    </div>
 
     <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
     <div class="details field">

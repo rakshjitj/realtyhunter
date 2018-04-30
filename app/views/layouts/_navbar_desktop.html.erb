@@ -59,9 +59,6 @@
           </li>
           <li><%= link_to "Commercial", commercial_listings_path %></li>
           <li><%= link_to "Sales", sales_listings_path %></li>
-          <% if current_user.is_management? %>
-            <li><%= link_to "Add Open Houses", add_open_hours_path %></li>
-          <% end %>
           <!-- **************** ROOMSHARING **************** -->
           <%# if current_user.has_role? :roomsharing %>
             <!-- <li class="dropdown">
@@ -105,7 +102,9 @@
                 <li><%= link_to "Offices", company_offices_path(current_user.company) %></li>
                 <li><%= link_to "Managers", managers_company_path(current_user.company) %></li>
                 <li><%= link_to "Coworkers", employees_company_path(current_user.company) %></li>
-
+                <% if current_user.is_management? %>
+                  <li><%= link_to "Add Open Houses", add_open_hours_path %></li>
+                <% end %>
                 <!-- **************** WATERFALL **************** -->
                 <% if current_user.is_company_admin? %>
                   <li><%= link_to "Waterfall", user_waterfalls_path %></li>

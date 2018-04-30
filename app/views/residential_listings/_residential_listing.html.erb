@@ -1,4 +1,9 @@
-  <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= residential_listing.listing_id %>" >
+  <% if residential_listing.unit.building.featured == true %>
+    <% color = "#F7D078" %>
+  <% else %>
+    <% color = "" %>
+  <% end %>
+  <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= residential_listing.listing_id %>" style="background-color: <%= color%>" >
 
     <!-- ****** checkboxes ****************************************** -->
     <% if controller_name == 'residential_listings' %>
