@@ -14,6 +14,7 @@ gem 'jquery-ui-rails', '~> 6.0.1' # not needed, since we use the following line
 gem 'turbolinks', '~> 5.0.1'
 # gem 'jquery-turbolinks', '~> 2.1.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'mailgun-ruby', '~>1.1.6'
 gem 'jbuilder', '~> 2.0'
 ## Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
@@ -83,7 +84,8 @@ end
 
 group :development, :test do
   gem 'rails-controller-testing'
-  gem 'wkhtmltopdf-binary-edge', '~> 0.12.2.1'
+  #gem 'wkhtmltopdf-binary-edge', '~> 0.12.2.1'
+  gem 'wkhtmltopdf-binary'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', '~> 8.2.2'
   # Access an IRB console on exception pages or by using <%= console %> in views
