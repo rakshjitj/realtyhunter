@@ -16,7 +16,7 @@ module KnackInterface
 
     def self.knack_request(request_type, url, data = nil)
       # don't send dev/test data
-      return {} unless Rails.env.production?
+      return {} unless Rails.env.development?
 
       uri = URI.parse(url)
       if request_type == 'create'
