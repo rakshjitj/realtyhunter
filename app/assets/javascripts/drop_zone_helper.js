@@ -48,6 +48,30 @@ DropZoneHelper = {};
     }
   };
 
+  DropZoneHelper.displayImage = function (id, unit_id, controllerPath) {
+    // if not currently in the middle of a deletion request, delete this photo
+    if (!DropZoneHelper.currentlyDeleting) {
+      DropZoneHelper.currentlyDeleting = true;
+      Listings.showSpinner();
+      $.ajax({
+        type: 'get',
+        url: '/' + controllerPath + '/' + unit_id + '/unit_images/' + id + '/display',
+        success: function(data){
+          //console.log(data.message);
+          $.getScript('/' + controllerPath + '/' + unit_id + '/refresh_images');
+          Listings.hideSpinner();
+          DropZoneHelper.currentlyDeleting = false;
+        },
+        error: function(data) {
+          Listings.hideSpinner();
+          DropZoneHelper.currentlyDeleting = false;
+          //console.log('ERROR:', data);
+        }
+      });
+    }
+  };
+
+
   DropZoneHelper.rotateImage = function (id, unit_id, controllerPath) {
     Listings.showSpinner();
     // make a DELETE ajax request to delete the file
@@ -101,6 +125,15 @@ DropZoneHelper = {};
       var id = $(this).attr('data-id');
       var unit_id = $(this).attr('data-unit-id');
       DropZoneHelper.removeImage(id, unit_id, controllerPath);
+    });
+  };
+
+  DropZoneHelper.updateImgOptions = function(sectionID, controllerPath) {
+    $('#' + sectionID + ' .display-unit-img').click(function(event) {
+      event.preventDefault();
+      var id = $(this).attr('data-id');
+      var unit_id = $(this).attr('data-unit-id');
+      DropZoneHelper.displayImage(id, unit_id, controllerPath);
     });
   };
 

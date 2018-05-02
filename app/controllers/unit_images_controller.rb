@@ -1,7 +1,7 @@
 class UnitImagesController < ApplicationController
   skip_authorize_resource
-  before_action :set_image, only: [:destroy]
-  before_action :set_unit, except: [:destroy]
+  before_action :set_image, only: [:destroy, :display]
+  before_action :set_unit, except: [:destroy, :display]
 
   # POST /images
   # POST /images.json
@@ -45,6 +45,18 @@ class UnitImagesController < ApplicationController
     else
       # if a user clicks a delete link twice in rapid succession,
       # just ignore it
+      render nothing: true
+    end
+  end
+
+  def display
+    if @image
+      if @image.display_on_website == true
+        @image.update_columns(display_on_website: false)
+      elsif @image.display_on_website == false
+        @image.update_columns(display_on_website: true)
+      end
+    else
       render nothing: true
     end
   end
