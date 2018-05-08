@@ -9,6 +9,7 @@ class User < ApplicationRecord
   belongs_to :company, touch: true
   belongs_to :manager, :class_name => "User"
   belongs_to :employee_title
+  has_and_belongs_to_many :specialties
   has_many   :subordinates, :class_name => "User", :foreign_key => "manager_id"
   # A unit can have up to 2 assigned or "primary" agents
   # if you are assigned agent #1

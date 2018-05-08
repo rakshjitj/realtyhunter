@@ -78,7 +78,34 @@
               ) %>
           </div>
         </div>
+        <div class="col-md-12">
+          <%= f.label :specialty_ids, "User Specialties" %>
+          <div class="row">
+            <% i = 0 %>
+              <%= f.collection_check_boxes(:specialty_ids, current_user.company.specialties, :id, :name) do |b| %>
 
+                <% if i % 3 == 0 && i > 0 %>
+                  </div>
+                  <div class="row">
+                <% end %>
+
+                <div class="col-sm-4">
+                  <div class="checkbox checkbox-warning checkbox-inline">
+                    <%= b.check_box(class: "check_box checkbox-warning inline") %>
+                    <%= b.label {b.text.titleize} %>
+                  </div>
+                </div>
+
+              <% i = i+1 %>
+              <% end %>
+          </div>
+          <div class="row">
+            <div class="col-md-11 vertical-margin-lg">
+              <%= text_field_tag :custom_specialties,nil, class: 'form-control',
+              placeholder: "Or enter new specialties, comma separated" %>
+            </div>
+          </div>
+        </div>
         <div class="col-md-12">
           <%= f.label :role_ids, "Enabled permissions", class: 'required' %><br>
             <%= f.select(:role_ids,

@@ -140,6 +140,18 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+    if !params[:custom_specialties].blank?
+      amenities = params[:custom_specialties].split(',')
+        amenities.each{|a|
+          if !a.empty?
+            a = a.downcase.strip
+            found = Specialty.where(name: a, company: Company.first).first
+            if !found
+              Specialty.create!(name: a, company: Company.first)
+            end
+          end
+        }
+    end
     if @user.update(user_params.merge({updated_at: Time.now}))
       @user.update_roles
       flash[:success] = "Profile updated!"
@@ -308,6 +320,7 @@ class UsersController < ApplicationController
         :remote_avatar_url, :phone_number, :status, :mobile_phone_number,
         :employee_title_id, :company_id, :office_id, :file,
         role_ids: [],
-        agent_types: [])
+        agent_types: [],
+        specialty_ids: [])
     end
 end
