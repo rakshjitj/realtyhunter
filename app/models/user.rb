@@ -291,6 +291,10 @@ class User < ApplicationRecord
     has_role? :streeteasy_agent
   end
 
+  def is_data_entry2?
+    self.has_role? :data_entry2
+  end
+
   # Many roles can be considered 'managerial' from
   # a staffing point of view. Any employees that work
   # in operations should have permission to edit
@@ -302,7 +306,8 @@ class User < ApplicationRecord
       :company_admin,
       :operations,
       :manager,
-      :data_entry]
+      :data_entry,
+      :data_entry2]
     management_roles.each do |r|
       return true if self.has_role? r
     end
@@ -316,7 +321,8 @@ class User < ApplicationRecord
       :company_admin,
       :operations,
       :manager,
-      :data_entry]
+      :data_entry,
+      :data_entry2]
 
     logged_in_user_is_management = false
     management_roles.each do |r|

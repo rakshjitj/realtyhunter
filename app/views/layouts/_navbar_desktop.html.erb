@@ -80,7 +80,7 @@
           <!-- **************** BUILDING **************** -->
           <li><%= link_to "Buildings", buildings_path %></li>
 
-          <% if current_user.is_management? || current_user.is_listings_manager? %>
+          <% if (current_user.is_management? || current_user.is_listings_manager?) && !current_user.is_data_entry2? %>
             <!-- **************** LANDLORDS **************** -->
             <li><%= link_to "Landlords", landlords_path %></li>
           <% end %>

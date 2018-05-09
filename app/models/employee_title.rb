@@ -68,4 +68,13 @@ class EmployeeTitle < ApplicationRecord
 		@agent_title
 	end
 
+	def self.data_entry2
+		@agent_title = EmployeeTitle.where(name: "data entry2").first;
+		if !@agent_title
+			@agent_title = EmployeeTitle.create(name: "data entry2")
+		end
+
+		@agent_title
+	end
+
 end
