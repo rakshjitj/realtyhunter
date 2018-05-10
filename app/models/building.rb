@@ -40,7 +40,7 @@ class Building < ApplicationRecord
 	validates :country_short, presence: true, length: {maximum: 100}
 	validates :lat, presence: true, length: {maximum: 100}
 	validates :lng, presence: true, length: {maximum: 100}
-	validates :place_id, presence: true, length: {maximum: 100}
+	validates :place_id, presence: true#, length: {maximum: 100}
 
   validates :llc_name, allow_blank: true, length: {maximum: 200}
 
