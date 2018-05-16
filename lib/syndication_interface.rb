@@ -40,6 +40,14 @@ module SyndicationInterface
 		pull_data(company_id, search_params)
 	end
 
+	def aparment_listings(company_id, search_params)
+		search_params[:has_primary_agent] = 1
+		search_params[:exclusive] = 1
+		search_params[:must_have_description] = 1
+		search_params[:must_have_aparment] = 1
+		pull_data(company_id, search_params)
+	end
+
 	# search these conditions
 	# - must be active
 	# - must belong to this company
@@ -84,6 +92,17 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			listings = listings.where('units.status IN (?) OR units.syndication_status = ?',
 					[Unit.statuses["active"], Unit.statuses["pending"]],
 					Unit.syndication_statuses['Force syndicate'])
+				.where('units.syndication_status IN (?)', [
+					Unit.syndication_statuses['Syndicate if matches criteria'],
+					Unit.syndication_statuses['Force syndicate']
+				])
+		end
+
+		if is_true?(search_params[:must_have_aparment])
+			listings = listings.where('units.status =?', Unit.statuses["active"])
+		else
+			listings = listings.where('units.status =? OR units.syndication_status = ?',
+					Unit.statuses["active"], Unit.syndication_statuses['Force syndicate'])
 				.where('units.syndication_status IN (?)', [
 					Unit.syndication_statuses['Syndicate if matches criteria'],
 					Unit.syndication_statuses['Force syndicate']

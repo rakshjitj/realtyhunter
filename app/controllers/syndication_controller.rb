@@ -12,6 +12,10 @@
     set_listings
   end
 
+  def aparment
+    set_listings
+  end
+
   def trulia
     set_listings
   end
@@ -37,6 +41,8 @@
         @listings = nestio_listings(@company.id, {})
       elsif syndication_params[:action] == 'dotsignal'
         @listings = dotsignal_listings(@company.id, {})
+      elsif syndication_params[:action] == 'aparment'
+        @listings = aparment_listings(@company.id, {})
       end
 
       @pet_policies = Building.get_pet_policies(@listings)

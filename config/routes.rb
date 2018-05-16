@@ -245,6 +245,7 @@ Rails.application.routes.draw do
       get 'trulia'
       get 'nestio'
       get 'dotsignal'
+      get 'aparment'
     end
   end
 
