@@ -154,7 +154,20 @@
             </div>
             <% end %>
           </div>
-
+            <br />
+            <div class="row">
+              <div class="col-xs-12 col-sm-3">
+                <%= f.label :listing_name, "Building Type", class: 'required' %>
+              </div>
+              <div class="col-xs-12 col-sm-9">
+                <%= f.select :listing_name,
+                    options_for_select(['Residential', 'Commercial', 'Mixed Use'],
+                      [@sales_unit.listing_name]),
+                    {prompt: "Choose one..."},
+                    :required => true,
+                    class: "form-control" %>
+              </div>
+            </div>
             <br />
             <div class="row">
               <div class="col-xs-12 col-sm-3">
@@ -168,6 +181,26 @@
 
             <div class="neighborhood_options">
               <%= render 'sales_listings/neighborhood_options' %>
+            </div>
+
+            <br />
+            <div class="row sl_number_of_units">
+              <div class="col-xs-4 col-sm-3">
+                <%= f.label :number_of_units %>
+              </div>
+              <div class="col-xs-8 col-sm-4">
+                <%= f.number_field :number_of_units, class: 'form-control' %>
+              </div>
+            </div>
+
+            <br />
+            <div class="row sl_number_of_retail_spaces">
+              <div class="col-xs-4 col-sm-3">
+                <%= f.label :number_of_retail_spaces %>
+              </div>
+              <div class="col-xs-8 col-sm-4">
+                <%= f.number_field :number_of_retail_spaces, class: 'form-control' %>
+              </div>
             </div>
 
             <div class="field" id="map-panel">
@@ -192,7 +225,7 @@
           </div>
 
           <br />
-          <div class="row">
+          <div class="row sl_beds">
             <div class="col-xs-4 col-sm-3">
               <%= f.label :beds, class: 'required' %>
             </div>
@@ -203,13 +236,33 @@
           </div>
 
           <br />
-          <div class="row">
+          <div class="row sl_baths">
             <div class="col-xs-4 col-sm-3">
               <%= f.label :baths, class: 'required' %>
             </div>
             <div class="col-xs-8 col-sm-4">
               <%= f.number_field :baths, class: 'form-control', step: 0.5, in: 0.0..10.0,
               :required => true %>
+            </div>
+          </div>
+
+          <br />
+          <div class="row">
+            <div class="col-xs-4 col-sm-3">
+              <%= f.label :number_of_floors %>
+            </div>
+            <div class="col-xs-8 col-sm-4">
+              <%= f.number_field :number_of_floors, class: 'form-control' %>
+            </div>
+          </div>
+
+          <br />
+          <div class="row sl_internal_sq_footage">
+            <div class="col-xs-4 col-sm-3">
+              <%= f.label :internal_sq_footage %>
+            </div>
+            <div class="col-xs-8 col-sm-4">
+              <%= f.number_field :internal_sq_footage, class: 'form-control' %>
             </div>
           </div>
 
@@ -288,7 +341,7 @@
           </div>
 
           <br />
-          <div class="row">
+          <div class="row sl_amineties">
             <div class="col-xs-12 col-md-3">
               <%= f.label :sales_amenity_ids, "Amenities" %>
             </div>

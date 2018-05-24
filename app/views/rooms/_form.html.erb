@@ -43,6 +43,7 @@
                     </div>
                 </div>
                 <%= r.hidden_field :residential_listing_id, value: @residential_unit.id %>
+                <%= r.hidden_field :name, value: "Room #{co.to_s(26).tr("123456789abcdefghijklmnopq", "ABCDEFGHIJKLMNOPQRSTUVWXYZ")}" %>
                 <div class="row vertical-margin-lg">
                     <div class="col-xs-3 col-md-2">
                       <%= r.label :rent %>

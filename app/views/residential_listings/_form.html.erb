@@ -121,7 +121,7 @@
               </div>
               <div class="col-xs-9 col-md-4">
                   <%= unit_form.select :status,
-                    options_for_select(%w(Active Pending Off),
+                    options_for_select(%w(Active Pending Off Rsonly),
                       [@residential_unit.unit.status.titleize]),
                     {prompt: "Choose one..."},
                     :required => true,
@@ -745,6 +745,36 @@
               <div class="checkbox checkbox-warning checkbox-inline">
                 <%= unit_form.check_box :has_stock_photos, class: "styled",
                     checked: @residential_unit ? @residential_unit.unit.has_stock_photos : false %>
+                <label></label>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <%= f.fields_for @residential_unit.unit do |unit_form| %>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4">
+              <%= unit_form.label :featured, "Featured Unit" %>
+            </div>
+            <div class="col-xs-9 col-md-7">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= unit_form.check_box :featured, class: "styled",
+                    checked: @residential_unit ? @residential_unit.unit.featured : false %>
+                <label></label>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <%= f.fields_for @residential_unit.unit do |unit_form| %>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4">
+              <%= unit_form.label :hide_on_website, "Hide On Website" %>
+            </div>
+            <div class="col-xs-9 col-md-7">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= unit_form.check_box :hide_on_website, class: "styled",
+                    checked: @residential_unit ? @residential_unit.unit.hide_on_website : false %>
                 <label></label>
               </div>
             </div>

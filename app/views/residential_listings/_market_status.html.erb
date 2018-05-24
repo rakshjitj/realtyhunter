@@ -4,6 +4,8 @@
 	<% elsif @residential_unit.unit.status == "pending" %>
 		<span class="green">On Market</span>
 	  <span class="dark-orange">Pending Application</span>
+	<% elsif @residential_unit.unit.status == "rsonly" %>
+		<span class="green">Roomshare Only</span>
 	<% elsif @residential_unit.unit.status == "off" %>
 	  <span class="grey">Off Market</span>
 	<% end %>

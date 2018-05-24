@@ -27,9 +27,9 @@ class SalesListing < ApplicationRecord
 
 	validates :seller_address, presence: true, length: {maximum: 500}
   validates :listing_type, presence: true, length: {maximum: 100}
-
-	validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }
-	validates :baths, presence: true, :numericality => { :less_than_or_equal_to => 11 }
+  validates :listing_name, presence: { message: "You must provide the Building Name." } #true, message: 'You must provide the Building Name.'
+	#validates :beds, presence: true, :numericality => { :less_than_or_equal_to => 11 }
+	#validates :baths, presence: true, :numericality => { :less_than_or_equal_to => 11 }
   validates :total_room_count, presence: true
   def archive
     self.unit.archived = true

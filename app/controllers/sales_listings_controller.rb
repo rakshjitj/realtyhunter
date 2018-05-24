@@ -391,7 +391,7 @@ class SalesListingsController < ApplicationController
 
         sales_listing: [
           :lock_version,
-          :beds, :baths, :custom_amenities, :formatted_street_address,
+          :beds, :baths, :listing_name, :number_of_floors, :internal_sq_footage, :number_of_units, :number_of_retail_spaces, :custom_amenities, :formatted_street_address,
           :listing_type, :percent_commission, :outside_broker_commission, :seller_name,
           :seller_phone, :seller_address, :year_built, :building_type, :lot_size,
           :building_size, :block_taxes, :lot_taxes, :water_sewer, :insurance,

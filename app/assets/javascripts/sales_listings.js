@@ -568,3 +568,68 @@ document.addEventListener('turbolinks:load', SalesListings.ready);
 document.addEventListener("turbolinks:before-cache", function() {
   $('.sales_listings').attr('initialized', 'true');
 })
+
+// form show hide fields on base of building type
+
+$("#sales_listing_listing_name").change(function(){
+    var listing_name = $("#sales_listing_listing_name").val();
+    if ( listing_name == "Residential"){
+      $(".sl_number_of_retail_spaces").css("display", "none");
+      $("#sales_listing_number_of_units").prop('required',true);
+    }
+    else{
+      $(".sl_number_of_retail_spaces").css("display", "block");
+      $("#sales_listing_number_of_units").prop('required',false);
+    }
+    if ( listing_name == "Commercial"){
+      $(".sl_number_of_units").css("display", "none");
+      $(".sl_amineties").css("display", "none");
+      $('.sl_beds').css("display", "none");
+      $('.sl_baths').css("display", "none");
+      $("#sales_listing_number_of_retail_spaces").prop('required',true);
+    }
+    else{
+      $(".sl_number_of_units").css("display", "block");
+      $(".sl_amineties").css("display", "block");
+      $('.sl_beds').css("display", "block");
+      $('.sl_baths').css("display", "block");
+      $("#sales_listing_number_of_retail_spaces").prop('required',false);
+    }
+    if ( listing_name == "Mixed Use"){
+      $("#sales_listing_number_of_units").prop('required',true);
+      $("#sales_listing_number_of_retail_spaces").prop('required',true);
+    }
+  });
+  var listing_name = $("#sales_listing_listing_name").val();
+  if ( listing_name == "Residential"){
+    $(".sl_number_of_retail_spaces").css("display", "none");
+  }
+  if ( listing_name == "Commercial"){
+    $(".sl_number_of_units").css("display", "none");
+  }
+
+  $('#sales_listing_number_of_units').keyup(function() {
+    if ($('#sales_listing_number_of_units').val() > 1){
+      $('.sl_beds').css("display", "none");
+      $('.sl_baths').css("display", "none");
+      $('#sales_listing_beds').prop('required', false);
+      $('#sales_listing_baths').prop('required', false);
+    }
+    else{
+      $('.sl_beds').css("display", "block");
+      $('.sl_baths').css("display", "block");
+      $('#sales_listing_beds').prop('required', true);
+      $('#sales_listing_baths').prop('required', true);
+    }
+  });
+
+  $('#sales_listing_number_of_retail_spaces').keyup(function() {
+    if ($('#sales_listing_number_of_retail_spaces').val() > 1){
+      $('.sl_internal_sq_footage').css("display", "none");
+      $('#sales_listing_internal_sq_footage').prop('required', false);
+    }
+    else{
+      $('.sl_internal_sq_footage').css("display", "block");
+      $('#sales_listing_internal_sq_footage').prop('required', true);
+    }
+  });
