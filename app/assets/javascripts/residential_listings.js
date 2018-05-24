@@ -182,12 +182,19 @@
     for (var i=0; i<info['units'].length; i++) {
 
       unit = info['units'][i];
-
       if (unit.image) {
-        slideshowContent += '<div class="image' + (!firstImageAdded ? ' active' : '') + '">' +
+        if (window.location.pathname == '/residential_listings/room_index'){
+          slideshowContent += '<div class="image' + (!firstImageAdded ? ' active' : '') + '">' +
+            '<a href="http://realtyhunter.org:3000/rooms/'+ unit.id +
+            '"><img src="' + unit.image + '" /></a>' +
+            '</div>';
+        }
+        else{
+          slideshowContent += '<div class="image' + (!firstImageAdded ? ' active' : '') + '">' +
             '<a href="http://realtyhunter.org:3000/residential_listings/'+ unit.id +
             '"><img src="' + unit.image + '" /></a>' +
             '</div>';
+        }
         firstImageAdded = true;
         imgCount++;
       }
@@ -200,14 +207,24 @@
         var set_icon = ''
       }
 
-
-      contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
-        + ''+set_icon+''
-        + '<a id = "copycontent_'+i+'" href='+unit.public_url+'></a>'
-        + '<a href="http://realtyhunter.org:3000/residential_listings/'
-        + unit.id + '">#' + unit.building_unit + ' ' +
-        + unit.beds + ' bd / '
-        + unit.baths + ' baths $' + unit.rent + '</a></div>';
+      if (window.location.pathname == '/residential_listings/room_index'){
+        contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
+          + ''+set_icon+''
+          + '<a id = "copycontent_'+i+'" href='+unit.public_url+'></a>'
+          + '<a href="http://realtyhunter.org:3000/rooms/'
+          + unit.id + '">#' + unit.building_unit + ' ' +
+          + unit.beds + ' bd / '
+          + unit.baths + ' baths $' + unit.rent + '</a></div>';
+      }
+      else{
+        contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
+          + ''+set_icon+''
+          + '<a id = "copycontent_'+i+'" href='+unit.public_url+'></a>'
+          + '<a href="http://realtyhunter.org:3000/residential_listings/'
+          + unit.id + '">#' + unit.building_unit + ' ' +
+          + unit.beds + ' bd / '
+          + unit.baths + ' baths $' + unit.rent + '</a></div>';
+      }
       if (i == 5) {
         contentString += '<div class="contentRow"><a href="http://realtyhunter.org:3000/buildings/'
           + info['building_id'] + '">View more...</a></div>';
