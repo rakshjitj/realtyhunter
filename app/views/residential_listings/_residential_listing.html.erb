@@ -148,12 +148,15 @@
     </td>
     <!-- ****** STATUS ****************************************** -->
     <td>
+      <%# abort residential_listing.status.inspect %>
       <% if residential_listing.status == Unit.statuses["active"] %>
         <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
       <% elsif residential_listing.status == Unit.statuses["pending"] %>
         <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
       <% elsif residential_listing.status == Unit.statuses["off"] %>
         <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+      <% elsif residential_listing.status == Unit.statuses["rsonly"] %>
+        <span class="glyphicon glyphicon-arrow-up blue" aria-hidden="true"></span>
       <% end %>
     </td>
 
