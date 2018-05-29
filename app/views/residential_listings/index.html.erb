@@ -446,7 +446,9 @@
             <th data-sort="name" class="th-sortable">StreetEasy Primary Agent</th>
             <th data-sort="residential_listings.updated_at" class="th-sortable">Updated</th>
             <th data-sort="residential_listings.updated_at" class="th-sortable">Price Change Date</th>
+
             <th data-sort="units.status" class="th-sortable">Status</th>
+            <th data-sort="featured" class="th-sortable">Featured</th>
             <% if current_user.is_management? || current_user.is_listings_manager? %>
               <th colspan="1" class="hidden-print"></th>
             <% end %>
