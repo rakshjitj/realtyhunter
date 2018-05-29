@@ -573,7 +573,7 @@ class ResidentialListing < ApplicationRecord
         description: message,
         price_drop_request: price_drop_request
       })
-      UnitMailer.inaccuracy_reported(self.id, reporter.id, message, price_drop_request).deliver
+      UnitMailer.inaccuracy_reported(self.id, reporter.id, message, price_drop_request).deliver!
     else
       raise "Invalid params specified while sending feedback"
     end
