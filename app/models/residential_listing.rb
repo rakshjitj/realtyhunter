@@ -204,7 +204,7 @@ class ResidentialListing < ApplicationRecord
       .select('buildings.formatted_street_address',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'buildings.lat', 'buildings.lng', 'buildings.rating', 'units.id AS unit_id',
-        'units.building_unit', 'units.status','units.rent', 'residential_listings.beds',
+        'units.building_unit','units.featured', 'units.status','units.rent', 'residential_listings.beds',
         'units.primary_agent_id',  'units.has_stock_photos',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
