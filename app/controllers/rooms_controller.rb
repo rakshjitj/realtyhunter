@@ -46,6 +46,7 @@ class RoomsController < ApplicationController
       else
       end
     else
+
       params["rooms"].each do |room|
         #abort params[:rooms][room].inspect
         params['rooms'][room].each do |key,value|
@@ -75,6 +76,11 @@ class RoomsController < ApplicationController
           end
           
 
+      end
+      #image priority define for rooms
+      params["image"].each do |image, val|
+        @image = Image.find(image)
+        @image.update_attributes(priority: val)
       end
         #abort @room.inspect
       end

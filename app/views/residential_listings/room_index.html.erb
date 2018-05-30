@@ -400,6 +400,8 @@
                 <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
               <% elsif res_list.unit.status == "off" %>
                 <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+              <% elsif res_list.unit.status == "rsonly" %>
+                <span class="glyphicon glyphicon-arrow-up blue" aria-hidden="true"></span>
               <% end %>
             </td>
             <td>
