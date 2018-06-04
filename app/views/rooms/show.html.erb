@@ -533,7 +533,7 @@
 			    	</div>
 			    <% end %>
 
-			    <% if !@residential_unit.unit.public_url.blank? %>
+			    <% if !@residential_unit.unit.public_url_for_room.blank? %>
 			    	<br />
 			    	<div class="row">
 			    		<div class="col-xs-12 col-md-12">
@@ -542,8 +542,8 @@
 			    	</div>
 			    	<div class="row">
 			    		<div class="col-xs-12 col-md-12">
-					    	<a href="<%= @residential_unit.unit.public_url %>" target="_blank">
-					    		<%= @residential_unit.unit.public_url %>
+							<a href="<%= @residential_unit.unit.public_url_for_room %>" target="_blank">
+								<%= @residential_unit.unit.public_url_for_room %>
 					    	</a>
 					    </div>
 					   </div>
