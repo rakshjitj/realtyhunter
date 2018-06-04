@@ -12,7 +12,7 @@ namespace :maintenance do
 		@listings.each {|listing|
 			#if u.name != 'Blank Slate'
 				url = "https://myspacenyc.com/rentals-room-details/?rid=#{listing.unit.id}"
-				listing.unit.update!(public_url: url)
+				listing.unit.update!(public_url_for_room: url)
 			#end
 		}
 
