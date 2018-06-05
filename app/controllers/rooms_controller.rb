@@ -78,9 +78,11 @@ class RoomsController < ApplicationController
 
       end
       #image priority define for rooms
-      params["image"].each do |image, val|
-        @image = Image.find(image)
-        @image.update_attributes(priority: val)
+      if !params["image"].blank?
+        params["image"].each do |image, val|
+          @image = Image.find(image)
+          @image.update_attributes(priority: val)
+        end
       end
         #abort @room.inspect
       end
