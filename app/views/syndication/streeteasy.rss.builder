@@ -260,20 +260,24 @@ xml.streeteasy :version => "1.6" do
 					end
 	            end
 				if listing.residential_listing.streeteasy_flag_one == true
-					user = User.find(listing.streeteasy_primary_agent_id)
-					xml.agent id: user.id do
-						xml.name user.name
-						xml.company @company.name
-						if user.image
-							xml.photo url:user.image.file.url(:large)
+					if listing.streeteasy_primary_agent_id
+						user = User.find(listing.streeteasy_primary_agent_id)
+
+						xml.agent id: user.id do
+							xml.name user.name
+							xml.company @company.name
+							if user.image
+								xml.photo url:user.image.file.url(:large)
+							end
+
+						xml.email user.streeteasy_email
+						xml.lead_email user.streeteasy_email
+						xml.phone_numbers do
+							xml.main user.streeteasy_mobile_number
+							xml.office user.office.telephone
+							xml.cell user.streeteasy_mobile_number
+							xml.fax user.office.fax
 						end
-					xml.email user.streeteasy_email
-					xml.lead_email user.streeteasy_email
-					xml.phone_numbers do
-						xml.main user.streeteasy_mobile_number
-						xml.office user.office.telephone
-						xml.cell user.streeteasy_mobile_number
-						xml.fax user.office.fax
 					end
 					end
 				end
