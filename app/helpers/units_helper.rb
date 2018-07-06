@@ -118,7 +118,7 @@ module UnitsHelper
 		end
 
 		output = output.sort{|a, b| b[0] <=> a[0]}
-		output.take(10).to_h
+		output.take(20).to_h
 	end
 
 end
