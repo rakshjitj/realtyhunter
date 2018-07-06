@@ -10,10 +10,19 @@ class UnitMailer < ApplicationMailer
     @reporter = User.where(id: reporter_id).first
     @price_drop_request = price_drop_request
 
-    mail to: ['info@myspacenyc.com', 'valentina@myspacenyc.com', 'smullahy@myspacenyc.com', 'belle@myspacenyc.com', 'mcohen@myspacenyc.com', 'ckwoka@myspacenyc.com', 'tprice@myspacenyc.com'],
+    mail to: 'rakshit@aristainfotech.com',
       cc: @reporter.email,
     	subject: "Feedback provided for #{@listing.street_address_and_unit}",
     	reply_to: @reporter.email,
+      tag: 'residential_inaccuracy',
+      track_opens:'true'
+  end
+
+  def feedback_report_notifaction(reporter_id)
+    @reporter = User.where(id: reporter_id).first
+    mail to: @reporter.email,
+      subject: "Feedback Report Submitted",
+      reply_to: @reporter.email,
       tag: 'residential_inaccuracy',
       track_opens:'true'
   end
