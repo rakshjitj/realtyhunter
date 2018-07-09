@@ -558,10 +558,10 @@ class ResidentialListingsController < ApplicationController
   # triggers email to staff notifying them of the inaccuracy
   def send_inaccuracy
     if !residential_listing_params[:inaccuracy_description].blank? ||
-        params[:price_drop_request]
+        params[:price_drop_request] || params[:new_photos_request]
       @residential_unit.send_inaccuracy_report(current_user,
           residential_listing_params[:inaccuracy_description],
-          params[:price_drop_request])
+          params[:price_drop_request], params[:new_photos_request])
       flash[:success] = "Report submitted! Thank you."
     end
     respond_to do |format|

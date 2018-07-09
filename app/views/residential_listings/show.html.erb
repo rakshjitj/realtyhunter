@@ -630,10 +630,18 @@
 									<br>
 
 									<div class="checkbox checkbox-warning inline">
-                		<%= check_box_tag :price_drop_request %>
-		                <label for="roomsharing_filter">
-		                  Request a price drop
-		                </label>
+						<div style="float: left;">
+							<%= check_box_tag :price_drop_request %>
+			                <label for="roomsharing_filter">
+			                  Request a price drop
+			                </label>
+			            </div>
+			            <div style="float: left;margin-left: 50px;">
+			                <%= check_box_tag :new_photos_request %>
+			                <label for="roomsharing_filter">
+			                  Request new unit photos
+			                </label>
+			            </div>
 		              </div>
 
 								  <%= f.text_area :inaccuracy_description, rows: 5, class: 'form-control' %>

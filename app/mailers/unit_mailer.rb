@@ -1,6 +1,6 @@
 class UnitMailer < ApplicationMailer
 
-  def inaccuracy_reported(listing_id, reporter_id, message, price_drop_request)
+  def inaccuracy_reported(listing_id, reporter_id, message, price_drop_request, new_photos_request)
     @message = message
     @listing = ResidentialListing.where(id: listing_id).first
     if !@listing
@@ -9,6 +9,7 @@ class UnitMailer < ApplicationMailer
 
     @reporter = User.where(id: reporter_id).first
     @price_drop_request = price_drop_request
+    @new_photos_request = new_photos_request
 
     mail to: ['info@myspacenyc.com', 'valentina@myspacenyc.com', 'smullahy@myspacenyc.com', 'belle@myspacenyc.com', 'mcohen@myspacenyc.com', 'ckwoka@myspacenyc.com', 'tprice@myspacenyc.com'],
       cc: @reporter.email,
