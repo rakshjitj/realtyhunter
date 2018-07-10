@@ -10,13 +10,18 @@ class UnitMailer < ApplicationMailer
     @reporter = User.where(id: reporter_id).first
     @price_drop_request = price_drop_request
     @new_photos_request = new_photos_request
-
-    mail to: ['info@myspacenyc.com', 'valentina@myspacenyc.com', 'smullahy@myspacenyc.com', 'belle@myspacenyc.com', 'mcohen@myspacenyc.com', 'ckwoka@myspacenyc.com', 'tprice@myspacenyc.com'],
-      cc: @reporter.email,
-    	subject: "Feedback provided for #{@listing.street_address_and_unit}",
-    	reply_to: @reporter.email,
-      tag: 'residential_inaccuracy',
-      track_opens:'true'
+    #abort @new_photos_request.inspect
+    if @new_photos_request == "1"
+      email_hash = ['info@myspacenyc.com', 'valentina@myspacenyc.com', 'smullahy@myspacenyc.com', 'belle@myspacenyc.com', 'mcohen@myspacenyc.com', 'ckwoka@myspacenyc.com', 'tprice@myspacenyc.com', 'photos@msyspacenyc.com']
+    else
+      email_hash = ['info@myspacenyc.com', 'valentina@myspacenyc.com', 'smullahy@myspacenyc.com', 'belle@myspacenyc.com', 'mcohen@myspacenyc.com', 'ckwoka@myspacenyc.com', 'tprice@myspacenyc.com']
+    end
+      mail to: email_hash,
+        cc: @reporter.email,
+        subject: "Feedback provided for #{@listing.street_address_and_unit}",
+        reply_to: @reporter.email,
+        tag: 'residential_inaccuracy',
+        track_opens:'true'
   end
 
   def feedback_report_notifaction(reporter_id)
@@ -36,8 +41,8 @@ class UnitMailer < ApplicationMailer
 
     mail to: 'info@myspacenyc.com',
       cc: @reporter.email,
-    	subject: "Feedback provided for commercial Unit: #{@listing.street_address_and_unit}",
-    	reply_to: @reporter.email,
+      subject: "Feedback provided for commercial Unit: #{@listing.street_address_and_unit}",
+      reply_to: @reporter.email,
       tag: 'commercial_inaccuracy',
       track_opens:'true'
   end
