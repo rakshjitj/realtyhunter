@@ -187,6 +187,12 @@
 						  <strong>Last Unit Updated:</strong>
 						  <%= @building.last_unit_updated_at %>
 						</p>
+						<% if !@building.description.blank? %>
+							<p>
+								<strong>Description:</strong>
+								<%= @building.description.html_safe %>
+							</p>
+						<% end %>
 					</div>
 				</div><!-- row -->
 				<br/>
