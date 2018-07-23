@@ -18,6 +18,7 @@ class RoomsController < ApplicationController
         #abort @residential_unit.rooms[a].inspect
         @kennel << @residential_unit.rooms[a]
       end
+      @kennel = @kennel.compact
       @kennel = @kennel.sort {|x,y| -(y <=> x)}
       #render "edit_existed"
     end
