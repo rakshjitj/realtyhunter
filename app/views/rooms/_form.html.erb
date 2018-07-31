@@ -26,7 +26,20 @@
           <%#= f.fields_for @residential_unit.unit do |unit_form| %>
           <%# abort @residential_unit.beds.inspect %>
           <%#= file_field_tag :unit_image %>
-          <br>
+          <div class="col-md-2">
+            <%= label_tag :description, "Unit Description" %>
+          </div>
+          <div class="col-md-9">
+            <!-- <small class="explainer-text"><em>
+              Tip: Enter 2 blank lines to separate paragraphs.
+            </small></em> -->
+            <br><br>
+            <%= text_area_tag :unit_description, @residential_unit.description, as: :ckeditor, class: 'form-control ckeditor',
+                rows: 15 %>
+            <br>
+          </div>
+          <%#= file_field_tag :unit_image %>
+          <div style="clear: both;"></div>
             <% co = 1 %>
             <% @kennel.each do |room| %>
               <%= fields_for 'rooms[]', room do |r| %>

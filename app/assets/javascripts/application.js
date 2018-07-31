@@ -17,6 +17,7 @@
 //= require jquery-ui
 //= require html.sortable.min
 // mapbox
+//= require ckeditor/init
 // leaflet.markercluster
 //= require_tree .
 //= require bootstrap-sprockets

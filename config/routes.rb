@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  mount Ckeditor::Engine => '/ckeditor'
   mount Bootsy::Engine => '/bootsy', as: 'bootsy'
   resources :images
   #get 'static_pages/help'
