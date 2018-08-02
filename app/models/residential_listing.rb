@@ -266,11 +266,14 @@ class ResidentialListing < ApplicationRecord
     # search by status
     if params[:status]
       status = params[:status].downcase
-      included = ['active/pending', 'active', 'pending', 'off'].include?(status)
+      included = ['active/pending', 'active', 'pending', 'off', 'rsonly', 'rsonly/active'].include?(status)
       if included
         if status == 'active/pending'
           running_list = running_list.where("status = ? or status = ?",
             Unit.statuses["active"], Unit.statuses["pending"])
+        elsif status == 'rsonly/active'
+          running_list = running_list.where("status = ? or status = ?",
+            Unit.statuses["active"], Unit.statuses["rsonly"])
         else
           running_list = running_list.where("status = ?", Unit.statuses[status])
         end
