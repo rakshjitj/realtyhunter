@@ -9,10 +9,10 @@ namespace :maintenance do
 
 		@open_houses = ResidentialListing.joins(:unit).where("(streeteasy_flag =? OR streeteasy_flag_one =?) AND archived =?", true,true,false)
 		@open_houses.each do |open_house|
-			unit_id = @open_houses.unit.id
+			unit_id = open_house.unit.id
 			day = Date.today.strftime("%Y-%m-%d")
-			start_time = Time.strptime("20:30:00", "%H:%M:%S")
-			end_time = Time.strptime("07:00:00", "%H:%M:%S")
+			start_time = Time.strptime("09:00:00", "%H:%M:%S")
+			end_time = Time.strptime("19:30:00", "%H:%M:%S")
 			#OpenHouse.create(day: day, start_time: start_time, end_time: end_time, unit_id: unit_id)
 			open_house = OpenHouse.create!(day: day, start_time: start_time, end_time: end_time, unit_id: unit_id)
 		end
