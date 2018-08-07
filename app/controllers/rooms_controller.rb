@@ -27,7 +27,7 @@ class RoomsController < ApplicationController
 
   def room_update
     @residential_unit = ResidentialListing.find(params[:id])
-    @residential_unit.update(description: params[:unit_description])
+    @residential_unit.update(rooms_description: params[:unit_description])
     #abort params[:unit_image].nil?.inspect
     if !params[:unit_image].nil?
       @residential_unit.unit.images.create(file: params[:unit_image], unit_id: @residential_unit.unit.id)
