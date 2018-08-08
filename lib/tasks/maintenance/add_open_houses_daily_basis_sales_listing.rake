@@ -12,7 +12,7 @@ namespace :maintenance do
 			unit_id = open_house.unit.id
 			day = 4.days.from_now.strftime("%Y-%m-%d")
 			start_time = Time.strptime("10:00:00", "%H:%M:%S")
-			end_time = Time.strptime("01:00:00", "%H:%M:%S")
+			end_time = Time.strptime("13:00:00", "%H:%M:%S")
 			#OpenHouse.create(day: day, start_time: start_time, end_time: end_time, unit_id: unit_id)
 			open_house = OpenHouse.create!(day: day, start_time: start_time, end_time: end_time, unit_id: unit_id)
 		end
