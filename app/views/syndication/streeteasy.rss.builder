@@ -215,7 +215,9 @@ xml.streeteasy :version => "1.6" do
 								# must match this format: 2006-11-20 3:30pm
 								xml.startsAt oh.day.strftime("%Y-%m-%d") + " " + oh.start_time.in_time_zone("Eastern Time (US & Canada)").strftime("%I:%M%p")
 								xml.endsAt oh.day.strftime("%Y-%m-%d") + " " + oh.end_time.in_time_zone("Eastern Time (US & Canada)").strftime("%I:%M%p")
-								xml.apptOnly
+								if !listing.s_id
+									xml.apptOnly
+								end
 							end
 						end
 					end
