@@ -1,16 +1,16 @@
 namespace :maintenance do
 	desc "clean up to match latest schema changes"
-	task :change_public_url => :environment do
-		log = ActiveSupport::Logger.new('log/change_public_urls.log')
+	task :change_public_url_sales_listing => :environment do
+		log = ActiveSupport::Logger.new('log/change_public_url_sales_listing.log')
 		start_time = Time.now
 
 		puts "Changing public url..."
 		log.info "Changing public url..."
 
-		@listings = ResidentialListing.all
+		@listings = SalesListing.all
 		@listings.each {|listing|
 			#if u.name != 'Blank Slate'
-				url = "https://myspacenyc.com/rental-details/?rid=#{listing.unit.id}"
+				url = "https://myspacenyc.com/sales-details/?sid=#{listing.unit.id}"
 				puts "listing public url Start update #{listing.unit.id}"
 				listing.unit.update!(public_url: url)
 				puts "listing public url End update #{listing.unit.id}"
