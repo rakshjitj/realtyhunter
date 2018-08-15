@@ -547,6 +547,22 @@
 
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-4">
+            <%= f.label :primary_agent_id, "Primary Agent" %>
+          </div>
+          <div class="col-xs-9 col-md-4">
+            <%= f.fields_for @residential_unit.unit do |unit_form| %>
+              <%= unit_form.select(:primary_agent_id,
+                options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
+                  [@residential_unit.unit.primary_agent ? @residential_unit.unit.primary_agent.id : '']),
+                {prompt: "Choose one..."},
+                class: 'form-control',
+                :include_blank => true) %>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="row vertical-margin-lg">
+          <div class="col-xs-3 col-md-4">
             <%= f.label :point_of_contact, "Point of contact" %>
           </div>
           <div class="col-xs-9 col-md-4">
@@ -561,21 +577,6 @@
           </div>
         </div>
 
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-4">
-            <%= f.label :primary_agent_id, "Primary Agent" %>
-          </div>
-          <div class="col-xs-9 col-md-4">
-            <%= f.fields_for @residential_unit.unit do |unit_form| %>
-              <%= unit_form.select(:primary_agent_id,
-                options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
-                  [@residential_unit.unit.primary_agent ? @residential_unit.unit.primary_agent.id : '']),
-                {prompt: "Choose one..."},
-                class: 'form-control',
-                :include_blank => true) %>
-            <% end %>
-          </div>
-        </div>
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-4">
             <%= f.label :primary_agent_id, "Streeteasy Primary Agent" %>
