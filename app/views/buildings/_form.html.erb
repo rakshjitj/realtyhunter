@@ -102,6 +102,21 @@
         <br />
         <div class="row">
           <div class="col-sm-3">
+            <%= f.label :point_of_contact, "Point of Contact" %>
+          </div>
+          <div class="col-sm-9">
+            <%= f.select(:point_of_contact,
+                options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
+                  [@building.point_of_contact ? @building.point_of_contact : '']),
+                {prompt: "Choose one..."},
+                class: 'form-control',
+                :include_blank => true) %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-sm-3">
             <%= f.label :rating, "Building Rating" %>
           </div>
           <div class="col-sm-9">

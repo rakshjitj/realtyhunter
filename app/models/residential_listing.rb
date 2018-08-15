@@ -202,7 +202,7 @@ class ResidentialListing < ApplicationRecord
       .where('units.archived = false')
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address',
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route','buildings.point_of_contact',
         'buildings.lat', 'buildings.lng', 'buildings.rating', 'units.id AS unit_id',
         'units.building_unit','units.featured', 'units.status','units.rent', 'residential_listings.beds',
         'units.primary_agent_id',  'units.has_stock_photos',
@@ -447,6 +447,10 @@ class ResidentialListing < ApplicationRecord
     if !params[:primary_agent_id].blank?
       running_list = running_list.where('units.primary_agent_id = ? OR units.primary_agent2_id = ?',
         params[:primary_agent_id], params[:primary_agent_id])
+    end
+
+    if !params[:point_of_contact].blank?
+      running_list = running_list.where('buildings.point_of_contact = ?',params[:point_of_contact])
     end
 
     if !params[:streeteasy_filter].blank?

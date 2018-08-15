@@ -196,6 +196,18 @@
             </div>
           </div>
           <div class="row vertical-padding">
+            <div class="col-xs-5">
+              <%= label_tag :point_of_contact, "Point of Contact", class: "field-label-sm" %>
+            </div>
+            <div class="col-xs-6 col-sm-left-padding">
+              <%= select_tag(:point_of_contact,
+                options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
+                    [params[:point_of_contact] ? params[:point_of_contact].titleize : "Any"]),
+                  {prompt: "Choose one...",
+                  class: 'form-control'}) %>
+            </div>
+          </div>
+          <div class="row vertical-padding">
           <div class="col-xs-3">
             <%= label_tag :listing_id, "Listing ID", class: "field-label-sm" %>
           </div>

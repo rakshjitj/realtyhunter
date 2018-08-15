@@ -446,6 +446,9 @@ class ResidentialListingsController < ApplicationController
       end
 
       # update fields on the unit first, then update fields on the residential_listing
+      if !params[:residential_listing][:building][:point_of_contact].nil?
+        @residential_unit.unit.building.update(point_of_contact: params[:residential_listing][:building][:point_of_contact])
+      end
       unit_updated = @residential_unit.unit.update(
           residential_listing_params[:unit].merge({updated_at: Time.now}))
       r_params = residential_listing_params
@@ -851,7 +854,8 @@ class ResidentialListingsController < ApplicationController
           :exclusive, :featured, :hide_on_website, :building_id, :primary_agent_id, :listing_agent_id,
           :syndication_status, :has_stock_photos, :is_exclusive_agreement_signed,
           :exclusive_agreement_expires_at, :public_url,
-          open_houses_attributes: [:day, :start_time, :end_time, :_destroy, :id] ],
+          open_houses_attributes: [:day, :start_time, :end_time, :_destroy, :id],
+          building: [:point_of_contact] ],
         residential_amenity_ids: []
         )
 

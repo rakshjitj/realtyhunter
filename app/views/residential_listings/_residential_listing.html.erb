@@ -130,7 +130,13 @@
         --
       <% end %>
     </td>
-
+    <td>
+      <% if !residential_listing.unit.building.point_of_contact.nil? %>
+        <%= link_to User.find(residential_listing.unit.building.point_of_contact).name, user_path(residential_listing.unit.building.point_of_contact) %>
+      <% else %>
+        --
+      <% end %>
+    </td>
     <!-- ****** UPDATED_AT ****************************************** -->
     <td><%= time_ago_in_words(residential_listing.updated_at) %></td>
 
