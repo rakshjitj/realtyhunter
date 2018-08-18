@@ -10,6 +10,9 @@ class ApplicationController < ActionController::Base
   before_action :detect_device_variant
   # before_action :check_rack_mini_profiler # for profiling purposes only
   after_action  :clear_xhr_flash
+  before_filter :redirect_https
+
+    
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
@@ -62,6 +65,10 @@ class ApplicationController < ActionController::Base
 
   private
 
+    def redirect_https        
+      redirect_to :protocol => "https://" unless request.ssl?
+      return true
+    end 
     # Confirms a logged-in user.
     def logged_in_user
       unless logged_in?
