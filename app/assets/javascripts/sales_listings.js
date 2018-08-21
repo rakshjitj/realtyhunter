@@ -99,7 +99,7 @@ SalesListings = {};
 
       if (unit.image) {
         slideshowContent += '<div class="image' + (!firstImageAdded ? ' active' : '') + '">' +
-            '<a href="http://realtyhunter.org:3000/sales_listings/'+ unit.id +
+            '<a href="https://realtyhunter.org:3000/sales_listings/'+ unit.id +
             '"><img src="' + unit.image + '" /></a>' +
             '</div>';
         firstImageAdded = true;
@@ -108,12 +108,12 @@ SalesListings = {};
 
       var shouldHighlightRow = imgCount == 1 && info['units'].length > 1;
       contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
-        + '<a href="http://realtyhunter.org:3000/sales_listings/'
+        + '<a href="https://realtyhunter.org:3000/sales_listings/'
         + unit.id + '">#' + unit.building_unit + ' ' +
         + unit.beds + ' bd / '
         + unit.baths + ' baths $' + unit.rent + '</a></div>';
       if (i == 5) {
-        contentString += '<div class="contentRow"><a href="http://realtyhunter.org:3000/buildings/'
+        contentString += '<div class="contentRow"><a href="https://realtyhunter.org:3000/buildings/'
           + info['building_id'] + '">View more...</a></div>';
         break;
       }

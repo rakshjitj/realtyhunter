@@ -7,7 +7,7 @@
 
 <% if @listings && @listings.size > 0 %>
   <% @listings.each do |l| %>
-    <a href="http://realtyhunter.org:3000/residential_listings/<%= l.id %>">
+    <a href="https://realtyhunter.org:3000/residential_listings/<%= l.id %>">
       <%= l.street_address_and_unit %><br>
     </a>
   <% end %>

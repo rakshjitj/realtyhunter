@@ -186,13 +186,13 @@
       if (unit.image) {
         if (window.location.pathname == '/residential_listings/room_index'){
           slideshowContent += '<div class="image' + (!firstImageAdded ? ' active' : '') + '">' +
-            '<a href="http://realtyhunter.org:3000/rooms/'+ unit.id +
+            '<a href="https://realtyhunter.org:3000/rooms/'+ unit.id +
             '"><img src="' + unit.image + '" /></a>' +
             '</div>';
         }
         else{
           slideshowContent += '<div class="image' + (!firstImageAdded ? ' active' : '') + '">' +
-            '<a href="http://realtyhunter.org:3000/residential_listings/'+ unit.id +
+            '<a href="https://realtyhunter.org:3000/residential_listings/'+ unit.id +
             '"><img src="' + unit.image + '" /></a>' +
             '</div>';
         }
@@ -212,7 +212,7 @@
         contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
           + ''+set_icon+''
           + '<a id = "copycontent_'+i+'" href='+unit.public_url+'></a>'
-          + '<a href="http://realtyhunter.org:3000/rooms/'
+          + '<a href="https://realtyhunter.org:3000/rooms/'
           + unit.id + '">#' + unit.building_unit + ' ' +
           + unit.beds + ' bd / '
           + unit.baths + ' baths $' + unit.rent + '</a></div>';
@@ -221,13 +221,13 @@
         contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
           + ''+set_icon+''
           + '<a id = "copycontent_'+i+'" href='+unit.public_url+'></a>'
-          + '<a href="http://realtyhunter.org:3000/residential_listings/'
+          + '<a href="https://realtyhunter.org:3000/residential_listings/'
           + unit.id + '">#' + unit.building_unit + ' ' +
           + unit.beds + ' bd / '
           + unit.baths + ' baths $' + unit.rent + '</a></div>';
       }
       if (i == 5) {
-        contentString += '<div class="contentRow"><a href="http://realtyhunter.org:3000/buildings/'
+        contentString += '<div class="contentRow"><a href="https://realtyhunter.org:3000/buildings/'
           + info['building_id'] + '">View more...</a></div>';
         break;
       }
