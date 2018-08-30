@@ -189,7 +189,7 @@ Buildings = {};
       }
 
       // if no neighborhood already set, update neighborhood from google results
-      // if ($('#neighborhood').val() === null) {
+      if ($('#neighborhood').val() === null) {
         $.ajax({
           type: "GET",
           url: '/buildings/neighborhood_options',
@@ -206,7 +206,7 @@ Buildings = {};
             }
           }
         });
-      // }
+      }
 
     }).bind("geocode:error", function () {
       console.log("[ERROR]: " + result);
