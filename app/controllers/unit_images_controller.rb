@@ -1,7 +1,7 @@
 class UnitImagesController < ApplicationController
   skip_authorize_resource
-  before_action :set_image, only: [:destroy, :display]
-  before_action :set_unit, except: [:destroy, :display]
+  before_action :set_image, only: [:destroy, :display, :display_floor_image, :display_floor_image_sales]
+  before_action :set_unit, except: [:destroy, :display, :display_floor_image, :display_floor_image_sales]
 
   # POST /images
   # POST /images.json
@@ -55,6 +55,30 @@ class UnitImagesController < ApplicationController
         @image.update_columns(display_on_website: false)
       elsif @image.display_on_website == false
         @image.update_columns(display_on_website: true)
+      end
+    else
+      render nothing: true
+    end
+  end
+
+  def display_floor_image
+    if @image
+      if @image.floorplan == true
+        @image.update_columns(floorplan: false)
+      elsif @image.floorplan == false
+        @image.update_columns(floorplan: true)
+      end
+    else
+      render nothing: true
+    end
+  end
+
+  def display_floor_image_sales
+    if @image
+      if @image.floorplan == true
+        @image.update_columns(floorplan: false)
+      elsif @image.floorplan == false
+        @image.update_columns(floorplan: true)
       end
     else
       render nothing: true

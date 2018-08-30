@@ -6,11 +6,20 @@
     <%= link_to "Remove ##{idx}", "",
         class: 'btn btn-xs btn-link center-block delete-unit-img',
         "data-id": image.id, "data-unit-id": @residential_unit.id %>
-	<div style="margin-left: 110px;">
-		<%= label_tag :display_on_website, "Display On Website", style: "color: #666;" %>
-		<div class="checkbox checkbox-warning checkbox-inline">
-			<%= check_box_tag :display_on_website, 1,  image.display_on_website ? true : false, class: "display-unit-img","data-id": image.id, "data-unit-id": @residential_unit.id %>
-			<label></label>
+	<div style="margin-left: 50px;">
+    <div style="float: left;">
+      <%= label_tag :display_on_website, "Display On Website", style: "color: #666;" %>
+      <div class="checkbox checkbox-warning checkbox-inline">
+        <%= check_box_tag :display_on_website, 1,  image.display_on_website ? true : false, class: "display-unit-img","data-id": image.id, "data-unit-id": @residential_unit.id %>
+        <label></label>
+    </div>
+    <div style="float: right;">
+      <%= label_tag :floorplan, "FloorPlan", style: "color: #666;" %>
+      <div class="checkbox checkbox-warning checkbox-inline">
+        <%= check_box_tag :floorplan, 0,  image.floorplan ? true : false, class: "display-unit-img-floor-plan","data-id": image.id, "data-unit-id": @residential_unit.id %>
+        <label></label>
+      </div>
+    </div>
 		</div>
 	</div>
   </div>

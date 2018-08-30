@@ -223,6 +223,7 @@ SalesListings = {};
     });
 
     DropZoneHelper.updateRemoveImgLinks('sales', 'sales_listings');
+    DropZoneHelper.updateImgFloorPlanOptionsForSales('sales', 'sales_listings');
 
     $('.carousel-indicators > li:first-child').addClass('active');
     $('.carousel-inner > .item:first-child').addClass('active');

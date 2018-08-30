@@ -1,3 +1,4 @@
 $(".images").html("<%= escape_javascript(render('images')) %>")
 DropZoneHelper.updateRemoveImgLinks('sales', 'sales_listings');
+DropZoneHelper.updateImgFloorPlanOptionsForSales('sales', 'sales_listings');
 DropZoneHelper.makeSortable('sales', 'images');

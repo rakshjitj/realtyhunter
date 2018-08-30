@@ -327,6 +327,13 @@ xml.streeteasy :version => "1.6" do
 							xml.photo url:i.file.url(:large), position: i.priority, description:""
 						end
 					end
+					if @images[listing.unit_id]
+						@images[listing.unit_id].each do |i|
+							if i.floorplan == true
+								xml.floorplan url:i.file.url(:large), description:""
+							end
+						end
+					end
 				end
 
 			end # property

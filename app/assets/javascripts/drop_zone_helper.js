@@ -71,6 +71,51 @@ DropZoneHelper = {};
     }
   };
 
+  DropZoneHelper.displayFloorImage = function (id, unit_id, controllerPath) {
+    // if not currently in the middle of a deletion request, delete this photo
+    if (!DropZoneHelper.currentlyDeleting) {
+      DropZoneHelper.currentlyDeleting = false;
+      Listings.showSpinner();
+      $.ajax({
+        type: 'get',
+        url: '/' + controllerPath + '/' + unit_id + '/unit_images/' + id + '/display_floor_image',
+        success: function(data){
+          //console.log(data.message);
+          $.getScript('/' + controllerPath + '/' + unit_id + '/refresh_images');
+          Listings.hideSpinner();
+          DropZoneHelper.currentlyDeleting = false;
+        },
+        error: function(data) {
+          Listings.hideSpinner();
+          DropZoneHelper.currentlyDeleting = false;
+          //console.log('ERROR:', data);
+        }
+      });
+    }
+  };
+
+  DropZoneHelper.displayFloorImageForSales = function (id, unit_id, controllerPath) {
+    // if not currently in the middle of a deletion request, delete this photo
+    if (!DropZoneHelper.currentlyDeleting) {
+      DropZoneHelper.currentlyDeleting = false;
+      Listings.showSpinner();
+      $.ajax({
+        type: 'get',
+        url: '/' + controllerPath + '/' + unit_id + '/unit_images/' + id + '/display_floor_image_sales',
+        success: function(data){
+          //console.log(data.message);
+          $.getScript('/' + controllerPath + '/' + unit_id + '/refresh_images');
+          Listings.hideSpinner();
+          DropZoneHelper.currentlyDeleting = false;
+        },
+        error: function(data) {
+          Listings.hideSpinner();
+          DropZoneHelper.currentlyDeleting = false;
+          //console.log('ERROR:', data);
+        }
+      });
+    }
+  };
 
   DropZoneHelper.rotateImage = function (id, unit_id, controllerPath) {
     Listings.showSpinner();
@@ -134,6 +179,24 @@ DropZoneHelper = {};
       var id = $(this).attr('data-id');
       var unit_id = $(this).attr('data-unit-id');
       DropZoneHelper.displayImage(id, unit_id, controllerPath);
+    });
+  };
+
+  DropZoneHelper.updateImgFloorPlanOptions = function(sectionID, controllerPath) {
+    $('#' + sectionID + ' .display-unit-img-floor-plan').click(function(event) {
+      event.preventDefault();
+      var id = $(this).attr('data-id');
+      var unit_id = $(this).attr('data-unit-id');
+      DropZoneHelper.displayFloorImage(id, unit_id, controllerPath);
+    });
+  };
+
+  DropZoneHelper.updateImgFloorPlanOptionsForSales = function(sectionID, controllerPath) {
+    $('#' + sectionID + ' .display-unit-img-floor-plan').click(function(event) {
+      event.preventDefault();
+      var id = $(this).attr('data-id');
+      var unit_id = $(this).attr('data-unit-id');
+      DropZoneHelper.displayFloorImageForSales(id, unit_id, controllerPath);
     });
   };
 
