@@ -4,7 +4,7 @@ class ResidentialListingsController < ApplicationController
   before_action :set_specific_residential_listing, only: [:specific_edit]
   before_action :set_residential_listing, only: [:show, :edit, :specific_edit, :duplicate_modal, :duplicate,
     :mark_app_submitted, :update, :delete_modal, :destroy,
-    :inaccuracy_modal, :send_inaccuracy, :refresh_images, :refresh_documents]
+    :inaccuracy_modal, :send_inaccuracy, :refresh_images, :refresh_documents, :favourite_listings]
   autocomplete :building, :formatted_street_address, full: true
   autocomplete :landlord, :code, full: true
   include KnackInterface
@@ -488,6 +488,12 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
+  def favorite_listings
+    set_residential_listings
+    @favorite_units = @residential_units.where(favorites: true)
+    #abort @favorite_units.inspect
+  end
+
   def claim_for_streeteasy
     if current_user.is_streeteasy_agent?
       set_residential_listings
@@ -755,7 +761,7 @@ class ResidentialListingsController < ApplicationController
       # only get data + images for paginated responses
       @residential_units = @residential_units.page params[:page]
       if request.variant != ":phone"
-        @favorite_units = @residential_units.where(favorites: true)
+        @favorite_units = @residential_units
       end
 
       # convert params back into something the form can recognize
