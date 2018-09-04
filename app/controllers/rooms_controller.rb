@@ -28,10 +28,12 @@ class RoomsController < ApplicationController
   def room_update
     @residential_unit = ResidentialListing.find(params[:id])
     @residential_unit.update(rooms_description: params[:unit_description])
+    #abort params[:unit_status].inspect
+    @residential_unit.unit.update(status: params[:unit_status].downcase, rent: params[:unit_rent])
     #abort params[:unit_image].nil?.inspect
-    if !params[:unit_image].nil?
-      @residential_unit.unit.images.create(file: params[:unit_image], unit_id: @residential_unit.unit.id)
-    end
+    # if !params[:unit_image].nil?
+    #   @residential_unit.unit.images.create(file: params[:unit_image], unit_id: @residential_unit.unit.id)
+    # end
     if @residential_unit.rooms.blank?
       if params.has_key?("room")
         @rooms = Room.create(room_params(params["room"]))

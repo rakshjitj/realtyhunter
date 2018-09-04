@@ -38,6 +38,27 @@
                 rows: 15 %>
             <br>
           </div>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-2">
+              <%= label_tag :unit_status, "Unit Status" %>
+            </div>
+            <div class="col-md-4">
+              <%= select_tag :unit_status,
+                      options_for_select(%w(Active Pending Off Rsonly),
+                        [@residential_unit.unit.status.titleize]),
+                      class: "form-control" %>
+              <br>
+            </div>
+          </div>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-2">
+              <%= label_tag :unit_rent, "Unit Rent" %>
+            </div>
+            <div class="col-md-4">
+              <%= text_field_tag :unit_rent,@residential_unit.unit.rent, class: 'form-control' %>
+              <br>
+            </div>
+          </div>
           <%#= file_field_tag :unit_image %>
           <div style="clear: both;"></div>
             <% co = 1 %>
