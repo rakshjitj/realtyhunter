@@ -162,8 +162,7 @@
             <%= f.label :beds, class: 'required' %>
           </div>
           <div class="col-xs-9 col-md-4">
-            <%= f.number_field :beds, class: 'form-control',
-              in: 0.0..10.0, :required => true %>
+            <%= f.number_field :beds, class: 'form-control', step: 0.5, in: 0.0..10.0, :required => true %>
           </div>
         </div>
 

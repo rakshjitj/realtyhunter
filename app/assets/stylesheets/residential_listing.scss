@@ -298,3 +298,12 @@ $mobile-footer-height: 65px;
     position: relative;
     z-index: 100;
 }
+
+.effect {
+    position: relative;
+    border: 1px solid #ccc;
+    -webkit-box-shadow: 5px 5px #CCC;
+    box-shadow: 5px 5px #CCC;
+    border-radius: 30px;
+    padding: 8px;
+}

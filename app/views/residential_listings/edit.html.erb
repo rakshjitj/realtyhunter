@@ -9,11 +9,6 @@
 		      <h1>
 		      	<%= @residential_unit.unit.building.street_address %>
 		      	<small>#<%= @residential_unit.unit.building_unit %></small>
-				<div>
-					<% if @residential_unit.unit.building.neighborhood %>
-						<span style="font-size: 20px;">Neighborhood : <%= @residential_unit.unit.building.neighborhood.name %></span>
-					<% end %>
-				</div>
 		      </h1>
 		    </div>
 		    <div class="col-sm-4 page-header-buttons-lg form-label-responsive">
@@ -21,6 +16,23 @@
 					<%= link_to 'All units', residential_listings_path %>
 		    </div>
 		  </div>
+			<div class="effect">
+				<div align="center">
+					<% if @residential_unit.unit.building.neighborhood %>
+						<span style="font-size: 20px;">Neighborhood : <%= @residential_unit.unit.building.neighborhood.name %></span>
+					<% end %>
+				</div>
+				<div align="center">
+					<% if @residential_unit.unit.building.pet_policy %>
+						<span style="font-size: 22px;">Pet Policy : <%= @residential_unit.unit.building.pet_policy.name %></span>
+					<% end %>
+				</div>
+				<div align="center">
+					<% if @residential_unit.unit.building.rental_term %>
+						<span style="font-size: 22px;">Lease Term: : <%= @residential_unit.unit.building.rental_term.name %></span>
+					<% end %>
+				</div>
+			</div>
 		</div>
 
 		<%= render 'form' %>
