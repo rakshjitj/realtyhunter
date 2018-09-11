@@ -301,7 +301,7 @@
             <div class="row">
 
               <% i = 0 %>
-              <%= f.collection_check_boxes(:residential_amenity_ids, current_user.company.residential_amenities, :id, :name) do |b| %>
+              <%= f.collection_check_boxes(:residential_amenity_ids, current_user.company.residential_amenities.where.not(parent_amenities: 1), :id, :name) do |b| %>
 
                 <% if i % 3 == 0 && i > 0 %>
                   </div>
