@@ -9,12 +9,12 @@ class RoomsController < ApplicationController
     @residential_unit = ResidentialListing.find(params[:id])
     if @residential_unit.rooms.blank?
       @kennel = []
-      @residential_unit.beds.times do
+      @residential_unit.beds.to_i.times do
         @kennel << Room.new
       end
     else
       @kennel = []
-      @residential_unit.beds.times do |a|
+      @residential_unit.beds.to_i.times do |a|
         #abort @residential_unit.rooms[a].inspect
         @kennel << @residential_unit.rooms[a]
       end
