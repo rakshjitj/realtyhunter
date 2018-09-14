@@ -71,7 +71,11 @@ xml.streeteasy :version => "1.6" do
 					end
 
 					if !listing.r_beds.nil?
-						xml.bedrooms listing.r_beds
+						if listing.r_beds.is_a?(Float) && (listing.r_beds.to_i == listing.r_beds)
+							xml.bedrooms listing.r_beds.to_i
+						else
+							xml.bedrooms listing.r_beds
+						end
 					elsif !listing.s_beds.nil?
 						xml.bedrooms listing.s_beds
 					end
