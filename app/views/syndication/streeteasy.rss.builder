@@ -71,9 +71,9 @@ xml.streeteasy :version => "1.6" do
 					end
 
 					if !listing.r_beds.nil?
-						xml.bedrooms listing.r_beds.to_i
+						xml.bedrooms listing.r_beds
 					elsif !listing.s_beds.nil?
-						xml.bedrooms listing.s_beds.to_i
+						xml.bedrooms listing.s_beds
 					end
 
 					if listing.r_total_room_count
