@@ -78,8 +78,9 @@ gem 'clipboard-rails'
 group :production do
 	gem 'rails_12factor', '0.0.3' # related to serving static assets
 	gem 'puma'
-	gem 'wkhtmltopdf-heroku', '~> 2.12.2.1'
+	#gem 'wkhtmltopdf-heroku', '~> 2.12.2.1'
   gem 'wkhtmltopdf-binary'
+  gem 'wkhtmltopdf-binary-edge'
   gem 'connection_pool', '~> 2.2.0'
   gem 'newrelic_rpm', '~> 3.15.0.314'
   #gem 'skylight'
