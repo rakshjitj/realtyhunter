@@ -42,7 +42,7 @@ gem 'cancancan', '~> 1.10'
 gem 'rails4-autocomplete', '1.1.1'
 gem 'wicked_pdf', '1.0.5'
 gem 'wkhtmltopdf-binary'
-gem 'wkhtmltopdf-binary-edge'
+#gem 'wkhtmltopdf-binary-edge'
 gem 'rack-cors', require: 'rack/cors'
 # used for our rake tasks to import data
 gem 'mechanize'
