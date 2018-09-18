@@ -325,33 +325,21 @@ class ResidentialListing < ApplicationRecord
     if params[:neighborhood_ids]
       neighborhood_ids = params[:neighborhood_ids][0, 256]
       neighborhoods = neighborhood_ids.split(",").select{|i| !i.strip.empty?}
-      if (neighborhoods.include? "43") || (neighborhoods.include? "6")
-        if (neighborhoods.include? "43") == true
-          neighborhoods << "6"
-        else
-          neighborhoods << "43"
-        end
+
+      if (neighborhoods.include? "43") == true
+          neighborhoods += ["6", "5"]
       end
-      if (neighborhoods.include? "14") || (neighborhoods.include? "15")
-        if (neighborhoods.include? "14") == true
-          neighborhoods << "15"
-        else
-          neighborhoods << "14"
-        end
+
+      if (neighborhoods.include? "14") == true
+        neighborhoods << "15"
       end
-      if (neighborhoods.include? "52") || (neighborhoods.include? "26")
-        if (neighborhoods.include? "52") == true
-          neighborhoods << "26"
-        else
-          neighborhoods << "52"
-        end
+
+      if (neighborhoods.include? "52") == true
+        neighborhoods << "26"
       end
-      if (neighborhoods.include? "9") || (neighborhoods.include? "53")
-        if (neighborhoods.include? "9") == true
-          neighborhoods << "53"
-        else
-          neighborhoods << "9"
-        end
+
+      if (neighborhoods.include? "9") == true
+        neighborhoods << "53"
       end
       if neighborhoods.length > 0 # ignore empty selection
         running_list = running_list
