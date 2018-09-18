@@ -41,6 +41,8 @@ gem 'cancancan', '~> 1.10'
 # autocomplete fields (like building addresses in our case)
 gem 'rails4-autocomplete', '1.1.1'
 gem 'wicked_pdf', '1.0.5'
+gem 'wkhtmltopdf-binary'
+gem 'wkhtmltopdf-binary-edge'
 gem 'rack-cors', require: 'rack/cors'
 # used for our rake tasks to import data
 gem 'mechanize'
@@ -79,8 +81,7 @@ group :production do
 	gem 'rails_12factor', '0.0.3' # related to serving static assets
 	gem 'puma'
 	#gem 'wkhtmltopdf-heroku', '~> 2.12.2.1'
-  gem 'wkhtmltopdf-binary'
-  gem 'wkhtmltopdf-binary-edge'
+
   gem 'connection_pool', '~> 2.2.0'
   gem 'newrelic_rpm', '~> 3.15.0.314'
   #gem 'skylight'
@@ -89,7 +90,7 @@ end
 group :development, :test do
   gem 'rails-controller-testing'
   #gem 'wkhtmltopdf-binary-edge', '~> 0.12.2.1'
-  gem 'wkhtmltopdf-binary'
+  #gem 'wkhtmltopdf-binary'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', '~> 8.2.2'
   # Access an IRB console on exception pages or by using <%= console %> in views
