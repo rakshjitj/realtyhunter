@@ -142,7 +142,7 @@
                       <a href="https://myspacenyc.com/agent-details/?uid=<%= @source_agent.id%>&email=<%= @source_agent.email %>" target="_blank">
                       <% if @source_agent.image %>
                         <%#= image_tag(@source_agent.image.file.url(:large_unmarked), style: "height: 150;") %>
-                        <%= image_tag @source_agent.image.file.url(:large_unmarked),alt: @source_agent.image.file.url(:large_unmarked), style: "height: 150;"  %>
+                        <%= image_tag @source_agent.image.file.url(:large_unmarked),alt: @source_agent.image.file.url(:large_unmarked), style: "height: 150px;"  %>
                       <% end %>
                       </a>
                     </td>
