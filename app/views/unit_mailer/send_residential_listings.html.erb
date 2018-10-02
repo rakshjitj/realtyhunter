@@ -1,96 +1,168 @@
-<!-- company header -->
-<% if @message %>
-	<p><%= @message %></p>
-<% end %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<!-- listings -->
-<table style="background-color:#F8F8F8">
-	<tr>
-		<% idx = 0 %>
-		<% @listings.each do |listing| %>
+  <title>RealtyHunter Email</title>
 
-		<% if idx > 0 && idx % 2 == 0 %>
-			</tr>
-			<tr>
-		<% end %>
+  <style type="text/css">
 
-		<td style="max-width: 200px; vertical-align: top;">
-			<% if @images[listing.unit_id] %>
-	      <a href="<%= listing.public_url %>"><%= image_tag(@images[listing.unit_id],
-	        alt: @images[listing.unit_id]) %></a>
-	    <% else %>
-	      <!-- placeholder image -->
-	      <a href="<%= listing.public_url %>">
-		      <%= image_tag("listing_soon_thumb.png", alt: "Image coming soon",
-	      			class: 'img-responsive', size: "100x100") %></a>
-	    <% end %>
-	  	<br />
-	    <%= rent_formatted(listing.rent) %><br />
-	    <%= listing.beds %> BR / <%= trim_zeros(listing.baths) %> Bath<br />
-	    <%= listing.route %>, <% listing.neighborhood_name %><br />
+    /* Outlines the grids, remove when sending */
+    table td { border: 0px solid cyan; }
+    /* CLIENT-SPECIFIC STYLES */
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { -ms-interpolation-mode: bicubic; }
+    /* RESET STYLES */
+    img { border: 0; outline: none; text-decoration: none; }
+    table { border-collapse: collapse !important; }
+    body { margin: 0 !important; padding: 0 !important; width: 100% !important; }
+    /* iOS BLUE LINKS */
+    a[x-apple-data-detectors] {
+      color: inherit !important;
+      text-decoration: none !important;
+      font-size: inherit !important;
+      font-family: inherit !important;
+      font-weight: inherit !important;
+      line-height: inherit !important;
+    }
+  button { font-family: Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif"; font-size: 18px; font-weight: 500; padding: 10px 30px; border: none; background-color: #F7B419; color:#fff; border-radius: 3px;}
 
-	    <% if !listing.all_amenities_to_s.blank? || !listing.unit.building.utilities_to_s.blank? %>
-	    	<hr />
-	    <% end %>
+  a, a:hover, a:active, a:visited, a:link { text-decoration: none; color: #fff;}
+    /* ANDROID CENTER FIX */
+    div[style*="margin: 16px 0;"] { margin: 0 !important; }
+    /* MEDIA QUERIES */
+    @media all and (max-width:639px){
+      .wrapper{ width:320px!important; padding: 0 !important; }
+      .container{ width:300px!important;  padding: 0 !important; }
+      .mobile{ width:300px!important; display:block!important; padding: 0 !important; }
+    .logo{ width:300px!important; display:block!important; padding: 0 0 30px 0 !important; }
+    .agentimg{ width:300px!important; display:block!important; padding: 30px 0 0 0 !important; }
+    .agent{ width:300px!important; display:block!important; padding: 30px 0 0 0 !important; text-align: center !important;}
+    .mobileunits{ width:300px!important; display:block!important; padding: 0px 0 50px 0 !important; }
+      .img{ width:100% !important; height:auto !important; }
+      *[class="mobileOff"] { width: 0px !important; display: none !important; }
+      *[class*="mobileOn"] { display: block !important; max-height:none !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#F2F2F2;">
 
-	    <% if !listing.all_amenities_to_s.blank? %>
-	      <%= listing.all_amenities_to_s %>
-	    <% end %>
-	    <% if !listing.all_amenities_to_s.blank? && !listing.unit.building.utilities_to_s.blank? %>
-	     ,
-	    <% end %>
-	    <% if !listing.unit.building.utilities_to_s.blank? %>
-	      <%= listing.unit.building.utilities_to_s %>
-	    <% end %>
+  <span style="display: block; width: 640px !important; max-width: 640px; height: 1px" class="mobileOff"></span>
 
-	    <br />
-	    <br />
-	    <a style="padding: 5px 10px; font-size: 12px;line-height: 1.5; border-radius: 3px;color: #fff;
-    background-color: #f0ad4e;border-color: #eea236;"
-	    	href="<%= listing.public_url %>">View More Details</a>
-	    <br />
-	    <br />
-    </td>
+  <center>
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F2F2F2" style="font-family: Gotham, 'Helvetica Neue', Helvetica, Arial, 'sans-serif'; color: #fff; font-size: 15px; font-weight: 300;">
+      <tr>
+        <td align="center" valign="top">
+     <table width="640" cellpadding="0" cellspacing="0" border="0" class="wrapper" bgcolor="#333">
+     <tr>
+     <td height="30" style="font-size:10px; line-height:30px;">&nbsp;</td>
+     </tr>
+            <tr>
+              <td align="center" valign="top">
 
-    <% idx = idx + 1 %>
-		<% end %>
-	</tr>
-</table>
+                <table width="580" cellpadding="0" cellspacing="0" border="0" class="container">
+                  <tr>
+                    <td width="80" class="logo" align="center" valign="top">
+                      <a href="https://myspacenyc.com/" target="_blank"><img height="100" src="https://myspacenyc.com/wp-content/uploads/2017/12/myspacenyc-logo-min-e1513076631828.png" target="_blank"></a>
+                    </td>
+           <td width="20" class="mobile" align="center" valign="top">
+           </td>
+          <td width="480" class="mobile" align="left" valign="top" style="color: white;">
+                      <% if @message %>
+                        <%= @message %>
+                      <% end %>
+                    </td>
+                  </tr>
+                </table>
 
+              </td>
+            </tr>
+     <tr>
+     <td height="30" style="font-size:10px; line-height:30px;">&nbsp;</td>
+     </tr>
+     </table>
+      <table width="640" cellpadding="0" cellspacing="0" border="0" class="wrapper" bgcolor="#333">
+            <tr>
+              <td align="center" valign="top">
 
-<!-- footer -->
-<hr />
-<!-- <table>
-	<tr>
-		<td>
-			<%#= image_tag @source_agent.company.image.file.url(:thumb),
-		    alt: @source_agent.company.image.file.url(:thumb), align:"left" %>
-		</td>
-		<td style="vertical-align: middle;">
-			<b><%#= @source_agent.company.name %></b>
-			<br />
-			<%# if @source_agent.company.website %>
-				<%#= link_to @source_agent.company.website, @source_agent.company.website %>
-			<%# end %>
-		</td>
-	</tr>
-</table> -->
-<table>
-	<tr>
-		<td>
-			<% if @source_agent.image %>
-				<%= image_tag @source_agent.image.file.url(:thumb),
-  		    alt: @source_agent.image.file.url(:thumb) %>
-  		<% end %>
-		</td>
-		<td style="min-width:200px;">
-			<%= @source_agent.name %>
-	    <% if !@source_agent.email.blank? %>
-	      <br /><%= mail_to @source_agent.email, @source_agent.email, subject: 'Responding to Your Sent Listings' %>
-	    <% end %>
-	    <% if !@source_agent.mobile_phone_number.blank? %>
-	      <br /><%= link_to @source_agent.mobile_phone_number, "tel:" + @source_agent.mobile_phone_number %>
-	    <% end %>
-		</td>
-	</tr>
-</table>
+                <table width="580" cellpadding="0" cellspacing="0" border="0" class="container">
+                  <tr>
+                    <% idx = 0 %>
+                    <% @listings.each do |listing| %>
+
+                    <% if idx > 0 && idx % 2 == 0 %>
+                      </tr>
+                      <tr>
+                    <% end %>
+                    <td width="290" class="mobileunits" align="left" valign="top" style="padding: 0 15px 50px 0; color: white;">
+                      <% if @images[listing.unit_id] %>
+                        <a href="<%= listing.public_url %>"><%= image_tag(listing.unit.images.first.file.url(:large),
+                          alt: @images[listing.unit_id], style: "width: 100%;padding-bottom: 20px;") %></a>
+                      <% else %>
+                        <!-- placeholder image -->
+                        <a href="<%= listing.public_url %>">
+                          <%= image_tag("listing_soon_thumb.png", alt: "Image coming soon",
+                              class: 'img-responsive', size: "100x100") %></a>
+                      <% end %>
+                      <br>
+                      <%= listing.route %>,<h1 style="font-size: 21px; font-weight: 700;"><%= rent_formatted(listing.rent) %><br><%= listing.beds %> BED | <%= trim_zeros(listing.baths) %> BATH</h1>
+            <p style="font-size: 12px; font-weight: 200;">
+              <% if !listing.all_amenities_to_s.blank? || !listing.unit.building.utilities_to_s.blank? %>
+                <hr />
+              <% end %>
+
+              <% if !listing.all_amenities_to_s.blank? %>
+                <%= listing.all_amenities_to_s %>
+              <% end %>
+              <% if !listing.all_amenities_to_s.blank? && !listing.unit.building.utilities_to_s.blank? %>
+               ,
+              <% end %>
+              <% if !listing.unit.building.utilities_to_s.blank? %>
+                <%= listing.unit.building.utilities_to_s %>
+              <% end %>
+            </p>
+            <br>
+            <a href="<%= listing.public_url %>" target="_blank"><button style="button">MORE INFO</button></a>
+              </td>
+              <% idx = idx + 1 %>
+            <% end %>
+       </tr>
+     </table>
+      <table width="640" cellpadding="0" cellspacing="0" border="0" class="wrapper" bgcolor="#333">
+
+            <tr>
+              <td align="center" valign="top">
+
+                <table width="580" cellpadding="0" cellspacing="0" border="0" class="container" style="border-top: 1px solid #666;">
+                  <tr>
+                    <td width="150" class="agentimg" align="center" valign="top" style="padding-top: 30px;">
+                      <a href="https://myspacenyc.com/agent-details/?uid=<%= @source_agent.id%>&email=<%= @source_agent.email %>" target="_blank">
+                      <% if @source_agent.image %>
+                        <%#= image_tag(@source_agent.image.file.url(:large_unmarked), style: "height: 150;") %>
+                        <%= image_tag @source_agent.image.file.url(:large_unmarked),alt: @source_agent.image.file.url(:large_unmarked), style: "height: 150;"  %>
+                      <% end %>
+                      </a>
+                    </td>
+          <td width="20" class="mobile" align="left" valign="top">
+                    </td>
+                    <td width="410" class="agent" align="left" valign="top"  style="padding-top: 30px;">Licensed Real Estate Agent
+                      <h1 style="font-size: 21px; font-weight: 700; line-height: 0;"><%= @source_agent.name %></h1><br><a href="email@myspacenyc.com"><%= @source_agent.email %></a><br><a href="tel:1-111-111-1111"><%= @source_agent.mobile_phone_number %></a>
+                    </td>
+                  </tr>
+                </table>
+
+              </td>
+            </tr>
+     <tr>
+     <td height="30" style="font-size:10px; line-height:30px;">&nbsp;</td>
+     </tr>
+     </table>
+        </td>
+      </tr>
+    </table>
+  </center>
+</body>
+</html>
