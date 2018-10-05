@@ -108,7 +108,7 @@
                               class: 'img-responsive', size: "100x100") %></a>
                       <% end %>
                       <br>
-                      <%= listing.route %>,<h1 style="font-size: 21px; font-weight: 700;"><%= rent_formatted(listing.rent) %> |
+                      <%= listing.route %><h1 style="font-size: 21px; font-weight: 700;"><%= rent_formatted(listing.rent) %> |
                         <% if listing.beds.is_a?(Float) && (listing.beds.to_i == listing.beds) %>
                           <%= listing.beds.to_i %>
                         <% else %>
