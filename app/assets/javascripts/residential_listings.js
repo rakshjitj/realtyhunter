@@ -49,8 +49,11 @@
         streeteasy_filter: $('#streeteasy_filter').val(),
         streeteasy_claim: $('#streeteasy_claim').val(),
         primary_agent_id:  $('#primary_agent_id').val(),
+        claim_agent_id: $('#claim_agent_id').val(),
         point_of_contact:  $('#point_of_contact').val(),
         building_rating: $('#building_rating').val(),
+        parent_amenities: $('#parent_amenities').val(),
+        parent_neighborhoods: $('#parent_neighborhoods').val(),
         landlord_rating: $('#landlord_rating').val(),
         sort_by: sortByCol,
         direction: sortDirection
@@ -483,7 +486,13 @@
     // when creating a new listing, inherit TP/OP from building's landlord
     $('#residential_listing_unit_building_id').change(ResidentialListings.inheritFeeOptions);
     // when toggling whether there's a signed exclusive agreement
-    var isMobileVersion = document.getElementsByClassName('specific_edit');
+    if(window.location.href.indexOf("specific_residential_listing") > -1) {
+      var isMobileVersion = document.getElementsByClassName('specific_edit');
+    }
+    else
+    {
+      var isMobileVersion = document.getElementsByClassName('agent_edit');
+    }
     if (isMobileVersion.length > 0) {
       // ResidentialListings.toggleExpirationDateUI();
       $('#residential_listing_unit_is_exclusive_agreement_signed').click(
@@ -753,19 +762,24 @@
     ResidentialListings.clearTimer();
     
     var specificEditPage = $('.residential_listings.specific_edit').length;
+    var agentEditPage = $('.residential_listings.agent_edit').length;
     var editPage = $('.residential_listings.edit').length;
     var newPage = $('.residential_listings.new').length;
     var indexPage = $('.residential_listings.index').length;
     var indexPageIn = $('.residential_listings.room_index').length;
+    var indexPageAgent = $('.residential_listings.agent_rental').length;
 
     // new and edit pages both render the same form template, so init them using the same code
-    if (editPage || newPage || specificEditPage) {
+    if (editPage || newPage || specificEditPage || agentEditPage) {
       ResidentialListings.initEditor();
     } else if (indexPage) {
       ResidentialListings.initIndex();
     }else if (indexPageIn) {
       ResidentialListings.initIndex();
-    } else {
+    }else if (indexPageAgent) {
+      ResidentialListings.initIndex();
+    }
+    else {
       ResidentialListings.initShow();
     }
   };
