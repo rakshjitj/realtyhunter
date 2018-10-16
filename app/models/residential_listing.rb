@@ -321,33 +321,6 @@ class ResidentialListing < ApplicationRecord
       running_list = running_list.where("baths <= ?", params[:bath_max])
     end
 
-    
-    if params[:parent_neighborhoods]
-      neighborhood_ids = params[:parent_neighborhoods][0, 256]
-      neighborhoods = neighborhood_ids.split(",").select{|i| !i.strip.empty?}
-
-      if (neighborhoods.include? "43") == true
-          neighborhoods += ["6", "5"]
-      end
-
-      if (neighborhoods.include? "14") == true
-        neighborhoods << "15"
-      end
-
-      if (neighborhoods.include? "52") == true
-        neighborhoods << "26"
-      end
-
-      if (neighborhoods.include? "9") == true
-        neighborhoods << "53"
-      end
-      if neighborhoods.length > 0 # ignore empty selection
-        running_list = running_list
-         .where('neighborhood_id IN (?)', neighborhoods)
-      end
-
-    end
-
     # search neighborhoods
     if params[:neighborhood_ids]
       neighborhood_ids = params[:neighborhood_ids][0, 256]
@@ -422,43 +395,6 @@ class ResidentialListing < ApplicationRecord
       if included
         running_list = running_list.where(has_fee: has_fee == "yes")
       end
-    end
-
-    if params[:parent_amenities]
-      features = params[:parent_amenities][0, 256]
-      features = features.split(",").select{|i| !i.empty?}
-      if features.include? "145"
-        features += ["89", "118", "128", "142", "132", "90", "131", "2"]
-      end
-      if features.include? "146"
-        features += ["5", "84", "3", "4", "103", "106"]
-      end
-      if features.include? "147"
-        features += ["100", "75", "105", "134", "14", "140", "73", "120", "71", "96", "15", "16", "20"]
-      end
-      if features.include? "148"
-        features += ["87", "125", "6", "129", "112", "70", "76", "82", "77", "127", "72", "117", "8", "101", "102", "122", "9", "86"]
-      end
-      if features.include? "149"
-        features += ["123", "113", "92", "135", "85", "88", "91", "95", "99", "126", "116", "98", "18", "81", "144", "1"]
-      end
-      if features.include? "150"
-        features += ["83", "143", "97", "141", "139"]
-      end
-      if features.include? "151"
-        features += ["119", "11", "12", "68", "114", "130"]
-      end
-      if features.include? "152"
-        features += ["115", "110", "69", "78", "124", "109", "7", "94", "121", "79", "80", "17", "19"]
-      end
-      if features.include? "153"
-        features += ["104", "133", "108"]
-      end
-      if features.include? "154"
-        features += ["136", "137", "138"]
-      end
-      running_list = running_list.joins(:residential_amenities)
-        .where('residential_amenity_id IN (?)', features)
     end
 
     # search features
