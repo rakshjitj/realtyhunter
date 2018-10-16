@@ -52,8 +52,6 @@
         claim_agent_id: $('#claim_agent_id').val(),
         point_of_contact:  $('#point_of_contact').val(),
         building_rating: $('#building_rating').val(),
-        parent_amenities: $('#parent_amenities').val(),
-        parent_neighborhoods: $('#parent_neighborhoods').val(),
         landlord_rating: $('#landlord_rating').val(),
         sort_by: sortByCol,
         direction: sortDirection
