@@ -345,16 +345,16 @@
             </div>
           </div>
 
-          <div class="row vertical-padding">
+          <!-- <div class="row vertical-padding">
             <div class="col-xs-5">
-              <%= label_tag :parent_neighborhoods, "Parent Neighborhoods" %>
+              <%#= label_tag :parent_neighborhoods, "Parent Neighborhoods" %>
             </div>
             <div class="col-xs-6 col-sm-left-padding">
-              <%= select_tag(:parent_neighborhoods,
+              <%#= select_tag(:parent_neighborhoods,
                   options_for_select(Neighborhood.where(parent_neighborhoods: 1).collect {|u| [u.name.titleize, u.id]},
                   params[:parent_neighborhoods] ? params[:parent_neighborhoods].titleize : "Any"),{ prompt: "Choose one...", class: 'form-control'}) %>
             </div>
-          </div>
+          </div> -->
 
           <div class="row vertical-padding">
             <div class="col-xs-11 selectize-wrapper">
@@ -370,16 +370,16 @@
             </div>
           </div>
           
-          <div class="row vertical-padding">
+          <!-- <div class="row vertical-padding">
             <div class="col-xs-5">
-              <%= label_tag :parent_amenities, "Parent Amenities" %>
+              <%#= label_tag :parent_amenities, "Parent Amenities" %>
             </div>
             <div class="col-xs-6 col-sm-left-padding">
-              <%= select_tag(:parent_amenities,
+              <%#= select_tag(:parent_amenities,
                   options_for_select(ResidentialAmenity.where(parent_amenities: 1).collect {|u| [u.name.titleize, u.id]},
                   params[:parent_amenities] ? params[:parent_amenities].titleize : "Any"),{ prompt: "Choose one...", class: 'form-control'}) %>
             </div>
-          </div>
+          </div> -->
 
           <div class="row vertical-padding">
             <div class="col-xs-11 selectize-wrapper">
