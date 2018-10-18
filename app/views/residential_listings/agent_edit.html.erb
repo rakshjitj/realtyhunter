@@ -1,0 +1,24 @@
+<% provide(:title, @residential_unit.unit.building.street_address +
+		'#' + @residential_unit.unit.building_unit + ' - Editing') %>
+
+<div class="row">
+	<div class="col-md-8 col-md-offset-2">
+		<div class="page-header">
+		  <div class="row">
+		    <div class="col-sm-8">
+		      <h1>
+		      	<%= @residential_unit.unit.building.street_address %>
+		      	<small>#<%= @residential_unit.unit.building_unit %></small>
+		      </h1>
+		    </div>
+		    <div class="col-sm-4 page-header-buttons-lg form-label-responsive">
+					<%= link_to 'Show', @residential_unit %> |
+					<%= link_to 'All units', agent_rental_path %>
+		    </div>
+		  </div>
+		</div>
+
+		<%= render 'agent_form' %>
+
+	</div>
+</div>

@@ -2,7 +2,7 @@ class ResidentialListingsController < ApplicationController
   load_and_authorize_resource
   skip_load_resource only: :create
   before_action :set_specific_residential_listing, only: [:specific_edit]
-  before_action :set_residential_listing, only: [:show, :edit, :specific_edit, :duplicate_modal, :duplicate,
+  before_action :set_residential_listing, only: [:show, :agent_show, :edit, :agent_edit, :agent_update, :specific_edit, :duplicate_modal, :duplicate,
     :mark_app_submitted, :update, :delete_modal, :destroy,
     :inaccuracy_modal, :send_inaccuracy, :refresh_images, :refresh_documents, :favourite_listings]
   autocomplete :building, :formatted_street_address, full: true
@@ -155,6 +155,25 @@ class ResidentialListingsController < ApplicationController
   #   UnitMailer.send_custom_email_with_mailgun(params[:from_address],params[:to_address], params[:subject],params[:body]).deliver!
   #   redirect_to send_custom_email_path
   # end
+  def agent_edit
+    @buildings = current_user.company.buildings
+        .where(archived: false)
+        .order("formatted_street_address ASC")
+        .collect {|b| [b.street_address, b.id]}
+    @panel_title = "Edit listing"
+  end
+
+  def agent_update
+    residential_listing = ResidentialListing.find(params[:id])
+    residential_listing.update(description: params[:residential_listing][:description], naked_apartment: params[:residential_listing][:naked_apartment], updated_at: Time.now())
+    flash[:success] = 'Residential unit was successfully Updated.'
+    redirect_to agent_show_path(residential_listing)
+  end
+
+  def agent_show
+    
+  end
+
 
   def specific_edit
     @buildings = current_user.company.buildings
@@ -540,6 +559,46 @@ class ResidentialListingsController < ApplicationController
 
   end
 
+  def claim_naked_apartment
+    residential_listing = ResidentialListing.find(params[:id])
+    if residential_listing.claim_for_naked_apartment.blank?
+      a = residential_listing.claim_for_naked_apartment << current_user.id
+      residential_listing = residential_listing.update(claim_for_naked_apartment: a)
+    else
+      claim_user = residential_listing.claim_for_naked_apartment << current_user.id
+      residential_listing = residential_listing.update(claim_for_naked_apartment: claim_user)
+    end
+    redirect_to agent_rental_url
+  end
+
+  def disclaim_naked_apartment
+    residential_listing = ResidentialListing.find(params[:id])
+    disclaim = residential_listing.claim_for_naked_apartment - ["#{current_user.id}"]
+    residential_listing = residential_listing.update(claim_for_naked_apartment: disclaim)
+    redirect_to agent_rental_url
+  end
+
+  def agent_rental
+    respond_to do |format|
+      format.html.phone do
+        set_residential_listings
+      end
+      # tablets get treated the same as desktops
+      format.html.desktop do
+        set_residential_listings
+      end
+      format.js do
+        set_residential_listings
+      end
+      format.csv do
+        set_residential_listings_csv
+        headers['Content-Disposition'] = "attachment; filename=\"" +
+          current_user.name + " - Residential Listings.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+    end
+  end
+
   # GET
   # handles ajax call. uses latest data in modal
   def delete_modal
@@ -852,10 +911,10 @@ class ResidentialListingsController < ApplicationController
         :available_starting, :available_before, :custom_amenities,
         :roomsharing_filter, :unassigned_filter, :tenant_occupied_filter, :streeteasy_filter,
         :no_description,:no_images, :roomshare_department,
-        :primary_agent_id, :favorites, :show,
+        :primary_agent_id, :favorites, :show,:claim_for_naked_apartment,
         :expose_address, :floor, :total_room_count, :condition, :showing_instruction,
         :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
-        :rls_flag, :streeteasy_flag, :streeteasy_flag_one,:streeteasy_claim,
+        :rls_flag, :streeteasy_flag, :streeteasy_flag_one,:streeteasy_claim, :naked_apartment,
         unit: [:building_unit, :streeteasy_primary_agent_id, :streeteasy_listing_email, :streeteasy_listing_number, :rent, :available_by, :access_info, :status,
           :exclusive, :featured, :hide_on_website, :building_id, :primary_agent_id, :listing_agent_id,
           :syndication_status, :has_stock_photos, :is_exclusive_agreement_signed,

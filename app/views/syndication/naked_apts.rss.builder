@@ -208,23 +208,34 @@ xml.streeteasy :version => "1.6" do
 
 				if !@primary_agents[listing.unit_id].blank?
 					xml.agents do
-						@primary_agents[listing.unit_id].each do |agent|
-							xml.agent id: agent.id do
-								xml.name agent.name
-								xml.company @company.name
-								if @agent_images[agent.id]
-									xml.photo @agent_images[agent.id].file.url(:large)
+						xml.agent id: 114 do
+		                xml.name "Myspace NYC"
+		                xml.email "info+streeteasy@myspacenyc.com"
+		                xml.lead_email "info+streeteasy@myspacenyc.com"
+		                xml.phone_numbers do
+		                  xml.office "9292748181"
+		                end
+		            end
+
+						if !listing.residential_listing.claim_for_naked_apartment.blank?
+							listing.residential_listing.claim_for_naked_apartment.each do |agent|
+								user = User.find(agent.to_i)
+								xml.agent id: user.id do
+									xml.name user.name
+									xml.company @company.name
+									if !user.image.nil?
+										xml.photo user.image.file.url(:large)
+									end
+									xml.email user.email
+									xml.lead_email user.email
+									xml.phone_numbers do
+										xml.main user.mobile_phone_number
+										xml.office user.office.telephone
+										xml.cell user.mobile_phone_number
+										xml.fax user.office.fax
+									end
 								end
-							  # xml.url agent.public_url
-						  	xml.email agent.email
-						  	xml.lead_email agent.email
-						  	xml.phone_numbers do
-						  		xml.main agent.mobile_phone_number
-						  		xml.office agent.office_telephone
-						  		xml.cell agent.mobile_phone_number
-						  		xml.fax agent.office_fax
-						  	end
-						  end
+							end
 						end
 					end
 				end
@@ -238,6 +249,13 @@ xml.streeteasy :version => "1.6" do
 					if @images[listing.unit_id]
 						@images[listing.unit_id].each do |i|
 							xml.photo url: i.file.url(:large), position: i.priority
+						end
+					end
+					if @images[listing.unit_id]
+						@images[listing.unit_id].each do |i|
+							if i.floorplan == true
+								xml.floorplan url:i.file.url(:large), description:""
+							end
 						end
 					end
 				end

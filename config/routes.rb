@@ -114,6 +114,7 @@ Rails.application.routes.draw do
   get 'rooms_image_delete/:id' => "rooms#room_image_delete", as: :room_image_delete
   post 'rooms/:id' => "rooms#room_update", as: :room_update
   resources :rooms
+  get 'residential_listings/agent_rental' => "residential_listings#agent_rental", as: :agent_rental
   get 'residential_listings/room_index' => "residential_listings#room_index", as: :room_index
   post 'residential_listings/generate_custom_email' => "residential_listings#generate_custom_email", as: :generate_custom_email
   get 'residential_listings/send_custom_email' => "residential_listings#send_custom_email", as: :send_custom_email
@@ -152,8 +153,11 @@ Rails.application.routes.draw do
       get 'check_in_options'
     end
   end
-
-  
+  get "residential_listings/disclaim/:id" => "residential_listings#disclaim_naked_apartment", as: :disclaim_naked_apartment
+  get "residential_listings/claim/:id" => "residential_listings#claim_naked_apartment", as: :claim_naked_apartment
+  get "residential_listings/agent_show/:id" => "residential_listings#agent_show", as: :agent_show
+  get "/agent_residential_listing/:id/edit" => "residential_listings#agent_edit", as: :agent_edit
+  patch "/agent_residential_listing/:id" => "residential_listings#agent_update", as: :agent_update
   get "/specific_residential_listing/:id/edit" => "residential_listings#specific_edit", as: :specific_edit
   patch "/specific_residential_listing/:id" => "residential_listings#specific_update", as: :specific_update
   post "residential_listings/access_email_generate" => "residential_listings#access_email_generate", as: :access_email_generate

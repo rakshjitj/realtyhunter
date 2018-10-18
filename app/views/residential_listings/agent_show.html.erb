@@ -81,6 +81,9 @@
 				</div><!-- panel heading -->
 
 				<div class="panel-body">
+					<% if action_name == "agent_show" %>
+						<%= link_to 'Agent Edit', agent_edit_path(@residential_unit.id) %>
+					<% end %>
 					<% if (current_user.id == @residential_unit.unit.primary_agent_id || current_user.id == @residential_unit.unit.streeteasy_primary_agent_id) && !current_user.is_management? %>
 						<%= link_to 'Edit', specific_edit_path(@residential_unit.id) %>
 					<% end %>
@@ -360,23 +363,7 @@
 		    			</div>
 		    		</div>
 		    	</div>
-		    		<% if current_user.is_management? %>
-			    		<br />
-				    	<div class="row">
-				    		<div class="col-xs-12 col-md-3">
-				    			<strong>Claim Agents for Naked Apartment:</strong>
-				    		</div>
-				    		<div class="col-xs-12 col-md-9">
-			    			<% if !@residential_unit.blank? %>
-				    			<% rs_final = "" %>
-				    			<% @residential_unit.claim_for_naked_apartment.each do |res_unit| %>
-				    				<% rs_final += User.find(res_unit.to_i).name + ", " %>
-				    			<% end %>
-				    			<%= rs_final %>
-				    		<% end %>	
-				    		</div>
-				    	</div>
-				    <% end %>
+
 					<% if @residential_unit.unit.access_info %>
 			    	<br />
 			    	<div class="row">

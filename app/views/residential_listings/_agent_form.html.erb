@@ -1,0 +1,184 @@
+<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+<div id="residential" data-unit-id="<%= @residential_unit.id %>">
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><%= @panel_title %></h3>
+  </div>
+  <div class="panel-body">
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <% if !current_user.is_photo_manager? %>
+        <li role="presentation" class="active"><a href="#basic-info" aria-controls="basic-info" role="tab" data-toggle="tab">Basic Info</a></li>
+        <% if action_name != 'new' %>
+          <li role="photos"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Agent Listing Photos</a></li>
+          <!-- <li role="documents"><a href="#documents" aria-controls="documents" role="tab" data-toggle="tab">Documents</a></li> -->
+        <% end %>
+      <% else %>
+        <li role="photos" class="active"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Agent Listing Photos</a></li>
+      <% end %>
+    </ul>
+
+    <div class="tab-content">
+      <% if !current_user.is_photo_manager? %>
+        <!-- ******************** third tabpanel - documents ******************** -->
+        <div role="tabpanel" class="tab-pane fade" id="documents">
+
+          <% if @residential_unit && @residential_unit.id %>
+
+            <br />
+            <%= form_for(@residential_unit, :url => residential_listing_documents_path(@residential_unit),
+              html: {multipart: true, class: "dropzone", id: "runit-dropzone-docs"}, method: :post) do |f| %>
+              <div class="fallback">
+                <%= f.file_field :file %><br>
+                <%= f.submit "Upload" %>
+              </div>
+            <% end %>
+
+            <br />
+            <div class="row">
+              <div class="col-md-12">
+                <p><strong>Edit current documents (drag to reorder):</strong></p>
+                <div class="documents sortable">
+                  <% if @residential_unit.unit.documents.length > 0 %>
+                    <%= render 'documents',  locals: { residential_unit: @residential_unit } %>
+                  <% else %>
+                    <p>(No files uploaded yet.)</p>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+          <% else %>
+            <br />
+            <strong>Save the basic info first!</strong>
+          <% end %>
+
+        </div><!-- end tabpanel docs -->
+      <% end %>
+
+      <!-- ******************** second tabpanel - photos ******************** -->
+      <!-- For the photo panel, note that the only difference hinges on if the logged in user is a
+          photo manager or not. If they are, then this panel is active upon page load. Otherwise,
+          we default to having the 'basic info' tab active. In all other respects, the if/else below
+          is exactly the same. -->
+      <% if current_user.is_photo_manager? %>
+        <div role="tabpanel" class="tab-pane fade in active" id="photos">
+      <% else %>
+        <div role="tabpanel" class="tab-pane fade" id="photos">
+      <% end %>
+          <% if @residential_unit.id %>
+
+            <br />
+            <%= form_for(@residential_unit, url: residential_listing_unit_images_path(@residential_unit),
+              html: {multipart: true, class: "dropzone", id: "runit-dropzone"}, method: :post) do |f| %>
+              <div class="fallback">
+                <%= f.file_field :file %><br>
+                <%= f.submit "Upload" %>
+              </div>
+            <% end %>
+
+            <br />
+            <div class="row">
+              <div class="col-md-12">
+                <p><strong>Edit current photos (drag to reorder):</strong></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="images sortable">
+                <% if @residential_unit.unit.images.length > 0 %>
+                  <%= render 'agent_images',  locals: { residential_unit: @residential_unit } %>
+                <% else %>
+                  <div class="col-xs-12">
+                    <p>(No files uploaded yet.)</p>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+
+          <% else %>
+            <br />
+            <strong>Save the basic info first!</strong>
+          <% end %>
+
+        </div><!-- end tabpanel photos -->
+
+      <!-- ******************** first tabpanel - basic info ********************-->
+      <% if !current_user.is_photo_manager? %>
+      <div role="tabpanel" class="tab-pane fade in active" id="basic-info">
+        <%= form_for(@residential_unit, url: agent_update_path(@residential_unit)) do |f| %>
+        <%= f.hidden_field :lock_version %>
+        <%= render partial: 'shared/error_messages',
+          locals: {model: @residential_unit} %>
+
+        <div class="row vertical-margin-lg">
+          <div class="col-md-2">
+            <%= f.label :description, "Agent Listing Description" %>
+          </div>
+          <div class="col-md-9">
+            <small class="explainer-text"><em>
+              Tip: Enter 2 blank lines to separate paragraphs.
+            </small></em>
+            <br><br>
+            <%= f.bootsy_area :description, class: 'form-control',
+                rows: 15 %>
+            <br>
+          </div>
+        </div>
+        <div class="row vertical-margin-lg">
+          <div class="col-xs-3 col-md-2">
+            <%= f.label :naked_apartment %>
+          </div>
+          <div class="col-xs-9 col-md-4">
+            <%= f.check_box :naked_apartment, class: 'form-control' %>
+          </div>
+        </div>
+
+        
+        <br>
+        <div class="row vertical-margin-lg">
+          <div class="col-md-12 col-md-offset-0">
+            <div class="actions col-md-3">
+              <%= f.submit class: "btn btn-warning btn-block", id: "listing_update" %>
+            </div>
+            <%# if params[:action] == "edit" %>
+              <!-- <div class="actions col-md-3">
+                <%#= f.submit "Access" ,class: "btn btn-warning btn-block", id: "listing_access" %>
+                <%#= submit_tag "Access", type: 'button', id: "access-btn", class: "btn btn-warning btn-block" %>
+              </div>
+              <div class="actions col-md-3">
+                <%#= f.submit "Update and Email" ,class: "btn btn-warning btn-block", id: "listing_update_and_email" %>
+              </div>
+              <div class="actions col-md-3">
+                <%#= f.submit "Unit Email" ,class: "btn btn-warning btn-block", id: "listing_unit_email" %>
+              </div> -->
+            <%# end %>
+          </div>
+        </div>
+
+        <% end %>
+
+      </div><!-- end tabpanel home -->
+    </div><!-- tab content -->
+  <% end %>
+
+  </div><!-- panelbody -->
+</div><!-- panel -->
+
+</div>
+<script type="text/javascript">
+  (function()
+    {
+      if( window.localStorage )
+      {
+        if( !localStorage.getItem( 'firstLoad' ) )
+        {
+          localStorage[ 'firstLoad' ] = true;
+          window.location.reload();
+        }
+        else
+          localStorage.removeItem( 'firstLoad' );
+      }
+    })();
+</script>

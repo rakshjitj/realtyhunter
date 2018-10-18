@@ -18,6 +18,7 @@ module SyndicationInterface
 	def naked_apts_listings(company_id, search_params)
 		search_params[:has_primary_agent] = 1
 		search_params[:has_fee_exclusive] = 1
+		search_params[:has_naked_apartment] = 1
 		pull_data(company_id, search_params)
 	end
 
@@ -123,6 +124,10 @@ left join sales_listings on units.id = sales_listings.unit_id')
 				])
 		end
 
+		if is_true?(search_params[:has_naked_apartment])
+			listings = listings.where('residential_listings.naked_apartment = TRUE')
+		end
+
 		if is_true?(search_params[:has_primary_agent])
 			listings = listings.where('units.primary_agent_id > 0 OR units.streeteasy_primary_agent_id > 0')
 		end
@@ -177,6 +182,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'residential_listings.floor',
 			'residential_listings.tenant_occupied as r_tenant_occupied',
 			'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_flag_one',
+			'residential_listings.naked_apartment',
 			'sales_listings.id AS s_id',
 			'sales_listings.beds as s_beds',
 			'sales_listings.baths as s_baths',

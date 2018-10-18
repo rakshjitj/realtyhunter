@@ -57,6 +57,8 @@ class SessionsController < ApplicationController
     # redirect_to root_path unless current_user
     if current_user && current_user.is_external_vendor?
       redirect_to current_user
+    elsif current_user.is_special_agent?
+        redirect_to agent_rental_path
     elsif current_user
       redirect_to residential_listings_path
     else

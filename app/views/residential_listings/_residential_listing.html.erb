@@ -32,7 +32,11 @@
 
     <!-- ****** ADDRESS ****************************************** -->
     <td>
-      <%= link_to "#{residential_listing.street_address}".freeze, residential_listing_path(residential_listing.id) %><br />
+      <% if action_name == "agent_rental" %>
+        <%= link_to "#{residential_listing.street_address}".freeze, agent_show_path(residential_listing.id) %><br />
+      <% else %>
+        <%= link_to "#{residential_listing.street_address}".freeze, residential_listing_path(residential_listing.id) %><br />
+      <% end %>
       <% if residential_listing.neighborhood_name %>
         <small><%= residential_listing.neighborhood_name %></small>
       <% end %>
@@ -182,28 +186,46 @@
         <td><%#= link_to "Deactive StreetEasy", streeteasy_active_by_agent_path(residential_listing, 'false') %></td> -->
       <%# end %>
     <%# end %>
+    <% if action_name == "agent_rental" %>
+      <td class="hidden-print">
+        
+        <% if residential_listing.claim_for_naked_apartment.include?(current_user.id.to_s)%>
+          <%= link_to 'DisClaim', disclaim_naked_apartment_path(residential_listing), class: "link_buttom_disclaim" %>
+        <% else %>
+          <%= link_to 'Claim', claim_naked_apartment_path(residential_listing), class: "link_buttom_claim" %>
+        <%end%>
+      </td>
+    <% end %>
+    <% if action_name == "agent_rental" %>
+      <td class="hidden-print">
+        <%= link_to 'Edit', agent_edit_path(residential_listing) %>
+      </td>
+    <% end %>
+
     <% if current_user.is_management? ||
           current_user.is_listings_manager? ||
           current_user.is_photo_manager? %>
       <td class="hidden-print">
-        <% if !current_user.is_photo_manager? %>
-          <%= link_to 'Edit', edit_residential_listing_path(residential_listing) %>
-          <br>
-          <% if controller_name == 'residential_listings' %>
-            <%= link_to 'Delete', delete_modal_residential_listing_path(residential_listing),
-              data: { toggle: "modal", target: "#runitDeleteModal", params: params}, remote: true %>
+        <% if action_name != "agent_rental" %>
+          <% if !current_user.is_photo_manager? %>
+            <%= link_to 'Edit', edit_residential_listing_path(residential_listing) %>
             <br>
+            <% if controller_name == 'residential_listings' %>
+              <%= link_to 'Delete', delete_modal_residential_listing_path(residential_listing),
+                data: { toggle: "modal", target: "#runitDeleteModal", params: params}, remote: true %>
+              <br>
+            <% else %>
+              <%= link_to 'Delete', delete_residential_listing_modal_building_path(
+                id: residential_listing.unit.building.id, listing_id: residential_listing),
+                data: { toggle: "modal", target: "#runitDeleteModal", params: params}, remote: true %>
+              <br>
+            <% end %>
+            <!-- hide the delete link on landlord and user pages -->
+            <%= link_to 'Duplicate', duplicate_modal_residential_listing_path(residential_listing),
+              data: { toggle: "modal", target: "#runitDuplicateModal"}, remote: true %>
           <% else %>
-            <%= link_to 'Delete', delete_residential_listing_modal_building_path(
-              id: residential_listing.unit.building.id, listing_id: residential_listing),
-              data: { toggle: "modal", target: "#runitDeleteModal", params: params}, remote: true %>
-            <br>
+            <%= link_to 'Manage Photos', edit_residential_listing_path(residential_listing) %>
           <% end %>
-          <!-- hide the delete link on landlord and user pages -->
-          <%= link_to 'Duplicate', duplicate_modal_residential_listing_path(residential_listing),
-            data: { toggle: "modal", target: "#runitDuplicateModal"}, remote: true %>
-        <% else %>
-          <%= link_to 'Manage Photos', edit_residential_listing_path(residential_listing) %>
         <% end %>
       </td>
     <% end %>

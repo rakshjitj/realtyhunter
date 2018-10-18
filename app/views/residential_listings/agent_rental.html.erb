@@ -57,7 +57,7 @@
       <i class="fa fa-spinner fa-pulse fa-5x res-spinner-desktop listings-spinner-desktop"></i>
 
       <div class="res-desktop-search-filters hidden-print" id="res-search-filters" data-search-path="<%= filter_residential_listings_path %>">
-        <%= form_tag residential_listings_path, method: 'get' do %>
+        <%= form_tag agent_rental_path, method: 'get' do %>
           <div class="row vertical-margin-lg">
             <div class="col-xs-3">
               <%= label_tag(:address, "Address") %>
@@ -206,6 +206,18 @@
                   class: 'form-control'}) %>
             </div>
           </div>
+          <div class="row vertical-padding">
+            <div class="col-xs-5">
+              <%= label_tag :claim_agent_id, "Claim Agent Listings" %>
+            </div>
+            <div class="col-xs-6 col-sm-left-padding">
+              <%= select_tag(:claim_agent_id,
+                options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
+                    [params[:claim_agent_id] ? params[:claim_agent_id].titleize : "Any"]),
+                  {prompt: "Choose one...",
+                  class: 'form-control'}) %>
+            </div>
+          </div>
           <%# abort current_user.is_streeteasy_agent?.inspect %>
           <% if current_user.is_management? || current_user.is_streeteasy_agent? %>
             <div class="row vertical-padding">
@@ -346,17 +358,6 @@
           </div>
 
           <div class="row vertical-padding">
-            <div class="col-xs-5">
-              <%= label_tag :parent_neighborhoods, "Parent Neighborhoods" %>
-            </div>
-            <div class="col-xs-6 col-sm-left-padding">
-              <%= select_tag(:parent_neighborhoods,
-                  options_for_select(Neighborhood.where(parent_neighborhoods: 1).collect {|u| [u.name.titleize, u.id]},
-                  params[:parent_neighborhoods] ? params[:parent_neighborhoods].titleize : "Any"),{ prompt: "Choose one...", class: 'form-control'}) %>
-            </div>
-          </div>
-
-          <div class="row vertical-padding">
             <div class="col-xs-11 selectize-wrapper">
               <select id="neighborhood-select-multiple" placeholder="Neighborhoods...">
                 <% @neighborhoods.each do |borough, list| %>
@@ -369,18 +370,6 @@
               </select>
             </div>
           </div>
-          
-          <div class="row vertical-padding">
-            <div class="col-xs-5">
-              <%= label_tag :parent_amenities, "Parent Amenities" %>
-            </div>
-            <div class="col-xs-6 col-sm-left-padding">
-              <%= select_tag(:parent_amenities,
-                  options_for_select(ResidentialAmenity.where(parent_amenities: 1).collect {|u| [u.name.titleize, u.id]},
-                  params[:parent_amenities] ? params[:parent_amenities].titleize : "Any"),{ prompt: "Choose one...", class: 'form-control'}) %>
-            </div>
-          </div>
-
           <div class="row vertical-padding">
             <div class="col-xs-11 selectize-wrapper">
               <select id="unit-amenities-select-multiple" placeholder="Unit features...">
@@ -390,7 +379,6 @@
               </select>
             </div>
           </div>
-          
           <div class="row vertical-padding">
             <div class="col-xs-11 selectize-wrapper">
               <select id="building-amenities-select-multiple" placeholder="Building features...">

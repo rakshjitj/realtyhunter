@@ -27,8 +27,11 @@
     <div class="navbar-inverse side-collapse in hidden-print">
       <nav role="navigation" class="navbar-collapse">
         <ul class="nav navbar-nav">
-
+        <% if !current_user.is_special_agent? || current_user.is_management? %>
           <li><%= link_to "Rentals", residential_listings_path %></li>
+        <% else %>
+          <li><%= link_to "Rentals", agent_rental_path %></li>
+        <% end %>
           <% if current_user.is_streeteasy_agent? %>
             <li><%= link_to "Claim for Streeteasy","javascript:void(0);", class: "claim_load" %></li>
           <% end %>

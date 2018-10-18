@@ -274,6 +274,10 @@ class User < ApplicationRecord
     employee_title == EmployeeTitle.agent
   end
 
+  def is_special_agent?
+    self.has_role? :agent
+  end
+
   # does this user actually manage other agents?
   def is_manager?
     self.has_role? :manager
