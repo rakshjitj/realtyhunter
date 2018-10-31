@@ -237,10 +237,10 @@
           <% if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
             <div class="row vertical-padding">
               <div class="col-xs-5">
-                <%= label_tag :building_rating, "Building Rating" %>
+                <%= label_tag :building_rating, "STREETEASY ELIGIBLE" %>
               </div>
               <div class="col-xs-6 col-sm-left-padding">
-                <%= select_tag(:building_rating, options_for_select([['Any','Any'],['NA', 0], ['Excellent', 1], ['Good', 2], ['Fair', 3]], params[:building_rating] ? params[:building_rating].titleize : "Any"), class: 'form-control') %>
+                <%= select_tag(:building_rating, options_for_select([['Any','Any'],['Yes', 0], ['No', 1]], params[:building_rating] ? params[:building_rating].titleize : "Any"), class: 'form-control') %>
               </div>
             </div>
           <% end %>
@@ -345,16 +345,16 @@
             </div>
           </div>
 
-          <div class="row vertical-padding">
+          <!-- <div class="row vertical-padding">
             <div class="col-xs-5">
-              <%= label_tag :parent_neighborhoods, "Parent Neighborhoods" %>
+              <%#= label_tag :parent_neighborhoods, "Parent Neighborhoods" %>
             </div>
             <div class="col-xs-6 col-sm-left-padding">
-              <%= select_tag(:parent_neighborhoods,
+              <%#= select_tag(:parent_neighborhoods,
                   options_for_select(Neighborhood.where(parent_neighborhoods: 1).collect {|u| [u.name.titleize, u.id]},
                   params[:parent_neighborhoods] ? params[:parent_neighborhoods].titleize : "Any"),{ prompt: "Choose one...", class: 'form-control'}) %>
             </div>
-          </div>
+          </div> -->
 
           <div class="row vertical-padding">
             <div class="col-xs-11 selectize-wrapper">
@@ -370,16 +370,19 @@
             </div>
           </div>
           
-          <div class="row vertical-padding">
+          <!-- <div class="row vertical-padding">
             <div class="col-xs-5">
-              <%= label_tag :parent_amenities, "Parent Amenities" %>
+              <%#= label_tag :parent_amenities, "Parent Amenities" %>
             </div>
-            <div class="col-xs-6 col-sm-left-padding">
-              <%= select_tag(:parent_amenities,
-                  options_for_select(ResidentialAmenity.where(parent_amenities: 1).collect {|u| [u.name.titleize, u.id]},
+            <br>
+            <br>
+            <div class="col-xs-11 vertical-padding">
+              <%# list_info = [['Utilities(+ $150 Utilities,Cable Included,Free Laundry,Free WIFI,Heat + Hot Water Included,No Utilities Included,Washer/Dryer Hookups)', 145], ['Heating & Cooling(Air Conditioning Unit,Ceiling Fans,Central A/C,Central Heat,HVAC,Working Fireplace)', 146], ['Layout(Alcove,Basement,Den,Driveway,Duplex,Kitchen Island,Loft,Mezzanine,Office,Penthouse,Railroad,Triplex,Walk-In Closet)', 147],['Outdoor Space(Backyard,Balcony,Balcony/Terrace,Greenhouse,Outside Space,Patio/Deck,Paved Outdoor Space,Private Deck,Private Outdoor Space,Private Patio,Private Roof Deck,Private Terrace,Private Yard,Shared Outdoor Patio,Shared Roof Deck,Shared Terrace,Shared Yard,Terrace)', 148], ['Amenities(Bike Room,Doorman,Elevator,Freight Elevator,Fully Furnished,Garage,Gym,Handicap Elevator,Laundry Room,Lounge,On Site Super,Parking,Roof Access,Storage Space,Swimming Pool,Washer/Dryer In-Unit)', 149], ['Speakers & Audio Systems(Bluetooth Speaker System,Butterflymx Intercom System,Video Intercom,Virtual Doorman,Voice Intercom)', 150], ['Appliances(Brand New Appliances,Dishwasher,Microwave,Stainless Steel Appliances,Top of the Line GE Appliances,Wine Cooler)', 151], ['Finishes(Brand New Finishes,Chefs Kitchens,Exposed Brick,Fireplace,Floor To Ceiling Windows,Granite Countertops,Hardwood Floors,High Ceilings,Juliette Balcony,Modern Finishes,Original Detail,Renovated,Skylight)', 152], ['Features(City Views,Open Listing,Private Elevator)', 153], ['Denison(Denison Grey,Denison Metal,Denison Wood)', 154]] %>
+              <%#= select_tag(:parent_amenities,
+                  options_for_select(list_info,
                   params[:parent_amenities] ? params[:parent_amenities].titleize : "Any"),{ prompt: "Choose one...", class: 'form-control'}) %>
             </div>
-          </div>
+          </div> -->
 
           <div class="row vertical-padding">
             <div class="col-xs-11 selectize-wrapper">
@@ -390,7 +393,7 @@
               </select>
             </div>
           </div>
-          
+
           <div class="row vertical-padding">
             <div class="col-xs-11 selectize-wrapper">
               <select id="building-amenities-select-multiple" placeholder="Building features...">

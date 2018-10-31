@@ -556,6 +556,8 @@ class ResidentialListing < ApplicationRecord
     if !params[:primary_agent_id].blank?
       running_list = running_list.where('units.primary_agent_id = ? OR units.primary_agent2_id = ?',
         params[:primary_agent_id], params[:primary_agent_id])
+      ts = ["35", "428", "39", "146"]
+      abort running_list.where.not('units.primary_agent_id IN (?) OR units.primary_agent2_id IN (?)', ts, ts).inspect
     end
     
     if !params[:claim_agent_id].blank?
@@ -590,13 +592,15 @@ class ResidentialListing < ApplicationRecord
     if !params[:building_rating].blank?
       rating = params[:building_rating]
       if rating == "0"
-        running_list = running_list.where("buildings.rating =?", 0)
-      elsif rating == "1"
         running_list = running_list.where("buildings.rating =?", 1)
-      elsif rating == "2"
-        running_list = running_list.where("buildings.rating =?", 2)
-      elsif rating == "3"
-        running_list = running_list.where("buildings.rating =?", 3)
+      # elsif rating == "1"
+      #   running_list = running_list.where("buildings.rating =?", 1)
+      # elsif rating == "2"
+      #   running_list = running_list.where("buildings.rating =?", 2)
+      # elsif rating == "3"
+      #   running_list = running_list.where("buildings.rating =?", 3)
+      elsif rating == "1"
+        running_list = running_list.where("buildings.rating IN (?)", [0,2,3])
       else
         running_list = running_list
       end
@@ -627,6 +631,9 @@ class ResidentialListing < ApplicationRecord
         running_list = running_list.where('residential_listings.streeteasy_claim = FALSE AND residential_listings.streeteasy_flag_one = TRUE')
       end
     end
+
+    # ts = ["35", "428", "39", "146"]
+    # running_list = running_list.where.not('buildings.point_of_contact IN (?)', ts)
 
     running_list.distinct
   end
@@ -685,16 +692,16 @@ class ResidentialListing < ApplicationRecord
     end
   end
 
-  def send_inaccuracy_report(reporter, message, price_drop_request, new_photos_request)
-    if reporter && (!message.blank? || price_drop_request || new_photos_request)
+  def send_inaccuracy_report(reporter, message, feedback_category, photo_error_types)
+    if reporter && (!message.blank? || feedback_category || photo_error_types)
       Feedback.create!({
         user_id: reporter.id,
         unit_id: self.id,
         description: message,
-        price_drop_request: price_drop_request,
-        new_photos_request: new_photos_request
+        feedback_category: feedback_category,
+        photo_error_type: photo_error_types
       })
-      UnitMailer.inaccuracy_reported(self.id, reporter.id, message, price_drop_request, new_photos_request).deliver!
+      UnitMailer.inaccuracy_reported(self.id, reporter.id, message, feedback_category, photo_error_types).deliver!
       UnitMailer.feedback_report_notifaction(reporter.id).deliver!
     else
       raise "Invalid params specified while sending feedback"

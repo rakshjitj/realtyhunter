@@ -1,13 +1,33 @@
 <h2><%= @reporter.name %> has submitted this error report:</h2>
 
-<% if @price_drop_request %>
-  <p style="color: #3333FF; font-weight: bold;">*** Requesting a price drop ***</p>
+<% if @feedback_category %>
+  <b>CATEGORY: </b><%= @feedback_category %>
+  <br><br>
+  <% if @feedback_category == "requesting new photos" %>
+  	<b>PHOTO ERROR: </b> <%= @photo_error_types %>
+  	<br><br>
+  <% end %>
+  <b>ADDRESS: </b> <%= @listing.unit.building.street_number %> <%= @listing.unit.building.route %>
+  <br><br>
+  <b>UNIT: </b> <%= @listing.unit.building_unit %>
+  <br><br>
+  <b>POINT OF CONTACT: </b> <%= User.find(@listing.unit.building.point_of_contact).name %>
+  <br><br>
+  <b>RENT: </b> $<%= @listing.unit.rent %>
+  <br><br>
+  <% if @feedback_category == "requesting new photos" %>
+  	<b>ACCESS INFO: </b> <%= @listing.unit.access_info %>
+  	<br><br>
+  <% end %>
+  <b>DETAILS: </b> <%= @message %>
+  <br><br>
+  <!-- <p style="color: #3333FF; font-weight: bold;">*** Requesting a price drop ***</p> -->
 <% end %>
-<% if @new_photos_request %>
-  <p style="color: #3333FF; font-weight: bold;">*** Requesting new unit photos ***</p>
-<% end %>
+<%# if @photo_error_types %>
+  <!-- <p style="color: #3333FF; font-weight: bold;">*** Requesting new unit photos ***</p> -->
+<%# end %>
 
-<p><%= @message %></p>
+<!-- <p><%#= @message %></p> -->
 
 <br />
 <a href="https://realtyhunter.org:3000/residential_listings/<%=@listing.id%>/edit">View Listing</a> the unit's info.

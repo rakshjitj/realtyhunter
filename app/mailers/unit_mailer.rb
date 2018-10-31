@@ -1,6 +1,6 @@
 class UnitMailer < ApplicationMailer
 
-  def inaccuracy_reported(listing_id, reporter_id, message, price_drop_request, new_photos_request)
+  def inaccuracy_reported(listing_id, reporter_id, message, feedback_category, photo_error_types)
     @message = message
     @listing = ResidentialListing.where(id: listing_id).first
     if !@listing
@@ -8,13 +8,13 @@ class UnitMailer < ApplicationMailer
     end
 
     @reporter = User.where(id: reporter_id).first
-    @price_drop_request = price_drop_request
-    @new_photos_request = new_photos_request
+    @feedback_category = feedback_category
+    @photo_error_types = photo_error_types
     #abort @new_photos_request.inspect
-    if @new_photos_request == "1"
-      email_hash = ['info@myspacenyc.com', 'valentina@myspacenyc.com', 'smullahy@myspacenyc.com', 'belle@myspacenyc.com', 'mcohen@myspacenyc.com', 'ckwoka@myspacenyc.com', 'tprice@myspacenyc.com', 'photos@myspacenyc.com', 'l2t1k3r4a8g8l4s2@msnyc1.slack.com']
+    if @feedback_category == "requesting new photos"
+      email_hash = ['info@myspacenyc.com', 'photos@myspacenyc.com', 'l2t1k3r4a8g8l4s2@msnyc1.slack.com']
     else
-      email_hash = ['info@myspacenyc.com', 'valentina@myspacenyc.com', 'smullahy@myspacenyc.com', 'belle@myspacenyc.com', 'mcohen@myspacenyc.com', 'ckwoka@myspacenyc.com', 'tprice@myspacenyc.com', 'l2t1k3r4a8g8l4s2@msnyc1.slack.com']
+      email_hash = ['info@myspacenyc.com', 'l2t1k3r4a8g8l4s2@msnyc1.slack.com']
     end
       mail to: email_hash,
         cc: @reporter.email,

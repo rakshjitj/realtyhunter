@@ -655,20 +655,38 @@
 										The more detail you can provide, the better.
 									</p>
 									<br>
-
+									<div class="col-xs-3">
+										<%= label_tag :feedback_category %>
+									</div>
+									<div class="col-xs-6 col-sm-left-padding">
+										
+										<%= select_tag :feedback_category, options_for_select(["problem with amenities","requesting new photos","problem with access", "problem with unit layout", "problem with unit's utilities","problem with the price", "incorrect/poor unit description", "incorrect unit number","incorrect move-in-date", "unit unavailable - please take off", "other"]),{prompt: "Choose one...",class: 'form-control', onchange: "hide_photo_for_error_type_dropdown()"} %>
+									</div>
+									<br><br>
+									<div id="hide-dropdown" style="display: none;">
+										<div class="col-xs-3">
+											<%= label_tag :photo_error_type %>
+										</div>
+										<div class="col-xs-6 col-sm-left-padding">
+											
+											<%= select_tag :photo_error_type, options_for_select(["no photos for this unit","correct unit and photos - but the photos are ugly","wrong photos - these photos are for another apartment in the same building", "wrong photos - these photo are of a different building altogether", "wrong photos - the layout of the photos do not match the actual apartment"]),{prompt: "Choose one...",class: 'form-control'} %>
+										</div>
+									</div>
+									<br><br>
 									<div class="checkbox checkbox-warning inline">
-						<div style="float: left;">
-							<%= check_box_tag :price_drop_request %>
+
+						<!-- <div style="float: left;">
+							<%#= check_box_tag :price_drop_request %>
 			                <label for="roomsharing_filter">
 			                  Request a price drop
 			                </label>
 			            </div>
 			            <div style="float: left;margin-left: 50px;">
-			                <%= check_box_tag :new_photos_request %>
+			                <%#= check_box_tag :new_photos_request %>
 			                <label for="roomsharing_filter">
 			                  Request new unit photos
 			                </label>
-			            </div>
+			            </div> -->
 		              </div>
 
 								  <%= f.text_area :inaccuracy_description, rows: 5, class: 'form-control' %>

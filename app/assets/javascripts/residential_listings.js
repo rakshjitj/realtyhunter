@@ -843,3 +843,11 @@ document.addEventListener('turbolinks:load', ResidentialListings.ready);
 document.addEventListener("turbolinks:before-cache", function() {
   $('.residential_listings').attr('initialized', 'true');
 })
+
+function hide_photo_for_error_type_dropdown(){
+  if (document.getElementById("feedback_category").value == "requesting new photos"){
+    document.getElementById("hide-dropdown").style.display = "Block";
+  }else{
+    document.getElementById("hide-dropdown").style.display = "none";
+  }
+}
