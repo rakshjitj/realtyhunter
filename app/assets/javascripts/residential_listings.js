@@ -851,3 +851,38 @@ function hide_photo_for_error_type_dropdown(){
     document.getElementById("hide-dropdown").style.display = "none";
   }
 }
+
+function parent_amenities_check(parent_amenity){
+  var get_parent = "parent_" + parent_amenity;
+  var get_child = "child_with_parent_" + parent_amenity;
+  if (document.getElementById(get_parent).value  == parent_amenity){
+    var checkboxes = document.querySelectorAll('[data-parent-id="'+ parent_amenity +'"]');
+    if(document.getElementById(get_parent).checked == true){
+      for (i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = true;
+      }
+    }
+    if(document.getElementById(get_parent).checked == false){
+      for (i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = false;
+      }
+    }
+  }
+}
+
+function click_naked_apt(id){
+  var checked_id = "residential_listing_" + id;
+  var get_checked_checkbox = document.getElementById(checked_id).checked
+  if (get_checked_checkbox){
+    $.ajax({
+      type: 'GET',
+      url: '/residential_listings/claim/' +id,
+    });  
+  }
+  else{
+   $.ajax({
+      type: 'GET',
+      url: '/residential_listings/disclaim/' +id,
+    }); 
+  }
+}

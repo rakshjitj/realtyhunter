@@ -1,56 +1,6 @@
 <% provide(:title, 'Residential Listings') %>
 <div id="residential-desktop" class="">
   <div id="section-name" data-name="residential_listings">
-
-  <%= render partial: "residential_listings/announcements",
-      locals: {announcement_items: @announcement_items} %>
-
-  <div class="row">
-    <div class="col-sm-6">
-      <h1>Rental Listings</h1>
-    </div>
-    <div class="hidden-xs hidden-sm col-sm-6 form-label-responsive page-header-buttons">
-      <% if current_user.is_management? || current_user.is_listings_manager? %>
-        <%= link_to 'Make Announcement', new_announcement_path,
-            class: "btn btn-warning btn-sm link-as-button management-action-button" %>
-        <%= link_to 'Add a Deal', new_deal_path,
-            class: 'btn btn-warning btn-sm link-as-button management-action-button' %>
-        <%= link_to 'Add a unit', new_residential_listing_path,
-            class: 'btn btn-warning btn-sm link-as-button management-action-button' %>
-        <%= link_to 'Export to CSV',
-            residential_listings_path(params.permit!.merge(format: 'csv')),
-            class: 'btn btn-sm btn-warning link-as-button management-action-button',
-            target: :_blank %>
-        <% if current_user.email == "rakshit@aristainfotech.com" %>
-          <%= link_to 'Export Main CSV',
-              index_main_path(params.permit!.merge(format: 'csv')),
-              class: 'btn btn-sm btn-warning link-as-button management-action-button',
-              target: :_blank %>
-          <%= link_to 'Export Streeteasy CSV',
-              index_streeteasy_path(params.permit!.merge(format: 'csv')),
-              class: 'btn btn-sm btn-warning link-as-button management-action-button',
-              target: :_blank %>
-        <% end %>
-      <% end %>
-    </div>
-    <div class="hidden-md hidden-lg col-sm-5 col-sm-left-padding form-label-responsive page-header-buttons">
-      <% if current_user.is_management? || current_user.is_listings_manager? %>
-        <%= link_to 'Make Announcement', new_announcement_path,
-            class: "btn btn-warning btn-sm link-as-button management-action-button" %>
-        <%= link_to 'Add a Deal', new_deal_path,
-            class: 'btn btn-warning btn-sm link-as-button management-action-button' %>
-        <%= link_to 'Add a unit', new_residential_listing_path,
-            class: 'btn btn-warning btn-sm link-as-button management-action-button' %>
-        <%= link_to 'Export to CSV',
-            residential_listings_path(params.permit!.merge(format: 'csv')),
-            class:"btn btn-sm btn-warning link-as-button management-action-button",
-            target: :_blank %>
-      <% end %>
-    </div>
-  </div>
-
-  <br>
-
   <div class="row">
     <div class="col-md-3">
 
@@ -123,26 +73,6 @@
           </div>
           <div class="row vertical-padding">
             <div class="col-xs-5">
-              <%= label_tag(:listing_id, "Listing ID") %>
-            </div>
-            <div class="col-xs-6 col-sm-left-padding">
-              <%= text_field_tag :listing_id, params[:listing_id], class:"form-control" %>
-            </div>
-          </div>
-          <div class="row vertical-padding">
-            <div class="col-xs-5">
-              <%= label_tag(:landlord, "Landlord ") %>
-            </div>
-            <div class="col-xs-6 col-sm-left-padding">
-              <%= autocomplete_field_tag :landlord, params[:landlord],
-                autocomplete_landlord_code_residential_listings_path,
-                update_elements: {},
-                placeholder: "code",
-                size: 30, class:'form-control' %>
-            </div>
-          </div>
-          <div class="row vertical-padding">
-            <div class="col-xs-5">
               <%= label_tag :status, "Status" %>
             </div>
             <div class="col-xs-6 col-sm-left-padding">
@@ -194,182 +124,8 @@
                   class: 'form-control'}) %>
             </div>
           </div>
-          <div class="row vertical-padding">
-            <div class="col-xs-5">
-              <%= label_tag :primary_agent_id, "Agent" %>
-            </div>
-            <div class="col-xs-6 col-sm-left-padding">
-              <%= select_tag(:primary_agent_id,
-                options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
-                    [params[:primary_agent_id] ? params[:primary_agent_id].titleize : "Any"]),
-                  {prompt: "Choose one...",
-                  class: 'form-control'}) %>
-            </div>
-          </div>
-          <div class="row vertical-padding">
-            <div class="col-xs-5">
-              <%= label_tag :claim_agent_id, "Claim Agent Listings" %>
-            </div>
-            <div class="col-xs-6 col-sm-left-padding">
-              <%= select_tag(:claim_agent_id,
-                options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
-                    [params[:claim_agent_id] ? params[:claim_agent_id].titleize : "Any"]),
-                  {prompt: "Choose one...",
-                  class: 'form-control'}) %>
-            </div>
-          </div>
-          <%# abort current_user.is_streeteasy_agent?.inspect %>
-          <% if current_user.is_management? || current_user.is_streeteasy_agent? %>
-            <div class="row vertical-padding">
-              <div class="col-xs-5">
-                <%= label_tag :streeteasy_filter, "On Streeteasy" %>
-              </div>
-              <div class="col-xs-6 col-sm-left-padding">
-                <%= select_tag(:streeteasy_filter,
-                    options_for_select(['Any', 'Yes', 'No'],
-                    [params[:streeteasy_filter] ? params[:streeteasy_filter].titleize : 'Any']),
-                    class: 'form-control') %>
-              </div>
-            </div>
-          <% end %>
-
-          <% if current_user.is_company_admin? || current_user.is_super_admin? %>
-            <div class="row vertical-padding">
-              <div class="col-xs-5">
-                <%= label_tag :streeteasy_claim, "Claim for Streeteasy" %>
-              </div>
-              <div class="col-xs-6 col-sm-left-padding">
-                <%= select_tag(:streeteasy_claim,
-                    options_for_select(['Any', 'Yes', 'No'],
-                    [params[:streeteasy_claim] ? params[:streeteasy_claim].titleize : 'Any']),
-                    class: 'form-control') %>
-              </div>
-            </div>
-          <% end %>
-          <% if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
-            <div class="row vertical-padding">
-              <div class="col-xs-5">
-                <%= label_tag :building_rating, "Building Rating" %>
-              </div>
-              <div class="col-xs-6 col-sm-left-padding">
-                <%= select_tag(:building_rating, options_for_select([['Any','Any'],['NA', 0], ['Excellent', 1], ['Good', 2], ['Fair', 3]], params[:building_rating] ? params[:building_rating].titleize : "Any"), class: 'form-control') %>
-              </div>
-            </div>
-          <% end %>
-          <% if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
-            <div class="row vertical-padding">
-              <div class="col-xs-5">
-                <%= label_tag :landlord_rating, "Landlord Rating" %>
-              </div>
-              <div class="col-xs-6 col-sm-left-padding">
-                <%= select_tag(:landlord_rating, options_for_select([['Any','Any'],['NA', 0], ['Excellent', 1], ['Good', 2], ['Fair', 3]], params[:landlord_rating] ? params[:landlord_rating].titleize : "Any"), class: 'form-control') %>
-              </div>
-            </div>
-          <% end %>
-          <div class="row vertical-padding">
-            <div class="col-xs-12">
-              <strong>Available</strong>
-            </div>
-          </div>
-          <div class="row vertical-padding">
-            <div class="col-xs-6 col-sm-left-padding">
-              <div class='input-group date datepicker'>
-                <%= text_field_tag :available_starting, params[:available_starting],
-                  placeholder: "start", class:"form-control", size:30 %>
-                <label class="input-group-addon btn" for="date">
-                  <span class="fa fa-calendar open-datepicker"></span>
-                </label>
-              </div>
-            </div>
-            <div class="col-xs-5 col-sm-left-padding">
-              <div class='input-group date datepicker'>
-                <%= text_field_tag :available_before, params[:available_before],
-                  placeholder: "by", class:"form-control" %>
-                <label class="input-group-addon btn" for="date">
-                  <span class="fa fa-calendar open-datepicker"></span>
-                </label>
-              </div>
-            </div>
           </div>
 
-          <div class="row vertical-padding">
-            <div class="col-xs-6">
-              <div class="checkbox checkbox-warning inline">
-                <%= check_box_tag :roomsharing_filter, "".freeze, params[:roomsharing_filter] == "true".freeze ? true : false,
-                    class: 'styled' %>
-                <label for="roomsharing_filter">
-                  Roomshares
-                </label>
-              </div>
-            </div>
-            <% if current_user.is_management? %>
-              <div class="col-xs-6">
-                <div class="checkbox checkbox-warning inline">
-                  <%= check_box_tag :unassigned_filter, "".freeze, params[:unassigned_filter] == "true".freeze   ? true : false,
-                      class: 'styled' %>
-                  <label for="unassigned_filter">
-                    Unassigned
-                  </label>
-                </div>
-              </div>
-            <% end %>
-          </div>
-
-          <div class="row vertical-padding">
-            <div class="col-xs-6">
-              <div class="checkbox checkbox-warning inline">
-                <%= check_box_tag :tenant_occupied_filter, "".freeze, params[:tenant_occupied_filter] == "true".freeze ? true : false,
-                    class: 'styled' %>
-                <label for="tenant_occupied_filter">
-                  Tenant Occupied
-                </label>
-              </div>
-            </div>
-            <div class="col-xs-6">
-              <div class="checkbox checkbox-warning inline">
-                <%= check_box_tag :has_stock_photos_filter, "".freeze, params[:has_stock_photos_filter] == "true".freeze ? true : false,
-                    class: 'styled' %>
-                <label for="has_stock_photos_filter">
-                  Stock Photos
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div class="row vertical-padding">
-            <div class="col-xs-6">
-              <div class="checkbox checkbox-warning inline">
-                <%= check_box_tag :no_description, "".freeze, params[:no_description] == "true".freeze ? true : false,
-                    class: 'styled' %>
-                <label for="no_description">
-                  No Description
-                </label>
-              </div>
-            </div>
-            <div class="col-xs-6">
-              <div class="checkbox checkbox-warning inline">
-                <%= check_box_tag :no_images, "".freeze, params[:no_images] == "true".freeze ? true : false,
-                    class: 'styled' %>
-                <label for="no_images">
-                  No Images
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div class="row vertical-padding">
-            <div class="col-xs-11 selectize-wrapper">
-              <select id="neighborhood-select-multiple" placeholder="Neighborhoods...">
-                <% @neighborhoods.each do |borough, list| %>
-                  <optgroup label="<%= borough %>">
-                    <% list.each do |neighborhood| %>
-                      <option value="<%= neighborhood.id %>"><%= neighborhood.name %></option>
-                    <% end %>
-                  </optgroup>
-                <% end %>
-              </select>
-            </div>
-          </div>
           <div class="row vertical-padding">
             <div class="col-xs-11 selectize-wrapper">
               <select id="unit-amenities-select-multiple" placeholder="Unit features...">
@@ -403,14 +159,14 @@
       </div>
     </div>
 
-    <div class="col-md-9 hidden-xs hidden-sm">
+    <!-- <div class="col-md-9 hidden-xs hidden-sm">
       <div id="r-big-map" data-map-points="<%= @map_infos %>"></div>
-    </div>
+    </div> -->
   </div>
 
-  <div class="hidden-xs hidden-sm">
+  <!-- <div class="hidden-xs hidden-sm">
     <hr class="map-hr">
-  </div>
+  </div> -->
 
   <%= form_tag print_list_residential_listings_path do %>
   <div class="row">
@@ -473,6 +229,7 @@
 
             <th data-sort="units.status" class="th-sortable">Status</th>
             <th data-sort="featured" class="th-sortable">Featured</th>
+            <th data-sort="featured" class="th-sortable">Sending to:</th>
             <% if current_user.is_management? || current_user.is_listings_manager? %>
               <th colspan="1" class="hidden-print"></th>
             <% end %>

@@ -383,6 +383,22 @@
                   params[:parent_amenities] ? params[:parent_amenities].titleize : "Any"),{ prompt: "Choose one...", class: 'form-control'}) %>
             </div>
           </div> -->
+          <a href="javascript:;" data-toggle="collapse" data-target="#demo">Amenities</a>
+          <div class="row vertical-padding collapse" id="demo">
+            <!-- <div class="col-xs-11 selectize-wrapper"> -->
+                <% @unit_amenities.where(parent_amenity_id: 0).each do |amenity| %>
+                  <div class="col-sm-6">
+                    <input type="checkbox" name="features[]" value="<%= amenity.id %>" id="parent_<%= amenity.id %>" onClick = "parent_amenities_check(<%= amenity.id %>)" ><b><%= amenity.name.titleize %></b>
+                    <br>
+                    <% @unit_amenities.where(parent_amenity_id: amenity.id).each do |child_amenity| %>
+                      <input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" class="child_with_parent_<%= child_amenity.parent_amenity_id %>"><%= child_amenity.name.titleize %>
+                    <% end %>
+                    <br>
+                  </div>
+                <% end %>
+            <!-- </div> -->
+          </div>
+
 
           <div class="row vertical-padding">
             <div class="col-xs-11 selectize-wrapper">

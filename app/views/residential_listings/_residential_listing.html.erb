@@ -188,12 +188,17 @@
     <%# end %>
     <% if action_name == "agent_rental" %>
       <td class="hidden-print">
-        
-        <% if residential_listing.claim_for_naked_apartment.include?(current_user.id.to_s)%>
-          <%= link_to 'DisClaim', disclaim_naked_apartment_path(residential_listing), class: "link_buttom_disclaim" %>
+        <% if residential_listing.claim_for_naked_apartment.include?(current_user.id.to_s) %>
+          <%= check_box_tag "naked_apartment", " #{residential_listing.id}", true, id: "residential_listing_#{residential_listing.id}", onClick: "click_naked_apt(#{residential_listing.id})" %>Naked Apts  
         <% else %>
-          <%= link_to 'Claim', claim_naked_apartment_path(residential_listing), class: "link_buttom_claim" %>
-        <%end%>
+          <%= check_box_tag "naked_apartment", " #{residential_listing.id}", false, id: "residential_listing_#{residential_listing.id}", onClick: "click_naked_apt(#{residential_listing.id})" %>Naked Apts
+        <% end %>
+        
+        <%# if residential_listing.claim_for_naked_apartment.include?(current_user.id.to_s)%>
+          <%#= link_to 'DisClaim', disclaim_naked_apartment_path(residential_listing), class: "link_buttom_disclaim" %>
+        <%# else %>
+          <%#= link_to 'Claim', claim_naked_apartment_path(residential_listing), class: "link_buttom_claim" %>
+        <%#end%>
       </td>
     <% end %>
     <% if action_name == "agent_rental" %>
