@@ -153,6 +153,9 @@ Rails.application.routes.draw do
       get 'check_in_options'
     end
   end
+  
+  get "residential_listings/syndication_page/disclaim/:id" => "residential_listings#disclaim_for_individual_syndication_page", as: :disclaim_for_individual_syndication_page
+  get "residential_listings/syndication_page/claim/:id" => "residential_listings#claim_for_individual_syndication_page", as: :claim_for_individual_syndication_page
   get "residential_listings/disclaim/:id" => "residential_listings#disclaim_naked_apartment", as: :disclaim_naked_apartment
   get "residential_listings/claim/:id" => "residential_listings#claim_naked_apartment", as: :claim_naked_apartment
   get "residential_listings/agent_show/:id" => "residential_listings#agent_show", as: :agent_show

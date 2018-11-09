@@ -383,6 +383,7 @@
                   params[:parent_amenities] ? params[:parent_amenities].titleize : "Any"),{ prompt: "Choose one...", class: 'form-control'}) %>
             </div>
           </div> -->
+          <%= hidden_field_tag :parent_amenities %>
           <a href="javascript:;" data-toggle="collapse" data-target="#demo">Amenities</a>
           <div class="row vertical-padding collapse" id="demo">
             <!-- <div class="col-xs-11 selectize-wrapper"> -->
@@ -390,8 +391,17 @@
                   <div class="col-sm-6">
                     <input type="checkbox" name="features[]" value="<%= amenity.id %>" id="parent_<%= amenity.id %>" onClick = "parent_amenities_check(<%= amenity.id %>)" ><b><%= amenity.name.titleize %></b>
                     <br>
+                    <%# abort params[:parent_amenities].split(",").inspect %>
                     <% @unit_amenities.where(parent_amenity_id: amenity.id).each do |child_amenity| %>
-                      <input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" class="child_with_parent_<%= child_amenity.parent_amenity_id %>"><%= child_amenity.name.titleize %>
+                      <% if params[:parent_amenities] %>
+                        <% if params[:parent_amenities].split(",").include? "#{child_amenity.id}" %>
+                          <input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" checked="true" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %>
+                        <% else %>
+                          <input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %>
+                        <% end %>
+                      <% else %>
+                        <input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %>
+                      <% end %>
                     <% end %>
                     <br>
                   </div>
@@ -492,7 +502,7 @@
             <th data-sort="formatted_street_address" class="th-sortable">Address</th>
             <th data-sort="building_unit" class="th-sortable">Unit</th>
             <th data-sort="bed_and_baths_sorter" class="th-sortable">Beds/Baths</th>
-            <th data-sort="rent" class="th-sortable">Price</th>
+            <th data-sort="rent" class="th-sortable" style="min-width: 20% !important;">Price</th>
             <th data-sort="available_by" class="th-sortable">Available</th>
             <th style="min-width: 20%;">Access</th>
             <th data-sort="code" class="th-sortable">Landlord</th>

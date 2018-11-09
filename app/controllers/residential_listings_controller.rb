@@ -458,6 +458,10 @@ class ResidentialListingsController < ApplicationController
             @residential_unit.unit.listing_id)
       end
 
+      if params[:residential_listing][:unit][:rent]
+        params[:residential_listing][:unit][:rent] = (params[:residential_listing][:unit][:gross_price].to_i * (params[:residential_listing][:lease_start].to_i - params[:residential_listing][:unit][:maths_free].to_f)) / params[:residential_listing][:lease_start].to_i
+      end
+
       # keep track of whether this listing just came on or off the market
       if @residential_unit.unit.status != residential_listing_params[:unit][:status] &&
           residential_listing_params[:unit][:status] != 'pending'
@@ -558,6 +562,26 @@ class ResidentialListingsController < ApplicationController
     set_residential_listings
 
   end
+
+  def claim_for_individual_syndication_page
+    residential_listing = ResidentialListing.find(params[:id])
+    if residential_listing.claim_for_individual_syndication_page.blank?
+      a = residential_listing.claim_for_individual_syndication_page << current_user.id
+      residential_listing = residential_listing.update(claim_for_individual_syndication_page: a)
+    else
+      claim_user = residential_listing.claim_for_individual_syndication_page << current_user.id
+      residential_listing = residential_listing.update(claim_for_individual_syndication_page: claim_user)
+    end
+    redirect_to root_url
+  end
+
+  def disclaim_for_individual_syndication_page
+    residential_listing = ResidentialListing.find(params[:id])
+    disclaim = residential_listing.claim_for_individual_syndication_page - ["#{current_user.id}"]
+    residential_listing = residential_listing.update(claim_for_individual_syndication_page: disclaim)
+    redirect_to root_url
+  end
+
 
   def claim_naked_apartment
     residential_listing = ResidentialListing.find(params[:id])
@@ -911,11 +935,10 @@ class ResidentialListingsController < ApplicationController
         :available_starting, :available_before, :custom_amenities,
         :roomsharing_filter, :unassigned_filter, :tenant_occupied_filter, :streeteasy_filter,
         :no_description,:no_images, :roomshare_department,
-        :primary_agent_id, :favorites, :show,:claim_for_naked_apartment,
-        :expose_address, :floor, :total_room_count, :condition, :showing_instruction,
+        :primary_agent_id, :favorites, :show,:claim_for_naked_apartment, :claim_for_individual_syndication_page, :expose_address, :floor, :total_room_count, :condition, :showing_instruction,
         :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
         :rls_flag, :streeteasy_flag, :streeteasy_flag_one,:streeteasy_claim, :naked_apartment,
-        unit: [:building_unit, :streeteasy_primary_agent_id, :streeteasy_listing_email, :streeteasy_listing_number, :rent, :available_by, :access_info, :status,
+        unit: [:building_unit, :streeteasy_unit, :streeteasy_primary_agent_id, :streeteasy_listing_email, :streeteasy_listing_number, :rent, :gross_price, :maths_free, :available_by, :access_info, :status,
           :exclusive, :featured, :hide_on_website, :building_id, :primary_agent_id, :listing_agent_id,
           :syndication_status, :has_stock_photos, :is_exclusive_agreement_signed,
           :exclusive_agreement_expires_at, :public_url,

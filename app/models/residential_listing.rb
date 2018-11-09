@@ -205,6 +205,7 @@ class ResidentialListing < ApplicationRecord
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route','buildings.point_of_contact',
         'buildings.lat', 'buildings.lng', 'buildings.rating', 'units.id AS unit_id',
         'units.building_unit','units.featured', 'units.status','units.rent', 'residential_listings.beds','residential_listings.claim_for_naked_apartment',
+        'residential_listings.claim_for_individual_syndication_page',
         'units.primary_agent_id',  'units.has_stock_photos',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
@@ -426,36 +427,36 @@ class ResidentialListing < ApplicationRecord
     if params[:parent_amenities]
       features = params[:parent_amenities][0, 256]
       features = features.split(",").select{|i| !i.empty?}
-      if features.include? "145"
-        features += ["89", "118", "128", "142", "132", "90", "131", "2"]
-      end
-      if features.include? "146"
-        features += ["5", "84", "3", "4", "103", "106"]
-      end
-      if features.include? "147"
-        features += ["100", "75", "105", "134", "14", "140", "73", "120", "71", "96", "15", "16", "20"]
-      end
-      if features.include? "148"
-        features += ["87", "125", "6", "129", "112", "70", "76", "82", "77", "127", "72", "117", "8", "101", "102", "122", "9", "86"]
-      end
-      if features.include? "149"
-        features += ["123", "113", "92", "135", "85", "88", "91", "95", "99", "126", "116", "98", "18", "81", "144", "1"]
-      end
-      if features.include? "150"
-        features += ["83", "143", "97", "141", "139"]
-      end
-      if features.include? "151"
-        features += ["119", "11", "12", "68", "114", "130"]
-      end
-      if features.include? "152"
-        features += ["115", "110", "69", "78", "124", "109", "7", "94", "121", "79", "80", "17", "19"]
-      end
-      if features.include? "153"
-        features += ["104", "133", "108"]
-      end
-      if features.include? "154"
-        features += ["136", "137", "138"]
-      end
+      # if features.include? "145"
+      #   features += ["89", "118", "128", "142", "132", "90", "131", "2"]
+      # end
+      # if features.include? "146"
+      #   features += ["5", "84", "3", "4", "103", "106"]
+      # end
+      # if features.include? "147"
+      #   features += ["100", "75", "105", "134", "14", "140", "73", "120", "71", "96", "15", "16", "20"]
+      # end
+      # if features.include? "148"
+      #   features += ["87", "125", "6", "129", "112", "70", "76", "82", "77", "127", "72", "117", "8", "101", "102", "122", "9", "86"]
+      # end
+      # if features.include? "149"
+      #   features += ["123", "113", "92", "135", "85", "88", "91", "95", "99", "126", "116", "98", "18", "81", "144", "1"]
+      # end
+      # if features.include? "150"
+      #   features += ["83", "143", "97", "141", "139"]
+      # end
+      # if features.include? "151"
+      #   features += ["119", "11", "12", "68", "114", "130"]
+      # end
+      # if features.include? "152"
+      #   features += ["115", "110", "69", "78", "124", "109", "7", "94", "121", "79", "80", "17", "19"]
+      # end
+      # if features.include? "153"
+      #   features += ["104", "133", "108"]
+      # end
+      # if features.include? "154"
+      #   features += ["136", "137", "138"]
+      # end
       running_list = running_list.joins(:residential_amenities)
         .where('residential_amenity_id IN (?)', features)
     end

@@ -56,7 +56,26 @@
     </td>
 
     <!-- ****** PRICE ****************************************** -->
-    <td><%= rent_formatted(residential_listing.rent) %></td>
+    <td><%= rent_formatted(residential_listing.rent) %>
+      <% if residential_listing.unit.audits %>
+        <%# abort residential_listing.unit.audits.inspect %>
+        <% residential_listing.unit.audits.each do |audit| %>
+          <% if audit.audited_changes["rent"] %>
+            <% @last_price_change = (audit.audited_changes["rent"][1] - audit.audited_changes["rent"][0]) %>
+            <%# @disp_date = audit.created_at.strftime("%b-%d-%Y") %>
+          <% end %>
+        <% end %>
+        <% if @last_price_change %>
+          <% if @last_price_change >= 0 %>
+            +<%= @last_price_change %>
+          <% else %>
+            <%= @last_price_change %>
+          <% end %>
+        <% end %>
+      <% end %>
+      Net Price : <%= residential_listing.rent %>
+      Gross Price : <%= residential_listing.unit.gross_price %>
+    </td>
 
     <!-- ****** AVAILBLE_BY ****************************************** -->
     <td>
@@ -117,23 +136,25 @@
     </td>
 
     <!-- ****** PRIMARY AGENT ****************************************** -->
-    <td>
-      <% if residential_listing.name %>
-        <%# abort residential_listing.name.inspect %>
-        <%= link_to residential_listing.name, user_path(residential_listing.primary_agent_id) %>
-      <% else %>
-        --
-      <% end %>
-    </td>
+    <% if action_name != "agent_rental" %>
+      <td>
+        <% if residential_listing.name %>
+          <%# abort residential_listing.name.inspect %>
+          <%= link_to residential_listing.name, user_path(residential_listing.primary_agent_id) %>
+        <% else %>
+          --
+        <% end %>
+      </td>
 
-    <!-- ****** StreetEasy PRIMARY AGENT ****************************************** -->
-    <td>
-      <% if !residential_listing.unit.streeteasy_primary_agent_id.nil? %>
-        <%= link_to User.find(residential_listing.unit.streeteasy_primary_agent_id).name, user_path(residential_listing.unit.streeteasy_primary_agent_id) %>
-      <% else %>
-        --
-      <% end %>
-    </td>
+      <!-- ****** StreetEasy PRIMARY AGENT ****************************************** -->
+      <td>
+        <% if !residential_listing.unit.streeteasy_primary_agent_id.nil? %>
+          <%= link_to User.find(residential_listing.unit.streeteasy_primary_agent_id).name, user_path(residential_listing.unit.streeteasy_primary_agent_id) %>
+        <% else %>
+          --
+        <% end %>
+      </td>
+    <% end %>
     <td>
       <% if !residential_listing.unit.building.point_of_contact.nil? %>
         <%= link_to User.find(residential_listing.unit.building.point_of_contact).name, user_path(residential_listing.unit.building.point_of_contact) %>
@@ -170,13 +191,15 @@
       <% end %>
     </td>
 
-    <td>
-      <% if residential_listing.unit.featured == true %>
-        <span class="glyphicon glyphicon-arrow-up pink" aria-hidden="true"></span>
-      <% else %>
-        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-      <% end %>
-    </td>
+    <% if action_name != "agent_rental" %>
+      <td>
+        <% if residential_listing.unit.featured == true %>
+          <span class="glyphicon glyphicon-arrow-up pink" aria-hidden="true"></span>
+        <% else %>
+          <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+        <% end %>
+      </td>
+    <% end %>
     <!-- ****** LINKS ****************************************** -->
     <%# abort residential_listing.streeteasy_flag.inspect %>
     <%# if current_user.is_streeteasy_agent? && residential_listing.status == Unit.statuses["active"] && residential_listing.streeteasy_flag == false %>
@@ -201,6 +224,17 @@
         <%#end%>
       </td>
     <% end %>
+
+    <% if action_name == "index" %>
+      <td>
+        <% if residential_listing.claim_for_individual_syndication_page.include?(current_user.id.to_s)%>
+          <%= link_to 'DisClaim', disclaim_for_individual_syndication_page_path(residential_listing), class: "link_buttom_disclaim" %>
+        <% else %>
+          <%= link_to 'Claim', claim_for_individual_syndication_page_path(residential_listing), class: "link_buttom_claim" %>
+        <%end%>
+      </td>
+    <% end %>
+    
     <% if action_name == "agent_rental" %>
       <td class="hidden-print">
         <%= link_to 'Edit', agent_edit_path(residential_listing) %>
