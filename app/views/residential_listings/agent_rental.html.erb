@@ -215,21 +215,23 @@
             </th>
             <th class="img-col"><!-- first image --></th>
             <th data-sort="formatted_street_address" class="th-sortable">Address</th>
-            <th data-sort="building_unit" class="th-sortable">Unit</th>
-            <th data-sort="bed_and_baths_sorter" class="th-sortable">Beds/Baths</th>
-            <th data-sort="rent" class="th-sortable">Price</th>
-            <th data-sort="available_by" class="th-sortable">Available</th>
+            <!-- <th data-sort="building_unit" class="th-sortable">Unit</th> -->
+            <!-- <th data-sort="bed_and_baths_sorter" class="th-sortable">Beds/Baths</th> -->
+            <!-- <th data-sort="rent" class="th-sortable">Price</th> -->
+            <!-- <th data-sort="available_by" class="th-sortable">Available</th> -->
             <th style="min-width: 20%;">Access</th>
-            <th data-sort="code" class="th-sortable">Landlord</th>
+            <th data-sort="bed_and_baths_sorter" class="th-sortable">Beds/Baths</th>
+            <th data-sort="rent" class="th-sortable" style="min-width: 125px;">Price</th>
+            <!-- <th data-sort="code" class="th-sortable">Landlord</th> -->
             <% if action_name != "agent_rental" %>
               <th data-sort="name" class="th-sortable">Primary Agent</th>
               <th data-sort="name" class="th-sortable">StreetEasy Primary Agent</th>
             <% end %>
-            <th data-sort="name" class="th-sortable">Point Of Contact</th>
+           <!--  <th data-sort="name" class="th-sortable">Point Of Contact</th> -->
             <th data-sort="residential_listings.updated_at" class="th-sortable">Updated</th>
-            <th data-sort="residential_listings.updated_at" class="th-sortable">Price Change Date</th>
+            <!-- <th data-sort="residential_listings.updated_at" class="th-sortable">Price Change Date</th>
 
-            <th data-sort="units.status" class="th-sortable">Status</th>
+            <th data-sort="units.status" class="th-sortable">Status</th> -->
             <% if action_name != "agent_rental" %>
               <th data-sort="featured" class="th-sortable">Featured</th>
             <% end %>

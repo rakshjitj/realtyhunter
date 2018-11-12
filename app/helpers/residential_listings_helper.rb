@@ -35,15 +35,15 @@ module ResidentialListingsHelper
 		if residential_listing.beds == 0
       "Studio ".freeze
     else
-      "#{residential_listing.beds} Beds".freeze
+      "#{residential_listing.beds}".freeze
     end
 	end
 
 	def baths_as_str(residential_listing)
 		if residential_listing.baths == 1
-      "#{trim_zeros(residential_listing.baths)} Bath".freeze
+      "#{trim_zeros(residential_listing.baths)}".freeze
     else
-      "#{trim_zeros(residential_listing.baths)} Baths".freeze
+      "#{trim_zeros(residential_listing.baths)}".freeze
     end
 	end
 

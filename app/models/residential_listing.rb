@@ -209,7 +209,7 @@ class ResidentialListing < ApplicationRecord
         'units.primary_agent_id',  'units.has_stock_photos',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
-        'residential_listings.favorites','residential_listings.streeteasy_flag_one',
+        'residential_listings.favorites','residential_listings.streeteasy_flag_one', 'residential_listings.lease_start',
         'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_claim',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'residential_listings.tenant_occupied',

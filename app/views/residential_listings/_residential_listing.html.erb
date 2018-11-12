@@ -9,11 +9,30 @@
     <% if controller_name == 'residential_listings' %>
       <td>
         <i data-action="selectUnit" class="fa fa-square-o fa-lg"></i>
+        <!-- ****** STATUS ****************************************** -->
+        
+          <%# abort residential_listing.status.inspect %>
+          <% if residential_listing.status == Unit.statuses["active"] %>
+            <span class="glyphicon glyphicon-ok-sign green" aria-hidden="true"></span>
+          <% elsif residential_listing.status == Unit.statuses["pending"] %>
+            <span class="glyphicon glyphicon-ok-sign dark-orange" aria-hidden="true"></span>
+          <% elsif residential_listing.status == Unit.statuses["off"] %>
+            <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+          <% elsif residential_listing.status == Unit.statuses["rsonly"] %>
+            <span class="glyphicon glyphicon-ok-sign blue" aria-hidden="true"></span>
+          <% end %>
+        <% if action_name != "agent_rental" %>
+            <% if residential_listing.unit.featured == true %>
+              <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <% else %>
+              <span class="glyphicon glyphicon-star-empty ash" aria-hidden="true"></span>
+            <% end %>
+        <% end %>
       </td>
     <% end %>
 
     <!-- ****** IMAGE ****************************************** -->
-    <td class="img-col">
+    <td class="img-col" style="max-width: 120px;">
       <!-- display building image first, if any are found -->
       <% if bldg_images[residential_listing.building_id] %>
         <%= link_to(image_tag(bldg_images[residential_listing.building_id],
@@ -33,30 +52,103 @@
     <!-- ****** ADDRESS ****************************************** -->
     <td>
       <% if action_name == "agent_rental" %>
-        <%= link_to "#{residential_listing.street_address}".freeze, agent_show_path(residential_listing.id) %><br />
+        <b><%= link_to "#{residential_listing.street_address}".freeze, agent_show_path(residential_listing.id) %></b><br />
       <% else %>
-        <%= link_to "#{residential_listing.street_address}".freeze, residential_listing_path(residential_listing.id) %><br />
+        <b>Address:<%= link_to "#{residential_listing.street_address}".freeze, residential_listing_path(residential_listing.id) %></b></br>
+        <b>Unit Number:</b><%= residential_listing.building_unit %>
+        <% if residential_listing.can_roomshare %>
+          <br /><strong>(RS)</strong>
+        <% end %>
+        <br />
       <% end %>
       <% if residential_listing.neighborhood_name %>
-        <small><%= residential_listing.neighborhood_name %></small>
+        <b>Neighborhood:</b><small><%= residential_listing.neighborhood_name %></small>
       <% end %>
     </td>
 
-    <!-- ****** UNIT ****************************************** -->
     <td>
-      <%= residential_listing.building_unit %>
-      <% if residential_listing.can_roomshare %>
-        <br /><strong>(RS)</strong>
+      <!-- ****** LANDLORD ****************************************** -->
+      <% if current_user.is_management? %>
+        <b>Landlord:</b><%= link_to residential_listing.code, landlord_path(residential_listing.landlord_id) %><br>
+      <% else %>
+        <%#= residential_listing.code %>
       <% end %>
+      <!-- ****** Point of Contact ****************************************** -->
+      <% if !residential_listing.unit.building.point_of_contact.nil? %>
+        <b>Point of Contact:</b><%= link_to User.find(residential_listing.unit.building.point_of_contact).name, user_path(residential_listing.unit.building.point_of_contact) %>
+      <% else %>
+        --
+      <% end %>
+
+      <!-- ****** ACCESS ****************************************** -->
+      <span class="access-info" data-toggle="tooltip" data-placement="top" title="<%= residential_listing.access_info %>"
+        data-delay="1500">
+        <div class="row">
+          <div class="col-md-12 js-phoneNumber">
+            <b>Access info:</b><%= trim_access residential_listing.access_info %>
+          </div>
+        </div>
+
+        <!-- if roomsharing, draw indicators for each roommate slot here -->
+        <% if residential_listing.can_roomshare %>
+          <div class="row">
+            <div class="col-md-12 margin-vertical">
+              <% for idx in 0..residential_listing.beds-1 %>
+
+                <!-- if the roommate exists -->
+                <% if idx < residential_listing.roommates.count && residential_listing.roommates[idx] %>
+                  <% roommate = residential_listing.roommates[idx] %>
+                  <% if roommate.upload_picture_of_yourself %>
+                    <%= image_tag roommate.upload_picture_of_yourself, class: 'roommate_icon',
+                      alt: roommate.upload_picture_of_yourself, size:'26x26' %>
+                  <% else %>
+                    <!-- otherwise the roommate is valid but has no photo -->
+                    <div class="roommate_no_photo_icon">
+                      <%= roommate.initials %>
+                    </div>
+                  <% end %>
+
+                <% else %>
+                  <!-- if there's no roommate -->
+                  <div class="roommate_no_photo_icon">&nbsp;&nbsp;&nbsp;</div>
+                <% end %>
+
+              <% end %>
+              <br />
+            </div>
+          </div>
+        <% end %><!-- roomsharing icons -->
+      </span>
     </td>
 
     <!-- ****** BEDS/BATHS ****************************************** -->
     <td>
-      <%= beds_as_str(residential_listing) %> / <%= baths_as_str(residential_listing) %>
+      <b>Beds:</b><%= beds_as_str(residential_listing) %><br>
+      <b>Baths:</b><%= baths_as_str(residential_listing) %>
+      <!-- ****** AVAILBLE_BY ****************************************** -->
+      <% if residential_listing.available_by %>
+        <b>Available:</b><%= residential_listing.available_by.strftime("%b %d") %>
+      <% else %>
+        -
+      <% end %>
     </td>
 
     <!-- ****** PRICE ****************************************** -->
-    <td><%= rent_formatted(residential_listing.rent) %>
+    <td><%#= rent_formatted(residential_listing.rent) %>
+      <b>Net Price :</b>$<%= residential_listing.rent %><br>
+      <b>Gross Price :</b>$<%= residential_listing.unit.gross_price %><br>
+      <b>Lease Term :</b><%= residential_listing.lease_start %><br>
+      <% if residential_listing.unit.maths_free == 0.0 %><br>
+        <b>Mths Free :</b><%= residential_listing.unit.maths_free %>
+      <% else %>
+        <b>Mths Free :</b><span style="background: #444;color: white;"><%= residential_listing.unit.maths_free %></span><br>
+      <% end %>
+      
+    </td>
+
+    <!-- ****** UPDATED_AT ****************************************** -->
+    <td><%= time_ago_in_words(residential_listing.updated_at) %>
+
       <% if residential_listing.unit.audits %>
         <%# abort residential_listing.unit.audits.inspect %>
         <% residential_listing.unit.audits.each do |audit| %>
@@ -65,164 +157,110 @@
             <%# @disp_date = audit.created_at.strftime("%b-%d-%Y") %>
           <% end %>
         <% end %>
+        <br>
+        <b>Most Recent Price Change :</b>
         <% if @last_price_change %>
           <% if @last_price_change >= 0 %>
-            +<%= @last_price_change %>
+            <span style="color: green;">
+              +<%= @last_price_change %>
+            </span>
           <% else %>
-            <%= @last_price_change %>
+            <span style="color: red;">
+              <%= @last_price_change %>
+            </span>
           <% end %>
         <% end %>
       <% end %>
-      Net Price : <%= residential_listing.rent %>
-      Gross Price : <%= residential_listing.unit.gross_price %>
     </td>
-
-    <!-- ****** AVAILBLE_BY ****************************************** -->
-    <td>
-      <% if residential_listing.available_by %>
-        <%= residential_listing.available_by.strftime("%b %d") %>
-      <% else %>
-        -
-      <% end %>
-    </td>
-
-    <!-- ****** ACCESS ****************************************** -->
-    <td class="access-info" data-toggle="tooltip" data-placement="top" title="<%= residential_listing.access_info %>"
-      data-delay="1500">
-      <div class="row">
-        <div class="col-md-12 js-phoneNumber">
-          <%= trim_access residential_listing.access_info %>
-        </div>
-      </div>
-
-      <!-- if roomsharing, draw indicators for each roommate slot here -->
-      <% if residential_listing.can_roomshare %>
-        <div class="row">
-          <div class="col-md-12 margin-vertical">
-            <% for idx in 0..residential_listing.beds-1 %>
-
-              <!-- if the roommate exists -->
-              <% if idx < residential_listing.roommates.count && residential_listing.roommates[idx] %>
-                <% roommate = residential_listing.roommates[idx] %>
-                <% if roommate.upload_picture_of_yourself %>
-                  <%= image_tag roommate.upload_picture_of_yourself, class: 'roommate_icon',
-                    alt: roommate.upload_picture_of_yourself, size:'26x26' %>
-                <% else %>
-                  <!-- otherwise the roommate is valid but has no photo -->
-                  <div class="roommate_no_photo_icon">
-                    <%= roommate.initials %>
-                  </div>
-                <% end %>
-
-              <% else %>
-                <!-- if there's no roommate -->
-                <div class="roommate_no_photo_icon">&nbsp;&nbsp;&nbsp;</div>
-              <% end %>
-
-            <% end %>
-            <br />
-          </div>
-        </div>
-      <% end %><!-- roomsharing icons -->
-    </td>
-
-    <!-- ****** LANDLORD ****************************************** -->
-    <td>
-      <% if current_user.is_management? %>
-        <%= link_to residential_listing.code, landlord_path(residential_listing.landlord_id) %>
-      <% else %>
-        <%= residential_listing.code %>
-      <% end %>
-    </td>
-
-    <!-- ****** PRIMARY AGENT ****************************************** -->
-    <% if action_name != "agent_rental" %>
-      <td>
-        <% if residential_listing.name %>
-          <%# abort residential_listing.name.inspect %>
-          <%= link_to residential_listing.name, user_path(residential_listing.primary_agent_id) %>
+    
+    <% if current_user.is_management? %>
+    <td>  
+        <% if residential_listing.streeteasy_flag == true or residential_listing.streeteasy_flag_one == true %>
+          <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
         <% else %>
-          --
+          <span>---</span>
         <% end %>
-      </td>
-
-      <!-- ****** StreetEasy PRIMARY AGENT ****************************************** -->
-      <td>
+        <br>
+        <b>Streeteasy Primary Agent:</b>
         <% if !residential_listing.unit.streeteasy_primary_agent_id.nil? %>
           <%= link_to User.find(residential_listing.unit.streeteasy_primary_agent_id).name, user_path(residential_listing.unit.streeteasy_primary_agent_id) %>
         <% else %>
           --
         <% end %>
-      </td>
-    <% end %>
-    <td>
-      <% if !residential_listing.unit.building.point_of_contact.nil? %>
-        <%= link_to User.find(residential_listing.unit.building.point_of_contact).name, user_path(residential_listing.unit.building.point_of_contact) %>
-      <% else %>
-        --
-      <% end %>
-    </td>
-    <!-- ****** UPDATED_AT ****************************************** -->
-    <td><%= time_ago_in_words(residential_listing.updated_at) %></td>
-
-    <td>
-      <% if residential_listing.unit.audits %>
-        <%# abort residential_listing.unit.audits.inspect %>
-        <% residential_listing.unit.audits.each do |audit| %>
-          <% if audit.audited_changes["rent"] %>
-            <% @disp_date = audit.created_at.strftime("%b-%d-%Y") %>
-          <% end %>
-        <% end %>
-        <%= @disp_date %>
-      <% end %>
-
-    </td>
-    <% if current_user.is_management? %>
-      <td>
         <% if residential_listing.unit.audits %>
-          <%# abort residential_listing.unit.audits.inspect %>
           <% residential_listing.audits.each do |audit| %>
             <% if audit.audited_changes["streeteasy_flag"].class == Array %>
               <% if audit.audited_changes["streeteasy_flag"][1] == true %>
                 <% if residential_listing.streeteasy_flag == true %>
                   <% @disp_se_date = audit.created_at %>
-                  <%#= @disp_se_date %>
                 <% end %>
               <% end %>
             <% end %>
           <% end %>
           <% if residential_listing.streeteasy_flag == true %>
             <% if !@disp_se_date.nil? %>
-              <%= time_ago_in_words(@disp_se_date) %>
+              <b>Active On Streeteasy:</b><%= time_ago_in_words(@disp_se_date) %>
             <% end %>
           <% end %>
         <% end %>
       </td>
     <% end %>
 
-    <!-- ****** STATUS ****************************************** -->
-    <td>
-      <%# abort residential_listing.status.inspect %>
-      <% if residential_listing.status == Unit.statuses["active"] %>
-        <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
-      <% elsif residential_listing.status == Unit.statuses["pending"] %>
-        <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
-      <% elsif residential_listing.status == Unit.statuses["off"] %>
-        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-      <% elsif residential_listing.status == Unit.statuses["rsonly"] %>
-        <span class="glyphicon glyphicon-arrow-up blue" aria-hidden="true"></span>
-      <% end %>
-    </td>
+    <!-- ****** PRIMARY AGENT ****************************************** -->
+    <%# if action_name != "agent_rental" %>
+      <!-- <td>
+        <%# if residential_listing.name %>
+          <%#= link_to residential_listing.name, user_path(residential_listing.primary_agent_id) %>
+        <%# else %>
+          
+        <%# end %>
+      </td> -->
 
-    <% if action_name != "agent_rental" %>
-      <td>
-        <% if residential_listing.unit.featured == true %>
-          <span class="glyphicon glyphicon-arrow-up pink" aria-hidden="true"></span>
-        <% else %>
-          <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-        <% end %>
-      </td>
-    <% end %>
+      <!-- ****** StreetEasy PRIMARY AGENT ****************************************** -->
+      <!-- <td>
+        <%# if !residential_listing.unit.streeteasy_primary_agent_id.nil? %>
+          <%#= link_to User.find(residential_listing.unit.streeteasy_primary_agent_id).name, user_path(residential_listing.unit.streeteasy_primary_agent_id) %>
+        <%# else %>
+
+        <%# end %>
+      </td> -->
+    <%# end %>
+
+    <!-- <td>
+      <%# if residential_listing.unit.audits %>
+        <%# residential_listing.unit.audits.each do |audit| %>
+          <%# if audit.audited_changes["rent"] %>
+            <%# @disp_date = audit.created_at.strftime("%b-%d-%Y") %>
+          <%# end %>
+        <%# end %>
+        <%#= @disp_date %>
+      <%# end %>
+    </td> -->
+
+    <%# if current_user.is_management? %>
+      <!-- <td>
+        <%# if residential_listing.unit.audits %>
+          <%# abort residential_listing.unit.audits.inspect %>
+          <%# residential_listing.audits.each do |audit| %>
+            <%# if audit.audited_changes["streeteasy_flag"].class == Array %>
+              <%# if audit.audited_changes["streeteasy_flag"][1] == true %>
+                <%# if residential_listing.streeteasy_flag == true %>
+                  <%# @disp_se_date = audit.created_at %>
+                  <%#= @disp_se_date %>
+                <%# end %>
+              <%# end %>
+            <%# end %>
+          <%# end %>
+          <%# if residential_listing.streeteasy_flag == true %>
+            <%# if !@disp_se_date.nil? %>
+              <%#= time_ago_in_words(@disp_se_date) %>
+            <%# end %>
+          <%# end %>
+        <%# end %>
+      </td> -->
+    <%# end %>
+
+    
     <!-- ****** LINKS ****************************************** -->
     <%# abort residential_listing.streeteasy_flag.inspect %>
     <%# if current_user.is_streeteasy_agent? && residential_listing.status == Unit.statuses["active"] && residential_listing.streeteasy_flag == false %>
