@@ -10,16 +10,16 @@
       <td>
         <i data-action="selectUnit" class="fa fa-square-o fa-lg"></i>
         <!-- ****** STATUS ****************************************** -->
-        
+          <br>
           <%# abort residential_listing.status.inspect %>
           <% if residential_listing.status == Unit.statuses["active"] %>
-            <span class="glyphicon glyphicon-ok-sign green" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-ok-sign green" aria-hidden="true"></span><br>
           <% elsif residential_listing.status == Unit.statuses["pending"] %>
-            <span class="glyphicon glyphicon-ok-sign dark-orange" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-ok-sign dark-orange" aria-hidden="true"></span><br>
           <% elsif residential_listing.status == Unit.statuses["off"] %>
-            <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span><br>
           <% elsif residential_listing.status == Unit.statuses["rsonly"] %>
-            <span class="glyphicon glyphicon-ok-sign blue" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-ok-sign blue" aria-hidden="true"></span><br>
           <% end %>
         <% if action_name != "agent_rental" %>
             <% if residential_listing.unit.featured == true %>
@@ -54,28 +54,28 @@
       <% if action_name == "agent_rental" %>
         <b><%= link_to "#{residential_listing.street_address}".freeze, agent_show_path(residential_listing.id) %></b><br />
       <% else %>
-        <b>Address:<%= link_to "#{residential_listing.street_address}".freeze, residential_listing_path(residential_listing.id) %></b></br>
-        <b>Unit Number:</b><%= residential_listing.building_unit %>
+        <b><!--Address:--><%= link_to "#{residential_listing.street_address}".freeze, residential_listing_path(residential_listing.id) %></b></br>
+        <b><!--Unit Number:--></b><%= residential_listing.building_unit %>
         <% if residential_listing.can_roomshare %>
           <br /><strong>(RS)</strong>
         <% end %>
         <br />
       <% end %>
       <% if residential_listing.neighborhood_name %>
-        <b>Neighborhood:</b><small><%= residential_listing.neighborhood_name %></small>
+        <b><!-- Neighborhood: --></b><small><%= residential_listing.neighborhood_name %></small>
       <% end %>
     </td>
 
     <td>
       <!-- ****** LANDLORD ****************************************** -->
       <% if current_user.is_management? %>
-        <b>Landlord:</b><%= link_to residential_listing.code, landlord_path(residential_listing.landlord_id) %><br>
+        Landlord: <%= link_to residential_listing.code, landlord_path(residential_listing.landlord_id) %><br>
       <% else %>
         <%#= residential_listing.code %>
       <% end %>
       <!-- ****** Point of Contact ****************************************** -->
       <% if !residential_listing.unit.building.point_of_contact.nil? %>
-        <b>Point of Contact:</b><%= link_to User.find(residential_listing.unit.building.point_of_contact).name, user_path(residential_listing.unit.building.point_of_contact) %>
+        Point of Contact: <%= link_to User.find(residential_listing.unit.building.point_of_contact).name, user_path(residential_listing.unit.building.point_of_contact) %>
       <% else %>
         --
       <% end %>
@@ -85,7 +85,7 @@
         data-delay="1500">
         <div class="row">
           <div class="col-md-12 js-phoneNumber">
-            <b>Access info:</b><%= trim_access residential_listing.access_info %>
+            Access info: <%= trim_access residential_listing.access_info %>
           </div>
         </div>
 
@@ -123,11 +123,11 @@
 
     <!-- ****** BEDS/BATHS ****************************************** -->
     <td>
-      <b>Beds:</b><%= beds_as_str(residential_listing) %><br>
-      <b>Baths:</b><%= baths_as_str(residential_listing) %>
+      Beds: <%= beds_as_str(residential_listing) %><br>
+      Baths: <%= baths_as_str(residential_listing) %><br>
       <!-- ****** AVAILBLE_BY ****************************************** -->
       <% if residential_listing.available_by %>
-        <b>Available:</b><%= residential_listing.available_by.strftime("%b %d") %>
+        Avail: <%= residential_listing.available_by.strftime("%b %d") %>
       <% else %>
         -
       <% end %>
@@ -136,18 +136,17 @@
     <!-- ****** PRICE ****************************************** -->
     <td><%#= rent_formatted(residential_listing.rent) %>
       <b>Net Price :</b>$<%= residential_listing.rent %><br>
-      <b>Gross Price :</b>$<%= residential_listing.unit.gross_price %><br>
-      <b>Lease Term :</b><%= residential_listing.lease_start %><br>
-      <% if residential_listing.unit.maths_free == 0.0 %><br>
-        <b>Mths Free :</b><%= residential_listing.unit.maths_free %>
+      Gross Price: $<%= residential_listing.unit.gross_price %><br>
+      Lease Term: <%= residential_listing.lease_start %><br>
+      <% if residential_listing.unit.maths_free == 0.0 %>
       <% else %>
-        <b>Mths Free :</b><span style="background: #444;color: white;"><%= residential_listing.unit.maths_free %></span><br>
+        <b>Mths Free :</b><span style="background: #444;color: white;"><%= residential_listing.unit.maths_free %></span>
       <% end %>
       
     </td>
 
     <!-- ****** UPDATED_AT ****************************************** -->
-    <td><%= time_ago_in_words(residential_listing.updated_at) %>
+    <td>Updated: <%= time_ago_in_words(residential_listing.updated_at) %>
 
       <% if residential_listing.unit.audits %>
         <%# abort residential_listing.unit.audits.inspect %>
@@ -162,11 +161,11 @@
         <% if @last_price_change %>
           <% if @last_price_change >= 0 %>
             <span style="color: green;">
-              +<%= @last_price_change %>
+              <b>+ $<%= @last_price_change %></b>
             </span>
           <% else %>
             <span style="color: red;">
-              <%= @last_price_change %>
+              <b>- $<%= @last_price_change.abs %></b>
             </span>
           <% end %>
         <% end %>
@@ -174,34 +173,35 @@
     </td>
     
     <% if current_user.is_management? %>
-    <td>  
+      <td>  
         <% if residential_listing.streeteasy_flag == true or residential_listing.streeteasy_flag_one == true %>
           <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
-        <% else %>
-          <span>---</span>
-        <% end %>
-        <br>
-        <b>Streeteasy Primary Agent:</b>
-        <% if !residential_listing.unit.streeteasy_primary_agent_id.nil? %>
-          <%= link_to User.find(residential_listing.unit.streeteasy_primary_agent_id).name, user_path(residential_listing.unit.streeteasy_primary_agent_id) %>
-        <% else %>
-          --
-        <% end %>
-        <% if residential_listing.unit.audits %>
-          <% residential_listing.audits.each do |audit| %>
-            <% if audit.audited_changes["streeteasy_flag"].class == Array %>
-              <% if audit.audited_changes["streeteasy_flag"][1] == true %>
-                <% if residential_listing.streeteasy_flag == true %>
-                  <% @disp_se_date = audit.created_at %>
+          <br>
+          Streeteasy Primary Agent: 
+          <% if !residential_listing.unit.streeteasy_primary_agent_id.nil? %>
+            <%= link_to User.find(residential_listing.unit.streeteasy_primary_agent_id).name, user_path(residential_listing.unit.streeteasy_primary_agent_id) %>
+          <% else %>
+            --
+          <% end %>
+
+          <% if residential_listing.unit.audits %>
+            <% residential_listing.audits.each do |audit| %>
+              <% if audit.audited_changes["streeteasy_flag"].class == Array %>
+                <% if audit.audited_changes["streeteasy_flag"][1] == true %>
+                  <% if residential_listing.streeteasy_flag == true %>
+                    <% @disp_se_date = audit.created_at %>
+                  <% end %>
                 <% end %>
               <% end %>
             <% end %>
-          <% end %>
-          <% if residential_listing.streeteasy_flag == true %>
-            <% if !@disp_se_date.nil? %>
-              <b>Active On Streeteasy:</b><%= time_ago_in_words(@disp_se_date) %>
+            <% if residential_listing.streeteasy_flag == true %>
+              <% if !@disp_se_date.nil? %>
+                Active On Streeteasy: <%= time_ago_in_words(@disp_se_date) %>
+              <% end %>
             <% end %>
           <% end %>
+        <% else %>
+          <span>---</span>
         <% end %>
       </td>
     <% end %>
