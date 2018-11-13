@@ -135,7 +135,7 @@
 
     <!-- ****** PRICE ****************************************** -->
     <td><%#= rent_formatted(residential_listing.rent) %>
-      <b>Net Price :</b>$<%= residential_listing.rent %><br>
+      <b>Net Price : $<%= residential_listing.rent %></b><br>
       Gross Price: $<%= residential_listing.unit.gross_price %><br>
       Lease Term: <%= residential_listing.lease_start %><br>
       <% if residential_listing.unit.maths_free == 0.0 %>
@@ -183,7 +183,7 @@
           <% else %>
             --
           <% end %>
-
+          <br>
           <% if residential_listing.unit.audits %>
             <% residential_listing.audits.each do |audit| %>
               <% if audit.audited_changes["streeteasy_flag"].class == Array %>
