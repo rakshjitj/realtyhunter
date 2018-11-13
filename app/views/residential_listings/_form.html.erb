@@ -189,11 +189,11 @@
 
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
-            <%= f.label "Net Price", class: 'required' %>
+            <%= f.label "Net Price" %>
           </div>
           <div class="col-xs-9 col-md-4">
             <%= f.fields_for @residential_unit.unit do |unit_form| %>
-              <%= unit_form.number_field :rent, class: 'form-control', required: true %>
+              <%= unit_form.number_field :rent, class: 'form-control' %>
             <% end %>
           </div>
         </div>
@@ -211,11 +211,11 @@
 
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
-            <%= f.label :maths_free, class: 'required' %>
+            <%= f.label :maths_free, "Mths Free", class: 'required' %>
           </div>
           <div class="col-xs-9 col-md-4">
             <%= f.fields_for @residential_unit.unit do |unit_form| %>
-              <%= unit_form.number_field :maths_free, class: 'form-control', step: 0.5, in: 0.0..12.0, required: true %>
+              <%= unit_form.number_field :maths_free, class: 'form-control', step: 0.1, in: 0.0..12.0, required: true %>
             <% end %>
           </div>
         </div>
