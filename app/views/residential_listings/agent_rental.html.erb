@@ -131,7 +131,33 @@
           </div>
           </div>
 
-          <div class="row vertical-padding">
+          <%= hidden_field_tag :parent_amenities %>
+          <a href="javascript:;" data-toggle="collapse" data-target="#demo">Unit features</a>
+          <div class="row vertical-padding collapse" id="demo">
+            <!-- <div class="col-xs-11 selectize-wrapper"> -->
+                <% @unit_amenities.where(parent_amenity_id: 0).each do |amenity| %>
+                  <div class="col-sm-6">
+                    <input type="checkbox" name="features[]" value="<%= amenity.id %>" id="parent_<%= amenity.id %>" onClick = "parent_amenities_check(<%= amenity.id %>)" ><b><%= amenity.name.titleize %></b>
+                    <br>
+                    <%# abort params[:parent_amenities].split(",").inspect %>
+                    <% @unit_amenities.where(parent_amenity_id: amenity.id).each do |child_amenity| %>
+                      <% if params[:parent_amenities] %>
+                        <% if params[:parent_amenities].split(",").include? "#{child_amenity.id}" %>
+                          <input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" checked="true" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %>
+                        <% else %>
+                          <input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %>
+                        <% end %>
+                      <% else %>
+                        <input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %>
+                      <% end %>
+                    <% end %>
+                    <br>
+                  </div>
+                <% end %>
+            <!-- </div> -->
+          </div>
+
+          <div class="row vertical-padding" style="display: none;">
             <div class="col-xs-11 selectize-wrapper">
               <select id="unit-amenities-select-multiple" placeholder="Unit features...">
                 <% @unit_amenities.each do |amenity| %>

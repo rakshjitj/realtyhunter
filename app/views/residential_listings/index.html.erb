@@ -384,7 +384,7 @@
             </div>
           </div> -->
           <%= hidden_field_tag :parent_amenities %>
-          <a href="javascript:;" data-toggle="collapse" data-target="#demo">Amenities</a>
+          <a href="javascript:;" data-toggle="collapse" data-target="#demo">Unit features</a>
           <div class="row vertical-padding collapse" id="demo">
             <!-- <div class="col-xs-11 selectize-wrapper"> -->
                 <% @unit_amenities.where(parent_amenity_id: 0).each do |amenity| %>
@@ -410,7 +410,7 @@
           </div>
 
 
-          <div class="row vertical-padding">
+          <div class="row vertical-padding" style="display: none;">
             <div class="col-xs-11 selectize-wrapper">
               <select id="unit-amenities-select-multiple" placeholder="Unit features...">
                 <% @unit_amenities.each do |amenity| %>

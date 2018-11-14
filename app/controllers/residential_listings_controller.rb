@@ -165,7 +165,12 @@ class ResidentialListingsController < ApplicationController
 
   def agent_update
     residential_listing = ResidentialListing.find(params[:id])
-    residential_listing.update(description: params[:residential_listing][:description], naked_apartment: params[:residential_listing][:naked_apartment], updated_at: Time.now())
+    if params[:residential_listing][:naked_apartment] == "1"
+      claim_for_naked_aprt = residential_listing.claim_for_naked_apartment << current_user.id
+    else
+      claim_for_naked_aprt = residential_listing.claim_for_naked_apartment - ["#{current_user.id}"]
+    end
+    residential_listing.update(description: params[:residential_listing][:description], naked_apartment: params[:residential_listing][:naked_apartment], claim_for_naked_apartment: claim_for_naked_aprt, updated_at: Time.now())
     flash[:success] = 'Residential unit was successfully Updated.'
     redirect_to agent_show_path(residential_listing)
   end
@@ -588,10 +593,10 @@ class ResidentialListingsController < ApplicationController
     residential_listing = ResidentialListing.find(params[:id])
     if residential_listing.claim_for_naked_apartment.blank?
       a = residential_listing.claim_for_naked_apartment << current_user.id
-      residential_listing = residential_listing.update(claim_for_naked_apartment: a)
+      residential_listing = residential_listing.update(claim_for_naked_apartment: a, naked_apartment: true, updated_at: Time.now)
     else
       claim_user = residential_listing.claim_for_naked_apartment << current_user.id
-      residential_listing = residential_listing.update(claim_for_naked_apartment: claim_user)
+      residential_listing = residential_listing.update(claim_for_naked_apartment: claim_user, naked_apartment: true, updated_at: Time.now)
     end
     redirect_to agent_rental_url
   end
@@ -599,7 +604,7 @@ class ResidentialListingsController < ApplicationController
   def disclaim_naked_apartment
     residential_listing = ResidentialListing.find(params[:id])
     disclaim = residential_listing.claim_for_naked_apartment - ["#{current_user.id}"]
-    residential_listing = residential_listing.update(claim_for_naked_apartment: disclaim)
+    residential_listing = residential_listing.update(claim_for_naked_apartment: disclaim, naked_apartment: false, updated_at: Time.now)
     redirect_to agent_rental_url
   end
 
