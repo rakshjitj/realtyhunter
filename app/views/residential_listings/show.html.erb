@@ -701,7 +701,7 @@
 			    <% sorted_changelist = pretty_audit_changes(@residential_unit) %>
 			    <% if sorted_changelist.keys.length > 0 %>
 			    	<div class="row history-report">
-			    		<div class="col-xs-12">
+					<div class="col-xs-6">
 			    			<h3>Recent Changes</h3>
 					    	<% sorted_changelist.each do |k, record_list| %>
 					    		<% for i in 0..record_list.length - 1 %>
@@ -713,6 +713,19 @@
 					    		<% end %>
 					    	<% end %>
 					  	</div>
+						<div class="col-xs-6">
+							<h3>Recent Feedbacks</h3>
+							<% @feedback_q = Feedback.where(unit_id: @residential_unit.id) %>
+							<% if !@feedback_q.blank? %>
+								<% @feedback_q.each do |fb| %>
+									<div class="row">
+										<div class="col-xs-12">
+											<%= User.find(fb.user_id).name %> Send Feedback on <%= fb.created_at %> <%= fb.created_at.strftime("%I:%M %p") %> <%= fb.description %>
+										</div>
+									</div>
+								<% end %>
+							<% end %>
+						</div>
 					</div><!-- row -->
 				<% end %>
 
