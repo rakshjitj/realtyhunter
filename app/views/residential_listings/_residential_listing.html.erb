@@ -69,13 +69,13 @@
     <td>
       <!-- ****** LANDLORD ****************************************** -->
       <% if current_user.is_management? %>
-        Landlord: <%= link_to residential_listing.code, landlord_path(residential_listing.landlord_id) %><br>
+        ll code: <%= link_to residential_listing.code, landlord_path(residential_listing.landlord_id) %><br>
       <% else %>
         <%#= residential_listing.code %>
       <% end %>
       <!-- ****** Point of Contact ****************************************** -->
       <% if !residential_listing.unit.building.point_of_contact.nil? %>
-        Point of Contact: <%= link_to User.find(residential_listing.unit.building.point_of_contact).name, user_path(residential_listing.unit.building.point_of_contact) %>
+        POC: <%= link_to User.find(residential_listing.unit.building.point_of_contact).name, user_path(residential_listing.unit.building.point_of_contact) %>
       <% else %>
         --
       <% end %>
@@ -85,7 +85,7 @@
         data-delay="1500">
         <div class="row">
           <div class="col-md-12 js-phoneNumber">
-            Access info: <%= trim_access residential_listing.access_info %>
+            Access: <%= trim_access residential_listing.access_info %>
           </div>
         </div>
 
@@ -135,12 +135,12 @@
 
     <!-- ****** PRICE ****************************************** -->
     <td><%#= rent_formatted(residential_listing.rent) %>
-      <b>Net Price : $<%= residential_listing.rent %></b><br>
-      Gross Price: $<%= residential_listing.unit.gross_price %><br>
-      Lease Term: <%= residential_listing.lease_start %><br>
+      <b>Net : $<%= residential_listing.rent %></b><br>
+      Gross : $<%= residential_listing.unit.gross_price %><br>
+      Term : <%= residential_listing.lease_start %><br>
       <% if residential_listing.unit.maths_free == 0.0 %>
       <% else %>
-        <b>Mths Free :</b><span style="background: #444;color: white;"><%= residential_listing.unit.maths_free %></span>
+        <span class="mthsFree">Mths Free :<%= residential_listing.unit.maths_free %></span>
       <% end %>
       
     </td>
@@ -157,7 +157,7 @@
           <% end %>
         <% end %>
         <br>
-        <b>Most Recent Price Change :</b>
+        <b>Price Change :</b>
         <% if @last_price_change %>
           <% if @last_price_change >= 0 %>
             <span style="color: green;">
@@ -177,7 +177,7 @@
         <% if residential_listing.streeteasy_flag == true or residential_listing.streeteasy_flag_one == true %>
           <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
           <br>
-          Streeteasy Primary Agent: 
+          Primary : 
           <% if !residential_listing.unit.streeteasy_primary_agent_id.nil? %>
             <%= link_to User.find(residential_listing.unit.streeteasy_primary_agent_id).name, user_path(residential_listing.unit.streeteasy_primary_agent_id) %>
           <% else %>
@@ -194,9 +194,10 @@
                 <% end %>
               <% end %>
             <% end %>
-            <% if residential_listing.streeteasy_flag == true %>
+            <% if residential_listing.streeteasy_flag == true or residential_listing.streeteasy_flag_one == true %>
               <% if !@disp_se_date.nil? %>
-                Active On Streeteasy: <%= time_ago_in_words(@disp_se_date) %>
+                <%# abort ((0.day.ago - @disp_se_date) / 86400).round.inspect %>
+                Active : <%= ((0.day.ago - @disp_se_date) / 86400).round %> Days
               <% end %>
             <% end %>
           <% end %>

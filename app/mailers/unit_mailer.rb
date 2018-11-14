@@ -33,6 +33,18 @@ class UnitMailer < ApplicationMailer
       track_opens:'true'
   end
 
+  def notification_at_listing_deleted(listing, user)
+    #@email_hash = []
+    @listing = listing
+    @email_user = User.find(user.to_i).name
+    @email_hash = User.find(user.to_i).email
+    mail to: @email_hash,
+        subject: "Your Syndicated Listing Has Been Refreshed",
+        reply_to: "rakshit@aristainfotech.com",
+        tag: 'residential_deleted',
+        track_opens:'true'
+  end
+
   def commercial_inaccuracy_reported(listing_id, reporter_id, message, price_drop_request)
     @message = message
     @listing = CommercialListing.where(id: listing_id).first

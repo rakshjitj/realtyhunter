@@ -637,6 +637,12 @@ class ResidentialListingsController < ApplicationController
   end
 
   def destroy
+    #UnitMailer.notification_at_listing_deleted(@residential_unit).deliver!
+    if !@residential_unit.claim_for_individual_syndication_page.blank?
+      @residential_unit.claim_for_individual_syndication_page.each do |user|
+        UnitMailer.notification_at_listing_deleted(@residential_unit,user).deliver!
+      end
+    end
     @residential_unit.archive
     set_residential_listings
     respond_to do |format|
