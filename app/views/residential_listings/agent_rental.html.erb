@@ -143,12 +143,12 @@
                     <% @unit_amenities.where(parent_amenity_id: amenity.id).each do |child_amenity| %>
                       <% if params[:parent_amenities] %>
                         <% if params[:parent_amenities].split(",").include? "#{child_amenity.id}" %>
-                          <input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" checked="true" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %>
+                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" checked="true" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
                         <% else %>
-                          <input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %>
+                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
                         <% end %>
                       <% else %>
-                        <input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %>
+                        <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
                       <% end %>
                     <% end %>
                     <br>
