@@ -141,9 +141,9 @@
             <ul class="dropdown-menu">
 
               <li><%= link_to "Profile", current_user %></li>
-              <% if current_user.has_role?("agent") %>
-                <li><%= link_to "My Syndicated Listings", agent_rental_path() %></li>
-              <% end %>
+              <%# if current_user.has_role?("agent") %>
+                <!-- <li><%#= link_to "My Syndicated Listings", agent_rental_path() %></li> -->
+              <%# end %>
               <li><%= link_to "My Waterfall", user_waterfall_path(current_user) %></li>
               <!-- <li><%#= link_to "Send Email", send_custom_email_path %></li> -->
               <li><%= link_to "Website Agents Login", "https://myspacenyc.com/agents-login/" %></li>
