@@ -322,26 +322,10 @@ class ResidentialListing < ApplicationRecord
       running_list = running_list.where("baths <= ?", params[:bath_max])
     end
 
-    #Search parent Amenities
+    #Search Parent Neighborhoods
     if params[:parent_neighborhoods]
       neighborhood_ids = params[:parent_neighborhoods][0, 256]
       neighborhoods = neighborhood_ids.split(",").select{|i| !i.strip.empty?}
-
-      if (neighborhoods.include? "43") == true
-          neighborhoods += ["6", "5"]
-      end
-
-      if (neighborhoods.include? "14") == true
-        neighborhoods << "15"
-      end
-
-      if (neighborhoods.include? "52") == true
-        neighborhoods << "26"
-      end
-
-      if (neighborhoods.include? "9") == true
-        neighborhoods << "53"
-      end
       if neighborhoods.length > 0 # ignore empty selection
         running_list = running_list
          .where('neighborhood_id IN (?)', neighborhoods)

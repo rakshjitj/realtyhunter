@@ -356,19 +356,54 @@
             </div>
           </div> -->
 
-          <div class="row vertical-padding">
+          <!-- <div class="row vertical-padding">
             <div class="col-xs-11 selectize-wrapper">
               <select id="neighborhood-select-multiple" placeholder="Neighborhoods...">
-                <% @neighborhoods.each do |borough, list| %>
-                  <optgroup label="<%= borough %>">
-                    <% list.each do |neighborhood| %>
-                      <option value="<%= neighborhood.id %>"><%= neighborhood.name %></option>
-                    <% end %>
+                <%# @neighborhoods.each do |borough, list| %>
+                  <optgroup label="<%#= borough %>">
+                    <%# list.each do |neighborhood| %>
+                      <option value="<%#= neighborhood.id %>"><%#= neighborhood.name %></option>
+                    <%# end %>
                   </optgroup>
-                <% end %>
+                <%# end %>
               </select>
             </div>
-          </div>
+          </div> -->
+
+          <%= hidden_field_tag :parent_neighborhoods %>
+          <a href="javascript:;" data-toggle="collapse" data-target="#demo_neghb">Neighborhoods</a>
+          <div class="row vertical-padding collapse" id="demo_neghb">
+            <% @neighborhoods = Neighborhood.all %>
+            <% @neighborhoods.where(parent_neighborhood_id: 0).each do |neighborhood| %>
+              <div class="col-sm-6">
+                    <input type="checkbox" name="neighborhood[]" value="<%= neighborhood.id %>" id="parent_<%= neighborhood.id %>" onClick = "parent_neighborhoods_check(<%= neighborhood.id %>)" ><b><%= neighborhood.name.titleize %></b>
+                    <br>
+                    <% @neighborhoods.where(parent_neighborhood_id: neighborhood.id).each do |child_neighborhood| %>
+                      <% if params[:parent_neighborhoods] %>
+                        <% if params[:parent_neighborhoods].split(",").include? "#{child_neighborhood.id}" %>
+                          <span class="child-input"><input type="checkbox" name="neighborhood[]" value="<%= child_neighborhood.id %>" data-parent-id= "<%= child_neighborhood.parent_neighborhood_id %>" id="child_with_parent_neghb_<%= child_neighborhood.id %>" checked="true" onClick = "child_neighborhoods_uncheck(<%= child_neighborhood.id %>)"><%= child_neighborhood.name.titleize %></span>
+                        <% else %>
+                          <span class="child-input"><input type="checkbox" name="neighborhood[]" value="<%= child_neighborhood.id %>" data-parent-id= "<%= child_neighborhood.parent_neighborhood_id %>" id="child_with_parent_neghb_<%= child_neighborhood.id %>" onClick = "child_neighborhoods_uncheck(<%= child_neighborhood.id %>)"><%= child_neighborhood.name.titleize %></span>
+                        <% end %>
+                      <% else %>
+                        <span class="child-input"><input type="checkbox" name="neighborhood[]" value="<%= child_neighborhood.id %>" data-parent-id= "<%= child_neighborhood.parent_neighborhood_id %>" id="child_with_parent_neghb_<%= child_neighborhood.id %>" onClick = "child_neighborhoods_uncheck(<%= child_neighborhood.id %>)"><%= child_neighborhood.name.titleize %></span>
+                      <% end %>
+                    <% end %>
+              </div>
+            <% end %>
+
+                    <!-- <div class="col-xs-11 selectize-wrapper">
+                      <select id="neighborhood-select-multiple" placeholder="Neighborhoods...">
+                        <%# @neighborhoods.each do |borough, list| %>
+                          <optgroup label="<%#= borough %>">
+                            <%# list.each do |neighborhood| %>
+                              <option value="<%#= neighborhood.id %>"><%#= neighborhood.name %></option>
+                            <%# end %>
+                          </optgroup>
+                        <%# end %>
+                      </select>
+                    </div> -->
+          </div>      
           
           <!-- <div class="row vertical-padding">
             <div class="col-xs-5">
