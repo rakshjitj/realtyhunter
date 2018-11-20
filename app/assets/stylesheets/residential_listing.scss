@@ -435,3 +435,7 @@ a[data-target="#demo"] + div#demo > div input[id*="child_with_parent"] {
 .residential_units_table_body tr td b {
   font-size: 14px;
 }
+.child-input {
+width: 48% !important;
+display: inline-block
+}
