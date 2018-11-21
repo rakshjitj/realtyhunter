@@ -286,16 +286,6 @@
         <%#end%>
       </td>
     <% end %>
-
-    <% if action_name == "index" && current_user.is_special_agent? %>
-      <td>
-        <% if residential_listing.claim_for_individual_syndication_page.include?(current_user.id.to_s)%>
-          <%= link_to 'DisClaim', disclaim_for_individual_syndication_page_path(residential_listing), class: "link_buttom_disclaim" %>
-        <% else %>
-          <%= link_to 'Claim', claim_for_individual_syndication_page_path(residential_listing), class: "link_buttom_claim" %>
-        <%end%>
-      </td>
-    <% end %>
     
     <% if action_name == "agent_rental" %>
       <td class="hidden-print">
