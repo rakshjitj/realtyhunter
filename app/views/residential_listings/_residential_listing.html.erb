@@ -71,7 +71,7 @@
       <% if current_user.is_management? %>
         ll code: <%= link_to residential_listing.code, landlord_path(residential_listing.landlord_id) %><br>
       <% else %>
-        <%#= residential_listing.code %>
+        ll code: <%= residential_listing.code %><br>
       <% end %>
       <!-- ****** Point of Contact ****************************************** -->
       <% if !residential_listing.unit.building.point_of_contact.nil? %>

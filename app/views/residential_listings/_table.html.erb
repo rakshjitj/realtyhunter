@@ -8,14 +8,17 @@
             <!-- checkboxes column - don't render in this case -->
             <th class="img-col"><!-- first image --></th>
             <th data-sort="formatted_street_address" class="th-sortable">Address</th>
-            <th data-sort="building_unit" class="th-sortable">Unit</th>
-            <th data-sort="bed_and_baths_sorter" class="th-sortable">Beds/Baths</th>
-            <th data-sort="rent" class="th-sortable">Price</th>
-            <th data-sort="available_by" class="th-sortable">Available</th>
             <th style="min-width: 20%;">Access</th>
-            <th data-sort="code" class="th-sortable">Landlord</th>
+            <!-- <th data-sort="building_unit" class="th-sortable">Unit</th> -->
+            <th data-sort="bed_and_baths_sorter" class="th-sortable">Beds/Baths</th>
+            <th data-sort="rent" class="th-sortable" style="min-width:125px;">Price</th>
+            <!-- <th data-sort="available_by" class="th-sortable">Available</th>
+            
+            <th data-sort="code" class="th-sortable">Landlord</th> -->
             <th data-sort="updated_at" class="th-sortable">Updated</th>
-            <th data-sort="status" class="th-sortable">Status</th>
+            <% if current_user.is_management? %>
+              <th data-sort="status" class="th-sortable">Streeteasy</th>
+            <% end %>
             <th colspan="1" class="hidden-print"></th>
           </tr>
         </thead>
