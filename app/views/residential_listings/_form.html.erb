@@ -200,11 +200,11 @@
         
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
-            <%= f.label :gross_price, class: 'required' %>
+            <%= f.label :gross_price %>
           </div>
           <div class="col-xs-9 col-md-4">
             <%= f.fields_for @residential_unit.unit do |unit_form| %>
-              <%= unit_form.number_field :gross_price, class: 'form-control', required: true %>
+              <%= unit_form.number_field :gross_price, class: 'form-control' %>
             <% end %>
           </div>
         </div>
