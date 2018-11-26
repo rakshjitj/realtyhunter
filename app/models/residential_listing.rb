@@ -32,7 +32,7 @@ class ResidentialListing < ApplicationRecord
     :pet_policy_shorthand, :available_starting, :available_before, :custom_amenities
 
 	validates :lease_start, presence: true, length: {maximum: 5}
-  validates :lease_end, presence: true, length: {maximum: 5}
+  #validates :lease_end, presence: true, length: {maximum: 5}
 
 	validates :beds, presence: true, numericality: { less_than_or_equal_to: 11 }
 	validates :baths, presence: true, numericality: { less_than_or_equal_to: 11 }
