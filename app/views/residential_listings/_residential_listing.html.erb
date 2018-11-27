@@ -135,8 +135,10 @@
 
     <!-- ****** PRICE ****************************************** -->
     <td><%#= rent_formatted(residential_listing.rent) %>
-      <b>Net : $<%= residential_listing.rent %></b><br>
-      Gross : $<%= residential_listing.unit.gross_price %><br>
+      <b>Net : $<%= residential_listing.rent %></b><br> 
+      <% if residential_listing.unit.gross_price > 0 %>
+        Gross : $<%= residential_listing.unit.gross_price %><br>
+      <% end %>
       Term : <%= residential_listing.lease_start %><br>
       <% if residential_listing.unit.maths_free == 0.0 %>
       <% else %>
@@ -184,29 +186,29 @@
             --
           <% end %>
           <br>
-          <% if residential_listing.unit.audits %>
-            <% residential_listing.audits.each do |audit| %>
-              <% if audit.audited_changes["streeteasy_flag"].class == Array %>
-                <% if audit.audited_changes["streeteasy_flag"][1] == true %>
-                  <% if residential_listing.streeteasy_flag == true %>
-                    <% @disp_se_date = audit.created_at %>
+            <% if residential_listing.unit.audits %>
+              <% residential_listing.audits.each do |audit| %>
+                <% if audit.audited_changes["streeteasy_flag"].class == Array %>
+                  <% if audit.audited_changes["streeteasy_flag"][1] == true %>
+                    <% if residential_listing.streeteasy_flag == true %>
+                      <% @disp_se_date = audit.created_at %>
+                    <% end %>
                   <% end %>
                 <% end %>
               <% end %>
-            <% end %>
-            <% if residential_listing.streeteasy_flag == true or residential_listing.streeteasy_flag_one == true %>
-              <% if !@disp_se_date.nil? %>
-                <%# abort ((0.day.ago - @disp_se_date) / 86400).round.inspect %>
-                Active : <%= ((0.day.ago - @disp_se_date) / 86400).round %> Days
+              <% if residential_listing.streeteasy_flag == true or residential_listing.streeteasy_flag_one == true %>
+                <% if !@disp_se_date.nil? %>
+                  <%# abort ((0.day.ago - @disp_se_date) / 86400).round.inspect %>
+                  Active : <%= ((0.day.ago - @disp_se_date) / 86400).round %> Days
+                <% end %>
               <% end %>
             <% end %>
-          <% end %>
+            <%# @last_count = nil %>
         <% else %>
           <span>---</span>
         <% end %>
       </td>
     <% end %>
-
     <!-- ****** PRIMARY AGENT ****************************************** -->
     <%# if action_name != "agent_rental" %>
       <!-- <td>

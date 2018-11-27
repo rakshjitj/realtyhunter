@@ -231,6 +231,15 @@
         </div>
 
         <div class="row vertical-margin-lg">
+          <div class="col-xs-3 col-md-2">
+            <%= f.label :lease_end, "Max Lease Duration" %>
+          </div>
+          <div class="col-xs-9 col-md-4">
+            <%= f.text_field :lease_end, class: 'form-control', placeholder: "max months" %>
+          </div>
+        </div>
+
+        <div class="row vertical-margin-lg">
           <%= f.fields_for @residential_unit.unit do |unit_form| %>
             <div class="col-xs-3 col-md-2">
               <%= unit_form.label :available_by, "Available", class: 'required' %>

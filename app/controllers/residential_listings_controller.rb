@@ -392,6 +392,7 @@ class ResidentialListingsController < ApplicationController
     listing_updated = nil
     is_now_active = nil
     #abort (@residential_unit.streeteasy_flag).inspect
+
     if params[:residential_listing][:streeteasy_flag] == "0" and params[:residential_listing][:unit][:status] == "Active"
       if params[:residential_listing][:streeteasy_flag] == "0"
         params[:residential_listing][:streeteasy_flag] = false
@@ -467,6 +468,8 @@ class ResidentialListingsController < ApplicationController
       if params[:residential_listing][:unit][:gross_price].to_i > 0
         params[:residential_listing][:unit][:rent] = (params[:residential_listing][:unit][:gross_price].to_i * (params[:residential_listing][:lease_start].to_i - params[:residential_listing][:unit][:maths_free].to_f)) / params[:residential_listing][:lease_start].to_i
         params[:residential_listing][:unit][:rent] = params[:residential_listing][:unit][:rent].round
+      else
+        params[:residential_listing][:unit][:gross_price] = 0
       end
 
       # keep track of whether this listing just came on or off the market
@@ -501,7 +504,6 @@ class ResidentialListingsController < ApplicationController
       @residential_unit.update_columns(streeteasy_claim: false)
 
     end
-    
 
 
     if unit_updated && listing_updated
