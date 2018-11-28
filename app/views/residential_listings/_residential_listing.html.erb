@@ -135,9 +135,11 @@
 
     <!-- ****** PRICE ****************************************** -->
     <td><%#= rent_formatted(residential_listing.rent) %>
-      <b>Net : $<%= residential_listing.rent %></b><br> 
-      <% if residential_listing.unit.gross_price > 0 %>
-        Gross : $<%= residential_listing.unit.gross_price %><br>
+      <b>Net : $<%= residential_listing.rent %></b><br>
+      <% if !residential_listing.unit.gross_price.nil? %>
+        <% if residential_listing.unit.gross_price > 0 %>
+          Gross : $<%= residential_listing.unit.gross_price %><br>
+        <% end %>
       <% end %>
       Term : <%= residential_listing.lease_start %><br>
       <% if residential_listing.unit.maths_free == 0.0 %>
