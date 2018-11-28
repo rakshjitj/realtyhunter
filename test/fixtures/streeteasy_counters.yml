@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  residential_listing_id: 1
+  streeteasy_flag_check: false
+
+two:
+  residential_listing_id: 1
+  streeteasy_flag_check: false

@@ -300,7 +300,7 @@ class ResidentialListingsController < ApplicationController
   # handles ajax call. uses latest data in modal
   def duplicate
     residential_unit_dup = @residential_unit.duplicate(
-      residential_listing_params[:unit][:building_unit],
+      residential_listing_params[:unit][:building_unit],residential_listing_params[:unit][:streeteasy_unit],
       residential_listing_params[:include_photos])
     if residential_unit_dup.valid?
       @residential_unit = residential_unit_dup

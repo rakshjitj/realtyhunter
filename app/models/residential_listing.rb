@@ -6,6 +6,7 @@ class ResidentialListing < ApplicationRecord
   has_many :roommates
   has_many :rooms
   belongs_to :unit, touch: true
+  has_many :streeteasy_counters
   accepts_nested_attributes_for :unit #, allow_destroy: true
   before_save :process_custom_amenities
   after_commit :update_building_counts, :trim_audit_log
@@ -637,11 +638,12 @@ class ResidentialListing < ApplicationRecord
     @dst.save!
   end
 
-  def duplicate(new_unit_num, include_photos=false)
+  def duplicate(new_unit_num, new_streeteasy_unit_num, include_photos=false)
     if new_unit_num && new_unit_num != self.id
       # copy objects
       unit_dup = self.unit.dup
       unit_dup.building_unit = new_unit_num
+      unit_dup.streeteasy_unit = new_streeteasy_unit_num
       unit_dup.listing_id = nil
       if unit_dup.save!
 

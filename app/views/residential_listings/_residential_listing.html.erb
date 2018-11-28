@@ -186,22 +186,8 @@
             --
           <% end %>
           <br>
-            <% if residential_listing.unit.audits %>
-              <% residential_listing.audits.each do |audit| %>
-                <% if audit.audited_changes["streeteasy_flag"].class == Array %>
-                  <% if audit.audited_changes["streeteasy_flag"][1] == true %>
-                    <% if residential_listing.streeteasy_flag == true %>
-                      <% @disp_se_date = audit.created_at %>
-                    <% end %>
-                  <% end %>
-                <% end %>
-              <% end %>
-              <% if residential_listing.streeteasy_flag == true or residential_listing.streeteasy_flag_one == true %>
-                <% if !@disp_se_date.nil? %>
-                  <%# abort ((0.day.ago - @disp_se_date) / 86400).round.inspect %>
-                  Active : <%= ((0.day.ago - @disp_se_date) / 86400).round %> Days
-                <% end %>
-              <% end %>
+            <% if !residential_listing.streeteasy_counters.blank? %>
+              Active: <%= ((0.day.ago - residential_listing.streeteasy_counters.last.created_at) / 86400).round %> Days
             <% end %>
             <%# @last_count = nil %>
         <% else %>
@@ -286,6 +272,16 @@
         <%# else %>
           <%#= link_to 'Claim', claim_naked_apartment_path(residential_listing), class: "link_buttom_claim" %>
         <%#end%>
+      </td>
+    <% end %>
+
+    <% if action_name == "index" && current_user.is_special_agent? %>
+      <td>
+        <% if residential_listing.claim_for_individual_syndication_page.include?(current_user.id.to_s)%>
+          <%= link_to 'DisClaim', disclaim_for_individual_syndication_page_path(residential_listing), class: "link_buttom_disclaim" %>
+        <% else %>
+          <%= link_to 'Claim', claim_for_individual_syndication_page_path(residential_listing), class: "link_buttom_claim" %>
+        <%end%>
       </td>
     <% end %>
     

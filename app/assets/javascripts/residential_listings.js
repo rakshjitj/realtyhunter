@@ -669,31 +669,31 @@
       $('#neighborhood-select-multiple').attr('initialized', 'true');
     // }
 
-      if (!$('#unit-amenities-select-multiple')[0].selectize) {
-        $('#unit-amenities-select-multiple').selectize({
-          plugins: ['remove_button'],
-          hideSelected: true,
-          maxItems: 100,
-          items: ResidentialListings.selectedUnitAmenityIds,
-          onChange: function(value) {
-            ResidentialListings.selectedUnitAmenityIds = value;
-          },
-          // onBlur: ResidentialListings.throttledSearch
-        });
-      }
+      // if (!$('#unit-amenities-select-multiple')[0].selectize) {
+      //   $('#unit-amenities-select-multiple').selectize({
+      //     plugins: ['remove_button'],
+      //     hideSelected: true,
+      //     maxItems: 100,
+      //     items: ResidentialListings.selectedUnitAmenityIds,
+      //     onChange: function(value) {
+      //       ResidentialListings.selectedUnitAmenityIds = value;
+      //     },
+      //     // onBlur: ResidentialListings.throttledSearch
+      //   });
+      // }
 
-      if (!$('#building-amenities-select-multiple')[0].selectize) {
-        $('#building-amenities-select-multiple').selectize({
-          plugins: ['remove_button'],
-          hideSelected: true,
-          maxItems: 100,
-          items: ResidentialListings.selectedBuildingAmenityIds,
-          onChange: function(value) {
-            ResidentialListings.selectedBuildingAmenityIds = value;
-          },
-          // onBlur: ResidentialListings.throttledSearch
-        });
-      }
+      // if (!$('#building-amenities-select-multiple')[0].selectize) {
+      //   $('#building-amenities-select-multiple').selectize({
+      //     plugins: ['remove_button'],
+      //     hideSelected: true,
+      //     maxItems: 100,
+      //     items: ResidentialListings.selectedBuildingAmenityIds,
+      //     onChange: function(value) {
+      //       ResidentialListings.selectedBuildingAmenityIds = value;
+      //     },
+      //     // onBlur: ResidentialListings.throttledSearch
+      //   });
+      // }
     }
 
     // just above main listings table - selecting listings menu dropdown
