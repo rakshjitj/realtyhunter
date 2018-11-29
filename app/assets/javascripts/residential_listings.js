@@ -895,7 +895,7 @@ function parent_amenities_check(parent_amenity){
   // document.getElementById("parent_amenities").value = name;
 }
 
-function child_aamenities_uncheck(id){
+function child_amenities_uncheck(id){
   var check_value = "child_with_parent_"+ id;
   if (document.getElementById(check_value).checked == true){
     if(document.getElementById("parent_amenities").value == ""){
@@ -1015,6 +1015,86 @@ function child_neighborhoods_uncheck(id){
       var filter_unchecked_value = previous_unchecked_value.filter(Boolean)
       var uncheck_val = filter_unchecked_value.filter(function(obj) { return unchecked_value.indexOf(obj) == -1; });
       document.getElementById("parent_neighborhoods").value = uncheck_val;
+    }
+  }
+  // if(document.getElementById("parent_amenities").value == ""){
+  //   var check_value = "child_with_parent_"+ id;
+  //   document.getElementById(check_value).checked = true
+  //   document.getElementById("parent_amenities").value = id
+  // }
+
+  // if(document.getElementById("parent_amenities").value != ""){
+    
+  // }
+
+}
+
+function parent_building_amenities_check(parent_amenity){
+  var get_parent = "parent_" + parent_amenity;
+  // var get_child = "child_with_parent_" + parent_amenity;
+
+  // if (document.getElementById(get_parent).value  == parent_amenity){
+    var checkboxes = document.querySelectorAll('[data-parent-id="'+ parent_amenity +'"]');
+    var checked_value = [];
+    if(document.getElementById(get_parent).checked == true){
+      for (i = 0; i < checkboxes.length; i++) {
+        checked_value.push([checkboxes[i].value]);
+        checkboxes[i].checked = true;   
+      }
+    }
+    if (document.getElementById("parent_building_amenities").value != ""){
+      var previous_value = document.getElementById("parent_building_amenities").value.split(',');
+      document.getElementById("parent_building_amenities").value = previous_value + ','+checked_value;
+    }
+    else{
+      document.getElementById("parent_building_amenities").value = checked_value;
+    }
+
+    if(document.getElementById(get_parent).checked == false){
+      var unchecked_value = [];
+      for (i = 0; i < checkboxes.length; i++) {
+        unchecked_value.push(checkboxes[i].value);
+        checkboxes[i].checked = false;
+      }
+      var previous_unchecked_value = document.getElementById("parent_building_amenities").value.split(',');
+      var filter_unchecked_value = previous_unchecked_value.filter(Boolean)
+      var uncheck_val = filter_unchecked_value.filter(function(obj) { return unchecked_value.indexOf(obj) == -1; });
+      document.getElementById("parent_building_amenities").value = uncheck_val;
+    }
+
+    // if (document.getElementById("parent_amenities").value != ""){
+    //   var previous_value = document.getElementById("parent_amenities").value.split(',');
+    //   document.getElementById("parent_amenities").value = previous_value - unchecked_value;
+    // }
+  // }
+  // console.log(checked_value);
+  // console.log(checked_value);
+  // document.getElementById("parent_amenities").value = name;
+}
+
+function child_building_amenities_uncheck(id){
+  var check_value = "child_with_parent_building_"+ id;
+  if (document.getElementById(check_value).checked == true){
+    if(document.getElementById("parent_building_amenities").value == ""){
+      document.getElementById(check_value).checked = true
+      document.getElementById("parent_building_amenities").value = id
+    }
+    else{
+      document.getElementById(check_value).checked = true
+      checked_value = document.getElementById("parent_building_amenities").value.split(',');
+      document.getElementById("parent_building_amenities").value = checked_value + ','+id;
+    }
+    
+  }
+
+  if (document.getElementById(check_value).checked == false){
+    if(document.getElementById("parent_building_amenities").value != ""){
+      document.getElementById(check_value).checked = false
+      var unchecked_value = document.getElementById(check_value).value;
+      var previous_unchecked_value = document.getElementById("parent_building_amenities").value.split(',');
+      var filter_unchecked_value = previous_unchecked_value.filter(Boolean)
+      var uncheck_val = filter_unchecked_value.filter(function(obj) { return unchecked_value.indexOf(obj) == -1; });
+      document.getElementById("parent_building_amenities").value = uncheck_val;
     }
   }
   // if(document.getElementById("parent_amenities").value == ""){

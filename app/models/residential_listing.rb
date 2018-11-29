@@ -542,8 +542,6 @@ class ResidentialListing < ApplicationRecord
     if !params[:primary_agent_id].blank?
       running_list = running_list.where('units.primary_agent_id = ? OR units.primary_agent2_id = ?',
         params[:primary_agent_id], params[:primary_agent_id])
-      ts = ["35", "428", "39", "146"]
-      abort running_list.where.not('units.primary_agent_id IN (?) OR units.primary_agent2_id IN (?)', ts, ts).inspect
     end
     
     if !params[:claim_agent_id].blank?

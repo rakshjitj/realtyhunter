@@ -418,12 +418,12 @@
                     <% @unit_amenities.where(parent_amenity_id: amenity.id).each do |child_amenity| %>
                       <% if params[:parent_amenities] %>
                         <% if params[:parent_amenities].split(",").include? "#{child_amenity.id}" %>
-                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" checked="true" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
+                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" checked="true" onClick = "child_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
                         <% else %>
-                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
+                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
                         <% end %>
                       <% else %>
-                        <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
+                        <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
                       <% end %>
                     <% end %>
                     <br>
@@ -439,18 +439,18 @@
             <!-- <div class="col-xs-11 selectize-wrapper"> -->
                 <% @building_amenities.where(building_parent_amenity_id: 0).each do |amenity| %>
                   <div class="col-sm-6" id= "building-amenities-select-multiple">
-                    <input type="checkbox" name="features[]" value="<%= amenity.id %>" id="parent_<%= amenity.id %>" onClick = "parent_amenities_check(<%= amenity.id %>)" ><b><%= amenity.name.titleize %></b>
+                    <input type="checkbox" name="features[]" value="<%= amenity.id %>" id="parent_<%= amenity.id %>" onClick = "parent_building_amenities_check(<%= amenity.id %>)" ><b><%= amenity.name.titleize %></b>
                     <br>
                     <%# abort params[:parent_amenities].split(",").inspect %>
                     <% @building_amenities.where(building_parent_amenity_id: amenity.id).each do |child_amenity| %>
                       <% if params[:parent_amenities] %>
                         <% if params[:parent_amenities].split(",").include? "#{child_amenity.id}" %>
-                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.building_parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" checked="true" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
+                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.building_parent_amenity_id %>" id="child_with_parent_building_<%= child_amenity.id %>" checked="true" onClick = "child_building_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
                         <% else %>
-                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.building_parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
+                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.building_parent_amenity_id %>" id="child_with_parent_building_<%= child_amenity.id %>" onClick = "child_building_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
                         <% end %>
                       <% else %>
-                        <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.building_parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_aamenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
+                        <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.building_parent_amenity_id %>" id="child_with_parent_building_<%= child_amenity.id %>" onClick = "child_building_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
                       <% end %>
                     <% end %>
                     <br>
