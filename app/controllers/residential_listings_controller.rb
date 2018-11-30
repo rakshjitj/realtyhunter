@@ -505,6 +505,9 @@ class ResidentialListingsController < ApplicationController
 
     end
 
+    if params[:residential_listing][:streeteasy_flag] == "1"
+      StreeteasyCounter.create(residential_listing_id: params[:id], streeteasy_flag_check: true)
+    end
 
     if unit_updated && listing_updated
 
