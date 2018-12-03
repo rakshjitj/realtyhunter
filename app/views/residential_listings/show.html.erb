@@ -81,7 +81,7 @@
 				</div><!-- panel heading -->
 
 				<div class="panel-body">
-					<% if (current_user.id == @residential_unit.unit.primary_agent_id || current_user.id == @residential_unit.unit.streeteasy_primary_agent_id) && !current_user.is_management? %>
+					<% if (current_user.id == @residential_unit.unit.primary_agent_id || current_user.id == @residential_unit.unit.streeteasy_primary_agent_id || current_user.id == @residential_unit.unit.building.point_of_contact) && !current_user.is_management? %>
 						<%= link_to 'Edit', specific_edit_path(@residential_unit.id) %>
 					<% end %>
 					<% if current_user.is_management? || current_user.is_listings_manager? || current_user.is_photo_manager? %>
@@ -741,7 +741,7 @@
 								<% @feedback_q.each do |fb| %>
 									<div class="row">
 										<div class="col-xs-12">
-											<%= User.find(fb.user_id).name %> Send Feedback on <%= fb.created_at %> <%= fb.created_at.strftime("%I:%M %p") %> <%= fb.description %>
+											<%= User.find(fb.user_id).name %> Send Feedback on <%= fb.created_at %> <%= fb.created_at.strftime("%I:%M %p") %> <%= fb.feedback_category %> --- <%= fb.description %>
 										</div>
 									</div>
 								<% end %>
