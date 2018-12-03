@@ -369,8 +369,11 @@
               </select>
             </div>
           </div> -->
-
-          <%= hidden_field_tag :parent_neighborhoods %>
+          <% if params[:parent_neighborhoods].nil? %>
+            <%= hidden_field_tag :parent_neighborhoods, params[:parent_neighborhoods] %>
+          <% else %>
+            <%= hidden_field_tag :parent_neighborhoods %>
+          <% end %>
           <a href="javascript:;" data-toggle="collapse" data-target="#demo_neghb">Neighborhoods</a>
           <div class="row vertical-padding collapse" id="demo_neghb">
             <% @neighborhoods = Neighborhood.all %>
@@ -406,7 +409,11 @@
                   params[:parent_amenities] ? params[:parent_amenities].titleize : "Any"),{ prompt: "Choose one...", class: 'form-control'}) %>
             </div>
           </div> -->
-          <%= hidden_field_tag :parent_amenities %>
+          <% if !params[:parent_amenities].nil? %>
+            <%= hidden_field_tag :parent_amenities, params[:parent_amenities] %>
+          <% else %>
+            <%= hidden_field_tag :parent_amenities %>
+          <% end %>
           <a href="javascript:;" data-toggle="collapse" data-target="#demo">Unit features</a>
           <div class="row vertical-padding collapse" id="demo">
             <!-- <div class="col-xs-11 selectize-wrapper"> -->
@@ -432,8 +439,11 @@
             <!-- </div> -->
           </div>
 
-
-          <%= hidden_field_tag :parent_building_amenities %>
+          <% if !params[:parent_amenities].nil? %>
+            <%= hidden_field_tag :parent_building_amenities, params[:parent_amenities] %>
+          <% else %>
+            <%= hidden_field_tag :parent_building_amenities %>
+          <% end %>
           <a href="javascript:;" data-toggle="collapse" data-target="#demo_build_feat">Building features</a>
           <div class="row vertical-padding collapse" id="demo_build_feat">
             <!-- <div class="col-xs-11 selectize-wrapper"> -->
