@@ -3,7 +3,8 @@ class BuildingMailer < ApplicationMailer
     @building = Building.where(id: building_id).first
     @reporter = User.where(id: reporter_id).first
     @message = message
-    mail to: ['info@myspacenyc.com', 'valentina@myspacenyc.com'],
+    @point_of_contact = User.find(@building.point_of_contact).email
+    mail to: ["info@myspacenyc.com", @point_of_contact, "l2t1k3r4a8g8l4s2@msnyc1.slack.com"],
         cc: @reporter.email,
     	subject: "Feedback provided for #{@building.street_address}",
         reply_to: @reporter.email,

@@ -126,6 +126,24 @@
 							</p>
 						<% end %>
 
+						<% if @building.dotsignal_code %>
+							<p>
+								<strong>Dotsignal Code:</strong>
+								<%= @building.dotsignal_code %>
+							</p>
+						<% end %>
+
+						<% if @building.streeteasy_eligibility %>
+							<p>
+								<strong>SE Eligibility:</strong>
+								<% if @building.streeteasy_eligibility == 1 %>
+									No
+								<% else %>
+									Yes
+								<% end %>
+							</p>
+						<% end %>
+
 						<% if !@building.amenities_to_s.blank? %>
 							<p>
 							  <strong>Building-Level Amenities:</strong>

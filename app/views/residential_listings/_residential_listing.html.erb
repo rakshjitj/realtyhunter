@@ -6,9 +6,11 @@
   <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= residential_listing.listing_id %>" style="background-color: <%= color%>" >
 
     <!-- ****** checkboxes ****************************************** -->
-    <% if controller_name == 'residential_listings' %>
+    <% if controller_name == 'residential_listings' || controller_name == 'buildings' %>
       <td>
-        <i data-action="selectUnit" class="fa fa-square-o fa-lg"></i>
+        <% if controller_name == 'residential_listings' %>
+          <i data-action="selectUnit" class="fa fa-square-o fa-lg"></i>
+        <% end %>
         <!-- ****** STATUS ****************************************** -->
           <br>
           <%# abort residential_listing.status.inspect %>

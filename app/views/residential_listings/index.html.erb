@@ -171,17 +171,51 @@
                 options_for_select(%w(Any Yes No), params[:has_fee]), class: 'form-control') %>
             </div>
           </div>
+          <!-- <div class="row vertical-padding">
+            <div class="col-xs-5">
+              <%#= label_tag :pet_policy_shorthand, "Pet policy" %>
+            </div>
+            <div class="col-xs-6 col-sm-left-padding">
+              <%#= select_tag(:pet_policy_shorthand,
+                options_for_select(["Any", "Cats Only", "Dogs Only", "None"],
+                [params[:pet_policy_shorthand] ? params[:pet_policy_shorthand].titleize : "Any"]),
+                class: 'form-control') %>
+            </div>
+          </div> -->
+
+          <% if !params[:pet_policy_shorthand].nil? %>
+            <%= hidden_field_tag :pet_policy_shorthand, params[:pet_policy_shorthand] %>
+          <% else %>
+            <%= hidden_field_tag :pet_policy_shorthand %>
+          <% end %>
           <div class="row vertical-padding">
             <div class="col-xs-5">
               <%= label_tag :pet_policy_shorthand, "Pet policy" %>
             </div>
             <div class="col-xs-6 col-sm-left-padding">
-              <%= select_tag(:pet_policy_shorthand,
-                options_for_select(["Any", "Cats Only", "Dogs Only", "None"],
-                [params[:pet_policy_shorthand] ? params[:pet_policy_shorthand].titleize : "Any"]),
-                class: 'form-control') %>
+              <a href="javascript:;" data-toggle="collapse" data-target="#demo_pet_policy">Pet Policy</a>
+              <div class="row vertical-padding collapse" id="demo_pet_policy">
+                <!-- <div class="col-xs-11 selectize-wrapper"> -->
+
+                    <% PetPolicy.all.each do |pet_policy| %>
+                      <div class="col-sm-6" id="unit-amenities-select-multiple">
+                        <% if params[:pet_policy_shorthand] %>  
+                          <% if (params[:pet_policy_shorthand].split(",").include? "#{pet_policy.id}") %>
+                            <span class="child-input"><input type="checkbox" name="features[]" value="<%= pet_policy.id %>" id="parent_<%= pet_policy.id %>" checked="true" onClick = "pet_policy_check(<%= pet_policy.id %>)" ><b><%= pet_policy.name.titleize %></b></span>
+                          <% else %>
+                            <span class="child-input"><input type="checkbox" name="features[]" value="<%= pet_policy.id %>" id="parent_<%= pet_policy.id %>" onClick = "pet_policy_check(<%= pet_policy.id %>)" ><b><%= pet_policy.name.titleize %></b></span>
+                          <% end %>
+                        <% else %>
+                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= pet_policy.id %>" id="parent_<%= pet_policy.id %>" onClick = "pet_policy_check(<%= pet_policy.id %>)" ><b><%= pet_policy.name.titleize %></b></span>
+                        <% end %>
+                        <br>
+                      </div>
+                    <% end %>
+                <!-- </div> -->
+              </div>
             </div>
           </div>
+
           <div class="row vertical-padding">
             <div class="col-xs-5">
               <%= label_tag :point_of_contact, "Point of Contact", class: "field-label-sm" %>
@@ -234,26 +268,37 @@
               </div>
             </div>
           <% end %>
+          <%# if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
+            <!-- <div class="row vertical-padding">
+              <div class="col-xs-5">
+                <%#= label_tag :building_rating, "STREETEASY ELIGIBLE" %>
+              </div>
+              <div class="col-xs-6 col-sm-left-padding">
+                <%#= select_tag(:building_rating, options_for_select([['Any','Any'],['Yes', 0], ['No', 1]], params[:building_rating] ? params[:building_rating].titleize : "Any"), class: 'form-control') %>
+              </div>
+            </div> -->
+          <%# end %>
+
           <% if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
             <div class="row vertical-padding">
               <div class="col-xs-5">
-                <%= label_tag :building_rating, "STREETEASY ELIGIBLE" %>
+                <%= label_tag :streeteasy_eligibility, "STREETEASY ELIGIBLE" %>
               </div>
               <div class="col-xs-6 col-sm-left-padding">
-                <%= select_tag(:building_rating, options_for_select([['Any','Any'],['Yes', 0], ['No', 1]], params[:building_rating] ? params[:building_rating].titleize : "Any"), class: 'form-control') %>
+                <%= select_tag(:streeteasy_eligibility, options_for_select([['Any','Any'],['Yes', 0], ['No', 1]], params[:streeteasy_eligibility] ? params[:streeteasy_eligibility].titleize : "Any"), class: 'form-control') %>
               </div>
             </div>
           <% end %>
-          <% if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
-            <div class="row vertical-padding">
+          <%# if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
+            <!-- <div class="row vertical-padding">
               <div class="col-xs-5">
-                <%= label_tag :landlord_rating, "Landlord Rating" %>
+                <%#= label_tag :landlord_rating, "Landlord Rating" %>
               </div>
               <div class="col-xs-6 col-sm-left-padding">
-                <%= select_tag(:landlord_rating, options_for_select([['Any','Any'],['NA', 0], ['Excellent', 1], ['Good', 2], ['Fair', 3]], params[:landlord_rating] ? params[:landlord_rating].titleize : "Any"), class: 'form-control') %>
+                <%#= select_tag(:landlord_rating, options_for_select([['Any','Any'],['NA', 0], ['Excellent', 1], ['Good', 2], ['Fair', 3]], params[:landlord_rating] ? params[:landlord_rating].titleize : "Any"), class: 'form-control') %>
               </div>
-            </div>
-          <% end %>
+            </div> -->
+          <%# end %>
           <div class="row vertical-padding">
             <div class="col-xs-12">
               <strong>Available</strong>

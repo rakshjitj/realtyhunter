@@ -554,3 +554,60 @@ a[data-target="#demo_build_feat"] + div#demo_build_feat > div input[id*="child_w
   margin: 0 5px 10px 20px;
   
 }
+
+
+a[data-target="#demo_pet_policy"] {
+  padding: 10px;
+  display: block;
+  border: solid #ccc 1px;
+  border-radius: 5px;
+  color: #888;
+  text-decoration: none;
+  width: 91%;
+  box-shadow: inset 0px 1px 0px #eee;
+  position: relative;
+  margin-bottom: 3px;
+}
+
+a[data-target="#demo_pet_policy"] + div#demo_pet_policy {
+  position: absolute;
+  padding: 20px;
+  z-index: 5;
+  width: 500px;
+  background: #eee;
+  height: 500px;
+  overflow: hidden;
+  overflow-y: scroll;
+  box-sizing: border-box;
+  border: solid 1px #ccc;
+  border-radius: 5px;
+  margin: 0
+}
+
+a[data-target="#demo_pet_policy"] + div#demo_pet_policy > div {
+  width: 100%;
+  padding: 2px 0 ;
+  margin: 5px 0;
+}
+
+a[data-target="#demo_pet_policy"] + div#demo_pet_policy > div + div {
+  border-top: dotted 1px #999;
+  padding-top: 8px
+}
+
+a[data-target="#demo_pet_policy"] + div#demo_pet_policy > div:last-of-type {margin-bottom: 10px;}
+
+a[data-target="#demo_pet_policy"] + div#demo_pet_policy > div input {
+  margin: 0 5px 0 0;
+  position: relative;
+  top: 2px;
+}
+
+a[data-target="#demo_pet_policy"] + div#demo_pet_policy > div input + b {
+  text-transform: uppercase
+}
+
+a[data-target="#demo_pet_policy"] + div#demo_pet_policy > div input[id*="child_with_parent"] {
+  margin: 0 5px 10px 20px;
+  
+}

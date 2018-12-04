@@ -52,6 +52,7 @@
         claim_agent_id: $('#claim_agent_id').val(),
         point_of_contact:  $('#point_of_contact').val(),
         building_rating: $('#building_rating').val(),
+        streeteasy_eligibility: $('#streeteasy_eligibility').val(),
         parent_amenities: $('#parent_amenities').val(),
         parent_neighborhoods: $('#parent_neighborhoods').val(),
         landlord_rating: $('#landlord_rating').val(),
@@ -1095,6 +1096,43 @@ function child_building_amenities_uncheck(id){
       var filter_unchecked_value = previous_unchecked_value.filter(Boolean)
       var uncheck_val = filter_unchecked_value.filter(function(obj) { return unchecked_value.indexOf(obj) == -1; });
       document.getElementById("parent_building_amenities").value = uncheck_val;
+    }
+  }
+  // if(document.getElementById("parent_amenities").value == ""){
+  //   var check_value = "child_with_parent_"+ id;
+  //   document.getElementById(check_value).checked = true
+  //   document.getElementById("parent_amenities").value = id
+  // }
+
+  // if(document.getElementById("parent_amenities").value != ""){
+    
+  // }
+
+}
+
+function pet_policy_check(id){
+  var check_value = "parent_"+ id;
+  if (document.getElementById(check_value).checked == true){
+    if(document.getElementById("pet_policy_shorthand").value == ""){
+      document.getElementById(check_value).checked = true
+      document.getElementById("pet_policy_shorthand").value = id
+    }
+    else{
+      document.getElementById(check_value).checked = true
+      checked_value = document.getElementById("pet_policy_shorthand").value.split(',');
+      document.getElementById("pet_policy_shorthand").value = checked_value + ','+id;
+    }
+    
+  }
+
+  if (document.getElementById(check_value).checked == false){
+    if(document.getElementById("pet_policy_shorthand").value != ""){
+      document.getElementById(check_value).checked = false
+      var unchecked_value = document.getElementById(check_value).value;
+      var previous_unchecked_value = document.getElementById("pet_policy_shorthand").value.split(',');
+      var filter_unchecked_value = previous_unchecked_value.filter(Boolean)
+      var uncheck_val = filter_unchecked_value.filter(function(obj) { return unchecked_value.indexOf(obj) == -1; });
+      document.getElementById("pet_policy_shorthand").value = uncheck_val;
     }
   }
   // if(document.getElementById("parent_amenities").value == ""){

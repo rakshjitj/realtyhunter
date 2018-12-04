@@ -42,6 +42,7 @@ Buildings = {};
       filter: $('#filter').val(),
       status: $('#status').val(),
       rating: $('#rating').val(),
+      streeteasy_eligibility: $('#streeteasy_eligibility').val(),
       sort_by: sortByCol,
       direction: sortDirection,
     };
@@ -233,6 +234,7 @@ Buildings = {};
     $('#filter').bind('railsAutocomplete.select', Buildings.throttledBldgSearch);
     $('#filter').change(Buildings.throttledBldgSearch);
     $('#rating').change(Buildings.throttledBldgSearch);
+    $('#streeteasy_eligibility').change(Buildings.throttledBldgSearch);
     $('#status').change(Buildings.throttledBldgSearch);
   }
 

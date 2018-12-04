@@ -96,11 +96,21 @@ class Building < ApplicationRecord
     Image.where(building_id: building_ids).to_a.group_by(&:building_id)
   end
 
-  def self._filter_query(running_list, query_str, status, rating)
+  def self._filter_query(running_list, query_str, status, rating, streeteasy_eligibility)
     if query_str
       @terms = query_str.split(" ")
       @terms.each do |term|
         running_list = running_list.where('buildings.formatted_street_address ILIKE ? OR buildings.sublocality ILIKE ?', "%#{term}%", "%#{term}%")
+      end
+    end
+
+    if !streeteasy_eligibility.nil?
+      if streeteasy_eligibility == "0"
+        running_list = running_list.where("buildings.streeteasy_eligibility =?", 0)
+      elsif streeteasy_eligibility == "1"
+        running_list = running_list.where("buildings.streeteasy_eligibility =?", 1)
+      else
+        running_list = running_list
       end
     end
 
@@ -135,13 +145,14 @@ class Building < ApplicationRecord
     running_list
   end
 
-	def self.search(query_str, status, rating)
+	def self.search(query_str, status, rating, streeteasy_eligibility)
     running_list = Building
       .joins('left join neighborhoods on neighborhoods.id = buildings.neighborhood_id')
       .where('buildings.archived = false')
       .select(
-        'buildings.formatted_street_address', 'buildings.notes',
-        'buildings.id', 'buildings.street_number', 'buildings.route','buildings.rating',
+        'buildings.formatted_street_address', 'buildings.notes', 'buildings.landlord_id', 'buildings.pet_policy_id',
+        'buildings.dotsignal_code', 'buildings.streeteasy_eligibility',
+        'buildings.id', 'buildings.street_number', 'buildings.route','buildings.rating', 'buildings.streeteasy_eligibility',
         'buildings.sublocality', 'buildings.neighborhood_id', 'neighborhoods.name as neighborhood_name',
         'buildings.administrative_area_level_2_short',
         'buildings.administrative_area_level_1_short', 'buildings.postal_code',
@@ -150,7 +161,7 @@ class Building < ApplicationRecord
         'buildings.total_unit_count',
         'buildings.active_unit_count')
 
-    running_list = Building._filter_query(running_list, query_str, status, rating)
+    running_list = Building._filter_query(running_list, query_str, status, rating, streeteasy_eligibility)
     running_list
 	end
 
@@ -207,7 +218,7 @@ class Building < ApplicationRecord
         building_id: self.id,
         description: message
       })
-      BuildingMailer.inaccuracy_reported(self.id, reporter.id, message).deliver
+      BuildingMailer.inaccuracy_reported(self.id, reporter.id, message).deliver!
     else
       raise "Invalid params specified while sending feedback"
     end

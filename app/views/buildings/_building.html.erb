@@ -21,6 +21,38 @@
     <%= short_location_title(building) %>
   </td>
 
+  <td>
+    <% if current_user.is_management? %>
+      <%= link_to "#{Landlord.find(building.landlord_id).code}", landlord_path(building.landlord_id) %>
+    <% else %>
+      <%= Landlord.find(building.landlord_id).code %>
+    <% end %>
+  </td>
+
+  <td>
+    <% if building.streeteasy_eligibility == 1 %>
+      No
+    <% else %>
+      Yes
+    <% end %>
+  </td>
+
+  <td>
+    <% if !building.dotsignal_code.nil? %>
+      <%= building.dotsignal_code %>
+    <% else %>
+      ---
+    <% end %>
+  </td>
+
+  <td>
+    <% if !building.pet_policy_id.nil? %>
+      <%= PetPolicy.find(building.pet_policy_id).name %>
+    <% else %>
+      ---
+    <% end %>
+  </td>
+
   <!-- ACTIVE UNITS -->
   <td><%= building.active_unit_count %></td>
 

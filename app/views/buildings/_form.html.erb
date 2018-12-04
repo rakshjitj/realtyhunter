@@ -114,13 +114,23 @@
           </div>
         </div>
 
+        <!-- <br />
+        <div class="row">
+          <div class="col-sm-3">
+            <%#= f.label :rating, "Building Rating" %>
+          </div>
+          <div class="col-sm-9">
+            <%#= f.select :rating, [['NA', 0], ['Excellent', 1], ['Good', 2], ['Fair', 3]], {}, {class: "form-control"}%>
+          </div>
+        </div> -->
+
         <br />
         <div class="row">
           <div class="col-sm-3">
-            <%= f.label :rating, "Building Rating" %>
+            <%= f.label :streeteasy_eligibility, "Streeteasy Eligibility" %>
           </div>
           <div class="col-sm-9">
-            <%= f.select :rating, [['NA', 0], ['Excellent', 1], ['Good', 2], ['Fair', 3]], {}, {class: "form-control"}%>
+            <%= f.select :streeteasy_eligibility, [['Yes', 0], ['No', 1]], {}, {class: "form-control"}%>
           </div>
         </div>
 
@@ -194,13 +204,13 @@
 
     <!-- cut -->
 
-    <div class="row">
-      <div class="col-xs-12">
+    <!-- <div class="row">
+      <div class="col-xs-12"> -->
         <!-- enter a new option -->
-        <%= f.text_field :custom_amenities, class: 'form-control vertical-margin-lg',
+        <%#= f.text_field :custom_amenities, class: 'form-control vertical-margin-lg',
           placeholder: "Or enter new amenities, comma separated" %>
-      </div>
-    </div>
+      <!-- </div>
+    </div> -->
 
     <br />
     <div class="row">

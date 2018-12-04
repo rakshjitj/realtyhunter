@@ -231,7 +231,8 @@ class BuildingsController < ApplicationController
       @buildings = Building.search(
         building_params[:filter],
         building_params[:status],
-        building_params[:rating])
+        building_params[:rating],
+        building_params[:streeteasy_eligibility])
 
       @buildings = custom_sort
       @buildings = @buildings.page params[:page]
@@ -273,7 +274,7 @@ class BuildingsController < ApplicationController
     # Need to take in additional params here. Can't rename them, or the geocode plugin
     # will not map to them correctly
     def building_params
-      data = params.permit(:sort_by, :direction, :page, :filter, :status, :rating, :status_listings, :street_number,
+      data = params.permit(:sort_by, :direction, :page, :filter, :status, :rating, :streeteasy_eligibility, :status_listings, :street_number,
         :route, :route_short, :intersection, :neighborhood,
         :sublocality, :administrative_area_level_2_short,
         :administrative_area_level_1_short, :inaccuracy_description, :request_price_drop,

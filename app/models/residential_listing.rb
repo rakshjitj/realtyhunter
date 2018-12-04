@@ -204,7 +204,7 @@ class ResidentialListing < ApplicationRecord
       .where('companies.id = ?', user.company_id)
       .select('buildings.formatted_street_address',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route','buildings.point_of_contact',
-        'buildings.lat', 'buildings.lng', 'buildings.rating', 'units.id AS unit_id',
+        'buildings.lat', 'buildings.lng', 'buildings.rating', 'buildings.streeteasy_eligibility', 'units.id AS unit_id',
         'units.building_unit','units.featured', 'units.status','units.rent', 'residential_listings.beds','residential_listings.claim_for_naked_apartment',
         'residential_listings.claim_for_individual_syndication_page',
         'units.primary_agent_id',  'units.has_stock_photos',
@@ -377,19 +377,26 @@ class ResidentialListing < ApplicationRecord
 
     # search pet policy
     if params[:pet_policy_shorthand]
-      pp = params[:pet_policy_shorthand].downcase
-      policies = nil
-      if pp == "none"
-        policies = PetPolicy.where(name: "no pets", company: user.company)
-      elsif pp == "cats only"
-        policies = PetPolicy.policies_that_allow_cats(user.company, true)
-      elsif pp == "dogs only"
-        policies = PetPolicy.policies_that_allow_dogs(user.company, true)
-      end
+      # pp = params[:pet_policy_shorthand].downcase
+      # policies = nil
+      # if pp == "none"
+      #   policies = PetPolicy.where(name: "no pets", company: user.company)
+      # elsif pp == "cats only"
+      #   policies = PetPolicy.policies_that_allow_cats(user.company, true)
+      # elsif pp == "dogs only"
+      #   policies = PetPolicy.policies_that_allow_dogs(user.company, true)
+      # end
+
+      # if policies
+      #   running_list = running_list#.joins(building: :pet_policy)
+      #     .where('pet_policy_id IN (?)', policies.ids)
+      # end
+      policies = params[:pet_policy_shorthand][0, 256]
+      policies = policies.split(",").select{|i| !i.empty?}
 
       if policies
         running_list = running_list#.joins(building: :pet_policy)
-          .where('pet_policy_id IN (?)', policies.ids)
+          .where('pet_policy_id IN (?)', policies)
       end
     end
 
@@ -573,10 +580,27 @@ class ResidentialListing < ApplicationRecord
       end
     end
 
-    if !params[:building_rating].blank?
-      rating = params[:building_rating]
+    # if !params[:building_rating].blank?
+    #   rating = params[:building_rating]
+    #   if rating == "0"
+    #     running_list = running_list.where("buildings.rating =?", 1)
+    #   # elsif rating == "1"
+    #   #   running_list = running_list.where("buildings.rating =?", 1)
+    #   # elsif rating == "2"
+    #   #   running_list = running_list.where("buildings.rating =?", 2)
+    #   # elsif rating == "3"
+    #   #   running_list = running_list.where("buildings.rating =?", 3)
+    #   elsif rating == "1"
+    #     running_list = running_list.where("buildings.rating IN (?)", [0,2,3])
+    #   else
+    #     running_list = running_list
+    #   end
+    # end
+
+    if !params[:streeteasy_eligibility].blank?
+      rating = params[:streeteasy_eligibility]
       if rating == "0"
-        running_list = running_list.where("buildings.rating =?", 1)
+        running_list = running_list.where("buildings.streeteasy_eligibility =?", 0)
       # elsif rating == "1"
       #   running_list = running_list.where("buildings.rating =?", 1)
       # elsif rating == "2"
@@ -584,7 +608,7 @@ class ResidentialListing < ApplicationRecord
       # elsif rating == "3"
       #   running_list = running_list.where("buildings.rating =?", 3)
       elsif rating == "1"
-        running_list = running_list.where("buildings.rating IN (?)", [0,2,3])
+        running_list = running_list.where("buildings.streeteasy_eligibility =?", 1)
       else
         running_list = running_list
       end
@@ -809,7 +833,8 @@ class ResidentialListing < ApplicationRecord
         'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id',
         'units.has_stock_photos',
         'residential_listings.beds', 'residential_listings.id', 'residential_listings.lease_start',
-        'residential_listings.baths','units.access_info',
+        'residential_listings.baths','units.access_info', 'residential_listings.streeteasy_flag',
+        'residential_listings.streeteasy_flag_one',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'residential_listings.tenant_occupied',
         'neighborhoods.name AS neighborhood_name',

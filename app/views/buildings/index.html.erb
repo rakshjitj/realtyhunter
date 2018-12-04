@@ -50,14 +50,26 @@
                 params[:status] ? params[:status].titleize : "Any"), class: 'form-control') %>
             <% end %>
           </div>
-          <% if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
-            <div class="col-sm-5 col-md-4 form-label-responsive">
+          <%# if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
+            <!-- <div class="col-sm-5 col-md-4 form-label-responsive">
               <label class="vertical-padding">Buildings Rating:</label>
             </div>
             <div class="col-sm-4 col-md-2">
-              <%= select_tag(:rating,
+              <%#= select_tag(:rating,
                   options_for_select([['Any','Any'],['NA', 0], ['Excellent', 1], ['Good', 2], ['Fair', 3]],
                   params[:rating] ? params[:rating].titleize : "Any"), class: 'form-control', style: "margin-top:15px;") %>
+              <%#= select_tag :rating, options_for_select([['Any','Any'],['NA', 0], ['Excellent', 1], ['Good', 2], ['Fair', 3]], {class: "form-control"})%>
+            </div> -->
+          <%# end %>
+
+          <% if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
+            <div class="col-sm-5 col-md-4 form-label-responsive">
+              <label class="vertical-padding">Streeteasy Eligibility:</label>
+            </div>
+            <div class="col-sm-4 col-md-2">
+              <%= select_tag(:streeteasy_eligibility,
+                  options_for_select([['Any','Any'],['Yes', 0], ['No', 1]],
+                  params[:streeteasy_eligibility] ? params[:streeteasy_eligibility].titleize : "Any"), class: 'form-control', style: "margin-top:15px;") %>
               <%#= select_tag :rating, options_for_select([['Any','Any'],['NA', 0], ['Excellent', 1], ['Good', 2], ['Fair', 3]], {class: "form-control"})%>
             </div>
           <% end %>
@@ -84,6 +96,14 @@
               <th></th>
               <th data-sort="formatted_street_address" class="th-sortable">
                 Address</th>
+              <th data-sort="formatted_street_address" class="th-sortable">
+                LL Code</th>
+              <th data-sort="streeteasy_eligibility" class="th-sortable">
+                SE Eligible</th>
+              <th data-sort="dotsignal_code" class="th-sortable">
+                Dotsignal Code</th>
+              <th data-sort="pet_policy_id" class="th-sortable">
+                Pet Policy</th>
               <th data-sort="active_unit_count" class="th-sortable">
                 On-Market Units</th>
               <th data-sort="total_unit_count" class="th-sortable">
