@@ -189,6 +189,14 @@ class ResidentialListingsController < ApplicationController
   end
 
   def specific_update
+    
+    if params[:residential_listing][:unit][:gross_price].to_i > 0
+      params[:residential_listing][:unit][:rent] = (params[:residential_listing][:unit][:gross_price].to_i * (params[:residential_listing][:lease_start].to_i - params[:residential_listing][:unit][:maths_free].to_f)) / params[:residential_listing][:lease_start].to_i
+      params[:residential_listing][:unit][:rent] = params[:residential_listing][:unit][:rent].round
+
+    else
+      params[:residential_listing][:unit][:gross_price] = 0
+    end
     #abort params[:residential_listing][:unit][:open_houses_attributes].to_a.inspect
     #abort params[:id].inspect
     #abort params[:residential_listing][:unit][:open_houses_attributes].to_a[1][1].inspect
@@ -229,7 +237,7 @@ class ResidentialListingsController < ApplicationController
 
     #unit_available_by = Date::strptime(params[:residential_listing][:unit][:available_by], "%m/%d/%Y") + 1.day
     unit = residential_listing.unit
-    tee = unit.update_columns(has_stock_photos: params[:residential_listing][:unit][:has_stock_photos])
+    tee = unit.update_columns(has_stock_photos: params[:residential_listing][:unit][:has_stock_photos], rent: params[:residential_listing][:unit][:rent], gross_price: params[:residential_listing][:unit][:gross_price], maths_free: params[:residential_listing][:unit][:maths_free], updated_at: Time.now())
 
     #find_open_house.delete_all
     params[:residential_listing][:unit][:open_houses_attributes].to_a.each do |a|

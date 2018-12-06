@@ -637,7 +637,7 @@
 
     $('#residential-desktop a').click(function() {
       if ($(this).text().toLowerCase().indexOf('csv') === -1) {
-        Listings.showSpinner();
+        // Listings.showSpinner();
       }
     });
 
