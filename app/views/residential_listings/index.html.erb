@@ -193,8 +193,8 @@
               <%= label_tag :pet_policy_shorthand, "Pet policy" %>
             </div>
             <div class="col-xs-6 col-sm-left-padding" style="width: 54%;">
-              <a href="javascript:;" data-toggle="collapse" data-target="#demo_pet_policy">Pet Policy</a>
-              <div class="row vertical-padding collapse" id="demo_pet_policy">
+              <a href="javascript:;" class="test_p" data-target="#demo_pet_policy">Pet Policy</a>
+              <div class="row vertical-padding test_c" id="demo_pet_policy" style="display: none;">
                 <!-- <div class="col-xs-11 selectize-wrapper"> -->
 
                     <% PetPolicy.all.each do |pet_policy| %>
@@ -419,8 +419,8 @@
           <% else %>
             <%= hidden_field_tag :parent_neighborhoods %>
           <% end %>
-          <a href="javascript:;" data-toggle="collapse" data-target="#demo_neghb">Neighborhoods</a>
-          <div class="row vertical-padding collapse" id="demo_neghb">
+          <a href="javascript:;" class="test_p" data-target="#demo_neghb">Neighborhoods</a>
+          <div class="row vertical-padding test_c" id="demo_neghb" style="display: none;">
             <% @neighborhoods = Neighborhood.all %>
             <% @neighborhoods.where(parent_neighborhood_id: 0).each do |neighborhood| %>
               <div class="col-sm-6">
@@ -459,8 +459,8 @@
           <% else %>
             <%= hidden_field_tag :parent_amenities %>
           <% end %>
-          <a href="javascript:;" data-toggle="collapse" data-target="#demo">Unit features</a>
-          <div class="row vertical-padding collapse" id="demo">
+          <a href="javascript:;" class="test_p" data-target="#demo">Unit features</a>
+          <div class="row vertical-padding test_c" id="demo" style="display: none;">
             <!-- <div class="col-xs-11 selectize-wrapper"> -->
                 <% @unit_amenities.where(parent_amenity_id: 0).each do |amenity| %>
                   <div class="col-sm-6" id="unit-amenities-select-multiple">
@@ -489,8 +489,8 @@
           <% else %>
             <%= hidden_field_tag :parent_building_amenities %>
           <% end %>
-          <a href="javascript:;" data-toggle="collapse" data-target="#demo_build_feat">Building features</a>
-          <div class="row vertical-padding collapse" id="demo_build_feat">
+          <a href="javascript:;" class="test_p" data-target="#demo_build_feat">Building features</a>
+          <div class="row vertical-padding test_c" id="demo_build_feat" style="display: none;">
             <!-- <div class="col-xs-11 selectize-wrapper"> -->
                 <% @building_amenities.where(building_parent_amenity_id: 0).each do |amenity| %>
                   <div class="col-sm-6" id= "building-amenities-select-multiple">

@@ -1146,3 +1146,24 @@ function pet_policy_check(id){
   // }
 
 }
+
+
+var $contents = $(".test_c")
+var $headers = $(".test_p").click(function () {
+
+    var $header = $(this);
+    //getting the next element
+    var $content = $header.next();
+    //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+    $content.stop(true, true).slideToggle(500, function () {
+        //execute this after slideToggle is done
+        // //change text of header based on visibility of content div
+        // $header.text(function () {
+        //     //change text based on condition
+        //     return $content.is(":visible") ? "Collapse" : "Expand";
+        // });
+    });
+
+    // $headers.not($header).text("Expand");
+    $contents.not($content).stop(true, true).slideUp();
+});
