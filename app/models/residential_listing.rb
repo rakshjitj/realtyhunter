@@ -173,8 +173,8 @@ class ResidentialListing < ApplicationRecord
       .select('buildings.formatted_street_address',
         'units.listing_id', 'units.building_unit', 'units.status','units.rent', 'units.archived',
         'units.available_by', 'units.public_url', 'units.access_info', 'units.exclusive',
-        'units.id AS unit_id', 'units.primary_agent_id', 'units.has_stock_photos',
-        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
+        'units.id AS unit_id', 'units.primary_agent_id', 'units.has_stock_photos', 'units.streeteasy_primary_agent_id',
+        'buildings.id AS building_id', 'buildings.street_number', 'buildings.route', 'buildings.point_of_contact',
         'buildings.lat', 'buildings.lng', 'buildings.rating',
         'residential_listings.id',
         'residential_listings.beds', 'residential_listings.baths', 'residential_listings.notes',
@@ -373,6 +373,24 @@ class ResidentialListing < ApplicationRecord
 
     if params[:listing_id]
       running_list = running_list.where("units.listing_id = ?", params[:listing_id].to_i)
+    end
+
+    # search pet policy mobile
+    if params[:pet_policy_shorthand_mobile]
+      pp = params[:pet_policy_shorthand_mobile].downcase
+      policies = nil
+      if pp == "none"
+        policies = PetPolicy.where(name: "no pets", company: user.company)
+      elsif pp == "cats only"
+        policies = PetPolicy.policies_that_allow_cats(user.company, true)
+      elsif pp == "dogs only"
+        policies = PetPolicy.policies_that_allow_dogs(user.company, true)
+      end
+
+      if policies
+        running_list = running_list#.joins(building: :pet_policy)
+          .where('pet_policy_id IN (?)', policies.ids)
+      end
     end
 
     # search pet policy

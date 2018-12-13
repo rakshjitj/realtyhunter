@@ -217,12 +217,12 @@
         </div>
           <div class="row vertical-padding">
             <div class="col-xs-3">
-              <%= label_tag :pet_policy_shorthand, "Pets", class: 'field-label-sm' %>
+              <%= label_tag :pet_policy_shorthand_mobile, "Pets", class: 'field-label-sm' %>
             </div>
             <div class="col-xs-8 col-sm-left-padding">
-              <%= select_tag(:pet_policy_shorthand,
+              <%= select_tag(:pet_policy_shorthand_mobile,
                 options_for_select(["Any", "Cats Only", "Dogs Only", "None"],
-                [params[:pet_policy_shorthand] ? params[:pet_policy_shorthand].titleize : "Any"]),
+                [params[:pet_policy_shorthand_mobile] ? params[:pet_policy_shorthand_mobile].titleize : "Any"]),
                 class: 'form-control') %>
             </div>
           </div>

@@ -683,7 +683,7 @@
 										
 										<%= select_tag :feedback_category, options_for_select(["problem with amenities","requesting new photos","problem with access", "problem with unit layout", "problem with unit's utilities","problem with the price", "incorrect/poor unit description", "incorrect unit number","incorrect move-in-date", "unit unavailable - please take off", "other"]),{prompt: "Choose one...",class: 'form-control', onchange: "hide_photo_for_error_type_dropdown()"} %>
 									</div>
-									<br><br>
+									<br><br><br>
 									<div id="hide-dropdown" style="display: none;">
 										<div class="col-xs-3">
 											<%= label_tag :photo_error_type %>

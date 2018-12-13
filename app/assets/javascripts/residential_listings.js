@@ -36,6 +36,7 @@
         landlord: $('#landlord').val(),
         listing_id: $('#listing_id').val(),
         pet_policy_shorthand: $('#pet_policy_shorthand').val(),
+        pet_policy_shorthand_mobile: $('#pet_policy_shorthand_mobile').val(),
         available_starting: $('#available_starting').val(),
         available_before: $('#available_before').val(),
         status: $('#status').val(),
