@@ -120,12 +120,22 @@
                 <%= unit_form.label :status, class: 'required' %>
               </div>
               <div class="col-xs-9 col-md-4">
+                <%# abort @residential_unit.unit.building.inspect %>
+                <% if !@residential_unit.unit.building.nil? && current_user.id == @residential_unit.unit.building.point_of_contact %>
+                  <%= unit_form.select :status,
+                    options_for_select(%w(Active Pending Off Rsonly),
+                      [@residential_unit.unit.status.titleize]),
+                    {prompt: "Choose one..."},
+                    :required => true, disabled: true,
+                    class: "form-control" %>
+                <% else %>
                   <%= unit_form.select :status,
                     options_for_select(%w(Active Pending Off Rsonly),
                       [@residential_unit.unit.status.titleize]),
                     {prompt: "Choose one..."},
                     :required => true,
                     class: "form-control" %>
+                <% end %>
               </div>
           </div>
           <% end %>

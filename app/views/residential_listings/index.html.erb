@@ -414,7 +414,7 @@
               </select>
             </div>
           </div> -->
-          <% if params[:parent_neighborhoods].nil? %>
+          <% if !params[:parent_neighborhoods].nil? %>
             <%= hidden_field_tag :parent_neighborhoods, params[:parent_neighborhoods] %>
           <% else %>
             <%= hidden_field_tag :parent_neighborhoods %>
@@ -484,8 +484,8 @@
             <!-- </div> -->
           </div>
 
-          <% if !params[:parent_amenities].nil? %>
-            <%= hidden_field_tag :parent_building_amenities, params[:parent_amenities] %>
+          <% if !params[:parent_building_amenities].nil? %>
+            <%= hidden_field_tag :parent_building_amenities, params[:parent_building_amenities] %>
           <% else %>
             <%= hidden_field_tag :parent_building_amenities %>
           <% end %>
@@ -498,8 +498,8 @@
                     <br>
                     <%# abort params[:parent_amenities].split(",").inspect %>
                     <% @building_amenities.where(building_parent_amenity_id: amenity.id).each do |child_amenity| %>
-                      <% if params[:parent_amenities] %>
-                        <% if params[:parent_amenities].split(",").include? "#{child_amenity.id}" %>
+                      <% if params[:parent_building_amenities] %>
+                        <% if params[:parent_building_amenities].split(",").include? "#{child_amenity.id}" %>
                           <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.building_parent_amenity_id %>" id="child_with_parent_building_<%= child_amenity.id %>" checked="true" onClick = "child_building_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
                         <% else %>
                           <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.building_parent_amenity_id %>" id="child_with_parent_building_<%= child_amenity.id %>" onClick = "child_building_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
