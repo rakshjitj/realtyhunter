@@ -55,6 +55,7 @@
         building_rating: $('#building_rating').val(),
         streeteasy_eligibility: $('#streeteasy_eligibility').val(),
         parent_amenities: $('#parent_amenities').val(),
+        parent_building_amenities: $('#parent_building_amenities').val(),
         parent_neighborhoods: $('#parent_neighborhoods').val(),
         landlord_rating: $('#landlord_rating').val(),
         sort_by: sortByCol,
