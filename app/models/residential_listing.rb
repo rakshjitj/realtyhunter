@@ -434,6 +434,15 @@ class ResidentialListing < ApplicationRecord
       end
     end
 
+    if params[:parent_building_amenities]
+      features = params[:parent_building_amenities][0, 256]
+      features = features.split(",").select{|i| !i.empty?}
+        bldg_ids = Building.joins(:building_amenities).where('building_amenity_id IN (?)', features).pluck(:id)
+        running_list = running_list.where("building_id IN (?)", bldg_ids)
+    end
+
+
+
     if params[:parent_amenities]
       features = params[:parent_amenities][0, 256]
       features = features.split(",").select{|i| !i.empty?}
