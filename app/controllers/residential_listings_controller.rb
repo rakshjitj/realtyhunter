@@ -272,12 +272,12 @@ class ResidentialListingsController < ApplicationController
     @bb = Building.find(params[:residential_listing][:unit][:building_id])
     if @bb.neighborhood.parent_neighborhood_id == 55
       notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
-        defaults channel: "#general",
+        defaults channel: "#default",
                  username: "notifier"
       end
     elsif @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 54
       notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
-        defaults channel: "#general",
+        defaults channel: "#default",
                  username: "notifier"
       end
     end
@@ -419,12 +419,12 @@ class ResidentialListingsController < ApplicationController
     if @residential_unit.unit.status != params[:residential_listing][:unit][:status]
       if @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 55
         notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
-          defaults channel: "#general",
+          defaults channel: "#default",
                    username: "notifier"
         end
       elsif @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 54
         notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
-          defaults channel: "#general",
+          defaults channel: "#default",
                    username: "notifier"
         end
       end
@@ -436,12 +436,12 @@ class ResidentialListingsController < ApplicationController
     if @residential_unit.unit.access_info != params[:residential_listing][:unit][:access_info]
       if @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 55
         notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
-          defaults channel: "#general",
+          defaults channel: "#default",
                    username: "notifier"
         end
       elsif @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 54
         notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
-          defaults channel: "#general",
+          defaults channel: "#default",
                    username: "notifier"
         end
       end
@@ -453,12 +453,12 @@ class ResidentialListingsController < ApplicationController
     if @residential_unit.unit.available_by.strftime("%m/%d/%Y") != params[:residential_listing][:unit][:available_by]
       if @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 55
         notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
-          defaults channel: "#general",
+          defaults channel: "#default",
                    username: "notifier"
         end
       elsif @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 54
         notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
-          defaults channel: "#general",
+          defaults channel: "#default",
                    username: "notifier"
         end
       end
@@ -549,12 +549,12 @@ class ResidentialListingsController < ApplicationController
       if @residential_unit.unit.rent != params[:residential_listing][:unit][:rent]
         if @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 55
           notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
-            defaults channel: "#general",
+            defaults channel: "#default",
                      username: "notifier"
           end
         elsif @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 54
           notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
-            defaults channel: "#general",
+            defaults channel: "#default",
                      username: "notifier"
           end
         end
