@@ -84,7 +84,7 @@
 					<% if (current_user.id == @residential_unit.unit.primary_agent_id || current_user.id == @residential_unit.unit.streeteasy_primary_agent_id) && !current_user.is_management? %>
 						<%= link_to 'Edit', specific_edit_path(@residential_unit.id) %>
 					<% end %>
-					<% if current_user.is_management? || current_user.is_listings_manager? || current_user.is_photo_manager? %>
+					<% if current_user.is_management? || current_user.is_listings_manager? || current_user.is_photo_manager? || current_user.id == @residential_unit.unit.building.point_of_contact %>
 				  	<div class="row hidden-print">
 					  	<div class="col-sm-12">
 					  		<%= link_to 'All units', residential_listings_path %> |
