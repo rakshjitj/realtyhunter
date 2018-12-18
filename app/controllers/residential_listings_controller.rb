@@ -416,7 +416,7 @@ class ResidentialListingsController < ApplicationController
     #abort (@residential_unit.streeteasy_flag).inspect
     
     #Start Slack Message when status change neighbourhood wise channel
-    if @residential_unit.unit.status != params[:residential_listing][:unit][:status]
+    if @residential_unit.unit.status != params[:residential_listing][:unit][:status].downcase
       if @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 55 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 56 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 57
         notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
           defaults channel: "#default",
