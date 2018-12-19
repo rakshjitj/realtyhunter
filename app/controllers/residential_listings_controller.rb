@@ -275,7 +275,7 @@ class ResidentialListingsController < ApplicationController
         defaults channel: "#default",
                  username: "notifier"
       end
-    elsif @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 54
+    elsif @bb.neighborhood.parent_neighborhood_id == 54
       notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
         defaults channel: "#default",
                  username: "notifier"
