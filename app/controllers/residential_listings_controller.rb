@@ -546,7 +546,7 @@ class ResidentialListingsController < ApplicationController
       end
 
       #Start Slack Message when Price change neighbourhood wise channel
-      if @residential_unit.unit.rent != params[:residential_listing][:unit][:rent]
+      if @residential_unit.unit.rent != params[:residential_listing][:unit][:rent].to_i
         if @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 55 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 56 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 57
           notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
             defaults channel: "#default",
