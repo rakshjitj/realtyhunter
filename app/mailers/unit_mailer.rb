@@ -143,8 +143,8 @@ class UnitMailer < ApplicationMailer
   #send email when new unit created using add unit button
   def send_email_at_new_unit_create(building,building_unit,beds,baths,rent,residential_amenity,access_info,notes,available,has_fee,tp_fee_percentage,op_fee_percentage,lease_start,lease_end, user_name)
     @building = Building.find(building).formatted_street_address
-    street_number = Building.find(building).street_number
-    route = Building.find(building).route
+    @street_number = Building.find(building).street_number
+    @route = Building.find(building).route
     @building_unit = building_unit
     @beds = beds
     @baths = baths
@@ -163,7 +163,7 @@ class UnitMailer < ApplicationMailer
     @lease_end = lease_end
     @landlord = Building.find(building).landlord.code
     @user_name = user_name
-    mail(to: 'bparekh@myspacenyc.com', subject: "New Unit (#{street_number} #{route}##{building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'myspaceupdates@myspacenyc.com', subject: "New Unit (#{@street_number} #{@route}##{@building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   # def send_email_at_new_unit_duplicate(building,building_unit,beds,baths,rent,residential_amenity,access_info,notes,available,tp_fee_percentage,op_fee_percentage,lease_start,lease_end, user_name)
@@ -235,17 +235,20 @@ class UnitMailer < ApplicationMailer
   end
 
   #send email when anyone Change Price
-  def send_price_change(building,building_unit,rent,old_rent,notes,access_info,user_name)
+  def send_price_change(building,building_unit,rent,old_rent,notes,access_info,user_name,id)
     @building = Building.find(building).formatted_street_address
-    street_number = Building.find(building).street_number
-    route = Building.find(building).route
+    @street_number = Building.find(building).street_number
+    @route = Building.find(building).route
     @building_unit = building_unit
+    @neighborhood = Building.find(building).neighborhood.name
+    @beds = ResidentialListing.find(id).beds
+    @baths = ResidentialListing.find(id).baths
     @old_rent = old_rent
     @rent = rent
     @notes = notes
     @access_info = access_info
     @user_name = user_name
-    mail(to: 'bparekh@myspacenyc.com', subject: "Price Change (#{street_number} #{route}##{building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'myspaceupdates@myspacenyc.com', subject: "Price Change (#{@street_number} #{@route}##{@building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
   end
 
   #send email when anyone change status to Active
@@ -273,15 +276,49 @@ class UnitMailer < ApplicationMailer
   end
 
   #send an email when available date changed
-  def send_available_by_info(building,building_unit,rent,available, user_name)
+  def send_available_by_info(building,building_unit,rent,available, user_name, id, available_old)
     @building = Building.find(building).formatted_street_address
-    street_number = Building.find(building).street_number
-    route = Building.find(building).route
+    @street_number = Building.find(building).street_number
+    @route = Building.find(building).route
     @building_unit = building_unit
+    @neighborhood = Building.find(building).neighborhood.name
+    @beds = ResidentialListing.find(id).beds
+    @baths = ResidentialListing.find(id).baths
     @rent = rent
     @available = available
+    @available_old = available_old
     @user_name = user_name
-    mail(to: 'bparekh@myspacenyc.com', subject: "Available (#{street_number} #{route}##{building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+    mail(to: 'myspaceupdates@myspacenyc.com', subject: "Available (#{@street_number} #{@route}##{@building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  end
+
+  def send_access_info(building,building_unit,rent,access_info, user_name, id, access_old)
+    @building = Building.find(building).formatted_street_address
+    @street_number = Building.find(building).street_number
+    @route = Building.find(building).route
+    @building_unit = building_unit
+    @neighborhood = Building.find(building).neighborhood.name
+    @beds = ResidentialListing.find(id).beds
+    @baths = ResidentialListing.find(id).baths
+    @rent = rent
+    @access_info = access_info
+    @access_old = access_old
+    @user_name = user_name
+    mail(to: 'myspaceupdates@myspacenyc.com', subject: "Available (#{@street_number} #{@route}##{@building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')
+  end
+
+  def send_status_change(building,building_unit,rent,status, user_name, id, status_old)
+    @building = Building.find(building).formatted_street_address
+    @street_number = Building.find(building).street_number
+    @route = Building.find(building).route
+    @building_unit = building_unit
+    @neighborhood = Building.find(building).neighborhood.name
+    @beds = ResidentialListing.find(id).beds
+    @baths = ResidentialListing.find(id).baths
+    @rent = rent
+    @status = status
+    @status_old = status_old
+    @user_name = user_name
+    mail(to: 'myspaceupdates@myspacenyc.com', subject: "Available (#{@street_number} #{@route}##{@building_unit})", track_opens:'true', reply_to: 'no-reply@myspacenyc.com')    
   end
 
   #send an email when any one change any thing in listing

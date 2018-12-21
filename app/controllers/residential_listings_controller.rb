@@ -417,6 +417,7 @@ class ResidentialListingsController < ApplicationController
     
     #Start Slack Message when status change neighbourhood wise channel
     if @residential_unit.unit.status != params[:residential_listing][:unit][:status].downcase
+      UnitMailer.send_status_change(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent],params[:residential_listing][:unit][:status], current_user.name, @residential_unit.id, @residential_unit.unit.status).deliver!
       if @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 55 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 56 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 57
         notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
           defaults channel: "#default",
@@ -434,6 +435,7 @@ class ResidentialListingsController < ApplicationController
 
     #Start Slack Message when Access info change neighbourhood wise channel
     if @residential_unit.unit.access_info != params[:residential_listing][:unit][:access_info]
+      UnitMailer.send_access_info(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent],params[:residential_listing][:unit][:access_info], current_user.name, @residential_unit.id, @residential_unit.unit.access_info).deliver!
       if @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 55 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 56 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 57
         notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
           defaults channel: "#default",
@@ -451,6 +453,7 @@ class ResidentialListingsController < ApplicationController
 
     #Start Slack Message when available_by change neighbourhood wise channel
     if @residential_unit.unit.available_by.strftime("%m/%d/%Y") != params[:residential_listing][:unit][:available_by]
+      UnitMailer.send_available_by_info(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent],params[:residential_listing][:unit][:available_by], current_user.name, @residential_unit.id, @residential_unit.unit.available_by.strftime("%m/%d/%Y")).deliver!
       if @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 55 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 56 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 57
         notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
           defaults channel: "#default",
@@ -472,8 +475,8 @@ class ResidentialListingsController < ApplicationController
       end
 
       if @residential_unit.streeteasy_flag != params[:residential_listing][:streeteasy_flag]
-        @residential_unit.update_columns(streeteasy_claim: true)
-        @residential_unit.unit.update_columns(streeteasy_primary_agent_id: nil)
+        @residential_unit.update_columns(streeteasy_claim: true, updated_at: Time.now())
+        @residential_unit.unit.update_columns(streeteasy_primary_agent_id: nil, updated_at: Time.now())
       end
     end
     if params[:residential_listing][:streeteasy_flag_one] == "0"
@@ -547,6 +550,7 @@ class ResidentialListingsController < ApplicationController
 
       #Start Slack Message when Price change neighbourhood wise channel
       if @residential_unit.unit.rent != params[:residential_listing][:unit][:rent].to_i
+        UnitMailer.send_price_change(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent], @residential_unit.unit.rent, params[:residential_listing][:notes], params[:residential_listing][:unit][:access_info], current_user.name, @residential_unit.id).deliver!
         if @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 55 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 56 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 57
           notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
             defaults channel: "#default",

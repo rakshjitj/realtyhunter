@@ -1,11 +1,8 @@
-<h3>Price lowered by : <%= @user_name %></h3>
-<h3>Price lowered :</h3>
-<h4>Address : <%= @building %></h4>
-<h4>Unit : <%= @building_unit %></h4>
-<h4>Old Rent : <%= @old_rent %></h4>
-<h4>Rent : <%= @rent %></h4>
-<h4>Internal Notes : <%= @notes %></h4>
-<h4>Access Info : <%= @access_info %></h4>
+<h3>Price Change : </h3>
+<h4><%= @street_number %> <%= @route  %>, <%= @building_unit %></h4>
+<h4><%= neighborhood %></h4>
+<h4><%= @beds %> Beds / <%= @baths %> Baths</h4>
+<h4><%= @user_name %> Changed rent from $<%= @old_rent %> to $<%= @rent %></h4>
 <div>
 	<h4>
 		<div>Thanks & Regards</div>
