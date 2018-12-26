@@ -196,6 +196,21 @@
           </div>
         </div>
 
+        <%= f.fields_for @residential_unit.unit do |unit_form| %>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-2">
+              <%= unit_form.label :price_calculation, "Price Calculation" %>
+            </div>
+            <div class="col-xs-3">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= unit_form.check_box :price_calculation, class: "styled",
+                    checked: @residential_unit ? @residential_unit.unit.price_calculation : false %>
+                <label></label>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
             <%= f.label "Net Price" %>

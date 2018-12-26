@@ -541,11 +541,13 @@ class ResidentialListingsController < ApplicationController
       end
 
       
-      if params[:residential_listing][:unit][:gross_price].to_i > 0
+      if params[:residential_listing][:unit][:price_calculation] == "1"
         params[:residential_listing][:unit][:rent] = (params[:residential_listing][:unit][:gross_price].to_i * (params[:residential_listing][:lease_start].to_i - params[:residential_listing][:unit][:maths_free].to_f)) / params[:residential_listing][:lease_start].to_i
         params[:residential_listing][:unit][:rent] = params[:residential_listing][:unit][:rent].round
       else
-        params[:residential_listing][:unit][:gross_price] = 0
+        if params[:residential_listing][:unit][:gross_price].blank?
+          params[:residential_listing][:unit][:gross_price] = 0
+        end
       end
 
       #Start Slack Message when Price change neighbourhood wise channel
@@ -1053,7 +1055,7 @@ class ResidentialListingsController < ApplicationController
         unit: [:building_unit, :streeteasy_unit, :streeteasy_primary_agent_id, :streeteasy_listing_email, :streeteasy_listing_number, :rent, :gross_price, :maths_free, :available_by, :access_info, :status,
           :exclusive, :featured, :hide_on_website, :building_id, :primary_agent_id, :listing_agent_id,
           :syndication_status, :has_stock_photos, :is_exclusive_agreement_signed,
-          :exclusive_agreement_expires_at, :public_url,
+          :exclusive_agreement_expires_at, :public_url, :price_calculation,
           open_houses_attributes: [:day, :start_time, :end_time, :_destroy, :id],
           building: [:point_of_contact] ],
         residential_amenity_ids: []
