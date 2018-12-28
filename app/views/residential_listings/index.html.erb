@@ -222,7 +222,7 @@
             </div>
             <div class="col-xs-6 col-sm-left-padding">
               <%= select_tag(:point_of_contact,
-                options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
+                options_for_select(@user,
                     [params[:point_of_contact] ? params[:point_of_contact].titleize : "Any"]),
                   {prompt: "Choose one...",
                   class: 'form-control'}) %>

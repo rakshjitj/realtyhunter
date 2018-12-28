@@ -10,6 +10,12 @@ class ResidentialListingsController < ApplicationController
   include KnackInterface
 
   def index
+    building = Building.all.map(&:point_of_contact).compact.uniq
+    @user = []
+    building.each do |build|
+      u = User.find(build)
+      @user << [u.name, u.id]
+    end
     respond_to do |format|
       format.html.phone do
         set_residential_listings
