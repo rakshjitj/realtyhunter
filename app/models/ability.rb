@@ -71,7 +71,12 @@ class Ability
     can :read, Building, company_id: user.company_id
     can :manage, Room
     can :manage, ResidentialListing do |residential_listing|
-      residential_listing.unit.building.company_id == user.company_id
+      if user.has_role?(:agent)
+        1 == user.company_id
+      else
+        residential_listing.unit.building.company_id == user.company_id
+      end
+      
     end
     can :read, SalesListing do |sales_listing|
       sales_listing.unit.building.company_id == user.company_id

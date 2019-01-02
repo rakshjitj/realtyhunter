@@ -31,6 +31,9 @@
 							| <%= link_to 'Edit', edit_building_path(@building) %> |
 							<%= link_to 'Add a Unit', new_residential_listing_path(building_id: @building.id) %>
 						<% end %>
+						<% if current_user.id == @building.point_of_contact %>
+							| <%= link_to 'Add a Unit', new_residential_listing_path(building_id: @building.id) %>
+						<% end %>
 		  		</div>
 		  	</div><!-- row -->
 
