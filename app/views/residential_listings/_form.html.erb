@@ -235,7 +235,7 @@
 
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
-            <%= f.label :maths_free, "Mths Free", class: 'required' %>
+            <%= f.label :maths_free, "Mths Free" %>
           </div>
           <div class="col-xs-9 col-md-4">
             <%= f.fields_for @residential_unit.unit do |unit_form| %>
@@ -266,7 +266,7 @@
         <div class="row vertical-margin-lg">
           <%= f.fields_for @residential_unit.unit do |unit_form| %>
             <div class="col-xs-3 col-md-2">
-              <%= unit_form.label :available_by, "Available", class: 'required' %>
+              <%= unit_form.label :available_by, "Available" %>
             </div>
             <div class="col-xs-9 col-md-4">
               <div class='input-group date datepicker'
