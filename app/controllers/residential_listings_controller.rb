@@ -458,8 +458,13 @@ class ResidentialListingsController < ApplicationController
     #End Slack Message when Access info change neighbourhood wise channel
 
     #Start Slack Message when available_by change neighbourhood wise channel
-    if @residential_unit.unit.available_by.strftime("%m/%d/%Y") != params[:residential_listing][:unit][:available_by]
-      UnitMailer.send_available_by_info(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent],params[:residential_listing][:unit][:available_by], current_user.name, @residential_unit.id, @residential_unit.unit.available_by.strftime("%m/%d/%Y")).deliver!
+    if @residential_unit.unit.available_by.nil? || @residential_unit.unit.available_by.strftime("%m/%d/%Y") != params[:residential_listing][:unit][:available_by]
+      if !@residential_unit.unit.available_by.nil?
+        @original_date = @residential_unit.unit.available_by.strftime("%m/%d/%Y")
+      else
+        @original_date = ""
+      end
+      UnitMailer.send_available_by_info(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent],params[:residential_listing][:unit][:available_by], current_user.name, @residential_unit.id, @original_date).deliver!
       if @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 55 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 56 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 57
         notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
           defaults channel: "#default",
@@ -471,7 +476,7 @@ class ResidentialListingsController < ApplicationController
                    username: "notifier"
         end
       end
-      notifier.ping "*Available* *by* *Change* \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n #{@residential_unit.unit.building.neighborhood.name} \n #{params[:residential_listing][:beds]} Beds / #{params[:residential_listing][:baths]} Baths \n #{current_user.name} Changed Available by from #{@residential_unit.unit.available_by.strftime("%m/%d/%Y")} to #{params[:residential_listing][:unit][:available_by]} \n ---"
+      notifier.ping "*Available* *by* *Change* \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n #{@residential_unit.unit.building.neighborhood.name} \n #{params[:residential_listing][:beds]} Beds / #{params[:residential_listing][:baths]} Baths \n #{current_user.name} Changed Available by from #{@original_date} to #{params[:residential_listing][:unit][:available_by]} \n ---"
     end
     #End Slack Message when Available by change neighbourhood wise channel
 
