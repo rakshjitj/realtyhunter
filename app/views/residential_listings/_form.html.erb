@@ -794,7 +794,7 @@
           </div>
           <div class="col-xs-9 col-md-7">
             <div class="checkbox checkbox-warning checkbox-inline">
-            <% if !@residential_unit.unit.building.nil? && current_user.id == @residential_unit.unit.building.point_of_contact %>
+            <% if !current_user.is_management? && !@residential_unit.unit.building.nil? && current_user.id == @residential_unit.unit.building.point_of_contact %>
               <%= f.check_box :streeteasy_flag, class: "styled", disabled: true,
                   checked: @residential_unit ? @residential_unit.streeteasy_flag : false %>
             <% else %>
