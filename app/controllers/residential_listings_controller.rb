@@ -470,7 +470,9 @@ class ResidentialListingsController < ApplicationController
           @ll_code = @residential_unit.unit.building.landlord.code
         end
         if @residential_unit.unit.building
-          @poc = User.find(@residential_unit.unit.building.point_of_contact).name
+          if !@residential_unit.unit.building.point_of_contact.nil?
+            @poc = User.find(@residential_unit.unit.building.point_of_contact).name
+          end
         end
         
         if @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 55 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 56 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 57
