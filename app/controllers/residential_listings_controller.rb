@@ -309,6 +309,16 @@ class ResidentialListingsController < ApplicationController
       if @residential_unit.unit.building.landlord
         @ll_code = @residential_unit.unit.building.landlord.code
       end
+      if params[:residential_listing][:has_fee] == "0"
+        if !params[:residential_listing][:op_fee_percentage].blank?
+          @has_fee = "Op Pays: #{params[:residential_listing][:op_fee_percentage]}% \n"
+        end
+      end
+      if params[:residential_listing][:has_fee] == "1"
+        if !params[:residential_listing][:tp_fee_percentage].blank?
+          @has_fee = "Tp Pays: #{params[:residential_listing][:tp_fee_percentage]}% \n"
+        end
+      end
       if @bb.neighborhood.parent_neighborhood_id == 55 || @bb.neighborhood.parent_neighborhood_id == 56 || @bb.neighborhood.parent_neighborhood_id == 57
         notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
           defaults channel: "#default",
@@ -320,7 +330,7 @@ class ResidentialListingsController < ApplicationController
                    username: "notifier"
         end
       end
-      notifier.ping "*New* *Unit* \n #{current_user.name} Added New Unit \n #{@bb.street_number} #{@bb.route}, #{params[:residential_listing][:unit][:building_unit]} \n #{@bb.neighborhood.name} \n #{params[:residential_listing][:beds]} Beds / #{params[:residential_listing][:baths]} Baths \n Net #{params[:residential_listing][:unit][:rent]} / Gross #{params[:residential_listing][:unit][:gross_price]} \n Avail: #{@avail_date} \n Lease: #{@lease_st} to #{@lease_ed} Months \n LLC: #{@ll_code} \n POC: #{@poc} \n ---"
+      notifier.ping "*New* *Unit* \n #{current_user.name} Added New Unit \n #{@bb.street_number} #{@bb.route}, #{params[:residential_listing][:unit][:building_unit]} \n #{@bb.neighborhood.name} \n #{params[:residential_listing][:beds]} Beds / #{params[:residential_listing][:baths]} Baths \n Net #{params[:residential_listing][:unit][:rent]} / Gross #{params[:residential_listing][:unit][:gross_price]} \n Avail: #{@avail_date} \n Lease: #{@lease_st} to #{@lease_ed} Months \n #{@has_fee} \n LLC: #{@ll_code} \n POC: #{@poc} \n ---"
 
       UnitMailer.send_email_at_new_unit_create(params[:residential_listing][:unit][:building_id], params[:residential_listing][:unit][:building_unit],params[:residential_listing][:beds],params[:residential_listing][:baths],params[:residential_listing][:unit][:rent],params[:residential_listing][:residential_amenity_ids].reject(&:empty?),params[:residential_listing][:unit][:access_info],params[:residential_listing][:notes],params[:residential_listing][:unit][:available_by],params[:residential_listing][:has_fee],params[:residential_listing][:tp_fee_percentage],params[:residential_listing][:op_fee_percentage], params[:residential_listing][:lease_start], params[:residential_listing][:lease_end],current_user.name).deliver!
       # keep track of whether this listing just came on or off the market
@@ -503,7 +513,7 @@ class ResidentialListingsController < ApplicationController
                      username: "notifier"
           end
         end
-          notifier.ping "*BACK* *ON* *MARKET* \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n #{@residential_unit.unit.building.neighborhood.name} \n #{params[:residential_listing][:beds]} Beds / #{params[:residential_listing][:baths]} Baths \n Price: $#{params[:residential_listing][:unit][:rent]} \n ---"
+          notifier.ping "*BACK* *ON* *MARKET* \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n #{@residential_unit.unit.building.neighborhood.name} \n #{params[:residential_listing][:beds]} Beds / #{params[:residential_listing][:baths]} Baths \n Price: $#{params[:residential_listing][:unit][:rent]} \n Changes made by #{current_user.name} \n ---"
       end
       #Slack Message when status change from pending to active End
 
@@ -520,7 +530,7 @@ class ResidentialListingsController < ApplicationController
                      username: "notifier"
           end
         end
-          notifier.ping "*TAKE* *OFF* \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n #{@residential_unit.unit.building.neighborhood.name} \n #{params[:residential_listing][:beds]} Beds / #{params[:residential_listing][:baths]} Baths \n Price: $#{params[:residential_listing][:unit][:rent]} \n ---"
+          notifier.ping "*TAKE* *OFF* \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n #{@residential_unit.unit.building.neighborhood.name} \n #{params[:residential_listing][:beds]} Beds / #{params[:residential_listing][:baths]} Baths \n Price: $#{params[:residential_listing][:unit][:rent]} \n Changes made by #{current_user.name} \n ---"
       end
       #Slack Message when status change from active to off or pending to off End
 
@@ -530,7 +540,7 @@ class ResidentialListingsController < ApplicationController
             defaults channel: "#default",
                      username: "notifier"
           end
-          notifier.ping "*APP* *RECEIVED* \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n #{@residential_unit.unit.building.neighborhood.name} \n #{params[:residential_listing][:beds]} Beds / #{params[:residential_listing][:baths]} Baths \n Price: $#{params[:residential_listing][:unit][:rent]} \n ---"
+          notifier.ping "*APP* *RECEIVED* \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n #{@residential_unit.unit.building.neighborhood.name} \n #{params[:residential_listing][:beds]} Beds / #{params[:residential_listing][:baths]} Baths \n Price: $#{params[:residential_listing][:unit][:rent]} \n Changes made by #{current_user.name} \n ---"
       end
       #Slack Message when status change from active to pending End
       UnitMailer.send_status_change(params[:residential_listing][:unit][:building_id],params[:residential_listing][:unit][:building_unit],params[:residential_listing][:unit][:rent],params[:residential_listing][:unit][:status], current_user.name, @residential_unit.id, @residential_unit.unit.status).deliver!
