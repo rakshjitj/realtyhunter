@@ -98,15 +98,36 @@
               options_for_select(%w(Any Yes No), params[:has_fee]), class: 'form-control') %>
           </div>
         </div>
+        <% if !params[:pet_policy_shorthand].nil? %>
+          <%= hidden_field_tag :pet_policy_shorthand, params[:pet_policy_shorthand] %>
+        <% else %>
+          <%= hidden_field_tag :pet_policy_shorthand %>
+        <% end %>
         <div class="row vertical-padding">
           <div class="col-xs-5">
             <%= label_tag :pet_policy_shorthand, "Pet policy" %>
           </div>
-          <div class="col-xs-6 col-sm-left-padding">
-            <%= select_tag(:pet_policy_shorthand,
-              options_for_select(["Any", "Cats Only", "Dogs Only", "None"],
-              [params[:pet_policy_shorthand] ? params[:pet_policy_shorthand].titleize : "Any"]),
-              class: 'form-control') %>
+          <div class="col-xs-6 col-sm-left-padding" style="width: 54%;">
+            <a href="javascript:;" class="test_p" data-target="#demo_pet_policy">Pet Policy</a>
+            <div class="row vertical-padding test_c" id="demo_pet_policy" style="display: none;">
+              <!-- <div class="col-xs-11 selectize-wrapper"> -->
+
+                  <% PetPolicy.all.each do |pet_policy| %>
+                    <div class="col-sm-6" id="unit-amenities-select-multiple">
+                      <% if params[:pet_policy_shorthand] %>  
+                        <% if (params[:pet_policy_shorthand].split(",").include? "#{pet_policy.id}") %>
+                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= pet_policy.id %>" id="parent_<%= pet_policy.id %>" checked="true" onClick = "pet_policy_check(<%= pet_policy.id %>)" ><b><%= pet_policy.name.titleize %></b></span>
+                        <% else %>
+                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= pet_policy.id %>" id="parent_<%= pet_policy.id %>" onClick = "pet_policy_check(<%= pet_policy.id %>)" ><b><%= pet_policy.name.titleize %></b></span>
+                        <% end %>
+                      <% else %>
+                        <span class="child-input"><input type="checkbox" name="features[]" value="<%= pet_policy.id %>" id="parent_<%= pet_policy.id %>" onClick = "pet_policy_check(<%= pet_policy.id %>)" ><b><%= pet_policy.name.titleize %></b></span>
+                      <% end %>
+                      <br>
+                    </div>
+                  <% end %>
+              <!-- </div> -->
+            </div>
           </div>
         </div>
         <div class="row vertical-padding">
