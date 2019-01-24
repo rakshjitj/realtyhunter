@@ -107,8 +107,8 @@ class SalesListingsController < ApplicationController
   # handles ajax call. uses latest data in modal
   def duplicate
     sales_listing_dup = @sales_unit.duplicate(
-      sales_listing_params[:unit][:building_unit],
-      sales_listing_params[:include_photos])
+      params[:sales_listing][:unit][:building_unit],
+      params[:sales_listing][:include_photos])
 
     if sales_listing_dup.valid?
       @sales_unit = sales_listing_dup
