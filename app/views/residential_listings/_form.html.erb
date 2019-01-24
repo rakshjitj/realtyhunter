@@ -133,7 +133,11 @@
         <%= f.fields_for @residential_unit.unit do |unit_form| %>
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
-            <%= unit_form.label :building_id, class: 'required' %>
+            <% if !@residential_unit.unit.building.nil? && current_user.id == @residential_unit.unit.building.point_of_contact %>
+              <%= unit_form.label :building_id, class: 'required', style: "display:none;" %>
+            <% else %>
+              <%= unit_form.label :building_id, class: 'required' %>
+            <% end %>
           </div>
           <div class="col-xs-9 col-md-4">
             <% if !@residential_unit.unit.building.nil? && current_user.id == @residential_unit.unit.building.point_of_contact %>
@@ -141,7 +145,7 @@
                 options_for_select(@buildings,
                   [@residential_unit.unit.building ? @residential_unit.unit.building.id : '']),
                 {prompt: "Choose one..."},
-                class: 'form-control', disabled: true,
+                class: 'form-control', style: "display:none;",
                 include_blank: true) %>
             <% else %>
               <%= unit_form.select(:building_id,
@@ -235,7 +239,7 @@
 
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
-            <%= f.label :maths_free, "Mths Free", class: 'required' %>
+            <%= f.label :maths_free, "Mths Free" %>
           </div>
           <div class="col-xs-9 col-md-4">
             <%= f.fields_for @residential_unit.unit do |unit_form| %>
@@ -266,7 +270,7 @@
         <div class="row vertical-margin-lg">
           <%= f.fields_for @residential_unit.unit do |unit_form| %>
             <div class="col-xs-3 col-md-2">
-              <%= unit_form.label :available_by, "Available", class: 'required' %>
+              <%= unit_form.label :available_by, "Available" %>
             </div>
             <div class="col-xs-9 col-md-4">
               <div class='input-group date datepicker'
@@ -790,7 +794,7 @@
           </div>
           <div class="col-xs-9 col-md-7">
             <div class="checkbox checkbox-warning checkbox-inline">
-            <% if !@residential_unit.unit.building.nil? && current_user.id == @residential_unit.unit.building.point_of_contact %>
+            <% if !current_user.is_management? && !@residential_unit.unit.building.nil? && current_user.id == @residential_unit.unit.building.point_of_contact %>
               <%= f.check_box :streeteasy_flag, class: "styled", disabled: true,
                   checked: @residential_unit ? @residential_unit.streeteasy_flag : false %>
             <% else %>
