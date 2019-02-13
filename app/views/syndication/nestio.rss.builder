@@ -60,6 +60,16 @@ xml.streeteasy :version => "1.6" do
             xml.exclusive
           end
 
+          if listing.building.landlord
+            xml.landlord_code listing.building.landlord.code
+          end
+
+          if listing.building
+            if listing.building.point_of_contact
+              xml.point_of_contact User.find(listing.building.point_of_contact).name
+            end
+          end
+
           if !listing.r_beds.nil?
             xml.bedrooms listing.r_beds.to_i
           elsif !listing.s_beds.nil?
@@ -289,6 +299,13 @@ xml.streeteasy :version => "1.6" do
           if @images[listing.unit_id]
             @images[listing.unit_id].each do |i|
               xml.photo url:i.file.url(:large), position: i.priority, description:""
+            end
+          end
+          if @images[listing.unit_id]
+            @images[listing.unit_id].each do |i|
+              if i.floorplan == true
+                xml.floorplan url:i.file.url(:large), description:""
+              end
             end
           end
         end
