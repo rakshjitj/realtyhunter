@@ -11,7 +11,7 @@
       class: 'form-control'}) %>
   <% else %>
     <%= select_tag(:neighborhood,
-      options_for_select(Neighborhood.where.not(parent_neighborhood_id: 0).for_borough(@building.sublocality).collect {|n| [n.name]},
+      options_for_select(Neighborhood.where.not(parent_neighborhood_id: 0).collect {|n| [n.name]},
       [@building.neighborhood ? @building.neighborhood.name : '']),
       {prompt: "Choose one...",
       class: 'form-control'}) %>
