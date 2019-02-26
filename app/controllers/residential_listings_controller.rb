@@ -232,6 +232,11 @@ class ResidentialListingsController < ApplicationController
     if params[:residential_listing][:streeteasy_flag_one] == "0"
       residential_listing.update(streeteasy_claim: true, updated_at: Time.now())
       residential_listing.unit.update(streeteasy_primary_agent_id: nil)
+      notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
+            defaults channel: "#default",
+                     username: "notifier"
+          end
+          notifier.ping "*LISTING* *UNCLAIMED* *ON* *SE* \n #{current_user.name} has unclaimed \n #{residential_listing.unit.building.street_number} #{residential_listing.unit.building.route}, # #{residential_listing.unit.building_unit} on SE. \n #{residential_listing.beds} Beds / #{residential_listing.baths} Baths \n $#{residential_listing.unit.rent} \n ---"
     end
 
     if params[:residential_listing][:streeteasy_flag_one] == "1"
