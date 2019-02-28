@@ -232,7 +232,7 @@ class ResidentialListingsController < ApplicationController
     if params[:residential_listing][:streeteasy_flag_one] == "0"
       residential_listing.update(streeteasy_claim: true, updated_at: Time.now())
       residential_listing.unit.update(streeteasy_primary_agent_id: nil)
-      notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
+      notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
             defaults channel: "#default",
                      username: "notifier"
           end
@@ -1092,7 +1092,11 @@ class ResidentialListingsController < ApplicationController
 
       # default to searching for active units
       if !params[:status]
-        params[:status] = "active".freeze
+        if action_name == "room_index"
+          params[:status] = "Rsonly/Active".freeze
+        else
+          params[:status] = "active".freeze
+        end
       end
       # parse neighborhood ids into strings for display in the view
       @selected_neighborhoods = []

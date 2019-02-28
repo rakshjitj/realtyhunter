@@ -77,7 +77,12 @@
       <% end %>
       <!-- ****** Point of Contact ****************************************** -->
       <% if !residential_listing.unit.building.point_of_contact.nil? %>
-        POC: <%= link_to User.find(residential_listing.unit.building.point_of_contact).name, user_path(residential_listing.unit.building.point_of_contact) %>
+        POC: 
+        <% if residential_listing.unit.building.point_of_contact == 230 || residential_listing.unit.building.point_of_contact == 278 || residential_listing.unit.building.point_of_contact == 417 %>
+          Contact Your Managers
+        <% else %>
+          <%= link_to User.find(residential_listing.unit.building.point_of_contact).name, user_path(residential_listing.unit.building.point_of_contact) %>
+        <% end %>
       <% else %>
         --
       <% end %>
