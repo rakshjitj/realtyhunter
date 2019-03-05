@@ -59,6 +59,29 @@
               <br>
             </div>
           </div>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-2">
+              <%= label_tag :primary_agent_for_rs, "Primary Agent for RS" %>
+            </div>
+            <div class="col-xs-9 col-md-4">
+                <%= select_tag :primary_agent_for_rs,
+                  options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
+                    [@residential_unit.unit.primary_agent_for_rs ? @residential_unit.unit.primary_agent_for_rs : '']),
+                  class: 'form-control', prompt: "Choose one..."
+                   %>
+            </div>
+          </div>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-2">
+              <%= label_tag :room_syndication, "Room Syndication" %>
+            </div>
+            <div class="col-xs-3">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= check_box_tag :room_syndication,true,false, checked: @residential_unit.room_syndication ? @residential_unit.room_syndication : false %>
+                <label></label>
+              </div>
+            </div>
+          </div>
           <%#= file_field_tag :unit_image %>
           <div style="clear: both;"></div>
             <% co = 1 %>
@@ -81,10 +104,10 @@
                 <%= r.hidden_field :name, value: "Room #{co.to_s(26).tr("123456789abcdefghijklmnopq", "ABCDEFGHIJKLMNOPQRSTUVWXYZ")}" %>
                 <div class="row vertical-margin-lg">
                     <div class="col-xs-3 col-md-2">
-                      <%= r.label :rent %>
+                      <%= r.label :rent, class: 'required' %>
                     </div>
                     <div class="col-xs-9 col-md-4">
-                      <%= r.text_field :rent, class: 'form-control' %>
+                      <%= r.text_field :rent, class: 'form-control', :required => true %>
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -101,13 +124,21 @@
                 </div>
                 <div class="row vertical-margin-lg" style="margin-bottom: 20px;border-bottom: 2px solid #ddd;">
                     <div class="col-xs-3 col-md-2">
-                      <%= r.label :file %>
+                      <% if room.images.count > 0 %>
+                        <%= r.label :file %>
+                      <% else %>
+                        <%= r.label :file, class: 'required' %>
+                      <% end %>
                     </div>
                     <div class="col-md-12">
                       <%#= file_field_tag :image, multiple: true %>
                       <%#= r.file_field "images[]", multiple: true, class: 'form-control' %>
                       <div class="col-xs-9 col-md-4">
-                        <%= r.file_field :file, multiple: true, class: 'form-control' %>
+                        <% if room.images.count > 0 %>
+                          <%= r.file_field :file, multiple: true, class: 'form-control' %>
+                        <% else %>
+                          <%= r.file_field :file, multiple: true, class: 'form-control', required: true %>
+                        <% end %>
                       </div>
                       <br><br>
                       <% if room.images.present? %>

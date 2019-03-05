@@ -89,6 +89,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'buildings/mass_edit/:id' => "buildings#mass_edit", as: :mass_edit
+  post 'buildings/mass_edit_update/:id' => "buildings#mass_edit_update", as: :mass_edit_update
   resources :buildings, concerns: [:images_uploadable, :documents_uploadable] do
     get :autocomplete_building_formatted_street_address, :on => :collection
     member do
@@ -256,6 +258,7 @@ Rails.application.routes.draw do
       get 'trulia'
       get 'nestio'
       get 'dotsignal'
+      get 'hotpad'
       get 'aparment'
     end
   end

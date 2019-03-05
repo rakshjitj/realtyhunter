@@ -65,6 +65,11 @@ module SyndicationInterface
 		pull_data(company_id, search_params)
 	end
 
+	def hotpad_listings(company_id, search_params)
+		search_params[:is_hotpad] = 1
+		pull_data(company_id, search_params)
+	end
+
 	def dotsignal_listings(company_id, search_params)
 		search_params[:is_dotsignal] = 1
 		pull_data(company_id, search_params)
@@ -88,6 +93,19 @@ left join sales_listings on units.id = sales_listings.unit_id')
 		# as more of different "frontend" for our listings. Ignore the syndication status flag in their case.
 		if is_true?(search_params[:is_nestio])
 			listings = listings.where('units.status IN (?)',
+					[Unit.statuses["active"], Unit.statuses["pending"]])
+		else
+			listings = listings.where('units.status IN (?) OR units.syndication_status = ?',
+					[Unit.statuses["active"], Unit.statuses["pending"]],
+					Unit.syndication_statuses['Force syndicate'])
+				.where('units.syndication_status IN (?)', [
+					Unit.syndication_statuses['Syndicate if matches criteria'],
+					Unit.syndication_statuses['Force syndicate']
+				])
+		end
+
+		if is_true?(search_params[:is_hotpad])
+			listings = listings.where('units.status IN (?) OR (residential_listings.room_syndication = TRUE AND units.status = 3)',
 					[Unit.statuses["active"], Unit.statuses["pending"]])
 		else
 			listings = listings.where('units.status IN (?) OR units.syndication_status = ?',
@@ -132,6 +150,10 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			listings = listings.where('units.primary_agent_id > 0 OR units.streeteasy_primary_agent_id > 0')
 		end
 
+		# if is_true?(search_params[:room_syndication])
+		# 	listings = listings.where("residential_listings.room_syndication = TRUE")
+		# end
+
 		# naked requires all no-fee listings to be exposed
 		# so we have to filter out the non-exclusive ones on our end
 		if is_true?(search_params[:has_fee_exclusive])
@@ -160,7 +182,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 
 		listings = listings
 			.select('units.id', 'units.building_unit', 'units.status', 'units.available_by',
-			'units.listing_id', 'units.updated_at', 'units.rent',
+			'units.listing_id', 'units.updated_at', 'units.rent', 'units.streeteasy_unit' ,
 			'units.streeteasy_listing_email', 'units.streeteasy_listing_number',
 			'buildings.id as building_id',
 			'buildings.administrative_area_level_2_short',
@@ -179,7 +201,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'residential_listings.has_fee', 'residential_listings.beds as r_beds',
 			'residential_listings.baths as r_baths', 'residential_listings.description',
 			'residential_listings.total_room_count as r_total_room_count',
-			'residential_listings.floor',
+			'residential_listings.floor', 'residential_listings.room_syndication',
 			'residential_listings.tenant_occupied as r_tenant_occupied',
 			'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_flag_one',
 			'residential_listings.naked_apartment',
@@ -194,7 +216,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'units.primary_agent_id',
 			'units.primary_agent2_id',
 			'units.streeteasy_primary_agent_id',
-			'units.public_url',
+			'units.public_url', 'units.primary_agent_for_rs',
 			'units.exclusive')
 
 		# puts "\n\n\n****** #{listings.length}"
