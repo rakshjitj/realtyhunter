@@ -279,14 +279,6 @@ xml.streeteasy :version => "1.6" do
 				# 	end
 	   #          end
 	            if !listing.primary_agent_for_rs.nil?
-	            	xml.agent id: 114 do
-	                xml.name "Myspace NYC"
-	                xml.email "info+streeteasy@myspacenyc.com"
-	                xml.lead_email "info+streeteasy@myspacenyc.com"
-	                xml.phone_numbers do
-	                  xml.office "9292748181"
-	                end
-	              end
 	              	agent = User.find(listing.primary_agent_for_rs)
 						xml.agent id: agent.id do
 							xml.name agent.name
@@ -305,34 +297,14 @@ xml.streeteasy :version => "1.6" do
 						end
 						end
 				else
-					if !listing.primary_agent_id.nil?
-						xml.agent id: 114 do
+					xml.agent id: 114 do
 		                xml.name "Myspace NYC"
 		                xml.email "info+streeteasy@myspacenyc.com"
 		                xml.lead_email "info+streeteasy@myspacenyc.com"
 		                xml.phone_numbers do
 		                  xml.office "9292748181"
 		                end
-		              end
-		              @primary_agents[listing.unit_id].each do |agent|
-							xml.agent id: agent.id do
-								xml.name agent.name
-								xml.company @company.name
-								if @agent_images[agent.id]
-									xml.photo url:@agent_images[agent.id].file.url(:large)
-								end
-							  # xml.url agent.public_url
-							xml.email agent.streeteasy_email
-							xml.lead_email agent.streeteasy_email
-							xml.phone_numbers do
-								xml.main agent.streeteasy_mobile_number
-								xml.office agent.office_telephone
-								xml.cell agent.streeteasy_mobile_number
-								xml.fax agent.office_fax
-							end
-							end
-						end
-					end
+	              	end
 	            end
 				# if listing.residential_listing.streeteasy_flag_one == true
 				# 	if listing.streeteasy_primary_agent_id
