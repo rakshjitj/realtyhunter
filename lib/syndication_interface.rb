@@ -105,8 +105,10 @@ left join sales_listings on units.id = sales_listings.unit_id')
 		end
 
 		if is_true?(search_params[:is_hotpad])
-			listings = listings.where('units.status IN (?) OR (residential_listings.room_syndication = TRUE AND units.status = 3)',
-					[Unit.statuses["active"], Unit.statuses["pending"]])
+			#abort listings.where("residential_listings.roomshare_department = TRUE").count.inspect
+			#listings = listings.where('units.status IN (?) OR (residential_listings.room_syndication = TRUE AND units.status = 3)',
+					#[Unit.statuses["active"], Unit.statuses["pending"]])
+			listings = listings.where("residential_listings.roomshare_department = TRUE AND residential_listings.room_syndication = TRUE")
 		else
 			listings = listings.where('units.status IN (?) OR units.syndication_status = ?',
 					[Unit.statuses["active"], Unit.statuses["pending"]],
