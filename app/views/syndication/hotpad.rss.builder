@@ -38,11 +38,7 @@ xml.streeteasy :version => "1.6" do
 
 			# listing type
 			if listing.r_id
-				if listing.status == "rsonly"
-					@ptype = "room"
-				else
-					@ptype = "rental"
-				end
+				@ptype = "room"
 			elsif listing.s_id
 				@ptype = "sale"
 			end
