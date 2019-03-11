@@ -130,6 +130,13 @@ xml.streeteasy :version => "1.6" do
 					# streeteasy has their own approved list of amenities
 					# doorman, gym, pool, elevator, garage, parking, balcony, storage, patio, fireplace
 					# washerDryer, dishwasher, furnished, pets, other
+					xml.buildingType 1
+					if listing.lease_start
+						xml.leaseTermMonths listing.lease_start
+					end
+					if listing.maths_free
+						xml.monthsFree listing.maths_free
+					end
 					xml.amenities do
 
 						@other_amenities = []

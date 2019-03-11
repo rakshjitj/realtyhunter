@@ -217,7 +217,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'units.id as unit_id',
 			'units.primary_agent_id',
 			'units.primary_agent2_id',
-			'units.streeteasy_primary_agent_id',
+			'units.streeteasy_primary_agent_id','units.maths_free',
 			'units.public_url', 'units.primary_agent_for_rs',
 			'units.exclusive')
 
