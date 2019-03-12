@@ -259,6 +259,7 @@ Rails.application.routes.draw do
       get 'nestio'
       get 'dotsignal'
       get 'hotpad'
+      get 'rooms'
       get 'aparment'
     end
   end

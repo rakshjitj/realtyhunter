@@ -435,103 +435,105 @@
     </thead>
     <tbody class="residential_units_table_body">
       <% @residential_listings.each do |res_list| %>
+        <% if res_list.unit.status == "rsonly" || res_list.unit.status == "active" %>
         <%#= image_tag res_list.unit.images.first.file(:large) %>
-        <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= res_list.unit.listing_id %>" >
-          <td class="img-col">  
-            <% if !res_list.unit.images.first.nil? %>
-              <%= link_to image_tag(res_list.unit.images.first.file(:thumb), :alt => "res_list.unit_id", :class => "css"), res_list %>
-            <% else %>
-              <%= link_to(image_tag("listing_soon_thumb.png".freeze, alt: "Image coming soon",
-                  class: 'img-responsive',
-                  size: "100x100"), res_list) %>
-            <% end %>
-          </td>
-          <td><%#= res_list.street_address %>
-            <%= link_to "#{res_list.street_address}".freeze, room_path(res_list.id) %><br />
-              <% if res_list.unit.building.neighborhood %>
-                 <small><%= res_list.unit.building.neighborhood.name %></small>
-              <% end %>
-            </td>
-            <td>
-              <% if res_list.unit.building_unit %>
-                <%= res_list.unit.building_unit %>
-              <% end %>
-            </td>
-            <td>
-              <%= beds_as_str(res_list) %> / <%= baths_as_str(res_list) %>
-            </td>
-            <td>
-              <% if res_list.unit.rent %>
-                $<%= res_list.unit.rent %>
-              <% end %>
-              <% i = 1 %>
-              <% res_list.rooms.each do |room| %>
-                
-                <p><%= "Room " + i.to_s(26).tr("123456789abcdefghijklmnopq", "ABCDEFGHIJKLMNOPQRSTUVWXYZ") %> :
-                  <p>$<%= room.rent %>
-                    <% if room.status == 0 %>
-                      <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
-                    <% elsif room.status == 1 %>
-                      <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
-                    <% elsif room.status == 2 %>
-                      <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                    <% end %>
-                  </p>
-                </p>
-                <% i = i + 1 %>
-              <% end %>
-            </td>
-            <td>
-              <% if res_list.unit.available_by %>
-                <%= res_list.unit.available_by.strftime("%b %d") %>
+          <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= res_list.unit.listing_id %>" >
+            <td class="img-col">  
+              <% if !res_list.unit.images.first.nil? %>
+                <%= link_to image_tag(res_list.unit.images.first.file(:thumb), :alt => "res_list.unit_id", :class => "css"), res_list %>
               <% else %>
-                -
+                <%= link_to(image_tag("listing_soon_thumb.png".freeze, alt: "Image coming soon",
+                    class: 'img-responsive',
+                    size: "100x100"), res_list) %>
               <% end %>
             </td>
-            <td>
-              <% if res_list.unit.building.landlord.code %>
-                <%= res_list.unit.building.landlord.code %>
-              <% end %>
-            </td>
-            <!-- <td>
-              <%# if res_list.unit.streeteasy_primary_agent_id %>
-                <%#= User.find(res_list.unit.streeteasy_primary_agent_id).name %>
-              <%# else %>
+            <td><%#= res_list.street_address %>
+              <%= link_to "#{res_list.street_address}".freeze, room_path(res_list.id) %><br />
+                <% if res_list.unit.building.neighborhood %>
+                   <small><%= res_list.unit.building.neighborhood.name %></small>
+                <% end %>
+              </td>
+              <td>
+                <% if res_list.unit.building_unit %>
+                  <%= res_list.unit.building_unit %>
+                <% end %>
+              </td>
+              <td>
+                <%= beds_as_str(res_list) %> / <%= baths_as_str(res_list) %>
+              </td>
+              <td>
+                <% if res_list.unit.rent %>
+                  $<%= res_list.unit.rent %>
+                <% end %>
+                <% i = 1 %>
+                <% res_list.rooms.each do |room| %>
+                  
+                  <p><%= "Room " + i.to_s(26).tr("123456789abcdefghijklmnopq", "ABCDEFGHIJKLMNOPQRSTUVWXYZ") %> :
+                    <p>$<%= room.rent %>
+                      <% if room.status == 0 %>
+                        <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
+                      <% elsif room.status == 1 %>
+                        <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
+                      <% elsif room.status == 2 %>
+                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                      <% end %>
+                    </p>
+                  </p>
+                  <% i = i + 1 %>
+                <% end %>
+              </td>
+              <td>
+                <% if res_list.unit.available_by %>
+                  <%= res_list.unit.available_by.strftime("%b %d") %>
+                <% else %>
+                  -
+                <% end %>
+              </td>
+              <td>
+                <% if res_list.unit.building.landlord.code %>
+                  <%= res_list.unit.building.landlord.code %>
+                <% end %>
+              </td>
+              <!-- <td>
+                <%# if res_list.unit.streeteasy_primary_agent_id %>
+                  <%#= User.find(res_list.unit.streeteasy_primary_agent_id).name %>
+                <%# else %>
 
-              <%# end %>
-            </td> -->
-            <!-- <td>
-              <%# if res_list.unit.building.landlord.listing_agent %>
-                <%#= res_list.unit.building.landlord.listing_agent.name %>
-              <%# else %>
+                <%# end %>
+              </td> -->
+              <!-- <td>
+                <%# if res_list.unit.building.landlord.listing_agent %>
+                  <%#= res_list.unit.building.landlord.listing_agent.name %>
+                <%# else %>
 
-              <%# end %>
-            </td> -->
-            <!-- <td>
-              <%# if res_list.unit.building.landlord.listing_agent %>
-                <%#= res_list.unit.building.landlord.listing_agent.mobile_phone_number %>
-              <%# else %>
+                <%# end %>
+              </td> -->
+              <!-- <td>
+                <%# if res_list.unit.building.landlord.listing_agent %>
+                  <%#= res_list.unit.building.landlord.listing_agent.mobile_phone_number %>
+                <%# else %>
 
-              <%# end %>
-            </td> -->
-            <td>
-              <%= time_ago_in_words(res_list.updated_at) %>
-            </td>
-            <td>
-              <% if res_list.unit.status == "active" %>
-                <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
-              <% elsif res_list.unit.status == "pending" %>
-                <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
-              <% elsif res_list.unit.status == "off" %>
-                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-              <% elsif res_list.unit.status == "rsonly" %>
-                <span class="glyphicon glyphicon-arrow-up blue" aria-hidden="true"></span>
-              <% end %>
-            </td>
-            <td>
-              <%= link_to "Edit", edit_room_path(res_list) %>
-            </td>
-          </tr>
+                <%# end %>
+              </td> -->
+              <td>
+                <%= time_ago_in_words(res_list.updated_at) %>
+              </td>
+              <td>
+                <% if res_list.unit.status == "active" %>
+                  <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
+                <% elsif res_list.unit.status == "pending" %>
+                  <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
+                <% elsif res_list.unit.status == "off" %>
+                  <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                <% elsif res_list.unit.status == "rsonly" %>
+                  <span class="glyphicon glyphicon-arrow-up blue" aria-hidden="true"></span>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to "Edit", edit_room_path(res_list) %>
+              </td>
+            </tr>
+          <% end %>
       <% end %>
   </tbody>
 </table>
