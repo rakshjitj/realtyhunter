@@ -468,7 +468,7 @@
                 <% i = 1 %>
                 <% res_list.rooms.each do |room| %>
                   
-                  <p><%= "Room " + i.to_s(26).tr("123456789abcdefghijklmnopq", "ABCDEFGHIJKLMNOPQRSTUVWXYZ") %> :
+                  <p><%= room.name %> :
                     <p>$<%= room.rent %>
                       <% if room.status == 0 %>
                         <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
