@@ -61,6 +61,8 @@ xml.streeteasy :version => "1.6" do
 					else
 						xml.zipcode listing.postal_code
 					end
+					xml.latitude listing.building.lat
+					xml.longitude listing.building.lng
 					xml.neighborhood listing.neighborhood_name
 				end
 
@@ -91,6 +93,8 @@ xml.streeteasy :version => "1.6" do
 			        if listing.s_total_room_count
 			        	xml.totalrooms listing.s_total_room_count.to_i
 			        end
+
+			        xml.roomsLeft listing.residential_listing.rooms.where(status: 0).count
 
 					baths = nil
 					if !listing.r_baths.nil?
