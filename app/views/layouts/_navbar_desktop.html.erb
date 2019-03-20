@@ -36,9 +36,7 @@
           <% if current_user.is_streeteasy_agent? %>
             <li><%= link_to "Claim for Streeteasy","javascript:void(0);", class: "claim_load" %></li>
           <% end %>
-          <% if current_user.is_special_agent? || current_user.is_streeteasy_agent? %>
-            <li><%= link_to "My Streeteasy List", individual_se_list_path %></li>
-          <% end %>
+
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Rooms
               <b class="caret"></b>
@@ -154,6 +152,9 @@
                 <li><%= link_to "Add New Member", admin_new_users_path %></li>
               <% elsif current_user.is_company_admin? %>
                 <li><%= link_to "Add Office", new_company_office_path(current_user.company) %></li>
+              <% end %>
+              <% if current_user.is_special_agent? || current_user.is_streeteasy_agent? %>
+                <li><%= link_to "My Streeteasy List", individual_se_list_path %></li>
               <% end %>
               <li class="divider"></li>
               <li>
