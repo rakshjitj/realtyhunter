@@ -465,12 +465,13 @@ class ResidentialListingsController < ApplicationController
     end
 
     if params[:residential_listing][:roomshare_department] == "1"
-      if !@residential_listing.rooms.blank?
-        @residential_listing.rooms.each do |room|
+      if @residential_listing.rooms.blank?
+        for i in 1..params[:residential_listing][:beds].to_i
+          room_name = "Room #{i.to_s(26).tr("123456789abcdefghijklmnopq", "ABCDEFGHIJKLMNOPQRSTUVWXYZ")}"
           rent = (params[:residential_listing][:unit][:gross_price].to_i * (params[:residential_listing][:lease_start].to_i - params[:residential_listing][:unit][:maths_free].to_f)) / params[:residential_listing][:lease_start].to_i
           rent = rent.round
           rent = (rent / params[:residential_listing][:beds].to_i)
-          room.update(rent: rent, updated_at: Time.now())
+          room = Room.create(name: room_name, rent: rent, status: 0, residential_listing_id: params[:id].to_i)
         end
       end
     end
@@ -738,7 +739,7 @@ class ResidentialListingsController < ApplicationController
 
   def individual_se_list
     @residential_listings = []
-    
+
     Unit.where(streeteasy_primary_agent_id: current_user.id, archived: false).each do |unit|
       if unit.residential_listing.streeteasy_flag_one == true
         @residential_listings << unit.residential_listing
