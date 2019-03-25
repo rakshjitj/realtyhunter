@@ -65,7 +65,9 @@ xml.streeteasy :version => "1.6" do
 				end
 
 				xml.details do
-					xml.price listing.rent
+					if !listing.residential_listing.rooms.blank?
+						xml.price listing.residential_listing.rooms.each.map(&:rent).min
+					end
 
 				 	if !listing.has_fee
 				 		xml.noFee
