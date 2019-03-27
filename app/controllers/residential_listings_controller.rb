@@ -466,6 +466,7 @@ class ResidentialListingsController < ApplicationController
 
     if params[:residential_listing][:roomshare_department] == "1"
       if @residential_listing.rooms.blank?
+        @residential_listing.unit.update(syndication_status: 1)
         for i in 1..params[:residential_listing][:beds].to_i
           room_name = "Room #{i.to_s(26).tr("123456789abcdefghijklmnopq", "ABCDEFGHIJKLMNOPQRSTUVWXYZ")}"
           rent = (params[:residential_listing][:unit][:gross_price].to_i * (params[:residential_listing][:lease_start].to_i - params[:residential_listing][:unit][:maths_free].to_f)) / params[:residential_listing][:lease_start].to_i
