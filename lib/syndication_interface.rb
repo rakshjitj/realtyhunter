@@ -116,7 +116,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			listings = listings.where("residential_listings.roomshare_department = TRUE AND residential_listings.room_syndication = TRUE")
 		else
 			listings = listings.where('units.status IN (?) OR units.syndication_status = ?',
-					[Unit.statuses["active"], Unit.statuses["pending"]],
+					[Unit.statuses["active"], Unit.statuses["pending"], Unit.statuses["rsonly"]],
 					Unit.syndication_statuses['Force syndicate'])
 				.where('units.syndication_status IN (?)', [
 					Unit.syndication_statuses['Syndicate if matches criteria'],

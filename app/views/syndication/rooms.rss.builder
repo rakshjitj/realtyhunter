@@ -111,6 +111,17 @@ xml.streeteasy :version => "1.6" do
 						end
 					end
 
+					if !listing.residential_listing.rooms.blank?
+						xml.availableRooms do
+							listing.residential_listing.rooms.where(status: 0).each do |room|
+								xml.availableRoom do
+									xml.roomName room.name
+									xml.roomPrice room.rent
+								end
+							end
+						end
+					end
+
 					xml.availableOn listing.available_by # rentals only
 
 					if listing.r_id
