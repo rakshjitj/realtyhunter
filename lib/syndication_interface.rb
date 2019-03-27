@@ -128,7 +128,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			#abort listings.where("residential_listings.roomshare_department = TRUE").count.inspect
 			#listings = listings.where('units.status IN (?) OR (residential_listings.room_syndication = TRUE AND units.status = 3)',
 					#[Unit.statuses["active"], Unit.statuses["pending"]])
-			listings = listings.where("residential_listings.roomshare_department = TRUE AND units.status IN (?)", [0, 1])
+			listings = listings.where("residential_listings.roomshare_department = TRUE AND units.status IN (?)", [0, 3])
 		else
 			listings = listings.where('units.status IN (?) OR units.syndication_status = ?',
 					[Unit.statuses["active"], Unit.statuses["pending"]],
