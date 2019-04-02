@@ -130,14 +130,15 @@
 
     <!-- ****** BEDS/BATHS ****************************************** -->
     <td>
-      Beds: <%= beds_as_str(residential_listing) %><br>
-      Baths: <%= baths_as_str(residential_listing) %><br>
       <!-- ****** AVAILBLE_BY ****************************************** -->
       <% if residential_listing.available_by %>
         Avail: <%= residential_listing.available_by.strftime("%b %d") %>
       <% else %>
         -
       <% end %>
+      <br>
+      Beds: <%= beds_as_str(residential_listing) %><br>
+      Baths: <%= baths_as_str(residential_listing) %><br>
     </td>
 
     <!-- ****** PRICE ****************************************** -->
