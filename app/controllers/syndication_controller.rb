@@ -32,6 +32,10 @@
     set_listings
   end
 
+  def rooms
+    set_listings
+  end
+
   def set_listings
     @company = Company.find(syndication_params[:id])
     if @company
@@ -47,6 +51,8 @@
         @listings = dotsignal_listings(@company.id, {})
       elsif syndication_params[:action] == 'hotpad'
         @listings = hotpad_listings(@company.id, syndication_params)
+      elsif syndication_params[:action] == 'rooms'
+        @listings = rooms_listings(@company.id, syndication_params)
       elsif syndication_params[:action] == 'aparment'
         @listings = aparment_listings(@company.id, {})
       end

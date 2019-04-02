@@ -463,6 +463,20 @@ class ResidentialListingsController < ApplicationController
         params[:residential_listing][:unit][:gross_price] = 0
       end
     end
+
+    if params[:residential_listing][:roomshare_department] == "1"
+      if @residential_listing.rooms.blank?
+        @residential_listing.unit.update(syndication_status: 1)
+        for i in 1..params[:residential_listing][:beds].to_i
+          room_name = "Room #{i.to_s(26).tr("123456789abcdefghijklmnopq", "ABCDEFGHIJKLMNOPQRSTUVWXYZ")}"
+          rent = (params[:residential_listing][:unit][:gross_price].to_i * (params[:residential_listing][:lease_start].to_i - params[:residential_listing][:unit][:maths_free].to_f)) / params[:residential_listing][:lease_start].to_i
+          rent = rent.round
+          rent = (rent / params[:residential_listing][:beds].to_i)
+          room = Room.create(name: room_name, rent: rent, status: 0, residential_listing_id: params[:id].to_i)
+        end
+      end
+    end
+
     #Start Slack Message when status change neighbourhood wise channel
     if @residential_unit.unit.status != params[:residential_listing][:unit][:status].downcase
       #Slack Message when status change from off to active start
@@ -721,6 +735,16 @@ class ResidentialListingsController < ApplicationController
         .order("formatted_street_address ASC")
         .collect {|b| [b.street_address, b.id]}
       render 'edit'
+    end
+  end
+
+  def individual_se_list
+    @residential_listings = []
+
+    Unit.where(streeteasy_primary_agent_id: current_user.id, archived: false).each do |unit|
+      if unit.residential_listing.streeteasy_flag_one == true
+        @residential_listings << unit.residential_listing
+      end
     end
   end
 

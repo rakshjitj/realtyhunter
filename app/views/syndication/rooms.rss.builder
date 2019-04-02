@@ -61,13 +61,13 @@ xml.streeteasy :version => "1.6" do
 					else
 						xml.zipcode listing.postal_code
 					end
+					xml.latitude listing.building.lat
+					xml.longitude listing.building.lng
 					xml.neighborhood listing.neighborhood_name
 				end
 
 				xml.details do
-					if !listing.residential_listing.rooms.blank?
-						xml.price listing.residential_listing.rooms.each.map(&:rent).min
-					end
+					xml.price listing.rent
 
 				 	if !listing.has_fee
 				 		xml.noFee
@@ -94,6 +94,8 @@ xml.streeteasy :version => "1.6" do
 			        	xml.totalrooms listing.s_total_room_count.to_i
 			        end
 
+			        xml.roomsLeft listing.residential_listing.rooms.where(status: 0).count
+
 					baths = nil
 					if !listing.r_baths.nil?
 						baths = listing.r_baths
@@ -106,6 +108,17 @@ xml.streeteasy :version => "1.6" do
 						decimal_idx = baths.to_s.index('.5')
 						if !decimal_idx.nil?
 							xml.half_baths 1
+						end
+					end
+
+					if !listing.residential_listing.rooms.blank?
+						xml.availableRooms do
+							listing.residential_listing.rooms.where(status: 0).each do |room|
+								xml.availableRoom do
+									xml.roomName room.name
+									xml.roomPrice room.rent
+								end
+							end
 						end
 					end
 

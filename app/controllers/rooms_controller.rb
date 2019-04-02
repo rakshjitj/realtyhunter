@@ -29,7 +29,12 @@ class RoomsController < ApplicationController
     @residential_unit = ResidentialListing.find(params[:id])
     @residential_unit.update(rooms_description: params[:unit_description], room_syndication: params[:room_syndication])
     #abort params[:unit_status].inspect
-    @residential_unit.unit.update(status: params[:unit_status].downcase, primary_agent_for_rs: params[:primary_agent_for_rs], rent: params[:unit_rent])
+    if params[:room_syndication] == "true"
+      #for default force syndication
+      @residential_unit.unit.update(status: params[:unit_status].downcase, primary_agent_for_rs: params[:primary_agent_for_rs], rent: params[:unit_rent], syndication_status: 1)
+    else
+      @residential_unit.unit.update(status: params[:unit_status].downcase, primary_agent_for_rs: params[:primary_agent_for_rs], rent: params[:unit_rent])
+    end
     #abort params[:unit_image].nil?.inspect
     # if !params[:unit_image].nil?
     #   @residential_unit.unit.images.create(file: params[:unit_image], unit_id: @residential_unit.unit.id)
