@@ -528,6 +528,9 @@
                 <% elsif res_list.unit.status == "rsonly" %>
                   <span class="glyphicon glyphicon-arrow-up blue" aria-hidden="true"></span>
                 <% end %>
+                <% if res_list.room_syndication == true %>
+                  <span class="glyphicon glyphicon-arrow-up purple" aria-hidden="true"></span>
+                <% end %>
               </td>
               <td>
                 <%= link_to "Edit", edit_room_path(res_list) %>
