@@ -162,3 +162,89 @@ $(document).on('keyup',function(evt) {
 });
 
 document.addEventListener('turbolinks:load', Landlords.ready);
+
+
+// var counter = 1;
+
+// function addInput(divName, template) {  
+//   var newdiv = document.createElement('div');
+//   newdiv.innerHTML = document.getElementById(divName).innerHTML;
+//   newdiv.className = 'added';
+//   document.getElementById(template).appendChild(newdiv);
+//   counter++;
+
+//   var selectElements = document.querySelectorAll('input');
+//   for (var i = 0; i < selectElements.length; i++) {
+//       console.log(selectElements);
+//       // selectElements[i].name = 'name' + i;
+//   }
+// }
+
+// function removeInput(obj) {
+//   if (obj.parentNode.className == 'added') {
+//       obj.parentNode.parentNode.removeChild(obj.parentNode);
+//       counter--;
+//   }
+// }
+
+$(document).ready(function() {
+    if ($("#total_count_contacts").val() == ""){
+      var treeCount = 1;
+    }
+    else{
+      var treeCount = $("#total_count_contacts").val();
+    }
+    $('.button-add').click(function(){
+        //we select the box clone it and insert it after the box
+        $('.box.template').clone()
+                          .each(function(){
+                            $("#name").last().attr("name", "name_" + treeCount);
+                            $("#email").last().attr("name", "email_" + treeCount);
+                            $("#phone").last().attr("name", "phone_" + treeCount);
+                            $("#position").last().attr("name", "position_" + treeCount);
+                          })
+                          .show()
+                          .removeClass("template")
+                          .insertAfter(".box:last");
+                          treeCount ++;
+                          $("#total_count_contacts").attr("value", ""+ treeCount)
+    }).trigger("click");
+    
+    $('.button-added').click(function(){
+        //we select the box clone it and insert it after the box
+        $('.box.template-for-clone').clone()
+                          .each(function(){
+                            $("#name").last().attr("name", "name_" + treeCount);
+                            $("#email").last().attr("name", "email_" + treeCount);
+                            $("#phone").last().attr("name", "phone_" + treeCount);
+                            $("#position").last().attr("name", "position_" + treeCount);
+                          })
+                          .show()
+                          .removeClass("template-for-clone")
+                          .insertAfter(".box:last");
+                          treeCount ++;
+                          $("#total_count_contacts").attr("value", ""+ treeCount)
+    }).trigger("click");
+    
+    $(document).on("click", ".button-remove", function() {
+        $(this).closest(".box").remove();
+        treeCount = treeCount - 1;
+        $("#total_count_contacts").attr("value", ""+ treeCount)
+    });
+});
+
+function delete_contact_from_db(id) {
+  var retVal = confirm("Do you want to Delete?");
+  if( retVal == true ) {
+    $.ajax({
+      url: "delete_contact/?ll_cont_id=" + id,
+      type: 'GET',
+      success: function(result){
+    }});
+      var cls = ".del_cont_" + id
+      $(cls).remove(); 
+      return true;
+  } else {
+    return false;
+  }
+}

@@ -76,6 +76,50 @@ class LandlordsController < ApplicationController
   # PATCH/PUT /landlords/1
   # PATCH/PUT /landlords/1.json
   def update
+    if !@landlord.landlord_contacts.blank?
+      #abort @landlord.landlord_contacts.inspect
+      count = params[:total_count_contacts].to_i - 2
+      for i in 0..count
+        update_name = :"name_#{i}"
+        #abort update_name.inspect
+        update_email = :"email_#{i}"
+        update_phone = :"phone_#{i}"
+        update_position = :"position_#{i}"
+        if (i <= (@landlord.landlord_contacts.count - 1))
+          update_landlord_cont = :"ll_contact_id_#{i}"
+          @landlord_contact = LandlordContact.find(params[update_landlord_cont])
+          @landlord_contact.update(name: params[update_name], email: params[update_email], phone: params[update_phone], position: params[update_position],landlord_id: params[:id])
+        else
+          LandlordContact.create(name: params[update_name], email: params[update_email], phone: params[update_phone], position: params[update_position],landlord_id: params[:id])
+        end
+      end
+      count_update = @landlord.landlord_contacts.count - 1
+      # for j in (count_update + 1)..count
+      #   #abort j.inspect
+      #   update_name = :"name_#{j}"
+      #   update_email = :"email_#{j}"
+      #   update_phone = :"phone_#{j}"
+      #   update_position = :"position_#{j}"
+      #   LandlordContact.create(name: params[update_name], email: params[update_email], phone: params[update_phone], position: params[update_position],landlord_id: params[:id])
+      # end
+      # for i in 0..count_update
+      #   update_name = :"name_#{i}"
+      #   update_email = :"email_#{i}"
+      #   update_phone = :"phone_#{i}"
+      #   update_position = :"position_#{i}"
+      #   LandlordContact.update(name: params[update_name], email: params[update_email], phone: params[update_phone], position: params[update_position],landlord_id: params[:id])
+      # end
+    else
+      count = params[:total_count_contacts].to_i - 2
+      for i in 0..count
+        update_name = :"name_#{i}"
+        update_email = :"email_#{i}"
+        update_phone = :"phone_#{i}"
+        update_position = :"position_#{i}"
+        LandlordContact.create(name: params[update_name], email: params[update_email], phone: params[update_phone], position: params[update_position],landlord_id: params[:id])
+      end
+    end
+
     if @landlord.update(format_params_before_save.merge({updated_at: Time.now}))
       Resque.enqueue(UpdateLandlord, @landlord.id) # send to Knack
       flash[:success] = "Landlord updated!"
@@ -83,6 +127,10 @@ class LandlordsController < ApplicationController
     else
       render 'edit'
     end
+  end
+
+  def delete_contact
+    LandlordContact.find(params[:ll_cont_id]).delete
   end
 
   # GET

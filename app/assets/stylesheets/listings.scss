@@ -87,3 +87,24 @@ and width so that it's middle content can expand to fill all available space */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
+.button-remove{
+  float: right;
+  color: red;
+}
+
+.button-added{
+  float: right;
+}
+
+.button-add{
+ float: right; 
+}
+
+.button-remove-db{
+  float: right;
+  color: red;
+}
+
+.template {
+    display: none;
+}

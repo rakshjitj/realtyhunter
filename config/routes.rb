@@ -197,6 +197,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get "landlords/:id/delete_contact" => "landlords#delete_contact", as: :delete_contact
   resources :landlords do
     get :autocomplete_landlord_code, :on => :collection
     collection do

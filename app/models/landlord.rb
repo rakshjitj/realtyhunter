@@ -4,6 +4,7 @@ class Landlord < ApplicationRecord
 	scope :unarchived, ->{where(archived: false)}
 
 	has_many :buildings, dependent: :destroy
+  has_many :landlord_contacts, dependent: :destroy
 	belongs_to :company #, touch: true
 	validates :company_id, presence: true
 

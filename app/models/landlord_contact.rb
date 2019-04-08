@@ -1,0 +1,2 @@
+class LandlordContact < ApplicationRecord
+end
