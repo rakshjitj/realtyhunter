@@ -27,13 +27,11 @@
 		  	<div class="row hidden-print">
 		  		<div class="col-xs-12 col-md-6 vertical-margin-lg">
 		  			<%= link_to 'View all', buildings_path %>
-						<% if current_user.is_management? || current_user.is_listings_manager? %>
-							| <%= link_to 'Edit', edit_building_path(@building) %> |
-							<%= link_to 'Add a Unit', new_residential_listing_path(building_id: @building.id) %>
-						<% end %>
-						<% if current_user.id == @building.point_of_contact %>
-							| <%= link_to 'Add a Unit', new_residential_listing_path(building_id: @building.id) %>
-						<% end %>
+					<% if current_user.is_management? || current_user.is_listings_manager? || current_user.id == @building.point_of_contact %>
+						| <%= link_to 'Edit', edit_building_path(@building) %> |
+						<%= link_to 'Add a Unit', new_residential_listing_path(building_id: @building.id) %>
+						| <%= link_to 'Mass Edit', mass_edit_path(@building) %>
+					<% end %>
 		  		</div>
 		  	</div><!-- row -->
 

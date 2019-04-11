@@ -99,6 +99,83 @@ class BuildingsController < ApplicationController
     end
   end
 
+  def mass_edit
+    @building = Building.find(params[:id])
+    if @building.units.where(status: 0, archived: false).blank?
+      flash[:info] = "No Active Unit available!"
+      redirect_to building_path(@building)
+    else
+    end
+  end
+
+  def mass_edit_update
+    @building = Building.find(params[:id])
+    all_selected_units = []
+    if !params[:price_cal].nil?
+      params[:price_cal].each do |price_cal|
+        all_selected_units << Unit.find(price_cal.to_i)
+      end
+    end
+    if !params[:rent].nil?
+      params[:rent].each do |rent|
+        all_selected_units << Unit.find(rent.to_i)
+      end
+    end
+    # @building = Building.find(params[:id])
+    # @building.units.where(status: 0).each do |unit|
+    i = 0
+    all_selected_units.each do |unit|
+      #abort params["price_cal"]["#{unit.id}"].inspect
+      if !params[:price_cal].nil?
+        if params["price_cal"]["#{unit.id}"] == "1"
+          #if !params["rent"]["#{unit.id}"].to_i.blank?
+            params[:rent] = (params["gross_price"]["#{unit.id}"].to_i * (params["lease_start"]["#{unit.id}"].to_i - params["mths_free"]["#{unit.id}"].to_f)) / params["lease_start"]["#{unit.id}"].to_i
+            params[:rent] = params[:rent].round
+            @price_slack_msg = "\n Unit #{i} \n #{unit.residential_listing.beds} Beds / #{unit.residential_listing.baths} Baths \n Price Changed from $#{unit.rent} to $#{params[:rent]}"
+            unit.update(rent: params[:rent], gross_price: params["gross_price"]["#{unit.id}"], maths_free: params["mths_free"]["#{unit.id}"], updated_at: Time.now())
+            unit.residential_listing.update(lease_start: params["lease_start"]["#{unit.id}"], lease_end: params["lease_end"]["#{unit.id}"], updated_at: Time.now())
+          #end
+          
+        end
+      end
+      if !params["available_by"]["#{unit.id}"].blank?
+        unit.update(available_by: Date::strptime(params["available_by"]["#{unit.id}"], "%m/%d/%Y"), updated_at: Time.now())
+  @available_by_slack_msg = "\n Unit #{i} \n #{unit.residential_listing.beds} Beds / #{unit.residential_listing.baths} Baths \n Available Date Updated"
+      end
+      if !params["point_of_contact"]["#{unit.id}"].blank?
+        @building.update(point_of_contact: params["point_of_contact"]["#{unit.id}"], updated_at: Time.now())
+  @poc_slack_msg = "\n Unit #{i} \n #{unit.residential_listing.beds} Beds / #{unit.residential_listing.baths} Baths \n Point of contact Updated"
+      end
+
+      if !params["primary_agent_id"]["#{unit.id}"].blank?
+        unit.update(primary_agent_id: params["primary_agent_id"]["#{unit.id}"], updated_at: Time.now())
+      end
+      i = i + 1
+    end
+    #Start Find all SE flag Checked
+    all_selected_se_units = []
+    if !params[:streeteasy_flag].nil?
+      params[:streeteasy_flag].each do |se|
+        all_selected_se_units << Unit.find(se.to_i)
+      end
+    end
+    #End Find all SE flag Checked
+    #Start Update all SE flag Checked
+    all_selected_se_units.each do |unit|
+      if params["streeteasy_flag"]["#{unit.id}"].present?
+        unit.update(primary_agent_id: params["primary_agent_id"]["#{unit.id}"], updated_at: Time.now())
+        unit.residential_listing.update(streeteasy_flag: true, updated_at: Time.now())
+      end
+    end
+    # notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
+    #         defaults channel: "#general",
+    #                  username: "notifier"
+    #       end
+    #       notifier.ping "*Listing* *Update* \n #{@building.street_number} #{@building.route} \n #{@building.neighborhood.name} #{@price_slack_msg if !@price_slack_msg.nil?} #{@available_by_slack_msg if !@available_by_slack_msg.nil?} #{@poc_slack_msg if !@poc_slack_msg.nil?} \n Changes made by #{current_user.name}"
+    #End Update all SE flag Checked
+    redirect_to building_path(params[:id])
+  end
+
   # PATCH/PUT /buildings/1
   # PATCH/PUT /buildings/1.json
   def update

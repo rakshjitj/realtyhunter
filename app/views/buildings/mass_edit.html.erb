@@ -1,0 +1,398 @@
+<div id="buildings" data-bldg-id="<%= @building.id %>" >
+
+<div class="panel panel-default">
+  <div class="panel-body">
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#basic-info" aria-controls="basic-info" role="tab" data-toggle="tab"><b>Mass Edit</b></a></li>
+  </ul>
+
+  <div class="tab-content">
+    <!-- ******************** second tabpanel - photos ******************** -->
+    <!-- For the photo panel, note that the only difference hinges on if the logged in user is a
+          photo manager or not. If they are, then this panel is active upon page load. Otherwise,
+          we default to having the 'basic info' tab active. In all other respects, the if/else below
+          is exactly the same. -->
+    <!-- ******************** first tabpanel - basic info ********************-->
+
+    <% if !current_user.is_photo_manager? %>
+    <div role="tabpanel" class="tab-pane fade in active" id="basic-info">
+      <%= form_tag mass_edit_update_url(@building), id: "mass_edit", onsubmit: "return validateForm()" %>
+        <%#= f.hidden_field :lock_version %>
+        <%#= render :partial => 'shared/error_messages', :locals => {:model => @building} %>
+        <table class="table table-striped table-hover table-condensed infinite-table-res table-mass">
+          <thead>
+            <tr>
+              <th>Unit</th>
+              <th>Price Calc</th>
+              <th>Net Price</th>
+              <th>Gross Price</th>
+              <th>Mths Free</th>
+              <th>Min Lease</th>
+              <th>Max Lease</th>
+              <th>Available</th>
+              <th>POC</th>
+              <th>Primary Agent</th>
+              <th>SE Flag</th>
+            </tr>
+          </thead>
+          <tbody class="residential_units_table_body">
+            <% @building.units.where(status: 0, archived: false).each do |unit| %>
+              <tr class="<%= cycle('even', 'odd') -%>">
+                <td><%= unit.building_unit %></td>
+                <td>
+                  <div class="checkbox checkbox-warning checkbox-inline">
+                    <%= check_box_tag :price_calculation, 1, true, name: "price_cal[#{unit.id}]", class: "styled price_clac", onclick: "price_clac_check(#{unit.id})" %>
+                    <label></label>
+                    
+                    <%= hidden_field_tag "unit_number_#{unit.id}", unit.building_unit %>
+                    <%= hidden_field_tag "unit_beds_and_baths_#{unit.id}", "#{unit.residential_listing.beds} Beds / #{unit.residential_listing.baths} Baths" %>
+                  </div>
+                </td>
+                <td>
+                  <%= text_field_tag "[rent][#{unit.id}]", unit.rent ? unit.rent : '', id: "rent",class: 'form-control', onchange: "rent_change(#{unit.id})" %>
+                  
+                  <%= hidden_field_tag "db_rent_unit_#{unit.id}", unit.rent ? unit.rent : '' %>
+                </td>
+                <td>
+                  <%= text_field_tag "[gross_price][#{unit.id}]", unit.gross_price ? unit.gross_price : '', id: "gross_price",class: 'form-control', onchange: "rent_calculation(#{unit.id})" %>
+                  <%= hidden_field_tag "db_gross_price_#{unit.id}", unit.gross_price ? unit.gross_price : '' %>
+                </td>
+                <td>
+                  <%= text_field_tag "[mths_free][#{unit.id}]", unit.maths_free ? unit.maths_free : '', id: "mths_free",class: 'form-control' %>  
+                </td>
+                <td>
+                  <%= text_field_tag "[lease_start][#{unit.id}]", unit.residential_listing.lease_start ? unit.residential_listing.lease_start : '', id: "lease_start", class: 'form-control', placeholder: "min months" %>
+                </td>
+                <td>
+                  <%= text_field_tag "[lease_end][#{unit.id}]", unit.residential_listing.lease_end ? unit.residential_listing.lease_end : '', class: 'form-control', placeholder: "max months" %>
+                </td>
+                <td>
+                  <div class='input-group date datepicker'>
+                    <%= text_field_tag "[available_by][#{unit.id}]",unit.available_by ? unit.available_by.strftime("%m/%d/%Y") : '',
+                      placeholder: "Available", class: "form-control", size:30, onblur: "available_by_change(#{unit.id})" %>
+                    <label class="input-group-addon btn" for="date">
+                      <span class="fa fa-calendar open-datepicker"></span>
+                    </label>
+                  </div>
+                  <%= hidden_field_tag "db_available_by_unit_#{unit.id}", unit.available_by.strftime("%m/%d/%Y") %>
+                </td>
+                <td>
+                  <%= select_tag "[point_of_contact][#{unit.id}]" , options_for_select(current_user.company.users.unarchived.collect{|u| [u.name, u.id]}, [unit.building.point_of_contact ? unit.building.point_of_contact : '']), prompt: "Choose one...",class: 'form-control', onchange: "poc_change(#{unit.id})"  %>
+
+                  <%= hidden_field_tag "db_point_of_contact_#{unit.id}", unit.building.point_of_contact ? unit.building.point_of_contact : '' %>
+                </td>
+                <td>
+                  <%= select_tag "[primary_agent_id][#{unit.id}]" , options_for_select(current_user.company.users.unarchived.collect{|u| [u.name, u.id]}, [unit.primary_agent ? unit.primary_agent.id : '']), prompt: "Choose one...",class: 'form-control', onchange: "primary_agent_change(#{unit.id})"  %>
+                  <%= hidden_field_tag "db_primary_agent_#{unit.id}", unit.primary_agent ? unit.primary_agent.id : '' %>
+                </td>
+                <td>
+                  <div class="checkbox checkbox-warning checkbox-inline">
+                    <% if unit.residential_listing.streeteasy_flag_one == true %>
+                      <%= check_box_tag "[streeteasy_flag][#{unit.id}]", true, false, class: "styled", disabled: true %>
+                    <% else %>
+                      <%= check_box_tag "[streeteasy_flag][#{unit.id}]", true, unit.residential_listing.streeteasy_flag ? unit.residential_listing.streeteasy_flag : false, class: "styled", onclick: "se_change(#{unit.id})" %>
+
+                      <%= hidden_field_tag "db_se_flag_#{unit.id}", unit.residential_listing.streeteasy_flag ? unit.residential_listing.streeteasy_flag : false %>
+                    <% end %>
+                    <label></label>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+        </table>
+    <br>
+    <div class="row vertical-margin-lg">
+      <div class="col-md-6 col-md-offset-6">
+        <div class="actions">
+          <button type="button" class="btn btn-primary v-sam" data-toggle="modal" data-target="#exampleModalCenter">
+            View Summary
+          </button>
+          <%= submit_tag 'SAVE CHANGES', class:"btn btn-warning btn-block btn-mass-edit", id: "mass_update_btn", data: { disable_with: false } %>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div><!-- end tabpanel home -->
+
+  </div><!-- tab content -->
+
+  </div><!-- panel-body-->
+</div><!-- panel -->
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalLongTitle">MASS EDIT SUMMARY</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body chng-bg">
+        <h4 style="font-weight: bold;">Listing Update</h4>
+        <div>
+          <%= @building.street_number %> <%= @building.route %>
+        </div>
+        <div>
+          <%= @building.neighborhood.name %>
+        </div>
+        <% @building.units.where(status: 0, archived: false).each do |unit| %>
+          <script type="text/javascript">
+
+            function price_clac_check(id){
+            
+              var ckeck = "input[name='price_cal["+ id +"]']:checked";
+              var unit_nm = "unit_number_" + id;
+              var unit_bedsandbaths = "unit_beds_and_baths_" + id;
+              var disp_unit_bedsandbaths = document.getElementById(unit_bedsandbaths).value;
+              var update_bedbaths = "#update_bed_bath_" + id;
+              var unit_numb = document.getElementsByName(unit_nm)[0].value;
+              var update_unit_number = "#update_unit_number_" + id;
+
+              // var calculation = Math.round(document.getElementsByName("[gross_price][20905]")[0].value * (document.getElementsByName("[lease_start][20905]")[0].value - document.getElementsByName("[mths_free][20905]")[0].value) / document.getElementsByName("[lease_start][20905]")[0].value)
+              
+              check_input = $(ckeck).length
+            
+              if (check_input > 0){
+                $(update_unit_number).html("Unit #" + unit_numb)
+                $(update_bedbaths).html(disp_unit_bedsandbaths)
+              }
+              else{
+               $(update_unit_number).html("")
+               $(update_bedbaths).html("")
+              }
+            }
+
+            function rent_change(id){
+            
+              var rent_form = "[rent]["+ id +"]";
+              var rent_db = "db_rent_unit_" + id;
+              var unit_nm = "unit_number_" + id;
+              var update_unit_number = "#update_unit_number_" + id;
+              var changes_update_popup = "#update_changes_" + id;
+              var rent_from_db = document.getElementsByName(rent_db)[0].value;
+              var unit_numb = document.getElementsByName(unit_nm)[0].value;
+              var ckeck = "input[name='price_cal["+ id +"]']:checked";
+              check_input = $(ckeck).length
+              if (check_input > 0){
+                var rent_live = Math.round(document.getElementsByName("[gross_price][20905]")[0].value * (document.getElementsByName("[lease_start][20905]")[0].value - document.getElementsByName("[mths_free][20905]")[0].value) / document.getElementsByName("[lease_start][20905]")[0].value)
+              }
+              else{
+                var rent_live = document.getElementsByName(rent_form)[0].value;
+              }
+              if (rent_live != rent_from_db){
+                // var unit_id_print = "#print_unit_rent_" + id;
+                $(update_unit_number).html("Unit #" + unit_numb);
+                $(changes_update_popup).append("Price Changed from $" + rent_from_db + "to $" + rent_live + "<br>")
+                // $(unit_id_print).html();
+              }
+              else{
+               $(update_unit_number).html("");
+              }
+            }
+
+            function rent_calculation(id){
+              var rent_form = "[rent]["+ id +"]";
+              var rent_db = "db_rent_unit_" + id;
+              var gross_form = "[gross_price]["+ id +"]";
+              var gross_db = "db_gross_price_" + id;
+              var unit_nm = "unit_number_" + id;
+              var update_unit_number = "#update_unit_number_" + id;
+              var changes_update_popup = "#update_changes_" + id;
+              var lease_start = "[lease_start]["+ id +"]";
+              var mths_free = "[mths_free]["+ id + "]";
+              var rent_from_db = document.getElementsByName(rent_db)[0].value;
+              var gross_live = document.getElementsByName(gross_form)[0].value;
+              var mths_free_for_calc = document.getElementsByName(mths_free)[0].value;
+              var lease_start_for_calc = document.getElementsByName(lease_start)[0].value;
+              var gross_live_for_calc = document.getElementsByName(gross_form)[0].value;
+              var gross_from_db = document.getElementsByName(gross_db)[0].value;
+              var unit_numb = document.getElementsByName(unit_nm)[0].value;
+              var ckeck = "input[name='price_cal["+ id +"]']:checked";
+              check_input = $(ckeck).length
+              if (check_input > 0){
+                var rent_live = Math.round(gross_live_for_calc * (lease_start_for_calc - mths_free_for_calc) / lease_start_for_calc)
+              }
+              else{
+                var rent_live = document.getElementsByName(rent_form)[0].value;
+              }
+              if (gross_live != gross_from_db){
+                // var unit_id_print = "#print_unit_rent_" + id;
+                $(update_unit_number).html("Unit #" + unit_numb);
+                $(changes_update_popup).append("Price Changed from $" + rent_from_db + "to $" + rent_live + "<br>")
+                // $(unit_id_print).html();
+              }
+              else{
+               $(update_unit_number).html("");
+              }
+            }
+
+            function available_by_change(id){
+              var avail_form = "[available_by]["+ id +"]";
+              var avail_db = "db_available_by_unit_" + id;
+              var unit_nm = "unit_number_" + id;
+              var update_unit_number = "#update_unit_number_" + id;
+              var changes_update_popup = "#update_changes_" + id;
+              var avail_from_db = document.getElementsByName(avail_db)[0].value;
+              var avail_live = document.getElementsByName(avail_form)[0].value;
+              var unit_numb = document.getElementsByName(unit_nm)[0].value;
+    
+              if (avail_live != avail_from_db){
+                // var unit_id_print = "#print_unit_rent_" + id;
+                $(update_unit_number).html("Unit #" + unit_numb);
+                $(changes_update_popup).append("Available date updated to " + avail_live + "<br>")
+                // $(unit_id_print).html();
+              }
+              else{
+                $(update_unit_number).html("");
+              }
+            }
+
+            function poc_change(id){
+              var poc_form = "[point_of_contact]["+ id +"]";
+              var poc_db = "db_point_of_contact_" + id;
+              var unit_nm = "unit_number_" + id;
+              var update_unit_number = "#update_unit_number_" + id;
+              var changes_update_popup = "#update_changes_" + id;
+              var poc_live = document.getElementsByName(poc_form)[0].value;
+              var poc_from_db = document.getElementsByName(poc_db)[0].value;
+              var unit_numb = document.getElementsByName(unit_nm)[0].value;
+              if (poc_live != poc_from_db){
+                // var unit_id_print = "#print_unit_rent_" + id;
+                $(update_unit_number).html("Unit #" + unit_numb);
+                $(changes_update_popup).append("Point of contact Updated" + "<br>")
+                // $(unit_id_print).html();
+              }
+              else{
+                $(update_unit_number).html("");
+              }
+            }
+
+            function primary_agent_change(id){
+              var primary_agent_form = "[primary_agent_id]["+ id +"]";
+              var primary_agent_db = "db_primary_agent_" + id;
+              var unit_nm = "unit_number_" + id;
+              var update_unit_number = "#update_unit_number_" + id;
+              var changes_update_popup = "#update_changes_" + id;
+              var primary_agent_live = document.getElementsByName(primary_agent_form)[0].value;
+              var primary_agent_from_db = document.getElementsByName(primary_agent_db)[0].value;
+              var unit_numb = document.getElementsByName(unit_nm)[0].value;
+              if (primary_agent_live != primary_agent_from_db){
+                // var unit_id_print = "#print_unit_rent_" + id;
+                $(update_unit_number).html("Unit #" + unit_numb);
+                $(changes_update_popup).append("Primary Agent Updated" + "<br>")
+                // $(unit_id_print).html();
+              }
+              else{
+                $(update_unit_number).html("");
+              }
+            }
+
+            function se_change(id){
+              var se_form = "[streeteasy_flag]["+ id +"]";
+              var se_db = "db_se_flag_" + id;
+              var unit_nm = "unit_number_" + id;
+              var update_unit_number = "#update_unit_number_" + id;
+              var changes_update_popup = "#update_changes_" + id;
+              var se_live = document.getElementsByName(se_form)[0].value;
+              var se_from_db = document.getElementsByName(se_db)[0].value;
+              var unit_numb = document.getElementsByName(unit_nm)[0].value;
+              if (se_live != se_from_db){
+                // var unit_id_print = "#print_unit_rent_" + id;
+                $(update_unit_number).html("Unit #" + unit_numb);
+                $(changes_update_popup).append("Listing Live on SE" + "<br>")
+                // $(unit_id_print).html();
+              }
+              else{
+                $(update_unit_number).html("");
+              }
+            }
+          </script>
+          <div class="test_msg">
+            <div id="update_unit_number_<%= unit.id %>" class="un-no">Unit #<%= unit.building_unit %>
+            
+            </div>
+            <div id="update_bed_bath_<%= unit.id %>">
+              <%= unit.residential_listing.beds %> Beds / <%= unit.residential_listing.baths %> Baths
+            </div>
+            <div id="update_changes_<%= unit.id %>">
+              
+            </div>
+          </div>
+          <% if unit.price_calculation == true  %>
+          <% end %>
+        <% end %>
+        <br>
+        <div>
+          Changes made by <%= current_user.name %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+<script type="text/javascript">
+  (function()
+    {
+      if( window.localStorage )
+      {
+        if( !localStorage.getItem( 'firstLoad' ) )
+        {
+          localStorage[ 'firstLoad' ] = true;
+          window.location.reload();
+        }
+        else
+          localStorage.removeItem( 'firstLoad' );
+      }
+      document.getElementById("mass_update_btn").disabled = false
+    })();
+  function validateForm() {
+    // var x = document.getElementById("rent").value;
+    var a = document.getElementById("gross_price").value;
+    var b = document.getElementById("mths_free").value;
+    var c = document.getElementById("lease_start").value;
+    // var d = document.getElementById("lease_end").value;
+    if(document.getElementById("price_calculation").checked == true){
+      // if (x == "") {
+      //   alert("Net Price must be filled out if clicked on Price Calculation");
+      //   return false;
+      // }
+      if (a == "") {
+        alert("Gross Price must be filled out if clicked on Price Calculation");
+        return false;
+      }
+      if (b == "") {
+        alert("Mths Free must be filled out if clicked on Price Calculation");
+        return false;
+      }
+      if (c == "") {
+        alert("Lease Duration must be filled out if clicked on Price Calculation");
+        return false;
+      }
+      // if (d == "") {
+      //   alert("Max Lease Duration must be filled out if clicked on Price Calculation");
+      //   return false;
+      // }
+    }
+    var pr_ag = document.getElementById("primary_agent_id").value;
+    if(document.getElementById("streeteasy_flag").checked == true){
+      if (pr_ag == "") {
+        alert("Primary Agent must be Select if clicked on Streeteasy Flag");
+        return false;
+      }
+    }
+
+  }
+</script>
