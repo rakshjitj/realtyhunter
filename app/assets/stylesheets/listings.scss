@@ -121,5 +121,16 @@ button.btn.btn-primary.v-sam {
 #exampleModalLongTitle{
   text-align: center;
   font-weight: bold;
-  padding-top:20px;
+  padding-top:0;
+}
+.modal-header .close {
+    margin-top: -2px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background-color: #d6d3d3;
+    color: #757474;
+    padding: 0 5px;
+    border-radius: 80px;
+    opacity: 0.9;
 }
