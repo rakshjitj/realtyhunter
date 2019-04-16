@@ -106,7 +106,7 @@
     <div class="row vertical-margin-lg">
       <div class="col-md-6 col-md-offset-6">
         <div class="actions">
-          <button type="button" class="btn btn-primary v-sam" data-toggle="modal" data-target="#exampleModalCenter">
+          <button type="button" class="btn btn-primary v-sam" data-toggle="modal" data-target="#exampleModalCenter" data-backdrop="static" data-keyboard="false">
             View Summary
           </button>
           <%= submit_tag 'SAVE CHANGES', class:"btn btn-warning btn-block btn-mass-edit", id: "mass_update_btn", data: { disable_with: false } %>
@@ -130,11 +130,11 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3 class="modal-title" id="exampleModalLongTitle">MASS EDIT SUMMARY</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" id="close-top" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body chng-bg">
+      <div class="modal-body chng-bg" id="temp">
         <h4 style="font-weight: bold;">Listing Update</h4>
         <div>
           <%= @building.street_number %> <%= @building.route %>
@@ -334,7 +334,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" id="close-bottom" data-dismiss="modal">Close</button>
         <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
       </div>
     </div>
@@ -344,6 +344,12 @@
 
 </div>
 <script type="text/javascript">
+  $('#close-top').click(function() {
+    $("#mass_update_btn").prop("disabled", false);
+  });
+  $('#close-bottom').click(function() {
+    $("#mass_update_btn").prop("disabled", false);
+  });
   (function()
     {
       if( window.localStorage )
@@ -356,7 +362,7 @@
         else
           localStorage.removeItem( 'firstLoad' );
       }
-      document.getElementById("mass_update_btn").disabled = false
+      document.getElementById("mass_update_btn").disabled = true
     })();
   function validateForm() {
     // var x = document.getElementById("rent").value;
