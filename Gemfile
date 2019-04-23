@@ -12,7 +12,8 @@ gem 'uglifier', '>= 1.3.0'
 gem 'jquery-rails', '~> 4.1.0' # needed. recommends jquery-ui-rails
 gem 'jquery-ui-rails', '~> 6.0.1' # not needed, since we use the following line
 gem 'turbolinks', '~> 5.0.1'
-gem "slack-notifier"
+#gem "slack-notifier"
+gem "slack-ruby-client"
 # gem 'jquery-turbolinks', '~> 2.1.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'mailgun-ruby', '~>1.1.6'

@@ -52,6 +52,11 @@ module RealtyHunter
     ActiveSupport.halt_callback_chains_on_return_false = false
     config.active_record.time_zone_aware_types = [:datetime, :time]
     config.assets.initialize_on_precompile = false
+    #config.action_mailer.delivery_method = :postmark
+    #config.action_mailer.postmark_settings = { :api_token => "0fff3a86-d3a2-446e-84e4-6f15458186e4" }
+    Slack.configure do |config|
+      config.token = ENV['SLACK_API_TOKEN']
+    end
   end
 end
 
