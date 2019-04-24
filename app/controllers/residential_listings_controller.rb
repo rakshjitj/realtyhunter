@@ -552,13 +552,13 @@ class ResidentialListingsController < ApplicationController
       #Slack Message when status change from active to off or pending to off start
       if (@residential_unit.unit.status == "active" && params[:residential_listing][:unit][:status].downcase == "off") || (@residential_unit.unit.status == "pending" && params[:residential_listing][:unit][:status].downcase == "off")
         if @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 55 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 56 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 57
-          client.chat_postMessage(channel: '#deops_nbk', text: "*TAKE* *OFF* \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n #{@residential_unit.unit.building.neighborhood.name} \n #{params[:residential_listing][:beds]} Beds / #{params[:residential_listing][:baths]} Baths \n Price: $#{params[:residential_listing][:unit][:rent]} \n Changes made by #{current_user.name} \n ---", as_user: true)
+          client.chat_postMessage(channel: '#updates_nbk', text: "*TAKE* *OFF* \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n #{@residential_unit.unit.building.neighborhood.name} \n #{params[:residential_listing][:beds]} Beds / #{params[:residential_listing][:baths]} Baths \n Price: $#{params[:residential_listing][:unit][:rent]} \n Changes made by #{current_user.name} \n ---", as_user: true)
           # notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
           #   defaults channel: "#default",
           #            username: "notifier"
           # end
         elsif @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 54
-          client.chat_postMessage(channel: '#deops_sbk', text: "*TAKE* *OFF* \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n #{@residential_unit.unit.building.neighborhood.name} \n #{params[:residential_listing][:beds]} Beds / #{params[:residential_listing][:baths]} Baths \n Price: $#{params[:residential_listing][:unit][:rent]} \n Changes made by #{current_user.name} \n ---", as_user: true)
+          client.chat_postMessage(channel: '#updates_sbk', text: "*TAKE* *OFF* \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n #{@residential_unit.unit.building.neighborhood.name} \n #{params[:residential_listing][:beds]} Beds / #{params[:residential_listing][:baths]} Baths \n Price: $#{params[:residential_listing][:unit][:rent]} \n Changes made by #{current_user.name} \n ---", as_user: true)
           # notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
           #   defaults channel: "#default",
           #            username: "notifier"
