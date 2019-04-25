@@ -77,6 +77,14 @@ xml.streeteasy :version => "1.6" do
 						xml.exclusive
 					end
 
+					if listing.roomfill_partial_move_in
+						if listing.roomfill_partial_move_in == true
+							xml.roomfill 1
+						else
+							xml.roomfill 0
+						end
+					end
+
 					if !listing.r_beds.nil?
 						if listing.r_beds.is_a?(Float) && (listing.r_beds.to_i == listing.r_beds)
 							xml.bedrooms listing.r_beds.to_i

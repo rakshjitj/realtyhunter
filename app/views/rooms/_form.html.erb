@@ -82,6 +82,17 @@
               </div>
             </div>
           </div>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-2">
+              <%= label_tag :roomfill_partial_move_in, "Roomfill / Partial Move-in" %>
+            </div>
+            <div class="col-xs-3">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= check_box_tag :roomfill_partial_move_in,true,false, checked: @residential_unit.roomfill_partial_move_in ? @residential_unit.roomfill_partial_move_in : false %>
+                <label></label>
+              </div>
+            </div>
+          </div>
           <%#= file_field_tag :unit_image %>
           <div style="clear: both;"></div>
             <% co = 1 %>
