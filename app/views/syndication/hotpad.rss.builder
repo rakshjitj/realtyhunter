@@ -48,7 +48,26 @@ xml.streeteasy :version => "1.6" do
 			xml.property type: @ptype, status: @status, id: listing.listing_id, url: public_url do
 				xml.location do
 					# note we don't want to give out the building number for rentals!
-					xml.address listing.street_number + " " + listing.route
+					if ((["St", "Ave", "Rd", "Pl"].include? listing.route.split(" ")[1]) || (["E", "N", "S"].include? listing.route.split(" ")[0]))
+						if listing.route.split(" ")[1] == "Ave"
+							route = listing.route.split(" ")[0] + " Avenue"
+						elsif listing.route.split(" ")[1] == "St"
+							route = listing.route.split(" ")[0] + " Street"
+						elsif listing.route.split(" ")[1] == "Rd"
+							route = listing.route.split(" ")[0] + " Road"
+						elsif listing.route.split(" ")[1] == "Pl"
+							route = listing.route.split(" ")[0] + " Place"
+						elsif listing.route.split(" ")[0] == "N"
+							route = "North " + listing.route.split(" ")[1] + " Street"
+						elsif listing.route.split(" ")[0] == "E"
+							route = "East " + listing.route.split(" ")[1] + " Street"
+						elsif listing.route.split(" ")[0] == "S"
+							route = "South " + listing.route.split(" ")[1] + " Street"
+						end
+						xml.address listing.street_number + " " + route
+					else
+						xml.address listing.street_number + " " + listing.route
+					end
 					if !listing.streeteasy_unit.nil?
 						xml.apartment listing.streeteasy_unit
 					else
@@ -109,7 +128,8 @@ xml.streeteasy :version => "1.6" do
 						end
 					end
 
-					xml.availableOn listing.available_by # rentals only
+					# xml.availableOn listing.available_by # rentals only
+					xml.availableOn "May-01-2019"
 
 					if listing.r_id
 						xml.description h raw sanitize listing.description,
