@@ -129,7 +129,7 @@ xml.streeteasy :version => "1.6" do
 					end
 
 					# xml.availableOn listing.available_by # rentals only
-					xml.availableOn "May-01-2019"
+					xml.availableOn "June-01-2019"
 
 					if listing.r_id
 						xml.description h raw sanitize listing.description,
