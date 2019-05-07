@@ -27,7 +27,7 @@
           <%# abort @residential_unit.beds.inspect %>
           <%#= file_field_tag :unit_image %>
           <div class="col-md-2">
-            <%= label_tag :description, "Rooms Unit Description" %>
+            <%= label_tag :description, "Rooms Unit Description", class: "required" %>
           </div>
           <div class="col-md-9">
             <!-- <small class="explainer-text"><em>
@@ -35,7 +35,7 @@
             </small></em> -->
             <br><br>
             <%= text_area_tag :unit_description, @residential_unit.rooms_description, as: :ckeditor, class: 'form-control ckeditor',
-                rows: 15 %>
+                rows: 15, required: true %>
             <br>
           </div>
           <div class="row vertical-margin-lg">
