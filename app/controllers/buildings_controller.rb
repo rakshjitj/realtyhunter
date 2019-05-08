@@ -297,6 +297,7 @@ class BuildingsController < ApplicationController
       @buildings = Building.export_all(
           building_params[:filter],
           building_params[:status],
+          building_params[:rating],
           building_params[:streeteasy_eligibility])
       @amenities = Building.get_amenities_from_buildings(@buildings)
       @utilities = Building.get_utilities_from_buildings(@buildings)
@@ -308,7 +309,7 @@ class BuildingsController < ApplicationController
       @buildings = Building.search(
         building_params[:filter],
         building_params[:status],
-        # building_params[:rating],
+        building_params[:rating],
         building_params[:streeteasy_eligibility])
 
       @buildings = custom_sort
