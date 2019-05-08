@@ -93,6 +93,7 @@
                       <%= check_box_tag "[streeteasy_flag][#{unit.id}]", true, false, class: "styled", disabled: true %>
                     <% else %>
                       <%= hidden_field_tag "db_se_flag_#{unit.id}", unit.residential_listing.streeteasy_flag ? unit.residential_listing.streeteasy_flag : false %>
+                      <%= hidden_field_tag "[streeteasy_flag][#{unit.id}]", false %>
                       <%= check_box_tag "[streeteasy_flag][#{unit.id}]", true, unit.residential_listing.streeteasy_flag ? unit.residential_listing.streeteasy_flag : false, class: "styled", onclick: "se_change(#{unit.id})" %>
                     <% end %>
                     <label></label>

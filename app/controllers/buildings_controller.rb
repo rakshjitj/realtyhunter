@@ -164,7 +164,7 @@ class BuildingsController < ApplicationController
     all_selected_se_units.each do |unit|
       if params["streeteasy_flag"]["#{unit.id}"].present?
         unit.update(primary_agent_id: params["primary_agent_id"]["#{unit.id}"], updated_at: Time.now())
-        unit.residential_listing.update(streeteasy_flag: true, updated_at: Time.now())
+        unit.residential_listing.update(streeteasy_flag: params["streeteasy_flag"]["#{unit.id}"], updated_at: Time.now())
       end
     end
     # notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
@@ -297,7 +297,7 @@ class BuildingsController < ApplicationController
       @buildings = Building.export_all(
           building_params[:filter],
           building_params[:status],
-          building_params[:rating])
+          building_params[:streeteasy_eligibility])
       @amenities = Building.get_amenities_from_buildings(@buildings)
       @utilities = Building.get_utilities_from_buildings(@buildings)
       @buildings = custom_sort
@@ -308,7 +308,7 @@ class BuildingsController < ApplicationController
       @buildings = Building.search(
         building_params[:filter],
         building_params[:status],
-        building_params[:rating],
+        # building_params[:rating],
         building_params[:streeteasy_eligibility])
 
       @buildings = custom_sort
