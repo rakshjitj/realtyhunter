@@ -67,11 +67,13 @@ module SyndicationInterface
 
 	def hotpad_listings(company_id, search_params)
 		search_params[:is_hotpad] = 1
+		search_params[:is_having_description] = 1
 		pull_data(company_id, search_params)
 	end
 
 	def rooms_listings(company_id, search_params)
 		search_params[:is_rooms] = 1
+		search_params[:is_having_description] = 1
 		pull_data(company_id, search_params)
 	end
 
@@ -122,6 +124,10 @@ left join sales_listings on units.id = sales_listings.unit_id')
 					Unit.syndication_statuses['Syndicate if matches criteria'],
 					Unit.syndication_statuses['Force syndicate']
 				])
+		end
+
+		if is_true?(search_params[:is_having_description])
+			listings = listings.where("residential_listings.rooms_description <> '' ")
 		end
 
 		if is_true?(search_params[:is_rooms])
