@@ -101,6 +101,22 @@ xml.streeteasy :version => "1.6" do
             xml.lease_term_max listing.lease_end
           end
 
+          if listing.residential_listing
+            if listing.residential_listing.streeteasy_flag == true || listing.residential_listing.streeteasy_flag_one == true
+              xml.streeteasy true
+              if listing.residential_listing.streeteasy_flag == true
+                xml.streeteasy_user "MySpaceNYC"
+              else
+                xml.streeteasy_user User.find(listing.streeteasy_primary_agent_id).name
+              end
+            else
+              xml.streeteasy false
+            end
+          end
+          if !listing.building.point_of_contact.nil?
+            xml.point_of_contact User.find(listing.building.point_of_contact).name
+          end
+
           if listing.r_id
             xml.description h raw sanitize listing.description + ' MyspaceNYCListingID: ' + listing.listing_id.to_s,
                 tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
