@@ -394,7 +394,7 @@ class SalesListingsController < ApplicationController
           :beds, :baths, :listing_name, :number_of_floors, :internal_sq_footage, :number_of_units, :number_of_retail_spaces, :custom_amenities, :formatted_street_address,
           :listing_type, :percent_commission, :outside_broker_commission, :seller_name, :streeteasy_flag,
           :seller_phone, :seller_address, :year_built, :building_type, :lot_size,
-          :building_size, :block_taxes, :lot_taxes, :water_sewer, :insurance,
+          :building_size, :property_tax, :block_taxes, :lot_taxes, :water_sewer, :insurance,
           :school_district, :certificate_of_occupancy, :violation_search, :tenant_occupied,
           :internal_notes, :public_description, :inaccuracy_description,
           :floor, :total_room_count, :condition, :showing_instruction, :commission_amount, :cyof,
