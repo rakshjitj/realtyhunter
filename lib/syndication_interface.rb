@@ -239,7 +239,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'sales_listings.internal_notes as s_note',
 			'sales_listings.public_description',
 			'sales_listings.tenant_occupied as s_tenant_occupied',
-			'sales_listings.total_room_count as s_total_room_count',
+			'sales_listings.total_room_count as s_total_room_count', 'sales_listings.property_tax',
 			'units.id as unit_id',
 			'units.primary_agent_id',
 			'units.primary_agent2_id',
