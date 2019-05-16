@@ -463,7 +463,7 @@ class ResidentialListingsController < ApplicationController
     is_now_active = nil
 
     if params[:residential_listing][:unit][:price_calculation] == "1"
-      params[:residential_listing][:unit][:rent] = (params[:residential_listing][:unit][:gross_price].to_i * (params[:residential_listing][:lease_start].to_i - params[:residential_listing][:unit][:maths_free].to_f)) / params[:residential_listing][:lease_start].to_i
+      params[:residential_listing][:unit][:rent] = (params[:residential_listing][:unit][:gross_price].to_i * (params[:residential_listing][:lease_start].to_f - params[:residential_listing][:unit][:maths_free].to_f)) / params[:residential_listing][:lease_start].to_f
       params[:residential_listing][:unit][:rent] = params[:residential_listing][:unit][:rent].round
     else
       if params[:residential_listing][:unit][:gross_price].blank?
