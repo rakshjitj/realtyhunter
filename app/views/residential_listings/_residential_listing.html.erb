@@ -36,11 +36,11 @@
     <!-- ****** IMAGE ****************************************** -->
     <td class="img-col" style="max-width: 120px;">
       <!-- display building image first, if any are found -->
-      <% if bldg_images[residential_listing.building_id] %>
-        <%= link_to(image_tag(bldg_images[residential_listing.building_id],
+      <%# if bldg_images[residential_listing.building_id] %>
+        <%#= link_to(image_tag(bldg_images[residential_listing.building_id],
             alt: bldg_images[residential_listing.building_id]), residential_listing) %>
       <!-- otherwise, pick the first residential photo -->
-      <% elsif res_images[residential_listing.unit_id] %>
+      <% if res_images[residential_listing.unit_id] %>
         <%= link_to(image_tag(res_images[residential_listing.unit_id],
             alt: res_images[residential_listing.unit_id]), residential_listing) %>
       <% else %>
