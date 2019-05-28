@@ -101,7 +101,7 @@ class BuildingsController < ApplicationController
 
   def mass_edit
     @building = Building.find(params[:id])
-    if @building.units.where(status: 0, archived: false).blank?
+    if @building.units.where(status: 0, archived: false).blank? || !@building.units.where(status: 0, archived: false)[0].commercial_listing.blank?
       flash[:info] = "No Active Unit available!"
       redirect_to building_path(@building)
     else
