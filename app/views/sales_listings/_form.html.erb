@@ -332,7 +332,7 @@
               <div class="field">
                 <%= f.select :listing_type,
                   options_for_select(['Single Fam', '2-3 Fam Townhome', 'Multi-family', 'Condo', 'Coop'],
-                    [@sales_unit.listing_type ? @sales_unit.listing_type.titleize : '']),
+                    [@sales_unit.listing_type ? @sales_unit.listing_type : '']),
                   {prompt: "Choose one..."},
                   :required => true,
                   class: "form-control" %>
