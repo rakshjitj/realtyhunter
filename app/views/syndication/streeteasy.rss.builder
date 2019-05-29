@@ -52,7 +52,11 @@ xml.streeteasy :version => "1.6" do
 				xml.location do
 					# note we don't want to give out the building number for rentals!
 					xml.address listing.street_number + " " + listing.route
-					xml.apartment listing.building_unit
+					if !listing.streeteasy_unit.nil?
+						xml.apartment listing.streeteasy_unit
+					else
+						xml.apartment listing.building_unit
+					end
 					xml.city listing.sublocality
 					xml.state listing.administrative_area_level_1_short
 					xml.zipcode listing.postal_code
@@ -68,6 +72,10 @@ xml.streeteasy :version => "1.6" do
 
 					if listing.exclusive
 						xml.exclusive
+					end
+
+					if listing.internal_sq_footage
+						xml.squareFeet listing.internal_sq_footage
 					end
 
 					if !listing.r_beds.nil?
@@ -115,100 +123,109 @@ xml.streeteasy :version => "1.6" do
 					if listing.r_id
 						xml.propertyType "rental"
 					elsif listing.s_id
-						xml.propertyType "house"
+						xml.propertyType listing.sales_listing.listing_type
 					end
 					# xml.propertyType @ptype
-
+					if listing.property_tax
+						xml.taxes listing.property_tax
+					end
+					if listing.common_chargers
+						xml.maintenance listing.common_chargers
+					end
 					# streeteasy has their own approved list of amenities
 					# doorman, gym, pool, elevator, garage, parking, balcony, storage, patio, fireplace
 					# washerDryer, dishwasher, furnished, pets, other
-					xml.amenities do
+					if listing.s_id
+						xml.amenities listing.sales_listing.sales_amenities.map(&:name).join(",")
+					else
+						xml.amenities do
 
-						@other_amenities = []
-						attribute_found = {}
-						if @building_amenities[listing.building_id]
-							@building_amenities[listing.building_id].map{|b| b.name}.each do |bm|
-								case bm
-									when "doorman"
-										xml.doorman
-									when "gym", "fitness center", "sauna"
-										if !attribute_found["gym"]
-											attribute_found["gym"] = 1
-											xml.gym
-										end
-									when "pool"
-										xml.pool
-									when "elevator"
-										xml.elevator
-									when "garage parking"
-										xml.garage
-									when "parking", "parking for $200 a month"
-										if !attribute_found["parking"]
-											attribute_found["parking"] = 1
-											xml.parking
-										end
-									when "balcony"
-										xml.balcony
-									when "storage"
-										xml.storage
-									when "courtyard", "shared yard for building"
-										if !attribute_found["patio"]
-											attribute_found["patio"] = 1
+							@other_amenities = []
+							attribute_found = {}
+							if @building_amenities[listing.building_id]
+								@building_amenities[listing.building_id].map{|b| b.name}.each do |bm|
+									case bm
+										when "doorman"
+											xml.doorman
+										when "gym", "fitness center", "sauna"
+											if !attribute_found["gym"]
+												attribute_found["gym"] = 1
+												xml.gym
+											end
+										when "pool"
+											xml.pool
+										when "elevator"
+											xml.elevator
+										when "garage parking"
+											xml.garage
+										when "parking", "parking for $200 a month"
+											if !attribute_found["parking"]
+												attribute_found["parking"] = 1
+												xml.parking
+											end
+										when "balcony"
+											xml.balcony
+										when "storage"
+											xml.storage
+										when "courtyard", "shared yard for building"
+											if !attribute_found["patio"]
+												attribute_found["patio"] = 1
+												xml.patio # outdoor space ?
+											end
+										when "fireplace"
+											xml.fireplace
+										# when "laundry in building"
+										# 	if !attribute_found["washerDryer"]
+										# 		attribute_found["washerDryer"] = 1
+										# 		xml.washerDryer
+										# 	end
+										# 	@laundry_included = true
+										else
+											@other_amenities << bm
+									end # case
+								end
+							end
+
+							pets_allowed = ["case by case",  "cats only", "cats/small dogs", "dogs only", "monthly pet fee" ,
+									"pet deposit required", "pets allowed", "pets ok", "pets upon approval", "small pets ok (<30lbs)"]
+							if @pet_policies[listing.building_id] && pets_allowed.include?(@pet_policies[listing.building_id][0].pet_policy_name)
+								xml.pets
+							end
+
+							if @residential_amenities && @residential_amenities[listing.unit_id]
+								@residential_amenities[listing.unit_id].map{|a| a.name}.each do |rm|
+
+									case rm
+										when "balcony/terrace"
+											xml.balcony
+										when "storage", "basement"
+											xml.storage
+										when "private yard", "shared yard"
 											xml.patio # outdoor space ?
-										end
-									when "fireplace"
-										xml.fireplace
-									# when "laundry in building"
-									# 	if !attribute_found["washerDryer"]
-									# 		attribute_found["washerDryer"] = 1
-									# 		xml.washerDryer
-									# 	end
-									# 	@laundry_included = true
-									else
-										@other_amenities << bm
-								end # case
+										when "washer/dryer hookups", "washer/dryer in unit"
+											if !attribute_found["washerDryer"]
+												attribute_found["washerDryer"] = 1
+												xml.washerDryer
+											end
+										when "dishwasher"
+											xml.dishwasher
+										when "furnished"
+											xml.furnished
+										else
+											if !attribute_found[rm]
+												attribute_found[rm] = 1
+												@other_amenities << rm
+											end
+									end # case
+
+								end
 							end
-						end
 
-						pets_allowed = ["case by case",  "cats only", "cats/small dogs", "dogs only", "monthly pet fee" ,
-								"pet deposit required", "pets allowed", "pets ok", "pets upon approval", "small pets ok (<30lbs)"]
-						if @pet_policies[listing.building_id] && pets_allowed.include?(@pet_policies[listing.building_id][0].pet_policy_name)
-							xml.pets
-						end
-
-						if @residential_amenities && @residential_amenities[listing.unit_id]
-							@residential_amenities[listing.unit_id].map{|a| a.name}.each do |rm|
-
-								case rm
-									when "balcony/terrace"
-										xml.balcony
-									when "storage", "basement"
-										xml.storage
-									when "private yard", "shared yard"
-										xml.patio # outdoor space ?
-									when "washer/dryer hookups", "washer/dryer in unit"
-										if !attribute_found["washerDryer"]
-											attribute_found["washerDryer"] = 1
-											xml.washerDryer
-										end
-									when "dishwasher"
-										xml.dishwasher
-									when "furnished"
-										xml.furnished
-									else
-										if !attribute_found[rm]
-											attribute_found[rm] = 1
-											@other_amenities << rm
-										end
-								end # case
-
+							if !@other_amenities.blank?
+								xml.other @other_amenities.join(", ")
 							end
-						end
 
-						if !@other_amenities.blank?
-							xml.other @other_amenities.join(", ")
 						end
-
 					end # amenities
 				end # details
 
@@ -219,6 +236,11 @@ xml.streeteasy :version => "1.6" do
 								# must match this format: 2006-11-20 3:30pm
 								xml.startsAt oh.day.strftime("%Y-%m-%d") + " " + oh.start_time.in_time_zone("Eastern Time (US & Canada)").strftime("%I:%M%p")
 								xml.endsAt oh.day.strftime("%Y-%m-%d") + " " + oh.end_time.in_time_zone("Eastern Time (US & Canada)").strftime("%I:%M%p")
+								if listing.s_id
+									if oh.day.strftime("%A") == "Wednesday" || oh.day.strftime("%A") == "Saturday"
+										xml.apptOnly
+									end
+								end
 								if !listing.s_id
 									xml.apptOnly
 								end
@@ -328,7 +350,9 @@ xml.streeteasy :version => "1.6" do
 					end
 					if @images[listing.unit_id]
 						@images[listing.unit_id].each do |i|
-							xml.photo url:i.file.url(:large), position: i.priority, description:""
+							if i.floorplan != true
+								xml.photo url:i.file.url(:large), position: i.priority, description:""
+							end
 						end
 					end
 					if @images[listing.unit_id]
