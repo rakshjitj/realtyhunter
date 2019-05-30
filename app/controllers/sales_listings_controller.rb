@@ -165,6 +165,28 @@ class SalesListingsController < ApplicationController
   def update
     ret1 = nil
     ret2 = nil
+    params[:sales_listing][:unit][:open_houses_attributes].to_a.each do |a|
+      if a[1][:"_destroy"].present?
+        tt = OpenHouse.find(a[1][:id])
+
+        tt.destroy
+        #exit
+      end
+      #abort a[1][:day].inspect
+      day = Date::strptime(a[1][:day], "%m/%d/%Y")
+      #abort a[1][:"start_time(5i)"].inspect
+      start_time =  a[1][:"start_time(4i)"] + ":" + a[1][:"start_time(5i)"] + ":" + "00"
+      end_time =  a[1][:"end_time(4i)"] + ":" + a[1][:"end_time(5i)"] + ":" + "00"
+      unit_id = @sales_listing.unit.id
+      find_open_house = OpenHouse.where(unit_id: unit_id, day: day)
+      if !a[1][:"_destroy"].present?
+        if find_open_house.blank?
+          #abort a[1].inspect
+          openhouse = OpenHouse.create(day: day, start_time: start_time, end_time: end_time, unit_id: unit_id)
+          #abort openhouse.inspect
+        end
+      end
+    end
     SalesListing.transaction do
       s_params = sales_listing_params[:sales_listing]
       # puts "11111 #{s_params[:unit]}"
