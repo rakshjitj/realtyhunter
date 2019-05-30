@@ -136,7 +136,28 @@ xml.streeteasy :version => "1.6" do
 					# doorman, gym, pool, elevator, garage, parking, balcony, storage, patio, fireplace
 					# washerDryer, dishwasher, furnished, pets, other
 					if listing.s_id
-						xml.amenities listing.sales_listing.sales_amenities.map(&:name).join(",")
+						#xml.amenities listing.sales_listing.sales_amenities.map(&:name).join(",")
+						xml.amenities do
+							@other_amenities = []
+							listing.sales_listing.sales_amenities.map{|a| a.name}.each do |rm|
+
+								case rm
+									when "dishwasher"
+										xml.dishwasher
+									when "patio"
+										xml.patio
+									when "pets allowed"
+										xml.pets
+									when "fireplace"
+										xml.fireplace
+									else
+										@other_amenities << rm
+								end
+							end
+							if !@other_amenities.blank?
+								xml.other @other_amenities.join(", ")
+							end
+						end
 					else
 						xml.amenities do
 
