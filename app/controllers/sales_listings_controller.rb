@@ -422,7 +422,7 @@ class SalesListingsController < ApplicationController
           :floor, :total_room_count, :condition, :showing_instruction, :commission_amount, :cyof,
           :rented_date, :rlsny, :share_with_brokers, :favorites, :show, :expose_address,
           :unit => [:building_unit, :rent, :available_by, :access_info, :status, :exclusive,
-            :building_id, :primary_agent_id, :listing_agent_id, :syndication_status],
+            :building_id, :primary_agent_id, :primary_agent2_id, :listing_agent_id, :syndication_status],
           :sales_amenity_ids => []
           ])
 

@@ -755,6 +755,23 @@
             </div>
           </div>
 
+          <br />
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-4 col-sm-3">
+              <%= f.label :primary_agent2_id, "Second Primary Agent" %>
+            </div>
+            <div class="col-xs-8 col-sm-4">
+              <%= f.fields_for @sales_unit.unit do |unit_form| %>
+                <%= unit_form.select(:primary_agent2_id,
+                  options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
+                    [@sales_unit.unit.primary_agent2_id ? @sales_unit.unit.primary_agent2_id : '']),
+                  {prompt: "Choose one..."},
+                  class: 'form-control',
+                  include_blank: true) %>
+              <% end %>
+            </div>
+          </div>
+
           <div class="row vertical-margin-lg">
             <div class="col-xs-4 col-sm-3">
               <%= f.label :rlsny, "RLSNY" %>
