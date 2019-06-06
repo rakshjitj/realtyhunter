@@ -73,7 +73,7 @@ module SyndicationInterface
 
 	def rooms_listings(company_id, search_params)
 		search_params[:is_rooms] = 1
-		search_params[:is_having_description] = 1
+		#search_params[:is_having_description] = 1
 		pull_data(company_id, search_params)
 	end
 
