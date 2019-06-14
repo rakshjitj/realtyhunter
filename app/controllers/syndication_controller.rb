@@ -20,6 +20,10 @@
     set_listings
   end
 
+  def zillow
+    set_listings
+  end
+
   def nestio
     set_listings
   end
@@ -44,6 +48,8 @@
       elsif syndication_params[:action] == 'streeteasy'
         @listings = streeteasy_listings(@company.id, syndication_params)
       elsif syndication_params[:action] == 'trulia'
+        @listings = trulia_listings(@company.id, syndication_params)
+      elsif syndication_params[:action] == 'zillow'
         @listings = trulia_listings(@company.id, syndication_params)
       elsif syndication_params[:action] == 'nestio'
         @listings = nestio_listings(@company.id, {})

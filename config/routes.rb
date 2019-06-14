@@ -197,6 +197,10 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :landlord_contacts do
+    collection { post :import }
+  end
+
   get "landlords/:id/delete_contact" => "landlords#delete_contact", as: :delete_contact
   resources :landlords do
     get :autocomplete_landlord_code, :on => :collection
@@ -258,6 +262,7 @@ Rails.application.routes.draw do
       get 'naked_apts'
       get 'streeteasy'
       get 'trulia'
+      get 'zillow'
       get 'nestio'
       get 'dotsignal'
       get 'hotpad'
