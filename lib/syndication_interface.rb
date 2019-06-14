@@ -55,11 +55,17 @@ module SyndicationInterface
 	# - must have at least 1 listing agent assigned
 	def trulia_listings(company_id, search_params)
 		search_params[:has_primary_agent] = 1
+		search_params[:exclusive] = 1
+		search_params[:must_have_description] = 1
+		search_params[:must_have_streeteasy_flag] = 1
 		pull_data(company_id, search_params)
 	end
 
 	def zillow_listings(company_id, search_params)
 		search_params[:has_primary_agent] = 1
+		search_params[:exclusive] = 1
+		search_params[:must_have_description] = 1
+		search_params[:must_have_streeteasy_flag] = 1
 		pull_data(company_id, search_params)
 	end
 
