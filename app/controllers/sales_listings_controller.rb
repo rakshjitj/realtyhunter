@@ -175,6 +175,7 @@ class SalesListingsController < ApplicationController
       #abort a[1][:day].inspect
       day = Date::strptime(a[1][:day], "%m/%d/%Y")
       #abort a[1][:"start_time(5i)"].inspect
+      apt_only = a[1][:appt_only]
       start_time =  a[1][:"start_time(4i)"] + ":" + a[1][:"start_time(5i)"] + ":" + "00"
       end_time =  a[1][:"end_time(4i)"] + ":" + a[1][:"end_time(5i)"] + ":" + "00"
       unit_id = @sales_listing.unit.id
@@ -182,8 +183,10 @@ class SalesListingsController < ApplicationController
       if !a[1][:"_destroy"].present?
         if find_open_house.blank?
           #abort a[1].inspect
-          openhouse = OpenHouse.create(day: day, start_time: start_time, end_time: end_time, unit_id: unit_id)
+          openhouse = OpenHouse.create(day: day,appt_only: apt_only, start_time: start_time, end_time: end_time, unit_id: unit_id)
           #abort openhouse.inspect
+        else
+          find_open_house.update(day: day,appt_only: apt_only, start_time: start_time, end_time: end_time, unit_id: unit_id)
         end
       end
     end

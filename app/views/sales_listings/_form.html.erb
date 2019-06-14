@@ -324,7 +324,7 @@
                   <% i = 0 %>
                   <%= unit_form.nested_fields_for :open_houses do |oh| %>
                     <!-- date -->
-                    <div class="col-xs-4">
+                    <div class="col-xs-3">
                       <div class='input-group date datepicker'
                           data-available-by="<%= @sales_unit.unit.open_houses[i] && @sales_unit.unit.open_houses[i].day ? @sales_unit.unit.open_houses[i].day.strftime("%m/%d/%Y") : '' %>">
 
@@ -335,6 +335,16 @@
                           <span class="fa fa-calendar open-datepicker"></span>
                         </label>
                       </div>
+                    </div>
+
+                    <div class="col-xs-2">
+                      ApptOnly:<br>
+                      <%# abort @sales_unit.unit.open_houses[i].appt_only.inspect %>
+                      <% if !@sales_unit.unit.open_houses[i].nil? %>
+                        <%= oh.check_box :appt_only, checked: @sales_unit.unit.open_houses[i].appt_only ? @sales_unit.unit.open_houses[i].appt_only : false  %>
+                      <% else %>
+                        <%= oh.check_box :appt_only %>
+                      <% end %>
                     </div>
 
                     <!-- start time -->

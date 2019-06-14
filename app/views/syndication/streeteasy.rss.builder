@@ -258,7 +258,7 @@ xml.streeteasy :version => "1.6" do
 								xml.startsAt oh.day.strftime("%Y-%m-%d") + " " + oh.start_time.in_time_zone("Eastern Time (US & Canada)").strftime("%I:%M%p")
 								xml.endsAt oh.day.strftime("%Y-%m-%d") + " " + oh.end_time.in_time_zone("Eastern Time (US & Canada)").strftime("%I:%M%p")
 								if listing.s_id
-									if oh.day.strftime("%A") == "Wednesday" || oh.day.strftime("%A") == "Saturday"
+									if oh.appt_only == true
 										xml.apptOnly
 									end
 								end
