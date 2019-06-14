@@ -329,6 +329,26 @@ xml.streeteasy :version => "1.6" do
 						end
 					end
 					end
+					if !listing.primary_agent2_id.nil?
+						user = User.find(listing.primary_agent2_id)
+
+						xml.agent id: user.id do
+							xml.name user.name
+							xml.company @company.name
+							if user.image
+								xml.photo url:user.image.file.url(:large)
+							end
+
+						xml.email user.streeteasy_email
+						xml.lead_email user.streeteasy_email
+						xml.phone_numbers do
+							xml.main user.streeteasy_mobile_number
+							xml.office user.office.telephone
+							xml.cell user.streeteasy_mobile_number
+							xml.fax user.office.fax
+						end
+					end
+					end
 				end
             else
 				if listing.sales_listing.streeteasy_flag == true
