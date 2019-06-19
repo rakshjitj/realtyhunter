@@ -63,6 +63,14 @@
       <span class="glyphicon glyphicon-arrow-up green" aria-hidden="true"></span>
     <% elsif sales_listing.status == Unit.statuses["pending"] %>
       <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
+    <% elsif sales_listing.status == Unit.statuses["on_market"]  %>
+      <span class="glyphicon glyphicon-arrow-up green-combo" aria-hidden="true"></span>
+    <% elsif sales_listing.status == Unit.statuses["offer_submitted"]  %>
+      <span class="glyphicon glyphicon-arrow-up pink-dark" aria-hidden="true"></span>
+    <% elsif sales_listing.status == Unit.statuses["contract_out"]  %>
+      <span class="glyphicon glyphicon-arrow-up pink-combo" aria-hidden="true"></span>
+    <% elsif sales_listing.status == Unit.statuses["in_escrow"]  %>
+      <span class="glyphicon glyphicon-arrow-up wooden-mix" aria-hidden="true"></span>
     <% elsif sales_listing.status == Unit.statuses["off"] %>
       <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
     <% end %>

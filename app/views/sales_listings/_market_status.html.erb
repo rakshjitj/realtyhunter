@@ -2,8 +2,16 @@
 	<% if @sales_unit.unit.status == "active" %>
 	  <span class="green">On Market</span>
 	<% elsif @sales_unit.unit.status == "pending" %>
-		<span class="green">On Market</span>
+		<!-- <span class="green">On Market</span> -->
 	  <span class="dark-orange">Pending Application</span>
+	<% elsif @sales_unit.unit.status == "on_market" %>
+		<span class="green-combo">On Market</span>
+	<% elsif @sales_unit.unit.status == "offer_submitted" %>
+		<span class="pink-dark">Offer Submitted</span>
+	<% elsif @sales_unit.unit.status == "contract_out" %>
+		<span class="pink-combo">Contract Out</span>
+	<% elsif @sales_unit.unit.status == "in_escrow" %>
+		<span class="wooden-mix">In Escrow</span>
 	<% elsif @sales_unit.unit.status == "off" %>
 	  <span class="grey">Off Market</span>
 	<% end %>
