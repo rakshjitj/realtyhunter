@@ -613,9 +613,11 @@ class ResidentialListingsController < ApplicationController
           if @residential_unit.unit.access_info != params[:residential_listing][:unit][:access_info]
             @accs_info = "Access Changed to #{params[:residential_listing][:unit][:access_info]} \n"
           end
-          
+          if !@accs_info.nil?
+            client.chat_postMessage(channel: '#access', text: "*Unit* *Update* \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n #{@residential_unit.unit.building.neighborhood.name} \n #{params[:residential_listing][:beds]} Beds / #{params[:residential_listing][:baths]} Baths \n $#{params[:residential_listing][:unit][:rent]} \n #{@accs_info} \n Changes made by #{current_user.name}\n ---", as_user: true)
+          end
           if @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 55 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 56 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 57
-            if !@has_fee.nil? || !@rent_info.nil? || !@avail_info.nil? || !@accs_info.nil?
+            if !@has_fee.nil? || !@rent_info.nil? || !@avail_info.nil?
               client.chat_postMessage(channel: '#updates_nbk', text: "*Unit* *Update* \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n #{@residential_unit.unit.building.neighborhood.name} \n #{params[:residential_listing][:beds]} Beds / #{params[:residential_listing][:baths]} Baths \n $#{params[:residential_listing][:unit][:rent]} \n #{@rent_info} #{@avail_info} #{@accs_info} #{@has_fee} \n Changes made by #{current_user.name}\n ---", as_user: true)
             end
             # notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
