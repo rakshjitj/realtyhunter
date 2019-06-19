@@ -29,7 +29,19 @@ xml.streeteasy :version => "1.6" do
 	  	end
 
 			# if listing.status == "active"
-				@status = "active"
+				if listing.r_id
+					@status = "active"
+				else
+					if listing.status == "on_market"
+						@status = "On Market"
+					elsif listing.status == "offer_submitted"
+						@status = "Offer Submitted"
+					elsif listing.status == "contract_out"
+						@status = "Contract Out"
+					elsif listing.status == "in_escrow"
+						@status = "In Escrow"
+					end
+				end
 			# elsif listing.status == "pending"
 				# @status = "in-contract"
 			# elsif listing.status == "off"
