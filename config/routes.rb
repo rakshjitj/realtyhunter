@@ -267,7 +267,7 @@ Rails.application.routes.draw do
       get 'dotsignal'
       get 'hotpad'
       get 'rooms'
-      get 'aparment'
+      get 'apartment'
     end
   end
 

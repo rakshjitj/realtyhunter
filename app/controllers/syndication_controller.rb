@@ -12,7 +12,7 @@
     set_listings
   end
 
-  def aparment
+  def apartment
     set_listings
   end
 
@@ -59,8 +59,8 @@
         @listings = hotpad_listings(@company.id, syndication_params)
       elsif syndication_params[:action] == 'rooms'
         @listings = rooms_listings(@company.id, syndication_params)
-      elsif syndication_params[:action] == 'aparment'
-        @listings = aparment_listings(@company.id, {})
+      elsif syndication_params[:action] == 'apartment'
+        @listings = apartment_listings(@company.id, {})
       end
 
       @pet_policies = Building.get_pet_policies(@listings)
