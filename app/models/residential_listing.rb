@@ -44,7 +44,7 @@ class ResidentialListing < ApplicationRecord
   validates :tp_fee_percentage, allow_blank: true, length: {maximum: 3}, numericality: { only_integer: true }
   validates_inclusion_of :tp_fee_percentage, in: 0..100, allow_blank: true
 
-  validates :total_room_count, presence: true
+  # validates :total_room_count, presence: true
   
   def archive
     self.unit.archived = true
