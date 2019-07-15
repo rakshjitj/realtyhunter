@@ -37,6 +37,7 @@ module SyndicationInterface
 		search_params[:has_primary_agent] = 1
 		search_params[:exclusive] = 1
 		search_params[:must_have_description] = 1
+		search_params[:must_have_status_inbetween] = 1
 		search_params[:must_have_streeteasy_flag] = 1
 		pull_data(company_id, search_params)
 	end
@@ -183,6 +184,10 @@ left join sales_listings on units.id = sales_listings.unit_id')
 
 		if is_true?(search_params[:has_naked_apartment])
 			listings = listings.where('residential_listings.naked_apartment = TRUE')
+		end
+
+		if is_true?(search_params[:must_have_status_inbetween])
+			listings = listings.where('units.status IN (?)', [Unit.statuses["active"], Unit.statuses["pending"], Unit.statuses["rsonly"], Unit.statuses["contract_out"], Unit.statuses["on_market"], Unit.statuses["offer_submitted"], Unit.statuses["in_escrow"]])
 		end
 
 		if is_true?(search_params[:has_primary_agent])
