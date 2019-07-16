@@ -720,7 +720,11 @@ class ResidentialListingsController < ApplicationController
 
       # update fields on the unit first, then update fields on the residential_listing
       if !params[:residential_listing][:building][:point_of_contact].nil?
-        @residential_unit.unit.building.update(point_of_contact: params[:residential_listing][:building][:point_of_contact])
+        @residential_unit.unit.building.update(point_of_contact: params[:residential_listing][:building][:point_of_contact], rental_term_id: params[:residential_listing][:building][:rental_term_id])
+      end
+      if !params[:residential_listing][:building][:custom_rental_term].blank?
+        new_rental_term = RentalTerm.create(name: params[:residential_listing][:building][:custom_rental_term], company_id: 1)
+        @residential_unit.unit.building.update(rental_term_id: new_rental_term.id)
       end
       unit_updated = @residential_unit.unit.update(
           residential_listing_params[:unit].merge({updated_at: Time.now}))
@@ -1215,7 +1219,7 @@ class ResidentialListingsController < ApplicationController
           :syndication_status, :has_stock_photos, :is_exclusive_agreement_signed,
           :exclusive_agreement_expires_at, :public_url, :price_calculation,
           open_houses_attributes: [:day, :start_time, :end_time, :_destroy, :id],
-          building: [:point_of_contact] ],
+          building: [:point_of_contact, :rental_term_id] ],
         residential_amenity_ids: []
         )
 
