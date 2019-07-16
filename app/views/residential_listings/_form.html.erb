@@ -120,9 +120,10 @@
                 <%= unit_form.label :status, class: 'required' %>
               </div>
               <div class="col-xs-9 col-md-4">
+                  <%# abort @residential_unit.unit.status.titleize.inspect %>
                   <%= unit_form.select :status,
-                    options_for_select(["Active", "Pending", "Off", "Rsonly", "Contract_Out"],
-                      [@residential_unit.unit.status.titleize]),
+                    options_for_select(["active", "pending", "off", "rsonly", "contract_out"],
+                      [@residential_unit.unit.status]),
                     {prompt: "Choose one..."},
                     :required => true,
                     class: "form-control" %>
