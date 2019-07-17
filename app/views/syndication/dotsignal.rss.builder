@@ -53,6 +53,13 @@ xml.streeteasy :version => "1.6" do
         end
 
         xml.details do
+          if listing.residential_listing
+            if listing.residential_listing.tenant_occupied == true
+              xml.tenant_occupied true
+            else
+              xml.tenant_occupied false
+            end
+          end
           xml.price listing.rent
 
           if !listing.has_fee
