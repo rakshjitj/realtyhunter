@@ -641,7 +641,7 @@ class ResidentialListingsController < ApplicationController
     end
     #End Slack Message when status change neighbourhood wise channel
 
-    if params[:residential_listing][:streeteasy_flag] == "0" and params[:residential_listing][:unit][:status] == "Active"
+    if params[:residential_listing][:streeteasy_flag] == "0" || params[:residential_listing][:unit][:status] == "Active"
       if params[:residential_listing][:streeteasy_flag] == "0"
         params[:residential_listing][:streeteasy_flag] = false
       end
