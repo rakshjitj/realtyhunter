@@ -783,6 +783,24 @@
           </div>
 
           <div class="row vertical-margin-lg">
+          <div class="col-xs-4 col-md-3">
+            <%= f.label :point_of_contact, "Point of contact" %>
+          </div>
+          <div class="col-xs-8 col-md-4">
+            <% if @sales_unit.unit.building %>
+              <%= f.fields_for @sales_unit.unit.building do |unit_form| %>
+                <%= unit_form.select(:point_of_contact,
+                  options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
+                    [@sales_unit.unit.building.point_of_contact ? @sales_unit.unit.building.point_of_contact : '']),
+                  {prompt: "Choose one..."},
+                  class: 'form-control',
+                  :include_blank => true) %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+
+          <div class="row vertical-margin-lg">
             <div class="col-xs-4 col-sm-3">
               <%= f.label :rlsny, "RLSNY" %>
             </div>

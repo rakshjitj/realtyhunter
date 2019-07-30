@@ -206,6 +206,10 @@ class SalesListingsController < ApplicationController
       ret2 = @sales_unit.update(s_params.merge({updated_at: Time.now}))
     end
 
+    if !params[:sales_listing][:building][:point_of_contact].nil?
+      @sales_unit.unit.building.update(point_of_contact: params[:sales_listing][:building][:point_of_contact])
+    end
+
     # update res
     if ret1 && ret2
       flash[:success] = "Unit successfully updated!"
@@ -425,7 +429,8 @@ class SalesListingsController < ApplicationController
           :floor, :total_room_count, :condition, :showing_instruction, :commission_amount, :cyof,
           :rented_date, :rlsny, :share_with_brokers, :favorites, :show, :expose_address,
           :unit => [:building_unit, :rent, :available_by, :access_info, :status, :exclusive,
-            :building_id, :primary_agent_id, :primary_agent2_id, :listing_agent_id, :syndication_status],
+            :building_id, :primary_agent_id, :primary_agent2_id, :listing_agent_id, :syndication_status,
+            building: [:point_of_contact, :rental_term_id] ],
           :sales_amenity_ids => []
           ])
 
