@@ -272,6 +272,34 @@ xml.PhysicalProperty do
 								"pet deposit required", "pets allowed", "pets ok", "pets upon approval", "small pets ok (<30lbs)"]
 						if @pet_policies[listing.building_id] && pets_allowed.include?(@pet_policies[listing.building_id][0].pet_policy_name)
 							xml.pets
+							if ["cats only"].include?(@pet_policies[listing.building_id][0].pet_policy_name)
+								xml.Policies do
+									xml.Pet allowed: true do
+										xml.Pets PetType: "Cat"
+									end
+								end
+							elsif ["cats/small dogs"].include?(@pet_policies[listing.building_id][0].pet_policy_name)
+								xml.Policies do
+									xml.Pet allowed: true do
+										xml.Pets PetType: "Cat"
+									end
+									xml.Pet allowed: true do
+										xml.Pets PetType: "Dog"
+									end
+								end
+							elsif ["dogs only"].include?(@pet_policies[listing.building_id][0].pet_policy_name)
+								xml.Policies do
+									xml.Pet allowed: true do
+										xml.Pets PetType: "Dog"
+									end
+								end
+							else
+								xml.Policies do
+									xml.Pet allowed: true do
+										xml.Pets PetType: "Pets"
+									end
+								end
+							end
 						end
 
 					#end # amenities

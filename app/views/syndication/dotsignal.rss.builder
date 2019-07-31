@@ -53,6 +53,7 @@ xml.streeteasy :version => "1.6" do
         end
 
         xml.details do
+          
           if listing.residential_listing
             if listing.residential_listing.tenant_occupied == true
               xml.tenant_occupied true
@@ -60,6 +61,15 @@ xml.streeteasy :version => "1.6" do
               xml.tenant_occupied false
             end
           end
+
+          if listing.sales_listing
+            if listing.sales_listing.tenant_occupied == true
+              xml.tenant_occupied true
+            else
+              xml.tenant_occupied false
+            end
+          end
+          
           xml.price listing.rent
 
           if !listing.has_fee
@@ -316,7 +326,7 @@ xml.streeteasy :version => "1.6" do
                 xml.email "info@myspacenyc.com"
                 xml.lead_email "info@myspacenyc.com"
                 xml.phone_numbers do
-                  xml.office "(929) 229-2245"
+                  xml.office "9292748181"
                 end
               end
             end # end forced
