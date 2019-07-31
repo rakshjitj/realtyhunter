@@ -268,6 +268,7 @@ Rails.application.routes.draw do
       get 'hotpad'
       get 'rooms'
       get 'apartment'
+      get 'zumper'
     end
   end
 

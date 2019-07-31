@@ -40,6 +40,10 @@
     set_listings
   end
 
+  def zumper
+    set_listings
+  end
+
   def set_listings
     @company = Company.find(syndication_params[:id])
     if @company
@@ -61,6 +65,8 @@
         @listings = rooms_listings(@company.id, syndication_params)
       elsif syndication_params[:action] == 'apartment'
         @listings = apartment_listings(@company.id, {})
+      elsif syndication_params[:action] == 'zumper'
+        @listings = zumper_listings(@company.id, syndication_params)
       end
 
       @pet_policies = Building.get_pet_policies(@listings)

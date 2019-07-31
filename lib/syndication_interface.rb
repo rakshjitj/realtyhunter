@@ -42,6 +42,13 @@ module SyndicationInterface
 		pull_data(company_id, search_params)
 	end
 
+	def zumper_listings(company_id, search_params)
+		search_params[:has_primary_agent] = 1
+		search_params[:is_hide_on_website] = 1
+		search_params[:must_have_status_inbetween] = 1
+		pull_data(company_id, search_params)
+	end
+
 	def apartment_listings(company_id, search_params)
 		search_params[:has_primary_agent] = 1
 		search_params[:exclusive] = 1
