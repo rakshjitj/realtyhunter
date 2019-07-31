@@ -91,6 +91,7 @@ module SyndicationInterface
 
 	def dotsignal_listings(company_id, search_params)
 		search_params[:is_dotsignal] = 1
+		search_params[:is_hide_on_website] = 1
 		pull_data(company_id, search_params)
 	end
 
@@ -180,6 +181,11 @@ left join sales_listings on units.id = sales_listings.unit_id')
 					Unit.syndication_statuses['Syndicate if matches criteria'],
 					Unit.syndication_statuses['Force syndicate']
 				])
+		end
+
+
+		if is_true?(search_params[:is_hide_on_website])
+			listings = listings.where('units.hide_on_website =?', false)
 		end
 
 		if is_true?(search_params[:has_naked_apartment])
