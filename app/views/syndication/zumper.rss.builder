@@ -292,8 +292,8 @@ xml.streeteasy :version => "1.6" do
             if listing.r_id
 				#unit = Unit.where(listing_id: listing.listing_id)[0].residential_listing
 				#abort listing.residential_listing.inspect
-				if !listing.streeteasy_primary_agent_id.nil?
-						user = User.find(listing.streeteasy_primary_agent_id)
+				if !listing.primary_agent_id.nil?
+						user = User.find(listing.primary_agent_id)
 
 						xml.agent id: user.id do
 							xml.name user.name
@@ -309,15 +309,6 @@ xml.streeteasy :version => "1.6" do
 							xml.office user.office.telephone
 							xml.cell user.streeteasy_mobile_number
 							xml.fax user.office.fax
-						end
-					end
-				else
-					xml.agent id: '114' do
-						xml.name "Myspace NYC"
-						xml.email "gillian.msnyc@myspacenyc.com"
-						xml.lead_email "gillian.msnyc@myspacenyc.com"
-						xml.phone_numbers do
-							xml.office "9292748181"
 						end
 					end
 				end
@@ -394,8 +385,8 @@ xml.streeteasy :version => "1.6" do
 				# end
             else
 
-            	if !listing.streeteasy_primary_agent_id.nil?
-						user = User.find(listing.streeteasy_primary_agent_id)
+            	if !listing.primary_agent_id.nil?
+						user = User.find(listing.primary_agent_id)
 
 						xml.agent id: user.id do
 							xml.name user.name
@@ -411,15 +402,6 @@ xml.streeteasy :version => "1.6" do
 							xml.office user.office.telephone
 							xml.cell user.streeteasy_mobile_number
 							xml.fax user.office.fax
-						end
-					end
-				else
-					xml.agent id: '114' do
-						xml.name "Myspace NYC"
-						xml.email "gillian.msnyc@myspacenyc.com"
-						xml.lead_email "gillian.msnyc@myspacenyc.com"
-						xml.phone_numbers do
-							xml.office "9292748181"
 						end
 					end
 				end
