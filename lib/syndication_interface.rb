@@ -45,7 +45,7 @@ module SyndicationInterface
 	def zumper_listings(company_id, search_params)
 		search_params[:has_primary_agent] = 1
 		search_params[:is_hide_on_website] = 1
-		search_params[:must_have_status_inbetween] = 1
+		search_params[:must_have_status_for_zumper] = 1
 		pull_data(company_id, search_params)
 	end
 
@@ -201,6 +201,10 @@ left join sales_listings on units.id = sales_listings.unit_id')
 
 		if is_true?(search_params[:must_have_status_inbetween])
 			listings = listings.where('units.status IN (?)', [Unit.statuses["active"], Unit.statuses["pending"], Unit.statuses["rsonly"], Unit.statuses["contract_out"], Unit.statuses["on_market"], Unit.statuses["offer_submitted"], Unit.statuses["in_escrow"]])
+		end
+
+		if is_true?(search_params[:must_have_status_for_zumper])
+			listings = listings.where('units.status =?', Unit.statuses["active"])
 		end
 
 		if is_true?(search_params[:has_primary_agent])
