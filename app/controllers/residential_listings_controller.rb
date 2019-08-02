@@ -720,12 +720,17 @@ class ResidentialListingsController < ApplicationController
 
       # update fields on the unit first, then update fields on the residential_listing
       if !params[:residential_listing][:building][:point_of_contact].nil?
-        @residential_unit.unit.building.update(point_of_contact: params[:residential_listing][:building][:point_of_contact], rental_term_id: params[:residential_listing][:building][:rental_term_id])
+        @residential_unit.unit.building.update(point_of_contact: params[:residential_listing][:building][:point_of_contact])
       end
-      if !params[:residential_listing][:building][:custom_rental_term].blank?
-        new_rental_term = RentalTerm.create(name: params[:residential_listing][:building][:custom_rental_term], company_id: 1)
-        @residential_unit.unit.building.update(rental_term_id: new_rental_term.id)
-      end
+
+      # if !params[:residential_listing][:rental_term_id].nil?
+      #   @residential_unit.update(rental_term_id: params[:residential_listing][:rental_term_id])
+      # end
+      # abort params[:custom_rental_term].blank?.inspect
+      # if !params[:custom_rental_term].blank?
+      #   new_rental_term = RentalTerm.create(name: params[:custom_rental_term], company_id: 1)
+      #   @residential_unit.update(rental_term_id: new_rental_term.id)
+      # end
       unit_updated = @residential_unit.unit.update(
           residential_listing_params[:unit].merge({updated_at: Time.now}))
       r_params = residential_listing_params
@@ -751,6 +756,11 @@ class ResidentialListingsController < ApplicationController
 
     if params[:residential_listing][:streeteasy_flag] == "1"
       StreeteasyCounter.create(residential_listing_id: params[:id], streeteasy_flag_check: true)
+    end
+
+    if !params[:custom_rental_term].blank?
+      new_rental_term = RentalTerm.create(name: params[:custom_rental_term], company_id: 1)
+      @residential_unit.update(rental_term_id: new_rental_term.id)
     end
 
     if unit_updated && listing_updated
@@ -1206,7 +1216,7 @@ class ResidentialListingsController < ApplicationController
         :recipients, :building_rating, :landlord_rating, :title, :message, :listing_ids, :listing_id,
         :tenant_occupied,
         :beds, :baths, :notes, :description, :rooms_description, :lease_start, :lease_end,
-        :include_photos, :inaccuracy_description,
+        :include_photos, :inaccuracy_description, :rental_term_id,
         :has_fee, :op_fee_percentage, :tp_fee_percentage,
         :available_starting, :available_before, :custom_amenities,
         :roomsharing_filter, :unassigned_filter, :tenant_occupied_filter, :streeteasy_filter,
@@ -1219,7 +1229,7 @@ class ResidentialListingsController < ApplicationController
           :syndication_status, :has_stock_photos, :is_exclusive_agreement_signed,
           :exclusive_agreement_expires_at, :public_url, :price_calculation,
           open_houses_attributes: [:day, :start_time, :end_time, :_destroy, :id],
-          building: [:point_of_contact, :rental_term_id] ],
+          building: [:point_of_contact] ],
         residential_amenity_ids: []
         )
 

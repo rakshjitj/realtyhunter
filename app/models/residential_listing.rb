@@ -5,6 +5,7 @@ class ResidentialListing < ApplicationRecord
   has_and_belongs_to_many :residential_amenities
   has_many :roommates
   has_many :rooms
+  belongs_to :rental_term
   belongs_to :unit, touch: true
   has_many :streeteasy_counters
   accepts_nested_attributes_for :unit #, allow_destroy: true

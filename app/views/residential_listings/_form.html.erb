@@ -610,26 +610,51 @@
           </div>
         </div>
 
-        <%#= f.fields_for @residential_unit.unit.building do |rt| %>
-          <div class="row vertical-margin-lg">
+        <div class="row vertical-margin-lg">
             <div class="col-xs-3 col-sm-4">
               <%= f.label :rental_term_id, "Rental Terms" %>
             </div>
             <div class="col-xs-9 col-sm-6">
-              <% if @residential_unit.unit.building %>
-                <%= f.fields_for @residential_unit.unit.building do |unit_form| %>
+              <%#= f.fields_for @residential_unit.unit.building do |unit_form| %>
+              <%# abort @residential_unit.unit.building.rental_term.inspect %>
+              <% if @residential_unit.rental_term %>
+                <%= f.select(:rental_term_id, options_for_select(current_user.company.rental_terms.all.collect { |r| [r.name.titleize, r.id] },
+                  [@residential_unit.rental_term.id ? @residential_unit.rental_term.id : '']),
+                   {prompt: "Choose one..."},
+                  class: 'form-control',
+                  :include_blank => true) %>
+              <% else %>
+                <%= f.select(:rental_term_id, options_for_select(current_user.company.rental_terms.all.collect { |r| [r.name.titleize, r.id] }),
+                   {prompt: "Choose one..."},
+                  class: 'form-control',
+                  :include_blank => true) %>
+              <% end %>
+                <%= text_field_tag :custom_rental_term,"", class: 'form-control vertical-margin-lg',
+                  placeholder: "Or enter new custom rental term" %>
+              <%# end %>
+            </div>
+          </div>
+
+        <%#= f.fields_for @residential_unit.unit.building do |rt| %>
+          <!-- <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-sm-4">
+              <%#= f.label :rental_term_id, "Rental Terms" %>
+            </div>
+            <div class="col-xs-9 col-sm-6">
+              <%# if @residential_unit.unit.building %>
+                <%#= f.fields_for @residential_unit.unit.building do |unit_form| %>
                 <%# abort @residential_unit.unit.building.rental_term.inspect %>
-                  <%= unit_form.select(:rental_term_id, options_for_select(current_user.company.rental_terms.all.collect { |r| [r.name.titleize, r.id] },
+                  <%#= unit_form.select(:rental_term_id, options_for_select(current_user.company.rental_terms.all.collect { |r| [r.name.titleize, r.id] },
                     [@residential_unit.unit.building.rental_term.id ? @residential_unit.unit.building.rental_term.id : '']),
                      {prompt: "Choose one..."},
                     class: 'form-control',
                     :include_blank => true) %>
-                  <%= unit_form.text_field :custom_rental_term, class: 'form-control vertical-margin-lg',
+                  <%#= unit_form.text_field :custom_rental_term, class: 'form-control vertical-margin-lg',
                     placeholder: "Or enter new custom rental term" %>
-                <% end %>
-              <% end %>
+                <%# end %>
+              <%# end %>
             </div>
-          </div>
+          </div> -->
         <%# end %>
 
         <div class="row vertical-margin-lg">

@@ -1,6 +1,7 @@
 class RentalTerm < ApplicationRecord
 	belongs_to :company, touch: true
 	has_many :buildings
+	has_many :residential_listings
 	before_save :downcase_name
 
 	validates :company, presence: true
