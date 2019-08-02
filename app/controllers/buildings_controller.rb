@@ -110,6 +110,22 @@ class BuildingsController < ApplicationController
 
   def mass_edit_update
     @building = Building.find(params[:id])
+    all_id = []
+    if !params["hide_on_website"].nil?
+      params["hide_on_website"].each do |k,v|
+        all_id << k.to_i
+        unit = Unit.find(k.to_i)
+        unit.update!(hide_on_website: v)
+      end
+    end
+    
+    all_active_unit = @building.units.where(status: 0).map(&:id)
+    all_remain_id = all_active_unit - all_id
+    all_remain_id.each do |ac_unit|
+        unit = Unit.find(ac_unit)
+        unit.update!(hide_on_website: false)
+    end
+
     all_selected_units = []
     if !params[:price_cal].nil?
       params[:price_cal].each do |price_cal|
@@ -167,6 +183,7 @@ class BuildingsController < ApplicationController
         unit.residential_listing.update(streeteasy_flag: params["streeteasy_flag"]["#{unit.id}"], updated_at: Time.now())
       end
     end
+
     # notifier = Slack::Notifier.new "https://hooks.slack.com/services/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" do
     #         defaults channel: "#general",
     #                  username: "notifier"

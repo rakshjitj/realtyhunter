@@ -31,10 +31,12 @@
               <th>Mths Free</th>
               <th>Min Lease</th>
               <th>Max Lease</th>
+              <!-- <th>Status</th> -->
               <th>Available</th>
               <th>POC</th>
               <th>Primary Agent</th>
               <th>SE Flag</th>
+              <th>Hide On Website</th>
             </tr>
           </thead>
           <tbody class="residential_units_table_body">
@@ -68,6 +70,9 @@
                 <td>
                   <%= text_field_tag "[lease_end][#{unit.id}]", unit.residential_listing.lease_end ? unit.residential_listing.lease_end : '', class: 'form-control', placeholder: "max months" %>
                 </td>
+                <!-- <td>
+                  
+                </td> -->
                 <td>
                   <div class='input-group date datepicker'>
                     <%= text_field_tag "[available_by][#{unit.id}]",unit.available_by ? unit.available_by.strftime("%m/%d/%Y") : '',
@@ -95,6 +100,19 @@
                       <%= hidden_field_tag "db_se_flag_#{unit.id}", unit.residential_listing.streeteasy_flag ? unit.residential_listing.streeteasy_flag : false %>
                       <%= hidden_field_tag "[streeteasy_flag][#{unit.id}]", false %>
                       <%= check_box_tag "[streeteasy_flag][#{unit.id}]", true, unit.residential_listing.streeteasy_flag ? unit.residential_listing.streeteasy_flag : false, class: "styled", onclick: "se_change(#{unit.id})" %>
+                    <% end %>
+                    <label></label>
+                  </div>
+                </td>
+                <td>
+                  <div class="checkbox checkbox-warning checkbox-inline">
+                    <% if unit.hide_on_website == true %>
+                      <%= check_box_tag "[hide_on_website][#{unit.id}]", true, unit.hide_on_website ? unit.hide_on_website : false, class: "styled" %>
+                      <%#= unit.hide_on_website  %>
+                    <% else %>
+                      <%= hidden_field_tag "db_hide_web_flag_#{unit.id}", unit.hide_on_website ? unit.hide_on_website : false %>
+                      <%= hidden_field_tag "[hide_on_website][#{unit.id}]", false %>
+                      <%= check_box_tag "[hide_on_website][#{unit.id}]", true, unit.hide_on_website ? unit.hide_on_website : false, class: "styled", onclick: "hide_website_change(#{unit.id})" %>
                     <% end %>
                     <label></label>
                   </div>
@@ -307,6 +325,26 @@
                 // var unit_id_print = "#print_unit_rent_" + id;
                 $(update_unit_number).html("Unit #" + unit_numb);
                 $(changes_update_popup).append("Listing Live on SE" + "<br>")
+                // $(unit_id_print).html();
+              }
+              else{
+                $(update_unit_number).html("");
+              }
+            }
+
+            function hide_website_change(id){
+              var hide_form = "[hide_on_website]["+ id +"]";
+              var hide_db = "db_hide_web_flag_" + id;
+              var unit_nm = "unit_number_" + id;
+              var update_unit_number = "#update_unit_number_" + id;
+              var changes_update_popup = "#update_changes_" + id;
+              var hide_live = document.getElementsByName(hide_form)[0].value;
+              var hide_from_db = document.getElementsByName(hide_db)[0].value;
+              var unit_numb = document.getElementsByName(unit_nm)[0].value;
+              if (hide_live != hide_from_db){
+                // var unit_id_print = "#print_unit_rent_" + id;
+                $(update_unit_number).html("Unit #" + unit_numb);
+                $(changes_update_popup).append("Listing Hide From Website" + "<br>")
                 // $(unit_id_print).html();
               }
               else{
