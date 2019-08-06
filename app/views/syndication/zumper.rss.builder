@@ -544,7 +544,11 @@ xml.streeteasy :version => "1.6" do
 									end
 
 									if listing.r_id
-										xml.propertyType "rental"
+										if listing.residential_listing.roomshare_department == false
+											xml.propertyType "rental"
+										else
+											xml.propertyType "room"
+										end
 									elsif listing.s_id
 										xml.propertyType listing.sales_listing.listing_type
 									end
