@@ -470,6 +470,7 @@ xml.streeteasy :version => "1.6" do
 					elsif listing.residential_listing.roomshare_department == true
 						
 						listing.residential_listing.rooms.where(status: 0).each do |one_room|
+								public_url = "https://myspacenyc.com/rooms/rooms-details/?rid=#{listing.id}"
 								xml.property type: @ptype, status: listing.status, id: listing.listing_id, url: public_url do
 								xml.location do
 									# note we don't want to give out the building number for rentals!
