@@ -435,7 +435,7 @@
     </thead>
     <tbody class="residential_units_table_body">
       <% @residential_listings.each do |res_list| %>
-        <% if res_list.unit.status == "rsonly" || res_list.unit.status == "active" %>
+        <%# if res_list.unit.status == "rsonly" || res_list.unit.status == "active" %>
         <%#= image_tag res_list.unit.images.first.file(:large) %>
           <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= res_list.unit.listing_id %>" >
             <td class="img-col">  
@@ -536,7 +536,7 @@
                 <%= link_to "Edit", edit_room_path(res_list) %>
               </td>
             </tr>
-          <% end %>
+          <%# end %>
       <% end %>
   </tbody>
 </table>
