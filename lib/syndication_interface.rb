@@ -200,7 +200,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 		end
 
 		if is_true?(search_params[:must_have_status_inbetween])
-			listings = listings.where('units.status IN (?)', [Unit.statuses["active"], Unit.statuses["pending"], Unit.statuses["rsonly"], Unit.statuses["contract_out"], Unit.statuses["on_market"], Unit.statuses["offer_submitted"], Unit.statuses["in_escrow"]])
+			listings = listings.where('units.status IN (?)', [Unit.statuses["active"], Unit.statuses["pending"], Unit.statuses["contract_out"], Unit.statuses["on_market"], Unit.statuses["offer_submitted"], Unit.statuses["in_escrow"]])
 		end
 
 		if is_true?(search_params[:must_have_status_for_zumper])
