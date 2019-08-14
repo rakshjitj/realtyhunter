@@ -77,7 +77,7 @@
   </td>
 
   <% if current_user.is_management? || current_user.is_listings_manager? ||
-        current_user.is_photo_manager? %>
+        current_user.is_photo_manager? || current_user.id == sales_listing.unit.building.point_of_contact %>
     <td class="hidden-print">
       <% if !current_user.is_photo_manager? %>
         <%= link_to 'Edit', edit_sales_listing_path(sales_listing) %>
