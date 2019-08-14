@@ -814,6 +814,7 @@ class ResidentialListingsController < ApplicationController
 
   def room_index
     @residential_listings = ResidentialListing.where(roomshare_department: true)
+    do_search
     @residential_units = ResidentialListing.search(params, current_user, params[:building_id])
 
     @residential_listings = @residential_units.each.map(&:id) & @residential_listings.each.map(&:id)
