@@ -533,7 +533,9 @@
                 <% end %>
               </td>
               <td>
-                <%= link_to "Edit", edit_room_path(res_list) %>
+                <% if current_user.is_management? || current_user.id == res_list.unit.building.point_of_contact %>
+                  <%= link_to "Edit", edit_room_path(res_list) %>
+                <% end %>
               </td>
             </tr>
           <%# end %>
