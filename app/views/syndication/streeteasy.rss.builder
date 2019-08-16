@@ -125,10 +125,10 @@ xml.streeteasy :version => "1.6" do
 					xml.availableOn listing.available_by # rentals only
 
 					if listing.r_id
-						xml.description h raw sanitize listing.description,
+						xml.description h raw sanitize listing.description + "For more information, view this apartment on MySpace NYC at #{public_url}",
 		        		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
 		      elsif listing.s_id
-		        xml.description h raw sanitize listing.public_description,
+		        xml.description h raw sanitize listing.public_description + "For more information, view this apartment on MySpace NYC at #{public_url}",
 		        		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
 					end
 

@@ -78,7 +78,7 @@ class Ability
       end
       
     end
-    can :read, SalesListing do |sales_listing|
+    can :manage, SalesListing do |sales_listing|
       sales_listing.unit.building.company_id == user.company_id
     end
     can :read, CommercialListing do |commercial_listing|
