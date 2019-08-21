@@ -304,6 +304,19 @@
       </div>
     </div>
 
+    <div class="row vertical-margin-lg">
+      <div class="col-xs-3 col-md-4">
+        <%= f.label :push_to_zumper, "Push to Zumper" %>
+      </div>
+      <div class="col-xs-9 col-md-7">
+        <div class="checkbox checkbox-warning checkbox-inline">
+          <%= f.check_box :push_to_zumper, class: "styled",
+              checked: @building ? @building.push_to_zumper : false %>
+          <label></label>
+        </div>
+      </div>
+    </div>
+
     <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
     <div class="details field">
       <%= f.hidden_field :street_number, name: "street_number" %>
