@@ -374,7 +374,9 @@ class BuildingsController < ApplicationController
         :sublocality, :administrative_area_level_2_short,
         :administrative_area_level_1_short, :inaccuracy_description, :request_price_drop,
         :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id, :file,
-        building: [:lock_version, :formatted_street_address, :dotsignal_code, :point_of_contact, :push_to_zumper, :building_website, :building_name, :section_8, :income_restricted, :featured, :rating, :notes, :description, :landlord_id, :user_id,
+        building: [:lock_version, :formatted_street_address, :dotsignal_code, :point_of_contact,
+         :push_to_zumper, :building_website, :building_name, :section_8, :income_restricted, :year_build, :featured, 
+         :rating, :notes, :description, :landlord_id, :user_id,
           :inaccuracy_description, :pet_policy_id, :rental_term_id, :custom_rental_term, :file,
           :custom_amenities, :custom_utilities, :neighborhood_id, :neighborhood, :llc_name,
           building_amenity_ids: [], images_files: [], utility_ids: [] ])
