@@ -311,12 +311,61 @@
       <div class="col-xs-9 col-md-7">
         <div class="checkbox checkbox-warning checkbox-inline">
           <%= f.check_box :push_to_zumper, class: "styled",
-              checked: @building ? @building.push_to_zumper : false %>
+              checked: @building ? @building.push_to_zumper : false, onClick: "push_checked()" %>
           <label></label>
         </div>
       </div>
     </div>
 
+    <br />
+    <div class="row">
+      <div class="col-sm-3">
+        <%= f.label :building_website, "Building Website" %>
+      </div>
+      <div class="col-sm-9">
+        <%= f.text_field :building_website, class: 'form-control' %>
+      </div>
+    </div>
+
+    <br />
+    <div class="row">
+      <div class="col-sm-3">
+        <%= f.label :building_name, "Building Name" %>
+      </div>
+      <div class="col-sm-9">
+        <% if @building.push_to_zumper == true %>
+          <%= f.text_field :building_name, class: 'form-control', required: true %>
+        <% else %>
+          <%= f.text_field :building_name, class: 'form-control' %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="row vertical-margin-lg">
+      <div class="col-xs-3 col-md-4">
+        <%= f.label :section_8, "Section 8" %>
+      </div>
+      <div class="col-xs-9 col-md-7">
+        <div class="checkbox checkbox-warning checkbox-inline">
+          <%= f.check_box :section_8, class: "styled",
+              checked: @building ? @building.section_8 : false %>
+          <label></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row vertical-margin-lg">
+      <div class="col-xs-3 col-md-4">
+        <%= f.label :income_restricted, "Income Restricted" %>
+      </div>
+      <div class="col-xs-9 col-md-7">
+        <div class="checkbox checkbox-warning checkbox-inline">
+          <%= f.check_box :income_restricted, class: "styled",
+              checked: @building ? @building.income_restricted : false %>
+          <label></label>
+        </div>
+      </div>
+    </div>
     <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
     <div class="details field">
       <%= f.hidden_field :street_number, name: "street_number" %>
@@ -366,4 +415,21 @@
           localStorage.removeItem( 'firstLoad' );
       }
     })();
+
+    function push_checked()
+    {
+      if (document.getElementById('building_push_to_zumper').checked) 
+      {
+        if (document.getElementById("building_building_name").innerText == ""){
+          document.getElementById("building_building_name").required = true
+        }
+      } else {
+        document.getElementById("building_building_name").required = false
+      }
+    }
+    // if (document.getElementById("building_push_to_zumper").checked == true){
+    //   if (document.getElementById("building_building_name").innerText === ""){
+    //     alert("please fill Building Name")
+    //   }
+    // }
 </script>
