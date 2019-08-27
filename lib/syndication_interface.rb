@@ -45,6 +45,7 @@ module SyndicationInterface
 	def zumper_listings(company_id, search_params)
 		search_params[:has_primary_agent] = 1
 		search_params[:is_hide_on_website] = 1
+		search_params[:push_to_zumper_active] = 1
 		search_params[:must_have_status_for_zumper] = 1
 		pull_data(company_id, search_params)
 	end
@@ -203,6 +204,10 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			listings = listings.where('units.status IN (?)', [Unit.statuses["active"], Unit.statuses["pending"], Unit.statuses["contract_out"], Unit.statuses["on_market"], Unit.statuses["offer_submitted"], Unit.statuses["in_escrow"]])
 		end
 
+		if is_true?(search_params[:push_to_zumper_active])
+			#listings = listings.where('buildings.push_to_zumper =?', true)
+		end
+
 		if is_true?(search_params[:must_have_status_for_zumper])
 			listings = listings.where('units.status IN (?)', [Unit.statuses["active"], Unit.statuses["rsonly"]])
 		end
@@ -245,7 +250,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			.select('units.id', 'units.building_unit', 'units.status', 'units.available_by',
 			'units.listing_id', 'units.updated_at', 'units.rent', 'units.streeteasy_unit' ,
 			'units.streeteasy_listing_email', 'units.streeteasy_listing_number',
-			'buildings.id as building_id',
+			'buildings.id as building_id', 'buildings.push_to_zumper',
 			'buildings.administrative_area_level_2_short',
 			'buildings.administrative_area_level_1_short',
 			'buildings.sublocality',
