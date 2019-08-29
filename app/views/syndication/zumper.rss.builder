@@ -76,7 +76,7 @@ xml.streeteasy :version => "1.6" do
 													xml.dogs
 												end
 										 	end
-										 	xml.niac do
+										 	xml.misc do
 										 		if listing.section_8 == true
 										 			xml.section_8
 										 		end
