@@ -180,7 +180,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 		#feed url for dotsignal similar as nestio only url change. feed similar to nestio
 		if is_true?(search_params[:is_dotsignal])
 			listings = listings.where('units.status IN (?)',
-					[Unit.statuses["active"], Unit.statuses["pending"]])
+					[Unit.statuses["active"], Unit.statuses["pending"], Unit.statuses["rsonly"]])
 		else
 			listings = listings.where('units.status IN (?) OR units.syndication_status = ?',
 					[Unit.statuses["active"], Unit.statuses["pending"], Unit.statuses["contract_out"], Unit.statuses["on_market"], Unit.statuses["offer_submitted"], Unit.statuses["in_escrow"]],
