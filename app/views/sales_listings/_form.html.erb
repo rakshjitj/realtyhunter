@@ -731,7 +731,7 @@
               <%= f.label :percent_commission, 'Commission %' %>
             </div>
             <div class="col-xs-8 col-sm-4">
-              <%= f.number_field :percent_commission, class: 'form-control', min: 0 %>
+              <%= f.number_field :percent_commission, class: 'form-control', min: 0, :step => 'any' %>
               <div id="op_explainer_text">
               </div>
             </div>
@@ -743,7 +743,7 @@
               <%= f.label :outside_broker_commission, 'Outside Broker Commission %' %>
             </div>
             <div class="col-xs-8 col-sm-4">
-              <%= f.number_field :outside_broker_commission, class: 'form-control', min: 0 %>
+              <%= f.number_field :outside_broker_commission, class: 'form-control', min: 0, :step => 'any' %>
               <div id="op_explainer_text"></div>
             </div>
           </div>
