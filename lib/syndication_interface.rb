@@ -205,7 +205,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 		end
 
 		if is_true?(search_params[:push_to_zumper_active])
-			#listings = listings.where('buildings.push_to_zumper =?', true)
+			listings = listings.where('buildings.push_to_zumper =?', true)
 		end
 
 		if is_true?(search_params[:must_have_status_for_zumper])

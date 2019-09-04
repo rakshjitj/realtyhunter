@@ -27,6 +27,7 @@ xml.streeteasy :version => "1.6" do
 								if !listing.neighborhood.blank?
 									public_url = "https://myspacenyc.com/rentals-building/" + (listing.street_number + "-" + listing.route.downcase.tr(" ", "-") + "-" + listing.neighborhood.name.downcase.tr(" ", "-") + "-" + listing.sublocality.downcase.tr(" ", "-") + "-" + listing.administrative_area_level_1_short.downcase)
 								end
+
 								xml.property type: "building", status: "active", id: listing.id, url: public_url do
 										xml.location do
 											# note we don't want to give out the building number for rentals!
