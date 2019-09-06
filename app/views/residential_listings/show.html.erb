@@ -127,7 +127,7 @@
 		    	<div class="row">
 		    		<div class="col-md-12">
 		    			<!-- begin photos -->
-					  	<% if @residential_unit.unit.images.length > 0 || @residential_unit.unit.building.images.length > 0 %>
+					  	<% if @residential_unit.unit.images.length > 0 #|| @residential_unit.unit.building.images.length > 0 %>
 								<div id="residential_unit-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
 								  <!-- Wrapper for slides -->
 								  <div class="carousel-inner" role="listbox">
@@ -150,7 +150,7 @@
 								  </div>
 
 								  <!-- Controls -->
-								  <% if @residential_unit.unit.building.images.length + @residential_unit.unit.images.length > 1 %>
+								  <% if @residential_unit.unit.images.length > 1 %>
 									  <a class="left carousel-control" href="#residential_unit-carousel" role="button" data-slide="prev">
 									    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
 									    <span class="sr-only">Previous</span>
@@ -164,15 +164,16 @@
 
 								<!-- clickable navigation -->
 								<!-- first building photos... -->
-								<% if @residential_unit.unit.building.images.length + @residential_unit.unit.images.length > 1 %>
+								<%# if @residential_unit.unit.building.images.length + @residential_unit.unit.images.length > 1 %>
+								<% if @residential_unit.unit.images.length > 1 %>
 									<% i = 0 %>
-									<% for i in 0..@residential_unit.unit.building.images.length-1 %>
-										<% image = @residential_unit.unit.building.images[i] %>
-							  		<a href="#residential_unit-carousel" data-slide-to="<%= i %>">
-								      <%= image_tag image.file.url(:thumb), :class => 'photo-inline',
+									<%# for i in 0..@residential_unit.unit.building.images.length-1 %>
+										<%# image = @residential_unit.unit.building.images[i] %>
+							  		<!-- <a href="#residential_unit-carousel" data-slide-to="<%#= i %>"> -->
+								      <%#= image_tag image.file.url(:thumb), :class => 'photo-inline',
 								      	alt: image.file.url(:thumb) %>
-								    </a>
-							  	<% end %>
+								    <!-- </a> -->
+							  	<%# end %>
 							  	<!-- now display unit photos -->
 							  	<% for j in 0..@residential_unit.unit.images.length-1 %>
 										<% image = @residential_unit.unit.images[j] %>
