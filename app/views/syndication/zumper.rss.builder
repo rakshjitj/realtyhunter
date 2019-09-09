@@ -13,187 +13,187 @@ xml.instruct! :xml, :version => "1.0"
 xml.streeteasy :version => "1.6" do
   xml.properties do
   	#exit
-	  @builds = Building.where(push_to_zumper: true, archived: false).where("description <> ''")
+	  # @builds = Building.where(push_to_zumper: true, archived: false).where("description <> ''")
 
-				if !@builds.blank?
-					@builds.each do |listing|
-						if !listing.images.blank?
-							arr_build = []
-							cond_for_building = listing.units.where(status: 0, archived: false)
-							cond_for_building.each do |cond_build|
-								arr_build << cond_build.images.where(floorplan: true)
-							end
-							if !arr_build.blank?
-								if !listing.neighborhood.blank?
-									public_url = "https://myspacenyc.com/rentals-building/" + (listing.street_number + "-" + listing.route.downcase.tr(" ", "-") + "-" + listing.neighborhood.name.downcase.tr(" ", "-") + "-" + listing.sublocality.downcase.tr(" ", "-") + "-" + listing.administrative_area_level_1_short.downcase)
-								end
+			# 	if !@builds.blank?
+			# 		@builds.each do |listing|
+			# 			if !listing.images.blank?
+			# 				arr_build = []
+			# 				cond_for_building = listing.units.where(status: 0, archived: false)
+			# 				cond_for_building.each do |cond_build|
+			# 					arr_build << cond_build.images.where(floorplan: true)
+			# 				end
+			# 				if !arr_build.blank?
+			# 					if !listing.neighborhood.blank?
+			# 						public_url = "https://myspacenyc.com/rentals-building/" + (listing.street_number + "-" + listing.route.downcase.tr(" ", "-") + "-" + listing.neighborhood.name.downcase.tr(" ", "-") + "-" + listing.sublocality.downcase.tr(" ", "-") + "-" + listing.administrative_area_level_1_short.downcase)
+			# 					end
 
-								if !listing.building_website.blank?
-									public_url = listing.building_website
-								end
+			# 					if !listing.building_website.blank?
+			# 						public_url = listing.building_website
+			# 					end
 
-								xml.property type: "building", status: "active", id: listing.id, url: public_url do
-										xml.location do
-											# note we don't want to give out the building number for rentals!
-											xml.address listing.street_number + " " + listing.route
-											# if !listing.streeteasy_unit.nil?
-											# 	xml.apartment listing.streeteasy_unit
-											# else
-											# 	xml.apartment listing.building_unit
-											# end
-											xml.city listing.sublocality
-											xml.state listing.administrative_area_level_1_short
-											xml.zipcode listing.postal_code
-											xml.neighborhood listing.neighborhood.name
-										end
-										if !listing.images.blank?
-											xml.media do
-												listing.images.each do |image|
-													xml.photo url: image.file.url(:large)
-												end
-											end
-										end
-										xml.details do
-											#xml.price listing.rent
+			# 					xml.property type: "building", status: "active", id: listing.id, url: public_url do
+			# 							xml.location do
+			# 								# note we don't want to give out the building number for rentals!
+			# 								xml.address listing.street_number + " " + listing.route
+			# 								# if !listing.streeteasy_unit.nil?
+			# 								# 	xml.apartment listing.streeteasy_unit
+			# 								# else
+			# 								# 	xml.apartment listing.building_unit
+			# 								# end
+			# 								xml.city listing.sublocality
+			# 								xml.state listing.administrative_area_level_1_short
+			# 								xml.zipcode listing.postal_code
+			# 								xml.neighborhood listing.neighborhood.name
+			# 							end
+			# 							if !listing.images.blank?
+			# 								xml.media do
+			# 									listing.images.each do |image|
+			# 										xml.photo url: image.file.url(:large)
+			# 									end
+			# 								end
+			# 							end
+			# 							xml.details do
+			# 								#xml.price listing.rent
 
-										 	# if !listing.has_fee
-										 	# 	xml.noFee
-										 	# end
-										 	if listing.building_name
-										 		xml.name listing.building_name
-										 	end
+			# 							 	# if !listing.has_fee
+			# 							 	# 	xml.noFee
+			# 							 	# end
+			# 							 	if listing.building_name
+			# 							 		xml.name listing.building_name
+			# 							 	end
 
-										 	if listing.featured == true
-										 		xml.featured "yes"
-										 	else
-										 		xml.featured "no"
-										 	end
+			# 							 	if listing.featured == true
+			# 							 		xml.featured "yes"
+			# 							 	else
+			# 							 		xml.featured "no"
+			# 							 	end
 
-										 	xml.pets do
-										 		cats_allowed = ["case by case",  "cats only", "cats/small dogs", "monthly pet fee",
-															"pet deposit required", "pets allowed", "pets ok", "pets upon approval", "small pets ok (<30lbs)"]
-												if cats_allowed.include?(listing.pet_policy.name)
-													xml.cats
-												end
-												dogs_allowed = ["case by case", "cats/small dogs", "dogs only", "monthly pet fee" ,
-															"pet deposit required", "pets allowed", "pets ok", "pets upon approval", "small pets ok (<30lbs)"]
-												if dogs_allowed.include?(listing.pet_policy.name)
-													xml.dogs
-												end
-										 	end
-										 	xml.misc do
-										 		if listing.section_8 == true
-										 			xml.section_8
-										 		end
-										 		if listing.income_restricted == true
-										 			xml.income_restricted
-										 		end
-										 	end
-										 	xml.lease_duration "1 Year"
-										 	if !listing.description.blank?
-										 		xml.description h raw sanitize listing.description,
-								         		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
-										 	end
+			# 							 	xml.pets do
+			# 							 		cats_allowed = ["case by case",  "cats only", "cats/small dogs", "monthly pet fee",
+			# 												"pet deposit required", "pets allowed", "pets ok", "pets upon approval", "small pets ok (<30lbs)"]
+			# 									if cats_allowed.include?(listing.pet_policy.name)
+			# 										xml.cats
+			# 									end
+			# 									dogs_allowed = ["case by case", "cats/small dogs", "dogs only", "monthly pet fee" ,
+			# 												"pet deposit required", "pets allowed", "pets ok", "pets upon approval", "small pets ok (<30lbs)"]
+			# 									if dogs_allowed.include?(listing.pet_policy.name)
+			# 										xml.dogs
+			# 									end
+			# 							 	end
+			# 							 	xml.misc do
+			# 							 		if listing.section_8 == true
+			# 							 			xml.section_8
+			# 							 		end
+			# 							 		if listing.income_restricted == true
+			# 							 			xml.income_restricted
+			# 							 		end
+			# 							 	end
+			# 							 	xml.lease_duration "1 Year"
+			# 							 	if !listing.description.blank?
+			# 							 		xml.description h raw sanitize listing.description,
+			# 					         		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
+			# 							 	end
 
-										 	xml.amenities do
+			# 							 	xml.amenities do
 
-													@other_amenities = []
-													attribute_found = {}
-													# abort listing.building_amenities.inspect
+			# 										@other_amenities = []
+			# 										attribute_found = {}
+			# 										# abort listing.building_amenities.inspect
 													
-													if listing.building_amenities
-														if (listing.building_amenities.map(&:name) & ["conference room", "business lounge"]).empty? == false
-															xml.business_center
-														end
-														if (listing.building_amenities.map(&:name) & ["24 hour concierge", "valet", "concierge", "4 hour front desk concierge", "concierge/services"]).empty? == false
-															xml.concierge_service
-														end
-														if (listing.building_amenities.map(&:name) & ["doorman"]).empty? == false
-															xml.door_person
-														end
-														if (listing.building_amenities.map(&:name) & ["elevator"]).empty? == false
-															xml.elevator
-														end
-														if (listing.building_amenities.map(&:name) & ["basketball court", "climbing wall", "fitness center", "pool", "squash court", "swimming pool", "yoga room"]).empty? == false
-															xml.fitness_center
-														end
-														if (listing.building_amenities.map(&:name) & ["parking", "garage parking", "parking for $200 a month"]).empty? == false
-															xml.garage_parking
-														end
-														if (listing.building_amenities.map(&:name) & ["laundry in building", "w/d in unit"]).empty? == false
-															xml.onsite_laundry
+			# 										if listing.building_amenities
+			# 											if (listing.building_amenities.map(&:name) & ["conference room", "business lounge"]).empty? == false
+			# 												xml.business_center
+			# 											end
+			# 											if (listing.building_amenities.map(&:name) & ["24 hour concierge", "valet", "concierge", "4 hour front desk concierge", "concierge/services"]).empty? == false
+			# 												xml.concierge_service
+			# 											end
+			# 											if (listing.building_amenities.map(&:name) & ["doorman"]).empty? == false
+			# 												xml.door_person
+			# 											end
+			# 											if (listing.building_amenities.map(&:name) & ["elevator"]).empty? == false
+			# 												xml.elevator
+			# 											end
+			# 											if (listing.building_amenities.map(&:name) & ["basketball court", "climbing wall", "fitness center", "pool", "squash court", "swimming pool", "yoga room"]).empty? == false
+			# 												xml.fitness_center
+			# 											end
+			# 											if (listing.building_amenities.map(&:name) & ["parking", "garage parking", "parking for $200 a month"]).empty? == false
+			# 												xml.garage_parking
+			# 											end
+			# 											if (listing.building_amenities.map(&:name) & ["laundry in building", "w/d in unit"]).empty? == false
+			# 												xml.onsite_laundry
 
-														end
-														if (listing.building_amenities.map(&:name) & ["live in super", "24 hour concierge", "24 hour front desk concierge", "24 hour security"]).empty? == false
-															xml.onsite_management
-														end
-														if (listing.building_amenities.map(&:name) & ["community garden", "dog run", "grills", "courtyard", "outdoor spaces", "shared backyard", "outdoor movie screening", "balconies", "outdoor areas"]).empty? == false
-															xml.outdoor_space
-														end													
-														if (listing.building_amenities.map(&:name) & ["package room"]).empty? == false
-															xml.package_service
-														end
-														if (listing.building_amenities.map(&:name) & ["recreation", "lounge", "communal spaces"]).empty? == false
-															xml.residents_lounge
-														end
-														if (listing.building_amenities.map(&:name) & ["roof access", "roof top terrace", "roof deck", "rooftop pet run"]).empty? == false
-															xml.roof_deck
-														end
-														if (listing.building_amenities.map(&:name) & ["24 hour security", "doorman", "virtual doorman", "video intercom"]).empty? == false
-															xml.secured_entry
-														end
-														if (listing.building_amenities.map(&:name) & ["bike storage", "cold storage", "storage"]).empty? == false
-															xml.storage
-														end
-														if (listing.building_amenities.map(&:name) & ["pool", "swimming pool"]).empty? == false
-															xml.swimming_pool
-														end															
-													end
-												end
-										end # details
+			# 											end
+			# 											if (listing.building_amenities.map(&:name) & ["live in super", "24 hour concierge", "24 hour front desk concierge", "24 hour security"]).empty? == false
+			# 												xml.onsite_management
+			# 											end
+			# 											if (listing.building_amenities.map(&:name) & ["community garden", "dog run", "grills", "courtyard", "outdoor spaces", "shared backyard", "outdoor movie screening", "balconies", "outdoor areas"]).empty? == false
+			# 												xml.outdoor_space
+			# 											end													
+			# 											if (listing.building_amenities.map(&:name) & ["package room"]).empty? == false
+			# 												xml.package_service
+			# 											end
+			# 											if (listing.building_amenities.map(&:name) & ["recreation", "lounge", "communal spaces"]).empty? == false
+			# 												xml.residents_lounge
+			# 											end
+			# 											if (listing.building_amenities.map(&:name) & ["roof access", "roof top terrace", "roof deck", "rooftop pet run"]).empty? == false
+			# 												xml.roof_deck
+			# 											end
+			# 											if (listing.building_amenities.map(&:name) & ["24 hour security", "doorman", "virtual doorman", "video intercom"]).empty? == false
+			# 												xml.secured_entry
+			# 											end
+			# 											if (listing.building_amenities.map(&:name) & ["bike storage", "cold storage", "storage"]).empty? == false
+			# 												xml.storage
+			# 											end
+			# 											if (listing.building_amenities.map(&:name) & ["pool", "swimming pool"]).empty? == false
+			# 												xml.swimming_pool
+			# 											end															
+			# 										end
+			# 									end
+			# 							end # details
 
-										xml.agents do
-											agent = User.find(listing.point_of_contact)
-											xml.agent id: agent.id do
-												xml.name agent.name
-												xml.company "MySpace NYC"
-												xml.photo agent.image.file.url(:large)
-												xml.email agent.streeteasy_email
-												xml.lead_email agent.streeteasy_email
-												xml.phone_numbers do
-													xml.main agent.streeteasy_mobile_number
-													xml.office agent.office.telephone
-													xml.cell agent.streeteasy_mobile_number
-													xml.fax agent.office.fax
-												end
-											end
-										end
+			# 							xml.agents do
+			# 								agent = User.find(listing.point_of_contact)
+			# 								xml.agent id: agent.id do
+			# 									xml.name agent.name
+			# 									xml.company "MySpace NYC"
+			# 									xml.photo agent.image.file.url(:large)
+			# 									xml.email agent.streeteasy_email
+			# 									xml.lead_email agent.streeteasy_email
+			# 									xml.phone_numbers do
+			# 										xml.main agent.streeteasy_mobile_number
+			# 										xml.office agent.office.telephone
+			# 										xml.cell agent.streeteasy_mobile_number
+			# 										xml.fax agent.office.fax
+			# 									end
+			# 								end
+			# 							end
 
-										xml.floorplans do
-											uns = listing.units.where(status: 0, archived: false)
-											uns.each do |unit|
-												un = unit.images.where(floorplan: true)
-												if !un.blank?
-													un.each do |a|
-														xml.floorplan id: unit.id do
-															xml.nane unit.building_unit
-															xml.status unit.status
-															xml.bedrooms unit.residential_listing.beds
-															xml.bathrooms unit.residential_listing.baths
-															xml.reant unit.rent
-															xml.media do
-																xml.photo a.file.url(:large)
-															end
-														end
-													end
-												end
-											end
-										end
-									end # property
-								end
-							end
-						end
-				end
+			# 							xml.floorplans do
+			# 								uns = listing.units.where(status: 0, archived: false)
+			# 								uns.each do |unit|
+			# 									un = unit.images.where(floorplan: true)
+			# 									if !un.blank?
+			# 										un.each do |a|
+			# 											xml.floorplan id: unit.id do
+			# 												xml.nane unit.building_unit
+			# 												xml.status unit.status
+			# 												xml.bedrooms unit.residential_listing.beds
+			# 												xml.bathrooms unit.residential_listing.baths
+			# 												xml.reant unit.rent
+			# 												xml.media do
+			# 													xml.photo a.file.url(:large)
+			# 												end
+			# 											end
+			# 										end
+			# 									end
+			# 								end
+			# 							end
+			# 						end # property
+			# 					end
+			# 				end
+			# 			end
+			# 	end
 	  @listings.each do |listing|
 
 	  	# NOTE: this is super hacky. We should filter this out before sending
@@ -659,8 +659,8 @@ xml.streeteasy :version => "1.6" do
 						
 						listing.residential_listing.rooms.where(status: 0).each do |one_room|
 								public_url = "https://myspacenyc.com/rooms/rooms-details/?rid=#{listing.id}"
-								listing_id = "#{listing.listing_id}" + "-" + one_room.name.downcase.tr(" ", "-")
-								xml.property type: @ptype, status: "active", id: listing_id, url: public_url do
+								#listing_id = "#{listing.listing_id}" + "-" + one_room.name.downcase.tr(" ", "-")
+								xml.property type: @ptype, status: "active", id: listing.listing_id, url: public_url do
 								xml.location do
 									# note we don't want to give out the building number for rentals!
 									xml.address listing.street_number + " " + listing.route
