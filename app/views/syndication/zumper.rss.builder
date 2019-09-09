@@ -659,8 +659,8 @@ xml.streeteasy :version => "1.6" do
 						
 						listing.residential_listing.rooms.where(status: 0).each do |one_room|
 								public_url = "https://myspacenyc.com/rooms/rooms-details/?rid=#{listing.id}"
-								#listing_id = "#{listing.listing_id}" + "-" + one_room.name.downcase.tr(" ", "-")
-								xml.property type: @ptype, status: "active", id: listing.listing_id, url: public_url do
+								listing_id = "#{listing.listing_id}" + "-" + one_room.name.downcase.tr(" ", "-")
+								xml.property type: @ptype, status: "active", id: listing_id, url: public_url do
 								xml.location do
 									# note we don't want to give out the building number for rentals!
 									xml.address listing.street_number + " " + listing.route
