@@ -57,7 +57,7 @@ xml.streeteasy :version => "1.6" do
 
 			public_url = listing.public_url
 			if !public_url
-				public_url = 'http://www.myspace-nyc.com/'
+				public_url = 'https://www.myspacenyc.com/'
 			end
 
 			xml.property type: @ptype, status: listing.status, id: listing.listing_id, url: public_url do
