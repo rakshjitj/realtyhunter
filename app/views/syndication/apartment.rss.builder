@@ -50,7 +50,7 @@ xml.PhysicalProperty do
 
 			public_url = listing.public_url
 			if !public_url
-				public_url = 'http://www.myspace-nyc.com/'
+				public_url = 'http://www.myspacenyc.com/'
 			end
 
 			xml.property do #type: @ptype, status: @status, id: listing.listing_id, url: public_url

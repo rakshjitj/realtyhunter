@@ -243,7 +243,7 @@ xml.streeteasy :version => "1.6" do
 
 				public_url = listing.public_url
 				if !public_url
-					public_url = 'http://www.myspace-nyc.com/'
+					public_url = 'http://www.myspacenyc.com/'
 				end
 
 				if listing.residential_listing

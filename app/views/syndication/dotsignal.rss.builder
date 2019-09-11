@@ -42,7 +42,7 @@ xml.streeteasy :version => "1.6" do
 
       # Hack: Nestio will not import a listings without a URL defined. Here we set a 'catch-all'
       # value for any listings that don't have a url defined.
-      public_url = listing.public_url || 'http://www.myspace-nyc.com'
+      public_url = listing.public_url || 'http://www.myspacenyc.com'
       if listing.residential_listing
         if listing.residential_listing.roomshare_department == false
           xml.property type: @ptype, status: @status, id: listing.listing_id, url: public_url do

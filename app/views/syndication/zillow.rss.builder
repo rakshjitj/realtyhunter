@@ -45,7 +45,7 @@ xml.instruct! :xml, :version => "1.0"
 
 			public_url = listing.public_url
 			if !public_url
-				public_url = 'http://www.myspace-nyc.com/'
+				public_url = 'http://www.myspacenyc.com/'
 			end
 
 			xml.Listing do #type: @ptype, status: @status, id: listing.listing_id, url: public_url do
@@ -68,7 +68,11 @@ xml.instruct! :xml, :version => "1.0"
 				end
 
 				xml.ListingDetails do
-					xml.Status listing.status
+					if listing.status == "rsonly"
+						xml.status "active"
+					else
+						xml.Status listing.status
+					end
 					xml.price listing.rent
 					xml.ListingUrl public_url
 				end
