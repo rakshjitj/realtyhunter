@@ -269,7 +269,9 @@
 				    			<strong>Rental Term:</strong>
 				    		</div>
 				    		<div class="col-xs-7">
-				    			<% if @residential_unit.unit.building.rental_term %>
+				    			<% if !@residential_unit.rental_term_id.nil? %>
+				    				<%= @residential_unit.unit.building.rental_term.name.titleize %>
+				    			<% elsif @residential_unit.unit.building.rental_term %>
 					    			<%= @residential_unit.unit.building.rental_term.name.titleize %>
 					    		<% else %>
 					    			-
