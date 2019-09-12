@@ -1,0 +1,8 @@
+<% if current_user.is_management? %>
+	<%= link_to "Edit Page", edit_faq_company_policy_path  %>
+<% end %>
+<div style="overflow: hidden;">
+	<% if !@company.faq_company_policy.nil? %>
+		<%= @company.faq_company_policy.html_safe %>
+	<% end %>
+</div>

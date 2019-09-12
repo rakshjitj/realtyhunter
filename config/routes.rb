@@ -43,6 +43,9 @@ Rails.application.routes.draw do
   resources :added_by_admins,     only: [:edit, :update]
   resources :password_resets,     only: [:new, :create, :edit, :update]
 
+  get 'edit_faq_company_policy' => "companies#edit_faq_company_policy", as: :edit_faq_company_policy
+  get 'faq_company_policy' => "companies#faq_company_policy", as: :faq_company_policy
+  post 'update_faq_company_policy' => "companies#update_faq_company_policy", as: :update_faq_company_policy
   resources :companies do
     collection do
       get 'filter'

@@ -1,7 +1,7 @@
 class CompaniesController < ApplicationController
   load_and_authorize_resource
-  skip_before_action :logged_in_user, only: [:new, :create]
-  before_action :set_company, except: [:new, :filter, :create, :index]
+  skip_before_action :logged_in_user, only: [:new, :create, :faq_company_policy, :edit_faq_company_policy, :update_faq_company_policy]
+  before_action :set_company, except: [:new, :filter, :create, :index, :faq_company_policy, :edit_faq_company_policy, :update_faq_company_policy]
 
   # GET /companies
   # GET /companies.json
@@ -61,6 +61,22 @@ class CompaniesController < ApplicationController
         headers['Content-Type'] ||= 'text/csv'
         render 'users/index'
       end
+    end
+  end
+
+  def faq_company_policy
+    @company = Company.find(1)
+  end
+
+  def edit_faq_company_policy
+    @company = Company.find(1)
+  end
+
+  def update_faq_company_policy
+    @company = Company.find(1)
+    @company.update_attributes(faq_company_policy: params[:faq_company_policy])
+    respond_to do |format|
+      format.html { redirect_to faq_company_policy_path }
     end
   end
 
@@ -155,7 +171,7 @@ class CompaniesController < ApplicationController
 
     def company_params
       params.require(:company).permit(:name, :file, :agent_types, :employee_titles,
-        :privacy_policy, :terms_conditions, :website,
+        :privacy_policy, :terms_conditions, :website, :faq_company_policy,
         users_attributes: [:name, :email, :password, :password_confirmation])
     end
 end
