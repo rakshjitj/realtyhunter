@@ -2,3 +2,18 @@
 	<%= text_area_tag :faq_company_policy, @company.faq_company_policy, as: :ckeditor, class: 'form-control ckeditor',rows: 15 %>
 	<%= submit_tag "Submit" %>
 <% end %>
+<script type="text/javascript">
+  (function()
+    {
+      if( window.localStorage )
+      {
+        if( !localStorage.getItem( 'firstLoad' ) )
+        {
+          localStorage[ 'firstLoad' ] = true;
+          window.location.reload();
+        }
+        else
+          localStorage.removeItem( 'firstLoad' );
+      }
+    })();
+</script>
