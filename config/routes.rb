@@ -126,6 +126,7 @@ Rails.application.routes.draw do
   get 'residential_listings/send_custom_email' => "residential_listings#send_custom_email", as: :send_custom_email
   get 'residential_listings/claim_for_streeteasy' => "residential_listings#claim_for_streeteasy", as: :claim_for_streeteasy
   get 'residential_listings_active_by_agent/:id/:streeteasy_status' => "residential_listings#streeteasy_active_by_agent", as: :streeteasy_active_by_agent
+  get 'delete_from_se_claim/:id' => "residential_listings#delete_from_se_claim", as: :delete_from_se_claim
   get 'residential_listings/rental_mobile_search' => "residential_listings#rental_mobile_search", as: :rental_mobile_search
   get 'residential_listings/search_result' => "residential_listings#rental_mobile_search_result", as: :rental_mobile_search_result
   resources :residential_listings, concerns: [:unit_images_uploadable, :documents_uploadable] do

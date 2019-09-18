@@ -457,6 +457,17 @@ class ResidentialListingsController < ApplicationController
     redirect_to root_path
   end
 
+  def delete_from_se_claim
+    residential_listing = ResidentialListing.find(params[:id])
+      residential_listing.update(streeteasy_flag_one: false, streeteasy_claim: false, updated_at: Time.now())
+      # residential_listing.update(streeteasy_flag_one: false, updated_at: Time.now())
+      residential_listing.unit.update(streeteasy_primary_agent_id: nil, updated_at: Time.now())
+
+    redirect_to claim_for_streeteasy_path
+    rescue ActionController::RedirectBackError
+    redirect_to root_path
+  end
+
   def update
     unit_updated = nil
     listing_updated = nil
