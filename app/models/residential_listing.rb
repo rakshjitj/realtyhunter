@@ -543,6 +543,11 @@ class ResidentialListing < ApplicationRecord
           'units.has_stock_photos = ?', params[:has_stock_photos_filter])
     end
 
+    if !params[:exclusive_filter].blank?
+      running_list = running_list.where(
+          'units.exclusive = ?', params[:exclusive_filter])
+    end
+
     if params[:no_description] == 'true'
       running_list = running_list.where("length(residential_listings.description) < 20")
     end
@@ -827,7 +832,7 @@ class ResidentialListing < ApplicationRecord
         'neighborhoods.name AS neighborhood_name',
         'landlords.code',
         'landlords.id AS landlord_id',
-        'units.primary_agent_id', 'units.available_by', 'units.listing_id',
+        'units.primary_agent_id', 'units.available_by', 'units.listing_id', 'units.exclusive',
         'users.name')
       .order('residential_listings.updated_at desc')
 
@@ -868,7 +873,7 @@ class ResidentialListing < ApplicationRecord
         'neighborhoods.name AS neighborhood_name',
         'landlords.code',
         'landlords.id AS landlord_id',
-        'units.primary_agent_id', 'units.available_by', 'units.listing_id',
+        'units.primary_agent_id', 'units.available_by', 'units.listing_id', 'units.exclusive',
         'users.name')
 
     if !status.nil?

@@ -46,6 +46,7 @@
         tenant_occupied_filter: $('#tenant_occupied_filter').prop('checked'),
         has_stock_photos_filter: $('#has_stock_photos_filter').prop('checked'),
         no_description: $('#no_description').prop('checked'),
+        exclusive_filter: $('#exclusive_filter').prop('checked'),
         no_images: $('#no_images').prop('checked'),
         streeteasy_filter: $('#streeteasy_filter').val(),
         streeteasy_claim: $('#streeteasy_claim').val(),

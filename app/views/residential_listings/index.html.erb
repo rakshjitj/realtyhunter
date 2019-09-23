@@ -388,6 +388,16 @@
                 </label>
               </div>
             </div>
+            <!-- <div class="row vertical-padding"> -->
+            <div class="col-xs-6">
+              <div class="checkbox checkbox-warning inline">
+                <%= check_box_tag :exclusive_filter, "".freeze, params[:exclusive_filter] == "true".freeze ? true : false,
+                    class: 'styled' %>
+                <label for="roomsharing_filter">
+                  Exclusive Listing
+                </label>
+              </div>
+            </div>
           </div>
 
           <!-- <div class="row vertical-padding">
