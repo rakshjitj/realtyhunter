@@ -65,6 +65,7 @@ class Ability
     #can [:new, :create, ], Roommate, :user_id => user.id
     #cannot :index, Roommate, :company_id => user.company.id
     can :read, :Neighborhood
+    can :manage, Company, id: user.company.id
     can :read, BuildingAmenity, company_id: user.company.id
     can :read, ResidentialAmenity, company_id: user.company.id
     can :read, Utility, company_id: user.company.id
