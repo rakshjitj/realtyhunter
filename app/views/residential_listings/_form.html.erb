@@ -715,12 +715,21 @@
             <%# abort @residential_unit.unit.streeteasy_primary_agent_id.inspect %>
 
             <%= f.fields_for @residential_unit.unit do |unit_form| %>
-              <%= unit_form.select(:streeteasy_primary_agent_id,
+              <% if current_user.is_management? %>
+                <%= unit_form.select(:streeteasy_primary_agent_id,
                 options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
                   [@residential_unit.unit.streeteasy_primary_agent_id ? @residential_unit.unit.streeteasy_primary_agent_id : '']),
-                {prompt: "Choose one..."},disabled: true,
+                {prompt: "Choose one..."},
                 class: 'form-control',
                 :include_blank => true) %>
+              <% else %>
+                <%= unit_form.select(:streeteasy_primary_agent_id,
+                  options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
+                    [@residential_unit.unit.streeteasy_primary_agent_id ? @residential_unit.unit.streeteasy_primary_agent_id : '']),
+                  {prompt: "Choose one..."},disabled: true,
+                  class: 'form-control',
+                  :include_blank => true) %>
+              <% end %>
             <% end %>
           </div>
         </div>
