@@ -119,6 +119,9 @@
                 <% if current_user.is_management? || current_user.is_listings_manager? %>
                   <li><%= link_to "Announcements", new_announcement_path %></li>
                 <% end %>
+                <% if current_user.is_management? %>
+                  <li><%= link_to "New/Reactivated lisitng current week", weekly_track_path %></li>
+                <% end %>
                 <li><%= link_to "FAQ / Company Policy", faq_company_policy_path %></li>
               </ul>
             </li>

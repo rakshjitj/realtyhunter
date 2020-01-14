@@ -1,0 +1,62 @@
+<div class="col-md-6">
+  <h2>New Listings(Running Week)</h2>
+  <span id="infinite-table-container">
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-striped table-hover table-condensed infinite-table">
+          <thead>
+            <tr>
+              <th data-sort="formatted_street_address" class="th-sortable">
+                Address</th>
+              <th data-sort="unit" class="th-sortable">
+                Unit</th>
+              <th data-sort="unit" class="th-sortable">
+                SE Unit</th>
+            </tr>
+          </thead>
+
+          <tbody class="buildings_table_body">
+            <% @new_listings.each do |new_listing| %>
+              <tr class="<%= cycle('even', 'odd') -%>">
+                <td><%= link_to "#{new_listing.unit.building.formatted_street_address}", residential_listing_path(new_listing.id) %></td>
+                <td><%= new_listing.unit.building_unit %></td>
+                <td><%= new_listing.unit.streeteasy_unit %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </span>
+</div>
+<div class="col-md-6">
+  <h2>Reactive Listings(Running Week)</h2>
+  <span id="infinite-table-container">
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-striped table-hover table-condensed infinite-table">
+          <thead>
+            <tr>
+              <th data-sort="formatted_street_address" class="th-sortable">
+                Address</th>
+              <th data-sort="unit" class="th-sortable">
+                Unit</th>
+              <th data-sort="unit" class="th-sortable">
+                SE Unit</th>
+            </tr>
+          </thead>
+
+          <tbody class="buildings_table_body">
+            <% @all_updated_listings.each do |updated_listing| %>
+              <tr class="<%= cycle('even', 'odd') -%>">
+                <td><%= link_to "#{updated_listing.unit.building.formatted_street_address}", residential_listing_path(updated_listing.id) %></td>
+                <td><%= updated_listing.unit.building_unit %></td>
+                <td><%= updated_listing.unit.streeteasy_unit %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </span>
+</div>
