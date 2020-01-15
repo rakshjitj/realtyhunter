@@ -75,7 +75,13 @@
                 <td><%= link_to "#{new_listing.unit.building.formatted_street_address}", residential_listing_path(new_listing.id) %></td>
                 <td><%= new_listing.unit.building_unit %></td>
                 <td><%= new_listing.unit.streeteasy_unit %></td>
-                <td><%#= User.find(new_listing.unit.building.point_of_contact).name %></td>
+                <td>
+                  <% if !new_listing.unit.building.point_of_contact.nil?%>
+                    <%= User.find(new_listing.unit.building.point_of_contact).name %>
+                  <% else %>
+                    --
+                  <% end %>
+                </td>
               </tr>
             <% end %>
           </tbody>
@@ -111,7 +117,13 @@
                 <td><%= link_to "#{updated_listing.unit.building.formatted_street_address}", residential_listing_path(updated_listing.id) %></td>
                 <td><%= updated_listing.unit.building_unit %></td>
                 <td><%= updated_listing.unit.streeteasy_unit %></td>
-                <td><%#= User.find(updated_listing.unit.building.point_of_contact).name %></td>
+                <td>
+                  <% if !updated_listing.unit.building.point_of_contact.nil?%>
+                    <%= User.find(updated_listing.unit.building.point_of_contact).name %>
+                  <% else %>
+                    --
+                  <% end %>
+                </td>
               </tr>
             <% end %>
           </tbody>
