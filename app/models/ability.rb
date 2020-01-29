@@ -4,15 +4,16 @@ class Ability
   def common_permissions(user)
     # everyone can filter, send error reports
     can :filter, Building, company_id: user.company_id
-    can [:filter, :neighborhoods_modal, :features_modal, :print_list], [ResidentialListing, CommercialListing, Room]
-    can [:inaccuracy_modal, :send_inaccuracy, :print_modal, :print_public, :print_private], [ResidentialListing, CommercialListing, Room]
-    can [:autocomplete_building_formatted_street_address], [ResidentialListing, CommercialListing, Building, Room]
-    can [:autocomplete_landlord_code], [ResidentialListing, Landlord, Room]
-    can [:update_announcements, :update_announcements_mobile, :check_in, :check_in_options], [ResidentialListing, Room]
+    can [:filter, :neighborhoods_modal, :features_modal, :print_list], [ResidentialListing, CommercialListing, Room, ListingDetail]
+    can [:inaccuracy_modal, :send_inaccuracy, :print_modal, :print_public, :print_private], [ResidentialListing, CommercialListing, Room, ListingDetail]
+    can [:autocomplete_building_formatted_street_address], [ResidentialListing, CommercialListing, Building, Room, ListingDetail]
+    can [:autocomplete_landlord_code], [ResidentialListing, Landlord, Room, ListingDetail]
+    can [:update_announcements, :update_announcements_mobile, :check_in, :check_in_options], [ResidentialListing, Room, ListingDetail]
     can [:autocomplete_user_name, :filter, :filter_listings, :coworkers, :subordinates], [User]
 
-    can [:send_listings], [ResidentialListing, CommercialListing, Room]
+    can [:send_listings], [ResidentialListing, CommercialListing, Room, ListingDetail]
     # every employee should be able to see their waterfall info
+    can :manage, ListingDetail
     can :show, UserWaterfall, parent_agent_id: user.id
     can :read, Announcement
   end
@@ -20,6 +21,7 @@ class Ability
   def posting_permissions(user)
     can :manage, Building, :company_id => user.company.id
     can :manage, Announcement
+    can :manage, ListingDetail
     can :manage, Room
     can :manage, ResidentialListing do |residential_listing|
       !residential_listing.unit || residential_listing.unit.building.company_id == user.company_id
@@ -49,6 +51,7 @@ class Ability
     #can :manage, Roommate, :company_id => user.company.id
     can :manage, Neighborhood
     can :manage, Room
+    can :manage, ListingDetail
     can :manage, BuildingAmenity, :company_id => user.company.id
     can :manage, ResidentialAmenity, :company_id => user.company.id
     can :manage, Utility, :company_id => user.company.id
@@ -71,6 +74,7 @@ class Ability
     can :read, Utility, company_id: user.company.id
     can :read, Building, company_id: user.company_id
     can :manage, Room
+    can :manage, ListingDetail
     can :manage, ResidentialListing do |residential_listing|
       if user.has_role?(:agent)
         1 == user.company_id

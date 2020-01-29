@@ -1107,6 +1107,7 @@ class ResidentialListingsController < ApplicationController
         end
       end
     end
+    @tb_all_new_reactivated_listings_count = ListingDetail.all
   end
 
   def check_in

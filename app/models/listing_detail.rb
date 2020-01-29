@@ -1,0 +1,2 @@
+class ListingDetail < ApplicationRecord
+end

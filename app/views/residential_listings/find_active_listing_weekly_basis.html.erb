@@ -33,22 +33,33 @@
           </thead>
 
           <tbody class="buildings_table_body">
-            <tr>
+            <!-- <tr>
               <td>
-                <%= Date.today.beginning_of_week.strftime("%m/%d/%Y") %>  
+                <%#= Date.today.beginning_of_week.strftime("%m/%d/%Y") %>  
               </td>
               <td>
-                <%= @new_listings.count %>
+                <%#= @new_listings.count %>
               </td>
               <td>
-                <%= @all_updated_listings.count %>
+                <%#= @all_updated_listings.count %>
               </td>
-            </tr>
+            </tr> -->
+            <% @tb_all_new_reactivated_listings_count.each do |ct| %>
+              <%# abort ct.inspect %>
+              <tr class="<%= cycle('even', 'odd') -%> blogBox-main-active moreBox-main-active" style="display: none;">
+                <td><%= ct.a %></td>
+                <td><%= ct.b %></td>
+                <td><%= ct.c %></td>
+              </tr>
+            <% end %>
           </tbody>
         </table>
       </div>
     </div>
   </span>
+  <div id="loadMore-main-active" class="loadmore" style="display: table; margin: 0 auto;">
+    <a href="#">Load More</a>
+  </div>
 </div>
 <h2>Current Week</h2>
 <div class="col-md-6">
@@ -138,10 +149,18 @@
 
 <script type="text/javascript">
   $( document ).ready(function () {
-  $(".moreBox-reactive").slice(0, 12).show();
-    if ($(".blogBox-reactive:hidden").length != 0) {
-      $("#loadMore-reactive").show();
-    }   
+  
+    if ($(".blogBox-reactive").length >=12) {
+      $("#loadMore-reactive").show()
+    }
+    else{
+      $("#loadMore-reactive").hide()
+    }
+
+    $(".moreBox-reactive").slice(0, 12).show();
+      if ($(".blogBox-reactive:hidden").length != 0) {
+        $("#loadMore-reactive").show();
+      }   
     $("#loadMore-reactive").on('click', function (e) {
       e.preventDefault();
       $(".moreBox-reactive:hidden").slice(0, 12).slideDown();
@@ -150,15 +169,41 @@
       }
     });
 
+    if ($(".blogBox-active").length >=12) {
+      $("#loadMore-active").show()
+    }
+    else{
+      $("#loadMore-active").hide()
+    }
+
     $(".moreBox-active").slice(0, 12).show();
     if ($(".blogBox-active:hidden").length != 0) {
-      $("#loadMore-reactive").show();
+      $("#loadMore-active").show();
     }   
     $("#loadMore-active").on('click', function (e) {
       e.preventDefault();
       $(".moreBox-active:hidden").slice(0, 12).slideDown();
       if ($(".moreBox-active:hidden").length == 0) {
         $("#loadMore-active").fadeOut('slow');
+      }
+    });
+    
+    if ($(".blogBox-main-active").length >=12) {
+      $("#loadMore-main-active").show()
+    }
+    else{
+      $("#loadMore-main-active").hide()
+    }
+
+    $(".moreBox-main-active").slice(0, 12).show();
+    if ($(".blogBox-main-active:hidden").length != 0) {
+      $("#loadMore-main-reactive").show();
+    }   
+    $("#loadMore-main-active").on('click', function (e) {
+      e.preventDefault();
+      $(".moreBox-main-active:hidden").slice(0, 12).slideDown();
+      if ($(".moreBox-main-active:hidden").length == 0) {
+        $("#loadMore-main-active").fadeOut('slow');
       }
     });
   });
