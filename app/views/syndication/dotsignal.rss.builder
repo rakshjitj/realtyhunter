@@ -49,7 +49,11 @@ xml.streeteasy :version => "1.6" do
             xml.location do
               # note we don't want to give out the building number for rentals!
               xml.address listing.street_number + " " + listing.route
-              xml.apartment listing.building_unit
+              if !listing.streeteasy_unit.nil?
+                xml.apartment listing.streeteasy_unit
+              else
+                xml.apartment listing.building_unit
+              end
               xml.city listing.sublocality
               xml.state listing.administrative_area_level_1_short
               if !listing.building.dotsignal_code.nil?
@@ -382,12 +386,17 @@ xml.streeteasy :version => "1.6" do
         end
         if listing.residential_listing.roomshare_department == true
           listing.residential_listing.rooms.where(status: 0).each do |one_room|
+            public_url = "https://myspacenyc.com/rooms/rooms-details/?rid=#{listing.id}"
             listing_id = "#{one_room.id}" + "-" + one_room.name.downcase.tr(" ", "-")
             xml.property type: @ptype, status: "active", id: listing_id, url: public_url do
               xml.location do
                 # note we don't want to give out the building number for rentals!
                 xml.address listing.street_number + " " + listing.route
-                xml.apartment listing.building_unit
+                if !listing.streeteasy_unit.nil?
+                  xml.apartment listing.streeteasy_unit
+                else
+                  xml.apartment listing.building_unit
+                end
                 xml.city listing.sublocality
                 xml.state listing.administrative_area_level_1_short
                 if !listing.building.dotsignal_code.nil?
