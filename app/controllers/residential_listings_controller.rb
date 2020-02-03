@@ -561,7 +561,14 @@ class ResidentialListingsController < ApplicationController
           # notifier.ping "*New* *Unit* \n #{current_user.name} Added New Unit \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n #{@residential_unit.unit.building.neighborhood.name} \n #{params[:residential_listing][:beds]} Beds / #{params[:residential_listing][:baths]} Baths \n Net #{params[:residential_listing][:unit][:rent]} / Gross #{params[:residential_listing][:unit][:gross_price]} \n Avail: #{@avail_date} \n Lease: #{@lease_st} to #{@lease_ed} Months \n LLC: #{@ll_code} \n POC: #{@poc} \n Access: #{params[:residential_listing][:unit][:access_info]} \n ---"
       end
       #Slack Message when status change from off to active End
-
+      if @residential_unit.unit.building
+        if !@residential_unit.unit.building.point_of_contact.nil?
+          @poc = User.find(@residential_unit.unit.building.point_of_contact).name
+        end
+      end
+      if @residential_unit.unit.building.landlord
+        @llc = @residential_unit.unit.building.landlord.code
+      end
       #Slack Message when status change from pending to active start
       if @residential_unit.unit.status == "pending" && params[:residential_listing][:unit][:status].downcase == "active"
         if @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 55 || @residential_unit.unit.building.neighborhood.parent_neighborhood_id == 57
