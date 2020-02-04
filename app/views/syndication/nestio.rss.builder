@@ -66,7 +66,7 @@ xml.streeteasy :version => "1.6" do
 
           if listing.residential_listing
             if !listing.residential_listing.op_fee_percentage.nil?
-              xml.owner_pays listing.residential_listing.op_fee_percentage
+              xml.payout listing.residential_listing.op_fee_percentage
             end
             if !listing.residential_listing.tp_fee_percentage.nil?
               xml.tenant_pays listing.residential_listing.tp_fee_percentage

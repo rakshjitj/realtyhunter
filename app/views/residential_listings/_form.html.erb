@@ -572,7 +572,7 @@
 
         <div class="row show-op vertical-margin-lg">
           <div class="col-xs-3 col-md-4">
-            <%= f.label :op_fee_percentage, 'Owner Pays %' %>
+            <%= f.label :op_fee_percentage, 'PayOut %' %>
           </div>
           <div class="col-xs-9 col-md-4">
             <%= f.number_field :op_fee_percentage, class: 'form-control', min: 0, max: 100 %>
@@ -580,10 +580,10 @@
               <p class="explainer-text">
                 <% if @residential_unit.unit && @residential_unit.unit.building &&
                       @residential_unit.unit.building.landlord.op_fee_percentage %>
-                  The landlords's default OP is
+                  The landlords's default PO is
                   <%= @residential_unit.unit.building.landlord.op_fee_percentage %>%.
                 <% else %>
-                  The landlord has no default OP % specified.
+                  The landlord has no default PO % specified.
                 <% end %>
               </p>
             </div>

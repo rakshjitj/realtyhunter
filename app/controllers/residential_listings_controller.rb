@@ -631,7 +631,7 @@ class ResidentialListingsController < ApplicationController
           if params[:residential_listing][:has_fee] == "0"
             if !params[:residential_listing][:op_fee_percentage].blank?
               if !@residential_unit.op_fee_percentage.nil? && @residential_unit.op_fee_percentage != params[:residential_listing][:op_fee_percentage].to_i
-                @has_fee = "Owner Pay Changed to #{params[:residential_listing][:op_fee_percentage]} \n"
+                @has_fee = "Payout Changed to #{params[:residential_listing][:op_fee_percentage]} \n"
               end
             end
           end
