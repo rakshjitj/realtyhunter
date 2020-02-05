@@ -27,7 +27,7 @@ class RoomsController < ApplicationController
 
   def room_update
     @residential_unit = ResidentialListing.find(params[:id])
-    @residential_unit.update(rooms_description: params[:unit_description], room_syndication: params[:room_syndication], roomfill_partial_move_in: params[:roomfill_partial_move_in])
+    @residential_unit.update(rooms_description: params[:unit_description], room_syndication: params[:room_syndication], roomfill_partial_move_in: params[:roomfill_partial_move_in], renthop: params[:renthop])
     #abort params[:unit_status].inspect
     if params[:room_syndication] == "true"
       #for default force syndication

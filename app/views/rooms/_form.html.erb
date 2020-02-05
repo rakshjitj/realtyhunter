@@ -93,6 +93,17 @@
               </div>
             </div>
           </div>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-2">
+              <%= label_tag :renthop, "Renthop" %>
+            </div>
+            <div class="col-xs-3">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= check_box_tag :renthop,true,false, checked: @residential_unit.renthop ? @residential_unit.renthop : false %>
+                <label></label>
+              </div>
+            </div>
+          </div>
           <%#= file_field_tag :unit_image %>
           <div style="clear: both;"></div>
             <% co = 1 %>

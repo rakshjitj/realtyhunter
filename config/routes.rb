@@ -274,6 +274,7 @@ Rails.application.routes.draw do
       get 'rooms'
       get 'apartment'
       get 'zumper'
+      get 'renthop'
     end
   end
 

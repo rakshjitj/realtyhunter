@@ -956,6 +956,20 @@
               </div>
             </div>
           </div>
+          <div id="roomshare_disp">
+          <div class="row vertical-margin-lg">
+              <div class="col-xs-3 col-md-4">
+                <%= f.label :renthop, "Renthop" %>
+              </div>
+              <div class="col-xs-9 col-md-7">
+                <div class="checkbox checkbox-warning checkbox-inline">
+                  <%= f.check_box :renthop, class: "styled",
+                      checked: @residential_unit ? @residential_unit.renthop : false %>
+                  <label></label>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <%= hidden_field_tag :update_status_info %>
         <br>

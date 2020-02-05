@@ -50,6 +50,14 @@ module SyndicationInterface
 		pull_data(company_id, search_params)
 	end
 
+	def renthop_listings(company_id, search_params)
+		search_params[:has_primary_agent] = 1
+		search_params[:is_hide_on_website] = 1
+		search_params[:must_have_status_for_zumper] = 1
+		search_params[:renthop_active] = 1
+		pull_data(company_id, search_params)
+	end
+
 	def apartment_listings(company_id, search_params)
 		search_params[:has_primary_agent] = 1
 		search_params[:exclusive] = 1
@@ -208,6 +216,10 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			#listings = listings.where('buildings.push_to_zumper =?', true)
 		end
 
+		if is_true?(search_params[:renthop_active])
+			listings = listings.where('residential_listings.renthop =?', true)
+		end
+
 		if is_true?(search_params[:must_have_status_for_zumper])
 			listings = listings.where('units.status IN (?)', [Unit.statuses["active"], Unit.statuses["rsonly"]])
 		end
@@ -262,13 +274,14 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'neighborhoods.name as neighborhood_name',
 			'neighborhoods.borough as neighborhood_borough',
 			'residential_listings.id AS r_id',
-			'residential_listings.notes AS r_note',
+			'residential_listings.notes AS r_note','residential_listings.renthop',
 			'residential_listings.lease_start', 'residential_listings.lease_end',
 			'residential_listings.has_fee', 'residential_listings.beds as r_beds',
 			'residential_listings.baths as r_baths', 'residential_listings.description', 'residential_listings.rooms_description',
 			'residential_listings.total_room_count as r_total_room_count',
 			'residential_listings.floor', 'residential_listings.room_syndication',
-			'residential_listings.tenant_occupied as r_tenant_occupied',
+			'residential_listings.tenant_occupied as r_tenant_occupied', 'residential_listings.op_fee_percentage',
+			'residential_listings.tp_fee_percentage',
 			'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_flag_one',
 			'residential_listings.naked_apartment', 'residential_listings.roomfill_partial_move_in',
 			'sales_listings.id AS s_id',

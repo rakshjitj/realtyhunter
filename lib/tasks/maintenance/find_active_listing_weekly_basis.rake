@@ -4,12 +4,13 @@ namespace :maintenance do
 		log = ActiveSupport::Logger.new('log/find_active_listing_weekly_basis.log')
 		start_time = Time.now
 
-		puts "add open houses daily basis..."
-		log.info "add open houses daily basis..."
+		puts "find active listings on weekly basis..."
+		log.info "find active listings on weekly basis..."
 
 		@listing_find = []
 	    @all_updated_listings = []
 	    @new_listings = ResidentialListing.where("created_at >= ?", Time.now.at_beginning_of_week)
+	    #@new_listings = ResidentialListing.where(:created_at => Time.now.at_beginning_of_week..Time.now.at_end_of_week)
 	    @updated_units = Unit.where("updated_at >= ? AND status =?", Time.now.at_beginning_of_week, 0)
 	    @updated_units.each do |update_unit|
 	      if update_unit.residential_listing
