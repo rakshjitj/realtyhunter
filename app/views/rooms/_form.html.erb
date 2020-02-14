@@ -105,6 +105,7 @@
             </div>
           </div>
           <%#= file_field_tag :unit_image %>
+          <div style="border: 1px solid #cdcdcd;width: 100%;height: 0;margin: auto;margin-top: 10px;margin-bottom: 10px;"></div>
           <div style="clear: both;"></div>
             <% co = 1 %>
             <% @kennel.each do |room| %>
@@ -132,29 +133,31 @@
                       <%= r.text_field :rent, class: 'form-control', :required => true %>
                     </div>
                 </div>
-                <div class="col-md-2">
-                  <%= r.label :preferences, "Preferences" %>
+                <div class="row vertical-margin-lg">
+                  <div class="col-xs-3 col-md-2">
+                    <%= r.label :preferences, "Preferences" %>
+                  </div>
+                  <div class="col-xs-9 col-md-4">
+                    <!-- <small class="explainer-text"><em>
+                      Tip: Enter 2 blank lines to separate paragraphs.
+                    </small></em> -->
+                    <!-- <br><br> -->
+                    <%= r.text_field :preferences, class: 'form-control' %>
+                    <br>
+                  </div>
                 </div>
-                <div class="col-md-9">
-                  <small class="explainer-text"><em>
-                    Tip: Enter 2 blank lines to separate paragraphs.
-                  </small></em>
-                  <br><br>
-                  <%= r.bootsy_area :preferences, class: 'form-control',
-                      rows: 15 %>
-                  <br>
-                </div>
-                <div class="col-md-2">
-                  <%= r.label :bonus, "Bonus" %>
-                </div>
-                <div class="col-md-9">
-                  <small class="explainer-text"><em>
-                    Tip: Enter 2 blank lines to separate paragraphs.
-                  </small></em>
-                  <br><br>
-                  <%= r.bootsy_area :bonus, class: 'form-control',
-                      rows: 15 %>
-                  <br>
+                <div class="row vertical-margin-lg">
+                  <div class="col-xs-3 col-md-2">
+                    <%= r.label :bonus, "Bonus" %>
+                  </div>
+                  <div class="col-xs-9 col-md-4">
+                   <!--  <small class="explainer-text"><em>
+                      Tip: Enter 2 blank lines to separate paragraphs.
+                    </small></em> -->
+                    <!-- <br><br> -->
+                    <%= r.text_field :bonus, class: 'form-control' %>
+                    <br>
+                  </div>
                 </div>
                 <div class="row vertical-margin-lg">
                     <div class="col-xs-3 col-md-2">
@@ -164,37 +167,41 @@
                       <%= r.text_field :room_size, class: 'form-control' %>
                     </div>
                 </div>
-                <div class="col-md-2">
-                  <%= r.label :room_notes, "Room Notes" %>
+                <div class="row vertical-margin-lg">
+                  <div class="col-xs-3 col-md-2">
+                    <%= r.label :room_notes, "Room Notes" %>
+                  </div>
+                  <div class="col-xs-9 col-md-4">
+                    <!-- <small class="explainer-text"><em>
+                      Tip: Enter 2 blank lines to separate paragraphs.
+                    </small></em> -->
+                    <!-- <br><br> -->
+                    <%= r.text_field :room_notes, class: 'form-control' %>
+                    <br>
+                  </div>
                 </div>
-                <div class="col-md-9">
-                  <small class="explainer-text"><em>
-                    Tip: Enter 2 blank lines to separate paragraphs.
-                  </small></em>
-                  <br><br>
-                  <%= r.bootsy_area :room_notes, class: 'form-control',
-                      rows: 15 %>
-                  <br>
+                <div class="row vertical-margin-lg">
+                  <div class="col-xs-3 col-md-2">
+                    <%= label_tag :tenant_info, "Tenant Info" %>
+                  </div>
+                  <div class="col-xs-9 col-md-4">
+                    <%= r.text_field :tenant_info, class: "form-control" %>
+                  </div>
                 </div>
-                
-                <div class="col-md-2">
-                  <%= label_tag :tenant_info, "Tenant Info" %>
+                <div class="row vertical-margin-lg">
+                  <div class="col-xs-3 col-md-2">
+                    <%= label_tag :renting_agent, "Renting Agent" %>
+                  </div>
+                  <div class="col-xs-9 col-md-4">
+                    <%= r.select :renting_agent,
+                            options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id] if u.is_special_agent? || u.is_streeteasy_agent?}.reject(&:blank?),
+                          [room.tenant_info]),
+                            {prompt: "Choose one..."},
+                            class: "form-control" %>
+                  </div>
                 </div>
-                <div class="col-md-4">
-                  <%= r.select :tenant_info,
-                          options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id] if u.is_special_agent? || u.is_streeteasy_agent?}.reject(&:blank?),
-                        [room.tenant_info]),
-                          {prompt: "Choose one..."},
-                          class: "form-control" %>
-                  <%# abort room.inspect %>
-                  <%#= select_tag(:tenant_info,
-                    options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id] if u.is_special_agent? || u.is_streeteasy_agent?}.reject(&:blank?),
-                        [room.tenant_info.to_i]),
-                      {prompt: "Choose one...",
-                      class: 'form-control'}) %>
-                </div>
-                
                 <div style="clear: both;"></div>
+                <div style="border: 1px solid #cdcdcd;width: 100%;height: 0;margin: auto;margin-top: 10px;margin-bottom: 10px;"></div>
                 <!-- <div class="row vertical-margin-lg" style="margin-bottom: 20px;border-bottom: 2px solid #ddd;">
                     <div class="col-xs-3 col-md-2">
                       <%# if room.images.count > 0 %>
