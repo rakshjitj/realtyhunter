@@ -221,7 +221,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 		end
 
 		if is_true?(search_params[:must_have_status_for_zumper])
-			listings = listings.where('units.status IN (?)', [Unit.statuses["active"], Unit.statuses["rsonly"]])
+			listings = listings.where('units.status IN (?) OR buildings.push_to_zumper =?', [Unit.statuses["active"], Unit.statuses["rsonly"]], true)
 		end
 
 		if is_true?(search_params[:has_primary_agent])

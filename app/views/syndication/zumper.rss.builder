@@ -251,6 +251,13 @@ xml.streeteasy :version => "1.6" do
 						xml.property type: @ptype, status: "active", id: listing.listing_id, url: public_url do
 							xml.location do
 								# note we don't want to give out the building number for rentals!
+								if listing.building.push_to_zumper == true
+									if !listing.building.building_name.blank?
+										xml.building_name listing.building.building_name
+									else
+										xml.building_name listing.route
+									end
+								end
 								xml.address listing.street_number + " " + listing.route
 								if !listing.streeteasy_unit.nil?
 									xml.apartment listing.streeteasy_unit
@@ -264,6 +271,9 @@ xml.streeteasy :version => "1.6" do
 							end
 
 							xml.details do
+								if listing.building.push_to_zumper == true
+									xml.provider_buildingid listing.building.id
+								end
 								xml.price listing.rent
 
 							 	if !listing.has_fee
