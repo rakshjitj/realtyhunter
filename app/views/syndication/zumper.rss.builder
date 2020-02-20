@@ -666,7 +666,7 @@ xml.streeteasy :version => "1.6" do
 						end # property
 					end
 
-					if listing.residential_listing.roomshare_department == true && listing.status = "active"
+					if listing.residential_listing.roomshare_department == true && listing.status == "active"
 						xml.property type: "rental", status: "active", id: listing.listing_id, url: public_url do
 							xml.location do
 								# note we don't want to give out the building number for rentals!
