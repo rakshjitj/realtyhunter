@@ -781,7 +781,29 @@ class ResidentialListing < ApplicationRecord
       else
         street_address = runit.route
       end
-
+      #room_info = []
+      #a = 0
+      # runit.rooms.each do |room|
+      #   room_info = [{ id: (runit.rooms[a].id if !runit.rooms[a].blank?),
+      #     status: (runit.rooms[a].status if !runit.rooms[a].blank?),
+      #     name: (runit.rooms[a].name if !runit.rooms[a].blank?),
+      #     rent: (runit.rooms[a].rent if !runit.rooms[a].blank?)}]
+      #   room_info + room_info
+      # end
+      # rooms_info = runit.rooms.all.collect {|u| [u.id, u.status, u.name, u.rent]}.inspect
+      # rooms_info = {
+      #   room_info: room_info
+      # }
+      # runit.rooms.each do |room|
+      #   room_info = [{ id: (runit.rooms[i].id if !runit.rooms[i].blank?),
+      #     status: (runit.rooms[i].status if !runit.rooms[i].blank?),
+      #     name: (runit.rooms[i].name if !runit.rooms[i].blank?),
+      #     rent: (runit.rooms[i].rent if !runit.rooms[i].blank?)}]
+      #   room_info + room_info
+      # end
+      # a = runit.rooms.map{|x| [{:id => x.id,:status => x.status, :name => x.name, :rent => x.rent}]}.flatten
+      # abort a.inspect
+      # abort room_info.inspect
       bldg_info = {
         building_id: runit.building_id,
         lat: runit.lat,
@@ -792,8 +814,27 @@ class ResidentialListing < ApplicationRecord
         beds: runit.beds,
         baths: runit.baths,
         rent: runit.rent,
-        public_url: runit.public_url
+        avail: (runit.available_by.strftime("%b %d") if !runit.available_by.blank?),
+        public_url: runit.public_url,
+        public_url_for_room: runit.unit.public_url_for_room
         }
+      room_info = {
+        a: runit.rooms.map{|x| [{:id => x.id,:status => x.status, :name => x.name, :rent => x.rent}]}.flatten
+      }
+      # rooms_info = {}
+      # if !runit.rooms.blank?
+      #   runit.rooms.each do |room|
+      #     room_info = {
+      #       id: room.id,
+      #       status: room.status,
+      #       name: room.name,
+      #       rent: room.rent
+      #     }
+      #     abort room_info.inspect
+      #     rooms_info += room_info
+      #   end
+      #   abort rooms_info.inspect
+      # end
 
       if bldg_images[runit.building_id]
         unit_info['image'] = bldg_images[runit.building_id]
@@ -803,8 +844,10 @@ class ResidentialListing < ApplicationRecord
 
       if map_infos.has_key?(street_address)
         map_infos[street_address]['units'] << unit_info
+        map_infos[street_address]['rooms'] << room_info
       else
         bldg_info['units'] = [unit_info]
+        bldg_info['rooms'] = [room_info]
         map_infos[street_address] = bldg_info
       end
 

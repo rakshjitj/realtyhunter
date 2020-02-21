@@ -182,8 +182,15 @@
 
   // for giant google map
   ResidentialListings.buildContentString = function (key, info) {
+    // console.log(key);
+    // console.log(info);
     var slideshowContent = '';
-    var contentString = '<strong>' + key + '</strong><br />';
+    if (window.location.pathname == '/residential_listings/room_index'){
+      var contentString = '<div class="un-content" style="text-align: left;"><strong>' + key + '</strong>';
+    }
+    else{
+      var contentString = '<div class="un-content"><strong>' + key + '</strong>';
+    }
 
     var firstImageAdded = false;
     var imgCount = 0;
@@ -216,13 +223,24 @@
       }
 
       if (window.location.pathname == '/residential_listings/room_index'){
-        contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
-          + ''+set_icon+''
-          + '<a id = "copycontent_'+i+'" href='+unit.public_url+'></a>'
-          + '<a href="https://realtyhunter.org:3000/rooms/'
-          + unit.id + '">#' + unit.building_unit + ' ' +
-          + unit.beds + ' bd / '
-          + unit.baths + ' baths $' + unit.rent + '</a></div>';
+        contentString += ',#' + unit.building_unit+ ' <div class="un-main-content">' + unit.beds + 'beds | ' + unit.baths + ' baths | $' + unit.rent + '<div> Avail: ' + unit.avail + '</div></div></div>' 
+        for (var i=0; i<info['rooms']['0']['a'].length; i++) {
+          room = info['rooms']['0']['a'][i];
+          if (room.status == 2){
+            contentString += '<div class="contentRow" style="clear: both;text-align: left;color:#cdcdcd"' + (shouldHighlightRow ? ' active' : '') +'">'
+            + ''+set_icon+''
+            + '<a id = "copycontent_'+i+'" href='+unit.public_url_for_room+'></a>'
+            + '' + room.name + ' - ' +
+            + room.rent + '</div>';
+          }
+          else{
+            contentString += '<div class="contentRow" style="clear: both;text-align: left;"' + (shouldHighlightRow ? ' active' : '') +'">'
+              + ''+set_icon+''
+              + '<a id = "copycontent_'+i+'" href='+unit.public_url_for_room+'></a>'
+              + '' + room.name + ' - ' +
+              + room.rent + '</div>';
+            }
+        }
       }
       else{
         contentString += '<div class="contentRow' + (shouldHighlightRow ? ' active' : '') +'">'
@@ -240,22 +258,39 @@
       }
     }
     // contentString += '<button type="button" class = "finalcopylink" >Copy Link!</button>'
-    output =
-      '<div class="slideshow">' +
-        slideshowContent +
-      '</div>';
-    if (imgCount > 1) {
-      output += '<div class="cycle">' +
-        '<a href="#" class="prev">&laquo; Previous</a>' +
-        '<a href="#" class="next">Next &raquo;</a>' +
+    if (window.location.pathname == '/residential_listings/room_index'){
+      output =
+        '<div class="slideshow" style="float: left;margin-right: 10px;width: 100px;">' +
+          slideshowContent +
         '</div>';
+      if (imgCount > 1) {
+        output += '<div class="cycle">' +
+          '<a href="#" class="prev">&laquo; Previous</a>' +
+          '<a href="#" class="next">Next &raquo;</a>' +
+          '</div>';
+      }
+      output += '<div class="content" style="float: left;width: 180px;">' +
+        contentString +
+        '</div><div style="clear: both;"></div>';
+      return '<div class="popup">' + output + '</div>';
     }
-    output += '<div class="content">' +
-      contentString +
-      '</div>';
-    return '<div class="popup">' + output + '</div>';
+    else{
+     output =
+        '<div class="slideshow">' +
+          slideshowContent +
+        '</div>';
+      if (imgCount > 1) {
+        output += '<div class="cycle">' +
+          '<a href="#" class="prev">&laquo; Previous</a>' +
+          '<a href="#" class="next">Next &raquo;</a>' +
+          '</div>';
+      }
+      output += '<div class="content">' +
+        contentString +
+        '</div>';
+      return '<div class="popup">' + output + '</div>'; 
+    }
   };
-
   ResidentialListings.toggleFeeOptions = function(event) {
     var isChecked = $('.has-fee').prop('checked');
     if (isChecked) {
