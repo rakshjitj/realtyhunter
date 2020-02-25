@@ -403,8 +403,11 @@ a[data-target="#demo"] + div#demo > div input[id*="child_with_parent"] {
 }
 .ac-hope{
   color: #eb348c;
+  font-size: 12px !important;
 }
-
+.ac-se-li{
+ font-size: 12px !important; 
+}
 .glyphicon + br {display: none;}
 
 .mthsFree {
