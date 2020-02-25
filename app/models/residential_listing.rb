@@ -207,7 +207,7 @@ class ResidentialListing < ApplicationRecord
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route','buildings.point_of_contact',
         'buildings.lat', 'buildings.lng', 'buildings.rating', 'buildings.streeteasy_eligibility', 'units.id AS unit_id',
         'units.building_unit','units.featured', 'units.status','units.rent', 'residential_listings.beds','residential_listings.claim_for_naked_apartment',
-        'residential_listings.claim_for_individual_syndication_page',
+        'residential_listings.claim_for_individual_syndication_page','residential_listings.renthop',
         'units.primary_agent_id',  'units.has_stock_photos',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',

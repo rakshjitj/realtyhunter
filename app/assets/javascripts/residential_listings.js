@@ -186,7 +186,7 @@
     // console.log(info);
     var slideshowContent = '';
     if (window.location.pathname == '/residential_listings/room_index'){
-      var contentString = '<div class="un-content" style="text-align: left;"><strong>' + key + '</strong>';
+      var contentString = '';
     }
     else{
       var contentString = '<div class="un-content"><strong>' + key + '</strong>';
@@ -223,7 +223,8 @@
       }
 
       if (window.location.pathname == '/residential_listings/room_index'){
-        contentString += ',#' + unit.building_unit+ ' <div class="un-main-content">' + unit.beds + 'beds | ' + unit.baths + ' baths | $' + unit.rent + '<div> Avail: ' + unit.avail + '</div></div></div>' 
+        var rooms_url = 'https://realtyhunter.org:3000/rooms/' + unit.id
+        contentString += '<div class="un-content" style="text-align: left;"><a href=' + rooms_url + '>' + key + ', #' + unit.building_unit+ '</a> <div class="un-main-content">' + unit.beds + 'beds | ' + unit.baths + ' baths | $' + unit.rent + '<div> Avail: ' + unit.avail + '</div></div></div>' 
         for (var i=0; i<info['rooms']['0']['a'].length; i++) {
           room = info['rooms']['0']['a'][i];
           if (room.status == 2){

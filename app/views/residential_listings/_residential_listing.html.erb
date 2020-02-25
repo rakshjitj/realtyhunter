@@ -186,19 +186,27 @@
     
     <% if current_user.is_management? %>
       <td>  
+        <% if residential_listing.renthop == true %>
+          <span class="glyphicon glyphicon-check ac-hope" aria-hidden="true"></span>
+          <br>
+        <% else %>
+          <span>---</span>
+          <br>
+        <% end %>
         <% if residential_listing.streeteasy_flag == true or residential_listing.streeteasy_flag_one == true %>
           <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
           <br>
-          Primary : 
-          <% if !residential_listing.unit.streeteasy_primary_agent_id.nil? %>
-            <%= link_to User.find(residential_listing.unit.streeteasy_primary_agent_id).name, user_path(residential_listing.unit.streeteasy_primary_agent_id) %>
-          <% else %>
-            --
-          <% end %>
+          <!-- Primary : 
+          <%# if !residential_listing.unit.streeteasy_primary_agent_id.nil? %>
+            <%#= link_to User.find(residential_listing.unit.streeteasy_primary_agent_id).name, user_path(residential_listing.unit.streeteasy_primary_agent_id) %>
+          <%# else %>
+            -->
+            <!--
+          <%# end %>
           <br>
-            <% if !residential_listing.streeteasy_counters.blank? %>
-              Active: <%= ((0.day.ago - residential_listing.streeteasy_counters.last.created_at) / 86400).round %> Days
-            <% end %>
+            <%# if !residential_listing.streeteasy_counters.blank? %>
+              Active: <%#= ((0.day.ago - residential_listing.streeteasy_counters.last.created_at) / 86400).round %> Days
+            <%# end %> -->
             <%# @last_count = nil %>
         <% else %>
           <span>---</span>
