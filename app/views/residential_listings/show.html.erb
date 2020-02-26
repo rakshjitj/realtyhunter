@@ -71,7 +71,13 @@
 				  	</div><!-- row -->
 				  	<div class="row">
 				  		<div class="col-xs-7">
-				  			<p><%= render 'market_status' %></p>
+				  			<p>
+				  				<%= render 'market_status' %>
+				  				<% if @residential_unit.roomshare_department == true %>
+				  					<span class="seperator-status">||</span>
+				  					<span class="rm-avail-sh">Available For Rooms</span>
+				  				<% end %>
+				  			</p>
 				  		</div>
 				  		<div class="col-xs-5 text-right">
 				  			<p>Available <%= @residential_unit.unit.available_by %></p>

@@ -413,6 +413,24 @@ a[data-target="#demo"] + div#demo > div input[id*="child_with_parent"] {
 .ac-se-li{
  font-size: 12px !important; 
 }
+.rm-avail{
+  font-family: sans-serif;
+  display: inline-block;
+  maegin-left: 5px;
+  font-size: 12px !important;
+  color: #23aad8;
+}
+.rm-avail-sh{
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  font-size: 13px;
+  color: #23aad8;
+}
+.seperator-status{
+  margin-left: 10px;
+  margin-right: 10px;
+}
 .glyphicon + br {display: none;}
 
 .mthsFree {

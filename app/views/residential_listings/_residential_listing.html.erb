@@ -96,6 +96,10 @@
           </div>
         </div>
 
+        <!-- Roomshare Info -->
+        <% if residential_listing.roomshare_department == true %>
+          <span class="rm-avail">Available For Rooms</span>
+        <% end %>
         <!-- if roomsharing, draw indicators for each roommate slot here -->
         <% if residential_listing.can_roomshare %>
           <div class="row">
