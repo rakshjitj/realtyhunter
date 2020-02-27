@@ -814,12 +814,13 @@ class ResidentialListing < ApplicationRecord
         beds: runit.beds,
         baths: runit.baths,
         rent: runit.rent,
+        gross: runit.unit.gross_price,
         avail: (runit.available_by.strftime("%b %d") if !runit.available_by.blank?),
         public_url: runit.public_url,
         public_url_for_room: runit.unit.public_url_for_room
         }
       room_info = {
-        a: runit.rooms.map{|x| [{:id => x.id,:status => x.status, :name => x.name, :rent => x.rent}]}.flatten
+        a: runit.rooms.order(name: :asc).map{|x| [{:id => x.id,:status => x.status, :name => x.name, :rent => x.rent}]}.flatten
       }
       # rooms_info = {}
       # if !runit.rooms.blank?

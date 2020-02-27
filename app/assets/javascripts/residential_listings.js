@@ -224,7 +224,7 @@
 
       if (window.location.pathname == '/residential_listings/room_index'){
         var rooms_url = 'https://realtyhunter.org:3000/rooms/' + unit.id
-        contentString += '<div class="un-content" style="text-align: left;"><a href=' + rooms_url + '>' + key + ', #' + unit.building_unit+ '</a> <div class="un-main-content">' + unit.beds + 'beds | ' + unit.baths + ' baths | $' + unit.rent + '<div> Avail: ' + unit.avail + '</div></div></div>' 
+        contentString += '<div class="un-content" style="text-align: left;"><a href=' + rooms_url + '>' + key + ', #' + unit.building_unit+ '</a> <div class="un-main-content">' + unit.beds + 'beds | ' + unit.baths + ' baths | '+ 'Net: $' + unit.rent + ' Gross: $' + unit.gross + '<div> Avail: ' + unit.avail + '</div></div></div>' 
         for (var i=0; i<info['rooms']['0']['a'].length; i++) {
           room = info['rooms']['0']['a'][i];
           if (room.status == 2){
@@ -252,10 +252,12 @@
           + unit.beds + ' bd / '
           + unit.baths + ' baths $' + unit.rent + '</a></div>';
       }
-      if (i == 5) {
-        contentString += '<div class="contentRow"><a href="https://realtyhunter.org:3000/buildings/'
-          + info['building_id'] + '">View more...</a></div>';
-        break;
+      if (window.location.pathname != '/residential_listings/room_index'){
+        if (i == 5) {
+          contentString += '<div class="contentRow"><a href="https://realtyhunter.org:3000/buildings/'
+            + info['building_id'] + '">View more...</a></div>';
+          break;
+        }
       }
     }
     // contentString += '<button type="button" class = "finalcopylink" >Copy Link!</button>'

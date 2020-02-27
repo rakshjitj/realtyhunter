@@ -283,7 +283,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'residential_listings.tenant_occupied as r_tenant_occupied', 'residential_listings.op_fee_percentage',
 			'residential_listings.tp_fee_percentage',
 			'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_flag_one',
-			'residential_listings.naked_apartment', 'residential_listings.roomfill_partial_move_in',
+			'residential_listings.naked_apartment', 'residential_listings.roomfill', 'residential_listings.partial_move_in',
 			'sales_listings.id AS s_id',
 			'sales_listings.beds as s_beds',
 			'sales_listings.baths as s_baths',

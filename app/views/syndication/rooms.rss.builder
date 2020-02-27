@@ -77,8 +77,8 @@ xml.streeteasy :version => "1.6" do
 						xml.exclusive
 					end
 
-					if listing.roomfill_partial_move_in
-						if listing.roomfill_partial_move_in == true
+					if listing.roomfill
+						if listing.roomfill == true
 							xml.roomfill 1
 						else
 							xml.roomfill 0
