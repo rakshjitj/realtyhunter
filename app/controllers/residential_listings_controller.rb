@@ -1331,7 +1331,7 @@ class ResidentialListingsController < ApplicationController
         :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
         :rls_flag, :streeteasy_flag, :streeteasy_flag_one,:streeteasy_claim, :naked_apartment,
         unit: [:building_unit, :streeteasy_unit, :streeteasy_primary_agent_id, :streeteasy_listing_email, :streeteasy_listing_number, :rent, :gross_price, :maths_free, :available_by, :access_info, :status,
-          :exclusive, :featured, :hide_on_website, :building_id, :primary_agent_id, :primary_agent2_id, :listing_agent_id,
+          :exclusive, :featured, :hide_on_website, :hide_from_agent, :building_id, :primary_agent_id, :primary_agent2_id, :listing_agent_id,
           :syndication_status, :has_stock_photos, :is_exclusive_agreement_signed,
           :exclusive_agreement_expires_at, :public_url, :price_calculation,
           open_houses_attributes: [:day, :start_time, :end_time, :_destroy, :id],
