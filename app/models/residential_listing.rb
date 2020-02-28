@@ -215,6 +215,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_claim',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'residential_listings.tenant_occupied', 'residential_listings.roomshare_department',
+        'residential_listings.roomfill', 'residential_listings.partial_move_in',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code', 'landlords.rating',
         'landlords.id AS landlord_id',
@@ -541,6 +542,16 @@ class ResidentialListing < ApplicationRecord
     if !params[:has_stock_photos_filter].blank?
       running_list = running_list.where(
           'units.has_stock_photos = ?', params[:has_stock_photos_filter])
+    end
+
+    if !params[:roomfill].blank?
+      running_list = running_list.where(
+          'residential_listings.roomfill = ?', params[:roomfill])
+    end
+
+    if !params[:partial_move_in].blank?
+      running_list = running_list.where(
+          'residential_listings.partial_move_in = ?', params[:partial_move_in])
     end
 
     if !params[:exclusive_filter].blank?
@@ -873,6 +884,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.baths','units.access_info', 'residential_listings.renthop',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'residential_listings.tenant_occupied', 'residential_listings.roomshare_department',
+        'residential_listings.roomfill', 'residential_listings.partial_move_in',
         'neighborhoods.name AS neighborhood_name',
         'landlords.code',
         'landlords.id AS landlord_id',
@@ -914,6 +926,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.streeteasy_flag_one', 'residential_listings.renthop',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'residential_listings.tenant_occupied', 'residential_listings.roomshare_department',
+        'residential_listings.roomfill', 'residential_listings.partial_move_in',
         'neighborhoods.name AS neighborhood_name',
         'landlords.code',
         'landlords.id AS landlord_id',

@@ -431,6 +431,16 @@ a[data-target="#demo"] + div#demo > div input[id*="child_with_parent"] {
   margin-left: 10px;
   margin-right: 10px;
 }
+span.rm-move-in {
+    margin-left: 10px;
+    color: #309a05;
+    font-weight: bold;
+}
+span.rm-fill {
+    margin-left: 10px;
+    color: #309a05;
+    font-weight: bold;
+}
 .glyphicon + br {display: none;}
 
 .mthsFree {

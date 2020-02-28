@@ -56,6 +56,8 @@
         building_rating: $('#building_rating').val(),
         streeteasy_eligibility: $('#streeteasy_eligibility').val(),
         parent_amenities: $('#parent_amenities').val(),
+        roomfill: $('#roomfill').prop('checked'),
+        partial_move_in: $('#partial_move_in').prop('checked'),
         parent_building_amenities: $('#parent_building_amenities').val(),
         parent_neighborhoods: $('#parent_neighborhoods').val(),
         landlord_rating: $('#landlord_rating').val(),
@@ -222,21 +224,28 @@
         var set_icon = ''
       }
 
+      if (unit.public_url_for_room != null){
+        var set_icon = '<input type = "radio" class = "rd_copy_btn"  id = "copylinkup_'+i+'" name = "copylink" value = '+ i +' data-clipboard-target="#copycontent_'+i+'"'
+      }
+      else{
+       var set_icon = '' 
+      }
+
       if (window.location.pathname == '/residential_listings/room_index'){
         var rooms_url = 'https://realtyhunter.org:3000/rooms/' + unit.id
-        contentString += '<div class="un-content" style="text-align: left;"><a href=' + rooms_url + '>' + key + ', #' + unit.building_unit+ '</a> <div class="un-main-content">' + unit.beds + 'beds | ' + unit.baths + ' baths | '+ 'Net: $' + unit.rent + ' Gross: $' + unit.gross + '<div> Avail: ' + unit.avail + '</div></div></div>' 
+        contentString += '<div class="un-content" style="text-align: left;"><a href=' + rooms_url + '>' + key + ', #' + unit.building_unit+ '</a> <div class="un-main-content">' + unit.beds + ' beds | ' + unit.baths + ' baths | '+ 'Net: $' + unit.rent + ' Gross: $' + unit.gross + '<div> Avail: ' + unit.avail + '</div></div></div>' 
         for (var i=0; i<info['rooms']['0']['a'].length; i++) {
           room = info['rooms']['0']['a'][i];
           if (room.status == 2){
             contentString += '<div class="contentRow" style="clear: both;text-align: left;color:#cdcdcd"' + (shouldHighlightRow ? ' active' : '') +'">'
-            + ''+set_icon+''
+            + ''+set_icon+'disabled>'
             + '<a id = "copycontent_'+i+'" href='+unit.public_url_for_room+'></a>'
             + '' + room.name + ' - ' +
             + room.rent + '</div>';
           }
           else{
             contentString += '<div class="contentRow" style="clear: both;text-align: left;"' + (shouldHighlightRow ? ' active' : '') +'">'
-              + ''+set_icon+''
+              + ''+set_icon+'>'
               + '<a id = "copycontent_'+i+'" href='+unit.public_url_for_room+'></a>'
               + '' + room.name + ' - ' +
               + room.rent + '</div>';
