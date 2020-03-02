@@ -596,10 +596,18 @@
             <i class="fa fa-fw fa-list"></i> Internal Listings Sheet</a></li>
         </ul>
       </div>
-
-      <span class="totals">
-        &nbsp;&nbsp;<%= @residential_units.total_count %> Units found
-      </span>
+      <% if !@residential_units.where('units.hide_from_agent =?', true).blank? %>
+        <% if current_user.is_special_agent? %>
+          <% @hide_agents_count = @residential_units.where('units.hide_from_agent =?', true).count %>
+          <span class="totals">
+            &nbsp;&nbsp;<%= @residential_units.total_count - @hide_agents_count %> Units found
+          </span>
+        <% else %>
+          <span class="totals">
+            &nbsp;&nbsp;<%= @residential_units.total_count %> Units found
+          </span>
+        <% end %>
+      <% end %>
     </div>
   </div>
 
