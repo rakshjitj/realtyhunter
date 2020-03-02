@@ -942,19 +942,21 @@
           </div>
         <% end %>
 
-        <%= f.fields_for @residential_unit.unit do |unit_form| %>
-          <div class="row vertical-margin-lg">
-            <div class="col-xs-3 col-md-4">
-              <%= unit_form.label :hide_from_agent, "Hide From Agents" %>
-            </div>
-            <div class="col-xs-9 col-md-7">
-              <div class="checkbox checkbox-warning checkbox-inline">
-                <%= unit_form.check_box :hide_from_agent, class: "styled",
-                    checked: @residential_unit ? @residential_unit.unit.hide_from_agent : false %>
-                <label></label>
+        <% if current_user.is_management? %>
+          <%= f.fields_for @residential_unit.unit do |unit_form| %>
+            <div class="row vertical-margin-lg">
+              <div class="col-xs-3 col-md-4">
+                <%= unit_form.label :hide_from_agent, "Hide From Agents" %>
+              </div>
+              <div class="col-xs-9 col-md-7">
+                <div class="checkbox checkbox-warning checkbox-inline">
+                  <%= unit_form.check_box :hide_from_agent, class: "styled",
+                      checked: @residential_unit ? @residential_unit.unit.hide_from_agent : false %>
+                  <label></label>
+                </div>
               </div>
             </div>
-          </div>
+          <% end %>
         <% end %>
 
         <div id="roomshare_disp">
