@@ -36,6 +36,7 @@ module SyndicationInterface
 		# syndication. If the "streeteasy flag" is not set here, we prevent the data from going out.
 		search_params[:has_primary_agent] = 1
 		search_params[:exclusive] = 1
+		search_params[:is_hide_on_website] = 1
 		search_params[:must_have_description] = 1
 		search_params[:must_have_status_inbetween] = 1
 		search_params[:must_have_streeteasy_flag] = 1
