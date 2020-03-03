@@ -225,10 +225,10 @@
       }
 
       if (unit.public_url_for_room != null){
-        var set_icon = '<input type = "radio" class = "rd_copy_btn"  id = "copylinkup_'+i+'" name = "copylink" value = '+ i +' data-clipboard-target="#copycontent_'+i+'"'
+        var set_iconss = '<input type = "radio" class = "rd_copy_btn"  id = "copylinkup_'+i+'" name = "copylink" value = '+ i +' data-clipboard-target="#copycontent_'+i+'"'
       }
       else{
-       var set_icon = '' 
+       var set_iconss = '' 
       }
 
       if (window.location.pathname == '/residential_listings/room_index'){
@@ -238,14 +238,14 @@
           room = info['rooms']['0']['a'][i];
           if (room.status == 2){
             contentString += '<div class="contentRow" style="clear: both;text-align: left;color:#cdcdcd"' + (shouldHighlightRow ? ' active' : '') +'">'
-            + ''+set_icon+'disabled>'
+            + ''+set_iconss+'disabled>'
             + '<a id = "copycontent_'+i+'" href='+unit.public_url_for_room+'></a>'
             + '' + room.name + ' - ' +
             + room.rent + '</div>';
           }
           else{
             contentString += '<div class="contentRow" style="clear: both;text-align: left;"' + (shouldHighlightRow ? ' active' : '') +'">'
-              + ''+set_icon+'>'
+              + ''+set_iconss+'>'
               + '<a id = "copycontent_'+i+'" href='+unit.public_url_for_room+'></a>'
               + '' + room.name + ' - ' +
               + room.rent + '</div>';
