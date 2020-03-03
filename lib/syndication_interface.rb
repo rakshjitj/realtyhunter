@@ -50,6 +50,14 @@ module SyndicationInterface
 		pull_data(company_id, search_params)
 	end
 
+	def external_feed_listings(company_id, search_params)
+		search_params[:has_primary_agent] = 1
+		search_params[:is_hide_on_website] = 1
+		search_params[:push_to_zumper_active] = 1
+		search_params[:must_have_status_for_zumper] = 1
+		pull_data(company_id, search_params)
+	end
+
 	def renthop_listings(company_id, search_params)
 		search_params[:has_primary_agent] = 1
 		search_params[:is_hide_on_website] = 1

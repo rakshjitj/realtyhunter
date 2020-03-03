@@ -110,6 +110,7 @@ Rails.application.routes.draw do
       get 'neighborhood_options'
     end
   end
+  get "residential_listings/download_csv_active_new_reactivated_listings/:id" => "residential_listings#download_csv_active_new_reactivated_listings", as: :download_csv_active_new_reactivated_listings
   get "residential_listings/weekly_track" => "residential_listings#find_active_listing_weekly_basis", as: :weekly_track
   get "residential_listings/individual_se_list" => "residential_listings#individual_se_list", as: :individual_se_list
   get 'residential_listings/favorite_listings' => "residential_listings#favorite_listings", as: :residential_favorite_listings
@@ -274,6 +275,7 @@ Rails.application.routes.draw do
       get 'rooms'
       get 'apartment'
       get 'zumper'
+      get 'external_feed'
       get 'renthop'
     end
   end

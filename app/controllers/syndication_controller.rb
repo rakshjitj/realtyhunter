@@ -48,6 +48,10 @@
     set_listings
   end
 
+  def external_feed
+    set_listings
+  end
+
   def set_listings
     @company = Company.find(syndication_params[:id])
     if @company
@@ -71,6 +75,8 @@
         @listings = apartment_listings(@company.id, {})
       elsif syndication_params[:action] == 'zumper'
         @listings = zumper_listings(@company.id, syndication_params)
+      elsif syndication_params[:action] == 'external_feed'
+        @listings = external_feed_listings(@company.id, syndication_params)
       elsif syndication_params[:action] == 'renthop'
         @listings = renthop_listings(@company.id, syndication_params)
       end
