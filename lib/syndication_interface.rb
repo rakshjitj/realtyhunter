@@ -18,6 +18,7 @@ module SyndicationInterface
 	def naked_apts_listings(company_id, search_params)
 		search_params[:has_primary_agent] = 1
 		search_params[:has_fee_exclusive] = 1
+		search_params[:is_hide_on_website] = 1
 		search_params[:has_naked_apartment] = 1
 		pull_data(company_id, search_params)
 	end
@@ -70,6 +71,7 @@ module SyndicationInterface
 	def apartment_listings(company_id, search_params)
 		search_params[:has_primary_agent] = 1
 		search_params[:exclusive] = 1
+		search_params[:is_hide_on_website] = 1
 		search_params[:must_have_description] = 1
 		search_params[:must_have_apartment] = 1
 		pull_data(company_id, search_params)
@@ -82,6 +84,7 @@ module SyndicationInterface
 	def trulia_listings(company_id, search_params)
 		search_params[:has_primary_agent] = 1
 		search_params[:exclusive] = 1
+		search_params[:is_hide_on_website] = 1
 		search_params[:must_have_description] = 1
 		search_params[:must_have_streeteasy_flag] = 1
 		pull_data(company_id, search_params)
@@ -90,6 +93,7 @@ module SyndicationInterface
 	def zillow_listings(company_id, search_params)
 		search_params[:has_primary_agent] = 1
 		search_params[:exclusive] = 1
+		search_params[:is_hide_on_website] = 1
 		search_params[:must_have_description] = 1
 		search_params[:must_have_streeteasy_flag] = 1
 		pull_data(company_id, search_params)
@@ -99,11 +103,13 @@ module SyndicationInterface
 	# to accomodate Nestio's requirements.
 	def nestio_listings(company_id, search_params)
 		search_params[:is_nestio] = 1
+		search_params[:is_hide_on_website] = 1
 		pull_data(company_id, search_params)
 	end
 
 	def hotpad_listings(company_id, search_params)
 		search_params[:is_hotpad] = 1
+		search_params[:is_hide_on_website] = 1
 		search_params[:is_having_description] = 1
 		pull_data(company_id, search_params)
 	end
