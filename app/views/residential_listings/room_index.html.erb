@@ -461,6 +461,7 @@
         <th data-sort="rent" class="th-sortable">Room</th>
         <th data-sort="rent" class="th-sortable">Price</th>
         <th data-sort="available_by" class="th-sortable">Available</th>
+        <th data-sort="bonus" class="th-sortable">Bonus</th>
         <th data-sort="code" class="th-sortable">Landlord</th>
         <!-- <th data-sort="name" class="th-sortable">Primary Agent</th> -->
         <!-- <th data-sort="name" class="th-sortable">StreetEasy Primary Agent</th>
@@ -562,6 +563,13 @@
                     <%= res_list.unit.available_by.strftime("%b %d") %>
                   <% else %>
                     -
+                  <% end %>
+                </td>
+                <td>
+                  <% if !room.bonus.blank? %>
+                    <%= room.bonus %>
+                  <% else %>
+                    ---
                   <% end %>
                 </td>
                 <td>
