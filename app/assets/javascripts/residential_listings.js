@@ -53,6 +53,7 @@
         primary_agent_id:  $('#primary_agent_id').val(),
         claim_agent_id: $('#claim_agent_id').val(),
         point_of_contact:  $('#point_of_contact').val(),
+        primary_agent_for_rs: $('#primary_agent_for_rs').val(),
         building_rating: $('#building_rating').val(),
         streeteasy_eligibility: $('#streeteasy_eligibility').val(),
         parent_amenities: $('#parent_amenities').val(),
@@ -233,7 +234,7 @@
 
       if (window.location.pathname == '/residential_listings/room_index'){
         var rooms_url = 'https://realtyhunter.org:3000/rooms/' + unit.id
-        contentString += '<div class="un-content" style="text-align: left;"><a href=' + rooms_url + '>' + key + ', #' + unit.building_unit+ '</a> <div class="un-main-content">' + unit.beds + ' beds | ' + unit.baths + ' baths | '+ 'Net: $' + unit.rent + ' Gross: $' + unit.gross + '<div> Avail: ' + unit.avail + '</div></div></div>' 
+        contentString += '<div class="un-content" style="text-align: left;"><a href=' + rooms_url + '>' + key + ', #' + unit.building_unit+ '</a> <div class="un-main-content"><div>' + unit.beds + ' beds | ' + unit.baths + ' baths </div> '+ '<div> Net: $' + unit.rent + ' | Gross: $' + unit.gross + '</div><div> Avail: ' + unit.avail + '</div></div></div>' 
         for (var i=0; i<info['rooms']['0']['a'].length; i++) {
           room = info['rooms']['0']['a'][i];
           if (room.status == 2){

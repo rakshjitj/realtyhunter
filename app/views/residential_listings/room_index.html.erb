@@ -173,7 +173,20 @@
               </div>
             </div>
           </div>
-
+        <% if current_user.is_manager? %>
+          <div class="row vertical-padding">
+            <div class="col-xs-5">
+              <%= label_tag :primary_agent_for_rs, "Rs primary", class: "field-label-sm" %>
+            </div>
+            <div class="col-xs-6 col-sm-left-padding">
+              <%= select_tag(:primary_agent_for_rs,
+                options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
+                    [params[:primary_agent_for_rs] ? params[:primary_agent_for_rs].titleize : "Any"]),
+                  {prompt: "Choose one...",
+                  class: 'form-control'}) %>
+            </div>
+          </div>
+        <% end %>
         <% if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
           <div class="row vertical-padding">
             <div class="col-xs-5">

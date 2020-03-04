@@ -208,7 +208,7 @@ class ResidentialListing < ApplicationRecord
         'buildings.lat', 'buildings.lng', 'buildings.rating', 'buildings.streeteasy_eligibility', 'units.id AS unit_id',
         'units.building_unit','units.featured', 'units.status','units.rent', 'residential_listings.beds','residential_listings.claim_for_naked_apartment',
         'residential_listings.claim_for_individual_syndication_page','residential_listings.renthop',
-        'units.primary_agent_id',  'units.has_stock_photos',
+        'units.primary_agent_id',  'units.has_stock_photos', 'units.primary_agent_for_rs',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info',
         'residential_listings.favorites','residential_listings.streeteasy_flag_one', 'residential_listings.lease_start',
@@ -594,6 +594,10 @@ class ResidentialListing < ApplicationRecord
       running_list = running_list.where('units.primary_agent_id = ? OR units.primary_agent2_id = ?',
         params[:primary_agent_id], params[:primary_agent_id])
     end
+
+    if !params[:primary_agent_for_rs].blank?
+      running_list = running_list.where('units.primary_agent_for_rs = ?', params[:primary_agent_for_rs])
+    end
     
     if !params[:claim_agent_id].blank?
       running_list = running_list.where(["residential_listings.claim_for_naked_apartment @> ?", "{#{params[:claim_agent_id]}}"])
@@ -878,7 +882,7 @@ class ResidentialListing < ApplicationRecord
       .select('buildings.formatted_street_address',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id',
-        'units.has_stock_photos',
+        'units.has_stock_photos', 'units.primary_agent_for_rs',
         'residential_listings.beds', 'residential_listings.id', 'residential_listings.lease_start',
         'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_flag_one',
         'residential_listings.baths','units.access_info', 'residential_listings.renthop',
@@ -920,7 +924,7 @@ class ResidentialListing < ApplicationRecord
       .select('buildings.formatted_street_address',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id',
-        'units.has_stock_photos',
+        'units.has_stock_photos', 'units.primary_agent_for_rs',
         'residential_listings.beds', 'residential_listings.id', 'residential_listings.lease_start',
         'residential_listings.baths','units.access_info', 'residential_listings.streeteasy_flag',
         'residential_listings.streeteasy_flag_one', 'residential_listings.renthop',
