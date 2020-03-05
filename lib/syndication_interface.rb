@@ -20,6 +20,7 @@ module SyndicationInterface
 		search_params[:has_fee_exclusive] = 1
 		search_params[:is_hide_on_website] = 1
 		search_params[:has_naked_apartment] = 1
+		search_params[:has_hide_from_agent] = 1
 		pull_data(company_id, search_params)
 	end
 
@@ -41,6 +42,7 @@ module SyndicationInterface
 		search_params[:must_have_description] = 1
 		search_params[:must_have_status_inbetween] = 1
 		search_params[:must_have_streeteasy_flag] = 1
+		search_params[:has_hide_from_agent] = 1
 		pull_data(company_id, search_params)
 	end
 
@@ -49,6 +51,7 @@ module SyndicationInterface
 		search_params[:is_hide_on_website] = 1
 		search_params[:push_to_zumper_active] = 1
 		search_params[:must_have_status_for_zumper] = 1
+		search_params[:has_hide_from_agent] = 1
 		pull_data(company_id, search_params)
 	end
 
@@ -57,6 +60,7 @@ module SyndicationInterface
 		search_params[:is_hide_on_website] = 1
 		search_params[:push_to_zumper_active] = 1
 		search_params[:must_have_status_for_zumper] = 1
+		search_params[:has_hide_from_agent] = 1
 		pull_data(company_id, search_params)
 	end
 
@@ -65,6 +69,7 @@ module SyndicationInterface
 		search_params[:is_hide_on_website] = 1
 		search_params[:must_have_status_for_zumper] = 1
 		search_params[:renthop_active] = 1
+		search_params[:has_hide_from_agent] = 1
 		pull_data(company_id, search_params)
 	end
 
@@ -74,6 +79,7 @@ module SyndicationInterface
 		search_params[:is_hide_on_website] = 1
 		search_params[:must_have_description] = 1
 		search_params[:must_have_apartment] = 1
+		search_params[:has_hide_from_agent] = 1
 		pull_data(company_id, search_params)
 	end
 
@@ -87,6 +93,7 @@ module SyndicationInterface
 		search_params[:is_hide_on_website] = 1
 		search_params[:must_have_description] = 1
 		search_params[:must_have_streeteasy_flag] = 1
+		search_params[:has_hide_from_agent] = 1
 		pull_data(company_id, search_params)
 	end
 
@@ -96,6 +103,7 @@ module SyndicationInterface
 		search_params[:is_hide_on_website] = 1
 		search_params[:must_have_description] = 1
 		search_params[:must_have_streeteasy_flag] = 1
+		search_params[:has_hide_from_agent] = 1
 		pull_data(company_id, search_params)
 	end
 
@@ -104,6 +112,7 @@ module SyndicationInterface
 	def nestio_listings(company_id, search_params)
 		search_params[:is_nestio] = 1
 		search_params[:is_hide_on_website] = 1
+		search_params[:has_hide_from_agent] = 1
 		pull_data(company_id, search_params)
 	end
 
@@ -111,11 +120,13 @@ module SyndicationInterface
 		search_params[:is_hotpad] = 1
 		search_params[:is_hide_on_website] = 1
 		search_params[:is_having_description] = 1
+		search_params[:has_hide_from_agent] = 1
 		pull_data(company_id, search_params)
 	end
 
 	def rooms_listings(company_id, search_params)
 		search_params[:is_rooms] = 1
+		search_params[:has_hide_from_agent] = 1
 		#search_params[:is_having_description] = 1
 		pull_data(company_id, search_params)
 	end
@@ -172,6 +183,10 @@ left join sales_listings on units.id = sales_listings.unit_id')
 
 		if is_true?(search_params[:is_having_description])
 			listings = listings.where("residential_listings.rooms_description <> '' ")
+		end
+
+		if is_true?(search_params[:has_hide_from_agent])
+			listings = listings.where('units.hide_from_agent =?', false)
 		end
 
 		if is_true?(search_params[:is_rooms])
@@ -309,7 +324,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'sales_listings.internal_sq_footage', 'sales_listings.common_chargers',
 			'units.id as unit_id',
 			'units.primary_agent_id',
-			'units.primary_agent2_id','units.featured',
+			'units.primary_agent2_id','units.featured', 'units.hide_from_agent',
 			'units.streeteasy_primary_agent_id','units.maths_free',
 			'units.public_url', 'units.primary_agent_for_rs',
 			'units.exclusive')
