@@ -1156,6 +1156,17 @@ class ResidentialListingsController < ApplicationController
     @tb_all_new_reactivated_listings_count = ListingDetail.all
   end
 
+  def download_csv_active_new_reactivated_listings
+    respond_to do |format|
+      format.csv do
+        @listing_detail_download = ListingDetailDownload.where(listing_detail_id: params[:id])
+        headers['Content-Disposition'] = "attachment; filename=\"" +
+          current_user.name + " - New Reactivated Listings.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+    end
+  end
+
   def check_in
     return unless params[:listing_id]
 

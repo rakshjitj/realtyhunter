@@ -1,0 +1,5 @@
+<%- headers = [ 'Address', 'unit', 'se_unit' , 'poc', 'llc','price','listing_label' ] -%>
+<%= CSV.generate_line(headers).strip %>
+<%- @listing_detail_download.each do |listing| -%>
+  <%= [listing.address, listing.unit, listing.se_unit, listing.poc, listing.llc, listing.price, listing.listing_label ].to_csv.strip.html_safe %>
+<%- end -%>

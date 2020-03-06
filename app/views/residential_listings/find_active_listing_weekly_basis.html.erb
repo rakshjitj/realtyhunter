@@ -29,6 +29,10 @@
                 New Listings</th>
               <th data-sort="unit" class="th-sortable">
                 Reactivated Listings</th>
+              <% if current_user.is_manager? %>
+                <th data-sort="unit" class="th-sortable">
+                  Download</th>
+              <% end %>
             </tr>
           </thead>
 
@@ -50,6 +54,13 @@
                 <td><%= ct.a %></td>
                 <td><%= ct.b %></td>
                 <td><%= ct.c %></td>
+                <% if current_user.is_manager? %>
+                  <td>
+                    <% if !ListingDetailDownload.where(listing_detail_id: ct.id).blank? %>
+                      <%= link_to "Download", download_csv_active_new_reactivated_listings_path(ct.id, format: :csv)%>
+                    <% end %>
+                  </td>
+                <% end %>
               </tr>
             <% end %>
           </tbody>

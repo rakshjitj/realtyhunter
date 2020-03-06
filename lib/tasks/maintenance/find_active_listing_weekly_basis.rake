@@ -40,6 +40,65 @@ namespace :maintenance do
 
 	    r =ListingDetail.create(a: Time.now.at_beginning_of_week, b: @new_listings.count, c: @all_updated_listings.count)
 	    r.save!
+	    @new_listings.each do |new_listing|
+	    	address = new_listing.unit.building.formatted_street_address
+	    	if !new_listing.unit.building_unit.nil?
+	    		unit = new_listing.unit.building_unit
+	    	else
+	    		unit = "---"
+	    	end
+	    	if !new_listing.unit.streeteasy_unit.nil?
+	    		se_unit = new_listing.unit.streeteasy_unit
+	    	else
+	    		se_unit = "---"
+	    	end
+	    	if !new_listing.unit.building.point_of_contact.nil?
+	    		poc = User.find(new_listing.unit.building.point_of_contact).name
+	    	else
+	    		poc = "---"
+	    	end
+	    	if new_listing.unit.building.landlord
+	    		llc = new_listing.unit.building.landlord.code
+	    	else
+	    		llc = "---"
+	    	end
+	    	if !new_listing.unit.rent.nil?
+	    		price = new_listing.unit.rent
+	    	else
+	    		price = "$0"
+	    	end
+	    	ListingDetailDownload.create(address: address, unit: unit, se_unit: se_unit, poc: poc, llc: llc, price: price, listing_detail_id: r.id, listing_label: "new")
+	    end
+
+	    @all_updated_listings.each do |all_update_listing|
+			address = all_update_listing.unit.building.formatted_street_address
+	    	if !all_update_listing.unit.building_unit.nil?
+	    		unit = all_update_listing.unit.building_unit
+	    	else
+	    		unit = "---"
+	    	end
+	    	if !all_update_listing.unit.streeteasy_unit.nil?
+	    		se_unit = all_update_listing.unit.streeteasy_unit
+	    	else
+	    		se_unit = "---"
+	    	end
+	    	if !all_update_listing.unit.building.point_of_contact.nil?
+	    		poc = User.find(all_update_listing.unit.building.point_of_contact).name
+	    	else
+	    		poc = "---"
+	    	end
+	    	if all_update_listing.unit.building.landlord
+	    		llc = all_update_listing.unit.building.landlord.code
+	    	else
+	    		llc = "---"
+	    	end
+	    	if !all_update_listing.unit.rent.nil?
+	    		price = all_update_listing.unit.rent
+	    	else
+	    		price = "$0"
+	    	end
+	    	ListingDetailDownload.create(address: address, unit: unit, se_unit: se_unit, poc: poc, llc: llc, price: price, listing_detail_id: r.id, listing_label: "reactivated")	    	
+	    end
 		puts "Done!\n"
 		log.info "Done!\n"
 		end_time = Time.now
