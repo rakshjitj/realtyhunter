@@ -277,6 +277,7 @@ Rails.application.routes.draw do
       get 'zumper'
       get 'external_feed'
       get 'renthop'
+      get 'test_watermark'
     end
   end
 

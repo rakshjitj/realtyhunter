@@ -55,6 +55,15 @@ module SyndicationInterface
 		pull_data(company_id, search_params)
 	end
 
+	def test_watermark_listings(company_id, search_params)
+		search_params[:has_primary_agent] = 1
+		search_params[:is_hide_on_website] = 1
+		search_params[:push_to_zumper_active] = 1
+		search_params[:must_have_status_for_zumper] = 1
+		search_params[:has_hide_from_agent] = 1
+		pull_data(company_id, search_params)
+	end
+
 	def external_feed_listings(company_id, search_params)
 		search_params[:has_primary_agent] = 1
 		search_params[:is_hide_on_website] = 1
@@ -311,7 +320,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'residential_listings.total_room_count as r_total_room_count',
 			'residential_listings.floor', 'residential_listings.room_syndication',
 			'residential_listings.tenant_occupied as r_tenant_occupied', 'residential_listings.op_fee_percentage',
-			'residential_listings.tp_fee_percentage',
+			'residential_listings.tp_fee_percentage', 'residential_listings.watermark',
 			'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_flag_one',
 			'residential_listings.naked_apartment', 'residential_listings.roomfill', 'residential_listings.partial_move_in',
 			'sales_listings.id AS s_id',

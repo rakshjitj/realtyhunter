@@ -52,6 +52,10 @@
     set_listings
   end
 
+  def test_watermark
+    set_listings
+  end
+
   def set_listings
     @company = Company.find(syndication_params[:id])
     if @company
@@ -77,6 +81,8 @@
         @listings = zumper_listings(@company.id, syndication_params)
       elsif syndication_params[:action] == 'external_feed'
         @listings = external_feed_listings(@company.id, syndication_params)
+      elsif syndication_params[:action] == 'test_watermark'
+        @listings = test_watermark_listings(@company.id, syndication_params)
       elsif syndication_params[:action] == 'renthop'
         @listings = renthop_listings(@company.id, syndication_params)
       end
