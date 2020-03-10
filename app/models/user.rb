@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  audited except: [:created_at, :updated_at]
+  # audited except: [:created_at, :updated_at]
   rolify
   default_scope { order("users.name ASC") }
   scope :unarchived, ->{where(archived: false)}
