@@ -12,7 +12,7 @@ namespace :maintenance do
 		@users = User.all
 		@users.each {|u|
 			#if u.name != 'Blank Slate'
-				u.update!(password: 'myspace123456', password_confirmation: 'myspace123456')
+				u.update!(password: 'zumPer2020MSnyc', password_confirmation: 'zumPer2020MSnyc')
 			#end
 		}
 
