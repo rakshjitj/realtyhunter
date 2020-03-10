@@ -117,6 +117,54 @@ xml.streeteasy :version => "1.6" do
             xml.lease_term_max listing.lease_end
           end
 
+          if listing.residential_listing
+            if listing.residential_listing.streeteasy_flag == true || listing.residential_listing.streeteasy_flag_one == true
+              xml.streeteasy true
+              #abort listing.residential_listing.audits.inspect
+              if listing.residential_listing.streeteasy_flag == true
+                xml.streeteasy_user "MySpaceNYC"
+                if listing.residential_listing.unit.audits
+                  listing.residential_listing.audits.each do |audit|
+                    if audit.audited_changes["streeteasy_flag"].class == Array
+                      if audit.audited_changes["streeteasy_flag"][1] == true
+                        if listing.residential_listing.streeteasy_flag == true
+                          @disp_se_date = audit.created_at
+                          @disp_se_date
+                        end
+                      end
+                    end
+                  end
+                  if listing.residential_listing.streeteasy_flag == true
+                    if !@disp_se_date.nil?
+                      xml.streeteasy_date time_ago_in_words(@disp_se_date)
+                    end
+                  end
+               end
+              else
+                xml.streeteasy_user User.find(listing.streeteasy_primary_agent_id).name
+                if listing.residential_listing.unit.audits
+                  listing.residential_listing.audits.each do |audit|
+                    if audit.audited_changes["streeteasy_flag_one"].class == Array
+                      if audit.audited_changes["streeteasy_flag_one"][1] == true
+                        if listing.residential_listing.streeteasy_flag_one == true
+                          @disp_se_date = audit.created_at
+                          @disp_se_date
+                        end
+                      end
+                    end
+                  end
+                  if listing.residential_listing.streeteasy_flag_one == true
+                    if !@disp_se_date.nil?
+                      xml.streeteasy_date time_ago_in_words(@disp_se_date)
+                    end
+                  end
+                end
+              end
+            else
+              xml.streeteasy false
+            end
+          end
+
           if listing.r_id
             xml.description h raw sanitize listing.description + ' MyspaceNYCListingID: ' + listing.listing_id.to_s,
                 tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
