@@ -73,6 +73,31 @@
           </div>
           <div class="row vertical-margin-lg">
             <div class="col-xs-2">
+              <%= label_tag :room_access %>
+            </div>
+            <div class="col-md-4">
+              <%= text_field_tag :room_access,@residential_unit.room_access, class: 'form-control' %>
+            </div>
+          </div>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-2">
+              <%= label_tag :move_in_date, "Move-in Date" %>
+            </div>
+            <div class="col-md-4">
+              <div class='input-group date datepicker'
+                data-available-by="<%= @residential_unit.move_in_date ? @residential_unit.move_in_date.strftime("%m/%d/%Y") : '' %>">
+
+                <%= text_field_tag :move_in_date,@residential_unit.move_in_date ? @residential_unit.move_in_date.strftime("%m/%d/%Y") : '',
+                  placeholder: "Move-in Date", class: "form-control", size:30 %>
+
+                <label class="input-group-addon btn" for="date">
+                  <span class="fa fa-calendar open-datepicker"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-2">
               <%= label_tag :room_syndication, "Room Syndication" %>
             </div>
             <div class="col-xs-3">
@@ -115,6 +140,18 @@
               </div>
             </div>
           </div>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-2">
+              <%= label_tag :working_this_listing %>
+            </div>
+            <div class="col-xs-3">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= check_box_tag :working_this_listing,true,false, checked: @residential_unit.working_this_listing ? @residential_unit.working_this_listing : false %>
+                <label></label>
+              </div>
+            </div>
+          </div>
+          
           <%#= file_field_tag :unit_image %>
           <div style="border: 1px solid #cdcdcd;width: 100%;height: 0;margin: auto;margin-top: 10px;margin-bottom: 10px;"></div>
           <div style="clear: both;"></div>
@@ -142,6 +179,14 @@
                     </div>
                     <div class="col-xs-9 col-md-4">
                       <%= r.text_field :rent, class: 'form-control', :required => true %>
+                    </div>
+                </div>
+                <div class="row vertical-margin-lg">
+                    <div class="col-xs-3 col-md-2">
+                      <%= r.label :months_free %>
+                    </div>
+                    <div class="col-xs-9 col-md-4">
+                      <%= r.text_field :months_free, class: 'form-control' %>
                     </div>
                 </div>
                 <!-- <div class="row vertical-margin-lg">

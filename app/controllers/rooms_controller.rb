@@ -27,7 +27,8 @@ class RoomsController < ApplicationController
 
   def room_update
     @residential_unit = ResidentialListing.find(params[:id])
-    @residential_unit.update(rooms_description: params[:unit_description], room_syndication: params[:room_syndication], roomfill: params[:roomfill], partial_move_in: params[:partial_move_in], renthop: params[:renthop])
+    params[:move_in_date] = Date::strptime(params[:move_in_date], "%m/%d/%Y")
+    @residential_unit.update(rooms_description: params[:unit_description], room_syndication: params[:room_syndication], roomfill: params[:roomfill], partial_move_in: params[:partial_move_in], renthop: params[:renthop], working_this_listing: params[:working_this_listing], room_access: params[:room_access], move_in_date: params[:move_in_date])
     #abort params[:unit_status].inspect
     if params[:room_syndication] == "true"
       #for default force syndication
@@ -124,6 +125,6 @@ class RoomsController < ApplicationController
    #    params.permit(:id,:name, :rent, :status, :description, :residential_listing_id)
    #  end
     def room_params(my_params)
-      my_params.permit(:id,:name, :rent, :status, :preferences, :bonus, :room_size, :room_notes, :tenant_info, :renting_agent, :description, :residential_listing_id, :file, :image)
+      my_params.permit(:id,:name, :rent, :months_free, :status, :preferences, :bonus, :room_size, :room_notes, :tenant_info, :renting_agent, :description, :residential_listing_id, :file, :image)
     end
 end
