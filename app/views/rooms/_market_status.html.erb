@@ -9,4 +9,16 @@
 	<% elsif @residential_unit.unit.status == "rsonly" %>
 		<span class="green">Roomshare Only</span>
 	<% end %>
+	<% if !@residential_unit.roomfill.nil? && @residential_unit.roomfill == true  %>
+		<span class="flex-even-item">
+			<span class="green">|| Roomfill</span>
+		</span>
+	<% else %>
+	<% end %>
+	<% if !@residential_unit.partial_move_in.nil? && @residential_unit.partial_move_in == true  %>
+		<span class="flex-even-item">
+			<span class="green">|| Partial Move-in</span>
+		</span>
+	<% else %>
+	<% end %>
 <!--/div-->
