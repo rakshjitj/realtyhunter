@@ -45,12 +45,17 @@ xml.streeteasy :version => "1.6" do
       public_url = listing.public_url || 'http://www.myspacenyc.com'
       if listing.residential_listing
         if listing.residential_listing.roomshare_department == false
-          if listing.building.route.split(" ")[0] =~ /\d/
+          if listing.building.route.split(" ")[0] =~ /\d/ || listing.building.route.split(" ")[1] =~ /\d/
             xml.property type: @ptype, status: @status, id: listing.listing_id, url: public_url do
               xml.location do
                 # note we don't want to give out the building number for rentals!
                 #abort listing.route.split(" ")[0].to_i.to_s.concat(" " + listing.route.split(" ")[1]).inspect
-                xml.address listing.street_number + " " + listing.route.split(" ")[0].to_i.to_s.concat(" " + listing.route.split(" ")[1])
+                if listing.building.route.split(" ")[0] =~ /\d/
+                  xml.address listing.street_number + " " + listing.route.split(" ")[0].to_i.to_s.concat(" " + listing.route.split(" ")[1])
+                end
+                if listing.building.route.split(" ")[1] =~ /\d/
+                  xml.address listing.street_number + " " + listing.route.split(" ")[0].concat(" " + listing.route.split(" ")[1].to_i.to_s + " " + listing.route.split(" ")[2])
+                end
                 if !listing.streeteasy_unit.nil?
                   xml.apartment listing.streeteasy_unit
                 else
@@ -1065,11 +1070,16 @@ xml.streeteasy :version => "1.6" do
           end          
         end
         if listing.residential_listing.roomshare_department == true && listing.status == "active"
-          if listing.building.route.split(" ")[0] =~ /\d/
+          if listing.building.route.split(" ")[0] =~ /\d/ || listing.building.route.split(" ")[1] =~ /\d/
             xml.property type: "rental", status: @status, id: listing.listing_id, url: public_url do
               xml.location do
                 # note we don't want to give out the building number for rentals!
-                xml.address listing.street_number + " " + listing.route.split(" ")[0].to_i.to_s.concat(" " + listing.route.split(" ")[1])
+                if listing.building.route.split(" ")[0] =~ /\d/
+                  xml.address listing.street_number + " " + listing.route.split(" ")[0].to_i.to_s.concat(" " + listing.route.split(" ")[1])
+                end
+                if listing.building.route.split(" ")[1] =~ /\d/
+                  xml.address listing.street_number + " " + listing.route.split(" ")[0].concat(" " + listing.route.split(" ")[1].to_i.to_s + " " + listing.route.split(" ")[2])
+                end
                 if !listing.streeteasy_unit.nil?
                   xml.apartment listing.streeteasy_unit
                 else
