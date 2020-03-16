@@ -27,7 +27,9 @@ class RoomsController < ApplicationController
 
   def room_update
     @residential_unit = ResidentialListing.find(params[:id])
-    params[:move_in_date] = Date::strptime(params[:move_in_date], "%m/%d/%Y")
+    if !params[:move_in_date].blank?
+      params[:move_in_date] = Date::strptime(params[:move_in_date], "%m/%d/%Y")
+    end
     @residential_unit.update(rooms_description: params[:unit_description], room_syndication: params[:room_syndication], roomfill: params[:roomfill], partial_move_in: params[:partial_move_in], renthop: params[:renthop], working_this_listing: params[:working_this_listing], room_access: params[:room_access], move_in_date: params[:move_in_date])
     #abort params[:unit_status].inspect
     if params[:room_syndication] == "true"

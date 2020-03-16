@@ -238,7 +238,7 @@
                   <div class="col-xs-9 col-md-4">
                     <%= r.select :renting_agent,
                             options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id] if u.is_special_agent? || u.is_streeteasy_agent?}.reject(&:blank?),
-                          [room.tenant_info]),
+                          [room.renting_agent]),
                             {prompt: "Choose one..."},
                             class: "form-control" %>
                   </div>
