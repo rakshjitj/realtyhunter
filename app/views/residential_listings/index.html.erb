@@ -295,7 +295,7 @@
                 <%= label_tag :tenant_occupied, "Tenant Occupieds or Not" %>
               </div>
               <div class="col-xs-6 col-sm-left-padding">
-                <%= select_tag(:tenant_occupied, options_for_select([['Any','Any'],['Tenant Occupied', 0], ['Tenant Not Occupied', 1]], params[:tenant_occupied] ? params[:tenant_occupied].titleize : "Any"), class: 'form-control') %>
+                <%= select_tag(:tenant_occupied, options_for_select([['Any','Any'],['Tenant Occupied', 0], ['Not Tenant Occupied', 1]], params[:tenant_occupied] ? params[:tenant_occupied].titleize : "Any"), class: 'form-control') %>
               </div>
             </div>
           <% end %>
