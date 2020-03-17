@@ -642,6 +642,9 @@ xml.streeteasy :version => "1.6" do
 							end
 
 							xml.media do
+								if !listing.youtube_video_url.blank?
+									xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
+								end
 								if @bldg_images[listing.building_id]
 									@bldg_images[listing.building_id].each do |i|
 										xml.photo url:i.file.url(:large), position: i.priority, description:""
@@ -1061,6 +1064,9 @@ xml.streeteasy :version => "1.6" do
 							end
 
 							xml.media do
+								if !listing.youtube_video_url.blank?
+									xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
+								end
 								if @bldg_images[listing.building_id]
 									@bldg_images[listing.building_id].each do |i|
 										xml.photo url:i.file.url(:large), position: i.priority, description:""
@@ -1473,6 +1479,9 @@ xml.streeteasy :version => "1.6" do
 								end
 
 								xml.media do
+									if !listing.youtube_video_url.blank?
+										xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
+									end
 									if @bldg_images[listing.building_id]
 										@bldg_images[listing.building_id].each do |i|
 											xml.photo url:i.file.url(:large), position: i.priority, description:""
