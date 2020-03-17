@@ -289,6 +289,16 @@
               </div>
             </div>
           <% end %>
+          <% if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
+            <div class="row vertical-padding">
+              <div class="col-xs-5">
+                <%= label_tag :tenant_occupied, "Tenant Occupieds or Not" %>
+              </div>
+              <div class="col-xs-6 col-sm-left-padding">
+                <%= select_tag(:tenant_occupied, options_for_select([['Any','Any'],['Tenant Occupied', 0], ['Tenant Not Occupied', 1]], params[:tenant_occupied] ? params[:tenant_occupied].titleize : "Any"), class: 'form-control') %>
+              </div>
+            </div>
+          <% end %>
           <%# if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
             <!-- <div class="row vertical-padding">
               <div class="col-xs-5">
@@ -350,11 +360,18 @@
 
           <div class="row vertical-padding">
             <div class="col-xs-6">
-              <div class="checkbox checkbox-warning inline">
-                <%= check_box_tag :tenant_occupied_filter, "".freeze, params[:tenant_occupied_filter] == "true".freeze ? true : false,
+              <!-- <div class="checkbox checkbox-warning inline">
+                <%#= check_box_tag :tenant_occupied_filter, "".freeze, params[:tenant_occupied_filter] == "true".freeze ? true : false,
                     class: 'styled' %>
                 <label for="tenant_occupied_filter">
                   Tenant Occupied
+                </label>
+              </div> -->
+              <div class="checkbox checkbox-warning inline">
+                <%= check_box_tag :exclusive_filter, "".freeze, params[:exclusive_filter] == "true".freeze ? true : false,
+                    class: 'styled' %>
+                <label for="roomsharing_filter">
+                  Exclusive Listing
                 </label>
               </div>
             </div>
@@ -389,15 +406,9 @@
               </div>
             </div>
             <!-- <div class="row vertical-padding"> -->
-            <div class="col-xs-6">
-              <div class="checkbox checkbox-warning inline">
-                <%= check_box_tag :exclusive_filter, "".freeze, params[:exclusive_filter] == "true".freeze ? true : false,
-                    class: 'styled' %>
-                <label for="roomsharing_filter">
-                  Exclusive Listing
-                </label>
-              </div>
-            </div>
+            <!-- <div class="col-xs-6">
+              
+            </div> -->
           </div>
 
           <!-- <div class="row vertical-padding">

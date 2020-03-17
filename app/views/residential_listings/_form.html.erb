@@ -815,7 +815,14 @@
             <%= f.number_field :commission_amount, class: 'form-control', :step => 'any' %>
           </div>
         </div>
-
+        <div class="row vertical-margin-lg">
+          <div class="col-xs-3 col-md-4">
+            <%= f.label :youtube_video_url, "Listing Video URL" %>
+          </div>
+          <div class="col-xs-9 col-md-7">
+            <%= f.text_field :youtube_video_url, class: 'form-control' %>
+          </div>
+        </div>
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-4">
             <%= f.label :cyof, "CYOF" %>
@@ -982,19 +989,6 @@
                 <div class="checkbox checkbox-warning checkbox-inline">
                   <%= f.check_box :renthop, class: "styled",
                       checked: @residential_unit ? @residential_unit.renthop : false %>
-                  <label></label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row vertical-margin-lg">
-              <div class="col-xs-3 col-md-4">
-                <%= f.label :watermark, "Watermark" %>
-              </div>
-              <div class="col-xs-9 col-md-7">
-                <div class="checkbox checkbox-warning checkbox-inline">
-                  <%= f.check_box :watermark, class: "styled",
-                      checked: @residential_unit ? @residential_unit.watermark : false %>
                   <label></label>
                 </div>
               </div>

@@ -215,7 +215,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_claim',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'residential_listings.tenant_occupied', 'residential_listings.roomshare_department',
-        'residential_listings.roomfill', 'residential_listings.partial_move_in',
+        'residential_listings.roomfill', 'residential_listings.partial_move_in', 'residential_listings.working_this_listing',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code', 'landlords.rating',
         'landlords.id AS landlord_id',
@@ -534,9 +534,15 @@ class ResidentialListing < ApplicationRecord
         'units.primary_agent_id IS NULL AND units.primary_agent2_id IS NULL')
     end
 
-    if !params[:tenant_occupied_filter].blank?
-      running_list = running_list.where(
-          'residential_listings.tenant_occupied = ?', params[:tenant_occupied_filter])
+    if !params[:tenant_occupied].blank?
+      if params[:tenant_occupied] == "0"
+        running_list = running_list.where('residential_listings.tenant_occupied = ?', true)
+      elsif params[:tenant_occupied] == "1"
+        running_list = running_list.where('residential_listings.tenant_occupied = ?', false)
+      else
+        running_list = running_list
+      end
+          
     end
 
     if !params[:has_stock_photos_filter].blank?
@@ -822,7 +828,9 @@ class ResidentialListing < ApplicationRecord
       bldg_info = {
         building_id: runit.building_id,
         lat: runit.lat,
-        lng: runit.lng }
+        lng: runit.lng,
+        working_this_listing: (runit.working_this_listing if !runit.available_by.nil?)
+      }
       unit_info = {
         id: runits[i].id,
         building_unit: runit.building_unit,
@@ -888,7 +896,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.baths','units.access_info', 'residential_listings.renthop',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'residential_listings.tenant_occupied', 'residential_listings.roomshare_department',
-        'residential_listings.roomfill', 'residential_listings.partial_move_in',
+        'residential_listings.roomfill', 'residential_listings.partial_move_in', 'residential_listings.working_this_listing',
         'neighborhoods.name AS neighborhood_name',
         'landlords.code',
         'landlords.id AS landlord_id',
@@ -930,7 +938,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.streeteasy_flag_one', 'residential_listings.renthop',
         'residential_listings.has_fee', 'residential_listings.updated_at',
         'residential_listings.tenant_occupied', 'residential_listings.roomshare_department',
-        'residential_listings.roomfill', 'residential_listings.partial_move_in',
+        'residential_listings.roomfill', 'residential_listings.partial_move_in', 'residential_listings.working_this_listing',
         'neighborhoods.name AS neighborhood_name',
         'landlords.code',
         'landlords.id AS landlord_id',
