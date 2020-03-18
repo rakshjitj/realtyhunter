@@ -570,6 +570,16 @@
 							    			<%= room.rent %>
 							    		</div>
 							    	</div>
+							    	<% if !room.months_free.blank? %>
+								    	<div class="row">
+						    				<div class="col-xs-5 mthsFree">
+								    			<strong>Months free:</strong>
+								    		</div>
+								    		<div class="col-xs-7 mthsFree">
+								    			<%= room.months_free %>
+								    		</div>
+								    	</div>
+								    <% end %>
 							    	<!-- <div class="row">
 					    				<div class="col-xs-5">
 							    			<strong>Description:</strong>
@@ -642,16 +652,6 @@
 							    			<% end %>
 							    		</div>
 							    	</div>
-							    	<% if !room.months_free.blank? %>
-								    	<div class="row">
-						    				<div class="col-xs-5">
-								    			<strong>Months free:</strong>
-								    		</div>
-								    		<div class="col-xs-7">
-								    			<%= room.months_free %>
-								    		</div>
-								    	</div>
-								    <% end %>
 									<%# if !@residential_unit.unit.images.blank? %>
 											<%#= image_tag @residential_unit.unit.images.where(priority: 0)[0].file.url(:large), :class => 'img-responsive center-block', alt: @residential_unit.unit.images.where(priority: 0)[0].file.url(:large)  %>
 									  <%# else %>
