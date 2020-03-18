@@ -28,13 +28,36 @@ RHMapbox = {};
       // draw each marker + load with data
       var info = dataPoints[key];
       var content = buildContentStringFn(key, info);
-
-      var marker = L.marker(new L.LatLng(info.lat, info.lng), {
-        icon: L.mapbox.marker.icon({
-          'marker-color': '#f86767'
-        }),
-        'title': key,
-      });
+      //Start marker for rooms dept change when working on listing checkbox checked with sky blue color
+      if (window.location.pathname == '/residential_listings/room_index'){
+        if (info['working_this_listing'] == true){
+          var marker = L.marker(new L.LatLng(info.lat, info.lng), {
+            icon: L.mapbox.marker.icon({
+              'marker-color': '#00ccff'
+            }),
+            'title': key,
+          });
+        }
+        else{
+          var marker = L.marker(new L.LatLng(info.lat, info.lng), {
+            icon: L.mapbox.marker.icon({
+              'marker-color': '#f86767'
+            }),
+            'title': key,
+          });
+        }
+      }
+      //End marker for rooms dept change when working on listing checkbox checked with sky blue color
+      // Start normal rental page marker mapper with red color
+      else{
+        var marker = L.marker(new L.LatLng(info.lat, info.lng), {
+          icon: L.mapbox.marker.icon({
+            'marker-color': '#f86767'
+          }),
+          'title': key,
+        });
+      }
+      // End normal rental page marker mapper with red color
       // console.log('JUST BEFORE', content);
       marker.bindPopup(content, {
         closeButton: false,

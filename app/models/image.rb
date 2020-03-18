@@ -24,6 +24,16 @@ class Image < ApplicationRecord
         rotation: a.instance.rotation,
         no_watermark: true,
       },
+      large_marked_sbklyn: { # no watermarks applied
+        geometry: '2500x2500>',
+        rotation: a.instance.rotation,
+        watermark_path: "#{Rails.root}/public/sbklyn-t.png"
+      },
+      large_blankwatermark: { # no watermarks applied
+        geometry: '2500x2500>',
+        rotation: a.instance.rotation,
+        watermark_path: "#{Rails.root}/public/blankwatermark.png"
+      },
       original: {
         convert_options: '-auto-orient',
         no_watermark: true,

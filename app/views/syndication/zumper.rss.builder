@@ -640,27 +640,130 @@ xml.streeteasy :version => "1.6" do
 			            end # end forced
 								end
 							end
-
-							xml.media do
-								if !listing.youtube_video_url.blank?
-									xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
-								end
-								if @bldg_images[listing.building_id]
-									@bldg_images[listing.building_id].each do |i|
-										xml.photo url:i.file.url(:large), position: i.priority, description:""
+							if !listing.watermark_in_use.nil?
+								if listing.watermark_in_use == 0
+									xml.media do
+										if !listing.youtube_video_url.blank?
+											xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
+										end
+										if @bldg_images[listing.building_id]
+											@bldg_images[listing.building_id].each do |i|
+												xml.photo url:i.file.url(:large), position: i.priority, description:""
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan != true
+													xml.photo url:i.file.url(:large), position: i.priority, description:""
+												end
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan == true
+													xml.floorplan url:i.file.url(:large), description:""
+												end
+											end
+										end
 									end
-								end
-								if @images[listing.unit_id]
-									@images[listing.unit_id].each do |i|
-										if i.floorplan != true
-											xml.photo url:i.file.url(:large), position: i.priority, description:""
+								elsif listing.watermark_in_use == 1
+									xml.media do
+										if !listing.youtube_video_url.blank?
+											xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
+										end
+										if @bldg_images[listing.building_id]
+											@bldg_images[listing.building_id].each do |i|
+												xml.photo url:i.file.url(:large_marked_sbklyn), position: i.priority, description:""
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan != true
+													xml.photo url:i.file.url(:large_marked_sbklyn), position: i.priority, description:""
+												end
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan == true
+													xml.floorplan url:i.file.url(:large_marked_sbklyn), description:""
+												end
+											end
+										end
+									end
+								elsif listing.watermark_in_use == 2
+									xml.media do
+										if !listing.youtube_video_url.blank?
+											xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
+										end
+										if @bldg_images[listing.building_id]
+											@bldg_images[listing.building_id].each do |i|
+												xml.photo url:i.file.url(:large_blankwatermark), position: i.priority, description:""
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan != true
+													xml.photo url:i.file.url(:large_blankwatermark), position: i.priority, description:""
+												end
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan == true
+													xml.floorplan url:i.file.url(:large_blankwatermark), description:""
+												end
+											end
+										end
+									end
+								else
+									xml.media do
+										if !listing.youtube_video_url.blank?
+											xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
+										end
+										if @bldg_images[listing.building_id]
+											@bldg_images[listing.building_id].each do |i|
+												xml.photo url:i.file.url(:large), position: i.priority, description:""
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan != true
+													xml.photo url:i.file.url(:large), position: i.priority, description:""
+												end
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan == true
+													xml.floorplan url:i.file.url(:large), description:""
+												end
+											end
 										end
 									end
 								end
-								if @images[listing.unit_id]
-									@images[listing.unit_id].each do |i|
-										if i.floorplan == true
-											xml.floorplan url:i.file.url(:large), description:""
+							else
+								xml.media do
+									if !listing.youtube_video_url.blank?
+										xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
+									end
+									if @bldg_images[listing.building_id]
+										@bldg_images[listing.building_id].each do |i|
+											xml.photo url:i.file.url(:large), position: i.priority, description:""
+										end
+									end
+									if @images[listing.unit_id]
+										@images[listing.unit_id].each do |i|
+											if i.floorplan != true
+												xml.photo url:i.file.url(:large), position: i.priority, description:""
+											end
+										end
+									end
+									if @images[listing.unit_id]
+										@images[listing.unit_id].each do |i|
+											if i.floorplan == true
+												xml.floorplan url:i.file.url(:large), description:""
+											end
 										end
 									end
 								end
@@ -1063,26 +1166,130 @@ xml.streeteasy :version => "1.6" do
 								end
 							end
 
-							xml.media do
-								if !listing.youtube_video_url.blank?
-									xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
-								end
-								if @bldg_images[listing.building_id]
-									@bldg_images[listing.building_id].each do |i|
-										xml.photo url:i.file.url(:large), position: i.priority, description:""
+							if !listing.watermark_in_use.nil?
+								if listing.watermark_in_use == 0
+									xml.media do
+										if !listing.youtube_video_url.blank?
+											xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
+										end
+										if @bldg_images[listing.building_id]
+											@bldg_images[listing.building_id].each do |i|
+												xml.photo url:i.file.url(:large), position: i.priority, description:""
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan != true
+													xml.photo url:i.file.url(:large), position: i.priority, description:""
+												end
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan == true
+													xml.floorplan url:i.file.url(:large), description:""
+												end
+											end
+										end
 									end
-								end
-								if @images[listing.unit_id]
-									@images[listing.unit_id].each do |i|
-										if i.floorplan != true
-											xml.photo url:i.file.url(:large), position: i.priority, description:""
+								elsif listing.watermark_in_use == 1
+									xml.media do
+										if !listing.youtube_video_url.blank?
+											xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
+										end
+										if @bldg_images[listing.building_id]
+											@bldg_images[listing.building_id].each do |i|
+												xml.photo url:i.file.url(:large_marked_sbklyn), position: i.priority, description:""
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan != true
+													xml.photo url:i.file.url(:large_marked_sbklyn), position: i.priority, description:""
+												end
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan == true
+													xml.floorplan url:i.file.url(:large_marked_sbklyn), description:""
+												end
+											end
+										end
+									end
+								elsif listing.watermark_in_use == 2
+									xml.media do
+										if !listing.youtube_video_url.blank?
+											xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
+										end
+										if @bldg_images[listing.building_id]
+											@bldg_images[listing.building_id].each do |i|
+												xml.photo url:i.file.url(:large_blankwatermark), position: i.priority, description:""
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan != true
+													xml.photo url:i.file.url(:large_blankwatermark), position: i.priority, description:""
+												end
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan == true
+													xml.floorplan url:i.file.url(:large_blankwatermark), description:""
+												end
+											end
+										end
+									end
+								else
+									xml.media do
+										if !listing.youtube_video_url.blank?
+											xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
+										end
+										if @bldg_images[listing.building_id]
+											@bldg_images[listing.building_id].each do |i|
+												xml.photo url:i.file.url(:large), position: i.priority, description:""
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan != true
+													xml.photo url:i.file.url(:large), position: i.priority, description:""
+												end
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan == true
+													xml.floorplan url:i.file.url(:large), description:""
+												end
+											end
 										end
 									end
 								end
-								if @images[listing.unit_id]
-									@images[listing.unit_id].each do |i|
-										if i.floorplan == true
-											xml.floorplan url:i.file.url(:large), description:""
+							else
+								xml.media do
+									if !listing.youtube_video_url.blank?
+										xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
+									end
+									if @bldg_images[listing.building_id]
+										@bldg_images[listing.building_id].each do |i|
+											xml.photo url:i.file.url(:large), position: i.priority, description:""
+										end
+									end
+									if @images[listing.unit_id]
+										@images[listing.unit_id].each do |i|
+											if i.floorplan != true
+												xml.photo url:i.file.url(:large), position: i.priority, description:""
+											end
+										end
+									end
+									if @images[listing.unit_id]
+										@images[listing.unit_id].each do |i|
+											if i.floorplan == true
+												xml.floorplan url:i.file.url(:large), description:""
+											end
 										end
 									end
 								end
@@ -1478,6 +1685,109 @@ xml.streeteasy :version => "1.6" do
 									end
 								end
 
+								if !listing.watermark_in_use.nil?
+								if listing.watermark_in_use == 0
+									xml.media do
+										if !listing.youtube_video_url.blank?
+											xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
+										end
+										if @bldg_images[listing.building_id]
+											@bldg_images[listing.building_id].each do |i|
+												xml.photo url:i.file.url(:large), position: i.priority, description:""
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan != true
+													xml.photo url:i.file.url(:large), position: i.priority, description:""
+												end
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan == true
+													xml.floorplan url:i.file.url(:large), description:""
+												end
+											end
+										end
+									end
+								elsif listing.watermark_in_use == 1
+									xml.media do
+										if !listing.youtube_video_url.blank?
+											xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
+										end
+										if @bldg_images[listing.building_id]
+											@bldg_images[listing.building_id].each do |i|
+												xml.photo url:i.file.url(:large_marked_sbklyn), position: i.priority, description:""
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan != true
+													xml.photo url:i.file.url(:large_marked_sbklyn), position: i.priority, description:""
+												end
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan == true
+													xml.floorplan url:i.file.url(:large_marked_sbklyn), description:""
+												end
+											end
+										end
+									end
+								elsif listing.watermark_in_use == 2
+									xml.media do
+										if !listing.youtube_video_url.blank?
+											xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
+										end
+										if @bldg_images[listing.building_id]
+											@bldg_images[listing.building_id].each do |i|
+												xml.photo url:i.file.url(:large_blankwatermark), position: i.priority, description:""
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan != true
+													xml.photo url:i.file.url(:large_blankwatermark), position: i.priority, description:""
+												end
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan == true
+													xml.floorplan url:i.file.url(:large_blankwatermark), description:""
+												end
+											end
+										end
+									end
+								else
+									xml.media do
+										if !listing.youtube_video_url.blank?
+											xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
+										end
+										if @bldg_images[listing.building_id]
+											@bldg_images[listing.building_id].each do |i|
+												xml.photo url:i.file.url(:large), position: i.priority, description:""
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan != true
+													xml.photo url:i.file.url(:large), position: i.priority, description:""
+												end
+											end
+										end
+										if @images[listing.unit_id]
+											@images[listing.unit_id].each do |i|
+												if i.floorplan == true
+													xml.floorplan url:i.file.url(:large), description:""
+												end
+											end
+										end
+									end
+								end
+							else
 								xml.media do
 									if !listing.youtube_video_url.blank?
 										xml.video url: listing.youtube_video_url, description: "Take a virtual tour of #{listing.street_number + " " + listing.route}"
@@ -1502,6 +1812,7 @@ xml.streeteasy :version => "1.6" do
 										end
 									end
 								end
+							end
 
 							end # property
 						end

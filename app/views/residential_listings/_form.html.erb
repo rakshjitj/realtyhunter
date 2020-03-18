@@ -994,6 +994,21 @@
               </div>
             </div>
           </div>
+          <br>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4">
+              <%= f.label :watermark_in_use %>
+            </div>
+            <div class="col-xs-9 col-md-7">
+                <%# abort @residential_unit.unit.status.titleize.inspect %>
+                <%= f.select :watermark_in_use,
+                  options_for_select([["myspacedefault", 0], ["simplybrooklyn", 1], ["blankwatermark", 2]],
+                    [@residential_unit.watermark_in_use]),
+                  {prompt: "Choose one..."},
+                  :required => true,
+                  class: "form-control" %>
+            </div>
+          </div>
         </div>
         <%= hidden_field_tag :update_status_info %>
         <br>

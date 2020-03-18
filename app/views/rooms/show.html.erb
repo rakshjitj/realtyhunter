@@ -41,7 +41,8 @@
 				  					<%= render 'market_status' %>
 				  				</span>
 				  				<span class="flex-even-item text-right">
-				  					Available <%= @residential_unit.unit.available_by %>
+				  					Available to show <%= @residential_unit.unit.available_by %>
+				  					Move-in Date <%= @residential_unit.move_in_date %>
 				  				</span>
 				  			</span>
 				  		</div>
@@ -74,7 +75,10 @@
 				  			<p><%= render 'market_status' %></p>
 				  		</div>
 				  		<div class="col-xs-5 text-right">
-				  			<p>Available <%= @residential_unit.unit.available_by %></p>
+				  			<p>Available to show <%= @residential_unit.unit.available_by %></p>
+				  			<% if @residential_unit.move_in_date %>
+				  				<p>Move-in Date <%= @residential_unit.move_in_date %></p>
+				  			<% end %>
 				  		</div>
 				  	</div>
 				  </div><!-- panel title -->
@@ -231,11 +235,23 @@
 		    			</div>
 		    			<div class="row">
 		    				<div class="col-xs-5">
-				    			<strong>Available:</strong>
+				    			<strong>Available to show:</strong>
 				    		</div>
 				    		<div class="col-xs-7">
 				    			<% if @residential_unit.unit.available_by %>
 										<%= @residential_unit.unit.available_by %>
+									<% else %>
+										-
+									<% end %>
+								</div>
+		    			</div>
+		    			<div class="row">
+		    				<div class="col-xs-5">
+				    			<strong>Move-in Date:</strong>
+				    		</div>
+				    		<div class="col-xs-7">
+				    			<% if @residential_unit.move_in_date %>
+										<%= @residential_unit.move_in_date %>
 									<% else %>
 										-
 									<% end %>
@@ -349,11 +365,11 @@
 		    		</div>
 		    	</div>
 
-					<% if @residential_unit.unit.access_info %>
-			    	<br />
+		    	<% if !@residential_unit.room_access.blank? %>
+		    		<br />
 			    	<div class="row">
 			    		<div class="col-xs-12 col-md-3">
-			    			<strong>Access info:</strong>
+			    			<strong>Room Access:</strong>
 			    		</div>
 			    		<div class="col-xs-12 col-md-9">
 			    			<div class="disclaimer"><%= occupancy_status(@residential_unit) %></div>
@@ -361,31 +377,49 @@
 				    			<div class="disclaimer">Has Stock Photos</div>
 				    		<% end %>
 			    			<div class="access-info">
-				    			<%= @residential_unit.unit.access_info %>
+				    			<%= @residential_unit.room_access %>
 				    		</div>
 			    		</div>
 			    	</div>
-			    <% end %>
+		    	<% else %>
+					<% if @residential_unit.unit.access_info %>
+				    	<br />
+				    	<div class="row">
+				    		<div class="col-xs-12 col-md-3">
+				    			<strong>Access info:</strong>
+				    		</div>
+				    		<div class="col-xs-12 col-md-9">
+				    			<div class="disclaimer"><%= occupancy_status(@residential_unit) %></div>
+				    			<% if @residential_unit.unit.has_stock_photos %>
+					    			<div class="disclaimer">Has Stock Photos</div>
+					    		<% end %>
+				    			<div class="access-info">
+					    			<%= @residential_unit.unit.access_info %>
+					    		</div>
+				    		</div>
+				    	</div>
+				    <% end %>
+				<% end %>
 
 
 					<!-- Open House Schedule Section - START -->
-					<% open_houses = @residential_unit.unit.open_houses %>
+					<%# open_houses = @residential_unit.unit.open_houses %>
 
-					<% if open_houses.any? %>
-			    	<br />
+					<%# if open_houses.any? %>
+			    	<!-- <br />
 			    	<div class="row">
 			    		<div class="col-xs-12 col-md-3">
 			    			<strong>Open Houses:</strong>
 			    		</div>
 			    		<div class="col-xs-12 col-md-9">
-			    			<% open_houses.each do |oh| %>
-			    				<%= oh.day.strftime('%b-%d-%Y') %> <%= oh.start_time.strftime("%I:%M %p") %> -
-			    				<%= oh.end_time.strftime("%I:%M %p") %>
+			    			<%# open_houses.each do |oh| %>
+			    				<%#= oh.day.strftime('%b-%d-%Y') %> <%#= oh.start_time.strftime("%I:%M %p") %> -
+			    				<%#= oh.end_time.strftime("%I:%M %p") %>
 			    				<br>
-			    			<% end %>
+			    			<%# end %>
 			    		</div>
-			    	</div>
-			    <% end %>
+			    	</div> -->
+			    <%# end %>
 
 		    	<!-- Building info -->
 		    	<% bldg_amenities = @residential_unit.unit.building.amenities_to_s %>
@@ -415,28 +449,28 @@
 			    	</div>
 			    <% end %>
 			    <%# abort @residential_unit.unit.audits.inspect %>
-			    <% if @residential_unit.unit.audits %>
-					<br />
+			    <%# if @residential_unit.unit.audits %>
+					<!-- <br />
 					<div class="row">
 						<div class="col-xs-12 col-md-3">
 							<strong>Price Changes</strong>
 						</div>
 						<div class="col-xs-12 col-md-9">
-							<% @residential_unit.unit.audits.each do |audit| %>
+							<%# @residential_unit.unit.audits.each do |audit| %>
 								<%# abort audit.audited_changes.inspect %>
-								<% if audit.audited_changes["rent"] %>
+								<%# if audit.audited_changes["rent"] %>
 									<%# abort audit.audited_changes["rent"][0].inspect %>
 								<%# for i in 0..record_list.length - 1 %>
 									<div class="row">
 										<div class="col-xs-12">
-										<%= User.find(audit.user_id).name %> changed rent form <%= audit.audited_changes["rent"][0] %> to <%= audit.audited_changes["rent"][1] %> on <%= audit.created_at.strftime("%b-%d-%Y %I:%M %P") %>
+										<%#= User.find(audit.user_id).name %> changed rent form <%#= audit.audited_changes["rent"][0] %> to <%#= audit.audited_changes["rent"][1] %> on <%#= audit.created_at.strftime("%b-%d-%Y %I:%M %P") %>
 										</div>
 									</div>
-								<% end %>
-							<% end %>
+								<%# end %>
+							<%# end %>
 						</div>
-					</div><!-- row -->
-				<% end %>
+					</div> row --> 
+				<%# end %>
 				<div class="row">
 					<div class="col-xs-12 col-md-3">
 						<strong>Rooms Public Description</strong>
@@ -602,6 +636,16 @@
 							    			<%= room.renting_agent %>
 							    		</div>
 							    	</div>
+							    	<% if !room.months_free.blank? %>
+								    	<div class="row">
+						    				<div class="col-xs-5">
+								    			<strong>Months free:</strong>
+								    		</div>
+								    		<div class="col-xs-7">
+								    			<%= room.months_free %>
+								    		</div>
+								    	</div>
+								    <% end %>
 									<%# if !@residential_unit.unit.images.blank? %>
 											<%#= image_tag @residential_unit.unit.images.where(priority: 0)[0].file.url(:large), :class => 'img-responsive center-block', alt: @residential_unit.unit.images.where(priority: 0)[0].file.url(:large)  %>
 									  <%# else %>
