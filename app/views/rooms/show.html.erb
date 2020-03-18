@@ -633,7 +633,7 @@
 							    			<strong>Renting Agent:</strong>
 							    		</div>
 							    		<div class="col-xs-7">
-							    			<%= User.find(room.renting_agent).name %>
+							    			<%= room.renting_agent %>
 							    		</div>
 							    	</div>
 							    	<% if !room.months_free.blank? %>
