@@ -633,7 +633,13 @@
 							    			<strong>Renting Agent:</strong>
 							    		</div>
 							    		<div class="col-xs-7">
-							    			<%= room.renting_agent %>
+							    			<% if !room.renting_agent.nil? %>
+							    				<% if !current_user.company.users.where(id: room.renting_agent )[0].nil?  %>
+							    					<%= current_user.company.users.where(id: room.renting_agent )[0].name %>
+							    				<% else %>
+							    					--
+							    				<% end %>
+							    			<% end %>
 							    		</div>
 							    	</div>
 							    	<% if !room.months_free.blank? %>
