@@ -56,7 +56,7 @@
 					  		<h1>
 					  			<%= @residential_unit.street_address_and_unit %>
 					  			<% if !@residential_unit.youtube_video_url.blank? %>
-					  				<%=image_tag("giphy.gif", class: "youtube-indicator")%>
+					  				<span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
 					  			<% end %>
 					  			<% if @residential_unit.can_roomshare %> (RS)<% end %>
 					  		</h1>
