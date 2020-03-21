@@ -57,6 +57,9 @@
 				  		<div class="col-xs-12 col-md-7">
 					  		<h1>
 					  			<%= @residential_unit.street_address_and_unit %>
+					  			<% if !@residential_unit.youtube_video_url.blank? %>
+					  				<%=image_tag("giphy.gif", class: "youtube-indicator")%>
+					  			<% end %>
 					  			<% if @residential_unit.can_roomshare %> (RS)<% end %>
 					  		</h1>
 					  		<p>
@@ -539,6 +542,22 @@
 			    		<div class="col-xs-12 col-md-12">
 							<a href="<%= @residential_unit.unit.public_url_for_room %>" target="_blank">
 								<%= @residential_unit.unit.public_url_for_room %>
+					    	</a>
+					    </div>
+					   </div>
+			    <% end %>
+
+			    <% if !@residential_unit.youtube_video_url.blank? %>
+			    	<br />
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-12">
+			    			<strong>YouTube URL:</strong>
+			    		</div>
+			    	</div>
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-12">
+					    	<a href="<%= @residential_unit.youtube_video_url %>" target="_blank">
+					    		<%= @residential_unit.youtube_video_url %>
 					    	</a>
 					    </div>
 					   </div>

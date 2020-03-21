@@ -516,6 +516,10 @@
                       Partial Move-in
                     </span>
                   <% end %>
+                  <% if !res_list.youtube_video_url.blank? %>
+                    <br>
+                    <%=image_tag("giphy.gif", class: "youtube-indicator")%>
+                  <% end %>
                   <div>
                     <% if res_list.unit.status == "active" %>
                       <span class="glyphicon glyphicon-arrow-up green" style="float: left;" aria-hidden="true"></span>
