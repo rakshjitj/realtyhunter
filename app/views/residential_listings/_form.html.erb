@@ -229,11 +229,11 @@
         
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
-            <%= f.label :gross_price %>
+            <%= f.label :gross_price, class: "required" %>
           </div>
           <div class="col-xs-9 col-md-4">
             <%= f.fields_for @residential_unit.unit do |unit_form| %>
-              <%= unit_form.number_field :gross_price, class: 'form-control' %>
+              <%= unit_form.number_field :gross_price, class: 'form-control', required: true %>
             <% end %>
           </div>
         </div>
@@ -659,7 +659,7 @@
 
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-4">
-            <%= f.label :primary_agent_id, "Primary Agent" %>
+            <%= f.label :primary_agent_id, "Primary Agent", class: "required" %>
           </div>
           <div class="col-xs-9 col-md-4">
             <%= f.fields_for @residential_unit.unit do |unit_form| %>
@@ -667,8 +667,7 @@
                 options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
                   [@residential_unit.unit.primary_agent ? @residential_unit.unit.primary_agent.id : '']),
                 {prompt: "Choose one..."},
-                class: 'form-control',
-                :include_blank => true) %>
+                class: 'form-control', required: true) %>
             <% end %>
           </div>
         </div>
@@ -994,6 +993,20 @@
               </div>
             </div>
           </div>
+          <%= f.fields_for @residential_unit.unit do |unit_form| %>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-3 col-md-4">
+              <%= unit_form.label :third_tier, "Third Tier" %>
+            </div>
+            <div class="col-xs-9 col-md-7">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= unit_form.check_box :third_tier, class: "styled",
+                    checked: @residential_unit ? @residential_unit.unit.third_tier : false %>
+                <label></label>
+              </div>
+            </div>
+          </div>
+        <% end %>
           <br>
           <div class="row vertical-margin-lg">
             <div class="col-xs-3 col-md-4">

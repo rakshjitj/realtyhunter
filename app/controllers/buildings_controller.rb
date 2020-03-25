@@ -196,6 +196,20 @@ class BuildingsController < ApplicationController
   # PATCH/PUT /buildings/1
   # PATCH/PUT /buildings/1.json
   def update
+    if params[:building][:third_tier] == "1"
+      if !@building.units.blank?
+        @building.units.each do |unit|
+          unit.update_attribute(:third_tier, true)
+        end
+      end
+    end
+    if params[:building][:third_tier] == "0"
+      if !@building.units.blank?
+        @building.units.each do |unit|
+          unit.update_attribute(:third_tier, false)
+        end
+      end
+    end
     if @building.update(format_params_before_save(false).merge({updated_at: Time.now}))
       Resque.enqueue(UpdateBuilding, @building.id) # send to Knack
       flash[:success] = "Building updated!"
@@ -376,7 +390,7 @@ class BuildingsController < ApplicationController
         :postal_code, :country_short, :lat, :lng, :place_id, :landlord_id, :file,
         building: [:lock_version, :formatted_street_address, :dotsignal_code, :point_of_contact,
          :push_to_zumper, :building_website, :building_name, :section_8, :income_restricted, :year_build, :featured, 
-         :rating, :notes, :description, :landlord_id, :user_id,
+         :rating, :notes, :description, :landlord_id, :user_id, :third_tier,
           :inaccuracy_description, :pet_policy_id, :rental_term_id, :custom_rental_term, :file,
           :custom_amenities, :custom_utilities, :neighborhood_id, :neighborhood, :llc_name,
           building_amenity_ids: [], images_files: [], utility_ids: [] ])

@@ -232,6 +232,6 @@ class UnitsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def unit_params
       params.require(:unit).permit(:building_unit, :rent, :available_by,
-        :access_info, :status, :open_house, :building_id, :user_id)
+        :access_info, :status, :third_tier, :open_house, :building_id, :user_id)
     end
 end

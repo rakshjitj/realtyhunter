@@ -376,6 +376,18 @@
         </div>
       </div>
     </div>
+    <div class="row vertical-margin-lg">
+      <div class="col-xs-3 col-md-4">
+        <%= f.label :third_tier, "Third Tier" %>
+      </div>
+      <div class="col-xs-9 col-md-7">
+        <div class="checkbox checkbox-warning checkbox-inline">
+          <%= f.check_box :third_tier, class: "styled",
+              checked: @building ? @building.third_tier : false %>
+          <label></label>
+        </div>
+      </div>
+    </div>
     <!-- geocoder plugin looks for "details" class name to insert results. Do not change without updating google-maps.js! -->
     <div class="details field">
       <%= f.hidden_field :street_number, name: "street_number" %>

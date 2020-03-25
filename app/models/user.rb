@@ -287,6 +287,10 @@ class User < ApplicationRecord
     self.has_role? :photo_manager
   end
 
+  def is_third_tier_agent?
+    self.has_role? :third_tier_agent
+  end
+
   def is_listings_manager?
     has_role? :listings_manager
   end
