@@ -1268,8 +1268,13 @@ class ResidentialListingsController < ApplicationController
         @map_infos = ResidentialListing.set_location_data(
           @residential_units.to_a & @residential_listings.to_a, @res_images, @bldg_images)
       else
-        @map_infos = ResidentialListing.set_location_data(
+        if current_user.is_third_tier_agent?
+          @map_infos = ResidentialListing.set_location_data(
+          @residential_units.where("units.third_tier =?", true), @res_images, @bldg_images)
+        else
+          @map_infos = ResidentialListing.set_location_data(
           @residential_units.to_a, @res_images, @bldg_images)
+        end
       end
 
       # only get data + images for paginated responses
