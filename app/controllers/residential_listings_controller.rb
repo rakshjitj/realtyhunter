@@ -1278,7 +1278,11 @@ class ResidentialListingsController < ApplicationController
       end
 
       # only get data + images for paginated responses
-      @residential_units = @residential_units.page params[:page]
+      if !current_user.is_third_tier_agent?
+        @residential_units = @residential_units.page params[:page]
+      else
+        @residential_units = @residential_units
+      end
       if request.variant != ":phone"
         @favorite_units = @residential_units
       end
