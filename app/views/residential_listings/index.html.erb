@@ -410,17 +410,19 @@
               
             </div> -->
           </div>
-          <div class="row vertical-padding">
-            <div class="col-xs-6">
-              <div class="checkbox checkbox-warning inline">
-                <%= check_box_tag :third_tier, "".freeze, params[:third_tier] == "true".freeze ? true : false,
-                    class: 'styled' %>
-                <label for="no_description">
-                  Third Tier
-                </label>
+          <% if current_user.is_management? %>
+            <div class="row vertical-padding">
+              <div class="col-xs-6">
+                <div class="checkbox checkbox-warning inline">
+                  <%= check_box_tag :third_tier, "".freeze, params[:third_tier] == "true".freeze ? true : false,
+                      class: 'styled' %>
+                  <label for="no_description">
+                    Third Tier
+                  </label>
+                </div>
               </div>
             </div>
-          </div>
+          <% end %>
           <!-- <div class="row vertical-padding">
             <div class="col-xs-5">
               <%#= label_tag :parent_neighborhoods, "Parent Neighborhoods" %>
