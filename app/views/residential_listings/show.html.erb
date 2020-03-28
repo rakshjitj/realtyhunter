@@ -1,3 +1,21 @@
+<input type="hidden" name="alert-third-tier" id="alrt-third-tier" value="<%= current_user.is_third_tier_agent? %>">
+<script type="text/javascript">
+	window.addEventListener('popstate', function(event) {
+	    // The popstate event is fired each time when the current history entry changes.
+	    location.reload();
+	}, false);
+
+	(function()
+  	{
+  		if($("#alrt-third-tier").val() == "true"){
+  			alert("You do not have permission to see this page");
+  			window.location.href = "https://realtyhunter.org:3000/residential_listings";
+  		}
+  		else{
+  			alert("hello");
+  		}
+  	})();
+</script>
 <!--% cache([@residential_unit, current_user.employee_title.name, request.variant.to_s,
  		@residential_unit.unit.updated_at,
  		@residential_unit.unit.building.updated_at,
@@ -841,10 +859,4 @@
   </div>
 
 </div>
-<script type="text/javascript">
-	window.addEventListener('popstate', function(event) {
-	    // The popstate event is fired each time when the current history entry changes.
-	    location.reload();
-	}, false);
-</script>
 <!--% end %--><!-- cache -->

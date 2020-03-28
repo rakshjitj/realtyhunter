@@ -58,6 +58,7 @@
         streeteasy_eligibility: $('#streeteasy_eligibility').val(),
         parent_amenities: $('#parent_amenities').val(),
         roomfill: $('#roomfill').prop('checked'),
+        third_tier: $('#third_tier').prop('checked'),
         partial_move_in: $('#partial_move_in').prop('checked'),
         parent_building_amenities: $('#parent_building_amenities').val(),
         parent_neighborhoods: $('#parent_neighborhoods').val(),

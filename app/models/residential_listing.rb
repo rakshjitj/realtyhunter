@@ -218,7 +218,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.roomfill', 'residential_listings.partial_move_in', 'residential_listings.working_this_listing',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code', 'landlords.rating',
-        'landlords.id AS landlord_id',
+        'landlords.id AS landlord_id', 'units.third_tier',
         'units.listing_id', 'units.available_by', 'units.public_url', 'units.exclusive',
         'users.name')
       #abort running_list.inspect
@@ -569,6 +569,10 @@ class ResidentialListing < ApplicationRecord
       running_list = running_list.where("length(residential_listings.description) < 20")
     end
 
+    if !params[:third_tier].blank?
+      running_list = running_list.where("units.third_tier =?", params[:third_tier])
+    end
+
     if params[:no_images] == 'true'
         less_two = Unit.joins(:images).group("units.id").having("count(units.id)<3")
         find_less_two = less_two.all.map(&:id)
@@ -899,7 +903,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.roomfill', 'residential_listings.partial_move_in', 'residential_listings.working_this_listing',
         'neighborhoods.name AS neighborhood_name',
         'landlords.code',
-        'landlords.id AS landlord_id',
+        'landlords.id AS landlord_id', 'units.third_tier',
         'units.primary_agent_id', 'units.available_by', 'units.listing_id', 'units.exclusive',
         'users.name')
       .order('residential_listings.updated_at desc')
@@ -941,7 +945,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.roomfill', 'residential_listings.partial_move_in', 'residential_listings.working_this_listing',
         'neighborhoods.name AS neighborhood_name',
         'landlords.code',
-        'landlords.id AS landlord_id',
+        'landlords.id AS landlord_id', 'units.third_tier',
         'units.primary_agent_id', 'units.available_by', 'units.listing_id', 'units.exclusive',
         'users.name')
 
