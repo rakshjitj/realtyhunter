@@ -129,7 +129,7 @@ class RoomsController < ApplicationController
       flash[:success] = "Report submitted! Thank you."
     end
     respond_to do |format|
-      format.html { redirect_to @residential_unit }
+      format.html { redirect_to room_path(@residential_unit) }
       format.js { }
     end
   end
