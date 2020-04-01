@@ -37,7 +37,7 @@ class UnitMailer < ApplicationMailer
     # if @feedback_category == "requesting new photos"
     #   email_hash = ['info@myspacenyc.com', 'photos@myspacenyc.com', 'l2t1k3r4a8g8l4s2@msnyc1.slack.com']
     # else
-      email_hash = ['info@myspacenyc.com', 'l2t1k3r4a8g8l4s2@msnyc1.slack.com', 'rooms@myspacenyc.com']
+      email_hash = ['info@myspacenyc.com', 'l2t1k3r4a8g8l4s2@msnyc1.slack.com', 'w0y1v7w0d2z2j2j2@msnyc1.slack.com']
     #send
       mail to: email_hash,
         cc: @reporter.email,
