@@ -110,6 +110,30 @@ class RoomsController < ApplicationController
     @residential_unit = ResidentialListing.find(params[:id])
   end
 
+  def send_inaccuracy
+    @residential_unit = ResidentialListing.find(params[:id])
+    if !params[:residential_listing][:inaccuracy_description].blank? ||
+        params[:price_drop_request] == "1"
+      if !params[:residential_listing][:inaccuracy_description].blank?
+        @inaccuracy_description = params[:residential_listing][:inaccuracy_description]
+      end
+      if params[:price_drop_request] == "1"
+        @price_drop_request = "Request for price drop"
+      end
+      client = Slack::Web::Client.new
+      client.auth_test
+      client.chat_postMessage(channel: '#rooms_updates', text: "*Feedback*  *ON*  \n  #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, # #{@residential_unit.unit.building_unit}. \n #{@residential_unit.beds} Beds / #{@residential_unit.baths} Baths \n $#{@residential_unit.unit.rent} \n Feedback #{@inaccuracy_description} \n @price_drop_request \n Request sent by #{current_user.name} \n ---", as_user: true)
+      @residential_unit.send_inaccuracy_report_room(current_user,
+          params[:residential_listing][:inaccuracy_description],
+          params[:price_drop_request])
+      flash[:success] = "Report submitted! Thank you."
+    end
+    respond_to do |format|
+      format.html { redirect_to @residential_unit }
+      format.js { }
+    end
+  end
+
   def room_image_delete
     @image = Image.find(params[:id])
     if @image.destroy

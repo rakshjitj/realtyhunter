@@ -44,6 +44,8 @@
         roomsharing_filter: $('#roomsharing_filter').prop('checked'),
         unassigned_filter: $('#unassigned_filter').prop('checked'),
         tenant_occupied: $('#tenant_occupied').val(),
+        youtube_video_url: $('#youtube_video_url').val(),
+        tour_3d: $('#tour_3d').val(),
         has_stock_photos_filter: $('#has_stock_photos_filter').prop('checked'),
         no_description: $('#no_description').prop('checked'),
         exclusive_filter: $('#exclusive_filter').prop('checked'),

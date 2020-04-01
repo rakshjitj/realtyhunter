@@ -1376,7 +1376,7 @@ class ResidentialListingsController < ApplicationController
         :beds, :baths, :notes, :description, :rooms_description, :lease_start, :lease_end,
         :include_photos, :inaccuracy_description, :rental_term_id,
         :has_fee, :op_fee_percentage, :tp_fee_percentage,
-        :available_starting, :available_before, :custom_amenities, :youtube_video_url,
+        :available_starting, :available_before, :custom_amenities, :youtube_video_url, :tour_3d,
         :roomsharing_filter, :unassigned_filter, :tenant_occupied_filter, :streeteasy_filter,
         :no_description,:no_images, :roomshare_department, :renthop, :watermark, :watermark_in_use,
         :primary_agent_id, :favorites, :show,:claim_for_naked_apartment, :claim_for_individual_syndication_page, :expose_address, :floor, :total_room_count, :condition, :showing_instruction,

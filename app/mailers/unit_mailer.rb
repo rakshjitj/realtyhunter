@@ -24,6 +24,29 @@ class UnitMailer < ApplicationMailer
         track_opens:'true'
   end
 
+  def inaccuracy_reported_room(listing_id, reporter_id, message, price_drop_request)
+    @message = message
+    @listing = ResidentialListing.where(id: listing_id).first
+    if !@listing
+      @listing = SalesListing.where(id: listing_id).first
+    end
+
+    @reporter = User.where(id: reporter_id).first
+    @price_drop_request = price_drop_request
+    #abort @new_photos_request.inspect
+    # if @feedback_category == "requesting new photos"
+    #   email_hash = ['info@myspacenyc.com', 'photos@myspacenyc.com', 'l2t1k3r4a8g8l4s2@msnyc1.slack.com']
+    # else
+      email_hash = ['info@myspacenyc.com', 'l2t1k3r4a8g8l4s2@msnyc1.slack.com']
+    #send
+      mail to: email_hash,
+        cc: @reporter.email,
+        subject: "Feedback provided for #{@listing.street_address_and_unit}",
+        reply_to: @reporter.email,
+        tag: 'residential_inaccuracy',
+        track_opens:'true'
+  end
+
   def feedback_report_notifaction(reporter_id)
     @reporter = User.where(id: reporter_id).first
     mail to: @reporter.email,

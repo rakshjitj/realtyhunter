@@ -1,0 +1,24 @@
+<h2><%= @reporter.name %> has submitted this error report:</h2>
+
+  <b>ADDRESS: </b> <%= @listing.unit.building.street_number %> <%= @listing.unit.building.route %>
+  <br><br>
+  <b>UNIT: </b> <%= @listing.unit.building_unit %>
+  <br><br>
+  <b>POINT OF CONTACT: </b> <%= User.find(@listing.unit.building.point_of_contact).name %>
+  <br><br>
+  <b>RENT: </b> $<%= @listing.unit.rent %>
+  <br><br>
+  <b>DETAILS: </b> <%= @message %>
+  <br><br>
+  <!-- <p style="color: #3333FF; font-weight: bold;">*** Requesting a price drop ***</p> -->
+<%# if @photo_error_types %>
+  <!-- <p style="color: #3333FF; font-weight: bold;">*** Requesting new unit photos ***</p> -->
+<%# end %>
+
+<!-- <p><%#= @message %></p> -->
+
+<br />
+<a href="https://realtyhunter.org:3000/residential_listings/<%=@listing.id%>/edit">View Listing</a> the unit's info.
+<!-- <%#= link_to "View listing", edit_residential_listing_url(@listing) %> the unit's info. -->
+<br>
+<a href="mailto:<%= @reporter.email %>">Respond to <%= @reporter.name %></a>

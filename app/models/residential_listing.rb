@@ -214,7 +214,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.favorites','residential_listings.streeteasy_flag_one', 'residential_listings.lease_start',
         'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_claim',
         'residential_listings.has_fee', 'residential_listings.updated_at', 'residential_listings.youtube_video_url',
-        'residential_listings.tenant_occupied', 'residential_listings.roomshare_department',
+        'residential_listings.tenant_occupied', 'residential_listings.roomshare_department', 'residential_listings.tour_3d',
         'residential_listings.roomfill', 'residential_listings.partial_move_in', 'residential_listings.working_this_listing',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code', 'landlords.rating',
@@ -545,6 +545,28 @@ class ResidentialListing < ApplicationRecord
           
     end
 
+    if !params[:youtube_video_url].blank?
+      if params[:youtube_video_url] == "0"
+        running_list = running_list.where("residential_listings.youtube_video_url != ''" )
+      elsif params[:youtube_video_url] == "1"
+        running_list = running_list.where("residential_listings.youtube_video_url = ''")
+      else
+        running_list = running_list
+      end
+          
+    end
+    
+    if !params[:tour_3d].blank?
+      if params[:tour_3d] == "0"
+        running_list = running_list.where("residential_listings.tour_3d != ''" )
+      elsif params[:tour_3d] == "1"
+        running_list = running_list.where("residential_listings.tour_3d = ''")
+      else
+        running_list = running_list
+      end
+          
+    end
+
     if !params[:has_stock_photos_filter].blank?
       running_list = running_list.where(
           'units.has_stock_photos = ?', params[:has_stock_photos_filter])
@@ -775,6 +797,21 @@ class ResidentialListing < ApplicationRecord
     end
   end
 
+  def send_inaccuracy_report_room(reporter, message, price_drop_request)
+      if reporter && (!message.blank? || price_drop_request)
+        Feedback.create!({
+          user_id: reporter.id,
+          unit_id: self.id,
+          description: message,
+          price_drop_request: price_drop_request
+        })
+        UnitMailer.inaccuracy_reported_room(self.id, reporter.id, message, price_drop_request).deliver!
+        UnitMailer.feedback_report_notifaction(reporter.id).deliver!
+      else
+        raise "Invalid params specified while sending feedback"
+      end
+  end
+
   def take_off_market(new_lease_end_date)
     if new_lease_end_date
       self.unit.update({status: :off, available_by: new_lease_end_date})
@@ -899,7 +936,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_flag_one',
         'residential_listings.baths','units.access_info', 'residential_listings.renthop',
         'residential_listings.has_fee', 'residential_listings.updated_at', 'residential_listings.youtube_video_url',
-        'residential_listings.tenant_occupied', 'residential_listings.roomshare_department',
+        'residential_listings.tenant_occupied', 'residential_listings.roomshare_department', 'residential_listings.tour_3d',
         'residential_listings.roomfill', 'residential_listings.partial_move_in', 'residential_listings.working_this_listing',
         'neighborhoods.name AS neighborhood_name',
         'landlords.code',
@@ -941,7 +978,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.baths','units.access_info', 'residential_listings.streeteasy_flag',
         'residential_listings.streeteasy_flag_one', 'residential_listings.renthop',
         'residential_listings.has_fee', 'residential_listings.updated_at', 'residential_listings.youtube_video_url',
-        'residential_listings.tenant_occupied', 'residential_listings.roomshare_department',
+        'residential_listings.tenant_occupied', 'residential_listings.roomshare_department', 'residential_listings.tour_3d',
         'residential_listings.roomfill', 'residential_listings.partial_move_in', 'residential_listings.working_this_listing',
         'neighborhoods.name AS neighborhood_name',
         'landlords.code',
