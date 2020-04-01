@@ -121,6 +121,7 @@ Rails.application.routes.draw do
   get 'residential_listings/index_main' => "residential_listings#index_main", as: :index_main
   get 'rooms_image_delete/:id' => "rooms#room_image_delete", as: :room_image_delete
   post 'rooms/:id' => "rooms#room_update", as: :room_update
+  post 'rooms/:id/send_inaccuracy' => "rooms#send_inaccuracy", as: :send_inaccuracy_room
   resources :rooms
   get 'residential_listings/agent_rental' => "residential_listings#agent_rental", as: :agent_rental
   get 'residential_listings/room_index' => "residential_listings#room_index", as: :room_index
