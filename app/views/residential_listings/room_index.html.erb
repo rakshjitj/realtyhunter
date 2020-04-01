@@ -294,6 +294,17 @@
             </div>
           </div>
         </div>
+        <div class="row vertical-padding">
+          <div class="col-xs-6">
+            <div class="checkbox checkbox-warning inline">
+              <%= check_box_tag :working, "".freeze, params[:working] == "true".freeze ? true : false,
+                  class: 'styled' %>
+              <label for="working">
+                Working
+              </label>
+            </div>
+          </div>
+        </div>
         <!-- <div class="row vertical-padding">
           <div class="col-xs-11 selectize-wrapper">
             <select id="neighborhood-select-multiple" placeholder="Neighborhoods...">

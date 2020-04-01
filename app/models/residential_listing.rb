@@ -577,6 +577,11 @@ class ResidentialListing < ApplicationRecord
           'residential_listings.roomfill = ?', params[:roomfill])
     end
 
+    if !params[:working].blank?
+      running_list = running_list.where(
+          'residential_listings.working_this_listing = ?', params[:working])
+    end
+
     if !params[:partial_move_in].blank?
       running_list = running_list.where(
           'residential_listings.partial_move_in = ?', params[:partial_move_in])
