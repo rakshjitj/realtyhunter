@@ -879,6 +879,65 @@ xml.streeteasy :version => "1.6" do
 									xml.exclusive
 								end
 
+								if listing.building.landlord
+									xml.ll_code listing.building.landlord.code
+								end
+
+								if listing.residential_listing.op_fee_percentage
+					    			xml.payout listing.op_fee_percentage
+					    		else
+					    			if listing.building.landlord
+					    				xml.payout listing.building.landlord.op_fee_percentage
+					    			end
+					    		end
+
+					    		if listing.building.point_of_contact
+					    			xml.point_of_contact User.find(listing.building.point_of_contact).name
+					    		end
+
+					    		if listing.residential_listing
+					    			if listing.residential_listing.lease_start
+					    				xml.lease_min listing.residential_listing.lease_start
+					    			end
+					    			if listing.residential_listing.lease_end
+					    				listing.residential_listing.lease_end
+					    			end
+					    		end
+
+					    		if listing.residential_listing.streeteasy_flag == true || listing.residential_listing.streeteasy_flag_one == true
+					    			xml.onstreeteasy
+					    		end
+					    		
+					    		if listing.residential_listing
+					    			if listing.residential_listing.streeteasy_flag == true
+					    				if !listing.primary_agent_id.nil?
+					    					xml.streeteasy_user User.find(listing.primary_agent_id).name
+					    				end
+					    			end
+					    		end
+
+					    		if !listing.residential_listing.rental_term_id.nil?
+				    				xml.rental_term listing.residential_listing.rental_term.name.titleize
+				    			elsif listing.building.rental_term
+					    			xml.rental_term listing.building.rental_term.name.titleize
+					    		end
+
+					    		if !listing.building.utilities_to_s.empty?
+					    			xml.utilities listing.building.utilities_to_s.titleize
+					    		end
+
+					    		if listing.access_info
+					    			xml.access_info listing.access_info
+					    		end
+
+					    		if listing.building.lat
+					    			xml.latitude listing.building.lat
+					    		end
+
+					    		if listing.building.lng
+					    			xml.longitude listing.building.lng
+					    		end
+
 								if listing.internal_sq_footage
 									xml.squareFeet listing.internal_sq_footage
 								end
@@ -1393,6 +1452,65 @@ xml.streeteasy :version => "1.6" do
 									if listing.exclusive
 										xml.exclusive
 									end
+
+									if listing.building.landlord
+									xml.ll_code listing.building.landlord.code
+								end
+
+								if listing.residential_listing.op_fee_percentage
+					    			xml.payout listing.op_fee_percentage
+					    		else
+					    			if listing.building.landlord
+					    				xml.payout listing.building.landlord.op_fee_percentage
+					    			end
+					    		end
+
+					    		if listing.building.point_of_contact
+					    			xml.point_of_contact User.find(listing.building.point_of_contact).name
+					    		end
+
+					    		if listing.residential_listing
+					    			if listing.residential_listing.lease_start
+					    				xml.lease_min listing.residential_listing.lease_start
+					    			end
+					    			if listing.residential_listing.lease_end
+					    				listing.residential_listing.lease_end
+					    			end
+					    		end
+
+					    		if listing.residential_listing.streeteasy_flag == true || listing.residential_listing.streeteasy_flag_one == true
+					    			xml.onstreeteasy
+					    		end
+					    		
+					    		if listing.residential_listing
+					    			if listing.residential_listing.streeteasy_flag == true
+					    				if !listing.primary_agent_id.nil?
+					    					xml.streeteasy_user User.find(listing.primary_agent_id).name
+					    				end
+					    			end
+					    		end
+
+					    		if !listing.residential_listing.rental_term_id.nil?
+				    				xml.rental_term listing.residential_listing.rental_term.name.titleize
+				    			elsif listing.building.rental_term
+					    			xml.rental_term listing.building.rental_term.name.titleize
+					    		end
+
+					    		if !listing.building.utilities_to_s.empty?
+					    			xml.utilities listing.building.utilities_to_s.titleize
+					    		end
+
+					    		if listing.access_info
+					    			xml.access_info listing.access_info
+					    		end
+
+					    		if listing.building.lat
+					    			xml.latitude listing.building.lat
+					    		end
+
+					    		if listing.building.lng
+					    			xml.longitude listing.building.lng
+					    		end
 
 									if listing.internal_sq_footage
 										xml.squareFeet listing.internal_sq_footage
