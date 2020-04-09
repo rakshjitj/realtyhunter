@@ -56,6 +56,10 @@
     set_listings
   end
 
+  def zumper_backup
+    set_listings
+  end
+
   def set_listings
     @company = Company.find(syndication_params[:id])
     if @company
@@ -78,6 +82,8 @@
       elsif syndication_params[:action] == 'apartment'
         @listings = apartment_listings(@company.id, {})
       elsif syndication_params[:action] == 'zumper'
+        @listings = zumper_listings(@company.id, syndication_params)
+      elsif syndication_params[:action] == 'zumper_backup'
         @listings = zumper_listings(@company.id, syndication_params)
       elsif syndication_params[:action] == 'external_feed'
         @listings = external_feed_listings(@company.id, syndication_params)

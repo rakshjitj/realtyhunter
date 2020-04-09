@@ -276,6 +276,7 @@ Rails.application.routes.draw do
       get 'rooms'
       get 'apartment'
       get 'zumper'
+      get 'zumper_backup'
       get 'external_feed'
       get 'renthop'
       get 'test_watermark'
