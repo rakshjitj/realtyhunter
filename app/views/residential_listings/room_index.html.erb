@@ -462,24 +462,24 @@
       |&nbsp;&nbsp;<%= @room_off %> Off room found
     </span>
   </div>
-<table class="sortable table table-striped table-hover table-condensed infinite-table-res">
+<table class="table table-striped table-hover table-condensed infinite-table-res">
     <thead>
       <tr>
         <th class="img-col"><!-- first image --></th>
-        <th data-sort="formatted_street_address" class="th-sortable">Address</th>
-        <th data-sort="building_unit" class="th-sortable">Unit</th>
-        <th data-sort="bed_and_baths_sorter" class="th-sortable">Beds/Baths</th>
-        <th data-sort="rent" class="th-sortable">Room</th>
-        <th data-sort="rent" class="th-sortable">Price</th>
-        <th data-sort="available_by" class="th-sortable">Available</th>
-        <th data-sort="bonus" class="th-sortable">Bonus</th>
-        <th data-sort="code" class="th-sortable">Landlord</th>
+        <th>Address</th>
+        <th data-sort="building_unit">Unit</th>
+        <th>Beds/Baths</th>
+        <th>Room</th>
+        <th>Price</th>
+        <th>Available</th>
+        <th>Bonus</th>
+        <th>Landlord</th>
         <!-- <th data-sort="name" class="th-sortable">Primary Agent</th> -->
         <!-- <th data-sort="name" class="th-sortable">StreetEasy Primary Agent</th>
         <th data-sort="name" class="th-sortable">Listing Agent</th>
         <th data-sort="number" class="th-sortable">Listing Agent Number</th> -->
-        <th data-sort="residential_listings.updated_at" class="th-sortable">Updated</th>
-        <th data-sort="units.status" class="th-sortable">Status</th>
+        <th>Updated</th>
+        <th>Status</th>
         <% if current_user.is_management? || current_user.is_listings_manager? %>
           <th colspan="1" class="hidden-print"></th>
         <% end %>
@@ -646,3 +646,37 @@
   </tbody>
 </table>
 <%#= javascript_tag "(#{@map_list.to_json.html_safe});" %>
+<script type="text/javascript">
+  function sortTable(table, col, reverse) {
+      var tb = table.tBodies[0], // use `<tbody>` to ignore `<thead>` and `<tfoot>` rows
+          tr = Array.prototype.slice.call(tb.rows, 0), // put rows into array
+          i;
+      reverse = -((+reverse) || -1);
+      tr = tr.sort(function (a, b) { // sort rows
+          return reverse // `-1 *` if want opposite order
+              * (a.cells[col].textContent.trim() // using `.textContent.trim()` for test
+                  .localeCompare(b.cells[col].textContent.trim())
+                 );
+      });
+      for(i = 0; i < tr.length; ++i) tb.appendChild(tr[i]); // append each row in order
+  }
+
+  function makeSortable(table) {
+      var th = table.tHead, i;
+      th && (th = th.rows[0]) && (th = th.cells);
+      if (th) i = th.length;
+      else return; // if no `<thead>` then do nothing
+      while (--i >= 0) (function (i) {
+          var dir = 1;
+          th[i].addEventListener('click', function () {sortTable(table, i, (dir = 1 - dir))});
+      }(i));
+  }
+
+  function makeAllSortable(parent) {
+      parent = parent || document.body;
+      var t = parent.getElementsByTagName('table'), i = t.length;
+      while (--i >= 0) makeSortable(t[i]);
+  }
+
+  window.onload = function () {makeAllSortable();};
+</script>
