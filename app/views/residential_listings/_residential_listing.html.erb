@@ -6,7 +6,7 @@
       <% color = "" %>
     <% end %>
     
-    <% if residential_listing.unit.hide_from_agent == true && current_user.is_special_agent? %>
+    <% if (residential_listing.unit.hide_from_agent == true && !current_user.is_manager?) || (residential_listing.unit.hide_from_agent == true && !current_user.is_company_admin?) %>
     <% else %>
       <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= residential_listing.listing_id %>" style="background-color: <%= color%>" >
 

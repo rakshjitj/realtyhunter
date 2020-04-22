@@ -76,6 +76,12 @@
     </script>
   <% else %>
   <% end %>
+  <% if action_name == "room_index" %>
+    <script type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/sortable/0.8.0/js/sortable.min.js">
+    </script>
+  <% else %>
+  <% end %>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': true, 'data-turbolinks-eval':"false" %>
 
