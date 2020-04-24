@@ -501,7 +501,11 @@ xml.streeteasy :version => "1.6" do
 
 									xml.agent id: user.id do
 										xml.name user.name
-										xml.company @company.name
+										if user.id == 740
+											xml.company "Simply Brooklyn"
+										else
+											xml.company @company.name
+										end
 										if user.image
 											xml.photo url:user.image.file.url(:large)
 										end
@@ -594,7 +598,11 @@ xml.streeteasy :version => "1.6" do
 
 									xml.agent id: user.id do
 										xml.name user.name
-										xml.company @company.name
+										if user.id == 740
+											xml.company "Simply Brooklyn"
+										else
+											xml.company @company.name
+										end
 										if user.image
 											xml.photo url:user.image.file.url(:large)
 										end
@@ -1026,7 +1034,11 @@ xml.streeteasy :version => "1.6" do
 
 									xml.agent id: user.id do
 										xml.name user.name
-										xml.company @company.name
+										if user.id == 740
+											xml.company "Simply Brooklyn"
+										else
+											xml.company @company.name
+										end
 										if user.image
 											xml.photo url:user.image.file.url(:large)
 										end
@@ -1119,7 +1131,11 @@ xml.streeteasy :version => "1.6" do
 
 									xml.agent id: user.id do
 										xml.name user.name
-										xml.company @company.name
+										if user.id == 740
+											xml.company "Simply Brooklyn"
+										else
+											xml.company @company.name
+										end
 										if user.image
 											xml.photo url:user.image.file.url(:large)
 										end
@@ -1545,7 +1561,11 @@ xml.streeteasy :version => "1.6" do
 
 										xml.agent id: user.id do
 											xml.name user.name
-											xml.company @company.name
+											if user.id == 740
+												xml.company "Simply Brooklyn"
+											else
+												xml.company @company.name
+											end
 											if user.image
 												xml.photo url:user.image.file.url(:large)
 											end
@@ -1638,7 +1658,11 @@ xml.streeteasy :version => "1.6" do
 
 										xml.agent id: user.id do
 											xml.name user.name
-											xml.company @company.name
+											if user.id == 740
+												xml.company "Simply Brooklyn"
+											else
+												xml.company @company.name
+											end
 											if user.image
 												xml.photo url:user.image.file.url(:large)
 											end
