@@ -151,6 +151,17 @@
               </div>
             </div>
           </div>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-2">
+              <%= label_tag :couples_accepted %>
+            </div>
+            <div class="col-xs-3">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= check_box_tag :couples_accepted,true,false, checked: @residential_unit.couples_accepted ? @residential_unit.couples_accepted : false %>
+                <label></label>
+              </div>
+            </div>
+          </div>
           
           <%#= file_field_tag :unit_image %>
           <div style="border: 1px solid #cdcdcd;width: 100%;height: 0;margin: auto;margin-top: 10px;margin-bottom: 10px;"></div>
