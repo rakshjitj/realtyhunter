@@ -61,6 +61,7 @@
         parent_amenities: $('#parent_amenities').val(),
         roomfill: $('#roomfill').prop('checked'),
         working: $('#working').prop('checked'),
+        couples_accepted: $('#couples_accepted').prop('checked'),
         third_tier: $('#third_tier').prop('checked'),
         partial_move_in: $('#partial_move_in').prop('checked'),
         parent_building_amenities: $('#parent_building_amenities').val(),

@@ -304,6 +304,15 @@
               </label>
             </div>
           </div>
+          <div class="col-xs-6">
+            <div class="checkbox checkbox-warning inline">
+              <%= check_box_tag :couples_accepted, "".freeze, params[:couples_accepted] == "true".freeze ? true : false,
+                  class: 'styled' %>
+              <label for="couples_accepted">
+                Couples Accepted
+              </label>
+            </div>
+          </div>
         </div>
         <!-- <div class="row vertical-padding">
           <div class="col-xs-11 selectize-wrapper">
