@@ -807,15 +807,16 @@ class ResidentialListing < ApplicationRecord
     end
   end
 
-  def send_inaccuracy_report_room(reporter, message, price_drop_request)
-      if reporter && (!message.blank? || price_drop_request)
+  def send_inaccuracy_report_room(reporter, message, feedback_category, photo_error_types)
+      if reporter && (!message.blank? || feedback_category || photo_error_types)
         Feedback.create!({
           user_id: reporter.id,
           unit_id: self.id,
           description: message,
-          price_drop_request: price_drop_request
+          feedback_category: feedback_category,
+          photo_error_type: photo_error_types
         })
-        UnitMailer.inaccuracy_reported_room(self.id, reporter.id, message, price_drop_request).deliver!
+        UnitMailer.inaccuracy_reported_room(self.id, reporter.id, message, feedback_category, photo_error_types).deliver!
         UnitMailer.feedback_report_notifaction(reporter.id).deliver!
       else
         raise "Invalid params specified while sending feedback"

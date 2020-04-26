@@ -113,7 +113,7 @@ class RoomsController < ApplicationController
   def send_inaccuracy
     @residential_unit = ResidentialListing.find(params[:id])
     if !params[:residential_listing][:inaccuracy_description].blank? ||
-        params[:price_drop_request] == "1"
+        params[:feedback_category] || params[:photo_error_type]
       if !params[:residential_listing][:inaccuracy_description].blank?
         @inaccuracy_description = params[:residential_listing][:inaccuracy_description]
       end
@@ -125,7 +125,7 @@ class RoomsController < ApplicationController
       # client.chat_postMessage(channel: '#rooms_updates', text: "*Feedback*  *ON*  \n  #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, # #{@residential_unit.unit.building_unit}. \n #{@residential_unit.beds} Beds / #{@residential_unit.baths} Baths \n $#{@residential_unit.unit.rent} \n Feedback #{@inaccuracy_description} \n @price_drop_request \n Request sent by #{current_user.name} \n ---", as_user: true)
       @residential_unit.send_inaccuracy_report_room(current_user,
           params[:residential_listing][:inaccuracy_description],
-          params[:price_drop_request])
+          params[:feedback_category], params[:photo_error_type])
       flash[:success] = "Report submitted! Thank you."
     end
     respond_to do |format|
