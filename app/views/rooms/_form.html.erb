@@ -162,6 +162,28 @@
               </div>
             </div>
           </div>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-2">
+              <%= label_tag :tenant_occupied %>
+            </div>
+            <div class="col-xs-3">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= check_box_tag :tenant_occupied,true,false, checked: @residential_unit.tenant_occupied ? @residential_unit.tenant_occupied : false %>
+                <label></label>
+              </div>
+            </div>
+          </div>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-2">
+              <%= label_tag :roomshare_department %>
+            </div>
+            <div class="col-xs-3">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= check_box_tag :roomshare_department,true,false, checked: @residential_unit.roomshare_department ? @residential_unit.roomshare_department : false %>
+                <label></label>
+              </div>
+            </div>
+          </div>
           
           <%#= file_field_tag :unit_image %>
           <div style="border: 1px solid #cdcdcd;width: 100%;height: 0;margin: auto;margin-top: 10px;margin-bottom: 10px;"></div>
