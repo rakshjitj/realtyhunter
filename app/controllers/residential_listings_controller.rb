@@ -792,6 +792,38 @@ class ResidentialListingsController < ApplicationController
       end
     end
     #End Slack Message when status change neighbourhood wise channel
+    if @residential_unit.youtube_video_url.blank?
+      if !params[:residential_listing][:youtube_video_url].blank?
+        client.chat_postMessage(channel: '#updates', text: " *New* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@ll_code} \n POC: #{@poc} \n ---", as_user: true)        
+      end
+    end
+    if !@residential_unit.youtube_video_url.blank?
+      if @residential_unit.youtube_video_url != params[:residential_listing][:youtube_video_url]
+        client.chat_postMessage(channel: '#updates', text: " *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@ll_code} \n POC: #{@poc} \n ---", as_user: true)
+      end
+    end
+
+    if @residential_unit.private_youtube_url.blank?
+      if !params[:residential_listing][:private_youtube_url].blank?
+        client.chat_postMessage(channel: '#updates', text: " *New* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@ll_code} \n POC: #{@poc} \n ---", as_user: true)        
+      end
+    end
+    if !@residential_unit.private_youtube_url.blank?
+      if @residential_unit.private_youtube_url != params[:residential_listing][:private_youtube_url]
+        client.chat_postMessage(channel: '#updates', text: " *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@ll_code} \n POC: #{@poc} \n ---", as_user: true)
+      end
+    end
+
+    if @residential_unit.tour_3d.blank?
+      if !params[:residential_listing][:tour_3d].blank?
+        client.chat_postMessage(channel: '#updates', text: " *New* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@ll_code} \n POC: #{@poc} \n ---", as_user: true)        
+      end
+    end
+    if !@residential_unit.tour_3d.blank?
+      if @residential_unit.tour_3d != params[:residential_listing][:tour_3d]
+        client.chat_postMessage(channel: '#updates', text: " *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@ll_code} \n POC: #{@poc} \n ---", as_user: true)
+      end
+    end
 
     if params[:residential_listing][:streeteasy_flag] == "0" || params[:residential_listing][:unit][:status] == "Active"
       if params[:residential_listing][:streeteasy_flag] == "0"
