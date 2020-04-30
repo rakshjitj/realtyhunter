@@ -1356,10 +1356,15 @@ class ResidentialListingsController < ApplicationController
       else
         if current_user.is_third_tier_agent?
           @map_infos = ResidentialListing.set_location_data(
-          @residential_units.where("units.third_tier =? OR units.hide_from_agent =?", true, false), @res_images, @bldg_images)
+          @residential_units.where("units.third_tier =?", true), @res_images, @bldg_images)
         else
-          @map_infos = ResidentialListing.where("units.hide_from_agent =?", false).set_location_data(
-          @residential_units.to_a, @res_images, @bldg_images)
+          if current_user.is_special_agent? || current_user.is_streeteasy_agent?
+            @map_infos = ResidentialListing.set_location_data(
+            @residential_units.where("units.hide_from_agent =?", false).to_a, @res_images, @bldg_images)
+          else
+            @map_infos = ResidentialListing.set_location_data(
+            @residential_units.to_a, @res_images, @bldg_images)
+          end
         end
       end
 
