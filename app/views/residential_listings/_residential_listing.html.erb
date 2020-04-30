@@ -66,6 +66,9 @@
             <% if !residential_listing.youtube_video_url.blank? %>
               <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
             <% end %>
+            <% if !residential_listing.private_youtube_url.blank? %>
+              <span class="glyphicon glyphicon-facetime-video gray" aria-hidden="true"></span>
+            <% end %>
             <% if !residential_listing.tour_3d.blank? %>
               <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
             <% end %>
@@ -409,6 +412,9 @@
           <b><!--Unit Number:--></b><%= residential_listing.building_unit %>
           <% if !residential_listing.youtube_video_url.blank? %>
             <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
+          <% end %>
+          <% if !residential_listing.private_youtube_url.blank? %>
+            <span class="glyphicon glyphicon-facetime-video gray" aria-hidden="true"></span>
           <% end %>
           <% if !residential_listing.tour_3d.blank? %>
             <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
