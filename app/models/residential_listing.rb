@@ -757,10 +757,13 @@ class ResidentialListing < ApplicationRecord
       unit_dup.building_unit = new_unit_num
       unit_dup.streeteasy_unit = new_streeteasy_unit_num
       unit_dup.listing_id = nil
+      unit_dup.rent = 0
+      unit_dup.access_info = nil
+      unit_dup.maths_free = nil
       if unit_dup.save!
 
         residential_unit_dup = self.dup
-        residential_unit_dup.update(unit_id: unit_dup.id, knack_id: nil, youtube_video_url: nil, tour_3d: nil, private_youtube_url: nil)
+        residential_unit_dup.update(unit_id: unit_dup.id, knack_id: nil, youtube_video_url: nil, tour_3d: nil, private_youtube_url: nil,notes: nil)
 
         self.residential_amenities.each {|a|
           residential_unit_dup.residential_amenities << a
