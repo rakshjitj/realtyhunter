@@ -1,44 +1,47 @@
-<div class="row-no-padding row-list-view %>">
-  <!-- thumbnail image -->
-  <div class="col-xs-4">
-    <!-- display building image first, if any are found -->
-    <% if @bldg_images[residential_listing.building_id] %>
-      <%= link_to(image_tag(@bldg_images[residential_listing.building_id],
-          alt: @bldg_images[residential_listing.building_id]), residential_listing) %>
-    <!-- otherwise, pick the first residential photo -->
-    <% elsif @res_images[residential_listing.unit_id] %>
-      <%= link_to(image_tag(@res_images[residential_listing.unit_id],
-          alt: @res_images[residential_listing.unit_id]),
-          residential_listing) %>
-    <% else %>
-    <!-- otherwise, fall back on placeholder image -->
-      <%= link_to(image_tag("listing_soon_thumb.png", alt: "Image coming soon",
-          size: "100x100"), residential_listing) %>
-    <% end %>
-  </div>
+<% if (residential_listing.unit.hide_from_agent == true && !current_user.is_manager?) || (residential_listing.unit.hide_from_agent == true && !current_user.is_company_admin?) %>
+<% else %>
+  <div class="row-no-padding row-list-view %>">
+    <!-- thumbnail image -->
+    <div class="col-xs-4">
+      <!-- display building image first, if any are found -->
+      <% if @bldg_images[residential_listing.building_id] %>
+        <%= link_to(image_tag(@bldg_images[residential_listing.building_id],
+            alt: @bldg_images[residential_listing.building_id]), residential_listing) %>
+      <!-- otherwise, pick the first residential photo -->
+      <% elsif @res_images[residential_listing.unit_id] %>
+        <%= link_to(image_tag(@res_images[residential_listing.unit_id],
+            alt: @res_images[residential_listing.unit_id]),
+            residential_listing) %>
+      <% else %>
+      <!-- otherwise, fall back on placeholder image -->
+        <%= link_to(image_tag("listing_soon_thumb.png", alt: "Image coming soon",
+            size: "100x100"), residential_listing) %>
+      <% end %>
+    </div>
 
-  <!-- data -->
-  <div class="col-xs-8">
-    <!-- 1st row: address -->
-    <div class="row-no-padding">
-      <div class="col-xs-10">
-        <h4>
-          <%= link_to "#{residential_listing.street_address} ##{residential_listing.building_unit}",
-              residential_listing_path(residential_listing.id) %>
-        </h4>
-        <% if residential_listing.neighborhood_name %>
-          <small><%= residential_listing.neighborhood_name %></small>
-        <% end %>
+    <!-- data -->
+    <div class="col-xs-8">
+      <!-- 1st row: address -->
+      <div class="row-no-padding">
+        <div class="col-xs-10">
+          <h4>
+            <%= link_to "#{residential_listing.street_address} ##{residential_listing.building_unit}",
+                residential_listing_path(residential_listing.id) %>
+          </h4>
+          <% if residential_listing.neighborhood_name %>
+            <small><%= residential_listing.neighborhood_name %></small>
+          <% end %>
+        </div>
       </div>
-    </div>
-    <!-- 2nd row: price, beds/baths -->
-    <div class="row-no-padding">
-      <div class="col-xs-6">
-        <%= beds_as_str(residential_listing) %> / <%= baths_as_str(residential_listing) %>
-      </div>
-      <div class="col-xs-5 text-right">
-        <%= rent_formatted(residential_listing.rent) %>
+      <!-- 2nd row: price, beds/baths -->
+      <div class="row-no-padding">
+        <div class="col-xs-6">
+          <%= beds_as_str(residential_listing) %> / <%= baths_as_str(residential_listing) %>
+        </div>
+        <div class="col-xs-5 text-right">
+          <%= rent_formatted(residential_listing.rent) %>
+        </div>
       </div>
     </div>
   </div>
-</div>
+<% end %>
