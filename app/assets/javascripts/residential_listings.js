@@ -239,18 +239,18 @@
 
       if (window.location.pathname == '/residential_listings/room_index'){
         var rooms_url = 'https://realtyhunter.org:3000/rooms/' + unit.id
-        contentString += '<div class="un-content" style="text-align: left;"><a href=' + rooms_url + '>' + key + ', #' + unit.building_unit+ '</a> <div class="un-main-content"><div>' + unit.beds + ' beds | ' + unit.baths + ' baths </div> '+ '<div> Net: $' + unit.rent + ' | Gross: $' + unit.gross + '</div><div> Avail: ' + unit.avail + '</div></div></div>' 
-        for (var i=0; i<info['rooms']['0']['a'].length; i++) {
-          room = info['rooms']['0']['a'][i];
+        contentString += '<div class="contentRow" '+ (shouldHighlightRow ? ' active' : '') +' style="text-align: left;"><a href=' + rooms_url + '>' + key + ', #' + unit.building_unit+ '</a> <div class="un-main-content"><div>' + unit.beds + ' beds | ' + unit.baths + ' baths </div> '+ '<div> Net: $' + unit.rent + ' | Gross: $' + unit.gross + '</div><div> Avail: ' + unit.avail + '</div></div></div>' 
+        for (var j=0; j<info['rooms']['0']['a'].length; j++) {
+          room = info['rooms']['0']['a'][j];
           if (room.status == 2){
-            contentString += '<div class="contentRow" style="clear: both;text-align: left;color:#cdcdcd"' + (shouldHighlightRow ? ' active' : '') +'">'
+            contentString += '<div class="contentRowroom" style="clear: both;text-align: left;color:#cdcdcd"' +'">'
             + ''+set_iconss+'disabled>'
             + '<a id = "copycontent_'+i+'" href='+unit.public_url_for_room+'></a>'
             + '' + room.name + ' - ' +
             + room.rent + '</div>';
           }
           else{
-            contentString += '<div class="contentRow" style="clear: both;text-align: left;"' + (shouldHighlightRow ? ' active' : '') +'">'
+            contentString += '<div class="contentRowroom" style="clear: both;text-align: left;"'+'">'
               + ''+set_iconss+'>'
               + '<a id = "copycontent_'+i+'" href='+unit.public_url_for_room+'></a>'
               + '' + room.name + ' - ' +
