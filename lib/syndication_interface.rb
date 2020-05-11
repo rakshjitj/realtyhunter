@@ -55,7 +55,7 @@ module SyndicationInterface
 		pull_data(company_id, search_params)
 	end
 
-	def zumper_backup_listings
+	def zumper_backup_listings(company_id, search_params)
 		search_params[:has_primary_agent] = 1
 		search_params[:is_hide_on_website] = 1
 		search_params[:push_to_zumper_active] = 1

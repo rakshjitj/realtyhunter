@@ -60,6 +60,13 @@
     set_listings
   end
 
+  def all_active_users
+    @users = User.where(archived: false)
+    respond_to do |format|
+      format.rss { render layout: false }
+    end
+  end
+
   def set_listings
     @company = Company.find(syndication_params[:id])
     if @company
@@ -84,7 +91,7 @@
       elsif syndication_params[:action] == 'zumper'
         @listings = zumper_listings(@company.id, syndication_params)
       elsif syndication_params[:action] == 'zumper_backup'
-        @listings = zumper_listings(@company.id, syndication_params)
+        @listings = zumper_backup_listings(@company.id, syndication_params)
       elsif syndication_params[:action] == 'external_feed'
         @listings = external_feed_listings(@company.id, syndication_params)
       elsif syndication_params[:action] == 'test_watermark'

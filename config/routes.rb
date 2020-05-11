@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
   root :to => 'sessions#new'
 
+  get "all_active_users" => "users#all_active_users", as: :all_active_users
   resources :users, except: 'new' do
     get :autocomplete_user_name, :on => :collection
     collection do
@@ -280,6 +281,7 @@ Rails.application.routes.draw do
       get 'external_feed'
       get 'renthop'
       get 'test_watermark'
+      get 'all_active_users'
     end
   end
 
