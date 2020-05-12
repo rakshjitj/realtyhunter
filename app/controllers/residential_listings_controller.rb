@@ -812,16 +812,16 @@ class ResidentialListingsController < ApplicationController
     if @residential_unit.private_youtube_url.blank?
       if !params[:residential_listing][:private_youtube_url].blank?
         if params[:residential_listing][:unit][:hide_from_agent] != "1"
-          client.chat_postMessage(channel: '#updates', text: " *New* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
-          client.chat_postMessage(channel: '#vlt_managers_agents', text: " *New* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
+          client.chat_postMessage(channel: '#updates', text: " *New* *Internal* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
+          client.chat_postMessage(channel: '#vlt_managers_agents', text: " *New* *Internal* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
         end
       end
     end
     if !@residential_unit.private_youtube_url.blank?
       if @residential_unit.private_youtube_url != params[:residential_listing][:private_youtube_url]
         if params[:residential_listing][:unit][:hide_from_agent] != "1"
-          client.chat_postMessage(channel: '#updates', text: " *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
-          client.chat_postMessage(channel: '#vlt_managers_agents', text: " *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
+          client.chat_postMessage(channel: '#updates', text: " *Internal* *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
+          client.chat_postMessage(channel: '#vlt_managers_agents', text: " *Internal* *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
         end
       end
     end
@@ -1481,7 +1481,7 @@ class ResidentialListingsController < ApplicationController
         :has_fee, :op_fee_percentage, :tp_fee_percentage,
         :available_starting, :available_before, :custom_amenities, :youtube_video_url, :tour_3d, :private_youtube_url,
         :roomsharing_filter, :unassigned_filter, :tenant_occupied_filter, :streeteasy_filter,
-        :no_description,:no_images, :roomshare_department, :renthop, :watermark, :watermark_in_use,
+        :no_description,:no_images, :roomshare_department, :renthop, :private_bathroom, :watermark, :watermark_in_use,
         :primary_agent_id, :favorites, :show,:claim_for_naked_apartment, :claim_for_individual_syndication_page, :expose_address, :floor, :total_room_count, :condition, :showing_instruction,
         :commission_amount, :cyof, :rented_date, :rlsny, :share_with_brokers,
         :rls_flag, :streeteasy_flag, :streeteasy_flag_one,:streeteasy_claim, :naked_apartment,

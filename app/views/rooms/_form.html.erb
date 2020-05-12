@@ -98,6 +98,17 @@
           </div>
           <div class="row vertical-margin-lg">
             <div class="col-xs-2">
+              <%= label_tag :private_bathroom, "Private Bathroom" %>
+            </div>
+            <div class="col-xs-3">
+              <div class="checkbox checkbox-warning checkbox-inline">
+                <%= check_box_tag :private_bathroom,true,false, checked: @residential_unit.private_bathroom ? @residential_unit.private_bathroom : false %>
+                <label></label>
+              </div>
+            </div>
+          </div>
+          <div class="row vertical-margin-lg">
+            <div class="col-xs-2">
               <%= label_tag :room_syndication, "Room Syndication" %>
             </div>
             <div class="col-xs-3">

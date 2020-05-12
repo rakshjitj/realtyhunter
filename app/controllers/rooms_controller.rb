@@ -30,7 +30,7 @@ class RoomsController < ApplicationController
     if !params[:move_in_date].blank?
       params[:move_in_date] = Date::strptime(params[:move_in_date], "%m/%d/%Y")
     end
-    @residential_unit.update(rooms_description: params[:unit_description], room_syndication: params[:room_syndication], roomfill: params[:roomfill], partial_move_in: params[:partial_move_in], renthop: params[:renthop], working_this_listing: params[:working_this_listing], room_access: params[:room_access], move_in_date: params[:move_in_date], couples_accepted: params[:couples_accepted], tenant_occupied: params[:tenant_occupied], roomshare_department: params[:roomshare_department])
+    @residential_unit.update(rooms_description: params[:unit_description], private_bathroom: params[:private_bathroom], room_syndication: params[:room_syndication], roomfill: params[:roomfill], partial_move_in: params[:partial_move_in], renthop: params[:renthop], working_this_listing: params[:working_this_listing], room_access: params[:room_access], move_in_date: params[:move_in_date], couples_accepted: params[:couples_accepted], tenant_occupied: params[:tenant_occupied], roomshare_department: params[:roomshare_department])
     #abort params[:unit_status].inspect
     if params[:room_syndication] == "true"
       #for default force syndication

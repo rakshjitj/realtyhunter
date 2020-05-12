@@ -211,7 +211,7 @@ class ResidentialListing < ApplicationRecord
         'units.primary_agent_id',  'units.has_stock_photos', 'units.primary_agent_for_rs',
         'buildings.street_number || \' \' || buildings.route as street_address_and_unit',
         'residential_listings.id', 'residential_listings.baths','units.access_info', 'units.gross_price', 'residential_listings.notes',
-        'residential_listings.favorites','residential_listings.streeteasy_flag_one', 'residential_listings.lease_start',
+        'residential_listings.favorites','residential_listings.streeteasy_flag_one', 'residential_listings.lease_start', 'residential_listings.private_bathroom',
         'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_claim', 'residential_listings.couples_accepted',
         'residential_listings.has_fee', 'residential_listings.updated_at', 'residential_listings.youtube_video_url', 'residential_listings.private_youtube_url',
         'residential_listings.tenant_occupied', 'residential_listings.roomshare_department', 'residential_listings.tour_3d',
@@ -600,6 +600,10 @@ class ResidentialListing < ApplicationRecord
           'residential_listings.couples_accepted = ?', params[:couples_accepted])
     end
 
+    if !params[:private_bathroom].blank?
+      running_list = running_list.where('residential_listings.private_bathroom =?', params[:private_bathroom])
+    end
+
     if !params[:partial_move_in].blank?
       running_list = running_list.where(
           'residential_listings.partial_move_in = ?', params[:partial_move_in])
@@ -958,7 +962,7 @@ class ResidentialListing < ApplicationRecord
       .select('buildings.formatted_street_address',
         'buildings.id AS building_id', 'buildings.street_number', 'buildings.route',
         'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id',
-        'units.has_stock_photos', 'units.primary_agent_for_rs', 'residential_listings.notes',
+        'units.has_stock_photos', 'units.primary_agent_for_rs', 'residential_listings.notes', 'residential_listings.private_bathroom',
         'residential_listings.beds', 'residential_listings.id', 'residential_listings.lease_start',
         'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_flag_one', 'units.gross_price',
         'residential_listings.baths','units.access_info', 'residential_listings.renthop', 'residential_listings.couples_accepted',
@@ -1002,7 +1006,7 @@ class ResidentialListing < ApplicationRecord
         'units.building_unit', 'units.status','units.rent', 'units.id AS unit_id',
         'units.has_stock_photos', 'units.primary_agent_for_rs', 'units.gross_price', 'residential_listings.notes',
         'residential_listings.beds', 'residential_listings.id', 'residential_listings.lease_start',
-        'residential_listings.baths','units.access_info', 'residential_listings.streeteasy_flag',
+        'residential_listings.baths','units.access_info', 'residential_listings.streeteasy_flag', 'residential_listings.private_bathroom',
         'residential_listings.streeteasy_flag_one', 'residential_listings.renthop', 'residential_listings.couples_accepted',
         'residential_listings.has_fee', 'residential_listings.updated_at', 'residential_listings.youtube_video_url', 'residential_listings.private_youtube_url',
         'residential_listings.tenant_occupied', 'residential_listings.roomshare_department', 'residential_listings.tour_3d',
