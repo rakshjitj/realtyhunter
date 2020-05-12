@@ -78,6 +78,25 @@
 
         <div class="row">
           <div class="col-xs-4 col-md-3">
+            <strong>LL Importance</strong>
+          </div>
+          <div class="col-xs-8 col-md-3">
+            <% if !@landlord.ll_importance.nil? %>
+              <% if @landlord.ll_importance == 'gold' %>
+                <span class="glyphicon glyphicon-certificate gold"></span>
+              <% elsif @landlord.ll_importance == 'silver' %>
+                <span class="glyphicon glyphicon-certificate silver"></span>
+              <% elsif @landlord.ll_importance == 'bronze' %>
+                <span class="glyphicon glyphicon-certificate bronze"></span>
+              <% end %>
+            <% else %>
+              --
+            <% end %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-4 col-md-3">
             <strong>Email</strong>
           </div>
           <div class="col-xs-8 col-md-3">

@@ -82,6 +82,21 @@ class Landlord < ApplicationRecord
       end
     end
 
+    ll_importance = params[:ll_importance]
+    if !ll_importance.nil?
+      if ll_importance == "gold"
+        running_list = running_list.where("landlords.ll_importance =?", 'gold')
+      elsif ll_importance == "silver"
+        running_list = running_list.where("landlords.ll_importance =?", 'silver')
+      elsif ll_importance == "bronze"
+        running_list = running_list.where("landlords.ll_importance =?", 'bronze')
+      else
+        running_list = running_list
+      end
+          
+        
+    end
+
     status = params[:status]
     if !status.nil?
       status_lowercase = status.downcase
@@ -116,7 +131,7 @@ class Landlord < ApplicationRecord
 
     running_list = self._search(running_list, params)
 		running_list = running_list.select('landlords.id', 'landlords.code', 'landlords.name',
-				'landlords.updated_at', 'landlords.mobile', 'landlords.rating',
+				'landlords.updated_at', 'landlords.mobile', 'landlords.rating', 'landlords.ll_importance',
 				'landlords.active_unit_count', 'landlords.total_unit_count',
 				'landlords.last_unit_updated_at', 'landlords.listing_agent_id',
         'users.name as listing_agent_name', 'landlords.listing_agent_percentage')
