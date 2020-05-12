@@ -795,16 +795,16 @@ class ResidentialListingsController < ApplicationController
     if @residential_unit.youtube_video_url.blank?
       if !params[:residential_listing][:youtube_video_url].blank?
         if params[:residential_listing][:unit][:hide_from_agent] != "1"
-          client.chat_postMessage(channel: '#updates', text: " *New* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
-          client.chat_postMessage(channel: '#vlt_managers_agents', text: " *New* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)        
+          client.chat_postMessage(channel: '#video_updates', text: " *New* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
+          #client.chat_postMessage(channel: '#vlt_managers_agents', text: " *New* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)        
         end
       end
     end
     if !@residential_unit.youtube_video_url.blank?
       if @residential_unit.youtube_video_url != params[:residential_listing][:youtube_video_url]
         if params[:residential_listing][:unit][:hide_from_agent] != "1"
-          client.chat_postMessage(channel: '#updates', text: " *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
-          client.chat_postMessage(channel: '#vlt_managers_agents', text: " *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
+          client.chat_postMessage(channel: '#video_updates', text: " *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
+          #client.chat_postMessage(channel: '#vlt_managers_agents', text: " *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
         end
       end
     end
@@ -812,16 +812,16 @@ class ResidentialListingsController < ApplicationController
     if @residential_unit.private_youtube_url.blank?
       if !params[:residential_listing][:private_youtube_url].blank?
         if params[:residential_listing][:unit][:hide_from_agent] != "1"
-          client.chat_postMessage(channel: '#updates', text: " *New* *Internal* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
-          client.chat_postMessage(channel: '#vlt_managers_agents', text: " *New* *Internal* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
+          client.chat_postMessage(channel: '#video_updates', text: " *New* *Internal* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
+          #client.chat_postMessage(channel: '#vlt_managers_agents', text: " *New* *Internal* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
         end
       end
     end
     if !@residential_unit.private_youtube_url.blank?
       if @residential_unit.private_youtube_url != params[:residential_listing][:private_youtube_url]
         if params[:residential_listing][:unit][:hide_from_agent] != "1"
-          client.chat_postMessage(channel: '#updates', text: " *Internal* *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
-          client.chat_postMessage(channel: '#vlt_managers_agents', text: " *Internal* *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
+          client.chat_postMessage(channel: '#video_updates', text: " *Internal* *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
+          #client.chat_postMessage(channel: '#vlt_managers_agents', text: " *Internal* *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
         end
       end
     end
@@ -829,16 +829,16 @@ class ResidentialListingsController < ApplicationController
     if @residential_unit.tour_3d.blank?
       if !params[:residential_listing][:tour_3d].blank?
         if params[:residential_listing][:unit][:hide_from_agent] != "1"
-          client.chat_postMessage(channel: '#updates', text: " *New* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
-          client.chat_postMessage(channel: '#vlt_managers_agents', text: " *New* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
+          client.chat_postMessage(channel: '#video_updates', text: " *New* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
+          #client.chat_postMessage(channel: '#vlt_managers_agents', text: " *New* *Video* *Uploaded* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
         end
       end
     end
     if !@residential_unit.tour_3d.blank?
       if @residential_unit.tour_3d != params[:residential_listing][:tour_3d]
         if params[:residential_listing][:unit][:hide_from_agent] != "1"
-          client.chat_postMessage(channel: '#updates', text: " *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
-          client.chat_postMessage(channel: '#vlt_managers_agents', text: " *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
+          client.chat_postMessage(channel: '#video_updates', text: " *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
+          #client.chat_postMessage(channel: '#vlt_managers_agents', text: " *Video* *URL* *Updated* by #{current_user.name} \n #{@residential_unit.unit.building.street_number} #{@residential_unit.unit.building.route}, #{@residential_unit.unit.building_unit} \n LLC: #{@llc} \n POC: #{@poc} \n ---", as_user: true)
         end
       end
     end
