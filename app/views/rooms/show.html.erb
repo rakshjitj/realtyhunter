@@ -222,10 +222,10 @@
 		    			</div>
 		    			<div class="row">
 		    				<div class="col-xs-5">
-				    			<strong>Price:</strong>
+				    			<strong>Price:Net/gross_price</strong>
 				    		</div>
 				    		<div class="col-xs-7">
-				    			<%= rent_formatted(@residential_unit.unit.rent) %>
+				    			<%= rent_formatted(@residential_unit.unit.rent) %> / <%= rent_formatted(@residential_unit.unit.gross_price) %>
 				    		</div>
 		    			</div>
 		    			<div class="row">
@@ -685,6 +685,14 @@
 							    					--
 							    				<% end %>
 							    			<% end %>
+							    		</div>
+							    	</div>
+							    	<div class="row">
+					    				<div class="col-xs-5">
+							    			<strong>Tenant Pet Info:</strong>
+							    		</div>
+							    		<div class="col-xs-7">
+							    			<%= room.tenant_pet_info %>
 							    		</div>
 							    	</div>
 									<%# if !@residential_unit.unit.images.blank? %>

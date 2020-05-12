@@ -151,6 +151,6 @@ class RoomsController < ApplicationController
    #    params.permit(:id,:name, :rent, :status, :description, :residential_listing_id)
    #  end
     def room_params(my_params)
-      my_params.permit(:id,:name, :rent, :months_free, :status, :preferences, :bonus, :room_size, :room_notes, :tenant_info, :renting_agent, :description, :residential_listing_id, :file, :image)
+      my_params.permit(:id,:name, :rent, :months_free, :status, :preferences, :bonus, :tenant_pet_info, :room_size, :room_notes, :tenant_info, :renting_agent, :description, :residential_listing_id, :file, :image)
     end
 end
