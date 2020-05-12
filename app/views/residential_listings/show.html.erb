@@ -334,10 +334,26 @@
 				    		<div class="col-xs-7">
 				    			<% if current_user.is_management? || current_user.is_listings_manager? %>
 										<%= link_to @residential_unit.unit.building.landlord.code, @residential_unit.unit.building.landlord %>
-									<% else %>
-										<%= @residential_unit.unit.building.landlord.code %>
-									<% end %>
+								<% else %>
+									<%= @residential_unit.unit.building.landlord.code %>
+								<% end %>
 				    		</div>
+		    			</div>
+		    			<div class="row">
+		    				<div class="col-xs-5">
+				    			<strong>LL Importance:</strong>
+				    		</div>
+		    				<div class="col-xs-7">
+		    					<% if @residential_unit.unit.building.landlord.ll_importance == 'gold' %>
+						          <span class="glyphicon glyphicon-certificate gold"></span>
+						        <% elsif @residential_unit.unit.building.landlord.ll_importance == 'silver' %>
+						          <span class="glyphicon glyphicon-certificate silver"></span>
+						        <% elsif @residential_unit.unit.building.landlord.ll_importance == 'bronze' %>
+						          <span class="glyphicon glyphicon-certificate bronze"></span>
+						        <% else %>
+						        	--
+						        <% end %>
+		    				</div>
 		    			</div>
 		    			<div class="row">
 		    				<div class="col-xs-5">

@@ -143,6 +143,16 @@
           </div>
           <div class="row vertical-padding">
             <div class="col-xs-5">
+              <%= label_tag :ll_importance, "LL Importance" %>
+            </div>
+            <div class="col-xs-6 col-sm-left-padding">
+              <%= select_tag(:ll_importance,
+                  options_for_select(['Any', ['Gold', 'gold'], ['Silver', 'silver'], ['Bronze', 'bronze']],
+                  params[:ll_importance] ? params[:ll_importance] : "Any"), class: 'form-control') %>
+            </div>
+          </div>
+          <div class="row vertical-padding">
+            <div class="col-xs-5">
               <%= label_tag :status, "Status" %>
             </div>
             <div class="col-xs-6 col-sm-left-padding">

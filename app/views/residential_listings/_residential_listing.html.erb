@@ -458,6 +458,13 @@
         <% else %>
           ll code: <%= residential_listing.code %><br>
         <% end %>
+        <% if residential_listing.unit.building.landlord.ll_importance == 'gold' %>
+          <span class="glyphicon glyphicon-certificate gold"></span>
+        <% elsif residential_listing.unit.building.landlord.ll_importance == 'silver' %>
+          <span class="glyphicon glyphicon-certificate silver"></span>
+        <% elsif residential_listing.unit.building.landlord.ll_importance == 'bronze' %>
+          <span class="glyphicon glyphicon-certificate bronze"></span>
+        <% end %>
         <!-- ****** Point of Contact ****************************************** -->
         <% if !residential_listing.unit.building.point_of_contact.nil? %>
           POC: 
