@@ -77,7 +77,7 @@
           <div style="clear: both;"></div>
           <% if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
             <div class="col-sm-2 col-md-1 vertical-padding form-label-responsive">
-              <label class="vertical-padding">LL Importance:</label>
+              <label class="vertical-padding">LL Class:</label>
             </div>
             <div class="col-sm-10 col-md-2 vertical-padding">
               <%= select_tag(:ll_importance,
