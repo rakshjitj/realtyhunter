@@ -178,6 +178,21 @@
           </div>
         <% end %>
 
+        <% if !escape_once(@landlord.ll_public_description).blank? %>
+          <div class="row">
+            <div class="col-md-12">
+              <br />
+              <strong>LL Public Description</strong>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <%= h raw sanitize @landlord.ll_public_description,
+                  tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div) %>
+            </div>
+          </div>
+        <% end %>
+
         <% if !escape_once(@landlord.management_info).blank? %>
           <div class="row">
             <div class="col-md-12">
