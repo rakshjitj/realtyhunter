@@ -231,12 +231,24 @@
         <br />
         <div class="row">
           <div class="col-xs-12">
-            <%= f.label :notes, "Notes (will be shared on listings)" %><br />
+            <%= f.label :notes, "LL Notes for Agents" %><br />
             <small class="explainer-text"><em>
               Tip: Enter 2 blank lines to separate paragraphs.
             </small></em>
             <br><br>
             <%= f.bootsy_area :notes, class: 'form-control', rows: 15 %>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-xs-12">
+            <%= f.label :ll_public_description, "LL Public Description" %><br />
+            <small class="explainer-text"><em>
+              Tip: Enter 2 blank lines to separate paragraphs.
+            </small></em>
+            <br><br>
+            <%= f.bootsy_area :ll_public_description, class: 'form-control', rows: 15 %>
           </div>
         </div>
 
@@ -251,7 +263,7 @@
         <br />
         <div class="row">
           <div class="col-xs-12">
-            <%= f.label :management_info, "Additional Management Info" %><br>
+            <%= f.label :management_info, "LL Notes for Managers" %><br>
             <small class="explainer-text"><em>
               Tip: Enter 2 blank lines to separate paragraphs.
             </small></em>

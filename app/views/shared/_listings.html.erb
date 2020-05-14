@@ -1,5 +1,5 @@
 <!-- ******** LISTINGS ********** -->
-<% if model.residential_units.length > 0 || model.commercial_units.length > 0 %>
+<% if model.residential_units.length > 0 || model.commercial_units.length > 0 || model.buildings.length > 0 %>
 
 <div class="row">
   <div class="col-md-12">
@@ -12,6 +12,12 @@
       <% if commercial_units %>
         <li role="commercial-listings"><a href="#commercial-listings" aria-controls="commercial-listings"
           role="tab" data-toggle="tab">Commercial</a></li>
+      <% end %>
+      <% if controller_name == "landlords" %>
+        <% if buildings %>
+          <li role="buildings"><a href="#buildings" aria-controls="buildings"
+            role="tab" data-toggle="tab">Buildings</a></li>
+        <% end %>
       <% end %>
     </ul>
 
@@ -66,7 +72,112 @@
             </div>
           </div>
         </div>
+        <% if controller_name == "landlords" %>
+          <div role="tabpanel" class="tab-pane fade" id="buildings">
+            <%#= render partial:'commercial_listings/table',
+              locals: { commercial_units: commercial_units, com_images: com_images,
+                  bldg_images: com_bldg_images } %>
 
+            <div class="col-md-12">
+              <table class="table table-striped table-hover table-condensed infinite-table">
+                <thead>
+                  <tr>
+                    <th data-sort="formatted_street_address" class="th-sortable">
+                      Address</th>
+                    <th data-sort="formatted_street_address" class="th-sortable">
+                      LL Code</th>
+                    <th data-sort="streeteasy_eligibility" class="th-sortable">
+                      SE Eligible</th>
+                    <th data-sort="dotsignal_code" class="th-sortable">
+                      Dotsignal Code</th>
+                    <th data-sort="pet_policy_id" class="th-sortable">
+                      Pet Policy</th>
+                    <th data-sort="active_unit_count" class="th-sortable">
+                      On-Market Units</th>
+                    <th data-sort="total_unit_count" class="th-sortable">
+                      Total Units</th>
+                    <th data-sort="last_unit_updated_at" class="th-sortable">
+                      Last Unit Updated</th>
+                  </tr>
+                </thead>
+
+                <tbody class="buildings_table_body">
+                  <%#= render '/buildings/building', locals: { buildings: buildings }%>
+                  <% @buildings.each do |building| %>
+                    <tr>
+                      <td>
+                        <%= link_to "#{building.street_address}".freeze, building %><br />
+                        <%= short_location_title(building) %>
+                      </td>
+
+                      <td>
+                        <% if current_user.is_management? %>
+                          <%= link_to "#{Landlord.find(building.landlord_id).code}", landlord_path(building.landlord_id) %>
+                        <% else %>
+                          <%= Landlord.find(building.landlord_id).code %>
+                        <% end %>
+                      </td>
+
+                      <td>
+                        <% if building.streeteasy_eligibility == 1 %>
+                          No
+                        <% else %>
+                          Yes
+                        <% end %>
+                      </td>
+
+                      <td>
+                        <% if !building.dotsignal_code.nil? %>
+                          <%= building.dotsignal_code %>
+                        <% else %>
+                          ---
+                        <% end %>
+                      </td>
+
+                      <td>
+                        <% if !building.pet_policy_id.nil? %>
+                          <%= PetPolicy.find(building.pet_policy_id).name %>
+                        <% else %>
+                          ---
+                        <% end %>
+                      </td>
+
+                      <!-- ACTIVE UNITS -->
+                      <td><%= building.active_unit_count %></td>
+
+                      <!-- TOTAL UNITS -->
+                      <td><%= building.total_unit_count %></td>
+
+                      <!-- LAST UNIT UPDATED -->
+                      <td>
+                        <% if building.last_unit_updated_at %>
+                          <%= time_ago_in_words(building.last_unit_updated_at) %>
+                        <% else %>
+                          --
+                        <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        <% end %>
+        <!-- <div class="row">
+          <div class="col-sm-4 col-sm-offset-4 pagination-wrapper">
+            <%#= render partial: 'shared/pagination', locals: {models: buildings} %>
+          </div>
+        </div>           -->
+
+
+          <!-- <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+              <div class="listing-pagination com pagination-wrapper">
+                <%#= render partial: 'shared/pagination', locals: {models: commercial_units} %>
+              </div>
+            </div>
+          </div> -->
+        </div>
     </div>
 
   </div><!-- col -->

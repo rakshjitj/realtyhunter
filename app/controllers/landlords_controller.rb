@@ -181,6 +181,7 @@ class LandlordsController < ApplicationController
       @residential_units = @residential_units.page(params[:page]).per(25)
       @commercial_units, @com_images, @com_bldg_images = @landlord.commercial_units(params[:status_listings])
       @commercial_units = @commercial_units.page(params[:page]).per(25)
+      @buildings = @landlord.buildings
     end
 
     def set_landlords
@@ -220,7 +221,7 @@ class LandlordsController < ApplicationController
       params.permit(:sort_by, :filter, :page, :agent_filter, :status, :rating, :status_listings, :street_number,
          :route, :neighborhood, :sublocality, :administrative_area_level_2_short,
         :administrative_area_level_1_short, :postal_code, :country_short, :lat, :lng, :place_id,
-        landlord: [:lock_version, :code, :rating, :ll_importance, :name, :contact_name, :mobile, :office_phone, :fax,
+        landlord: [:lock_version, :code, :rating, :ll_public_description, :ll_importance, :name, :contact_name, :mobile, :office_phone, :fax,
           :email, :website, :formatted_street_address, :notes,
           :listing_agent_percentage, :listing_agent_id,
           :has_fee, :op_fee_percentage, :tp_fee_percentage,
