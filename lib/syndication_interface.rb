@@ -318,7 +318,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'buildings.postal_code', 'buildings.dotsignal_code',
 			'buildings.lat',
 			'buildings.lng',
-			'landlords.code',
+			'landlords.code', 'landlords.ll_public_description',
 			'neighborhoods.name as neighborhood_name',
 			'neighborhoods.borough as neighborhood_borough',
 			'residential_listings.id AS r_id',
