@@ -98,14 +98,6 @@
 							</p>
 						<% end %>
 
-						<% if !escape_once(@building.notes).blank? %>
-							<p>
-							  <strong>Building Notes:</strong>
-		            <%= h raw sanitize @building.notes,
-		            		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div) %>
-							</p>
-						<% end %>
-
 						<% if @building.landlord %>
 							<p>
 							  <strong>Landlord Code:</strong>
@@ -220,9 +212,17 @@
 						  <strong>Last Unit Updated:</strong>
 						  <%= @building.last_unit_updated_at %>
 						</p>
+						<% if !escape_once(@building.notes).blank? %>
+							<p>
+							  <strong>Building Private Notes:</strong>
+		            			<%= h raw sanitize @building.notes,
+		            		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div) %>
+							</p>
+						<% end %>
+
 						<% if !@building.description.blank? %>
 							<p>
-								<strong>Description:</strong>
+								<strong>Building Public Description:</strong>
 								<%= @building.description.html_safe %>
 							</p>
 						<% end %>

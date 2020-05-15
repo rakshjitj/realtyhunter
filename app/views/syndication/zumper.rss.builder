@@ -327,16 +327,21 @@ xml.streeteasy :version => "1.6" do
 								end
 
 								xml.availableOn listing.available_by # rentals only
+								pb_description = ""
 								if listing.building.landlord
 									if !listing.building.landlord.ll_public_description.nil?
-										pb_description = listing.description + listing.building.landlord.ll_public_description
-									else
-										pb_description = listing.description
+										pb_description = listing.building.landlord.ll_public_description
+									end
+								end
+								b_description = ""
+								if listing.building
+									if !listing.building.description.blank?
+										b_description = listing.building.description
 									end
 								end
 
 								if listing.r_id
-									xml.description h raw sanitize pb_description,
+									xml.description h raw sanitize listing.description + " " + b_description + " " + pb_description,
 					        		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
 					      elsif listing.s_id
 					        xml.description h raw sanitize listing.public_description,
@@ -867,16 +872,21 @@ xml.streeteasy :version => "1.6" do
 								end
 
 								xml.availableOn listing.available_by # rentals only
+								pb_description = ""
 								if listing.building.landlord
 									if !listing.building.landlord.ll_public_description.nil?
-										pb_description = listing.description + listing.building.landlord.ll_public_description
-									else
-										pb_description = listing.description
+										pb_description = listing.building.landlord.ll_public_description
+									end
+								end
+								b_description = ""
+								if listing.building
+									if !listing.building.description.blank?
+										b_description = listing.building.description
 									end
 								end
 								
 								if listing.r_id
-									xml.description h raw sanitize pb_description,
+									xml.description h raw sanitize listing.description + " " + b_description + " " + pb_description,
 					        		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
 					      elsif listing.s_id
 					        xml.description h raw sanitize listing.public_description,
@@ -1397,16 +1407,21 @@ xml.streeteasy :version => "1.6" do
 									end
 
 									xml.availableOn listing.available_by # rentals only
+									pb_description = ""
 									if listing.building.landlord
 										if !listing.building.landlord.ll_public_description.nil?
-											pb_description = listing.description + listing.building.landlord.ll_public_description
-										else
-											pb_description = listing.description
+											pb_description = listing.building.landlord.ll_public_description
+										end
+									end
+									b_description = ""
+									if listing.building
+										if !listing.building.description.blank?
+											b_description = listing.building.description
 										end
 									end
 
 									if listing.r_id
-										xml.description h raw sanitize pb_description,
+										xml.description h raw sanitize listing.description + " " + b_description + " " + pb_description,
 						        		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
 						      elsif listing.s_id
 						        xml.description h raw sanitize listing.public_description,
