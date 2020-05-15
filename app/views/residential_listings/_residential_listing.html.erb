@@ -431,7 +431,8 @@
           <b><%= link_to "#{residential_listing.street_address}".freeze, agent_show_path(residential_listing.id) %></b><br />
         <% else %>
           <b><!--Address:--><%= link_to "#{residential_listing.street_address}".freeze, residential_listing_path(residential_listing.id) %></b></br>
-          <b><!--Unit Number:--></b><%= residential_listing.building_unit %>
+          <b><!--Unit Number:--></b><%= residential_listing.building_unit %> / <%= residential_listing.unit.streeteasy_unit %>
+          
           <% if !residential_listing.youtube_video_url.blank? %>
             <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
           <% end %>
