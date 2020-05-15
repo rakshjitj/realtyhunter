@@ -11,7 +11,7 @@ xml.streeteasy :version => "1.6" do
     @listings.each do |listing|
 
       # NOTE: this is super hacky. We should filter this out before sending
-      # to the view.
+      # to the view.  
       if !@primary_agents[listing.unit_id].blank? &&
             @primary_agents[listing.unit_id][0].name == @company.name
         # skip our generic catch-all account
@@ -96,6 +96,10 @@ xml.streeteasy :version => "1.6" do
 
                 if listing.exclusive
                   xml.exclusive
+                end
+
+                if listing.building.landlord
+                  xml.ll_code listing.building.landlord.code
                 end
 
                 if !listing.r_beds.nil?
@@ -434,6 +438,10 @@ xml.streeteasy :version => "1.6" do
 
                 if listing.exclusive
                   xml.exclusive
+                end
+
+                if listing.building.landlord
+                  xml.ll_code listing.building.landlord.code
                 end
 
                 if !listing.r_beds.nil?
@@ -773,6 +781,10 @@ xml.streeteasy :version => "1.6" do
 
                 if listing.exclusive
                   xml.exclusive
+                end
+
+                if listing.building.landlord
+                  xml.ll_code listing.building.landlord.code
                 end
 
                 if !listing.r_beds.nil?
@@ -1122,6 +1134,10 @@ xml.streeteasy :version => "1.6" do
                   xml.exclusive
                 end
 
+                if listing.building.landlord
+                  xml.ll_code listing.building.landlord.code
+                end
+
                 if !listing.r_beds.nil?
                   xml.bedrooms listing.r_beds.to_i
                 elsif !listing.s_beds.nil?
@@ -1458,6 +1474,10 @@ xml.streeteasy :version => "1.6" do
 
                 if listing.exclusive
                   xml.exclusive
+                end
+
+                if listing.building.landlord
+                  xml.ll_code listing.building.landlord.code
                 end
 
                 if !listing.r_beds.nil?
@@ -1797,6 +1817,10 @@ xml.streeteasy :version => "1.6" do
 
                 if listing.exclusive
                   xml.exclusive
+                end
+
+                if listing.building.landlord
+                  xml.ll_code listing.building.landlord.code
                 end
 
                 if !listing.r_beds.nil?
@@ -2145,6 +2169,10 @@ xml.streeteasy :version => "1.6" do
                   xml.exclusive
                 end
 
+                if listing.building.landlord
+                  xml.ll_code listing.building.landlord.code
+                end
+
                 if !listing.r_beds.nil?
                   xml.bedrooms listing.r_beds.to_i
                 elsif !listing.s_beds.nil?
@@ -2480,6 +2508,10 @@ xml.streeteasy :version => "1.6" do
 
           if listing.exclusive
             xml.exclusive
+          end
+
+          if listing.building.landlord
+            xml.ll_code listing.building.landlord.code
           end
 
           if !listing.r_beds.nil?
