@@ -61,7 +61,7 @@
     <div class="card list-view">
       <div class="card-contents">
         <div class="card-middle">
-          <% if @favorite_units.count > 0 %>
+          <% if @favorite_units.length > 0 %>
             <div class="card-nav">
               <div class="card-nav-inner">
                 <div class="middle">
@@ -91,7 +91,7 @@
           </div>
           <div class="row">
             <div class="col-xs-12 pagination-wrapper">
-              <%= render partial: 'shared/pagination', locals: {models: @residential_units} %>
+              <%#= render partial: 'shared/pagination', locals: {models: @residential_units} %>
             </div>
           </div>
         </div>
