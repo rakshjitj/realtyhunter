@@ -33,6 +33,31 @@
           <% end %>
         </div>
       </div>
+
+      <div class="row-no-padding">
+        <div class="col-xs-10">
+          <% if !residential_listing.youtube_video_url.blank? %>
+            <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
+          <% end %>
+          <% if !residential_listing.private_youtube_url.blank? %>
+            <span class="glyphicon glyphicon-facetime-video gray" aria-hidden="true"></span>
+          <% end %>
+          <% if !residential_listing.tour_3d.blank? %>
+            <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+          <% end %>
+          <br>
+          <% if residential_listing.unit.building.landlord.ll_importance == 'gold' %>
+            <span class="glyphicon glyphicon-certificate gold"></span>
+          <% elsif residential_listing.unit.building.landlord.ll_importance == 'silver' %>
+            <span class="glyphicon glyphicon-certificate silver"></span>
+          <% elsif residential_listing.unit.building.landlord.ll_importance == 'bronze' %>
+            <span class="glyphicon glyphicon-certificate bronze"></span>
+          <% end %>
+          <% if residential_listing.can_roomshare %>
+            <br /><strong>(RS)</strong>
+          <% end %>
+        </div>
+      </div>
       <!-- 2nd row: price, beds/baths -->
       <div class="row-no-padding">
         <div class="col-xs-6">
