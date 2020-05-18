@@ -175,6 +175,16 @@
           </div>
           <div class="row vertical-padding">
             <div class="col-xs-3">
+              <%= label_tag :ll_importance, "LL Class" %>
+            </div>
+            <div class="col-xs-4 col-sm-left-padding">
+              <%= select_tag(:ll_importance,
+                  options_for_select(['Any', ['Gold', 'gold'], ['Silver', 'silver'], ['Bronze', 'bronze']],
+                  params[:ll_importance] ? params[:ll_importance] : "Any"), class: 'form-control') %>
+            </div>
+          </div>
+          <div class="row vertical-padding">
+            <div class="col-xs-3">
               <%= label_tag :status, "Status", class: "field-label-sm" %>
             </div>
             <div class="col-xs-8 col-sm-left-padding">
