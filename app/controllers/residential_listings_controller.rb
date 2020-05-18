@@ -1422,6 +1422,10 @@ class ResidentialListingsController < ApplicationController
           params[:status] = "active".freeze
         end
       end
+
+      if !params[:ll_importance]
+        params[:ll_importance] = "gold".freeze
+      end
       # parse neighborhood ids into strings for display in the view
       @selected_neighborhoods = []
       if params[:neighborhood_ids]
