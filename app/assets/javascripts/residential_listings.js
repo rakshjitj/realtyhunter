@@ -1225,3 +1225,63 @@ var $headers = $(".test_p").click(function () {
     // $headers.not($header).text("Expand");
     $contents.not($content).stop(true, true).slideUp();
 });
+
+// $(document).ready(function() {
+//     if ($("#total_count_contacts").val() == ""){
+//       var treeCount = 1;
+//     }
+//     else{
+//       var treeCount = $("#total_count_contacts").val();
+//     }
+//     $('.button-add').click(function(){
+//         //we select the box clone it and insert it after the box
+//         $('.box.template').clone()
+//                           .each(function(){
+//                             $("#name").last().attr("name", "name_" + treeCount);
+//                             $("#email").last().attr("name", "email_" + treeCount);
+//                             $("#phone").last().attr("name", "phone_" + treeCount);
+//                           })
+//                           .show()
+//                           .removeClass("template")
+//                           .insertAfter(".box:last");
+//                           treeCount ++;
+//                           $("#total_count_contacts").attr("value", ""+ treeCount)
+//     }).trigger("click");
+    
+//     $('.button-added').click(function(){
+//         //we select the box clone it and insert it after the box
+//         $('.box.template-for-clone').clone()
+//                           .each(function(){
+//                             $("#name").last().attr("name", "name_" + treeCount);
+//                             $("#email").last().attr("name", "email_" + treeCount);
+//                             $("#phone").last().attr("name", "phone_" + treeCount);
+//                           })
+//                           .show()
+//                           .removeClass("template-for-clone")
+//                           .insertAfter(".box:last");
+//                           treeCount ++;
+//                           $("#total_count_contacts").attr("value", ""+ treeCount)
+//     }).trigger("click");
+    
+//     $(document).on("click", ".button-remove", function() {
+//         $(this).closest(".box").remove();
+//         treeCount = treeCount - 1;
+//         $("#total_count_contacts").attr("value", ""+ treeCount)
+//     });
+// });
+
+function delete_contact_from_db(id) {
+  var retVal = confirm("Do you want to Delete?");
+  if( retVal == true ) {
+    $.ajax({
+      url: "delete_contact/?tenant_info_id=" + id,
+      type: 'GET',
+      success: function(result){
+    }});
+      var cls = ".del_cont_" + id
+      $(cls).remove(); 
+      return true;
+  } else {
+    return false;
+  }
+}

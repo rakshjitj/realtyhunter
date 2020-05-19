@@ -111,6 +111,7 @@ Rails.application.routes.draw do
       get 'neighborhood_options'
     end
   end
+  get "residential_listings/:id/delete_contact" => "residential_listings#delete_contact", as: :delete_contact_rental
   get "residential_listings/download_csv_active_new_reactivated_listings/:id" => "residential_listings#download_csv_active_new_reactivated_listings", as: :download_csv_active_new_reactivated_listings
   get "residential_listings/weekly_track" => "residential_listings#find_active_listing_weekly_basis", as: :weekly_track
   get "residential_listings/individual_se_list" => "residential_listings#individual_se_list", as: :individual_se_list

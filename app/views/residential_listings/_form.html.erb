@@ -305,6 +305,135 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-xs-12 form-section-header">
+            <hr class="thin-line" />
+            <h4>Tenant Info</h4>
+            <hr class="thin-line" />
+          </div>
+        </div>
+        <br />
+        <% if !@residential_unit.tenant_infos.blank? %>
+          <%= hidden_field_tag "total_count_contacts", "#{@residential_unit.tenant_infos.count + 1}" %>
+        <% else %>
+          <%= hidden_field_tag "total_count_contacts"  %>
+        <% end %>
+        <% if !@residential_unit.tenant_infos.blank? %>
+          <%# abort @landlord.landlord_contacts.count.inspect %>
+          <a href="javascript:void(0)" class="button-added">+ Add A Contact</a>
+          <div id="add_more"></div>
+          <div class="multiple_contact box template-added">
+          <div class="multiple_contact box template-for-clone" style="display: none;">
+            <br />
+            <div class="row">
+              <div class="col-xs-1 form-label-responsive" style="width: 12%;">
+                <%= label_tag "Name", nil, class: "required" %>
+              </div>
+              <div class="col-xs-4">
+                <%= text_field_tag :name, '', class: 'form-control', name: "name_#{@residential_unit.tenant_infos.count}" %>
+              </div>
+              <div class="col-xs-1 form-label-responsive" style="width: 12%;">
+                <%= label_tag "Email", nil, class: "required" %>
+              </div>
+              <div class="col-xs-4">
+                <%= text_field_tag :email, '', class: 'form-control', name: "email_#{@residential_unit.tenant_infos.count}" %>
+              </div>
+            </div>
+
+            <br />
+            <div class="row">
+              <div class="col-xs-1 form-label-responsive" style="width: 12%;">
+                <%= label_tag "Phone" %>
+              </div>
+              <div class="col-xs-4">
+                <%= text_field_tag :phone, '', class: 'form-control', name: "phone_#{@residential_unit.tenant_infos.count}" %>
+              </div>
+            </div>
+            <a href="javascript:void(0)" class="button-remove">Delete Contact</a>
+            <br />
+          </div>
+        <% else %>
+          <a href="javascript:void(0)" class="button-add">+ Add A Contact</a>
+          <div id="add_more"></div>
+          <div class="multiple_contact box template">
+        <% end %>
+        <!-- <input class="button-add" type="button" value="Clone box"> -->
+        
+          <% if !@residential_unit.tenant_infos.blank? %>  
+            <% r = 0 %>
+            <% @residential_unit.tenant_infos.each do |tenant_info| %>
+              <%= hidden_field_tag "tenant_info_id_#{r}", tenant_info.id %>
+              <br />
+              <div class="row">
+                <div class="col-xs-1 form-label-responsive" style="width: 12%;">
+                  <%= label_tag "Name", nil, class: "required del_cont_#{tenant_info.id}" %>
+                </div>
+                <div class="col-xs-4">
+                  <%= text_field_tag :name, tenant_info.name ? tenant_info.name : '', class: "form-control del_cont_#{tenant_info.id}", name: "name_#{r}" %>
+                </div>
+                <div class="col-xs-1 form-label-responsive" style="width: 12%;">
+                  <%= label_tag "Email", nil, class: "required del_cont_#{tenant_info.id}" %>
+                </div>
+                <div class="col-xs-4">
+                  <%= text_field_tag :email, tenant_info.email ? tenant_info.email : '', class: "form-control del_cont_#{tenant_info.id}", name: "email_#{r}" %>
+                </div>
+              </div>
+
+              <br />
+              <div class="row">
+                <div class="col-xs-1 form-label-responsive" style="width: 12%;">
+                  <%= label_tag "Phone", nil, class: "del_cont_#{tenant_info.id}" %>
+                </div>
+                <div class="col-xs-4">
+                  <%= text_field_tag :phone, tenant_info.phone ? tenant_info.phone : '', class: "form-control del_cont_#{tenant_info.id}", name: "phone_#{r}" %>
+                </div>
+              </div>
+              <%= link_to "Delete Contact", "javascript:void(0)", class: "button-remove-db del_cont_#{tenant_info.id}", onClick: "delete_contact_from_db(#{tenant_info.id})"%>
+              <!-- <a href="javascript:void(0)" class="button-remove-db" onclick="delete_contact_from_db("")">Delete Contact</a> -->
+              <br />
+              <% r = r + 1 %>
+            <% end %>
+          <% else %>
+            <br />
+            <div class="row">
+              <div class="col-xs-1 form-label-responsive" style="width: 12%;">
+                <%= label_tag "Name", nil, class: "required" %>
+              </div>
+              <div class="col-xs-4">
+                <%= text_field_tag :name, '', class: 'form-control', name: "name_0" %>
+              </div>
+              <div class="col-xs-1 form-label-responsive" style="width: 12%;">
+                <%= label_tag "Email", nil, class: "required" %>
+              </div>
+              <div class="col-xs-4">
+                <%= text_field_tag :email, '', class: 'form-control', name: "email_0" %>
+              </div>
+            </div>
+
+            <br />
+            <div class="row">
+              <div class="col-xs-1 form-label-responsive" style="width: 12%;">
+                <%= label_tag "Phone" %>
+              </div>
+              <div class="col-xs-4">
+                <%= text_field_tag :phone, '', class: 'form-control', name: "phone_0" %>
+              </div>
+            </div>
+
+            <br />
+            <a href="javascript:void(0)" class="button-remove">Delete Contact</a>
+          <% end %>
+          <!-- <input class="button-remove" type="button" value="Delete box"> -->
+          <!-- <a href="javascript:void(0)" class="button-remove">Delete Contact</a> -->
+        </div>
+        <div class="row">
+          <div class="col-xs-12 form-section-header">
+            <hr class="thin-line" />
+            <hr class="thin-line" />
+          </div>
+        </div>
+        <br />
+
         <!-- Open House -->
         <div class="row vertical-margin-lg">
           <div class="col-md-2">

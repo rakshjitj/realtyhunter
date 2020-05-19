@@ -5,6 +5,7 @@ class ResidentialListing < ApplicationRecord
   has_and_belongs_to_many :residential_amenities
   has_many :roommates
   has_many :rooms
+  has_many :tenant_infos, dependent: :destroy
   belongs_to :rental_term
   belongs_to :unit, touch: true
   has_many :streeteasy_counters

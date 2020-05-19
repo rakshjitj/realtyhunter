@@ -506,47 +506,47 @@ class ResidentialListingsController < ApplicationController
     listing_updated = nil
     is_now_active = nil
 
-    # if !@residential_unit.tenant_infos.blank?
-    #   #abort @landlord.landlord_contacts.inspect
-    #   count = params[:total_count_contacts].to_i - 2
-    #   for i in 0..count
-    #     update_name = :"name_#{i}"
-    #     #abort update_name.inspect
-    #     update_email = :"email_#{i}"
-    #     update_phone = :"phone_#{i}"
-    #     if (i <= (@residential_unit.tenant_infos.count - 1))
-    #       update_tenant_info_cont = :"tenant_info_id_#{i}"
-    #       @tenant_info = TenantInfo.find(params[update_tenant_info_cont])
-    #       @tenant_info.update(name: params[update_name], email: params[update_email], phone: params[update_phone],residential_listing_id: params[:id])
-    #     else
-    #       TenantInfo.create(name: params[update_name], email: params[update_email], phone: params[update_phone],residential_listing_id: params[:id])
-    #     end
-    #   end
-    #   count_update = @residential_unit.tenant_infos.count - 1
-    #   # for j in (count_update + 1)..count
-    #   #   #abort j.inspect
-    #   #   update_name = :"name_#{j}"
-    #   #   update_email = :"email_#{j}"
-    #   #   update_phone = :"phone_#{j}"
-    #   #   update_position = :"position_#{j}"
-    #   #   LandlordContact.create(name: params[update_name], email: params[update_email], phone: params[update_phone], position: params[update_position],landlord_id: params[:id])
-    #   # end
-    #   # for i in 0..count_update
-    #   #   update_name = :"name_#{i}"
-    #   #   update_email = :"email_#{i}"
-    #   #   update_phone = :"phone_#{i}"
-    #   #   update_position = :"position_#{i}"
-    #   #   LandlordContact.update(name: params[update_name], email: params[update_email], phone: params[update_phone], position: params[update_position],landlord_id: params[:id])
-    #   # end
-    # else
-    #   count = params[:total_count_contacts].to_i - 2
-    #   for i in 0..count
-    #     update_name = :"name_#{i}"
-    #     update_email = :"email_#{i}"
-    #     update_phone = :"phone_#{i}"
-    #     TenantInfo.create(name: params[update_name], email: params[update_email], phone: params[update_phone],residential_listing_id: params[:id])
-    #   end
-    # end
+    if !@residential_unit.tenant_infos.blank?
+      #abort @landlord.landlord_contacts.inspect
+      count = params[:total_count_contacts].to_i - 2
+      for i in 0..count
+        update_name = :"name_#{i}"
+        #abort update_name.inspect
+        update_email = :"email_#{i}"
+        update_phone = :"phone_#{i}"
+        if (i <= (@residential_unit.tenant_infos.count - 1))
+          update_tenant_info_cont = :"tenant_info_id_#{i}"
+          @tenant_info = TenantInfo.find(params[update_tenant_info_cont])
+          @tenant_info.update(name: params[update_name], email: params[update_email], phone: params[update_phone],residential_listing_id: params[:id])
+        else
+          TenantInfo.create(name: params[update_name], email: params[update_email], phone: params[update_phone],residential_listing_id: params[:id])
+        end
+      end
+      count_update = @residential_unit.tenant_infos.count - 1
+      # for j in (count_update + 1)..count
+      #   #abort j.inspect
+      #   update_name = :"name_#{j}"
+      #   update_email = :"email_#{j}"
+      #   update_phone = :"phone_#{j}"
+      #   update_position = :"position_#{j}"
+      #   LandlordContact.create(name: params[update_name], email: params[update_email], phone: params[update_phone], position: params[update_position],landlord_id: params[:id])
+      # end
+      # for i in 0..count_update
+      #   update_name = :"name_#{i}"
+      #   update_email = :"email_#{i}"
+      #   update_phone = :"phone_#{i}"
+      #   update_position = :"position_#{i}"
+      #   LandlordContact.update(name: params[update_name], email: params[update_email], phone: params[update_phone], position: params[update_position],landlord_id: params[:id])
+      # end
+    else
+      count = params[:total_count_contacts].to_i - 2
+      for i in 0..count
+        update_name = :"name_#{i}"
+        update_email = :"email_#{i}"
+        update_phone = :"phone_#{i}"
+        TenantInfo.create(name: params[update_name], email: params[update_email], phone: params[update_phone],residential_listing_id: params[:id])
+      end
+    end
 
     if params[:residential_listing][:unit][:price_calculation] == "1"
       params[:residential_listing][:unit][:rent] = (params[:residential_listing][:unit][:gross_price].to_i * (params[:residential_listing][:lease_start].to_f - params[:residential_listing][:unit][:maths_free].to_f)) / params[:residential_listing][:lease_start].to_f
