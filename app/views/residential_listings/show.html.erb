@@ -231,6 +231,18 @@
 		    			</div>
 		    			<div class="row">
 		    				<div class="col-xs-5">
+		    					<strong>ALT Address</strong>
+		    				</div>
+		    				<div class="col-xs-7">
+		    					<% if !@residential_unit.alt_address.blank? %>
+		    						<%= @residential_unit.alt_address %>
+		    					<% else %>
+		    						---
+		    					<% end %>
+		    				</div>
+		    			</div>
+		    			<div class="row">
+		    				<div class="col-xs-5">
 				    			<strong>Unit:</strong>
 				    		</div>
 				    		<div class="col-xs-7">
@@ -464,6 +476,15 @@
 			    	</div>
 			    <% end %>
 
+			    <% if !@residential_unit.photo_video_access.blank? && current_user.is_management? %>
+			    	<div class="row">
+				    	<div class="col-xs-12 col-md-3">
+			    			<strong>Photo Video Access:</strong>
+			    		</div>
+			    		<div class="col-xs-12 col-md-9">
+			    			<%= @residential_unit.photo_video_access %>
+			    		</div>
+			    <% end %>
 
 					<!-- Open House Schedule Section - START -->
 					<% open_houses = @residential_unit.unit.open_houses %>
@@ -575,6 +596,19 @@
 			    	<div class="row">
 			    		<div class="col-xs-12 col-md-12">
 			    			<%= @residential_unit.notes %>
+			    		</div>
+			    	</div>
+			    <% end %>
+			    <% if !@residential_unit.dimensions.blank? %>
+				    <br />
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-12">
+			    			<strong>Dimensions:</strong>
+			    		</div>
+			    	</div>
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-12">
+			    			<%= @residential_unit.dimensions %>
 			    		</div>
 			    	</div>
 			    <% end %>

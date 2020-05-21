@@ -160,6 +160,15 @@
         </div>
         <% end %>
 
+        <div class="row vertical-margin-lg">
+          <div class="col-xs-3 col-md-2">
+            <%= f.label :alt_address %>
+          </div>
+          <div class="col-xs-9 col-md-4">
+            <%= f.text_field :alt_address, class: 'form-control' %>
+          </div>
+        </div>
+
         <%= f.fields_for @residential_unit.unit do |unit_form| %>
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
@@ -304,6 +313,16 @@
             <% end %>
           </div>
         </div>
+        <% if current_user.is_management? %>
+          <div class="row vertical-margin-lg">
+            <div class="col-md-2">
+              <%= f.label :photo_video_access %>
+            </div>
+            <div class="col-md-9">
+              <%= f.text_area :photo_video_access, class: 'form-control', rows: 6 %>
+            </div>
+          </div>
+        <% end %>
 
         <div class="row">
           <div class="col-xs-12 form-section-header">
@@ -542,6 +561,15 @@
           </div>
           <div class="col-md-9">
             <%= f.text_area :notes, class: 'form-control', rows: 6 %>
+          </div>
+        </div>
+
+        <div class="row vertical-margin-lg">
+          <div class="col-md-2">
+            <%= f.label :dimensions %>
+          </div>
+          <div class="col-md-9">
+            <%= f.text_area :dimensions, class: 'form-control', rows: 6 %>
           </div>
         </div>
 
