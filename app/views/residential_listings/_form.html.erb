@@ -183,7 +183,7 @@
         <%= f.fields_for @residential_unit.unit do |unit_form| %>
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
-            <%= f.label :streeteasy_unit, class: 'required' %>
+            <%= f.label :streeteasy_unit, "ALT Unit", class: 'required' %>
           </div>
           <div class="col-xs-9 col-md-4">
             <%= unit_form.text_field :streeteasy_unit, class: 'form-control', required: true %>
