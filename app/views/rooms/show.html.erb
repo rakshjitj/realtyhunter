@@ -222,7 +222,7 @@
 		    			</div>
 		    			<div class="row">
 		    				<div class="col-xs-5">
-				    			<strong>Price:Net/gross_price</strong>
+				    			<strong>Price:</strong>
 				    		</div>
 				    		<div class="col-xs-7">
 				    			<%= rent_formatted(@residential_unit.unit.rent) %> / <%= rent_formatted(@residential_unit.unit.gross_price) %>
@@ -635,7 +635,7 @@
 						                    <% elsif room.status == 1 %>
 						                      <span class="glyphicon glyphicon-arrow-up dark-orange" aria-hidden="true"></span>
 						                    <% elsif room.status == 2 %>
-						                      <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+						                      <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
 						                    <% end %>
 							    		</div>
 							    	</div>
