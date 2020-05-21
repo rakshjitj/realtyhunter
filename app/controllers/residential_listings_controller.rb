@@ -1468,12 +1468,11 @@ class ResidentialListingsController < ApplicationController
           params[:status] = "active".freeze
         end
       end
-      if action_name != room_index
-        if current_user.is_data_entry? || current_user.is_data_entry2?
-        else
-          if !params[:ll_importance]
-            params[:ll_importance] = "gold".freeze
-          end
+
+      if current_user.is_data_entry? || current_user.is_data_entry2?
+      else
+        if !params[:ll_importance]
+          params[:ll_importance] = "gold".freeze
         end
       end
       # parse neighborhood ids into strings for display in the view
