@@ -118,6 +118,7 @@ Rails.application.routes.draw do
   get 'residential_listings/favorite_listings' => "residential_listings#favorite_listings", as: :residential_favorite_listings
   get 'sales_listings/:sales_listing_id/unit_images/:id/display_floor_image_sales' => "unit_images#display_floor_image_sales", as: :display_floor_image_sales
   get 'residential_listings/:residential_listing_id/unit_images/:id/display_floor_image' => "unit_images#display_floor_image", as: :display_floor_image
+  get 'residential_listings/:residential_listing_id/unit_images/:id/display_tenant_sourced' => "unit_images#display_tenant_sourced", as: :display_tenant_sourced
   get 'residential_listings/:residential_listing_id/unit_images/:id/display' => "unit_images#display", as: :display
   get 'residential_listings/index_streeteasy' => "residential_listings#index_streeteasy", as: :index_streeteasy
   get 'residential_listings/index_main' => "residential_listings#index_main", as: :index_main
