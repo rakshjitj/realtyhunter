@@ -370,6 +370,7 @@
     DropZoneHelper.updateRemoveImgLinks('residential', 'residential_listings');
     DropZoneHelper.updateImgOptions('residential', 'residential_listings');
     DropZoneHelper.updateImgFloorPlanOptions('residential', 'residential_listings');
+    DropZoneHelper.updateImgTenantSourcedOptions('residential', 'residential_listings');
 
     $('.carousel-indicators > li:first-child').addClass('active');
     $('.carousel-inner > .item:first-child').addClass('active');

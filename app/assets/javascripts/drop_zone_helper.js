@@ -94,6 +94,29 @@ DropZoneHelper = {};
     }
   };
 
+  DropZoneHelper.displayTenantSourcedImage = function (id, unit_id, controllerPath) {
+    // if not currently in the middle of a deletion request, delete this photo
+    if (!DropZoneHelper.currentlyDeleting) {
+      DropZoneHelper.currentlyDeleting = false;
+      Listings.showSpinner();
+      $.ajax({
+        type: 'get',
+        url: '/' + controllerPath + '/' + unit_id + '/unit_images/' + id + '/display_tenant_sourced',
+        success: function(data){
+          //console.log(data.message);
+          $.getScript('/' + controllerPath + '/' + unit_id + '/refresh_images');
+          Listings.hideSpinner();
+          DropZoneHelper.currentlyDeleting = false;
+        },
+        error: function(data) {
+          Listings.hideSpinner();
+          DropZoneHelper.currentlyDeleting = false;
+          //console.log('ERROR:', data);
+        }
+      });
+    }
+  };
+
   DropZoneHelper.displayFloorImageForSales = function (id, unit_id, controllerPath) {
     // if not currently in the middle of a deletion request, delete this photo
     if (!DropZoneHelper.currentlyDeleting) {
@@ -188,6 +211,15 @@ DropZoneHelper = {};
       var id = $(this).attr('data-id');
       var unit_id = $(this).attr('data-unit-id');
       DropZoneHelper.displayFloorImage(id, unit_id, controllerPath);
+    });
+  };
+
+  DropZoneHelper.updateImgTenantSourcedOptions = function(sectionID, controllerPath) {
+    $('#' + sectionID + ' .display-unit-img-tenant-sourced').click(function(event) {
+      event.preventDefault();
+      var id = $(this).attr('data-id');
+      var unit_id = $(this).attr('data-unit-id');
+      DropZoneHelper.displayTenantSourcedImage(id, unit_id, controllerPath);
     });
   };
 
