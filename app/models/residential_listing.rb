@@ -395,12 +395,28 @@ class ResidentialListing < ApplicationRecord
     if params[:pet_policy_shorthand_mobile]
       pp = params[:pet_policy_shorthand_mobile].downcase
       policies = nil
-      if pp == "none"
+      if pp == "no pets"
         policies = PetPolicy.where(name: "no pets", company: user.company)
       elsif pp == "cats only"
-        policies = PetPolicy.policies_that_allow_cats(user.company, true)
+        policies = PetPolicy.where(name: "cats only", company: user.company)
       elsif pp == "dogs only"
-        policies = PetPolicy.policies_that_allow_dogs(user.company, true)
+        policies = PetPolicy.where(name: "dogs only", company: user.company)
+      elsif pp == "case by case"
+        policies = PetPolicy.where(name: "case by case", company: user.company)
+      elsif pp == "cats/small dogs"
+        policies = PetPolicy.where(name: "case by case", company: user.company)
+      elsif pp == "monthly pet fee"
+        policies = PetPolicy.where(name: "monthly pet fee", company: user.company)
+      elsif pp == "pet deposit required"
+        policies = PetPolicy.where(name: "pet deposit required", company: user.company)
+      elsif pp == "pets allowed"
+        policies = PetPolicy.where(name: "pets allowed", company: user.company)
+      elsif pp == "pets ok"
+        policies = PetPolicy.where(name: "pets ok", company: user.company)
+      elsif pp == "pets upon approval"
+        policies = PetPolicy.where(name: "pets upon approval", company: user.company)
+      elsif pp == "small pets ok (<30 lbs)"
+        policies = PetPolicy.where(name: "small pets ok (<30 lbs)", company: user.company)    
       end
 
       if policies

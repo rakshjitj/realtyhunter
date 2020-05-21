@@ -174,8 +174,20 @@
             </div>
           </div>
           <div class="row vertical-padding">
+            <div class="col-xs-5">
+              <%= label_tag(:landlord, "Landlord ", class: "field-label-sm") %>
+            </div>
+            <div class="col-xs-6 col-sm-left-padding">
+              <%= autocomplete_field_tag :landlord, params[:landlord],
+                autocomplete_landlord_code_residential_listings_path,
+                update_elements: {},
+                placeholder: "code",
+                size: 30, class:'form-control' %>
+            </div>
+          </div>
+          <div class="row vertical-padding">
             <div class="col-xs-3">
-              <%= label_tag :ll_importance, "LL Class" %>
+              <%= label_tag :ll_importance, "LL Class", class: "field-label-sm" %>
             </div>
             <div class="col-xs-4 col-sm-left-padding">
               <%= select_tag(:ll_importance,
@@ -217,21 +229,39 @@
                   class: 'form-control'}) %>
             </div>
           </div>
-          <div class="row vertical-padding">
+          <!-- <div class="row vertical-padding">
           <div class="col-xs-3">
-            <%= label_tag :listing_id, "Listing ID", class: "field-label-sm" %>
+            <%#= label_tag :listing_id, "Listing ID", class: "field-label-sm" %>
           </div>
           <div class="col-xs-8 col-sm-left-padding">
-            <%= text_field_tag :listing_id, params[:listing_id], class:"form-control" %>
+            <%#= text_field_tag :listing_id, params[:listing_id], class:"form-control" %>
           </div>
-        </div>
+        </div> -->
+        <% if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
+            <div class="row vertical-padding">
+              <div class="col-xs-5">
+                <%= label_tag :tenant_occupied, "Tenant Occupieds or Not", class: "field-label-sm"  %>
+              </div>
+              <div class="col-xs-6 col-sm-left-padding">
+                <%= select_tag(:tenant_occupied, options_for_select([['Any','Any'],['Tenant Occupied', 0], ['Not Tenant Occupied', 1]], params[:tenant_occupied] ? params[:tenant_occupied].titleize : "Any"), class: 'form-control') %>
+              </div>
+            </div>
+          <% end %>
+          <div class="row vertical-padding">
+            <div class="col-xs-5">
+              <%= label_tag :youtube_video_url, "Video Present Or Not", class: "field-label-sm" %>
+            </div>
+            <div class="col-xs-6 col-sm-left-padding">
+              <%= select_tag(:youtube_video_url, options_for_select([['Any','Any'],['Video Present', 0], ['Not Video Present', 1]], params[:youtube_video_url] ? params[:youtube_video_url].titleize : "Any"), class: 'form-control') %>
+            </div>
+          </div>
           <div class="row vertical-padding">
             <div class="col-xs-3">
               <%= label_tag :pet_policy_shorthand_mobile, "Pets", class: 'field-label-sm' %>
             </div>
             <div class="col-xs-8 col-sm-left-padding">
               <%= select_tag(:pet_policy_shorthand_mobile,
-                options_for_select(["Any", "Cats Only", "Dogs Only", "None"],
+                options_for_select(["Any", "Cats Only", "Dogs Only", "No Pets", "CASE BY CASE", "CATS/SMALL DOGS", "MONTHLY PET FEE", "PET DEPOSIT REQUIRED", "PETS ALLOWED", "PETS OK", "PETS UPON APPROVAL", "SMALL PETS OK (<30 LBS)"],
                 [params[:pet_policy_shorthand_mobile] ? params[:pet_policy_shorthand_mobile].titleize : "Any"]),
                 class: 'form-control') %>
             </div>
