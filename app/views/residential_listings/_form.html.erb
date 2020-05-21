@@ -349,7 +349,7 @@
                 <%= text_field_tag :phone, '', class: 'form-control', name: "phone_#{@residential_unit.tenant_infos.count}" %>
               </div>
             </div>
-            <a href="javascript:void(0)" class="button-remove">Delete Contact</a>
+            <a href="javascript:void(0)" class="button-remove">Delete Tenant Info</a>
             <br />
           </div>
         <% else %>
@@ -388,7 +388,7 @@
                   <%= text_field_tag :phone, tenant_info.phone ? tenant_info.phone : '', class: "form-control del_cont_#{tenant_info.id}", name: "phone_#{r}" %>
                 </div>
               </div>
-              <%= link_to "Delete Contact", "javascript:void(0)", class: "button-remove-db del_cont_#{tenant_info.id}", onClick: "delete_contact_from_db(#{tenant_info.id})"%>
+              <%= link_to "Delete Tenant Info", "javascript:void(0)", class: "button-remove-db del_cont_#{tenant_info.id}", onClick: "delete_contact_from_db(#{tenant_info.id})"%>
               <!-- <a href="javascript:void(0)" class="button-remove-db" onclick="delete_contact_from_db("")">Delete Contact</a> -->
               <br />
               <% r = r + 1 %>
@@ -421,7 +421,7 @@
             </div>
 
             <br />
-            <a href="javascript:void(0)" class="button-remove">Delete Contact</a>
+            <a href="javascript:void(0)" class="button-remove">Delete Tenant Info</a>
           <% end %>
           <!-- <input class="button-remove" type="button" value="Delete box"> -->
           <!-- <a href="javascript:void(0)" class="button-remove">Delete Contact</a> -->
@@ -436,10 +436,12 @@
 
         <!-- Open House -->
         <div class="row vertical-margin-lg">
-          <div class="col-md-2">
-            <br>
-            <!-- <label>Open Houses</label> -->
-          </div>
+          <% if !@residential_unit.unit.open_houses.blank? %>
+            <div class="col-md-2">
+              <br>
+              <label>OPEN HOUSE TIMES</label>
+            </div>
+          <% end %>
           <div class="col-md-10">
             <div class="row vertical-margin-lg no-margin-padding">
               <%= f.fields_for @residential_unit.unit do |unit_form| %>
@@ -484,6 +486,15 @@
             </div>
           </div>
         </div>
+        <% if !@residential_unit.unit.open_houses.blank? %>
+          <div class="row">
+            <div class="col-xs-12 form-section-header">
+              <hr class="thin-line" />
+              <hr class="thin-line" />
+            </div>
+          </div>
+        <% end %>
+        <br />
         <!-- End open House -->
 
         <div class="row vertical-margin-lg">
