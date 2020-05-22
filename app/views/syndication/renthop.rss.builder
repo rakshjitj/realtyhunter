@@ -330,9 +330,13 @@ xml.streeteasy :version => "1.6" do
 										b_description = listing.building.description
 									end
 								end
+								t_description = ""
+								if !listing.residential_listing.tenant_description.nil?
+									t_description = "TENANT DESCIRIPTION " + listing.residential_listing.tenant_description
+								end
 
 								if listing.r_id
-									xml.description h raw sanitize b_description + " " + listing.description + " " + pb_description,
+									xml.description h raw sanitize t_description + " " + b_description + " " + listing.description + " " + pb_description,
 					        		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
 					      elsif listing.s_id
 					        xml.description h raw sanitize listing.public_description,
@@ -789,6 +793,11 @@ xml.streeteasy :version => "1.6" do
 										end
 									end
 
+									t_description = ""
+									if !listing.residential_listing.tenant_description.nil?
+										t_description = "TENANT DESCIRIPTION " + listing.residential_listing.tenant_description
+									end
+
 									if !listing.residential_listing.rs_only_description.nil?
 										listing_desc = listing.residential_listing.rs_only_description
 									else
@@ -796,7 +805,7 @@ xml.streeteasy :version => "1.6" do
 									end
 
 									if listing.r_id
-										xml.description h raw sanitize b_description + " " + listing_desc + " " + pb_description,
+										xml.description h raw sanitize t_description + " " + b_description + " " + listing_desc + " " + pb_description,
 						        		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
 						      elsif listing.s_id
 						        xml.description h raw sanitize listing.public_description,
