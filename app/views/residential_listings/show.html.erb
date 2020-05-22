@@ -629,6 +629,23 @@
 				        </div>
 				        <% end %>
 			    <% end %>
+
+			    <% if !@residential_unit.tenant_description.blank? %>
+						<br />
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-12">
+			    			<strong>Tenant Description:</strong>
+			    		</div>
+			    	</div>
+			    	<div class="row">
+			    		<div class="col-xs-12 col-md-12">
+			    			<% if !escape_once(@residential_unit.tenant_description).blank? %>
+		            	<%= h raw sanitize @residential_unit.tenant_description,
+		            			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div) %>
+		            <% end %>
+			    		</div>
+			    	</div>
+			    <% end %>
 			    
 			    <% if !@residential_unit.description.blank? %>
 						<br />

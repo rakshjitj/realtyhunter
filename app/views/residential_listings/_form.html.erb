@@ -160,15 +160,6 @@
         </div>
         <% end %>
 
-        <div class="row vertical-margin-lg">
-          <div class="col-xs-3 col-md-2">
-            <%= f.label :alt_address %>
-          </div>
-          <div class="col-xs-9 col-md-4">
-            <%= f.text_field :alt_address, class: 'form-control' %>
-          </div>
-        </div>
-
         <%= f.fields_for @residential_unit.unit do |unit_form| %>
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
@@ -180,13 +171,22 @@
         </div>
         <% end %>
 
+        <div class="row vertical-margin-lg">
+          <div class="col-xs-3 col-md-2">
+            <%= f.label :alt_address, "ALT Address" %>
+          </div>
+          <div class="col-xs-9 col-md-4">
+            <%= f.text_field :alt_address, class: 'form-control' %>
+          </div>
+        </div>
+
         <%= f.fields_for @residential_unit.unit do |unit_form| %>
         <div class="row vertical-margin-lg">
           <div class="col-xs-3 col-md-2">
-            <%= f.label :streeteasy_unit, "ALT Unit", class: 'required' %>
+            <%= f.label :streeteasy_unit, "ALT Unit" %>
           </div>
           <div class="col-xs-9 col-md-4">
-            <%= unit_form.text_field :streeteasy_unit, class: 'form-control', required: true %>
+            <%= unit_form.text_field :streeteasy_unit, class: 'form-control' %>
           </div>
         </div>
         <% end %>
@@ -346,13 +346,13 @@
             <br />
             <div class="row">
               <div class="col-xs-1 form-label-responsive" style="width: 12%;">
-                <%= label_tag "Name", nil, class: "required" %>
+                <%= label_tag "Name", nil %>
               </div>
               <div class="col-xs-4">
                 <%= text_field_tag :name, '', class: 'form-control', name: "name_#{@residential_unit.tenant_infos.count}" %>
               </div>
               <div class="col-xs-1 form-label-responsive" style="width: 12%;">
-                <%= label_tag "Email", nil, class: "required" %>
+                <%= label_tag "Email", nil %>
               </div>
               <div class="col-xs-4">
                 <%= text_field_tag :email, '', class: 'form-control', name: "email_#{@residential_unit.tenant_infos.count}" %>
@@ -385,13 +385,13 @@
               <br />
               <div class="row">
                 <div class="col-xs-1 form-label-responsive" style="width: 12%;">
-                  <%= label_tag "Name", nil, class: "required del_cont_#{tenant_info.id}" %>
+                  <%= label_tag "Name", nil, class: "del_cont_#{tenant_info.id}" %>
                 </div>
                 <div class="col-xs-4">
                   <%= text_field_tag :name, tenant_info.name ? tenant_info.name : '', class: "form-control del_cont_#{tenant_info.id}", name: "name_#{r}" %>
                 </div>
                 <div class="col-xs-1 form-label-responsive" style="width: 12%;">
-                  <%= label_tag "Email", nil, class: "required del_cont_#{tenant_info.id}" %>
+                  <%= label_tag "Email", nil, class: "del_cont_#{tenant_info.id}" %>
                 </div>
                 <div class="col-xs-4">
                   <%= text_field_tag :email, tenant_info.email ? tenant_info.email : '', class: "form-control del_cont_#{tenant_info.id}", name: "email_#{r}" %>
@@ -416,13 +416,13 @@
             <br />
             <div class="row">
               <div class="col-xs-1 form-label-responsive" style="width: 12%;">
-                <%= label_tag "Name", nil, class: "required" %>
+                <%= label_tag "Name", nil %>
               </div>
               <div class="col-xs-4">
                 <%= text_field_tag :name, '', class: 'form-control', name: "name_0" %>
               </div>
               <div class="col-xs-1 form-label-responsive" style="width: 12%;">
-                <%= label_tag "Email", nil, class: "required" %>
+                <%= label_tag "Email", nil %>
               </div>
               <div class="col-xs-4">
                 <%= text_field_tag :email, '', class: 'form-control', name: "email_0" %>
@@ -710,6 +710,21 @@
             <br>
           </div>
         </div><!-- row -->
+
+        <div class="row vertical-margin-lg">
+          <div class="col-md-2">
+            <%= f.label :tenant_description, "Tenant Description" %>
+          </div>
+          <div class="col-md-9">
+            <small class="explainer-text"><em>
+              Tip: Enter 2 blank lines to separate paragraphs.
+            </small></em>
+            <br><br>
+            <%= f.bootsy_area :tenant_description, class: 'form-control',
+                rows: 15 %>
+            <br>
+          </div>
+        </div>
 
         <div class="row vertical-margin-lg">
           <div class="col-md-2">
