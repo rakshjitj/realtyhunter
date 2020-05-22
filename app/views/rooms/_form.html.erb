@@ -38,6 +38,18 @@
                 rows: 15, required: true %>
             <br>
           </div>
+          <div class="col-md-2">
+            <%= label_tag :rs_only_description, "RS-Only Description" %>
+          </div>
+          <div class="col-md-9">
+            <!-- <small class="explainer-text"><em>
+              Tip: Enter 2 blank lines to separate paragraphs.
+            </small></em> -->
+            <br><br>
+            <%= text_area_tag :rs_only_description, @residential_unit.rs_only_description, as: :ckeditor, class: 'form-control ckeditor',
+                rows: 15 %>
+            <br>
+          </div>
           <div class="row vertical-margin-lg">
             <div class="col-xs-3 col-md-2">
               <%= label_tag :unit_status, "Unit Status" %>
