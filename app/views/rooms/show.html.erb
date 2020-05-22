@@ -490,18 +490,33 @@
 						</div>
 					</div> row --> 
 				<%# end %>
-				<div class="row">
-					<div class="col-xs-12 col-md-3">
-						<strong>Rooms Public Description</strong>
+				<% if !@residential_unit.rs_only_description.nil? %>
+					<div class="row">
+						<div class="col-xs-12 col-md-3">
+							<strong>Rooms Public Description</strong>
+						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-12 col-md-9">
-						<% if !@residential_unit.rooms_description.nil? %>
-							<%= @residential_unit.rooms_description.html_safe %>
-						<%end%>
+					<div class="row">
+						<div class="col-xs-12 col-md-9">
+							<% if !@residential_unit.rs_only_description.nil? %>
+								<%= @residential_unit.rs_only_description.html_safe %>
+							<%end%>
+						</div>
 					</div>
-				</div>
+				<% else %>
+					<div class="row">
+						<div class="col-xs-12 col-md-3">
+							<strong>Rooms Public Description</strong>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12 col-md-9">
+							<% if !@residential_unit.rooms_description.nil? %>
+								<%= @residential_unit.rooms_description.html_safe %>
+							<%end%>
+						</div>
+					</div>
+				<% end %>
 
 				<% if !escape_once(@residential_unit.unit.building.landlord.notes).blank? %>
 			    	<br />

@@ -134,8 +134,13 @@ xml.streeteasy :version => "1.6" do
 					xml.availableOn "June-01-2019"
 
 					if listing.r_id
-						xml.description h raw sanitize listing.description,
-		        		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
+						if !listing.residential_listing.rs_only_description.nil?
+							xml.description h raw sanitize listing.residential_listing.rs_only_description,
+		        			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
+						else
+							xml.description h raw sanitize listing.description,
+		        			tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
+		        		end
 		      elsif listing.s_id
 		        xml.description h raw sanitize listing.public_description,
 		        		tags: %w(h1 h2 h3 h4 h5 h6 p i b strong em a ol ul li q blockquote font span br div)
