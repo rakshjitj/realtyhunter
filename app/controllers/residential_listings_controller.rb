@@ -524,9 +524,7 @@ class ResidentialListingsController < ApplicationController
           @tenant_info = TenantInfo.find(params[update_tenant_info_cont])
           @tenant_info.update(name: params[update_name], email: params[update_email], phone: params[update_phone],residential_listing_id: params[:id])
         else
-          if !params[update_name].blank? && !params[update_phone].blank? && !params[update_email].blank?
-            TenantInfo.create(name: params[update_name], email: params[update_email], phone: params[update_phone],residential_listing_id: params[:id])
-          end
+          TenantInfo.create(name: params[update_name], email: params[update_email], phone: params[update_phone],residential_listing_id: params[:id])
         end
       end
       count_update = @residential_unit.tenant_infos.count - 1
@@ -551,9 +549,7 @@ class ResidentialListingsController < ApplicationController
         update_name = :"name_#{i}"
         update_email = :"email_#{i}"
         update_phone = :"phone_#{i}"
-        if !params[update_name].blank? && !params[update_phone].blank? && !params[update_email].blank?
-          TenantInfo.create(name: params[update_name], email: params[update_email], phone: params[update_phone],residential_listing_id: params[:id])
-        end
+        TenantInfo.create(name: params[update_name], email: params[update_email], phone: params[update_phone],residential_listing_id: params[:id])
       end
     end
 
