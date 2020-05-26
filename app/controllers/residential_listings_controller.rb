@@ -152,6 +152,11 @@ class ResidentialListingsController < ApplicationController
     @result = running_list
   end
 
+  def send_email_to_tenant
+    #@residential_listing = ResidentialListing.find(params[:id])
+    UnitMailer.send_email_to_all_tenant(params[:id], current_user.email).deliver!
+  end
+
   # def send_custom_email
 
   # end
@@ -519,7 +524,9 @@ class ResidentialListingsController < ApplicationController
           @tenant_info = TenantInfo.find(params[update_tenant_info_cont])
           @tenant_info.update(name: params[update_name], email: params[update_email], phone: params[update_phone],residential_listing_id: params[:id])
         else
-          TenantInfo.create(name: params[update_name], email: params[update_email], phone: params[update_phone],residential_listing_id: params[:id])
+          if !params[update_name].blank? && !params[update_phone].blank? && !params[update_email].blank?
+            TenantInfo.create(name: params[update_name], email: params[update_email], phone: params[update_phone],residential_listing_id: params[:id])
+          end
         end
       end
       count_update = @residential_unit.tenant_infos.count - 1
@@ -544,7 +551,9 @@ class ResidentialListingsController < ApplicationController
         update_name = :"name_#{i}"
         update_email = :"email_#{i}"
         update_phone = :"phone_#{i}"
-        TenantInfo.create(name: params[update_name], email: params[update_email], phone: params[update_phone],residential_listing_id: params[:id])
+        if !params[update_name].blank? && !params[update_phone].blank? && !params[update_email].blank?
+          TenantInfo.create(name: params[update_name], email: params[update_email], phone: params[update_phone],residential_listing_id: params[:id])
+        end
       end
     end
 
@@ -1088,6 +1097,16 @@ class ResidentialListingsController < ApplicationController
 
   end
 
+  def media_index
+    building = Building.all.map(&:point_of_contact).compact.uniq
+    @user = []
+    building.each do |build|
+      u = User.find(build)
+      @user << [u.name, u.id]
+    end
+    set_residential_listings
+  end
+
   def claim_for_individual_syndication_page
     residential_listing = ResidentialListing.find(params[:id])
     if residential_listing.claim_for_individual_syndication_page.blank?
@@ -1471,7 +1490,7 @@ class ResidentialListingsController < ApplicationController
 
       if current_user.is_data_entry? || current_user.is_data_entry2?
       else
-        if action_name == "room_index"
+        if action_name == "room_index" || action_name == "media_index"
           if !params[:ll_importance]
             params[:ll_importance] = "any".freeze
           end
