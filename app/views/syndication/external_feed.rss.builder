@@ -342,7 +342,7 @@ xml.streeteasy :version => "1.6" do
 								end
 								t_description = ""
 								if !listing.residential_listing.tenant_description.nil?
-									t_description = "TENANT DESCIRIPTION " + listing.residential_listing.tenant_description
+									t_description = "Tenant Quote " + listing.residential_listing.tenant_description
 								end
 
 								if listing.r_id
@@ -781,7 +781,7 @@ xml.streeteasy :version => "1.6" do
 								end
 								t_description = ""
 								if !listing.residential_listing.tenant_description.nil?
-									t_description = "TENANT DESCIRIPTION " + listing.residential_listing.tenant_description
+									t_description = "Tenant Quote " + listing.residential_listing.tenant_description
 								end
 
 								if listing.r_id
@@ -1209,7 +1209,7 @@ xml.streeteasy :version => "1.6" do
 									end
 									t_description = ""
 									if !listing.residential_listing.tenant_description.nil?
-										t_description = "TENANT DESCIRIPTION " + listing.residential_listing.tenant_description
+										t_description = "Tenant Quote " + listing.residential_listing.tenant_description
 									end
 
 									if listing.r_id
