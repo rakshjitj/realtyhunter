@@ -35,6 +35,7 @@
         bath_max: $('#bath_max').val(),
         landlord: $('#landlord').val(),
         ll_importance: $('#ll_importance').val(),
+        accepts_third_party_gaurantor: $('#accepts_third_party_gaurantor').val(),
         listing_id: $('#listing_id').val(),
         pet_policy_shorthand: $('#pet_policy_shorthand').val(),
         pet_policy_shorthand_mobile: $('#pet_policy_shorthand_mobile').val(),

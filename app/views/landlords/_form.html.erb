@@ -211,6 +211,19 @@
           </div>
         </div>
 
+        <br />
+        <div class="row">
+          <div class="col-xs-3 form-label-responsive">
+            <strong>Accepts Third-Party Gaurantor</strong>
+          </div>
+          <div class="col-xs-9 col-md-4">
+            <div class="checkbox checkbox-warning ">
+              <%= f.check_box :accepts_third_party_gaurantor, class:"styled", checked: @landlord.accepts_third_party_gaurantor %>
+              <label></label>
+            </div>
+          </div>
+        </div>
+
         <div class="row show-tp">
           <div class="col-xs-3 form-label-responsive">
             <%= f.label :tp_fee_percentage, 'Tenant Pays %' %>

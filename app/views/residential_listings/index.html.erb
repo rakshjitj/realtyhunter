@@ -153,6 +153,14 @@
           </div>
           <div class="row vertical-padding">
             <div class="col-xs-5">
+              <%= label_tag :accepts_third_party_gaurantor, "Accepts Third-Party Gaurantor" %>
+            </div>
+            <div class="col-xs-6 col-sm-left-padding">
+              <%= select_tag(:accepts_third_party_gaurantor, options_for_select([['Any','Any'],['Yes', 0], ['No', 1]], params[:accepts_third_party_gaurantor] ? params[:accepts_third_party_gaurantor].titleize : "Any"), class: 'form-control') %>
+            </div>
+          </div>
+          <div class="row vertical-padding">
+            <div class="col-xs-5">
               <%= label_tag :status, "Status" %>
             </div>
             <div class="col-xs-6 col-sm-left-padding">

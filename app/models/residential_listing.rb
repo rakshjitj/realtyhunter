@@ -219,7 +219,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.roomfill', 'residential_listings.partial_move_in', 'residential_listings.working_this_listing',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code', 'landlords.rating', 'landlords.ll_importance',
-        'landlords.id AS landlord_id', 'units.third_tier',
+        'landlords.id AS landlord_id', 'units.third_tier', 'landlords.accepts_third_party_gaurantor',
         'units.listing_id', 'units.available_by', 'units.public_url', 'units.exclusive',
         'users.name')
       #abort running_list.inspect
@@ -738,6 +738,16 @@ class ResidentialListing < ApplicationRecord
       end
     end
 
+    if !params[:accepts_third_party_gaurantor].blank?
+      if params[:accepts_third_party_gaurantor] == "0"
+        running_list = running_list.where("landlords.accepts_third_party_gaurantor =?", true)
+      elsif params[:accepts_third_party_gaurantor] == "1"
+        running_list = running_list.where("landlords.accepts_third_party_gaurantor =?", false)
+      else
+        running_list = running_list
+      end
+    end
+
     if !params[:landlord_rating].blank?
       rating = params[:landlord_rating]
       if rating == "0"
@@ -987,7 +997,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.tenant_occupied', 'residential_listings.roomshare_department', 'residential_listings.tour_3d',
         'residential_listings.roomfill', 'residential_listings.partial_move_in', 'residential_listings.working_this_listing',
         'neighborhoods.name AS neighborhood_name',
-        'landlords.code', 'landlords.ll_importance',
+        'landlords.code', 'landlords.ll_importance', 'landlords.accepts_third_party_gaurantor',
         'landlords.id AS landlord_id', 'units.third_tier',
         'units.primary_agent_id', 'units.available_by', 'units.listing_id', 'units.exclusive',
         'users.name')
@@ -1029,7 +1039,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.tenant_occupied', 'residential_listings.roomshare_department', 'residential_listings.tour_3d',
         'residential_listings.roomfill', 'residential_listings.partial_move_in', 'residential_listings.working_this_listing',
         'neighborhoods.name AS neighborhood_name',
-        'landlords.code', 'landlords.ll_importance',
+        'landlords.code', 'landlords.ll_importance', 'landlords.accepts_third_party_gaurantor',
         'landlords.id AS landlord_id', 'units.third_tier',
         'units.primary_agent_id', 'units.available_by', 'units.listing_id', 'units.exclusive',
         'users.name')
