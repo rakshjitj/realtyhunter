@@ -341,7 +341,7 @@ xml.streeteasy :version => "1.6" do
 									end
 								end
 								t_description = ""
-								if !listing.residential_listing.tenant_description.nil?
+								if !listing.residential_listing.tenant_description.nil?  || !listing.residential_listing.tenant_description.blank?
 									t_description = "Tenant Quote " + listing.residential_listing.tenant_description
 								end
 
@@ -780,7 +780,7 @@ xml.streeteasy :version => "1.6" do
 									end
 								end
 								t_description = ""
-								if !listing.residential_listing.tenant_description.nil?
+								if !listing.residential_listing.tenant_description.nil?  || !listing.residential_listing.tenant_description.blank?
 									t_description = "Tenant Quote " + listing.residential_listing.tenant_description
 								end
 
@@ -1208,7 +1208,7 @@ xml.streeteasy :version => "1.6" do
 										end
 									end
 									t_description = ""
-									if !listing.residential_listing.tenant_description.nil?
+									if !listing.residential_listing.tenant_description.nil?  || !listing.residential_listing.tenant_description.blank?
 										t_description = "Tenant Quote " + listing.residential_listing.tenant_description
 									end
 
