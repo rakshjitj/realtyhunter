@@ -17,21 +17,28 @@
 		    </div>
 		  </div>
 			<div class="effect">
-				<div align="center">
+				<div align="left" style="margin-left: 10px;">
+					<h4>Building Info</h4>
+				</div>
+				<div class="left-b-info">
 					<% if @residential_unit.unit.building.neighborhood %>
-						<span style="font-size: 20px;">Neighborhood : <%= @residential_unit.unit.building.neighborhood.name %></span>
+						<strong>Neighborhood :</strong> <%= @residential_unit.unit.building.neighborhood.name %>
 					<% end %>
-				</div>
-				<div align="center">
+					<br>
 					<% if @residential_unit.unit.building.pet_policy %>
-						<span style="font-size: 22px;">Pet Policy : <%= @residential_unit.unit.building.pet_policy.name %></span>
+						<strong>Pet Policy :</strong> <%= @residential_unit.unit.building.pet_policy.name %>
 					<% end %>
-				</div>
-				<div align="center">
+					<br>
 					<% if @residential_unit.unit.building.rental_term %>
-						<span style="font-size: 22px;">Lease Term: <%= @residential_unit.unit.building.rental_term.name %></span>
+						<strong>Lease Term :</strong> <%= @residential_unit.unit.building.rental_term.name %>
 					<% end %>
 				</div>
+				<div class="vertical-center"></div>
+				<% if !@residential_unit.unit.building.description.blank? %>
+					<div class="right-b-info">
+						<%= @residential_unit.unit.building.description.html_safe %>
+					</div>
+				<% end %>
 			</div>
 		</div>
 
