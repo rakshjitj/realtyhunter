@@ -50,17 +50,13 @@ xml.streeteasy :version => "1.6" do
               xml.location do
                 # note we don't want to give out the building number for rentals!
                 #abort listing.route.split(" ")[0].to_i.to_s.concat(" " + listing.route.split(" ")[1]).inspect
-                if !listing.residential_listing.alt_address.nil? && !listing.residential_listing.alt_address.blank?
-                  xml.address listing.residential_listing.alt_address
-                else
-                  if listing.building.route.split(" ")[0] =~ /\d/
-                    xml.address listing.street_number + " " + listing.route.split(" ")[0].to_i.to_s.concat(" " + listing.route.split(" ")[1])
-                  end
-                  if listing.building.route.split(" ")[1] =~ /\d/
-                    xml.address listing.street_number + " " + listing.route.split(" ")[0].concat(" " + listing.route.split(" ")[1].to_i.to_s + " " + listing.route.split(" ")[2])
-                  end
+                if listing.building.route.split(" ")[0] =~ /\d/
+                  xml.address listing.street_number + " " + listing.route.split(" ")[0].to_i.to_s.concat(" " + listing.route.split(" ")[1])
                 end
-                if !listing.streeteasy_unit.nil? && !listing.streeteasy_unit.nil?
+                if listing.building.route.split(" ")[1] =~ /\d/
+                  xml.address listing.street_number + " " + listing.route.split(" ")[0].concat(" " + listing.route.split(" ")[1].to_i.to_s + " " + listing.route.split(" ")[2])
+                end
+                if !listing.streeteasy_unit.nil?
                   xml.apartment listing.streeteasy_unit
                 else
                   xml.apartment listing.building_unit
@@ -401,12 +397,8 @@ xml.streeteasy :version => "1.6" do
             xml.property type: @ptype, status: @status, id: listing.listing_id, url: public_url do
               xml.location do
                 # note we don't want to give out the building number for rentals!
-                if !listing.residential_listing.alt_address.nil? && !listing.residential_listing.alt_address.blank?
-                  xml.address listing.residential_listing.alt_address
-                else
-                  xml.address listing.street_number + " " + listing.route
-                end
-                if !listing.streeteasy_unit.nil? && !listing.streeteasy_unit.nil?
+                xml.address listing.street_number + " " + listing.route
+                if !listing.streeteasy_unit.nil?
                   xml.apartment listing.streeteasy_unit
                 else
                   xml.apartment listing.building_unit
@@ -748,12 +740,8 @@ xml.streeteasy :version => "1.6" do
             xml.property type: @ptype, status: @status, id: listing.listing_id, url: public_url do
               xml.location do
                 # note we don't want to give out the building number for rentals!
-                if !listing.residential_listing.alt_address.nil? && !listing.residential_listing.alt_address.blank?
-                  xml.address listing.residential_listing.alt_address
-                else
-                  xml.address listing.street_number + " " + listing.route
-                end
-                if !listing.streeteasy_unit.nil? && !listing.streeteasy_unit.blank?
+                xml.address listing.street_number + " " + listing.route
+                if !listing.streeteasy_unit.nil?
                   xml.apartment listing.streeteasy_unit
                 else
                   xml.apartment listing.building_unit
@@ -1098,17 +1086,13 @@ xml.streeteasy :version => "1.6" do
             xml.property type: "rental", status: @status, id: listing.listing_id, url: public_url do
               xml.location do
                 # note we don't want to give out the building number for rentals!
-                if !listing.residential_listing.alt_address.nil? && !listing.residential_listing.alt_address.blank?
-                  xml.address listing.residential_listing.alt_address
-                else
-                  if listing.building.route.split(" ")[0] =~ /\d/
-                    xml.address listing.street_number + " " + listing.route.split(" ")[0].to_i.to_s.concat(" " + listing.route.split(" ")[1])
-                  end
-                  if listing.building.route.split(" ")[1] =~ /\d/
-                    xml.address listing.street_number + " " + listing.route.split(" ")[0].concat(" " + listing.route.split(" ")[1].to_i.to_s + " " + listing.route.split(" ")[2])
-                  end
+                if listing.building.route.split(" ")[0] =~ /\d/
+                  xml.address listing.street_number + " " + listing.route.split(" ")[0].to_i.to_s.concat(" " + listing.route.split(" ")[1])
                 end
-                if !listing.streeteasy_unit.nil? && !listing.streeteasy_unit.nil?
+                if listing.building.route.split(" ")[1] =~ /\d/
+                  xml.address listing.street_number + " " + listing.route.split(" ")[0].concat(" " + listing.route.split(" ")[1].to_i.to_s + " " + listing.route.split(" ")[2])
+                end
+                if !listing.streeteasy_unit.nil?
                   xml.apartment listing.streeteasy_unit
                 else
                   xml.apartment listing.building_unit
@@ -1449,12 +1433,8 @@ xml.streeteasy :version => "1.6" do
             xml.property type: "rental", status: @status, id: listing.listing_id, url: public_url do
               xml.location do
                 # note we don't want to give out the building number for rentals!
-                if !listing.residential_listing.alt_address.nil? && !listing.residential_listing.alt_address.blank?
-                  xml.address listing.residential_listing.alt_address
-                else
-                  xml.address listing.street_number + " " + listing.route
-                end
-                if !listing.streeteasy_unit.nil? && !listing.streeteasy_unit.nil?
+                xml.address listing.street_number + " " + listing.route
+                if !listing.streeteasy_unit.nil?
                   xml.apartment listing.streeteasy_unit
                 else
                   xml.apartment listing.building_unit
@@ -1796,12 +1776,8 @@ xml.streeteasy :version => "1.6" do
             xml.property type: "rental", status: @status, id: listing.listing_id, url: public_url do
               xml.location do
                 # note we don't want to give out the building number for rentals!
-                if !listing.residential_listing.alt_address.nil? && !listing.residential_listing.alt_address.blank?
-                  xml.address listing.residential_listing.alt_address
-                else
-                  xml.address listing.street_number + " " + listing.route
-                end
-                if !listing.streeteasy_unit.nil? && !listing.streeteasy_unit.nil?
+                xml.address listing.street_number + " " + listing.route
+                if !listing.streeteasy_unit.nil?
                   xml.apartment listing.streeteasy_unit
                 else
                   xml.apartment listing.building_unit
@@ -2148,12 +2124,8 @@ xml.streeteasy :version => "1.6" do
             xml.property type: @ptype, status: "active", id: listing_id, url: public_url do
               xml.location do
                 # note we don't want to give out the building number for rentals!
-                if !listing.residential_listing.alt_address.nil? && !listing.residential_listing.alt_address.blank?
-                  xml.address listing.residential_listing.alt_address
-                else
-                  xml.address listing.street_number + " " + listing.route
-                end
-                if !listing.streeteasy_unit.nil? && !listing.streeteasy_unit.nil?
+                xml.address listing.street_number + " " + listing.route
+                if !listing.streeteasy_unit.nil?
                   xml.apartment listing.streeteasy_unit
                 else
                   xml.apartment listing.building_unit
