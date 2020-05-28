@@ -324,7 +324,7 @@ left join sales_listings on units.id = sales_listings.unit_id')
 			'residential_listings.id AS r_id',
 			'residential_listings.notes AS r_note','residential_listings.renthop',
 			'residential_listings.lease_start', 'residential_listings.lease_end',
-			'residential_listings.has_fee', 'residential_listings.beds as r_beds',
+			'residential_listings.has_fee', 'residential_listings.beds as r_beds', 'residential_listings.alt_address',
 			'residential_listings.baths as r_baths', 'residential_listings.description', 'residential_listings.rooms_description',
 			'residential_listings.total_room_count as r_total_room_count', 'residential_listings.rs_only_description',
 			'residential_listings.floor', 'residential_listings.room_syndication', 'residential_listings.watermark_in_use',
