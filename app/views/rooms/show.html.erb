@@ -228,6 +228,17 @@
 				    			<%= rent_formatted(@residential_unit.unit.rent) %> / <%= rent_formatted(@residential_unit.unit.gross_price) %>
 				    		</div>
 		    			</div>
+		    			<% if @residential_unit.unit.maths_free == 0.0 %>
+						<% else %>
+							<div class="row">
+								<div class="col-xs-5">
+									<strong><span class="mthsFree">Mths Free : </span></strong>
+								</div>
+								<div class="col-xs-7">
+									<span class="mthsFree"><%= @residential_unit.unit.maths_free %></span>
+								</div>
+							</div>
+						<% end %>
 		    			<div class="row">
 		    				<div class="col-xs-5">
 				    			<strong>Beds/Baths:</strong>
