@@ -51,8 +51,14 @@ xml.instruct! :xml, :version => "1.0"
 			xml.Listing do #type: @ptype, status: @status, id: listing.listing_id, url: public_url do
 				xml.Location do
 					# note we don't want to give out the building number for rentals!
-					xml.StreetAddress listing.street_number + " " + listing.route
-					if !listing.streeteasy_unit.nil?
+					if listing.residential_listing
+						if	listing.residential_listing.alt_address.blank?
+	                  		xml.StreetAddress listing.residential_listing.alt_address
+	                  	end
+	                else
+					  xml.StreetAddress listing.street_number + " " + listing.route
+					end
+					if !listing.streeteasy_unit.blank?
 						xml.UnitNumber listing.streeteasy_unit
 					else
 						xml.UnitNumber listing.building_unit
@@ -309,17 +315,18 @@ xml.instruct! :xml, :version => "1.0"
 			                #   xml.office "9292748181"
 			                # end
 			              end
-			              @primary_agents[listing.unit_id].each do |agent|
+			              if !listing.primary_agent_id.nil?
+									user = User.find(listing.primary_agent_id)
 								xml.Agent do #id: agent.id
-									xml.Name agent.name
+									xml.Name user.name
 									xml.Company @company.name
-									xml.EmailAddress agent.streeteasy_email
-									if @agent_images[agent.id]
-										xml.PictureUrl url:@agent_images[agent.id].file.url(:large)
+									xml.EmailAddress user.streeteasy_email
+									if user.image
+										xml.PictureUrl url:user.image.file.url(:large)
 									end
-									xml.OfficeLineNumber agent.office_telephone
-									xml.MobilePhoneLineNumber agent.streeteasy_mobile_number
-									xml.FaxLineNumber agent.office_fax
+									xml.OfficeLineNumber user.office.telephone
+									xml.MobilePhoneLineNumber user.streeteasy_mobile_number
+									xml.FaxLineNumber user.office.fax
 								  # xml.url agent.public_url
 								
 								#xml.lead_email agent.streeteasy_email
