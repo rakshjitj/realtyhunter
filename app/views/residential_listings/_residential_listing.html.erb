@@ -286,8 +286,8 @@
                 </div>
               <% end %><!-- roomsharing icons -->
             </span>
-            <% if !residential_listing.notes.blank? %>
-              <span class="glyphicon glyphicon-info-sign green" data-toggle="modal" data-target="#myModal"  data-whatever="<%= residential_listing.notes.html_safe %><%= residential_listing.unit.building.landlord.notes.html_safe %>"></span>
+            <% if !residential_listing.notes.blank? || !residential_listing.dimensions.blank? %>
+              <span class="glyphicon glyphicon-info-sign green" data-toggle="modal" data-target="#myModal"  data-whatever="<%= 'Private Unit Notes ' + residential_listing.notes.html_safe %><%= residential_listing.unit.building.landlord.notes.html_safe %> <%= '<br> ---- <br> Dimensions<br> ' + residential_listing.dimensions %>"></span>
               <div class="modal fade" id="myModal" role="dialog">
                 <div class="modal-dialog">
                 
@@ -295,7 +295,7 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 class="modal-title">Private Unit Note</h4>
+                      <h4 class="modal-title">Additional Info</h4>
                     </div>
                     <div class="modal-body">
                       <p><%#= residential_listing.notes.html_safe %><%#= residential_listing.unit.building.landlord.notes.html_safe %></p>
@@ -308,19 +308,19 @@
                 </div>
               </div>
             <% end %>
-            <% if !residential_listing.dimensions.blank? %>
-              <span class="glyphicon glyphicon-info-sign dark-blue" data-toggle="modal" data-target="#myModalDimension"  data-whatever="<%= residential_listing.dimensions %>"></span>
+            <%# if !residential_listing.dimensions.blank? %>
+              <!-- <span class="glyphicon glyphicon-info-sign dark-blue" data-toggle="modal" data-target="#myModalDimension"  data-whatever="<%#= residential_listing.dimensions %>"></span>
               <div class="modal fade" id="myModalDimension" role="dialog">
-                <div class="modal-dialog">
+                <div class="modal-dialog"> -->
                 
                   <!-- Modal content-->
-                  <div class="modal-content">
+                 <!--  <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                       <h4 class="modal-title">Dimensions</h4>
                     </div>
                     <div class="modal-body">
-                      <p><%= residential_listing.dimensions %></p>
+                      <p><%#= residential_listing.dimensions %></p>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -328,8 +328,8 @@
                   </div>
                   
                 </div>
-              </div>
-            <% end %>
+              </div> -->
+            <%# end %>
           </td>
 
           <!-- ****** BEDS/BATHS ****************************************** -->
@@ -686,7 +686,7 @@
             <% end %><!-- roomsharing icons -->
           </span>
           <% if !residential_listing.notes.blank? %>
-            <span class="glyphicon glyphicon-info-sign green" data-toggle="modal" data-target="#myModal" data-whatever="<%= residential_listing.notes.html_safe %><%= residential_listing.unit.building.landlord.notes %>"></span>
+            <span class="glyphicon glyphicon-info-sign green" data-toggle="modal" data-target="#myModal" data-whatever="<%= '<strong>Private Unit Notes</strong> <br>' + residential_listing.notes.html_safe %><%= residential_listing.unit.building.landlord.notes %><%= '<br> ---- <br> Dimensions<br><br> ' + residential_listing.dimensions %>"></span>
               <div class="modal fade" id="myModal" role="dialog">
                 <div class="modal-dialog">
                 
@@ -694,7 +694,7 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 class="modal-title">Private Unit Note</h4>
+                      <h4 class="modal-title">Additional Info</h4>
                     </div>
                     <div class="modal-body">
                       <p><%#= residential_listing.notes.html_safe %><%#= residential_listing.unit.building.landlord.notes.html_safe %></p>
@@ -707,19 +707,19 @@
                 </div>
               </div>
           <% end %>
-          <% if !residential_listing.dimensions.blank? %>
-            <span class="glyphicon glyphicon-info-sign dark-blue" data-toggle="modal" data-target="#myModalDimension"  data-whatever="<%= residential_listing.dimensions %>"></span>
+          <%# if !residential_listing.dimensions.blank? %>
+            <!-- <span class="glyphicon glyphicon-info-sign dark-blue" data-toggle="modal" data-target="#myModalDimension"  data-whatever="<%#= residential_listing.dimensions %>"></span>
             <div class="modal fade" id="myModalDimension" role="dialog">
-              <div class="modal-dialog">
+              <div class="modal-dialog"> -->
               
                 <!-- Modal content-->
-                <div class="modal-content">
+                <!-- <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Dimensions</h4>
                   </div>
                   <div class="modal-body">
-                    <p><%= residential_listing.dimensions %></p>
+                    <p><%#= residential_listing.dimensions %></p>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -727,8 +727,8 @@
                 </div>
                 
               </div>
-            </div>
-          <% end %>
+            </div> -->
+          <%# end %>
         </td>
 
         <!-- ****** BEDS/BATHS ****************************************** -->
