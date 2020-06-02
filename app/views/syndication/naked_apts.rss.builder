@@ -37,7 +37,13 @@ xml.streeteasy :version => "1.6" do
 			xml.property type: @ptype, status: @status, id: listing.listing_id, url: listing.public_url do
 				xml.location do
 					# note we don't want to give out the building number for rentals!
-					xml.address listing.street_number + " " + listing.route
+					if listing.residential_listing
+						if	!listing.residential_listing.alt_address.blank?
+	                  		xml.address listing.residential_listing.alt_address
+	                  	else
+	                  		xml.address listing.street_number + " " + listing.route
+	                  	end
+					end
 					xml.apartment listing.building_unit
 					xml.city listing.sublocality
 					xml.state listing.administrative_area_level_1_short

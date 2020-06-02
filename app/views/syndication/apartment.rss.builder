@@ -64,7 +64,10 @@ xml.PhysicalProperty do
 						xml.City listing.sublocality
 						xml.State listing.administrative_area_level_1_short
 						xml.PostalCode listing.postal_code
-						xml.Email @primary_agents[listing.unit_id].first.streeteasy_email
+						if !listing.primary_agent_id.nil?
+							user = User.find(listing.primary_agent_id)
+							xml.Email @primary_agents[listing.unit_id].first.streeteasy_email
+						end
 					end
 					xml.Phone PhoneType: "office" do
 						xml.PhoneNumber "9292748181"
@@ -337,7 +340,8 @@ xml.PhysicalProperty do
 	                  xml.office "9292748181"
 	                end
 	              end
-	              @primary_agents[listing.unit_id].each do |agent|
+	              	if !listing.primary_agent_id.nil?
+	              		agent = User.find(listing.primary_agent_id)
 						xml.agent id: agent.id do
 							xml.name agent.name
 							xml.company @company.name
@@ -345,14 +349,14 @@ xml.PhysicalProperty do
 								xml.photo url:@agent_images[agent.id].file.url(:large)
 							end
 						  # xml.url agent.public_url
-						xml.email agent.streeteasy_email
-						xml.lead_email agent.streeteasy_email
-						xml.phone_numbers do
-							xml.main agent.streeteasy_mobile_number
-							xml.office agent.office_telephone
-							xml.cell agent.streeteasy_mobile_number
-							xml.fax agent.office_fax
-						end
+							xml.email agent.streeteasy_email
+							xml.lead_email agent.streeteasy_email
+							xml.phone_numbers do
+								xml.main agent.streeteasy_mobile_number
+								xml.office agent.office.telephone
+								xml.cell agent.streeteasy_mobile_number
+								xml.fax agent.office.fax
+							end
 						end
 					end
 	            end

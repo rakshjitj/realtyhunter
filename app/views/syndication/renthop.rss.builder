@@ -251,7 +251,11 @@ xml.streeteasy :version => "1.6" do
 						xml.property type: @ptype, status: "active", id: listing.listing_id, url: public_url do
 							xml.location do
 								# note we don't want to give out the building number for rentals!
-								xml.address listing.street_number + " " + listing.route
+								if	!listing.residential_listing.alt_address.blank?
+			                  		xml.address listing.residential_listing.alt_address
+			                  	else
+			                  		xml.address listing.street_number + " " + listing.route
+			                  	end
 								if !listing.streeteasy_unit.nil?
 									xml.apartment listing.streeteasy_unit
 								else
@@ -718,7 +722,11 @@ xml.streeteasy :version => "1.6" do
 								xml.property type: @ptype, status: "active", id: listing_id, url: public_url do
 								xml.location do
 									# note we don't want to give out the building number for rentals!
-									xml.address listing.street_number + " " + listing.route
+									if	!listing.residential_listing.alt_address.blank?
+				                  		xml.address listing.residential_listing.alt_address
+				                  	else
+				                  		xml.address listing.street_number + " " + listing.route
+				                  	end
 									if !listing.streeteasy_unit.nil?
 										xml.apartment listing.streeteasy_unit
 									else
