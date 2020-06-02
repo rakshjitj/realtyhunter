@@ -807,7 +807,7 @@ class ResidentialListing < ApplicationRecord
       if unit_dup.save!
 
         residential_unit_dup = self.dup
-        residential_unit_dup.update(unit_id: unit_dup.id, knack_id: nil, youtube_video_url: nil, tour_3d: nil, private_youtube_url: nil,notes: nil)
+        residential_unit_dup.update(unit_id: unit_dup.id, knack_id: nil, youtube_video_url: nil, tour_3d: nil, private_youtube_url: nil,notes: nil, dimensions: "")
 
         self.residential_amenities.each {|a|
           residential_unit_dup.residential_amenities << a
