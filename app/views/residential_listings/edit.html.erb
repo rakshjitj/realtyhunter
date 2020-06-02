@@ -16,11 +16,9 @@
 					<%= link_to 'All units', residential_listings_path %>
 		    </div>
 		  </div>
-			<div class="effect">
-				<div align="left" style="margin-left: 10px;">
-					<h4>Building Info</h4>
-				</div>
-				<div class="left-b-info">
+			<div class="building_info_row">
+				<h4>Building Info</h4>
+				<div class="building_left">
 					<% if @residential_unit.unit.building.neighborhood %>
 						<strong>Neighborhood :</strong> <%= @residential_unit.unit.building.neighborhood.name %>
 					<% end %>
@@ -33,12 +31,13 @@
 						<strong>Lease Term :</strong> <%= @residential_unit.unit.building.rental_term.name %>
 					<% end %>
 				</div>
-				<div class="vertical-center"></div>
-				<% if !@residential_unit.unit.building.description.blank? %>
-					<div class="right-b-info">
+				<div class="building_rght">
+					<% if !@residential_unit.unit.building.description.blank? %>
+						<strong>Building Desc: </strong>
 						<%= @residential_unit.unit.building.description.html_safe %>
-					</div>
-				<% end %>
+					<% end %>
+				</div>
+				<div class="clearfix"></div>
 			</div>
 		</div>
 
