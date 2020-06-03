@@ -258,7 +258,7 @@ class ResidentialListing < ApplicationRecord
       # cap query string length for security reasons
       address = params[:address][0, 500]
       running_list =
-       running_list.where('buildings.formatted_street_address ILIKE ?', "%#{address}%")
+       running_list.where('buildings.formatted_street_address ILIKE ? OR residential_listings.alt_address ILIKE ?', "%#{address}%", "%#{address}%" )
     end
 
     # search by unit
