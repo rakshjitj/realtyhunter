@@ -32,8 +32,15 @@
           <b><%= link_to "#{residential_listing.street_address}".freeze, agent_show_path(residential_listing.id) %></b><br />
         <% else %>
           <b><!--Address:--><%= link_to "#{residential_listing.street_address}".freeze, residential_listing_path(residential_listing.id) %></b></br>
-          <b><!--Unit Number:--></b><%= residential_listing.building_unit %> / <%= residential_listing.unit.streeteasy_unit %>
+          <b><!--Unit Number:--></b><%= residential_listing.building_unit %>
           <br />
+          <% if !residential_listing.unit.streeteasy_unit.blank? %>
+            --- Alt Unit <%= residential_listing.unit.streeteasy_unit %>
+          <% elsif !residential_listing.unit.streeteasy_unit.blank? && !residential_listing.alt_address.blank? %>
+            ---
+            <br>
+            Alt <%= residential_listing.alt_address %>, Unit <%= residential_listing.unit.streeteasy_unit %>
+          <% end %>
         <% end %>
         <% if residential_listing.neighborhood_name %>
           <b><!-- Neighborhood: --></b><small><%= residential_listing.neighborhood_name %></small>
@@ -127,7 +134,13 @@
           </div>
         </span>
         <% if !residential_listing.tenant_infos.blank? %>
-          <%= link_to "Send Tenant Email", send_email_to_tenant_path(residential_listing), remote: true, class: "send_t_button" %>
+          <% if !residential_listing.tenant_infos.blank? && residential_listing.tenant_occupied == true %>
+            <h5>TENANT INFO NEEDED</h5>
+          <% end %>
+          <% if !residential_listing.tenant_infos.all.map(&:email).reject(&:empty?).blank? %>
+            <%= link_to "Send Tenant Email", send_email_to_tenant_path(residential_listing), remote: true, class: "send_t_button" %>
+          <% end %>
+        <% else %>
         <% end %>
       </td>
       <% if current_user.is_management? ||
@@ -595,8 +608,15 @@
             <b><%= link_to "#{residential_listing.street_address}".freeze, agent_show_path(residential_listing.id) %></b><br />
           <% else %>
             <b><!--Address:--><%= link_to "#{residential_listing.street_address}".freeze, residential_listing_path(residential_listing.id) %></b></br>
-            <b><!--Unit Number:--></b><%= residential_listing.building_unit %> / <%= residential_listing.unit.streeteasy_unit %>
-            
+            <b><!--Unit Number:--></b><%= residential_listing.building_unit %>
+            <br>
+            <% if !residential_listing.unit.streeteasy_unit.blank? && residential_listing.alt_address.blank? %>
+              --- Alt Unit <%= residential_listing.unit.streeteasy_unit %>
+            <% elsif !residential_listing.alt_address.blank? && !residential_listing.unit.streeteasy_unit.blank? %>
+              ---
+              <br>
+              Alt <%= residential_listing.alt_address %>,<br> Unit <%= residential_listing.unit.streeteasy_unit %>
+            <% end %>
             <% if !residential_listing.youtube_video_url.blank? %>
               <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
             <% end %>
