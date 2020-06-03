@@ -205,15 +205,25 @@
 
     var firstImageAdded = false;
     var imgCount = 0;
+    var ct = 0
     for (var i=0; i<info['units'].length; i++) {
 
       unit = info['units'][i];
+      
       if (unit.image) {
         if (window.location.pathname == '/residential_listings/room_index'){
-          slideshowContent += '<div class="image' + (!firstImageAdded ? ' active' : '') + '">' +
+          if (ct >= 1){
+            contentString += '<div style="border-bottom: 1px solid #ccc; margin:15px;"></div><div style="float: left;" class="image' + (!firstImageAdded ? ' active' : '') + '">' +
             '<a href="https://realtyhunter.org:3000/rooms/'+ unit.id +
             '"><img src="' + unit.image + '" /></a>' +
             '</div>';
+          }
+          else{
+            contentString += '<div style="float: left;" class="image' + (!firstImageAdded ? ' active' : '') + '">' +
+            '<a href="https://realtyhunter.org:3000/rooms/'+ unit.id +
+            '"><img src="' + unit.image + '" /></a>' +
+            '</div>';
+          }
         }
         else{
           slideshowContent += '<div class="image' + (!firstImageAdded ? ' active' : '') + '">' +
@@ -223,6 +233,7 @@
         }
         firstImageAdded = true;
         imgCount++;
+        ct++;
       }
 
       var shouldHighlightRow = imgCount == 1 && info['units'].length > 1;
@@ -242,18 +253,18 @@
 
       if (window.location.pathname == '/residential_listings/room_index'){
         var rooms_url = 'https://realtyhunter.org:3000/rooms/' + unit.id
-        contentString += '<div class="contentRow" '+ (shouldHighlightRow ? ' active' : '') +' style="text-align: left;"><a href=' + rooms_url + '>' + key + ', #' + unit.building_unit+ '</a> <div class="un-main-content"><div>' + unit.beds + ' beds | ' + unit.baths + ' baths </div> '+ '<div> Net: $' + unit.rent + ' | Gross: $' + unit.gross + '</div><div> Avail: ' + unit.avail + '</div></div></div>' 
+        contentString += '<div class="contentRow" style="float: left;margin-left: 10px;" '+ (shouldHighlightRow ? ' active' : '') +' style="text-align: left;"><a href=' + rooms_url + '>' + key + ', #' + unit.building_unit+ '</a> <div class="un-main-content"><div>' + unit.beds + ' beds | ' + unit.baths + ' baths </div> '+ '<div> Net: $' + unit.rent + ' | Gross: $' + unit.gross + '</div><div> Avail: ' + unit.avail + '</div></div></div>' 
         for (var j=0; j<info['rooms']['0']['a'].length; j++) {
           room = info['rooms']['0']['a'][j];
           if (room.status == 2){
-            contentString += '<div class="contentRowroom" style="clear: both;text-align: left;color:#cdcdcd"' +'">'
+            contentString += '<div class="contentRowroom" style="clear: both;text-align: left;color:#cdcdcd;margin-left: 110px;"' +'">'
             + ''+set_iconss+'disabled>'
             + '<a id = "copycontent_'+i+'" href='+unit.public_url_for_room+'></a>'
             + '' + room.name + ' - ' +
             + room.rent + '</div>';
           }
           else{
-            contentString += '<div class="contentRowroom" style="clear: both;text-align: left;"'+'">'
+            contentString += '<div class="contentRowroom" style="clear: both;text-align: left;margin-left: 110px;"'+'">'
               + ''+set_iconss+'>'
               + '<a id = "copycontent_'+i+'" href='+unit.public_url_for_room+'></a>'
               + '' + room.name + ' - ' +
@@ -284,16 +295,10 @@
         '<div class="slideshow" style="float: left;margin-right: 10px;width: 100px;">' +
           slideshowContent +
         '</div>';
-      if (imgCount > 1) {
-        output += '<div class="cycle">' +
-          '<a href="#" class="prev">&laquo; Previous</a>' +
-          '<a href="#" class="next">Next &raquo;</a>' +
-          '</div>';
-      }
-      output += '<div class="content" style="float: left;width: 180px;">' +
+      output += '<div class="content" style="float: left;width: 300px;">' +
         contentString +
         '</div><div style="clear: both;"></div>';
-      return '<div class="popup">' + output + '</div>';
+      return '<div class="popup" style="text-align: left;max-height: 350px;overflow: auto;">' + output + '</div>';
     }
     else{
      output =
