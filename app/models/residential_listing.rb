@@ -286,6 +286,10 @@ class ResidentialListing < ApplicationRecord
       end
     end
 
+    if params[:public_url]
+      running_list = running_list.where("units.public_url =?", params[:public_url])
+    end
+
     if params[:ll_importance]
       if params[:ll_importance] == "gold"
         running_list = running_list.where("landlords.ll_importance =?", "gold")
@@ -998,7 +1002,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.roomfill', 'residential_listings.partial_move_in', 'residential_listings.working_this_listing',
         'neighborhoods.name AS neighborhood_name',
         'landlords.code', 'landlords.ll_importance', 'landlords.accepts_third_party_gaurantor',
-        'landlords.id AS landlord_id', 'units.third_tier',
+        'landlords.id AS landlord_id', 'units.third_tier', 'units.public_url',
         'units.primary_agent_id', 'units.available_by', 'units.listing_id', 'units.exclusive',
         'users.name')
       .order('residential_listings.updated_at desc')
@@ -1040,7 +1044,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.roomfill', 'residential_listings.partial_move_in', 'residential_listings.working_this_listing',
         'neighborhoods.name AS neighborhood_name',
         'landlords.code', 'landlords.ll_importance', 'landlords.accepts_third_party_gaurantor',
-        'landlords.id AS landlord_id', 'units.third_tier',
+        'landlords.id AS landlord_id', 'units.third_tier', 'units.public_url',
         'units.primary_agent_id', 'units.available_by', 'units.listing_id', 'units.exclusive',
         'users.name')
 

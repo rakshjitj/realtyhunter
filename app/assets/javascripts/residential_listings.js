@@ -42,6 +42,7 @@
         available_starting: $('#available_starting').val(),
         available_before: $('#available_before').val(),
         status: $('#status').val(),
+        public_url: $('#public_url').val(),
         has_fee: $('#has_fee').val(),
         roomsharing_filter: $('#roomsharing_filter').prop('checked'),
         unassigned_filter: $('#unassigned_filter').prop('checked'),
