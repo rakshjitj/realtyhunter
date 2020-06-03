@@ -674,3 +674,33 @@ a[data-target="#demo_pet_policy"] + div#demo_pet_policy > div input[id*="child_w
 .youtube-indicator{
   width: 50px;
 }
+
+.panel-title {
+  position: relative;
+}
+  
+.panel-title::after {
+  content: "\f107";
+  color: #333;
+  top: -2px;
+  right: 0px;
+  position: absolute;
+    font-family: "FontAwesome"
+}
+
+.panel-title[aria-expanded="true"]::after {
+  content: "\f106";
+}
+.row.vertical-padding {
+    margin-left: 0px;
+}
+a.test_p {
+  background-color: white;
+  margin-left: 12px;
+}
+.collapse {
+  background-color: #e6e6e6;
+}
+.h-line{
+  border-bottom: 1px solid #e6e6e6; margin-bottom:10px;
+}

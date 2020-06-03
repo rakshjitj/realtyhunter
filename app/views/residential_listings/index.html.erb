@@ -180,408 +180,420 @@
               <%# end %>
             </div>
           </div>
-          <div class="row vertical-padding">
-            <div class="col-xs-5">
-              <%= label_tag :has_fee, "Broker's Fee" %>
-            </div>
-            <div class="col-xs-6 col-sm-left-padding">
-              <%= select_tag(:has_fee,
-                options_for_select(%w(Any Yes No), params[:has_fee]), class: 'form-control') %>
-            </div>
-          </div>
-          <!-- <div class="row vertical-padding">
-            <div class="col-xs-5">
-              <%#= label_tag :pet_policy_shorthand, "Pet policy" %>
-            </div>
-            <div class="col-xs-6 col-sm-left-padding">
-              <%#= select_tag(:pet_policy_shorthand,
-                options_for_select(["Any", "Cats Only", "Dogs Only", "None"],
-                [params[:pet_policy_shorthand] ? params[:pet_policy_shorthand].titleize : "Any"]),
-                class: 'form-control') %>
-            </div>
-          </div> -->
+          <br>
+          <div class="h-line"></div>
+          <br>
+          <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+              <div class="panel-heading" style="background-color: white;text-align: center;">
+                 <h4 class="panel-title" data-toggle="collapse" data-target="#collapseOne">
+                     Advance Search Options
+                 </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse">
+                <div class="row vertical-padding">
+                  <div class="col-xs-5">
+                    <%= label_tag :has_fee, "Broker's Fee" %>
+                  </div>
+                  <div class="col-xs-6 col-sm-left-padding">
+                    <%= select_tag(:has_fee,
+                      options_for_select(%w(Any Yes No), params[:has_fee]), class: 'form-control') %>
+                  </div>
+                </div>
+                <!-- <div class="row vertical-padding">
+                  <div class="col-xs-5">
+                    <%#= label_tag :pet_policy_shorthand, "Pet policy" %>
+                  </div>
+                  <div class="col-xs-6 col-sm-left-padding">
+                    <%#= select_tag(:pet_policy_shorthand,
+                      options_for_select(["Any", "Cats Only", "Dogs Only", "None"],
+                      [params[:pet_policy_shorthand] ? params[:pet_policy_shorthand].titleize : "Any"]),
+                      class: 'form-control') %>
+                  </div>
+                </div> -->
 
-          <% if !params[:pet_policy_shorthand].nil? %>
-            <%= hidden_field_tag :pet_policy_shorthand, params[:pet_policy_shorthand] %>
-          <% else %>
-            <%= hidden_field_tag :pet_policy_shorthand %>
-          <% end %>
-          <div class="row vertical-padding">
-            <div class="col-xs-5">
-              <%= label_tag :pet_policy_shorthand, "Pet policy" %>
-            </div>
-            <div class="col-xs-6 col-sm-left-padding" style="width: 54%;">
-              <a href="javascript:;" class="test_p" data-target="#demo_pet_policy">Pet Policy</a>
-              <div class="row vertical-padding test_c" id="demo_pet_policy" style="display: none;">
-                <!-- <div class="col-xs-11 selectize-wrapper"> -->
+                <% if !params[:pet_policy_shorthand].nil? %>
+                  <%= hidden_field_tag :pet_policy_shorthand, params[:pet_policy_shorthand] %>
+                <% else %>
+                  <%= hidden_field_tag :pet_policy_shorthand %>
+                <% end %>
+                <div class="row vertical-padding">
+                  <div class="col-xs-5">
+                    <%= label_tag :pet_policy_shorthand, "Pet policy" %>
+                  </div>
+                  <div class="col-xs-6 col-sm-left-padding" style="width: 54%;">
+                    <a href="javascript:;" class="test_p" style="margin-left: 0px;" data-target="#demo_pet_policy">Pet Policy</a>
+                    <div class="row vertical-padding test_c" id="demo_pet_policy" style="display: none;">
+                      <!-- <div class="col-xs-11 selectize-wrapper"> -->
 
-                    <% PetPolicy.all.each do |pet_policy| %>
-                      <div class="col-sm-6" id="unit-amenities-select-multiple">
-                        <% if params[:pet_policy_shorthand] %>  
-                          <% if (params[:pet_policy_shorthand].split(",").include? "#{pet_policy.id}") %>
-                            <span class="child-input"><input type="checkbox" name="features[]" value="<%= pet_policy.id %>" id="parent_<%= pet_policy.id %>" checked="true" onClick = "pet_policy_check(<%= pet_policy.id %>)" ><b><%= pet_policy.name.titleize %></b></span>
-                          <% else %>
-                            <span class="child-input"><input type="checkbox" name="features[]" value="<%= pet_policy.id %>" id="parent_<%= pet_policy.id %>" onClick = "pet_policy_check(<%= pet_policy.id %>)" ><b><%= pet_policy.name.titleize %></b></span>
+                          <% PetPolicy.all.each do |pet_policy| %>
+                            <div class="col-sm-6" id="unit-amenities-select-multiple">
+                              <% if params[:pet_policy_shorthand] %>  
+                                <% if (params[:pet_policy_shorthand].split(",").include? "#{pet_policy.id}") %>
+                                  <span class="child-input"><input type="checkbox" name="features[]" value="<%= pet_policy.id %>" id="parent_<%= pet_policy.id %>" checked="true" onClick = "pet_policy_check(<%= pet_policy.id %>)" ><b><%= pet_policy.name.titleize %></b></span>
+                                <% else %>
+                                  <span class="child-input"><input type="checkbox" name="features[]" value="<%= pet_policy.id %>" id="parent_<%= pet_policy.id %>" onClick = "pet_policy_check(<%= pet_policy.id %>)" ><b><%= pet_policy.name.titleize %></b></span>
+                                <% end %>
+                              <% else %>
+                                <span class="child-input"><input type="checkbox" name="features[]" value="<%= pet_policy.id %>" id="parent_<%= pet_policy.id %>" onClick = "pet_policy_check(<%= pet_policy.id %>)" ><b><%= pet_policy.name.titleize %></b></span>
+                              <% end %>
+                              <br>
+                            </div>
                           <% end %>
-                        <% else %>
-                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= pet_policy.id %>" id="parent_<%= pet_policy.id %>" onClick = "pet_policy_check(<%= pet_policy.id %>)" ><b><%= pet_policy.name.titleize %></b></span>
-                        <% end %>
-                        <br>
-                      </div>
-                    <% end %>
-                <!-- </div> -->
-              </div>
-            </div>
-          </div>
-
-          <div class="row vertical-padding">
-            <div class="col-xs-5">
-              <%= label_tag :point_of_contact, "Point of Contact", class: "field-label-sm" %>
-            </div>
-            <div class="col-xs-6 col-sm-left-padding">
-              <%= select_tag(:point_of_contact,
-                options_for_select(@user,
-                    [params[:point_of_contact] ? params[:point_of_contact].titleize : "Any"]),
-                  {prompt: "Choose one...",
-                  class: 'form-control'}) %>
-            </div>
-          </div>
-          <div class="row vertical-padding">
-            <div class="col-xs-5">
-              <%= label_tag :primary_agent_id, "Agent" %>
-            </div>
-            <div class="col-xs-6 col-sm-left-padding">
-              <%= select_tag(:primary_agent_id,
-                options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
-                    [params[:primary_agent_id] ? params[:primary_agent_id].titleize : "Any"]),
-                  {prompt: "Choose one...",
-                  class: 'form-control'}) %>
-            </div>
-          </div>
-          <%# abort current_user.is_streeteasy_agent?.inspect %>
-          <% if current_user.is_management? || current_user.is_streeteasy_agent? %>
-            <div class="row vertical-padding">
-              <div class="col-xs-5">
-                <%= label_tag :streeteasy_filter, "On Streeteasy" %>
-              </div>
-              <div class="col-xs-6 col-sm-left-padding">
-                <%= select_tag(:streeteasy_filter,
-                    options_for_select(['Any', 'Yes', 'No'],
-                    [params[:streeteasy_filter] ? params[:streeteasy_filter].titleize : 'Any']),
-                    class: 'form-control') %>
-              </div>
-            </div>
-          <% end %>
-
-          <% if current_user.is_company_admin? || current_user.is_super_admin? %>
-            <div class="row vertical-padding">
-              <div class="col-xs-5">
-                <%= label_tag :streeteasy_claim, "Claim for Streeteasy" %>
-              </div>
-              <div class="col-xs-6 col-sm-left-padding">
-                <%= select_tag(:streeteasy_claim,
-                    options_for_select(['Any', 'Yes', 'No'],
-                    [params[:streeteasy_claim] ? params[:streeteasy_claim].titleize : 'Any']),
-                    class: 'form-control') %>
-              </div>
-            </div>
-          <% end %>
-          <%# if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
-            <!-- <div class="row vertical-padding">
-              <div class="col-xs-5">
-                <%#= label_tag :building_rating, "STREETEASY ELIGIBLE" %>
-              </div>
-              <div class="col-xs-6 col-sm-left-padding">
-                <%#= select_tag(:building_rating, options_for_select([['Any','Any'],['Yes', 0], ['No', 1]], params[:building_rating] ? params[:building_rating].titleize : "Any"), class: 'form-control') %>
-              </div>
-            </div> -->
-          <%# end %>
-
-          <% if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
-            <div class="row vertical-padding">
-              <div class="col-xs-5">
-                <%= label_tag :streeteasy_eligibility, "STREETEASY ELIGIBLE" %>
-              </div>
-              <div class="col-xs-6 col-sm-left-padding">
-                <%= select_tag(:streeteasy_eligibility, options_for_select([['Any','Any'],['Yes', 0], ['No', 1]], params[:streeteasy_eligibility] ? params[:streeteasy_eligibility].titleize : "Any"), class: 'form-control') %>
-              </div>
-            </div>
-          <% end %>
-          <% if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
-            <div class="row vertical-padding">
-              <div class="col-xs-5">
-                <%= label_tag :tenant_occupied, "Tenant Occupieds or Not" %>
-              </div>
-              <div class="col-xs-6 col-sm-left-padding">
-                <%= select_tag(:tenant_occupied, options_for_select([['Any','Any'],['Tenant Occupied', 0], ['Not Tenant Occupied', 1]], params[:tenant_occupied] ? params[:tenant_occupied].titleize : "Any"), class: 'form-control') %>
-              </div>
-            </div>
-          <% end %>
-          <div class="row vertical-padding">
-            <div class="col-xs-5">
-              <%= label_tag :youtube_video_url, "Video Present Or Not" %>
-            </div>
-            <div class="col-xs-6 col-sm-left-padding">
-              <%= select_tag(:youtube_video_url, options_for_select([['Any','Any'],['Video Present', 0], ['Not Video Present', 1]], params[:youtube_video_url] ? params[:youtube_video_url].titleize : "Any"), class: 'form-control') %>
-            </div>
-          </div>
-          <div class="row vertical-padding">
-            <div class="col-xs-5">
-              <%= label_tag :tour_3d, "3D Tour Present Or Not" %>
-            </div>
-            <div class="col-xs-6 col-sm-left-padding">
-              <%= select_tag(:tour_3d, options_for_select([['Any','Any'],['3D Tour Present', 0], ['Not 3D Tour Present', 1]], params[:tour_3d] ? params[:tour_3d].titleize : "Any"), class: 'form-control') %>
-            </div>
-          </div>
-          <%# if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
-            <!-- <div class="row vertical-padding">
-              <div class="col-xs-5">
-                <%#= label_tag :landlord_rating, "Landlord Rating" %>
-              </div>
-              <div class="col-xs-6 col-sm-left-padding">
-                <%#= select_tag(:landlord_rating, options_for_select([['Any','Any'],['NA', 0], ['Excellent', 1], ['Good', 2], ['Fair', 3]], params[:landlord_rating] ? params[:landlord_rating].titleize : "Any"), class: 'form-control') %>
-              </div>
-            </div> -->
-          <%# end %>
-          <div class="row vertical-padding">
-            <div class="col-xs-12">
-              <strong>Available</strong>
-            </div>
-          </div>
-          <div class="row vertical-padding">
-            <div class="col-xs-6 col-sm-left-padding">
-              <div class='input-group date datepicker'>
-                <%= text_field_tag :available_starting, params[:available_starting],
-                  placeholder: "start", class:"form-control", size:30 %>
-                <label class="input-group-addon btn" for="date">
-                  <span class="fa fa-calendar open-datepicker"></span>
-                </label>
-              </div>
-            </div>
-            <div class="col-xs-5 col-sm-left-padding">
-              <div class='input-group date datepicker'>
-                <%= text_field_tag :available_before, params[:available_before],
-                  placeholder: "by", class:"form-control" %>
-                <label class="input-group-addon btn" for="date">
-                  <span class="fa fa-calendar open-datepicker"></span>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div class="row vertical-padding">
-            <div class="col-xs-6">
-              <div class="checkbox checkbox-warning inline">
-                <%= check_box_tag :roomsharing_filter, "".freeze, params[:roomsharing_filter] == "true".freeze ? true : false,
-                    class: 'styled' %>
-                <label for="roomsharing_filter">
-                  Roomshares
-                </label>
-              </div>
-            </div>
-            <% if current_user.is_management? %>
-              <div class="col-xs-6">
-                <div class="checkbox checkbox-warning inline">
-                  <%= check_box_tag :unassigned_filter, "".freeze, params[:unassigned_filter] == "true".freeze   ? true : false,
-                      class: 'styled' %>
-                  <label for="unassigned_filter">
-                    Unassigned
-                  </label>
+                      <!-- </div> -->
+                    </div>
+                  </div>
                 </div>
-              </div>
-            <% end %>
-          </div>
 
-          <div class="row vertical-padding">
-            <div class="col-xs-6">
-              <!-- <div class="checkbox checkbox-warning inline">
-                <%#= check_box_tag :tenant_occupied_filter, "".freeze, params[:tenant_occupied_filter] == "true".freeze ? true : false,
-                    class: 'styled' %>
-                <label for="tenant_occupied_filter">
-                  Tenant Occupied
-                </label>
-              </div> -->
-              <div class="checkbox checkbox-warning inline">
-                <%= check_box_tag :exclusive_filter, "".freeze, params[:exclusive_filter] == "true".freeze ? true : false,
-                    class: 'styled' %>
-                <label for="roomsharing_filter">
-                  Exclusive Listing
-                </label>
-              </div>
-            </div>
-            <div class="col-xs-6">
-              <div class="checkbox checkbox-warning inline">
-                <%= check_box_tag :has_stock_photos_filter, "".freeze, params[:has_stock_photos_filter] == "true".freeze ? true : false,
-                    class: 'styled' %>
-                <label for="has_stock_photos_filter">
-                  Stock Photos
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div class="row vertical-padding">
-            <div class="col-xs-6">
-              <div class="checkbox checkbox-warning inline">
-                <%= check_box_tag :no_description, "".freeze, params[:no_description] == "true".freeze ? true : false,
-                    class: 'styled' %>
-                <label for="no_description">
-                  No Description
-                </label>
-              </div>
-            </div>
-            <div class="col-xs-6">
-              <div class="checkbox checkbox-warning inline">
-                <%= check_box_tag :no_images, "".freeze, params[:no_images] == "true".freeze ? true : false,
-                    class: 'styled' %>
-                <label for="no_images">
-                  No Images
-                </label>
-              </div>
-            </div>
-            <!-- <div class="row vertical-padding"> -->
-            <!-- <div class="col-xs-6">
-              
-            </div> -->
-          </div>
-          <% if current_user.is_management? %>
-            <div class="row vertical-padding">
-              <div class="col-xs-6">
-                <div class="checkbox checkbox-warning inline">
-                  <%= check_box_tag :third_tier, "".freeze, params[:third_tier] == "true".freeze ? true : false,
-                      class: 'styled' %>
-                  <label for="no_description">
-                    Third Tier
-                  </label>
+                <div class="row vertical-padding">
+                  <div class="col-xs-5">
+                    <%= label_tag :point_of_contact, "Point of Contact", class: "field-label-sm" %>
+                  </div>
+                  <div class="col-xs-6 col-sm-left-padding">
+                    <%= select_tag(:point_of_contact,
+                      options_for_select(@user,
+                          [params[:point_of_contact] ? params[:point_of_contact].titleize : "Any"]),
+                        {prompt: "Choose one...",
+                        class: 'form-control'}) %>
+                  </div>
                 </div>
-              </div>
-            </div>
-          <% end %>
-          <!-- <div class="row vertical-padding">
-            <div class="col-xs-5">
-              <%#= label_tag :parent_neighborhoods, "Parent Neighborhoods" %>
-            </div>
-            <div class="col-xs-6 col-sm-left-padding">
-              <%#= select_tag(:parent_neighborhoods,
-                  options_for_select(Neighborhood.where(parent_neighborhoods: 1).collect {|u| [u.name.titleize, u.id]},
-                  params[:parent_neighborhoods] ? params[:parent_neighborhoods].titleize : "Any"),{ prompt: "Choose one...", class: 'form-control'}) %>
-            </div>
-          </div> -->
+                <div class="row vertical-padding">
+                  <div class="col-xs-5">
+                    <%= label_tag :primary_agent_id, "Agent" %>
+                  </div>
+                  <div class="col-xs-6 col-sm-left-padding">
+                    <%= select_tag(:primary_agent_id,
+                      options_for_select(current_user.company.users.unarchived.collect {|u| [u.name, u.id]},
+                          [params[:primary_agent_id] ? params[:primary_agent_id].titleize : "Any"]),
+                        {prompt: "Choose one...",
+                        class: 'form-control'}) %>
+                  </div>
+                </div>
+                <%# abort current_user.is_streeteasy_agent?.inspect %>
+                <% if current_user.is_management? || current_user.is_streeteasy_agent? %>
+                  <div class="row vertical-padding">
+                    <div class="col-xs-5">
+                      <%= label_tag :streeteasy_filter, "On Streeteasy" %>
+                    </div>
+                    <div class="col-xs-6 col-sm-left-padding">
+                      <%= select_tag(:streeteasy_filter,
+                          options_for_select(['Any', 'Yes', 'No'],
+                          [params[:streeteasy_filter] ? params[:streeteasy_filter].titleize : 'Any']),
+                          class: 'form-control') %>
+                    </div>
+                  </div>
+                <% end %>
 
-          <!-- <div class="row vertical-padding">
-            <div class="col-xs-11 selectize-wrapper">
-              <select id="neighborhood-select-multiple" placeholder="Neighborhoods...">
-                <%# @neighborhoods.each do |borough, list| %>
-                  <optgroup label="<%#= borough %>">
-                    <%# list.each do |neighborhood| %>
-                      <option value="<%#= neighborhood.id %>"><%#= neighborhood.name %></option>
-                    <%# end %>
-                  </optgroup>
+                <% if current_user.is_company_admin? || current_user.is_super_admin? %>
+                  <div class="row vertical-padding">
+                    <div class="col-xs-5">
+                      <%= label_tag :streeteasy_claim, "Claim for Streeteasy" %>
+                    </div>
+                    <div class="col-xs-6 col-sm-left-padding">
+                      <%= select_tag(:streeteasy_claim,
+                          options_for_select(['Any', 'Yes', 'No'],
+                          [params[:streeteasy_claim] ? params[:streeteasy_claim].titleize : 'Any']),
+                          class: 'form-control') %>
+                    </div>
+                  </div>
+                <% end %>
+                <%# if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
+                  <!-- <div class="row vertical-padding">
+                    <div class="col-xs-5">
+                      <%#= label_tag :building_rating, "STREETEASY ELIGIBLE" %>
+                    </div>
+                    <div class="col-xs-6 col-sm-left-padding">
+                      <%#= select_tag(:building_rating, options_for_select([['Any','Any'],['Yes', 0], ['No', 1]], params[:building_rating] ? params[:building_rating].titleize : "Any"), class: 'form-control') %>
+                    </div>
+                  </div> -->
                 <%# end %>
-              </select>
-            </div>
-          </div> -->
-          <% if !params[:parent_neighborhoods].nil? %>
-            <%= hidden_field_tag :parent_neighborhoods, params[:parent_neighborhoods] %>
-          <% else %>
-            <%= hidden_field_tag :parent_neighborhoods %>
-          <% end %>
-          <a href="javascript:;" class="test_p" data-target="#demo_neghb">Neighborhoods</a>
-          <div class="row vertical-padding test_c" id="demo_neghb" style="display: none;">
-            <% @neighborhoods = Neighborhood.all %>
-            <% @neighborhoods.where(parent_neighborhood_id: 0).each do |neighborhood| %>
-              <div class="col-sm-6">
-                    <input type="checkbox" name="neighborhood[]" value="<%= neighborhood.id %>" id="parent_<%= neighborhood.id %>" onClick = "parent_neighborhoods_check(<%= neighborhood.id %>)" ><b><%= neighborhood.name.titleize %></b>
-                    <br>
-                    <% @neighborhoods.where(parent_neighborhood_id: neighborhood.id).each do |child_neighborhood| %>
-                      <% if params[:parent_neighborhoods] %>
-                        <% if params[:parent_neighborhoods].split(",").include? "#{child_neighborhood.id}" %>
-                          <span class="child-input"><input type="checkbox" name="neighborhood[]" value="<%= child_neighborhood.id %>" data-parent-id= "<%= child_neighborhood.parent_neighborhood_id %>" id="child_with_parent_neghb_<%= child_neighborhood.id %>" checked="true" onClick = "child_neighborhoods_uncheck(<%= child_neighborhood.id %>)"><%= child_neighborhood.name.titleize %></span>
-                        <% else %>
-                          <span class="child-input"><input type="checkbox" name="neighborhood[]" value="<%= child_neighborhood.id %>" data-parent-id= "<%= child_neighborhood.parent_neighborhood_id %>" id="child_with_parent_neghb_<%= child_neighborhood.id %>" onClick = "child_neighborhoods_uncheck(<%= child_neighborhood.id %>)"><%= child_neighborhood.name.titleize %></span>
-                        <% end %>
-                      <% else %>
-                        <span class="child-input"><input type="checkbox" name="neighborhood[]" value="<%= child_neighborhood.id %>" data-parent-id= "<%= child_neighborhood.parent_neighborhood_id %>" id="child_with_parent_neghb_<%= child_neighborhood.id %>" onClick = "child_neighborhoods_uncheck(<%= child_neighborhood.id %>)"><%= child_neighborhood.name.titleize %></span>
+
+                <% if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
+                  <div class="row vertical-padding">
+                    <div class="col-xs-5">
+                      <%= label_tag :streeteasy_eligibility, "STREETEASY ELIGIBLE" %>
+                    </div>
+                    <div class="col-xs-6 col-sm-left-padding">
+                      <%= select_tag(:streeteasy_eligibility, options_for_select([['Any','Any'],['Yes', 0], ['No', 1]], params[:streeteasy_eligibility] ? params[:streeteasy_eligibility].titleize : "Any"), class: 'form-control') %>
+                    </div>
+                  </div>
+                <% end %>
+                <% if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
+                  <div class="row vertical-padding">
+                    <div class="col-xs-5">
+                      <%= label_tag :tenant_occupied, "Tenant Occupieds or Not" %>
+                    </div>
+                    <div class="col-xs-6 col-sm-left-padding">
+                      <%= select_tag(:tenant_occupied, options_for_select([['Any','Any'],['Tenant Occupied', 0], ['Not Tenant Occupied', 1]], params[:tenant_occupied] ? params[:tenant_occupied].titleize : "Any"), class: 'form-control') %>
+                    </div>
+                  </div>
+                <% end %>
+                <div class="row vertical-padding">
+                  <div class="col-xs-5">
+                    <%= label_tag :youtube_video_url, "Video Present Or Not" %>
+                  </div>
+                  <div class="col-xs-6 col-sm-left-padding">
+                    <%= select_tag(:youtube_video_url, options_for_select([['Any','Any'],['Video Present', 0], ['Not Video Present', 1]], params[:youtube_video_url] ? params[:youtube_video_url].titleize : "Any"), class: 'form-control') %>
+                  </div>
+                </div>
+                <div class="row vertical-padding">
+                  <div class="col-xs-5">
+                    <%= label_tag :tour_3d, "3D Tour Present Or Not" %>
+                  </div>
+                  <div class="col-xs-6 col-sm-left-padding">
+                    <%= select_tag(:tour_3d, options_for_select([['Any','Any'],['3D Tour Present', 0], ['Not 3D Tour Present', 1]], params[:tour_3d] ? params[:tour_3d].titleize : "Any"), class: 'form-control') %>
+                  </div>
+                </div>
+                <%# if current_user.is_company_admin? || current_user.is_super_admin? || current_user.is_listings_manager? %>
+                  <!-- <div class="row vertical-padding">
+                    <div class="col-xs-5">
+                      <%#= label_tag :landlord_rating, "Landlord Rating" %>
+                    </div>
+                    <div class="col-xs-6 col-sm-left-padding">
+                      <%#= select_tag(:landlord_rating, options_for_select([['Any','Any'],['NA', 0], ['Excellent', 1], ['Good', 2], ['Fair', 3]], params[:landlord_rating] ? params[:landlord_rating].titleize : "Any"), class: 'form-control') %>
+                    </div>
+                  </div> -->
+                <%# end %>
+                <div class="row vertical-padding">
+                  <div class="col-xs-12">
+                    <strong>Available</strong>
+                  </div>
+                </div>
+                <div class="row vertical-padding">
+                  <div class="col-xs-6 col-sm-left-padding">
+                    <div class='input-group date datepicker'>
+                      <%= text_field_tag :available_starting, params[:available_starting],
+                        placeholder: "start", class:"form-control", size:30 %>
+                      <label class="input-group-addon btn" for="date">
+                        <span class="fa fa-calendar open-datepicker"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-xs-5 col-sm-left-padding">
+                    <div class='input-group date datepicker'>
+                      <%= text_field_tag :available_before, params[:available_before],
+                        placeholder: "by", class:"form-control" %>
+                      <label class="input-group-addon btn" for="date">
+                        <span class="fa fa-calendar open-datepicker"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row vertical-padding">
+                  <div class="col-xs-6">
+                    <div class="checkbox checkbox-warning inline">
+                      <%= check_box_tag :roomsharing_filter, "".freeze, params[:roomsharing_filter] == "true".freeze ? true : false,
+                          class: 'styled' %>
+                      <label for="roomsharing_filter">
+                        Roomshares
+                      </label>
+                    </div>
+                  </div>
+                  <% if current_user.is_management? %>
+                    <div class="col-xs-6">
+                      <div class="checkbox checkbox-warning inline">
+                        <%= check_box_tag :unassigned_filter, "".freeze, params[:unassigned_filter] == "true".freeze   ? true : false,
+                            class: 'styled' %>
+                        <label for="unassigned_filter">
+                          Unassigned
+                        </label>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+
+                <div class="row vertical-padding">
+                  <div class="col-xs-6">
+                    <!-- <div class="checkbox checkbox-warning inline">
+                      <%#= check_box_tag :tenant_occupied_filter, "".freeze, params[:tenant_occupied_filter] == "true".freeze ? true : false,
+                          class: 'styled' %>
+                      <label for="tenant_occupied_filter">
+                        Tenant Occupied
+                      </label>
+                    </div> -->
+                    <div class="checkbox checkbox-warning inline">
+                      <%= check_box_tag :exclusive_filter, "".freeze, params[:exclusive_filter] == "true".freeze ? true : false,
+                          class: 'styled' %>
+                      <label for="roomsharing_filter">
+                        Exclusive Listing
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-xs-6">
+                    <div class="checkbox checkbox-warning inline">
+                      <%= check_box_tag :has_stock_photos_filter, "".freeze, params[:has_stock_photos_filter] == "true".freeze ? true : false,
+                          class: 'styled' %>
+                      <label for="has_stock_photos_filter">
+                        Stock Photos
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row vertical-padding">
+                  <div class="col-xs-6">
+                    <div class="checkbox checkbox-warning inline">
+                      <%= check_box_tag :no_description, "".freeze, params[:no_description] == "true".freeze ? true : false,
+                          class: 'styled' %>
+                      <label for="no_description">
+                        No Description
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-xs-6">
+                    <div class="checkbox checkbox-warning inline">
+                      <%= check_box_tag :no_images, "".freeze, params[:no_images] == "true".freeze ? true : false,
+                          class: 'styled' %>
+                      <label for="no_images">
+                        No Images
+                      </label>
+                    </div>
+                  </div>
+                  <!-- <div class="row vertical-padding"> -->
+                  <!-- <div class="col-xs-6">
+                    
+                  </div> -->
+                </div>
+                <% if current_user.is_management? %>
+                  <div class="row vertical-padding">
+                    <div class="col-xs-6">
+                      <div class="checkbox checkbox-warning inline">
+                        <%= check_box_tag :third_tier, "".freeze, params[:third_tier] == "true".freeze ? true : false,
+                            class: 'styled' %>
+                        <label for="no_description">
+                          Third Tier
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+                <!-- <div class="row vertical-padding">
+                  <div class="col-xs-5">
+                    <%#= label_tag :parent_neighborhoods, "Parent Neighborhoods" %>
+                  </div>
+                  <div class="col-xs-6 col-sm-left-padding">
+                    <%#= select_tag(:parent_neighborhoods,
+                        options_for_select(Neighborhood.where(parent_neighborhoods: 1).collect {|u| [u.name.titleize, u.id]},
+                        params[:parent_neighborhoods] ? params[:parent_neighborhoods].titleize : "Any"),{ prompt: "Choose one...", class: 'form-control'}) %>
+                  </div>
+                </div> -->
+
+                <!-- <div class="row vertical-padding">
+                  <div class="col-xs-11 selectize-wrapper">
+                    <select id="neighborhood-select-multiple" placeholder="Neighborhoods...">
+                      <%# @neighborhoods.each do |borough, list| %>
+                        <optgroup label="<%#= borough %>">
+                          <%# list.each do |neighborhood| %>
+                            <option value="<%#= neighborhood.id %>"><%#= neighborhood.name %></option>
+                          <%# end %>
+                        </optgroup>
+                      <%# end %>
+                    </select>
+                  </div>
+                </div> -->
+                <% if !params[:parent_neighborhoods].nil? %>
+                  <%= hidden_field_tag :parent_neighborhoods, params[:parent_neighborhoods] %>
+                <% else %>
+                  <%= hidden_field_tag :parent_neighborhoods %>
+                <% end %>
+                <a href="javascript:;" class="test_p" data-target="#demo_neghb">Neighborhoods</a>
+                <div class="row vertical-padding test_c" id="demo_neghb" style="display: none;">
+                  <% @neighborhoods = Neighborhood.all %>
+                  <% @neighborhoods.where(parent_neighborhood_id: 0).each do |neighborhood| %>
+                    <div class="col-sm-6">
+                          <input type="checkbox" name="neighborhood[]" value="<%= neighborhood.id %>" id="parent_<%= neighborhood.id %>" onClick = "parent_neighborhoods_check(<%= neighborhood.id %>)" ><b><%= neighborhood.name.titleize %></b>
+                          <br>
+                          <% @neighborhoods.where(parent_neighborhood_id: neighborhood.id).each do |child_neighborhood| %>
+                            <% if params[:parent_neighborhoods] %>
+                              <% if params[:parent_neighborhoods].split(",").include? "#{child_neighborhood.id}" %>
+                                <span class="child-input"><input type="checkbox" name="neighborhood[]" value="<%= child_neighborhood.id %>" data-parent-id= "<%= child_neighborhood.parent_neighborhood_id %>" id="child_with_parent_neghb_<%= child_neighborhood.id %>" checked="true" onClick = "child_neighborhoods_uncheck(<%= child_neighborhood.id %>)"><%= child_neighborhood.name.titleize %></span>
+                              <% else %>
+                                <span class="child-input"><input type="checkbox" name="neighborhood[]" value="<%= child_neighborhood.id %>" data-parent-id= "<%= child_neighborhood.parent_neighborhood_id %>" id="child_with_parent_neghb_<%= child_neighborhood.id %>" onClick = "child_neighborhoods_uncheck(<%= child_neighborhood.id %>)"><%= child_neighborhood.name.titleize %></span>
+                              <% end %>
+                            <% else %>
+                              <span class="child-input"><input type="checkbox" name="neighborhood[]" value="<%= child_neighborhood.id %>" data-parent-id= "<%= child_neighborhood.parent_neighborhood_id %>" id="child_with_parent_neghb_<%= child_neighborhood.id %>" onClick = "child_neighborhoods_uncheck(<%= child_neighborhood.id %>)"><%= child_neighborhood.name.titleize %></span>
+                            <% end %>
+                          <% end %>
+                    </div>
+                  <% end %>
+                </div>
+                
+                <!-- <div class="row vertical-padding">
+                  <div class="col-xs-5">
+                    <%#= label_tag :parent_amenities, "Parent Amenities" %>
+                  </div>
+                  <br>
+                  <br>
+                  <div class="col-xs-11 vertical-padding">
+                    <%# list_info = [['Utilities(+ $150 Utilities,Cable Included,Free Laundry,Free WIFI,Heat + Hot Water Included,No Utilities Included,Washer/Dryer Hookups)', 145], ['Heating & Cooling(Air Conditioning Unit,Ceiling Fans,Central A/C,Central Heat,HVAC,Working Fireplace)', 146], ['Layout(Alcove,Basement,Den,Driveway,Duplex,Kitchen Island,Loft,Mezzanine,Office,Penthouse,Railroad,Triplex,Walk-In Closet)', 147],['Outdoor Space(Backyard,Balcony,Balcony/Terrace,Greenhouse,Outside Space,Patio/Deck,Paved Outdoor Space,Private Deck,Private Outdoor Space,Private Patio,Private Roof Deck,Private Terrace,Private Yard,Shared Outdoor Patio,Shared Roof Deck,Shared Terrace,Shared Yard,Terrace)', 148], ['Amenities(Bike Room,Doorman,Elevator,Freight Elevator,Fully Furnished,Garage,Gym,Handicap Elevator,Laundry Room,Lounge,On Site Super,Parking,Roof Access,Storage Space,Swimming Pool,Washer/Dryer In-Unit)', 149], ['Speakers & Audio Systems(Bluetooth Speaker System,Butterflymx Intercom System,Video Intercom,Virtual Doorman,Voice Intercom)', 150], ['Appliances(Brand New Appliances,Dishwasher,Microwave,Stainless Steel Appliances,Top of the Line GE Appliances,Wine Cooler)', 151], ['Finishes(Brand New Finishes,Chefs Kitchens,Exposed Brick,Fireplace,Floor To Ceiling Windows,Granite Countertops,Hardwood Floors,High Ceilings,Juliette Balcony,Modern Finishes,Original Detail,Renovated,Skylight)', 152], ['Features(City Views,Open Listing,Private Elevator)', 153], ['Denison(Denison Grey,Denison Metal,Denison Wood)', 154]] %>
+                    <%#= select_tag(:parent_amenities,
+                        options_for_select(list_info,
+                        params[:parent_amenities] ? params[:parent_amenities].titleize : "Any"),{ prompt: "Choose one...", class: 'form-control'}) %>
+                  </div>
+                </div> -->
+                <% if !params[:parent_amenities].nil? %>
+                  <%= hidden_field_tag :parent_amenities, params[:parent_amenities] %>
+                <% else %>
+                  <%= hidden_field_tag :parent_amenities %>
+                <% end %>
+                <a href="javascript:;" class="test_p" data-target="#demo">Unit features</a>
+                <div class="row vertical-padding test_c" id="demo" style="display: none;">
+                  <!-- <div class="col-xs-11 selectize-wrapper"> -->
+                      <% @unit_amenities.where(parent_amenity_id: 0).each do |amenity| %>
+                        <div class="col-sm-6" id="unit-amenities-select-multiple">
+                          <input type="checkbox" name="features[]" value="<%= amenity.id %>" id="parent_<%= amenity.id %>" onClick = "parent_amenities_check(<%= amenity.id %>)" ><b><%= amenity.name.titleize %></b>
+                          <br>
+                          <%# abort params[:parent_amenities].split(",").inspect %>
+                          <% @unit_amenities.where(parent_amenity_id: amenity.id).each do |child_amenity| %>
+                            <% if params[:parent_amenities] %>
+                              <% if params[:parent_amenities].split(",").include? "#{child_amenity.id}" %>
+                                <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" checked="true" onClick = "child_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
+                              <% else %>
+                                <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
+                              <% end %>
+                            <% else %>
+                              <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
+                            <% end %>
+                          <% end %>
+                          <br>
+                        </div>
                       <% end %>
-                    <% end %>
+                  <!-- </div> -->
+                </div>
+
+                <% if !params[:parent_building_amenities].nil? %>
+                  <%= hidden_field_tag :parent_building_amenities, params[:parent_building_amenities] %>
+                <% else %>
+                  <%= hidden_field_tag :parent_building_amenities %>
+                <% end %>
+                <a href="javascript:;" class="test_p" data-target="#demo_build_feat">Building features</a>
+                <div class="row vertical-padding test_c" id="demo_build_feat" style="display: none;">
+                  <!-- <div class="col-xs-11 selectize-wrapper"> -->
+                      <% @building_amenities.where(building_parent_amenity_id: 0).each do |amenity| %>
+                        <div class="col-sm-6" id= "building-amenities-select-multiple">
+                          <input type="checkbox" name="features[]" value="<%= amenity.id %>" id="parent_<%= amenity.id %>" onClick = "parent_building_amenities_check(<%= amenity.id %>)" ><b><%= amenity.name.titleize %></b>
+                          <br>
+                          <%# abort params[:parent_amenities].split(",").inspect %>
+                          <% @building_amenities.where(building_parent_amenity_id: amenity.id).each do |child_amenity| %>
+                            <% if params[:parent_building_amenities] %>
+                              <% if params[:parent_building_amenities].split(",").include? "#{child_amenity.id}" %>
+                                <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.building_parent_amenity_id %>" id="child_with_parent_building_<%= child_amenity.id %>" checked="true" onClick = "child_building_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
+                              <% else %>
+                                <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.building_parent_amenity_id %>" id="child_with_parent_building_<%= child_amenity.id %>" onClick = "child_building_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
+                              <% end %>
+                            <% else %>
+                              <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.building_parent_amenity_id %>" id="child_with_parent_building_<%= child_amenity.id %>" onClick = "child_building_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
+                            <% end %>
+                          <% end %>
+                          <br>
+                        </div>
+                      <% end %>
+                  <!-- </div> -->
+                </div>
               </div>
-            <% end %>
-          </div>
-          
-          <!-- <div class="row vertical-padding">
-            <div class="col-xs-5">
-              <%#= label_tag :parent_amenities, "Parent Amenities" %>
             </div>
-            <br>
-            <br>
-            <div class="col-xs-11 vertical-padding">
-              <%# list_info = [['Utilities(+ $150 Utilities,Cable Included,Free Laundry,Free WIFI,Heat + Hot Water Included,No Utilities Included,Washer/Dryer Hookups)', 145], ['Heating & Cooling(Air Conditioning Unit,Ceiling Fans,Central A/C,Central Heat,HVAC,Working Fireplace)', 146], ['Layout(Alcove,Basement,Den,Driveway,Duplex,Kitchen Island,Loft,Mezzanine,Office,Penthouse,Railroad,Triplex,Walk-In Closet)', 147],['Outdoor Space(Backyard,Balcony,Balcony/Terrace,Greenhouse,Outside Space,Patio/Deck,Paved Outdoor Space,Private Deck,Private Outdoor Space,Private Patio,Private Roof Deck,Private Terrace,Private Yard,Shared Outdoor Patio,Shared Roof Deck,Shared Terrace,Shared Yard,Terrace)', 148], ['Amenities(Bike Room,Doorman,Elevator,Freight Elevator,Fully Furnished,Garage,Gym,Handicap Elevator,Laundry Room,Lounge,On Site Super,Parking,Roof Access,Storage Space,Swimming Pool,Washer/Dryer In-Unit)', 149], ['Speakers & Audio Systems(Bluetooth Speaker System,Butterflymx Intercom System,Video Intercom,Virtual Doorman,Voice Intercom)', 150], ['Appliances(Brand New Appliances,Dishwasher,Microwave,Stainless Steel Appliances,Top of the Line GE Appliances,Wine Cooler)', 151], ['Finishes(Brand New Finishes,Chefs Kitchens,Exposed Brick,Fireplace,Floor To Ceiling Windows,Granite Countertops,Hardwood Floors,High Ceilings,Juliette Balcony,Modern Finishes,Original Detail,Renovated,Skylight)', 152], ['Features(City Views,Open Listing,Private Elevator)', 153], ['Denison(Denison Grey,Denison Metal,Denison Wood)', 154]] %>
-              <%#= select_tag(:parent_amenities,
-                  options_for_select(list_info,
-                  params[:parent_amenities] ? params[:parent_amenities].titleize : "Any"),{ prompt: "Choose one...", class: 'form-control'}) %>
-            </div>
-          </div> -->
-          <% if !params[:parent_amenities].nil? %>
-            <%= hidden_field_tag :parent_amenities, params[:parent_amenities] %>
-          <% else %>
-            <%= hidden_field_tag :parent_amenities %>
-          <% end %>
-          <a href="javascript:;" class="test_p" data-target="#demo">Unit features</a>
-          <div class="row vertical-padding test_c" id="demo" style="display: none;">
-            <!-- <div class="col-xs-11 selectize-wrapper"> -->
-                <% @unit_amenities.where(parent_amenity_id: 0).each do |amenity| %>
-                  <div class="col-sm-6" id="unit-amenities-select-multiple">
-                    <input type="checkbox" name="features[]" value="<%= amenity.id %>" id="parent_<%= amenity.id %>" onClick = "parent_amenities_check(<%= amenity.id %>)" ><b><%= amenity.name.titleize %></b>
-                    <br>
-                    <%# abort params[:parent_amenities].split(",").inspect %>
-                    <% @unit_amenities.where(parent_amenity_id: amenity.id).each do |child_amenity| %>
-                      <% if params[:parent_amenities] %>
-                        <% if params[:parent_amenities].split(",").include? "#{child_amenity.id}" %>
-                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" checked="true" onClick = "child_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
-                        <% else %>
-                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
-                        <% end %>
-                      <% else %>
-                        <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.parent_amenity_id %>" id="child_with_parent_<%= child_amenity.id %>" onClick = "child_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
-                      <% end %>
-                    <% end %>
-                    <br>
-                  </div>
-                <% end %>
-            <!-- </div> -->
           </div>
-
-          <% if !params[:parent_building_amenities].nil? %>
-            <%= hidden_field_tag :parent_building_amenities, params[:parent_building_amenities] %>
-          <% else %>
-            <%= hidden_field_tag :parent_building_amenities %>
-          <% end %>
-          <a href="javascript:;" class="test_p" data-target="#demo_build_feat">Building features</a>
-          <div class="row vertical-padding test_c" id="demo_build_feat" style="display: none;">
-            <!-- <div class="col-xs-11 selectize-wrapper"> -->
-                <% @building_amenities.where(building_parent_amenity_id: 0).each do |amenity| %>
-                  <div class="col-sm-6" id= "building-amenities-select-multiple">
-                    <input type="checkbox" name="features[]" value="<%= amenity.id %>" id="parent_<%= amenity.id %>" onClick = "parent_building_amenities_check(<%= amenity.id %>)" ><b><%= amenity.name.titleize %></b>
-                    <br>
-                    <%# abort params[:parent_amenities].split(",").inspect %>
-                    <% @building_amenities.where(building_parent_amenity_id: amenity.id).each do |child_amenity| %>
-                      <% if params[:parent_building_amenities] %>
-                        <% if params[:parent_building_amenities].split(",").include? "#{child_amenity.id}" %>
-                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.building_parent_amenity_id %>" id="child_with_parent_building_<%= child_amenity.id %>" checked="true" onClick = "child_building_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
-                        <% else %>
-                          <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.building_parent_amenity_id %>" id="child_with_parent_building_<%= child_amenity.id %>" onClick = "child_building_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
-                        <% end %>
-                      <% else %>
-                        <span class="child-input"><input type="checkbox" name="features[]" value="<%= child_amenity.id %>" data-parent-id= "<%= child_amenity.building_parent_amenity_id %>" id="child_with_parent_building_<%= child_amenity.id %>" onClick = "child_building_amenities_uncheck(<%= child_amenity.id %>)"><%= child_amenity.name.titleize %></span>
-                      <% end %>
-                    <% end %>
-                    <br>
-                  </div>
-                <% end %>
-            <!-- </div> -->
-          </div>
-
-
           <!-- <div class="row vertical-padding" style="display: none;">
             <div class="col-xs-11 selectize-wrapper">
               <select id="unit-amenities-select-multiple" placeholder="Unit features...">
