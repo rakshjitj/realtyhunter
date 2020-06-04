@@ -1293,3 +1293,40 @@ function delete_contact_from_db(id) {
     return false;
   }
 }
+
+function clearsearchdata(){
+  $("#address").val("");
+  $("#unit").val("");
+  $("#rent_min").val("");
+  $("#rent_max").val("");
+  $("#bed_min").val("Any");
+  $("#bed_min").val("Any");
+  $("#bath_min").val("Any");
+  $("#bath_min").val("Any");
+  $("#landlord").val("");
+  if ($("#hd_for_ll_class").val() == "false"){
+    $("#ll_importance").val("gold");
+  }
+  else{
+    $("#ll_importance").val("Any");
+  }
+  $("#accepts_third_party_gaurantor").val("Any");
+  $("#status").val("Active");
+  $("#public_url").val("");
+  $("#has_fee").val("Any");
+  $("input:checkbox").prop('checked',false);
+  $("#pet_policy_shorthand").val("");
+  $("#point_of_contact").val("");
+  $("#primary_agent_id").val("");
+  $("#streeteasy_filter").val("Any");
+  $("#streeteasy_claim").val("Any");
+  $("#streeteasy_eligibility").val("Any");
+  $("#tenant_occupied").val("Any");
+  $("#youtube_video_url").val("Any");
+  $("#tour_3d").val("Any");
+  $("#available_starting").val("");
+  $("#available_before").val("");
+  $("#parent_neighborhoods").val("");
+  $("#parent_amenities").val("");
+  $("#parent_building_amenities").val("");
+}

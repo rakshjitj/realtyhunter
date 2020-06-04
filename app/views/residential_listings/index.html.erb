@@ -624,7 +624,11 @@
               </select>
             </div>
           </div> -->
-
+          <% if current_user.is_data_entry? || current_user.is_data_entry2? %>
+            <%= hidden_field_tag :hd_for_ll_class, "true" %>
+          <% else %>
+            <%= hidden_field_tag :hd_for_ll_class, "false" %>
+          <% end %>
           <div class="row vertical-padding">
             <div class="col-xs-11 col-sm-left-padding">
               <button id='res-search-trigger', class="search-trigger btn btn-warning btn-sm form-control">
@@ -632,8 +636,14 @@
               </button>
             </div>
           </div>
-
         <% end %>
+        <div class="row vertical-padding">
+          <div class="col-xs-11 col-sm-left-padding">
+            <button class="search-trigger btn btn-warning btn-sm form-control" style="background-color: #a7a5a3;border-color: #969593;" onclick="clearsearchdata()">
+              Clear Search Fields
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
