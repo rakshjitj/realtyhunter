@@ -647,7 +647,7 @@
       </div>
     </div>
 
-    <div class="col-md-9 hidden-xs hidden-sm">
+     <div class="col-md-9 hidden-xs hidden-sm">
       <div id="r-big-map" data-map-points="<%= @map_infos %>"></div>
     </div>
   </div>
@@ -657,8 +657,8 @@
   </div>
 
   <%= form_tag print_list_residential_listings_path do %>
-  <div class="row">
-    <div class="col-md-6 vertical-margin-lg">
+  <div class="row r-search-rs">
+    <div class="col-md-3 vertical-margin-lg">
       <!-- will be a dropdown of either print pdf or email -->
       <div class="dropdown selected-listings">
         <button class="btn btn-warning btn-sm dropdown-toggle disabled" id="selected-listings-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="menu">
@@ -699,6 +699,155 @@
               &nbsp;&nbsp;<%= @residential_units.total_count %> Units found
             </span>
         <% end %>
+      <% end %>
+    </div>
+    <div class="col-md-9 vertical-margin-lg">
+      <span>Current Search</span>
+      <br>
+      <% if !params[:address].nil? %>
+        <strong>Address: </strong>: <%= params[:address] %>
+      <% end %>
+      <% if !params[:unit].nil? %>
+        | <strong>Unit: </strong>: <%= params[:unit] %>
+      <% end %>
+      <% if !params[:rent_min].nil? %>
+        | <strong>Min Rent: </strong>: <%= params[:rent_min] %>
+      <% end %>
+      <% if !params[:rent_max].nil? %>
+        | <strong>Max Rent: </strong>: <%= params[:rent_max] %>
+      <% end %>
+      <% if !params[:bed_min].nil? %>
+        | <strong>Min Bed: </strong>: <%= params[:bed_min] %>
+      <% end %>
+      <% if !params[:bed_max].nil? %>
+        | <strong>Max Bed: </strong>: <%= params[:bed_max] %>
+      <% end %>
+      <% if !params[:bath_min].nil? %>
+        | <strong>Min Bath: </strong>: <%= params[:bath_min] %>
+      <% end %>
+      <% if !params[:bath_max].nil? %>
+        | <strong>Max Bath: </strong>: <%= params[:bath_max] %>
+      <% end %>
+      <% if !params[:landlord].nil? %>
+        | <strong>Landlord: </strong>: <%= params[:landlord] %>
+      <% end %>
+      <% if !params[:ll_importance].nil? && params[:ll_importance] != "Any" %>
+        | <strong>LL Class: </strong>: <%= params[:ll_importance] %>
+      <% end %>
+      <% if !params[:accepts_third_party_gaurantor].nil? && params[:accepts_third_party_gaurantor] != "Any" %>
+        | <strong>Accepts Third-Party Gaurantor: </strong>: 
+        <% if params[:accepts_third_party_gaurantor] == "0" %>
+          Yes
+        <% else %>
+          No
+        <% end %>
+      <% end %>
+      <% if !params[:status].nil? %>
+        | <strong>Status: </strong>: <%= params[:status] %>
+      <% end %>
+      <% if !params[:public_url].nil? %>
+        | <strong>Public URL: </strong>: <%= params[:public_url] %>
+      <% end %>
+      <% if !params[:has_fee].nil?  && params[:has_fee] != "Any" %>
+        | <strong>Broker's Fee: </strong>: 
+        <% if params[:has_fee] == "Yes" %>
+          Yes
+        <% else %>
+          No
+        <% end %>
+      <% end %>
+      <% if !params[:pet_policy_shorthand].nil? %>
+        <strong>Pet Policy: </strong> <%= params[:pet_policy_shorthand].split(",").each.map{|a| PetPolicy.find(a.to_i).name}.join(",")  %>
+      <% end %>
+      <% if !params[:point_of_contact].nil? %>
+        | <strong>Point Of Contact: </strong>: <%= User.find(params[:point_of_contact]).name %>
+      <% end %>
+      <% if !params[:primary_agent_id].nil? %>
+        | <strong>Agent: </strong>: <%= User.find(params[:primary_agent_id]).name %>
+      <% end %>
+      <% if !params[:streeteasy_filter].nil? && params[:streeteasy_filter] != "Any" %>
+        | <strong>On Streeteasy: </strong>: 
+        <% if params[:streeteasy_filter] == "Yes" %>
+          Yes
+        <% else %>
+          No
+        <% end %>
+      <% end %>
+      <% if !params[:streeteasy_claim].nil? && params[:streeteasy_claim] != "Any" %>
+        | <strong>Streeteasy Claim: </strong>: 
+        <% if params[:streeteasy_claim] == "Yes" %>
+          Yes
+        <% else %>
+          No
+        <% end %>
+      <% end %>
+      <% if !params[:streeteasy_eligibility].nil? && params[:streeteasy_eligibility] != "Any" %>
+        | <strong>Streeteasy Eligibility: </strong>: 
+        <% if params[:streeteasy_eligibility] == "0" %>
+          Yes
+        <% else %>
+          No
+        <% end %>
+      <% end %>
+      <% if !params[:tenant_occupied].nil? && params[:tenant_occupied] != "Any" %>
+        | <strong>Tenant Occupied: </strong>: 
+        <% if params[:tenant_occupied] == "0" %>
+          Tenant Occupied
+        <% else %>
+          Not Tenant Occupied
+        <% end %>
+      <% end %>
+      <% if !params[:youtube_video_url].nil? && params[:youtube_video_url] != "Any" %>
+        | <strong>Video Present Or Not: </strong>: 
+        <% if params[:youtube_video_url] == "0" %>
+          Video Present
+        <% else %>
+          Not Video Present
+        <% end %>
+      <% end %>
+      <% if !params[:tour_3d].nil? && params[:tour_3d] != "Any" %>
+        | <strong>3D Tour Present Or Not: </strong>: 
+        <% if params[:tour_3d] == "0" %>
+          3D Tour Present
+        <% else %>
+          Not 3D Tour Present
+        <% end %>
+      <% end %>
+      <% if !params[:available_starting].nil? %>
+        | <strong>Available Start: </strong>: <%= params[:available_starting] %>
+      <% end %>
+      <% if !params[:available_before].nil? %>
+        | <strong>Available End</strong>: <%= params[:available_before] %>
+      <% end %>
+      <% if !params[:roomsharing_filter].nil? %>
+        | <strong>Roomshares</strong>: <%= params[:roomsharing_filter] %>
+      <% end %>
+      <% if !params[:unassigned_filter].nil? %>
+        | <strong>Unassigned</strong>: <%= params[:unassigned_filter] %>
+      <% end %>
+      <% if !params[:exclusive_filter].nil? %>
+        | <strong>Exclusive Listing</strong>: <%= params[:exclusive_filter] %>
+      <% end %>
+      <% if !params[:has_stock_photos_filter].nil? %>
+        | <strong>Stock Photos</strong>: <%= params[:has_stock_photos_filter] %>
+      <% end %>
+      <% if !params[:no_description].nil? %>
+        | <strong>No Description</strong>: <%= params[:no_description] %>
+      <% end %>
+      <% if !params[:no_images].nil? %>
+        | <strong>No Images</strong>: <%= params[:no_images] %>
+      <% end %>
+      <% if !params[:third_tier].nil? %>
+        | <strong>Third Tier</strong>: <%= params[:third_tier] %>
+      <% end %>
+      <% if !params[:parent_neighborhoods].nil? %>
+        | <strong>Neighborhoods</strong> <%= params[:parent_neighborhoods].split(",").each.map{|a| Neighborhood.find(a.to_i).name}.join(",")  %>
+      <% end %>
+      <% if !params[:parent_amenities].nil? %>
+        | <strong>Unit Features</strong>  <%= params[:parent_amenities].split(",").each.map{|a| ResidentialAmenity.find(a.to_i).name}.join(",")  %>
+      <% end %>
+      <% if !params[:parent_building_amenities].nil? %>
+        | <strong>Building Features</strong> <%= params[:parent_building_amenities].split(",").each.map{|a| BuildingAmenity.find(a.to_i).name}.join(",")  %>
       <% end %>
     </div>
   </div>
