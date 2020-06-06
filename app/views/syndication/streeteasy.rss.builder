@@ -70,7 +70,7 @@ xml.streeteasy :version => "1.6" do
 	                  		xml.address listing.street_number + " " + listing.route
 	                  	end
 					end
-					if !listing.streeteasy_unit.nil?
+					if !listing.streeteasy_unit.blank?
 						xml.apartment listing.streeteasy_unit
 					else
 						xml.apartment listing.building_unit
