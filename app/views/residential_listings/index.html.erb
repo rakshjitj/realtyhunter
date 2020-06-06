@@ -121,14 +121,14 @@
                 params[:bath_max]), class: 'form-control') %>
             </div>
           </div>
-          <!-- <div class="row vertical-padding">
+          <div class="row vertical-padding">
             <div class="col-xs-5">
-              <%#= label_tag(:listing_id, "Listing ID") %>
+              <%= label_tag(:listing_id, "Listing ID") %>
             </div>
             <div class="col-xs-6 col-sm-left-padding">
-              <%#= text_field_tag :listing_id, params[:listing_id], class:"form-control" %>
+              <%= text_field_tag :listing_id, params[:listing_id], class:"form-control" %>
             </div>
-          </div> -->
+          </div>
           <div class="row vertical-padding">
             <div class="col-xs-5">
               <%= label_tag(:landlord, "Landlord ") %>
@@ -180,15 +180,6 @@
               <%# end %>
             </div>
           </div>
-          <div class="row vertical-padding">
-            <div class="col-xs-3">
-              <%= label_tag(:public_url, "Public URL") %>
-            </div>
-            <div class="col-xs-8 col-sm-left-padding">
-              <%= text_field_tag :public_url, params[:public_url], class:"form-control" %>
-            </div>
-          </div>
-
           <br>
           <div class="h-line"></div>
           <br>
@@ -200,6 +191,14 @@
                  </h4>
               </div>
               <div id="collapseOne" class="panel-collapse collapse">
+                <div class="row vertical-padding">
+                  <div class="col-xs-3">
+                    <%= label_tag(:public_url, "Public URL") %>
+                  </div>
+                  <div class="col-xs-8 col-sm-left-padding">
+                    <%= text_field_tag :public_url, params[:public_url], class:"form-control" %>
+                  </div>
+                </div>
                 <div class="row vertical-padding">
                   <div class="col-xs-5">
                     <%= label_tag :has_fee, "Broker's Fee" %>
