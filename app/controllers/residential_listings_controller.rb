@@ -172,8 +172,8 @@ class ResidentialListingsController < ApplicationController
       tenant_number.each do |t_number|
         t_full_number = "+1" + t_number.gsub!(/[^0-9A-Za-z]/, '')
         require 'twilio-ruby'
-        account_sid = 'AC84d9858bafe7200b7a30fe0ac7936c82'
-        auth_token = '27b0acba26015cd649a841bb92ef89e2'
+        account_sid = ENV['TWILIO_ACCOUNT_SID']
+        auth_token = ENV['TWILIO_AUTH_TOKEN']
         @client = Twilio::REST::Client.new account_sid, auth_token
 
         @client.messages.create(
