@@ -140,6 +140,10 @@
           <% if !residential_listing.tenant_infos.all.map(&:email).reject(&:empty?).blank? %>
             <%= link_to "Send Tenant Email", send_email_to_tenant_path(residential_listing), remote: true, class: "send_t_button" %>
           <% end %>
+          <br><br>
+          <% if !residential_listing.tenant_infos.all.map(&:phone).reject(&:empty?).blank? %>
+            <%= link_to "Send Tenant SMS", send_sms_to_tenant_path(residential_listing), remote: true, class: "send_t_button" %>
+          <% end %>
         <% else %>
         <% end %>
       </td>

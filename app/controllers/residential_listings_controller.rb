@@ -154,7 +154,36 @@ class ResidentialListingsController < ApplicationController
 
   def send_email_to_tenant
     #@residential_listing = ResidentialListing.find(params[:id])
-    UnitMailer.send_email_to_all_tenant(params[:id], current_user.email).deliver!
+    @res_list = ResidentialListing.find(params[:id])
+    if !@res_list.tenant_infos.blank?
+      @res_list.tenant_infos.each do |t_info|
+        if !t_info.email.blank?
+          UnitMailer.send_email_to_all_tenant(params[:id], t_info, current_user.email).deliver!
+          @res_list.update(tenant_email_date: Time.now())
+        end
+      end
+    end
+  end
+
+  def send_sms_to_tenant
+    @res_list = ResidentialListing.find(params[:id])
+    if !@res_list.tenant_infos.blank?
+      tenant_number = @res_list.tenant_infos.all.map(&:phone).reject(&:empty?)
+      tenant_number.each do |t_number|
+        t_full_number = "+1" + t_number.gsub!(/[^0-9A-Za-z]/, '')
+        require 'twilio-ruby'
+        account_sid = 'AC84d9858bafe7200b7a30fe0ac7936c82'
+        auth_token = '27b0acba26015cd649a841bb92ef89e2'
+        @client = Twilio::REST::Client.new account_sid, auth_token
+
+        @client.messages.create(
+          from: '+16469561066',
+          to: t_full_number,
+          body: 'Hey! We’re renting out your apt. Upload a video tour to myspacenyc.com/video-uploads/ to get $25! Thanks! -Kevin@MSNYC (broker) 555-555-5555'
+        )
+      end
+      @res_list.update(tenant_sms_date: Time.now())
+    end
   end
 
   # def send_custom_email
@@ -1551,7 +1580,7 @@ class ResidentialListingsController < ApplicationController
         :recipients, :building_rating, :landlord_rating, :title, :message, :listing_ids, :listing_id,
         :tenant_occupied, :alt_address, :dimensions, :photo_video_access,
         :beds, :baths, :notes, :description, :rooms_description, :lease_start, :lease_end,
-        :include_photos, :inaccuracy_description, :rental_term_id,
+        :include_photos, :inaccuracy_description, :rental_term_id, :tenant_email_date, :tenant_sms_date,
         :has_fee, :op_fee_percentage, :tp_fee_percentage, :tenant_description,
         :available_starting, :available_before, :custom_amenities, :youtube_video_url, :tour_3d, :private_youtube_url,
         :roomsharing_filter, :unassigned_filter, :tenant_occupied_filter, :streeteasy_filter,
