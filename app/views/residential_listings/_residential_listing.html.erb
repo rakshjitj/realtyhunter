@@ -90,11 +90,13 @@
         <% if !residential_listing.tenant_infos.blank? %>
             <% r = 1 %>
             <% residential_listing.tenant_infos.each do |tenant_info| %>
-              Tenant <%= r %> : <%= tenant_info.name if !tenant_info.name.blank? %>,
-              <%= tenant_info.phone if !tenant_info.phone.blank? %>, <%= tenant_info.email if !tenant_info.email.blank? %>
-              <% r = r + 1 %>
-              <br>
-              <br>
+              <% if !tenant_info.name.blank? || !tenant_info.phone.blank? || !tenant_info.email.blank? %>
+                Tenant <%= r %> : <%= tenant_info.name if !tenant_info.name.blank? %>,
+                <%= tenant_info.phone if !tenant_info.phone.blank? %>, <%= tenant_info.email if !tenant_info.email.blank? %>
+                <% r = r + 1 %>
+                <br>
+                <br>
+              <% end %>    
             <% end %>
         <% end %>
       </td>
