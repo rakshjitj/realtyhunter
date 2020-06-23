@@ -131,8 +131,8 @@ Rails.application.routes.draw do
   get 'residential_listings/room_index' => "residential_listings#room_index", as: :room_index
   post 'residential_listings/generate_custom_email' => "residential_listings#generate_custom_email", as: :generate_custom_email
   get 'residential_listings/send_custom_email' => "residential_listings#send_custom_email", as: :send_custom_email
-  get 'residential_listings/send_email_to_tenant/:id' => "residential_listings#send_email_to_tenant", as: :send_email_to_tenant
-  get 'residential_listings/send_sms_to_tenant/:id' => "residential_listings#send_sms_to_tenant", as: :send_sms_to_tenant
+  post 'residential_listings/send_email_to_tenant/:id' => "residential_listings#send_email_to_tenant", as: :send_email_to_tenant
+  post 'residential_listings/send_sms_to_tenant/:id' => "residential_listings#send_sms_to_tenant", as: :send_sms_to_tenant
   get 'residential_listings/claim_for_streeteasy' => "residential_listings#claim_for_streeteasy", as: :claim_for_streeteasy
   get 'residential_listings_active_by_agent/:id/:streeteasy_status' => "residential_listings#streeteasy_active_by_agent", as: :streeteasy_active_by_agent
   get 'delete_from_se_claim/:id' => "residential_listings#delete_from_se_claim", as: :delete_from_se_claim

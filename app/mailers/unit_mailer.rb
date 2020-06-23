@@ -57,12 +57,13 @@ class UnitMailer < ApplicationMailer
       track_opens:'true'
   end
 
-  def send_email_to_all_tenant(id,t_info, email)
+  def send_email_to_all_tenant(id,t_subject, t_message,t_info, email)
     @residential_listing = ResidentialListing.find(id)
+    @message = t_message
     @t_info_name = t_info
     mail to: t_info.email,
         cc: 'photos@myspacenyc.com',
-        subject: "Your current apartment at #{@residential_listing.unit.building.street_number} #{@residential_listing.unit.building.route}",
+        subject: t_subject,
         reply_to: 'photos@myspacenyc.com',
         tag: 'residential_listings',
         track_opens:'true'

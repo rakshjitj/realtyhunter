@@ -140,11 +140,92 @@
             <h5>TENANT INFO NEEDED</h5>
           <% end %>
           <% if !residential_listing.tenant_infos.all.map(&:email).reject(&:empty?).blank? %>
-            <%= link_to "Send Tenant Email", send_email_to_tenant_path(residential_listing), remote: true, class: "send_t_button" %>
+            <%#= link_to "Send Tenant Email", send_email_to_tenant_path(residential_listing), remote: true, class: "send_t_button" %>
+            <div class="modal fade" id="modalEmailForm<%= residential_listing.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title w-100 font-weight-bold">Email Tenants</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <%= form_tag(send_email_to_tenant_path(residential_listing), remote: true) do %>
+                    <div class="modal-body mx-3">
+                      <div class="md-form mb-5">
+                        Please use this form below to email tenants for this unit. Each tenant with an email Address will receive seperate email.Both the POC and the photos@myspacenyc.com account will receive a copy.
+                      </div>
+                      <br>
+                      <div class="md-form mb-4">
+                        <label data-error="wrong" data-success="right" for="form2">Subject:</label>
+                        <% if !residential_listing.unit.streeteasy_unit.blank? %>
+                          <input type="text" name="subject" value="Your Current Appartrtment at <%= residential_listing.unit.building.street_number %> <%= residential_listing.unit.building.route %>, #<%= residential_listing.unit.streeteasy_unit %>" class="form-control" id="email-subject">
+                        <% else %>
+                          <input type="text" name="subject" value="Your Current Appartrtment at <%= residential_listing.unit.building.street_number %> <%= residential_listing.unit.building.route %>, #<%= residential_listing.unit.building_unit %>" class="form-control" id="email-subject">
+                        <% end %>
+                      </div>
+                      <div class="md-form mb-4">
+                        <label data-error="wrong" data-success="right" for="form2">Message:</label>
+                        <%= hidden_field_tag "rental_id", residential_listing.id %>
+                        <!-- <input type="textarea" id="message" name="message" class="form-control"> -->
+                        <textarea name='message' type="text" rows="20" style="width: 100%;"><div> Hope you're doing well!</div><br><div>We are working with your landlord at <%= residential_listing.unit.building.street_number %> <%= residential_listing.unit.building.route %>, to find new tenants for your apartment. To reduce the need for any in-person showings, we are asking current tenants for videos and some additional info. Would you be able to send us a quick 2-minute video today or tomorrow? Approximate dimensions of the bedrooms and any notes you have would also be extremely helpful.</div><br><div>To say thank you, we would be happy to send you a $25 Amazon Gift Card! You can submit your video directly from your phone using this form, https://myspacenyc.com/agents-login/video-uploads/, and it will register you for the gift card, too. </div><br><div>Please visit our site, https://myspacenyc.com/agents-login/video-instructions/, for more information and instructions.</div><br><div>Thanks for your help!</div><div>MySpace NYC</div></textarea>
+                      </div>
+                    </div>
+                  
+                    <div class="modal-footer d-flex justify-content-center">
+                      <!-- <button class="btn btn-indigo">Submit</button> -->
+                      <button type="submit" class="btn btn-success btn btn-indigo" id="SubmitEmailForm<%= residential_listing.id %>" onclick='$("#modalEmailForm<%= residential_listing.id %>").modal("hide")'></i>Submit</button>
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalEmailForm<%= residential_listing.id %>">Send Tenant Email</a>
+            </div>
           <% end %>
-          <br><br>
+          <br>
           <% if !residential_listing.tenant_infos.all.map(&:phone).reject(&:empty?).blank? %>
-            <%= link_to "Send Tenant SMS", send_sms_to_tenant_path(residential_listing), remote: true, class: "send_t_button" %>
+            <%#= link_to "Send Tenant SMS", send_sms_to_tenant_path(residential_listing), remote: true, class: "send_t_button" %>
+            <div class="modal fade" id="modalSMSForm<%= residential_listing.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title w-100 font-weight-bold">Text Tenants</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <%= form_tag(send_sms_to_tenant_path(residential_listing), remote: true) do %>
+                    <div class="modal-body mx-3">
+                      <div class="md-form mb-5">
+                        Please use this form below to text tenants for this unit. Each tenant with phone number will receive seperate text.
+                      </div>
+                      <br><br>
+                      <div class="md-form mb-4">
+                        <label data-error="wrong" data-success="right" for="form2">Message:</label>
+                        <!-- <input type="textarea" id="message" name="message" class="form-control"> -->
+                        <textarea name='message' type="text" rows="5" style="width: 100%;">Hey! We’re renting out your apt. Upload a video tour to myspacenyc.com/video-uploads/ to get $25! Thanks! -Kevin@MSNYC (broker) 555-555-5555</textarea>
+                      </div>
+                    </div>
+                  
+                    <div class="modal-footer d-flex justify-content-center">
+                      <!-- <button class="btn btn-indigo">Submit</button> -->
+                      <button type="submit" class="btn btn-success btn btn-indigo" id="SubmitSMSForm" onclick='$("#modalSMSForm<%= residential_listing.id %>").modal("hide")'></i>Submit</button>
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalSMSForm<%= residential_listing.id %>">Send Tenant SMS</a>
+            </div>
           <% end %>
         <% else %>
         <% end %>
@@ -981,4 +1062,11 @@
       modal.find('.modal-body p').html(recipient)
     })
   });
+  // var b = $("#rental_id").val();
+  // var c = "#SubmitEmailForm" + b;
+  // $(c).click(function() {
+  //   var d = $("#rental_id").val();
+  //   var a = "#modalEmailForm" + d;
+  //    $(a).modal('hide');
+  // });
 </script>

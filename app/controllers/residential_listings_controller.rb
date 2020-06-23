@@ -158,10 +158,11 @@ class ResidentialListingsController < ApplicationController
     if !@res_list.tenant_infos.blank?
       @res_list.tenant_infos.each do |t_info|
         if !t_info.email.blank?
-          UnitMailer.send_email_to_all_tenant(params[:id], t_info, current_user.email).deliver!
+          UnitMailer.send_email_to_all_tenant(params[:id], params[:subject], params[:message], t_info, current_user.email).deliver!
           @res_list.update(tenant_email_date: Time.now())
         end
       end
+      flash[:success] = 'Email Sended successfully.'
     end
   end
 
@@ -179,10 +180,11 @@ class ResidentialListingsController < ApplicationController
         @client.messages.create(
           from: '+16469561066',
           to: t_full_number,
-          body: 'Hey! We’re renting out your apt. Upload a video tour to myspacenyc.com/video-uploads/ to get $25! Thanks! -Kevin@MSNYC (broker) 555-555-5555'
+          body: params[:message]
         )
       end
       @res_list.update(tenant_sms_date: Time.now())
+      flash[:success] = 'SMS Sended successfully.'
     end
   end
 
