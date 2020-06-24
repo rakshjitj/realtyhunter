@@ -7,7 +7,7 @@
   
   <% if residential_listing.unit.hide_from_agent == true && current_user.is_special_agent? %>
   <% else %>
-    <tr class="<%= cycle('even', 'odd') -%> <%= more_sep_id %> <%= sep_id %>" data-id="<%= residential_listing.listing_id %>" style="background-color: <%= color%>" >
+    <tr class="<%= cycle('even', 'odd') -%>" data-id="<%= residential_listing.listing_id %>" style="background-color: <%= color%>" >
       <!-- ****** IMAGE ****************************************** -->
       <td class="img-col" style="max-width: 120px;">
         <!-- display building image first, if any are found -->
@@ -607,7 +607,7 @@
                 current_user.is_photo_manager? || current_user.id == residential_listing.unit.building.point_of_contact %>
             <td class="hidden-print">
               <% if action_name != "agent_rental" %>
-                <% if !current_user.is_photo_manager? %>
+                <%# if !current_user.is_photo_manager? %>
                   <%= link_to 'Edit', edit_residential_listing_path(residential_listing) %>
                   <br>
                   <% if controller_name == 'residential_listings' %>
@@ -623,9 +623,9 @@
                   <!-- hide the delete link on landlord and user pages -->
                   <%= link_to 'Duplicate', duplicate_modal_residential_listing_path(residential_listing),
                     data: { toggle: "modal", target: "#runitDuplicateModal"}, remote: true %>
-                <% else %>
-                  <%= link_to 'Manage Photos', edit_residential_listing_path(residential_listing) %>
-                <% end %>
+                <%# else %>
+                  <%#= link_to 'Manage Photos', edit_residential_listing_path(residential_listing) %>
+                <%# end %>
               <% end %>
             </td>
           <% end %>
@@ -1013,7 +1013,7 @@
               current_user.is_photo_manager? || current_user.id == residential_listing.unit.building.point_of_contact %>
           <td class="hidden-print">
             <% if action_name != "agent_rental" %>
-              <% if !current_user.is_photo_manager? %>
+              <%# if !current_user.is_photo_manager? %>
                 <%= link_to 'Edit', edit_residential_listing_path(residential_listing) %>
                 <br>
                 <% if controller_name == 'residential_listings' %>
@@ -1029,9 +1029,9 @@
                 <!-- hide the delete link on landlord and user pages -->
                 <%= link_to 'Duplicate', duplicate_modal_residential_listing_path(residential_listing),
                   data: { toggle: "modal", target: "#runitDuplicateModal"}, remote: true %>
-              <% else %>
-                <%= link_to 'Manage Photos', edit_residential_listing_path(residential_listing) %>
-              <% end %>
+              <%# else %>
+                <%#= link_to 'Manage Photos', edit_residential_listing_path(residential_listing) %>
+              <%# end %>
             <% end %>
           </td>
         <% end %>

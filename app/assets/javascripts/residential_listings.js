@@ -834,6 +834,7 @@
     var newPage = $('.residential_listings.new').length;
     var indexPage = $('.residential_listings.index').length;
     var indexPageIn = $('.residential_listings.room_index').length;
+    var indexPageInMedia = $('.residential_listings.media_index').length;
     var indexPageAgent = $('.residential_listings.agent_rental').length;
 
     // new and edit pages both render the same form template, so init them using the same code
@@ -842,6 +843,8 @@
     } else if (indexPage) {
       ResidentialListings.initIndex();
     }else if (indexPageIn) {
+      ResidentialListings.initIndex();
+    }else if (indexPageInMedia) {
       ResidentialListings.initIndex();
     }else if (indexPageAgent) {
       ResidentialListings.initIndex();
