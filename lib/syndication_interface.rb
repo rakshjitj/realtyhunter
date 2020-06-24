@@ -42,7 +42,7 @@ module SyndicationInterface
 		search_params[:must_have_description] = 1
 		search_params[:must_have_status_inbetween] = 1
 		search_params[:must_have_streeteasy_flag] = 1
-		search_params[:has_hide_from_agent] = 1
+		# search_params[:has_hide_from_agent] = 1
 		pull_data(company_id, search_params)
 	end
 
@@ -96,7 +96,7 @@ module SyndicationInterface
 		search_params[:exclusive] = 1
 		search_params[:is_hide_on_website] = 1
 		search_params[:must_have_description] = 1
-		search_params[:must_have_apartment] = 1
+		# search_params[:must_have_apartment] = 1
 		search_params[:has_hide_from_agent] = 1
 		pull_data(company_id, search_params)
 	end
