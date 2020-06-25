@@ -137,7 +137,9 @@
         </span>
         <% if !residential_listing.tenant_infos.blank? %>
           <% if !residential_listing.tenant_infos.blank? && residential_listing.tenant_occupied == true %>
-            <h5>TENANT INFO NEEDED</h5>
+            <% if residential_listing.tenant_infos.all.map(&:email).reject(&:blank?).blank? && residential_listing.tenant_infos.all.map(&:phone).reject(&:blank?).blank? %>
+              <h5>TENANT INFO NEEDED</h5>
+            <% end %>
           <% end %>
           <% if !residential_listing.tenant_infos.all.map(&:email).reject(&:blank?).blank? %>
             <div class="modal fade" id="modalEmailForm<%= residential_listing.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
