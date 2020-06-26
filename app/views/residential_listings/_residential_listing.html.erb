@@ -161,9 +161,9 @@
                       <div class="md-form mb-4">
                         <label data-error="wrong" data-success="right" for="form2">Subject:</label>
                         <% if !residential_listing.unit.streeteasy_unit.blank? %>
-                          <input type="text" name="subject" value="Your Current Appartrtment at <%= residential_listing.unit.building.street_number %> <%= residential_listing.unit.building.route %>, #<%= residential_listing.unit.streeteasy_unit %>" class="form-control" id="email-subject">
+                          <input type="text" name="subject" value="Your Current Apartment at <%= residential_listing.unit.building.street_number %> <%= residential_listing.unit.building.route %>, #<%= residential_listing.unit.streeteasy_unit %>" class="form-control" id="email-subject">
                         <% else %>
-                          <input type="text" name="subject" value="Your Current Appartrtment at <%= residential_listing.unit.building.street_number %> <%= residential_listing.unit.building.route %>, #<%= residential_listing.unit.building_unit %>" class="form-control" id="email-subject">
+                          <input type="text" name="subject" value="Your Current Apartment at <%= residential_listing.unit.building.street_number %> <%= residential_listing.unit.building.route %>, #<%= residential_listing.unit.building_unit %>" class="form-control" id="email-subject">
                         <% end %>
                       </div>
                       <div class="md-form mb-4">
