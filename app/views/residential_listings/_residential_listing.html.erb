@@ -704,6 +704,10 @@
               ---
               <br>
               Alt <%= residential_listing.alt_address %>,<br> Unit <%= residential_listing.unit.streeteasy_unit %>
+            <% elsif residential_listing.unit.streeteasy_unit.blank? && !residential_listing.alt_address.blank? %>
+              ---
+              <br>
+              Alt <%= residential_listing.alt_address %>
             <% end %>
             <% if !residential_listing.youtube_video_url.blank? %>
               <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
