@@ -287,6 +287,10 @@ class User < ApplicationRecord
     self.has_role? :photo_manager
   end
 
+  def is_hired_photographer?
+    self.has_role? :hired_photographer
+  end
+
   def is_third_tier_agent?
     self.has_role? :third_tier_agent
   end
@@ -299,7 +303,7 @@ class User < ApplicationRecord
     has_role? :streeteasy_agent
   end
 
-  def data_entry?
+  def is_data_entry?
     self.has_role? :data_entry
   end
 

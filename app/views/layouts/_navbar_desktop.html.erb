@@ -27,6 +27,7 @@
     <div class="navbar-inverse side-collapse in hidden-print">
       <nav role="navigation" class="navbar-collapse">
         <ul class="nav navbar-nav">
+        <% if !current_user.is_hired_photographer? %>
         <li><%= link_to "Rentals", residential_listings_path %></li>
         <%# if !current_user.is_special_agent? || current_user.is_management? %>
           <!-- <li><%#= link_to "Rentals", residential_listings_path %></li> -->
@@ -141,7 +142,10 @@
             </ul>
             </li>
           <% end %>
-
+          <% end %>
+          <% if current_user.is_hired_photographer? %>
+            <li><%= link_to "PhotoGrapher To-Do List", photographer_todo_path() %></li>
+          <% end %>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <%= current_user.name.titleize %> <b class="caret"></b>
@@ -149,19 +153,21 @@
             <ul class="dropdown-menu">
 
               <li><%= link_to "Profile", current_user %></li>
-              <li><%= link_to "My Waterfall", user_waterfall_path(current_user) %></li>
-              <!-- <li><%#= link_to "Send Email", send_custom_email_path %></li> -->
-              <li><%= link_to "Website Agents Login", "https://myspacenyc.com/agents-login/" %></li>
-              <% if current_user.is_manager? %>
-                <li><%= link_to "My Team Members", subordinates_user_path(current_user) %></li>
-              <% end %>
-              <% if current_user.is_management? %>
-                <li><%= link_to "Add New Member", admin_new_users_path %></li>
-              <% elsif current_user.is_company_admin? %>
-                <li><%= link_to "Add Office", new_company_office_path(current_user.company) %></li>
-              <% end %>
-              <% if current_user.is_special_agent? || current_user.is_streeteasy_agent? %>
-                <li><%= link_to "My Streeteasy List", individual_se_list_path %></li>
+              <% if !current_user.is_hired_photographer? %>
+                <li><%= link_to "My Waterfall", user_waterfall_path(current_user) %></li>
+                <!-- <li><%#= link_to "Send Email", send_custom_email_path %></li> -->
+                <li><%= link_to "Website Agents Login", "https://myspacenyc.com/agents-login/" %></li>
+                <% if current_user.is_manager? %>
+                  <li><%= link_to "My Team Members", subordinates_user_path(current_user) %></li>
+                <% end %>
+                <% if current_user.is_management? %>
+                  <li><%= link_to "Add New Member", admin_new_users_path %></li>
+                <% elsif current_user.is_company_admin? %>
+                  <li><%= link_to "Add Office", new_company_office_path(current_user.company) %></li>
+                <% end %>
+                <% if current_user.is_special_agent? || current_user.is_streeteasy_agent? %>
+                  <li><%= link_to "My Streeteasy List", individual_se_list_path %></li>
+                <% end %>
               <% end %>
               <li class="divider"></li>
               <li>
