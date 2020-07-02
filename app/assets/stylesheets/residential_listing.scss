@@ -709,3 +709,65 @@ a.test_p {
   background-color: #efefef;
   margin-bottom: 20px;
 }
+
+.dir-ggl {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border: solid 1px #20538D;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: #2c9c35;
+    color: white !important;
+    font-weight: bold;
+    padding: 8px 12px;
+    text-decoration: none;
+  }
+
+  a.dir-ggl:hover, a.dir-ggl:focus {
+    color: white;
+    background-color: forestgreen !important;
+    font-weight: bold;
+  }
+  .mod-delete{
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border: solid 1px #20538D;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: red;
+    font-weight: bold;
+    color: white !important;
+    padding: 8px 12px;
+    text-decoration: none;
+  }
+  a.mod-delete:hover, a.mod-delete:focus {
+    color: white;
+    background-color: red !important;
+    font-weight: bold;
+  }
+  .mod-cancel{
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border: solid 1px #20538D;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: #4479BA;
+    font-weight: bold;
+    color: white !important;
+    padding: 8px 12px;
+    text-decoration: none;
+  }
+  a.mod-cancel:hover, a.mod-cancel:focus {
+    color: white;
+    background-color: #4479BA !important;
+    font-weight: bold;
+  }
