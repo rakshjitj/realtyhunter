@@ -188,6 +188,36 @@ class ResidentialListingsController < ApplicationController
     end
   end
 
+  def add_to_photog_list
+    @res_list = ResidentialListing.find(params[:id])
+    params[:what_is_needed] = params[:what_is_needed].join(",")
+    if @res_list.photo_grapher_to_do.blank?
+      PhotoGrapherToDo.create(level_of_urgency: params[:level_of_urgency], what_is_needed: params[:what_is_needed], notes: params[:notes],residential_listing_id: params[:id], sort_urgency: params[:level_of_urgency], send_todo: true)
+    else
+      @res_list.photo_grapher_to_do.update(level_of_urgency: params[:level_of_urgency], what_is_needed: params[:what_is_needed], notes: params[:notes],residential_listing_id: params[:id], sort_urgency: params[:level_of_urgency], send_todo: true)
+    end
+    @res_list_to_to = @res_list.photo_grapher_to_do
+    if action_name == "photographer_todo"
+      redirect_to photographer_todo_path
+    end
+  end
+
+  def photographer_todo
+    @photographer_todo_list = PhotoGrapherToDo.order(updated_at: :desc).where(send_todo: true)
+    #@photographer_todo_list = @photographer_todo_list.desc(:updated_at)
+  end
+
+  def photo_status_update
+    @photo_field = PhotoGrapherToDo.find(params[:id])
+    @photo_field.update(photo_status: params[:photo_status], completed: params[:completed], user_id: current_user.id, photo_status_update_date: Time.now())
+  end
+
+  def delete_from_photo_tag_list
+    @delete_from_photo_tag_list = PhotoGrapherToDo.find(params[:id])
+    @delete_from_photo_tag_list.update(send_todo: false)
+    redirect_to photographer_todo_path
+  end
+
   # def send_custom_email
 
   # end

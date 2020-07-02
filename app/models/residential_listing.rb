@@ -9,6 +9,7 @@ class ResidentialListing < ApplicationRecord
   belongs_to :rental_term
   belongs_to :unit, touch: true
   has_many :streeteasy_counters
+  has_one :photo_grapher_to_do
   accepts_nested_attributes_for :unit #, allow_destroy: true
   before_save :process_custom_amenities
   after_commit :update_building_counts, :trim_audit_log
@@ -183,7 +184,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.description', 'residential_listings.lease_start',
         'residential_listings.lease_end', 'residential_listings.has_fee',
         'residential_listings.op_fee_percentage','residential_listings.tp_fee_percentage',
-        'residential_listings.tenant_occupied', 'residential_listings.created_at',
+        'residential_listings.tenant_occupied', 'residential_listings.created_at', 'residential_listings.alt_address',
         'residential_listings.updated_at','residential_listings.streeteasy_flag','residential_listings.show',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code', 'landlords.rating',

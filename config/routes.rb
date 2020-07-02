@@ -133,6 +133,10 @@ Rails.application.routes.draw do
   get 'residential_listings/send_custom_email' => "residential_listings#send_custom_email", as: :send_custom_email
   post 'residential_listings/send_email_to_tenant/:id' => "residential_listings#send_email_to_tenant", as: :send_email_to_tenant
   post 'residential_listings/send_sms_to_tenant/:id' => "residential_listings#send_sms_to_tenant", as: :send_sms_to_tenant
+  post 'residential_listings/add_to_photog_list/:id' => "residential_listings#add_to_photog_list", as: :add_to_photog_list
+  get 'residential_listings/photographer_todo' => "residential_listings#photographer_todo", as: :photographer_todo
+  post 'residential_listings/photo_status_update/:id' => "residential_listings#photo_status_update", as: :photo_status_update
+  get 'residential_listings/delete_from_photo_tag_list/:id' => "residential_listings#delete_from_photo_tag_list", as: :delete_from_photo_tag_list
   get 'residential_listings/claim_for_streeteasy' => "residential_listings#claim_for_streeteasy", as: :claim_for_streeteasy
   get 'residential_listings_active_by_agent/:id/:streeteasy_status' => "residential_listings#streeteasy_active_by_agent", as: :streeteasy_active_by_agent
   get 'delete_from_se_claim/:id' => "residential_listings#delete_from_se_claim", as: :delete_from_se_claim

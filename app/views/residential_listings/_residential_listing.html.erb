@@ -230,6 +230,154 @@
           <% end %>
         <% else %>
         <% end %>
+
+        <div class="modal fade" id="modalPhotogList<%= residential_listing.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title w-100 font-weight-bold">Add To Photographer's To-Do List</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <%= form_tag(add_to_photog_list_path(residential_listing), remote: true) do %>
+                <div class="modal-body mx-3">
+                  <div class="md-form mb-5">
+                    Complete this form to add to the photohraphers page for shooting and filming.
+                  </div>
+                  <br><br>
+                  <div class="md-form mb-4">
+                    <label data-error="wrong" data-success="right" for="form2">Level Of Urgency:</label>
+                    <!-- <input type="textarea" id="message" name="message" class="form-control"> -->
+                    <br>
+                    <% if residential_listing.photo_grapher_to_do %>
+                      <% if residential_listing.photo_grapher_to_do.sort_urgency == 1 %>
+                        <%= radio_button_tag 'level_of_urgency', 1, true  %>
+                        <label>Within 24 hours</label>
+                        <br>
+                        <%= radio_button_tag 'level_of_urgency', 2, false %>
+                        <label>Within 36 hours</label>
+                        <br>
+                        <%= radio_button_tag 'level_of_urgency', 3, false %>
+                        <label>This Week</label>
+                        <br>
+                        <%= radio_button_tag 'level_of_urgency', 4, false %>
+                        <label>When possible</label>
+                        <br>
+                      <% end %>
+                      <% if residential_listing.photo_grapher_to_do.sort_urgency == 2 %>
+                        <%= radio_button_tag 'level_of_urgency', 1, false  %>
+                        <label>Within 24 hours</label>
+                        <br>
+                        <%= radio_button_tag 'level_of_urgency', 2, true %>
+                        <label>Within 36 hours</label>
+                        <br>
+                        <%= radio_button_tag 'level_of_urgency', 3, false %>
+                        <label>This Week</label>
+                        <br>
+                        <%= radio_button_tag 'level_of_urgency', 4, false %>
+                        <label>When possible</label>
+                        <br>
+                      <% end %>
+                      <% if residential_listing.photo_grapher_to_do.sort_urgency == 3 %>
+                        <%= radio_button_tag 'level_of_urgency', 1, false  %>
+                        <label>Within 24 hours</label>
+                        <br>
+                        <%= radio_button_tag 'level_of_urgency', 2, false %>
+                        <label>Within 36 hours</label>
+                        <br>
+                        <%= radio_button_tag 'level_of_urgency', 3, true %>
+                        <label>This Week</label>
+                        <br>
+                        <%= radio_button_tag 'level_of_urgency', 4, false %>
+                        <label>When possible</label>
+                        <br>
+                      <% end %>
+                      <% if residential_listing.photo_grapher_to_do.sort_urgency == 4 %>
+                        <%= radio_button_tag 'level_of_urgency', 1, false  %>
+                        <label>Within 24 hours</label>
+                        <br>
+                        <%= radio_button_tag 'level_of_urgency', 2, false %>
+                        <label>Within 36 hours</label>
+                        <br>
+                        <%= radio_button_tag 'level_of_urgency', 3, false %>
+                        <label>This Week</label>
+                        <br>
+                        <%= radio_button_tag 'level_of_urgency', 4, true %>
+                        <label>When possible</label>
+                        <br>
+                      <% end %>
+                    <% else %>
+                      <%= radio_button_tag 'level_of_urgency', 1 %>
+                      <label>Within 24 hours</label>
+                      <br>
+                      <%= radio_button_tag 'level_of_urgency', 2 %>
+                      <label>Within 36 hours</label>
+                      <br>
+                      <%= radio_button_tag 'level_of_urgency', 3 %>
+                      <label>This Week</label>
+                      <br>
+                      <%= radio_button_tag 'level_of_urgency', 4 %>
+                      <label>When possible</label>
+                      <br>
+                    <% end %>
+                  </div>
+                  <br>
+                <div class="md-form mb-4">
+                  <label>What is needed?</label>
+                    <% if residential_listing.photo_grapher_to_do %>
+                      <br>
+                      <%= check_box_tag "what_is_needed[]", "photos", residential_listing.photo_grapher_to_do.what_is_needed.split(",").include?("photos") %> Photos
+                      <br>
+                      <%= check_box_tag "what_is_needed[]", "video", residential_listing.photo_grapher_to_do.what_is_needed.split(",").include?("video") %> Video
+                      <br>
+                      <%= check_box_tag "what_is_needed[]", "dimensions", residential_listing.photo_grapher_to_do.what_is_needed.split(",").include?("dimensions") %> Dimensions
+                      <br>
+                      <%= check_box_tag "what_is_needed[]", "neighborhoods photos/videos", residential_listing.photo_grapher_to_do.what_is_needed.split(",").include?("neighborhoods photos/videos") %> Neighborhood photos/videos
+                      <br>
+                      <%= check_box_tag "what_is_needed[]", "amenities photos/videos", residential_listing.photo_grapher_to_do.what_is_needed.split(",").include?("amenities photos/videos") %> Amenities photos/videos
+                      <br>
+                    <% else %>
+                      <br>
+                      <%= check_box_tag "what_is_needed[]", "photos" %> Photos
+                      <br>
+                      <%= check_box_tag "what_is_needed[]", "video" %> Video
+                      <br>
+                      <%= check_box_tag "what_is_needed[]", "dimensions" %> Dimensions
+                      <br>
+                      <%= check_box_tag "what_is_needed[]", "neighborhoods photos/videos" %> Neighborhood photos/videos
+                      <br>
+                      <%= check_box_tag "what_is_needed[]", "amenities photos/videos" %> Amenities photos/videos
+                      <br>
+                    <% end %>
+                </div>
+                <br>
+                <div class="md-form mb-4">
+                  <label data-error="wrong" data-success="right" for="form2">Notes to the photographer:</label>
+                  <br>
+                  <!-- <input type="textarea" id="message" name="message" class="form-control"> -->
+                  <% if residential_listing.photo_grapher_to_do %>
+                    <textarea name='notes' type="text" rows="3" style="width: 100%;"><%= residential_listing.photo_grapher_to_do.notes %></textarea>
+                  <% else %>
+                    <textarea name='notes' type="text" rows="3" style="width: 100%;"></textarea>
+                  <% end %>
+                </div>
+                </div>
+              
+                <div class="modal-footer d-flex justify-content-center">
+                  <!-- <button class="btn btn-indigo">Submit</button> -->
+                  <button type="submit" class="btn btn-success btn btn-indigo" id="SubmitSMSForm" onclick='$("#modalPhotogList<%= residential_listing.id %>").modal("hide")'></i>Submit</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+      <div class="text-center">
+        <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalPhotogList<%= residential_listing.id %>">Add To Photog List</a>
+      </div>
+
       </td>
       <% if current_user.is_management? ||
             current_user.is_listings_manager? ||
