@@ -170,17 +170,17 @@
 
   </div><!-- main centering col -->
 </div><!-- overall row -->
-
-<div id="listings" data-search-path="<%= filter_listings_user_path %>">
-  <%= render partial:'shared/listings', locals: {
-      model: user,
-      residential_units: residential_units,
-      res_images: res_images,
-      res_bldg_images: res_bldg_images,
-      commercial_units: commercial_units,
-      com_images: com_images,
-      com_bldg_images: com_bldg_images
-    } %>
-</div>
-
+<% if !current_user.is_hired_photographer? %>
+  <div id="listings" data-search-path="<%= filter_listings_user_path %>">
+    <%= render partial:'shared/listings', locals: {
+        model: user,
+        residential_units: residential_units,
+        res_images: res_images,
+        res_bldg_images: res_bldg_images,
+        commercial_units: commercial_units,
+        com_images: com_images,
+        com_bldg_images: com_bldg_images
+      } %>
+  </div>
+<% end %>
 <% end %><!-- cache -->
