@@ -110,6 +110,14 @@
         </div>
         <div class="row vertical-padding">
           <div class="col-xs-5">
+            <%= label_tag :private_youtube_video_url, "Private Video Present Or Not" %>
+          </div>
+          <div class="col-xs-6 col-sm-left-padding">
+            <%= select_tag(:private_youtube_video_url, options_for_select([['Any','Any'],['Video Present', 0], ['Not Video Present', 1]], params[:private_youtube_video_url] ? params[:private_youtube_video_url].titleize : "Any"), class: 'form-control') %>
+          </div>
+        </div>
+        <div class="row vertical-padding">
+          <div class="col-xs-5">
             <%= label_tag :tour_3d, "3D Tour Present Or Not" %>
           </div>
           <div class="col-xs-6 col-sm-left-padding">

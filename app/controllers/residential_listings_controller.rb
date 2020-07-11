@@ -193,6 +193,7 @@ class ResidentialListingsController < ApplicationController
     params[:what_is_needed] = params[:what_is_needed].join(",")
     if @res_list.photo_grapher_to_do.blank?
       PhotoGrapherToDo.create(level_of_urgency: params[:level_of_urgency], what_is_needed: params[:what_is_needed], notes: params[:notes],residential_listing_id: params[:id], sort_urgency: params[:level_of_urgency], send_todo: true)
+      @res_list.update(photographer_user_id: current_user.id, photographer_update_date: Time.now())
     else
       @res_list.photo_grapher_to_do.update(level_of_urgency: params[:level_of_urgency], what_is_needed: params[:what_is_needed], notes: params[:notes],residential_listing_id: params[:id], sort_urgency: params[:level_of_urgency], send_todo: true)
     end
@@ -1554,6 +1555,11 @@ class ResidentialListingsController < ApplicationController
         else 
           if !params[:ll_importance]
             params[:ll_importance] = "gold".freeze
+          end
+        end
+        if action_name == "media_index"
+          if !params[:youtube_video_url]
+            params[:youtube_video_url] = "1".freeze
           end
         end
       end

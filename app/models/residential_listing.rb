@@ -181,11 +181,12 @@ class ResidentialListing < ApplicationRecord
         'buildings.lat', 'buildings.lng', 'buildings.rating',
         'residential_listings.id',
         'residential_listings.beds', 'residential_listings.baths', 'residential_listings.notes',
-        'residential_listings.description', 'residential_listings.lease_start',
-        'residential_listings.lease_end', 'residential_listings.has_fee',
+        'residential_listings.description', 'residential_listings.lease_start', 'residential_listings.dimensions',
+        'residential_listings.lease_end', 'residential_listings.has_fee', 'residential_listings.youtube_video_url',
+        'residential_listings.private_youtube_url', 'residential_listings.tour_3d',
         'residential_listings.op_fee_percentage','residential_listings.tp_fee_percentage',
         'residential_listings.tenant_occupied', 'residential_listings.created_at', 'residential_listings.alt_address',
-        'residential_listings.updated_at','residential_listings.streeteasy_flag','residential_listings.show',
+        'residential_listings.updated_at','residential_listings.streeteasy_flag', 'residential_listings.streeteasy_flag_one','residential_listings.show',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code', 'landlords.rating',
         'landlords.id AS landlord_id',
@@ -217,6 +218,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.streeteasy_flag', 'residential_listings.streeteasy_claim', 'residential_listings.couples_accepted',
         'residential_listings.has_fee', 'residential_listings.updated_at', 'residential_listings.youtube_video_url', 'residential_listings.private_youtube_url',
         'residential_listings.tenant_occupied', 'residential_listings.roomshare_department', 'residential_listings.tour_3d',
+        'residential_listings.photographer_update_date','residential_listings.photographer_user_id',
         'residential_listings.roomfill', 'residential_listings.partial_move_in', 'residential_listings.working_this_listing', 'residential_listings.alt_address',
         'neighborhoods.name AS neighborhood_name', 'neighborhoods.id AS neighborhood_id',
         'landlords.code', 'landlords.rating', 'landlords.ll_importance',
@@ -591,6 +593,17 @@ class ResidentialListing < ApplicationRecord
           
     end
     
+    if !params[:private_youtube_video_url].blank?
+      if params[:private_youtube_video_url] == "0"
+        running_list = running_list.where("residential_listings.private_youtube_url != ''" )
+      elsif params[:private_youtube_video_url] == "1"
+        running_list = running_list.where("residential_listings.private_youtube_url = ''")
+      else
+        running_list = running_list
+      end
+          
+    end
+
     if !params[:tour_3d].blank?
       if params[:tour_3d] == "0"
         running_list = running_list.where("residential_listings.tour_3d != ''" )
@@ -1001,6 +1014,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.has_fee', 'residential_listings.updated_at', 'residential_listings.youtube_video_url', 'residential_listings.private_youtube_url',
         'residential_listings.tenant_occupied', 'residential_listings.roomshare_department', 'residential_listings.tour_3d', 'residential_listings.alt_address',
         'residential_listings.roomfill', 'residential_listings.partial_move_in', 'residential_listings.working_this_listing',
+        'residential_listings.photographer_user_id','residential_listings.photographer_update_date',
         'neighborhoods.name AS neighborhood_name',
         'landlords.code', 'landlords.ll_importance', 'landlords.accepts_third_party_gaurantor',
         'landlords.id AS landlord_id', 'units.third_tier', 'units.public_url',
@@ -1043,6 +1057,7 @@ class ResidentialListing < ApplicationRecord
         'residential_listings.has_fee', 'residential_listings.updated_at', 'residential_listings.youtube_video_url', 'residential_listings.private_youtube_url',
         'residential_listings.tenant_occupied', 'residential_listings.roomshare_department', 'residential_listings.tour_3d', 'residential_listings.alt_address',
         'residential_listings.roomfill', 'residential_listings.partial_move_in', 'residential_listings.working_this_listing',
+        'residential_listings.photographer_user_id','residential_listings.photographer_update_date',
         'neighborhoods.name AS neighborhood_name',
         'landlords.code', 'landlords.ll_importance', 'landlords.accepts_third_party_gaurantor',
         'landlords.id AS landlord_id', 'units.third_tier', 'units.public_url',

@@ -366,7 +366,7 @@
               
                 <div class="modal-footer d-flex justify-content-center">
                   <!-- <button class="btn btn-indigo">Submit</button> -->
-                  <button type="submit" class="btn btn-success btn btn-indigo" id="SubmitSMSForm" onclick='$("#modalPhotogList<%= residential_listing.id %>").modal("hide")'></i>Submit</button>
+                  <button type="submit" class="btn btn-success btn btn-indigo" id="SubmitSMSForm" onclick='$("#modalPhotogList<%= residential_listing.id %>").modal("hide");window.location.reload();'></i>Submit</button>
                   <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
               <% end %>
@@ -375,7 +375,15 @@
         </div>
 
       <div class="text-center">
-        <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalPhotogList<%= residential_listing.id %>">Add To Photog List</a>
+        <% if residential_listing.photographer_update_date.blank? && residential_listing.photographer_user_id.blank? %>
+          <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalPhotogList<%= residential_listing.id %>">Add To Photog List</a>
+        <% else %>
+          <span style="color: green;">Added to the to-do list</span>
+          <br>
+          <span style="color: #989797;font-weight: bold;font-size: 10px;">
+            <%= User.find(residential_listing.photographer_user_id).name %> | <%= residential_listing.photographer_update_date.strftime("%d/%m/%Y") %>
+          </span>
+        <% end %>
       </div>
 
       </td>
