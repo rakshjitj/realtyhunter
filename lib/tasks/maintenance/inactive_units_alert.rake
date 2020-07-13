@@ -8,7 +8,7 @@ namespace :maintenance do
 		log.info "Inactive Unit Alert..."
 
 		#@res_list =	ResidentialListing.joins(:unit).where("residential_listings.streeteasy_flag =? and units.status =? and units.archived =?", true, 0, false)
-		inactive_units = ResidentialListing.joins(unit: {buidling: [:company, :landlord]}).where("units.archived =? and units.status =? and landlords.ll_importance =? and residential_listings.updated_at <= ?", false, 0, "gold", 15.days.ago).each.map{|rental| "\n *Inactive* *Units* *Alert* \n #{rental.unit.building.street_number} #{rental.unit.building.route} ##{rental.unit.building_unit} \n $#{rental.unit.rent} \n #{rental.beds} | #{rental.baths} \n LLC: #{rental.unit.building.landlord.code} \n POC: #{User.find(rental.unit.building.point_of_contact).name}\n ---\n"}.join(" ")
+		inactive_units = ResidentialListing.joins(unit: {building: [:landlord]}).where("units.archived =? and units.status =? and landlords.ll_importance =? and residential_listings.updated_at <= ?", false, 0, "gold", 15.days.ago).each.map{|rental| "\n *Inactive* *Units* *Alert* \n #{rental.unit.building.street_number} #{rental.unit.building.route} ##{rental.unit.building_unit} \n $#{rental.unit.rent} \n #{rental.beds} | #{rental.baths} \n LLC: #{rental.unit.building.landlord.code} \n POC: #{User.find(rental.unit.building.point_of_contact).name}\n ---\n"}.join(" ")
 		client = Slack::Web::Client.new
     	client.auth_test
     	client.chat_postMessage(channel: '#am_alerts', text: inactive_units, as_user: false)
